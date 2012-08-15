@@ -154,6 +154,7 @@ void ConfigImpl::mapSharedData(const uint128_t& initID)
 bool ConfigImpl::exit()
 {
     //deregisterObject( &myFrameData );
+	myServer->dispose();
     const bool ret = eq::Config::exit();
     return ret;
 }

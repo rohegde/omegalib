@@ -147,6 +147,25 @@ void MissionControlConnection::sendMessage(const char* header, void* data, int s
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
+void MissionControlServer::initialize() 
+{
+	omsg("MissionControlServer: adding log listener");
+	// Register the mission control server as a log listener
+	ologaddlistener(this);
+
+	TcpServer::initialize();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+void MissionControlServer::dispose() 
+{
+	omsg("MissionControlServer: removing log listener");
+	ologremlistener(this);
+
+	TcpServer::dispose();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
 TcpConnection* MissionControlServer::createConnection(const ConnectionInfo& ci)
 {
 	MissionControlConnection* conn = new MissionControlConnection(ci, this);

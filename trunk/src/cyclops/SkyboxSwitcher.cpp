@@ -43,6 +43,7 @@ SkyboxSwitcher::SkyboxSwitcher(SceneManager* sceneMng):
 	EngineModule("SkyboxSwitcher"),
 	mySceneManager(sceneMng)
 {
+	mySkybox = new Skybox();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,6 +55,7 @@ SkyboxSwitcher::~SkyboxSwitcher()
 void SkyboxSwitcher::initialize()
 {
 	omsg("SkyboxSwitcher initializing...");
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -78,9 +78,9 @@ namespace omegaOsg
 		float myRepresentationSize;
 
 		//OsgSceneObject* myRootSceneObject;
-		osg::Node* myRootNode;
-		osg::FrameStamp* myFrameStamp;
-		osg::NodeVisitor* myUpdateVisitor;
+		Ref<osg::Node> myRootNode;
+		Ref<osg::FrameStamp> myFrameStamp;
+		Ref<osg::NodeVisitor> myUpdateVisitor;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////

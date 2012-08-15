@@ -29,6 +29,12 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+EngineModule::~EngineModule()
+{
+	ofmsg("~EngineModule %1%", %myName);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineModule::doInitialize(Engine* server) 
 { 
 	myEngine = server; 
@@ -49,12 +55,6 @@ void EngineModule::doInitialize(Engine* server)
 void ModuleServices::addModule(EngineModule* module)
 { 
 	mysModules.push_back(module); 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-List<EngineModule*>::ConstRange ModuleServices::getModules() 
-{ 
-	return List<EngineModule*>::ConstRange(mysModules.begin(), mysModules.end()); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -116,11 +116,11 @@ void ModuleServices::handleCommand(const String& cmd)
 //}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ModuleServices::cleanup()
+void ModuleServices::disposeAll()
 {
 	foreach(EngineModule* module, mysModules)
 	{
-		delete module;
+		module->dispose();
 	}
 	mysModules.clear();
 }

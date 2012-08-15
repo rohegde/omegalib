@@ -37,6 +37,7 @@ namespace omega {
 	friend class ConsoleRenderable;
 	public:
 		Console();
+		virtual ~Console();
 
 		virtual Renderable* createRenderable();
 

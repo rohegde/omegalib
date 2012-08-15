@@ -36,7 +36,7 @@
 
 using namespace omega;
 
-List<EngineModule*> ModuleServices::mysModules;
+List< Ref<EngineModule> > ModuleServices::mysModules;
 Engine* Engine::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,8 +55,7 @@ Engine::Engine(ApplicationBase* app):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Engine::~Engine()
 {
-    ImageUtils::internalDispose();
-	ModuleServices::cleanup();
+	omsg("~Engine");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +69,6 @@ void Engine::initialize()
     // Create console.
     myConsole = new Console();
     myConsole->initialize(this);
-    ologaddlistener(myConsole.get());
 
 	// Then in the system config
 	Config* syscfg = getSystemManager()->getSystemConfig();
@@ -142,6 +140,20 @@ void Engine::initialize()
 	myDefaultCamera->setPosition(Vector3f::Zero());
 
 	myLock.unlock();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Engine::dispose()
+{
+    ImageUtils::internalDispose();
+	ModuleServices::disposeAll();
+
+	// Clear renderer list.
+	myClients.clear();
+
+	// Clear root scene node.
+	myScene = NULL;
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

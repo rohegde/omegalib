@@ -75,8 +75,18 @@ public:
 Skybox::Skybox():
 	myTexture(NULL), myNode(NULL), myRootStateSet(NULL)
 {
+	// Allocate and delete MoveSkyWithEyePointTransform, since we can't use Ref<> inside the Skybox header 
+	// (because MoveSkyWithEyePointTransform is defined within this file)
+	myTransform = new MoveSkyWithEyePointTransform();
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Skybox::~Skybox()
+{
+	delete myTransform;
+	myTransform = NULL;
+}
+	
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Skybox::initialize(osg::StateSet* rootStateSet)
 {
@@ -103,6 +113,9 @@ bool Skybox::loadPano(const String& panoName)
 
         myTexture->setFilter(osg::Texture::MIN_FILTER, osg::Texture::LINEAR_MIPMAP_LINEAR);
         myTexture->setFilter(osg::Texture::MAG_FILTER, osg::Texture::LINEAR);		
+
+		updateSkyBox();
+
 		return true;
 	}
 	return false;
@@ -142,6 +155,8 @@ bool Skybox::loadCubeMap(const String& cubemapDir, const String& extension)
 
 		myTexture = cubemap;
 
+		updateSkyBox();
+
 		return true;
     }
 
@@ -155,33 +170,10 @@ osg::Node* Skybox::createSkyBox()
 	{
 		osg::StateSet* stateset = new osg::StateSet();
 
-		//osg::TexEnv* te = new osg::TexEnv;
-		//te->setMode(osg::TexEnv::REPLACE);
-		//stateset->setTextureAttributeAndModes(0, te, osg::StateAttribute::ON);
-
-		//osg::TexGen *tg = new osg::TexGen;
-		//tg->setMode(osg::TexGen::SPHERE_MAP);
-		//tg->setMode(osg::TexGen::EYE_LINEAR);
-		//stateset->setTextureAttributeAndModes(0, tg, osg::StateAttribute::ON);
-		
 		// Uncomment to draw wireframe skybox.
 		//osg::PolygonMode* pm = new osg::PolygonMode();
 		//pm->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE);
 		//stateset->setAttribute(pm);
-
-		// Setup the root state set to apply the environment map to scene objects.
-		// Use Texture stage 3 for the environment map (0-2 reserved for object textures, 4,5 reserved for shadow maps)
-		myRootStateSet->setTextureAttributeAndModes(3, myTexture, osg::StateAttribute::ON);
-		if(myType == CubeMap)
-		{
-			myRootStateSet->addUniform( new osg::Uniform("unif_CubeMap", 3) );
-		}
-		else if(myType == Pano)
-		{
-			myRootStateSet->addUniform( new osg::Uniform("unif_PanoMap", 3) );
-		}
-
-		//stateset->setTextureAttributeAndModes(0, myCubeMap, osg::StateAttribute::ON);
 
 		stateset->setMode( GL_LIGHTING, osg::StateAttribute::OFF );
 		stateset->setMode( GL_CULL_FACE, osg::StateAttribute::OFF );
@@ -200,55 +192,80 @@ osg::Node* Skybox::createSkyBox()
 		//osg::Geometry* geometry = osgwTools::makeGeodesicSphere(0.1f, 8);
 		//osg::Geometry* geometry = osgwTools::makeBox(osg::Vec3(0.1f, 0.1f, 0.1f));
 
-		osg::Geode* geode = new osg::Geode;
-		geode->setCullingActive(false);
-		geode->setStateSet( stateset );
-		geode->addDrawable(geometry);
+		myGeode = new osg::Geode;		
+		myGeode->setCullingActive(false);
+		myGeode->setStateSet(stateset);
+		myGeode->addDrawable(geometry);
 
-
-		ProgramAsset* cubeMapProgram = NULL;
-		if(myType == CubeMap)
-		{
-			cubeMapProgram = SceneManager::instance()->getProgram(
-				"skybox-cube", 
-				"cyclops/common/Skybox.vert", 
-				"cyclops/common/Skybox.frag");
-		}
-		else if(myType == Pano)
-		{
-			cubeMapProgram = SceneManager::instance()->getProgram(
-				"skybox-pano", 
-				"cyclops/common/Skybox-pano.vert", 
-				"cyclops/common/Skybox-pano.frag");
-		}
-
-		if(cubeMapProgram != NULL)
-		{
-			stateset->setAttributeAndModes(cubeMapProgram->program, osg::StateAttribute::ON);
-		}
-
-		MoveSkyWithEyePointTransform* transform = new MoveSkyWithEyePointTransform;
-		if(myType == CubeMap)
-		{
-			transform->pitch = 0.0f;
-		}
-		else if(myType == Pano)
-		{
-			transform->pitch = -Math::Pi / 2;
-		}
-
-		transform->setCullingActive(false);
-		transform->addChild(geode);
+		myTransform->setCullingActive(false);
+		myTransform->addChild(myGeode);
 
 		osg::ClearNode* clearNode = new osg::ClearNode;
 		clearNode->setClearColor(osg::Vec4(0.0, 1.0, 1.0, 1.0));
-		clearNode->addChild(transform);
+		clearNode->addChild(myTransform);
+
+		updateSkyBox();
+
 		return clearNode;
 	}
 	return NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void updateSkyBox()
+void Skybox::updateSkyBox()
 {
+	if(myTexture != NULL && myGeode != NULL)
+	{
+		omsg("Updating Skybox");
+
+		SceneManager* sm = SceneManager::instance();
+		ProgramAsset* cubeMapProgram = NULL;
+		if(myType == CubeMap)
+		{
+			cubeMapProgram = sm->getProgram(
+				"skybox-cube", 
+				"cyclops/common/Skybox.vert", 
+				"cyclops/common/Skybox.frag");
+		}
+		else if(myType == Pano)
+		{
+			cubeMapProgram = sm->getProgram(
+				"skybox-pano", 
+				"cyclops/common/Skybox-pano.vert", 
+				"cyclops/common/Skybox-pano.frag");
+		}
+
+		osg::StateSet* stateset = myGeode->getOrCreateStateSet();
+		if(cubeMapProgram != NULL)
+		{
+			stateset->setAttributeAndModes(cubeMapProgram->program, osg::StateAttribute::ON);
+		}
+
+		// Setup the root state set to apply the environment map to scene objects.
+		// Use Texture stage 3 for the environment map (0-2 reserved for object textures, 4,5 reserved for shadow maps)
+		myRootStateSet->setTextureAttributeAndModes(3, myTexture, osg::StateAttribute::ON);
+
+		if(myTextureUniform != NULL)
+		{
+			myRootStateSet->removeUniform(myTextureUniform);
+		}
+
+		if(myType == CubeMap)
+		{
+			myRootStateSet->addUniform( new osg::Uniform("unif_CubeMap", 3) );
+		}
+		else if(myType == Pano)
+		{
+			myRootStateSet->addUniform( new osg::Uniform("unif_PanoMap", 3) );
+		}
+
+		if(myType == CubeMap)
+		{
+			myTransform->pitch = 0.0f;
+		}
+		else if(myType == Pano)
+		{
+			myTransform->pitch = -Math::Pi / 2;
+		}
+	}
 }

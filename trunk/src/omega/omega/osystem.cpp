@@ -238,6 +238,9 @@ namespace omega
 
 			sys->cleanup();
 
+			omsg("===================== ReferenceType object leaks follow:");
+			ReferenceType::printObjCounts();
+
 			ologclose();
 		}
 

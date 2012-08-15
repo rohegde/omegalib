@@ -45,6 +45,16 @@ Console::Console():
 	myConsoleColors['@'] = Color(0.8f, 0.7f, 1.0f);
 
 	myHeadline = SystemManager::instance()->getApplication()->getName();
+
+	omsg("Console: adding log listener");
+	ologaddlistener(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Console::~Console()
+{
+	omsg("~Console: removing log listener");
+	ologremlistener(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

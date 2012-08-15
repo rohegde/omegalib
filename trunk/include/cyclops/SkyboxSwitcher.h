@@ -48,8 +48,8 @@ namespace cyclops
 		int numSkyboxes();
 
 	private:
-		SceneManager* mySceneManager;
-		Skybox* mySkyBox;
+		Ref<SceneManager> mySceneManager;
+		Ref<Skybox> mySkybox;
 
 	private:
 		SkyboxSwitcher(SceneManager* sceneMng);
