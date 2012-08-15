@@ -145,6 +145,8 @@ void Engine::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Engine::dispose()
 {
+	omsg("Engine::dispose");
+
     ImageUtils::internalDispose();
 	ModuleServices::disposeAll();
 
@@ -154,6 +156,12 @@ void Engine::dispose()
 	// Clear root scene node.
 	myScene = NULL;
 
+	ofmsg("Engine::dispose: cleaning up %1% cameras", %myCameras.size());
+	myCameras.clear();
+	myDefaultCamera = NULL;
+
+	// clean up Pointers.
+	for(int i = 0; i < MaxPointers; i++) myPointers[i] = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

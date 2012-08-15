@@ -146,7 +146,7 @@ namespace omega {
 		DrawContext myDrawContext[GpuContext::MaxContexts];
 
 		// Navigation stuff.
-		CameraController* myController;
+		Ref<CameraController> myController;
 		bool myControllerEnabled;
 	};
 

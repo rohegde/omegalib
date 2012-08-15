@@ -50,11 +50,11 @@ namespace omegaToolkit
 
 	public:
 		UiModule();
-		~UiModule();
 
 		bool isLocalEventsEnabled() { return myLocalEventsEnabled; }
 
 		virtual void initialize();
+		virtual void dispose();
 		virtual void initializeRenderer(Renderer* r);
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt);
@@ -96,10 +96,9 @@ namespace omegaToolkit
 
 		ui::Widget* myWidgets[MaxWidgets];
 
-		ui::Widget* myActiveWidget;
-
-		ui::Container* myUi;
-		ui::WidgetFactory* myWidgetFactory;
+		Ref<ui::Widget> myActiveWidget;
+		Ref<ui::Container> myUi;
+		Ref<ui::WidgetFactory> myWidgetFactory;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

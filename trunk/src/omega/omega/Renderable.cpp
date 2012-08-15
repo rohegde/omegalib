@@ -171,8 +171,3 @@ Renderable* RenderableFactory::getRenderable(Renderer* client)
 	return addRenderable(client);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-List<Renderable*>::ConstRange RenderableFactory::getRenderables() const
-{
-	return List<Renderable*>::ConstRange(myRenderables.begin(), myRenderables.end());
-}

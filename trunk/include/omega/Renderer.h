@@ -65,7 +65,7 @@ namespace omega {
 	private:
 		Ref<Engine> myServer;
 		Ref<DrawInterface> myRenderer;
-		List<RenderPass*> myRenderPassList;
+		List< Ref<RenderPass> > myRenderPassList;
 		Queue<IRendererCommand*> myRenderableCommands;
 	};
 

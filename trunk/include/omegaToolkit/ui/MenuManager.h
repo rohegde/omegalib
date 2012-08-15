@@ -97,8 +97,10 @@ namespace omegaToolkit { namespace ui {
 		Menu* getSubMenu() { return mySubMenu; }
 
 	private:
+		// Weak reference to parent menu
 		Menu* myMenu;
-		MenuItem* myParent;
+
+		Ref<MenuItem> myParent;
 		Type myType;
 
 		Ref<UiScriptCommand> myCommand;
@@ -111,10 +113,10 @@ namespace omegaToolkit { namespace ui {
 
 		String myUserTag;
 		void* myUserData;
-		Menu* mySubMenu;
+		Ref<Menu> mySubMenu;
 
-		omegaToolkit::ui::Widget* myWidget;
-		omegaToolkit::ui::Button* myButton;
+		Ref<omegaToolkit::ui::Widget> myWidget;
+		Ref<omegaToolkit::ui::Button> myButton;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -148,20 +150,20 @@ namespace omegaToolkit { namespace ui {
 		void onPushMenuStack();
 
 	private:
-		MenuManager* myManager;
-		MenuItem* myRootItem;
+		Ref<MenuManager> myManager;
+		Ref<MenuItem> myRootItem;
 		String myName;
 
 		// Menu placement
 		Vector3f menuPosition;
 
-		List<MenuItem*> myMenuItems;
-		Menu* myActiveSubMenu;
-		Menu* myParent;
+		List< Ref<MenuItem> > myMenuItems;
+		Ref<Menu> myActiveSubMenu;
+		Ref<Menu> myParent;
 
 		bool myVisible;
 
-		omegaToolkit::ui::Container* myContainer;
+		Ref<omegaToolkit::ui::Container> myContainer;
 		omegaToolkit::ui::Container3dSettings my3dSettings;
 	};
 
@@ -175,6 +177,7 @@ namespace omegaToolkit { namespace ui {
 		UiModule* getUiModule() { return myUiModule; }
 
 		virtual void initialize();
+		virtual void dispose();
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt);
 
@@ -201,8 +204,8 @@ namespace omegaToolkit { namespace ui {
 		static MenuManager* mysInstance;
 
 		UiModule* myUiModule;
-		List<Menu*> myMenuList;
-		Menu* myMainMenu;
+		List< Ref<Menu> > myMenuList;
+		Ref<Menu> myMainMenu;
 
 		bool myRayPlaceEnabled;
 		Vector3f myDefaultMenuPosition;

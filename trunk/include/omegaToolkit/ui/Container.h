@@ -135,7 +135,7 @@ namespace omegaToolkit { namespace ui {
 		bool rayToPointerEvent(const Event& inEvt, Event& outEvt);
 
 	private:
-		List<Widget*> myChildren;
+		List< Ref<Widget> > myChildren;
 		Layout myLayout;
 		float myPadding;
 		float myMargin;
@@ -158,11 +158,12 @@ namespace omegaToolkit { namespace ui {
         void draw3d(RenderState* state);
 
 	private:
+		// We use a raw pointer here to avoid cyclic references.
 		Container* myOwner;
 
 		// Stuff used for 3d ui rendering.
-		RenderTarget* myRenderTarget;
-		Texture* myTexture;
+		Ref<RenderTarget> myRenderTarget;
+		Ref<Texture> myTexture;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

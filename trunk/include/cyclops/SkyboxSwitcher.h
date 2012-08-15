@@ -28,12 +28,21 @@
 #define __SKYBOX_SWITCHER_H__
 
 #include "cyclops/SceneManager.h"
+#include "cyclops/Skybox.h"
 
 namespace cyclops
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	class CY_API SkyboxSwitcher: public EngineModule
 	{
+	public:
+		struct SkyboxInfo
+		{
+			Skybox::Type type;
+			String filename;
+			String extension;
+		};
+
 	public:
 		static SkyboxSwitcher* createAndInitialize(SceneManager* sceneManager);
 		virtual ~SkyboxSwitcher();
@@ -45,11 +54,14 @@ namespace cyclops
 
 		void setActiveSkybox(int index);
 		int getActiveSkybox();
-		int numSkyboxes();
+		int getNumSkyboxes();
 
 	private:
-		Ref<SceneManager> mySceneManager;
+		SceneManager* mySceneManager;
+
 		Ref<Skybox> mySkybox;
+		int myActiveSkybox;
+		Vector<SkyboxInfo> mySkyboxInfoVector;
 
 	private:
 		SkyboxSwitcher(SceneManager* sceneMng);
