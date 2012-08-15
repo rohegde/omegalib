@@ -98,6 +98,19 @@ void SkyboxSwitcher::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SkyboxSwitcher::handleCommand(const String& cmd)
 {
+	Vector<String> args = StringUtils::split(cmd, " ");
+	
+	if(args[0] == "sb" && args.size() == 2)
+	{
+		// sb: select active skybox
+		int skyboxId = boost::lexical_cast<int>(args[1]);
+		setActiveSkybox(skyboxId);
+	}
+	else if(args[0] == "sb")
+	{
+		// sb with no arguments: print active skybox id and total skybox count.
+		ofmsg("Active skybox: %1% Available skyboxes: %2%", %myActiveSkybox %mySkyboxInfoVector.size());
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
