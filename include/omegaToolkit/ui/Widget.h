@@ -206,6 +206,8 @@ namespace omegaToolkit { namespace ui {
 		Widget* myVerticalNextWidget;
 
         omega::String myName;
+
+		// We use a raw pointer to our parent in order to avoid reference loops.
         Container* myContainer;
 
         IEventListener* myEventHandler;

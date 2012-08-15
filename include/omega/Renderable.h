@@ -88,7 +88,6 @@ namespace omega {
 		virtual bool isInitialized();
 		Renderable* getRenderable(Renderer* client);
 		Engine* getEngine();
-		List<Renderable*>::ConstRange getRenderables() const;
 
 	protected:
 		Renderable* addRenderable(Renderer* cli);
@@ -96,7 +95,7 @@ namespace omega {
 	private:
 		bool myInitialized;
 		Engine* myServer;
-		List<Renderable*> myRenderables;
+		List< Ref<Renderable> > myRenderables;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

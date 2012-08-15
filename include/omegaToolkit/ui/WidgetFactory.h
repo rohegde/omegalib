@@ -34,7 +34,7 @@
 namespace omegaToolkit { namespace ui
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class WidgetFactory
+	class WidgetFactory: public ReferenceType
 	{
 	public:
 		WidgetFactory(Engine* server): myServer(server) {}

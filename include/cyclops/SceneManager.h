@@ -98,7 +98,7 @@ namespace cyclops {
 		float getSoftShadowJitter() { return mySoftShadowJitter; }
 
 	private:
-		SceneManager* mySceneManager;
+		Ref<SceneManager> mySceneManager;
 
 		Color myColor;
 		Color myAmbient;
@@ -108,8 +108,8 @@ namespace cyclops {
 		int mySoftShadowJitter;
 
 		// osg light stuff.
-		osg::Light* myOsgLight;
-		osg::LightSource* myOsgLightSource;
+		Ref<osg::Light> myOsgLight;
+		Ref<osg::LightSource> myOsgLightSource;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -157,12 +157,13 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct ModelAsset
+	class ModelAsset: public ReferenceType
 	{
+	public:
 		ModelAsset(): id(0), numNodes(0) {}
 		String description;
 		String filename;
-		Vector<osg::Node*> nodes;
+		Vector< Ref<osg::Node> > nodes;
 		//! Number of nodes in this model (used for multimodel assets)
 		int numNodes;
 		int id;
@@ -171,8 +172,9 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct ProgramAsset 
+	class ProgramAsset: public ReferenceType
 	{
+	public:
 		ProgramAsset():
 			program(NULL), vertexShader(NULL), fragmentShader(NULL)
 		{}
@@ -180,9 +182,10 @@ namespace cyclops {
 		String name;
 		String vertexShaderName;
 		String fragmentShaderName;
-		osg::Program* program;
-		osg::Shader* vertexShader;
-		osg::Shader* fragmentShader;
+
+		Ref<osg::Program> program;
+		Ref<osg::Shader> vertexShader;
+		Ref<osg::Shader> fragmentShader;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -230,6 +233,7 @@ namespace cyclops {
 		SceneManagerListener* getListener();
 
 		virtual void initialize();
+		virtual void dispose();
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt);
 
@@ -240,7 +244,7 @@ namespace cyclops {
 		//@{
 		bool loadModel(const ModelInfo& info);
 		ModelAsset* getModel(const String& name);
-		const List<ModelAsset*>& getModels();
+		const List< Ref<ModelAsset> >& getModels();
 		//@}
 
 		//! Wand Management
@@ -256,6 +260,7 @@ namespace cyclops {
 		//! Utility method: loads a scene file using the standard cyclops scene loader.
 		void load(const String& file);
 		void setSkyBox(Skybox* skyBox);
+		void unload();
 		//@}
 
 		//! Light management methods
@@ -306,23 +311,23 @@ namespace cyclops {
 		Ref<osg::Group> myScene;
 
 		// Model data (stored as dictionary and list for convenience)
-		Dictionary<String, ModelAsset*> myModelDictionary;
-		List<ModelAsset*> myModelList;
+		Dictionary<String, Ref<ModelAsset> > myModelDictionary;
+		List< Ref<ModelAsset> > myModelList;
 
-		Dictionary<String, osg::Texture2D*> myTextures;
-		Dictionary<String, ProgramAsset*> myPrograms;
-		Dictionary<String, osg::Shader*> myShaders;
+		Dictionary<String, Ref<osg::Texture2D> > myTextures;
+		Dictionary<String, Ref<ProgramAsset> > myPrograms;
+		Dictionary<String, Ref<osg::Shader> > myShaders;
 
 		ShaderMacroDictionary myShaderMacros;
 
-		Dictionary<String, Entity*> myObjectDictionary;
-		Vector<Entity*> myObjectVector;
+		Dictionary<String, Ref<Entity> > myObjectDictionary;
+		Vector< Ref<Entity> > myObjectVector;
 		
 		Ref<Skybox> mySkyBox;
 
 		// Lights and shadows
-		List<Light*> myLights;
-		Light* myMainLight;
+		List< Ref<Light> > myLights;
+		Ref<Light> myMainLight;
 		
 		Ref<osgShadow::ShadowedScene> myShadowedScene;
 		Ref<osgShadow::SoftShadowMap> mySoftShadowMap;
@@ -384,7 +389,6 @@ namespace cyclops {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Light::~Light()
 	{
-		mySceneManager->removeLight(this);
 	}
 };
 

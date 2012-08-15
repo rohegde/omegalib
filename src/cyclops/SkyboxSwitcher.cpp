@@ -41,7 +41,8 @@ SkyboxSwitcher* SkyboxSwitcher::createAndInitialize(SceneManager* sceneMng)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SkyboxSwitcher::SkyboxSwitcher(SceneManager* sceneMng):
 	EngineModule("SkyboxSwitcher"),
-	mySceneManager(sceneMng)
+	mySceneManager(sceneMng),
+	myActiveSkybox(-1)
 {
 	mySkybox = new Skybox();
 }
@@ -54,8 +55,34 @@ SkyboxSwitcher::~SkyboxSwitcher()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SkyboxSwitcher::initialize()
 {
+	// Parse the skybox data from the settings
 	omsg("SkyboxSwitcher initializing...");
+	if(SystemManager::settingExists("config/SkyboxSwitcher"))
+	{
+		Setting& sSkyboxes = SystemManager::settingLookup("config/SkyboxSwitcher");
+		for(int i = 0; i < sSkyboxes.getLength(); i++)
+		{
+			Setting& sSkybox = sSkyboxes[i];
+			SkyboxInfo info;
 
+			String type = Config::getStringValue("type", sSkybox, "cube");
+			String filename = Config::getStringValue("filename", sSkybox, "cube");
+			info.filename = filename;
+			if(type == "cube")
+			{
+				info.type = Skybox::CubeMap;
+				String ext = Config::getStringValue("extension", sSkybox, "jpg");
+				info.extension = ext;
+			}
+			else if(type == "pano")
+			{
+				info.type = Skybox::Pano;
+			}
+			mySkyboxInfoVector.push_back(info);
+		}
+	}
+
+	mySceneManager->setSkyBox(mySkybox);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,4 +98,34 @@ void SkyboxSwitcher::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SkyboxSwitcher::handleCommand(const String& cmd)
 {
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SkyboxSwitcher::setActiveSkybox(int index)
+{
+	myActiveSkybox = index;
+	if(myActiveSkybox >= 0 && myActiveSkybox < getNumSkyboxes())
+	{
+		SkyboxInfo& info = mySkyboxInfoVector[myActiveSkybox];
+		if(info.type == Skybox::CubeMap)
+		{
+			mySkybox->loadCubeMap(info.filename, info.extension);
+		}
+		else
+		{
+			mySkybox->loadPano(info.filename);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int SkyboxSwitcher::getActiveSkybox()
+{
+	return myActiveSkybox;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int SkyboxSwitcher::getNumSkyboxes()
+{
+	return mySkyboxInfoVector.size();
 }

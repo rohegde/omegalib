@@ -171,6 +171,39 @@ void SceneManager::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::dispose()
+{
+	unload();
+
+	// Release wand objects
+	myWandEntity = NULL;
+	myWandTracker = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::unload()
+{
+	ofmsg("SceneManager::unload: releasing %1% models", %myModelList.size());
+	myModelList.clear();
+	myModelDictionary.clear();
+
+	ofmsg("SceneManager::unload: releasing %1% lights", %myLights.size());
+	myLights.clear();
+	myMainLight = NULL;
+	myNumActiveLights = 0;
+
+	ofmsg("SceneManager::unload: releasing %1% objects", %myObjectVector.size());
+	myObjectVector.clear();
+	myObjectDictionary.clear();
+
+	ofmsg("SceneManager::unload: releasing %1% programs", %myPrograms.size());
+	myPrograms.clear();
+
+	ofmsg("SceneManager::unload: releasing %1% programs", %myTextures.size());
+	myTextures.clear();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::addEntity(Entity* obj)
 {
 	myObjectVector.push_back(obj);
@@ -602,7 +635,7 @@ ModelAsset* SceneManager::getModel(const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-const List<ModelAsset*>& SceneManager::getModels()
+const List< Ref<ModelAsset> >& SceneManager::getModels()
 {
 	return myModelList;
 }
@@ -696,7 +729,7 @@ void SceneManager::recompileShaders()
 
 	ofmsg("Recompiling shaders (variation: %1%)", %myShaderVariationName);
 
-	typedef Dictionary<String, ProgramAsset*>::Item ProgramAssetItem;
+	typedef Dictionary<String, Ref<ProgramAsset> >::Item ProgramAssetItem;
 	foreach(ProgramAssetItem item, myPrograms)
 	{
 		recompileShaders(item.getValue(), myShaderVariationName);

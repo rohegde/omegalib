@@ -424,7 +424,7 @@ void MenuManager::initialize()
 
 	// Read configuration parameters from system config
 	//Setting& sSysCfg = SystemManager::instance()->getSystemConfig()->lookup("config");
-	//myMenu3dEnabled = Config::getBoolValue("menu3dEnabled", sSysCfg, false);
+	//myMenu3dEnabled = Config::getBoolValue("menu3dEnabled", sSysCfg, false);nMenu
 	//myMenu3dEnabled = true;
 	//if(myMenu3dEnabled)
 	//{
@@ -432,6 +432,14 @@ void MenuManager::initialize()
 	//	myAutoPlaceDistance = Config::getFloatValue("menu3dDistance", sSysCfg, myAutoPlaceDistance);
 	//	myMenu3dScale = Config::getFloatValue("menu3dScale", sSysCfg, myMenu3dScale);
 	//}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MenuManager::dispose()
+{
+	ofmsg("MenuManager::dispose: cleaning up %1% menus", %myMenuList.size());
+	myMainMenu = NULL;
+	myMenuList.clear();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
