@@ -329,7 +329,7 @@ void PythonInterpreter::update(const UpdateContext& context)
 		// Handle special 'shortcut' commands. Commands starting with a ':' won't be interpreted
 		// using the python interpreter. Instead, we will dispatch them to EngineModule::handleCommand 
 		// methods.
-		if(myInteractiveCommand[0] == ':')
+		if(myInteractiveCommand.length() > 0 && myInteractiveCommand[0] == ':')
 		{
 			ModuleServices::handleCommand(myInteractiveCommand.substr(1, myInteractiveCommand.length() - 1));
 		}

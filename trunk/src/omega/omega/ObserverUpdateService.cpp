@@ -55,33 +55,39 @@ void ObserverUpdateService::setup(Setting& settings)
 void ObserverUpdateService::initialize()
 {
 	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
-	myObserver = Engine::instance()->getDefaultCamera();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ObserverUpdateService::poll()
 {
-	lockEvents();
-	int numEvts = getManager()->getAvailableEvents();
-	for(int i = 0; i < numEvts; i++)
+	Engine* e = Engine::instance();
+	
+	if(e != NULL)
 	{
-		Event* evt = getEvent(i);
-		if(evt->getServiceType() == Service::Mocap)
+		myObserver = e->getDefaultCamera();
+
+		lockEvents();
+		int numEvts = getManager()->getAvailableEvents();
+		for(int i = 0; i < numEvts; i++)
 		{
-			if(evt->getSourceId() == mySourceId)
+			Event* evt = getEvent(i);
+			if(evt->getServiceType() == Service::Mocap)
 			{
-				Vector3f pos = evt->getPosition();
-				//myLastPosition = pos;
-				myObserver->setHeadOffset(pos);
-				myObserver->setHeadOrientation(evt->getOrientation());
-				if(myDebug)
+				if(evt->getSourceId() == mySourceId)
 				{
-					ofmsg("Observer pos: %1%", %pos);
+					Vector3f pos = evt->getPosition();
+					//myLastPosition = pos;
+					myObserver->setHeadOffset(pos);
+					myObserver->setHeadOrientation(evt->getOrientation());
+					if(myDebug)
+					{
+						ofmsg("Observer pos: %1%", %pos);
+					}
 				}
 			}
 		}
+		unlockEvents();
 	}
-	unlockEvents();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
