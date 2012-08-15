@@ -90,7 +90,7 @@ Skybox::~Skybox()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Skybox::initialize(osg::StateSet* rootStateSet)
 {
-	if(myTexture != NULL && myNode == NULL)
+	//if(myTexture != NULL && myNode == NULL)
 	{
 		myRootStateSet = rootStateSet;
 		myNode = createSkyBox();
@@ -166,7 +166,7 @@ bool Skybox::loadCubeMap(const String& cubemapDir, const String& extension)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 osg::Node* Skybox::createSkyBox()
 {
-	if(myTexture != NULL)
+	//if(myTexture != NULL)
 	{
 		osg::StateSet* stateset = new osg::StateSet();
 
