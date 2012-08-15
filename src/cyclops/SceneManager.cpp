@@ -99,6 +99,7 @@ SceneManager* SceneManager::createAndInitialize()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SceneManager::SceneManager():
+	EngineModule("SceneManager"),
 	myOsg(NULL),
 	myShadowedScene(NULL),
 	mySoftShadowMap(NULL),

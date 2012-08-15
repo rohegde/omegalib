@@ -36,6 +36,9 @@
 #include <omegaOsg.h>
 #include <omegaToolkit.h>
 
+//! @internal Forward decl. Internal class Defined in Skybox.cpp
+class MoveSkyWithEyePointTransform;
+
 namespace cyclops {
 	using namespace omega;
 	using namespace omegaOsg;
@@ -48,6 +51,7 @@ namespace cyclops {
 
 	public:
 		Skybox();
+		virtual ~Skybox();
 
 		void initialize(osg::StateSet* rootStateSet);
 
@@ -68,6 +72,10 @@ namespace cyclops {
 		Ref<osg::StateSet> myRootStateSet;
 		Ref<osg::Texture> myTexture;
 		Ref<osg::Node> myNode;
+		Ref<osg::Geode> myGeode;
+		Ref<osg::Uniform> myTextureUniform;
+
+		MoveSkyWithEyePointTransform* myTransform;
 
 		Type myType;
 	};

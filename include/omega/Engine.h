@@ -38,7 +38,7 @@
 #include "Console.h"
 
 namespace omega {
-	typedef List<Renderer*> EngineClientList;
+	typedef List< Ref<Renderer> > EngineClientList;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	template<typename T> class RendererObject
@@ -124,10 +124,7 @@ namespace omega {
 		bool isDebugWandEnabled() { return myDebugWand; }
 
 		virtual void initialize();
-		//! Internal method.
-		//void clientInitialize(Renderer* client);
-		//void preDraw(Renderer* r, const DrawContext& context);
-		//void postDraw(Renderer* r, const DrawContext& context);
+		virtual void dispose();
 
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
@@ -150,7 +147,7 @@ namespace omega {
 		// Engine lock, used when client / server thread synchronization is needed.
 		Lock myLock;
 
-		List<Renderer*> myClients;
+		List< Ref<Renderer> > myClients;
 
 		Ref<SceneNode> myScene;
 

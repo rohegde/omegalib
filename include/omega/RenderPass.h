@@ -45,7 +45,12 @@ namespace omega {
 			RenderCustom = 1 << 8 };
 
 	public:
-		RenderPass(Renderer* client, const String& name): myInitialized(false), myClient(client), myName(name) {}
+		RenderPass(Renderer* client, const String& name): 
+		  myInitialized(false), myClient(client), myName(name) 
+		  {}
+		virtual ~RenderPass()
+		{ ofmsg("~RenderPass %1%", %myName); }
+
 		virtual void initialize() { myInitialized = true; }
 		virtual void render(Renderer* client, const DrawContext& context) = 0;
 

@@ -61,15 +61,6 @@ OsgModule::OsgModule():
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgModule::~OsgModule()
 {
-    if(myRootNode != NULL)
-    {
-        myRootNode->unref();
-        myRootNode = NULL;
-    }
-    myFrameStamp->unref();
-    myFrameStamp = NULL;
-    myUpdateVisitor->unref();
-    myUpdateVisitor = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

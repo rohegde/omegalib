@@ -290,9 +290,6 @@ void SystemManager::initialize()
 			myMissionControlServer = new MissionControlServer();
 			myMissionControlServer->setPort(myMissionControlPort);
 
-			// Register the mission control server as a log listener
-			ologaddlistener(myMissionControlServer);
-
 			// Register the mission control server. The service manager will take care of polling the server
 			// periodically to check for new connections.
 			myServiceManager->addService(myMissionControlServer);
@@ -329,6 +326,13 @@ void SystemManager::cleanup()
 		delete myDisplaySystem;
 		myDisplaySystem = NULL;
 	}
+
+	if(myServiceManager != NULL)
+	{
+		myServiceManager->stop();
+		myServiceManager->dispose();
+	}
+
 	delete mysInstance;
 	mysInstance = NULL;
 }

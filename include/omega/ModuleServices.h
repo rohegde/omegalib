@@ -47,8 +47,10 @@ namespace omega {
 	public:
 		EngineModule(const String& name): myInitialized(false), myEngine(NULL), myName(name), myPriority(PriorityNormal) {}
 		EngineModule(): myInitialized(false), myEngine(NULL), myName(mysNameGenerator.generate()), myPriority(PriorityNormal) {}
+		virtual ~EngineModule();
 
 		virtual void initialize() {}
+		virtual void dispose() {}
 		virtual void update(const UpdateContext& context) {}
 		virtual void handleEvent(const Event& evt) {}
 		virtual void handleCommand(const String& cmd) {}
@@ -69,10 +71,12 @@ namespace omega {
 		void setPriority(Priority value) { myPriority = value; }
 
 	private:
+		Ref<Engine> myEngine;
+
 		String myName;
 		Priority myPriority;
 		bool myInitialized;
-		Engine* myEngine;
+
 		static NameGenerator mysNameGenerator;
 	};
 
@@ -81,15 +85,14 @@ namespace omega {
 	{
 	public:
 		static void addModule(EngineModule* module);
-		static List<EngineModule*>::ConstRange getModules();
 		static void update(Engine* srv, const UpdateContext& context);
 		static void handleEvent(const Event& evt);
 		static void handleCommand(const String& cmd);
 		//static void initializeRenderer(Engine* srv, Renderer* r);
-		static void cleanup();
+		static void disposeAll();
 
 	private:
-		static List<EngineModule*> mysModules;
+		static List< Ref<EngineModule> > mysModules;
 	};
 }; // namespace omega
 

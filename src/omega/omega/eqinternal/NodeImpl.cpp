@@ -71,6 +71,13 @@ bool NodeImpl::configInit( const eq::uint128_t& initID )
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool NodeImpl::configExit()
 {
+	// If this is not a master node, call dispose on the engine object. 
+	// Otherwise, ConfigImpl will take care of it.
+	SystemManager* sys = SystemManager::instance();
+	if(!sys->isMaster())
+	{
+		myServer->dispose();
+	}
 	return Node::configExit();
 }
 

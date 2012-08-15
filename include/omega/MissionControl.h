@@ -58,9 +58,9 @@ namespace omega {
 	class MissionControlServer: public TcpServer, public ILogListener
 	{
 	public:
-		MissionControlServer()
-		{}
-        
+		virtual void initialize();
+		virtual void dispose();
+
 		virtual TcpConnection* createConnection(const ConnectionInfo& ci);
 		void closeConnection(MissionControlConnection* conn);
 		void broadcastMessage(const char* header, void* data, int size);
