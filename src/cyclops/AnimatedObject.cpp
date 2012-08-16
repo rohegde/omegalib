@@ -57,7 +57,13 @@ struct AnimationManagerFinder : public osg::NodeVisitor
 }; 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-AnimatedObject::AnimatedObject(SceneManager* scene, const String& modelName, const String& entityName):
+AnimatedObject* AnimatedObject::create(const String& modelName)
+{
+	return new AnimatedObject(SceneManager::instance(), modelName);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+AnimatedObject::AnimatedObject(SceneManager* scene, const String& modelName):
 	Entity(scene),
 		mySceneManager(scene), 
 		myOsgSwitch(NULL), 
@@ -88,8 +94,6 @@ AnimatedObject::AnimatedObject(SceneManager* scene, const String& modelName, con
 			}
 			osgRoot = myOsgSwitch;
 		}
-
-		if(entityName != "") setName(entityName);
 
 		initialize(osgRoot);
 	}
