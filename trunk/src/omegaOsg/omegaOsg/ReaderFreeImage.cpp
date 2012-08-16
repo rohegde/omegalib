@@ -49,8 +49,8 @@ ReaderWriter::ReadResult ReaderFreeImage::readImage(const std::string& file, con
     //if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
 
 	omega::Ref<omega::PixelData> img = omega::ImageUtils::loadImage(file, false);
-	img->setDeleteDisabled(true);
 	if(img == NULL) return ReadResult::FILE_NOT_FOUND;
+	img->setDeleteDisabled(true);
 
     //unsigned char *imageData = NULL;
     //int width_ret;
