@@ -100,7 +100,13 @@ void SkyboxSwitcher::handleCommand(const String& cmd)
 {
 	Vector<String> args = StringUtils::split(cmd, " ");
 	
-	if(args[0] == "sb" && args.size() == 2)
+	if(args[0] == "?")
+	{
+		// ?: command help
+		omsg("SkyboxSwitcher");
+		omsg("\t sb [skyboxId] - set the active skybox. When no arg specified return info about active skyboxes");
+	}
+	else if(args[0] == "sb" && args.size() == 2)
 	{
 		// sb: select active skybox
 		int skyboxId = boost::lexical_cast<int>(args[1]);

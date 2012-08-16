@@ -192,14 +192,3 @@ void AnimatedObject::stopAllAnimations()
 		myAnimationManager->stopAll();
 	}
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void AnimatedObject::setEventCallbacks(const EntityEventCallbacks& eec)
-{
-	//myCallbacks = eec;
-	//if(eec.onAdd != "")
-	//{
-	//	eec.onAdd = ostr(eec.onAdd, %myId);
-	//}
-}
-

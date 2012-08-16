@@ -52,13 +52,6 @@ namespace cyclops {
 	class SceneManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct EntityEventCallbacks
-	{
-		String onAdd;
-		String onUpdate;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	class CY_API AnimatedObject: public Entity
 	{
 	public:
@@ -84,8 +77,6 @@ namespace cyclops {
 		void stopAllAnimations();
 		//@}
 
-		void setEventCallbacks(const EntityEventCallbacks& eec);
-
 	private:
 		SceneManager* mySceneManager;
 
@@ -96,9 +87,6 @@ namespace cyclops {
 		// osg animation stuff
 		osgAnimation::BasicAnimationManager* myAnimationManager;
 		const osgAnimation::AnimationList* myAnimations;
-
-		// Callbacks
-		EntityEventCallbacks myCallbacks;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

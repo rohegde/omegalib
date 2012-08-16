@@ -73,6 +73,9 @@ namespace omega
 
 		//! Gets the application configuration.
 		Config* getAppConfig();
+		//! Sets the application configuration.
+		//! @remarks Changing the application configuration will not influence already loaded modules and services.
+		void setAppConfig(Config* cfg);
 
 		//! Gets the system configuration.
 		Config* getSystemConfig();
@@ -126,8 +129,8 @@ namespace omega
 		bool myIsInitialized;
 
 		// NOTE; We can't use Ref<> for a few types because they are forward-declared.
-		Config*			myAppConfig;
-		Config*			mySystemConfig;
+		Ref<Config>			myAppConfig;
+		Ref<Config>			mySystemConfig;
 		Ref<DataManager>    myDataManager;
 		DisplaySystem*	myDisplaySystem;
 		ServiceManager*	myServiceManager;
@@ -190,6 +193,10 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Config* SystemManager::getAppConfig() 
 	{ return myAppConfig; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void SystemManager::setAppConfig(Config* cfg)
+	{ myAppConfig = cfg; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Config* SystemManager::getSystemConfig() 

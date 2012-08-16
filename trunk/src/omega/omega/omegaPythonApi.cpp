@@ -235,7 +235,7 @@ static PyMethodDef omegaMethods[] =
 		"Searches for a file in the application data filesystems and returns a full path if found"},
 
     {"orun", omegaRun, METH_VARARGS, 
-		"ofindFile(fileName)\n"
+		"orun(fileName)\n"
 		"Runs an external script"},
 
     {"setUpdateFunction", omegaUpdateCallback, METH_VARARGS, 

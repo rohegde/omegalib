@@ -56,6 +56,7 @@ public:
 
 	virtual void initialize();
 	virtual void handleEvent(const Event& evt);
+	virtual void handleCommand(const String& cmd);
 };
 
 
@@ -102,6 +103,70 @@ void OmegaViewer::handleEvent(const Event& evt)
 	//{
 	//	EngineClient::handleEvent(evt);
 	//}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OmegaViewer::handleCommand(const String& cmd)
+{
+	Vector<String> args = StringUtils::split(cmd);
+	if(args[0] == "?")
+	{
+		// ?: command help
+		omsg("OmegaViewer");
+		omsg("\t r <appName> - run the specified script application");
+		omsg("\t lo          - list live objects");
+		omsg("\t ln          - print the scene node tree");
+		omsg("\t q           - quit");
+	}
+	else if(args[0] == "r" && args.size() > 1)
+	{
+		// r: run application.
+		String baseName = args[1] + "/" + args[1];
+		String scriptName = baseName + ".py";
+		String cfgName = baseName + ".cfg";
+
+		ofmsg("Looking for config file %1%", %cfgName);
+		String cfgPath;
+		if(DataManager::findFile(cfgName, cfgPath))
+		{
+			ofmsg(":: found at %1%", %cfgPath);
+			ofmsg("Looking for script file %1%", %scriptName);
+
+			String scriptPath;
+			if(DataManager::findFile(scriptName, scriptPath))
+			{
+				ofmsg(":: found at %1%", %scriptPath);
+
+				SystemManager* sys = SystemManager::instance();
+
+				// Load and set the new app config.
+				Config* cfg = new Config(cfgName);
+				cfg->load();
+				sys->setAppConfig(cfg);
+
+				// Run the application main script.
+				sys->getScriptInterpreter()->runFile(scriptName);
+			}
+		}
+	}
+	else if(args[0] == "lo")
+	{
+		// lo: list objects
+		ReferenceType::printObjCounts();
+	}
+	else if(args[0] == "ln")
+	{
+		// ln: list nodes
+
+		// ls is really just a shortcut for printChildren(getEngine().getScene(), <tree depth>)
+		SystemManager* sys = SystemManager::instance();
+		sys->getScriptInterpreter()->eval("printChildren(getEngine().getScene(), 10");
+	}
+	else if(args[0] == "q")
+	{
+		// q: quit
+		oexit(0);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
