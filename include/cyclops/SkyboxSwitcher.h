@@ -33,6 +33,7 @@
 namespace cyclops
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//! #PYAPI
 	class CY_API SkyboxSwitcher: public EngineModule
 	{
 	public:
@@ -52,8 +53,11 @@ namespace cyclops
 		void handleEvent(const Event& evt);
 		void handleCommand(const String& cmd);
 
+		//! #PYAPI
 		void setActiveSkybox(int index);
+		//! #PYAPI
 		int getActiveSkybox();
+		//! #PYAPI
 		int getNumSkyboxes();
 
 	private:

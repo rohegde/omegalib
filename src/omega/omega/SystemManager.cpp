@@ -111,20 +111,14 @@ SystemManager::SystemManager():
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SystemManager::~SystemManager()
 {
-	if(myAppConfig != NULL) 
-	{
-		delete myAppConfig;
-		if(myAppConfig == mySystemConfig) mySystemConfig = NULL;
-		myAppConfig = NULL;
-	}
-	if(mySystemConfig != NULL) delete mySystemConfig;
+	myAppConfig = NULL;
+	mySystemConfig = NULL;
+
 	if(myServiceManager != NULL) delete myServiceManager;
 	if(myDisplaySystem != NULL) delete myDisplaySystem;
 	if(myInterpreter != NULL) delete myInterpreter;
 	if(myStatsManager != NULL) delete myStatsManager;
 	
-	myAppConfig = NULL;
-	mySystemConfig = NULL;
 	myDisplaySystem = NULL;
 	myInterpreter = NULL;
 }

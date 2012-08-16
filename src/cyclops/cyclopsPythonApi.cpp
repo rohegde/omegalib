@@ -28,90 +28,13 @@
 #include "cyclops/SceneManager.h"
 #include "cyclops/AnimatedObject.h"
 #include "cyclops/SceneLoader.h"
+#include "cyclops/SkyboxSwitcher.h"
 
 #ifdef OMEGA_USE_PYTHON
 
 #include "omega/PythonInterpreterWrapper.h"
 
 using namespace cyclops;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//PyObject* animationCount(PyObject* self, PyObject* args)
-//{
-//	int id;
-//	PyArg_ParseTuple(args, "i", &id);
-//
-//	AnimatedObject* e = SceneManager::instance()->findEntity(id);
-//	if(e != NULL)
-//	{
-//		return Py_BuildValue("i", e->getNumAnimations());
-//	}
-//	return NULL;
-//}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//PyObject* animationPlay(PyObject* self, PyObject* args)
-//{
-//	int id, animationId;
-//	PyArg_ParseTuple(args, "ii", &id, &animationId);
-//
-//	AnimatedObject* e = SceneManager::instance()->findEntity(id);
-//	if(e != NULL)
-//	{
-//		e->playAnimation(animationId);
-//		Py_INCREF(Py_None);
-//		return Py_None;
-//	}
-//	return NULL;
-//}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//PyObject* animationLoop(PyObject* self, PyObject* args)
-//{
-//	int id, animationId;
-//	PyArg_ParseTuple(args, "i", &id, &animationId);
-//
-//	AnimatedObject* e = SceneManager::instance()->findEntity(id);
-//	if(e != NULL)
-//	{
-//		e->loopAnimation(animationId);
-//		Py_INCREF(Py_None);
-//		return Py_None;
-//	}
-//	return NULL;
-//}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//PyObject* animationStop(PyObject* self, PyObject* args)
-//{
-//	int id, animationId;
-//	PyArg_ParseTuple(args, "ii", &id, &animationId);
-//
-//	AnimatedObject* e = SceneManager::instance()->findEntity(id);
-//	if(e != NULL)
-//	{
-//		e->pauseAnimation(animationId);
-//		Py_INCREF(Py_None);
-//		return Py_None;
-//	}
-//	return NULL;
-//}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//PyObject* animationStopAll(PyObject* self, PyObject* args)
-//{
-//	int id;
-//	PyArg_ParseTuple(args, "i", &id);
-//
-//	AnimatedObject* e = SceneManager::instance()->findEntity(id);
-//	if(e != NULL)
-//	{
-//		e->stopAllAnimations();
-//		Py_INCREF(Py_None);
-//		return Py_None;
-//	}
-//	return NULL;
-//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneManager* getSceneManager() { return SceneManager::instance(); }
@@ -168,6 +91,13 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def_readwrite("numFiles", &ModelInfo::numFiles)
 		.def_readwrite("path", &ModelInfo::path)
 		.def_readwrite("size", &ModelInfo::size)
+		;
+
+	class_<SkyboxSwitcher, boost::noncopyable>("SkyboxSwitcher", no_init)
+		.def("createAndInitialize", &SkyboxSwitcher::createAndInitialize, PYAPI_RETURN_NEW_INSTANCE).staticmethod("createAndInitialize")
+		.def("getNumSkyboxes", &SkyboxSwitcher::getNumSkyboxes)
+		.def("getActiveSkybox", &SkyboxSwitcher::getActiveSkybox)
+		.def("setActiveSkybox", &SkyboxSwitcher::setActiveSkybox)
 		;
 
 	// Free Functions
