@@ -584,6 +584,9 @@ bool SceneManager::loadModel(const ModelInfo& info)
 			osg::Node* node = osgDB::readNodeFile(assetPath, options);
 			if(node != NULL)
 			{
+				//omsg("Optimizing model");
+				//osgUtil::Optimizer optOSGFile;
+				//optOSGFile.optimize(node); //, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
 
 				if(info.size != 0.0f)
 				{

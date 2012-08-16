@@ -125,28 +125,28 @@ void OmegaViewer::handleCommand(const String& cmd)
 		String scriptName = baseName + ".py";
 		String cfgName = baseName + ".cfg";
 
-		ofmsg("Looking for config file %1%", %cfgName);
-		String cfgPath;
-		if(DataManager::findFile(cfgName, cfgPath))
+		ofmsg("Looking for script file %1%", %scriptName);
+		String scriptPath;
+		if(DataManager::findFile(scriptName, scriptPath))
 		{
-			ofmsg(":: found at %1%", %cfgPath);
-			ofmsg("Looking for script file %1%", %scriptName);
+			ofmsg(":: found at %1%", %scriptPath);
+			ofmsg("Looking for config file %1%", %cfgName);
 
-			String scriptPath;
-			if(DataManager::findFile(scriptName, scriptPath))
+			SystemManager* sys = SystemManager::instance();
+
+			String cfgPath;
+			if(DataManager::findFile(cfgName, cfgPath))
 			{
-				ofmsg(":: found at %1%", %scriptPath);
-
-				SystemManager* sys = SystemManager::instance();
+				ofmsg(":: found at %1%", %cfgPath);
 
 				// Load and set the new app config.
 				Config* cfg = new Config(cfgName);
 				cfg->load();
 				sys->setAppConfig(cfg);
-
-				// Run the application main script.
-				sys->getScriptInterpreter()->runFile(scriptName);
 			}
+
+			// Run the application main script.
+			sys->getScriptInterpreter()->runFile(scriptName);
 		}
 	}
 	else if(args[0] == "lo")
