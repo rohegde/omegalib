@@ -29,6 +29,7 @@
 #include "cyclops/AnimatedObject.h"
 #include "cyclops/SceneLoader.h"
 #include "cyclops/SkyboxSwitcher.h"
+#include "cyclops/SceneLoader.h"
 
 #ifdef OMEGA_USE_PYTHON
 
@@ -42,6 +43,11 @@ SceneManager* getSceneManager() { return SceneManager::instance(); }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 BOOST_PYTHON_MODULE(cyclops)
 {
+	// SceneLoader
+	class_<SceneLoader, boost::noncopyable >("SceneLoader", no_init)
+		.def("getLastLoadedEntity", &SceneLoader::getLastLoadedEntity, PYAPI_RETURN_POINTER).staticmethod("getLastLoadedEntity")
+		;
+
 	// SceneManager
 	class_<SceneManager, boost::noncopyable>("SceneManager", no_init)
 		.def("setMainLight", &SceneManager::setMainLight)
@@ -69,6 +75,17 @@ BOOST_PYTHON_MODULE(cyclops)
 	// StaticObject
 	class_<StaticObject, bases<Entity>, boost::noncopyable >("StaticObject", no_init)
 		.def("create", &StaticObject::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
+		;
+
+	// AnimatedObject
+	class_<AnimatedObject, bases<Entity>, boost::noncopyable >("AnimatedObject", no_init)
+		.def("create", &AnimatedObject::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
+		.def("hasAnimations", &AnimatedObject::hasAnimations)
+		.def("getNumAnimations", &AnimatedObject::getNumAnimations)
+		.def("playAnimation", &AnimatedObject::playAnimation)
+		.def("loopAnimation", &AnimatedObject::loopAnimation)
+		.def("pauseAnimation", &AnimatedObject::pauseAnimation)
+		.def("stopAllAnimations", &AnimatedObject::stopAllAnimations)
 		;
 
 	// Light
@@ -114,8 +131,10 @@ CY_API void cyclopsPythonApiInit()
 		sApiInitialized = true;
 		omsg("cyclopsPythonApiInit()");
 		initcyclops();
-		//omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-		//interp->addModule("cyclops", cyMethods);
+
+		// import the module by default
+		omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+		interp->eval("from cyclops import *");
 	}
 }
 

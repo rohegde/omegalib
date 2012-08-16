@@ -52,13 +52,16 @@ namespace cyclops {
 	class SceneManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! #PYAPI
 	class CY_API AnimatedObject: public Entity
 	{
 	public:
+		//! #PYAPI Convenience method to create a new AnimatedObject instance.
+		static AnimatedObject* create(const String& modelName);
 		static AnimatedObject* fromEntity(Entity* dobj);
 
 	public:
-		AnimatedObject(SceneManager* mng, const String& modelName, const String& entityName);
+		AnimatedObject(SceneManager* mng, const String& modelName);
 		virtual ~AnimatedObject() {}
 
 		ModelAsset* getModel();
@@ -69,11 +72,17 @@ namespace cyclops {
 
 		//! Animation support
 		//@{
+		//! #PYAPI
 		bool hasAnimations();
+		//! #PYAPI
 		int getNumAnimations();
+		//! #PYAPI
 		void playAnimation(int id);
+		//! #PYAPI
 		void loopAnimation(int id);
+		//! #PYAPI
 		void pauseAnimation(int id);
+		//! #PYAPI
 		void stopAllAnimations();
 		//@}
 

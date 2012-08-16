@@ -34,6 +34,14 @@
 
 using namespace cyclops;
 
+Entity* SceneLoader::sLastLoadedEntity = NULL;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Entity* SceneLoader::getLastLoadedEntity()
+{
+	return sLastLoadedEntity;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneLoader::SceneLoader(TiXmlDocument& doc, const String& path):
 	myDoc(doc),
@@ -266,6 +274,8 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 
 		if(obj != NULL)
 		{
+			sLastLoadedEntity = obj;
+
 			Vector3f rotation = readVector3f(xchild, "Rotation");
 			Vector3f position = readVector3f(xchild, "WorldPos");
 			Vector3f scale = readVector3f(xchild, "Scale");
@@ -297,6 +307,23 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 			if(attrFx != NULL)
 			{
 				obj->setEffect(attrFx);
+			}
+
+			// If the xml element has an id, create a script variable with the specified name linked to this object
+			const char* attrId = xchild->Attribute("Id");
+			if(attrId != NULL)
+			{
+				String className = "";
+				if(objtype == "plane")	className = "PlaneShape";
+				else if(objtype == "sphere") className = "SphereShape";
+				else if(objtype == "staticobject") className = "StaticObject";
+				else if(objtype == "entity" || objtype == "animatedobject" ) className = "AnimatedObject";
+
+
+				// Exacute a script command to create a variable and assign it with the newly created object.
+				String scriptCmd = ostr("%1% = SceneLoader.getLastLoadedEntity(); %1%.__class__ = %2%", %attrId %className);
+				PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+				interp->eval(scriptCmd);
 			}
 		}
 		
@@ -342,12 +369,15 @@ AnimatedObject* SceneLoader::createEntity(TiXmlElement* xchild)
 	const char* id = xchild->Attribute("Id");
 
 	static NameGenerator ng("AnimatedObject");
+	if(id == NULL) id = ng.generate().c_str();
 
 	if(fileIndex != NULL)
 	{
 		AnimatedObject* e = NULL;
-		if(id == NULL) e = new AnimatedObject(mySceneManager, fileIndex, ng.generate());
-		else e = new AnimatedObject(mySceneManager, fileIndex, id);
+		if(id == NULL) e = new AnimatedObject(mySceneManager, fileIndex);
+		else e = new AnimatedObject(mySceneManager, fileIndex);
+
+		e->setName(id);
 
 		return e;
 	}

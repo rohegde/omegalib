@@ -46,6 +46,7 @@ namespace cyclops {
 	using namespace omegaOsg;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! #PYAPI Performs parsing of an xml .scene file and loads a scene.
 	class CY_API SceneLoader
 	{
 	public:
@@ -56,14 +57,19 @@ namespace cyclops {
 		static int readInt(TiXmlElement* elem, const String& attributeName, int defaultValue = 0);
 		static bool readBool(TiXmlElement* elem, const String& attributeName, bool defaultValue = false);
 
+		//! #PYAPI @internal returns a pointer to the last entity loaded. Used for scripting support.
+		static Entity* getLastLoadedEntity();
+
 	public:
 		SceneLoader(TiXmlDocument& doc, const String& path);
 
-		// Loader interface
+		//! Loader interface
+		//@{
 		void startLoading(SceneManager* sm);
 		bool isLoadingComplete();
 		int getLoadProgress();
 		void loadStep();
+		//@}
 
 		void loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::AssetType type);
 
@@ -73,15 +79,17 @@ namespace cyclops {
 		void initShading();
 
 	private:
+		static Entity* sLastLoadedEntity;
+
+		String myPath;
+		TiXmlDocument& myDoc;
+		SceneManager* mySceneManager;
+
+	private:
 		PlaneShape* createPlane(TiXmlElement* xPlane);
 		SphereShape* createSphere(TiXmlElement* xchild);
 		StaticObject* createStaticObject(TiXmlElement* xchild);
 		AnimatedObject* createEntity(TiXmlElement* xchild);
-
-	private:
-		String myPath;
-		TiXmlDocument& myDoc;
-		SceneManager* mySceneManager;
 	};
 };
 
