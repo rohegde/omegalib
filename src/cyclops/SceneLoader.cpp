@@ -365,19 +365,24 @@ SphereShape* SceneLoader::createSphere(TiXmlElement* xchild)
 AnimatedObject* SceneLoader::createEntity(TiXmlElement* xchild)
 {
 	// Create a new entity
-	const char* fileIndex = xchild->Attribute("FileIndex");
+	const char* fileId = xchild->Attribute("FileId");
+	if(fileId == NULL) fileId = xchild->Attribute("FileIndex"); // Legacy name
+
 	const char* id = xchild->Attribute("Id");
 
 	static NameGenerator ng("AnimatedObject");
 	if(id == NULL) id = ng.generate().c_str();
 
-	if(fileIndex != NULL)
+	if(fileId != NULL)
 	{
 		AnimatedObject* e = NULL;
-		if(id == NULL) e = new AnimatedObject(mySceneManager, fileIndex);
-		else e = new AnimatedObject(mySceneManager, fileIndex);
+		if(id == NULL) e = new AnimatedObject(mySceneManager, fileId);
+		else e = new AnimatedObject(mySceneManager, fileId);
 
 		e->setName(id);
+
+		const char* attrOnAnimationEnded = xchild->Attribute("OnAnimationEnded");
+		if(attrOnAnimationEnded != NULL) e->setOnAnimationEndedScript(attrOnAnimationEnded);
 
 		return e;
 	}
@@ -392,7 +397,8 @@ AnimatedObject* SceneLoader::createEntity(TiXmlElement* xchild)
 StaticObject* SceneLoader::createStaticObject(TiXmlElement* xchild)
 {
 	// Create a new static object
-	const char* fileIndex = xchild->Attribute("FileIndex");
-	return new StaticObject(mySceneManager, fileIndex);
+	const char* fileId = xchild->Attribute("FileId");
+	if(fileId == NULL) fileId = xchild->Attribute("FileIndex");
+	return new StaticObject(mySceneManager, fileId);
 }
 
