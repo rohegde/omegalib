@@ -54,6 +54,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def("getMainLight", &SceneManager::getMainLight, PYAPI_RETURN_POINTER)
 		.def("loadModel", &SceneManager::loadModel)
 		.def("setBackgroundColor", &SceneManager::setBackgroundColor)
+		.def("loadScene", &SceneManager::loadScene)
 		;
 
 	// Entity
@@ -86,6 +87,10 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def("loopAnimation", &AnimatedObject::loopAnimation)
 		.def("pauseAnimation", &AnimatedObject::pauseAnimation)
 		.def("stopAllAnimations", &AnimatedObject::stopAllAnimations)
+		.def("getCurAnimation", &AnimatedObject::getCurAnimation)
+		.def("getAnimationLength", &AnimatedObject::getAnimationLength)
+		.def("getAnimationStart", &AnimatedObject::getAnimationStart)
+		.def("setAnimationStart", &AnimatedObject::setAnimationStart)
 		;
 
 	// Light

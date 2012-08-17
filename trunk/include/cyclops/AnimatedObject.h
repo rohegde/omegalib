@@ -52,7 +52,7 @@ namespace cyclops {
 	class SceneManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! #PYAPI
+	//! #PYAPI Represents an object with embedded animations.
 	class CY_API AnimatedObject: public Entity
 	{
 	public:
@@ -63,6 +63,8 @@ namespace cyclops {
 	public:
 		AnimatedObject(SceneManager* mng, const String& modelName);
 		virtual ~AnimatedObject() {}
+
+		virtual void update(const UpdateContext& context);
 
 		ModelAsset* getModel();
 
@@ -81,10 +83,21 @@ namespace cyclops {
 		//! #PYAPI
 		void loopAnimation(int id);
 		//! #PYAPI
-		void pauseAnimation(int id);
+		void pauseAnimation();
 		//! #PYAPI
 		void stopAllAnimations();
+		//! #PYAPI
+		int getCurAnimation();
+		//! #PYAPI
+		float getAnimationLength(int id);
+		//! #PYAPI
+		float getAnimationStart(int id);
+		//! #PYAPI
+		void setAnimationStart(int id, float time);
 		//@}
+
+		void setOnAnimationEndedScript(const String& value) { myOnAnimationEnded = value; }
+		String getOnAnimationEndedScript() { return myOnAnimationEnded; }
 
 	private:
 		SceneManager* mySceneManager;
@@ -96,6 +109,11 @@ namespace cyclops {
 		// osg animation stuff
 		osgAnimation::BasicAnimationManager* myAnimationManager;
 		const osgAnimation::AnimationList* myAnimations;
+		int myCurAnimationId;
+		osgAnimation::Animation* myCurAnimation;
+
+		// Event handler scripts
+		String myOnAnimationEnded;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

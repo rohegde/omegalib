@@ -257,8 +257,8 @@ namespace cyclops {
 		//! Scene creation methods
 		//@{
 		void load(SceneLoader* loader);
-		//! Utility method: loads a scene file using the standard cyclops scene loader.
-		void load(const String& file);
+		//! #PYAPI Utility method: loads a scene file using the standard cyclops scene loader.
+		void loadScene(const String& file);
 		void setSkyBox(Skybox* skyBox);
 		void unload();
 		//@}

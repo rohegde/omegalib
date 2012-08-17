@@ -1,7 +1,7 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
@@ -35,7 +35,7 @@
 
 using namespace cyclops;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 struct AnimationManagerFinder : public osg::NodeVisitor 
 { 
     osgAnimation::BasicAnimationManager* am; 
@@ -56,20 +56,21 @@ struct AnimationManagerFinder : public osg::NodeVisitor
     } 
 }; 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 AnimatedObject* AnimatedObject::create(const String& modelName)
 {
 	return new AnimatedObject(SceneManager::instance(), modelName);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 AnimatedObject::AnimatedObject(SceneManager* scene, const String& modelName):
 	Entity(scene),
 		mySceneManager(scene), 
 		myOsgSwitch(NULL), 
 		myCurrentModelIndex(0),
 		myAnimationManager(NULL),
-		myAnimations(NULL)
+		myAnimations(NULL),
+		myCurAnimation(NULL)
 {
 	myModel = scene->getModel(modelName);
 
@@ -107,11 +108,31 @@ AnimatedObject::AnimatedObject(SceneManager* scene, const String& modelName):
 		myAnimations = &myAnimationManager->getAnimationList();
 		ofmsg("AnimatedObject %1%: found %2% animations.", %getName() %getNumAnimations());
 
-		loopAnimation(0);
+		// DO not play an anymation by default anymore.
+		//loopAnimation(0);
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void AnimatedObject::update(const UpdateContext& context)
+{
+	if(myCurAnimation != NULL)
+	{
+		// See if the current animation has finished playing.
+		if(!myAnimationManager->isPlaying(myCurAnimation))
+		{
+			ofmsg("AnimatedObject %1%: animation ended", %getName());
+
+			myCurAnimation = NULL;
+			if(myOnAnimationEnded.length() > 0)
+			{
+				SystemManager::instance()->getScriptInterpreter()->eval(myOnAnimationEnded);
+			}
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void AnimatedObject::setCurrentModelIndex(int index)
 {
 	if(myOsgSwitch != NULL && index < getNumModels())
@@ -121,7 +142,7 @@ void AnimatedObject::setCurrentModelIndex(int index)
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 int AnimatedObject::getCurrentModelIndex()
 {
 	if(myOsgSwitch != NULL)
@@ -131,13 +152,13 @@ int AnimatedObject::getCurrentModelIndex()
 	return 0;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool AnimatedObject::hasAnimations()
 {
 	return myAnimationManager != NULL;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 int AnimatedObject::getNumAnimations()
 {
 	if(hasAnimations())
@@ -147,52 +168,88 @@ int AnimatedObject::getNumAnimations()
 	return 0;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void AnimatedObject::playAnimation(int id)
 {
 	if(hasAnimations())
 	{
 		if(id < getNumAnimations())
 		{
-			osgAnimation::Animation* anim = myAnimations->at(id);
-			anim->setPlayMode(osgAnimation::Animation::ONCE);
-			myAnimationManager->playAnimation(anim);
+			myCurAnimationId = id;
+			myCurAnimation = myAnimations->at(id);
+			myCurAnimation->setPlayMode(osgAnimation::Animation::ONCE);
+			myAnimationManager->playAnimation(myCurAnimation);
 		}
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void AnimatedObject::loopAnimation(int id)
 {
 	if(hasAnimations())
 	{
 		if(id < getNumAnimations())
 		{
-			osgAnimation::Animation* anim = myAnimations->at(id);
-			anim->setPlayMode(osgAnimation::Animation::LOOP);
-			myAnimationManager->playAnimation(anim);
+			myCurAnimationId = id;
+			myCurAnimation = myAnimations->at(id);
+			myCurAnimation->setPlayMode(osgAnimation::Animation::LOOP);
+			myAnimationManager->playAnimation(myCurAnimation);
 		}
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void AnimatedObject::pauseAnimation(int id)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void AnimatedObject::pauseAnimation()
 {
-	if(hasAnimations())
+	if(hasAnimations() && myCurAnimation != NULL)
 	{
-		if(id < getNumAnimations())
-		{
-			osgAnimation::Animation* anim = myAnimations->at(id);
-			myAnimationManager->stopAnimation(anim);
-		}
+		myAnimationManager->stopAnimation(myCurAnimation);
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void AnimatedObject::stopAllAnimations()
 {
 	if(hasAnimations())
 	{
 		myAnimationManager->stopAll();
+		myCurAnimation = NULL;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int AnimatedObject::getCurAnimation()
+{
+	return myCurAnimationId;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+float AnimatedObject::getAnimationLength(int id)
+{
+	if(hasAnimations() && id < getNumAnimations())
+	{
+		osgAnimation::Animation* anim = myAnimations->at(id);
+		return anim->getDuration();
+	}
+	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+float AnimatedObject::getAnimationStart(int id)
+{
+	if(hasAnimations() && id < getNumAnimations())
+	{
+		osgAnimation::Animation* anim = myAnimations->at(id);
+		return anim->getDuration();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void AnimatedObject::setAnimationStart(int id, float time)
+{
+	if(hasAnimations() && id < getNumAnimations())
+	{
+		osgAnimation::Animation* anim = myAnimations->at(id);
+		anim->setStartTime(time);
 	}
 }

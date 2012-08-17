@@ -224,6 +224,10 @@ void SceneManager::addEntity(Entity* obj)
 void SceneManager::update(const UpdateContext& context) 
 {
 	updateLights();
+	foreach(Entity* e, myObjectVector)
+	{
+		e->update(context);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -342,7 +346,7 @@ void SceneManager::load(SceneLoader* loader)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::load(const String& relativePath)
+void SceneManager::loadScene(const String& relativePath)
 {
 	String fullPath;
 	//If able to get full path
