@@ -196,7 +196,9 @@ protected:
 				ss->setMode(GL_BLEND, osg::StateAttribute::ON);
 				if(additive)
 				{
-					
+					osg::BlendFunc* bf = new osg::BlendFunc();
+					bf->setFunction(GL_SRC_ALPHA, GL_ONE);
+					ss->setAttribute(bf);
 				}
 			}
 		}

@@ -106,6 +106,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def("getSoftShadowWidth", &Light::getSoftShadowWidth)
 		;
 
+	// ModelInfo
 	class_<ModelInfo, boost::noncopyable>("ModelInfo")
 		.def_readwrite("name", &ModelInfo::name)
 		.def_readwrite("description", &ModelInfo::description)
