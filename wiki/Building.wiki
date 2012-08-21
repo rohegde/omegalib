@@ -64,8 +64,8 @@ The basic instructions are the same as for the Windows guide. Under linux, you w
    * `svn co https://omegalib.googlecode.com/svn/trunk omegalib --username<your-username>`
    * (if you are not a committer) `svn co http://omegalib.googlecode.com/svn/trunk omegalib`
  * *(optional)* Download the omegalib applications source code:
-   * `svn co https://omegalib-apps.googlecode.com/svn/trunk omegalib --username<your-username>`
-   * (if you are not a committer) `svn co http://omegalib-apps.googlecode.com/svn/trunk omegalib`
+   * `svn co https://omegalib-apps.googlecode.com/svn/trunk apps --username<your-username>`
+   * (if you are not a committer) `svn co http://omegalib-apps.googlecode.com/svn/trunk apps`
  * create a build directory
    * `mkdir build`
    * `cd build`
