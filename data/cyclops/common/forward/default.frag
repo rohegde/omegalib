@@ -53,6 +53,9 @@ LitSurfaceData computeLighting(SurfaceData surf)
 		} 
 	} 	
 
+	// Add ambient component from main light.
+	ld.luminance += surf.albedo * unif_Ambient;
+	
 	ld.luminance.a = surf.albedo.a;
 	// Add emissive surface component to final luminance.
 	ld.luminance += surf.emissive;
