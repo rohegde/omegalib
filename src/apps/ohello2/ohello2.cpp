@@ -118,6 +118,8 @@ void HelloRenderPass::render(Renderer* client, const DrawContext& context)
 {
 	if(context.task == DrawContext::SceneDrawTask)
 	{
+		client->getRenderer()->beginDraw3D(context);
+
 		// Enable depth testing and lighting.
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_LIGHTING);
@@ -146,6 +148,8 @@ void HelloRenderPass::render(Renderer* client, const DrawContext& context)
 			glVertex3fv(myVertices[myFaces[i][3]].data());
 			glEnd();
 		}
+
+		client->getRenderer()->endDraw();
 	}
 }
 
