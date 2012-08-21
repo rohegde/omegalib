@@ -57,12 +57,26 @@ Another way to run an application is to right click on it inside visual studio (
 
 == Building on Linux ==
 The basic instructions are the same as for the Windows guide. Under linux, you will use make as your build system. To summarize, the process will be:
- * Download the code
+ * create a new directory for omegalib:
+   * `mkdir omegalib`
+   * `cd omegalib`
+ * Download the omegalib source code:
+   * `svn co https://omegalib.googlecode.com/svn/trunk omegalib --username<your-username>`
+   * (if you are not a committer) `svn co http://omegalib.googlecode.com/svn/trunk omegalib`
+ * *(optional)* Download the omegalib applications source code:
+   * `svn co https://omegalib-apps.googlecode.com/svn/trunk omegalib --username<your-username>`
+   * (if you are not a committer) `svn co http://omegalib-apps.googlecode.com/svn/trunk omegalib`
  * create a build directory
- * get in the build directory and run `cmake -i <path-to-source-dir>` or run `ccmake` or `cmake-gui`. The commands will respectively run an interactive shell version of cmake, a curses based version, and a gui version similar to the windows one. 
+   * `mkdir build`
+   * `cd build`
+ * run cmake using one of the following commands:
+   * `cmake -i ../omegalib` 
+   * `ccmake ../omegalib` 
+   * `cmake-gui`. 
+   * (The commands will respectively run an interactive shell version of cmake, a curses based version, and a gui version similar to the windows one)
  * Follow the same steps as the one in windows to generate a makefile
  * run `make`
- * if the build succeeds, get in the `bin` directory and you should find your libraries and compiled demo applications.
+ * if the build succeeds, get in the `build/bin` directory and you should find your libraries and compiled demo applications.
  
 === IMPORTANT: Solving missing `eq/eq.h` include ===
 On some linux distributions, the build may fail due to a missing `eq/eq.h` include. For some reason cmake won't compute project dependencies correctly and it will forget to build the Equalizer project before building omega. A quick solution to this problem is building equalizer manually: 
