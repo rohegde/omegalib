@@ -173,6 +173,11 @@ void OmegaViewer::handleCommand(const String& cmd)
 // Application entry point
 int main(int argc, char** argv)
 {
+	ImageUtils::preallocateBlocks(8192 * 4096 * 3, 2);
+	Skybox::setPreallocBlock(0, DrawContext::EyeCyclop);
+	Skybox::setPreallocBlock(0, DrawContext::EyeLeft);
+	Skybox::setPreallocBlock(1, DrawContext::EyeRight);
+
 	Application<OmegaViewer> app("orun");
 	oargs().newNamedString('s', "script", "script", "script to launch at startup", sDefaultScript);
 	return omain(app, argc, argv);

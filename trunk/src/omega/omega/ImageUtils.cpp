@@ -30,6 +30,50 @@
 
 using namespace omega;
 
+// Vector of preallocated memory blocks for image loading.
+Vector<void*> ImageUtils::sPreallocBlocks;
+size_t ImageUtils::sPreallocBlockSize;
+int ImageUtils::sLoadPreallocBlock = -1;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool ImageUtils::preallocateBlocks(size_t size, int numBlocks)
+{
+	ofmsg("ImageUtils::preallocateBlocks: allocating %1% blocks of size %2%Kb", %numBlocks %(size / 1024));
+	for(int i = 0; i < numBlocks; i++)
+	{
+		void* block = malloc(size);
+		if(block != NULL)
+		{
+			sPreallocBlocks.push_back(block);
+		}
+		else
+		{
+			ofwarn("ImageUtils::preallocateBlocks: failed allocating block %1%", %i);
+			return false;
+		}
+	}
+	return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int ImageUtils::getNumPreallocatedBlocks()
+{
+	return sPreallocBlocks.size();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void* ImageUtils::getPreallocatedBlock(int blockIndex)
+{
+	if(blockIndex < sPreallocBlocks.size()) return sPreallocBlocks[blockIndex];
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ImageUtils::setLoadPreallocatedBlock(int blockId)
+{
+	sLoadPreallocBlock = blockId;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ImageUtils::internalInitialize()
 {
@@ -40,6 +84,13 @@ void ImageUtils::internalInitialize()
 void ImageUtils::internalDispose()
 {
 	FreeImage_DeInitialise();
+
+	// Clean up preallocated memory blocks.
+	foreach(void* ptr, sPreallocBlocks)
+	{
+		free(ptr);
+	}
+	sPreallocBlocks.empty();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -62,30 +113,61 @@ Ref<PixelData> ImageUtils::loadImage(const String& filename, bool hasFullPath)
 		path = filename;
 	}
 
-
 	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(path.c_str(), 0);
 	FIBITMAP* image = FreeImage_Load(format, path.c_str());
-	
-	FIBITMAP* temp = image;
-	image = FreeImage_ConvertTo32Bits(image);
-	FreeImage_Unload(temp);
-	
+	if(image == NULL)
+	{
+		ofwarn("ImageUtils::loadImage: could not load %1%: unsupported file format, corrupted file or out of memory.", %filename);
+		return NULL;
+	}
+
+	//FIBITMAP* temp = image;
+	//image = FreeImage_ConvertTo32Bits(image);
+	//FreeImage_Unload(temp);
+
+	uint bpp = FreeImage_GetBPP(image);
 	int width = FreeImage_GetWidth(image);
 	int height = FreeImage_GetHeight(image);
 
-	Ref<PixelData> pixelData = new PixelData(PixelData::FormatRgba, width, height);
+	// If blockId is not -1, use a preallocated memory block to load this image.
+	byte* pdata = NULL;
+	if(sLoadPreallocBlock != -1) pdata = (byte*)getPreallocatedBlock(sLoadPreallocBlock);
+
+	Ref<PixelData> pixelData;
+	int pixelOffset;
+	if(bpp == 24)
+	{
+		pixelData = new PixelData(PixelData::FormatRgb, width, height, pdata);
+		pixelOffset = 3;
+	}
+	else if(bpp == 32)
+	{
+		pixelData = new PixelData(PixelData::FormatRgba, width, height, pdata);
+		pixelOffset = 4;
+	}
+	else
+	{
+		ofwarn("ImageUtils::loadImage: unhandled bpp (%1%) while loading %2%", %bpp %filename);
+		return NULL;
+	}
 
 	ofmsg("Image loaded: %1%. Size: %2%x%3%", %filename %width %height);
 	
 	byte* data = pixelData->lockData();
-	char* pixels = (char*)FreeImage_GetBits(image);
 	
-	for(int j= 0; j < width * height ; j++)
+	for(int i = 0; i < height; i++)
 	{
-		data[j*4+0]= pixels[j*4+2];
-		data[j*4+1]= pixels[j*4+1];
-		data[j*4+2]= pixels[j*4+0];
-		data[j*4+3]= pixels[j*4+3];
+		char* pixels = (char*)FreeImage_GetScanLine(image, i);
+		for(int j = 0; j < width; j++)
+		{
+			int k = i * width + j;
+
+			data[k * pixelOffset + 0] = pixels[j * pixelOffset + 2];
+			data[k * pixelOffset + 1] = pixels[j * pixelOffset + 1];
+			data[k * pixelOffset + 2] = pixels[j * pixelOffset + 0];
+			if(bpp == 32) data[k * pixelOffset + 3] = pixels[j * pixelOffset + 3];
+			//data[j * pixelOffset + 3] = pixels[j * pixelOffset + 3];
+		}
 	}
 	pixelData->unlockData();
 	

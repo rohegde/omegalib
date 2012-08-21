@@ -48,9 +48,21 @@ ReaderWriter::ReadResult ReaderFreeImage::readImage(const std::string& file, con
     //std::string fileName = osgDB::findDataFile( file, options );
     //if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
 
+	bool leaveMemoryAlone = false;
+
 	omega::Ref<omega::PixelData> img = omega::ImageUtils::loadImage(file, false);
 	if(img == NULL) return ReadResult::FILE_NOT_FOUND;
-	img->setDeleteDisabled(true);
+
+	// If the image delete is disabled, the image does not own the pixel buffer. Tell the
+	// same to osg::Image. Otherwise, pass the buffer ownership to osg::Image.
+	if(img->isDeleteDisabled())
+	{
+		leaveMemoryAlone = true;
+	}
+	else
+	{
+		img->setDeleteDisabled(true);
+	}
 
     //unsigned char *imageData = NULL;
     //int width_ret;
@@ -81,7 +93,7 @@ ReaderWriter::ReadResult ReaderFreeImage::readImage(const std::string& file, con
         pixelFormat,
         dataType,
 		img->lockData(),
-		osg::Image::USE_MALLOC_FREE);
+		leaveMemoryAlone ? osg::Image::NO_DELETE : osg::Image::USE_MALLOC_FREE);
 
 	img->unlockData();
 

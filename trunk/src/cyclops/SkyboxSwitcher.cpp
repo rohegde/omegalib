@@ -68,15 +68,19 @@ void SkyboxSwitcher::initialize()
 			String type = Config::getStringValue("type", sSkybox, "cube");
 			String filename = Config::getStringValue("filename", sSkybox, "cube");
 			info.filename = filename;
+			String ext = Config::getStringValue("extension", sSkybox, "jpg");
+			info.extension = ext;
 			if(type == "cube")
 			{
 				info.type = Skybox::CubeMap;
-				String ext = Config::getStringValue("extension", sSkybox, "jpg");
-				info.extension = ext;
 			}
 			else if(type == "pano")
 			{
 				info.type = Skybox::Pano;
+			}
+			else if(type == "stereopano")
+			{
+				info.type = Skybox::StereoPano;
 			}
 			mySkyboxInfoVector.push_back(info);
 		}
@@ -130,9 +134,13 @@ void SkyboxSwitcher::setActiveSkybox(int index)
 		{
 			mySkybox->loadCubeMap(info.filename, info.extension);
 		}
-		else
+		else if(info.type == Skybox::Pano)
 		{
 			mySkybox->loadPano(info.filename);
+		}
+		if(info.type == Skybox::StereoPano)
+		{
+			mySkybox->loadStereoPano(info.filename, info.extension);
 		}
 	}
 }

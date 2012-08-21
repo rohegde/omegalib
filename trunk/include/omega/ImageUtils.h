@@ -30,6 +30,8 @@
 #include "osystem.h"
 #include "omega/PixelData.h"
 
+
+
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Loads and manages image data.
@@ -38,12 +40,31 @@ namespace omega {
 	public:
 		enum ImageFormat { FormatPng };
 	public:
+		//! Preallocated memory management
+		//@{
+		//! Preallocate memory blocks for image loading and processing.
+		//! @return true if preallocation succeeded. False otherwise.
+		static bool preallocateBlocks(size_t size, int numBlocks);
+		static size_t getPreallocatedBlockSize() { return sPreallocBlockSize; }
+		static int getNumPreallocatedBlocks();
+		static void* getPreallocatedBlock(int blockIndex);
+		//! Specified which preallocated block to use when loading images. Pass -1 to disable 
+		//! preallocated block usage on image loading.
+		static void setLoadPreallocatedBlock(int blockId);
+		static int getLoadPreallocatedBlock() { return sLoadPreallocBlock; }
+		//@}
+
 		//! Load an image from a file.
 		static Ref<PixelData> loadImage(const String& filename, bool hasFullPath = false);
 		static ByteArray* encode(PixelData* data, ImageFormat format);
 
 		static void internalInitialize();
 		static void internalDispose();
+
+	private:
+		static Vector<void*> sPreallocBlocks;
+		static size_t sPreallocBlockSize;
+		static int sLoadPreallocBlock;
 
 	private:
 		ImageUtils() {}

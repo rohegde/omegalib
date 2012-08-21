@@ -99,7 +99,7 @@ void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 		mySceneView->setFrameStamp(myModule->getFrameStamp());
 
 		if(getstats) myTimer.start();
-		mySceneView->cull();
+		mySceneView->cull(context.eye);
 		if(getstats)
 		{
 			myTimer.stop();

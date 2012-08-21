@@ -53,6 +53,10 @@ PixelData::PixelData(Format fmt, int width, int height, byte* data):
 		}
 		myData = (byte*)malloc(mySize);
 	}
+	else
+	{
+		myDeleteDisabled = true;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
