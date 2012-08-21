@@ -286,7 +286,7 @@ void Skybox::updateSkyBox()
 			cubeMapProgram = sm->getProgram(
 				"skybox-stereopano", 
 				"cyclops/common/Skybox-pano.vert", 
-				"cyclops/common/Skybox-pano.frag");
+				"cyclops/common/Skybox-stereopano.frag");
 		}
 
 		osg::StateSet* stateset = myGeode->getOrCreateStateSet();
@@ -296,8 +296,12 @@ void Skybox::updateSkyBox()
 		}
 
 		// Setup the root state set to apply the environment map to scene objects.
-		// Use Texture stage 3 for the environment map (0-2 reserved for object textures, 4,5 reserved for shadow maps)
+		// Use Texture stage 3, 6 for the environment map (0-2 reserved for object textures, 4,5 reserved for shadow maps)
 		myRootStateSet->setTextureAttributeAndModes(3, myTexture, osg::StateAttribute::ON);
+		if(myType == StereoPano)
+		{
+			myRootStateSet->setTextureAttributeAndModes(6, myTextureR, osg::StateAttribute::ON);
+		}
 
 		if(myTextureUniform != NULL)
 		{
@@ -314,7 +318,8 @@ void Skybox::updateSkyBox()
 		}
 		else if(myType == StereoPano)
 		{
-			myRootStateSet->addUniform( new osg::Uniform("unif_PanoMap", 3) );
+			myRootStateSet->addUniform( new osg::Uniform("unif_PanoMapL", 3) );
+			myRootStateSet->addUniform( new osg::Uniform("unif_PanoMapR", 6) );
 		}
 
 		if(myType == CubeMap)
