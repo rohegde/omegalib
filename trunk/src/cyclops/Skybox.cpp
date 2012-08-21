@@ -145,10 +145,12 @@ bool Skybox::loadStereoPano(const String& panoName, const String& extension)
 	int prevBlock = ImageUtils::getLoadPreallocatedBlock();
 
 	ImageUtils::setLoadPreallocatedBlock(mysPreallocBlock[DrawContext::EyeLeft]);
-	osg::Image* panoL = osgDB::readImageFile(ostr("%1%L.%2%", %panoName %extension));
+	String fileName = ostr(panoName, %"L");
+	osg::Image* panoL = osgDB::readImageFile(ostr("%1%.%2%", %fileName %extension));
 
 	ImageUtils::setLoadPreallocatedBlock(mysPreallocBlock[DrawContext::EyeRight]);
-	osg::Image* panoR = osgDB::readImageFile(ostr("%1%R.%2%", %panoName %extension));
+	fileName = ostr(panoName, %"R");
+	osg::Image* panoR = osgDB::readImageFile(ostr("%1%.%2%", %fileName %extension));
 
 	// Reset prealloc block state
 	ImageUtils::setLoadPreallocatedBlock(prevBlock);
