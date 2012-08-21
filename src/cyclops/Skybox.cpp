@@ -72,12 +72,26 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int Skybox::mysPreallocBlock[3];
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Skybox::setPreallocBlock(int blockId, DrawContext::Eye eye)
+{
+	mysPreallocBlock[eye] = blockId;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Skybox::Skybox():
 	myTexture(NULL), myNode(NULL), myRootStateSet(NULL)
 {
 	// Allocate and delete MoveSkyWithEyePointTransform, since we can't use Ref<> inside the Skybox header 
 	// (because MoveSkyWithEyePointTransform is defined within this file)
 	myTransform = new MoveSkyWithEyePointTransform();
+
+	// Init prealloc block ids to -1 (to disable usage of prealloc blocks)
+	mysPreallocBlock[DrawContext::EyeCyclop] = -1;
+	mysPreallocBlock[DrawContext::EyeLeft] = -1;
+	mysPreallocBlock[DrawContext::EyeRight] = -1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,22 +115,55 @@ void Skybox::initialize(osg::StateSet* rootStateSet)
 bool Skybox::loadPano(const String& panoName)
 {
 	myType = Pano;
+
+	// Change prealloc block state
+	int prevBlock = ImageUtils::getLoadPreallocatedBlock();
+	ImageUtils::setLoadPreallocatedBlock(mysPreallocBlock[DrawContext::EyeCyclop]);
+
 	osg::Image* pano = osgDB::readImageFile(panoName);
+
+	// Reset prealloc block state
+	ImageUtils::setLoadPreallocatedBlock(prevBlock);
+
 	if(pano)
 	{
 		osg::Texture2D* panoTex = new osg::Texture2D();
 		panoTex->setImage(pano);
 		myTexture = panoTex;
-       myTexture->setWrap(osg::Texture::WRAP_S, osg::Texture::CLAMP_TO_EDGE);
-        myTexture->setWrap(osg::Texture::WRAP_T, osg::Texture::CLAMP_TO_EDGE);
-        myTexture->setWrap(osg::Texture::WRAP_R, osg::Texture::CLAMP_TO_EDGE);
+		updateSkyBox();
+		return true;
+	}
+	return false;
+}
 
-        myTexture->setFilter(osg::Texture::MIN_FILTER, osg::Texture::LINEAR_MIPMAP_LINEAR);
-        myTexture->setFilter(osg::Texture::MAG_FILTER, osg::Texture::LINEAR);		
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Skybox::loadStereoPano(const String& panoName, const String& extension)
+{
+	myType = StereoPano;
+
+	// Change prealloc block state
+	int prevBlock = ImageUtils::getLoadPreallocatedBlock();
+
+	ImageUtils::setLoadPreallocatedBlock(mysPreallocBlock[DrawContext::EyeLeft]);
+	osg::Image* panoL = osgDB::readImageFile(ostr("%1%L.%2%", %panoName %extension));
+
+	ImageUtils::setLoadPreallocatedBlock(mysPreallocBlock[DrawContext::EyeRight]);
+	osg::Image* panoR = osgDB::readImageFile(ostr("%1%R.%2%", %panoName %extension));
+
+	// Reset prealloc block state
+	ImageUtils::setLoadPreallocatedBlock(prevBlock);
+
+	if(panoL && panoR)
+	{
+		osg::Texture2D* panoTexL = new osg::Texture2D();
+		panoTexL->setImage(panoL);
+		myTexture = panoTexL;
+
+		osg::Texture2D* panoTexR = new osg::Texture2D();
+		panoTexR->setImage(panoR);
+		myTextureR = panoTexR;
 
 		updateSkyBox();
-
-		return true;
 	}
 	return false;
 }
@@ -234,6 +281,13 @@ void Skybox::updateSkyBox()
 				"cyclops/common/Skybox-pano.vert", 
 				"cyclops/common/Skybox-pano.frag");
 		}
+		else if(myType == StereoPano)
+		{
+			cubeMapProgram = sm->getProgram(
+				"skybox-stereopano", 
+				"cyclops/common/Skybox-pano.vert", 
+				"cyclops/common/Skybox-pano.frag");
+		}
 
 		osg::StateSet* stateset = myGeode->getOrCreateStateSet();
 		if(cubeMapProgram != NULL)
@@ -258,12 +312,16 @@ void Skybox::updateSkyBox()
 		{
 			myRootStateSet->addUniform( new osg::Uniform("unif_PanoMap", 3) );
 		}
+		else if(myType == StereoPano)
+		{
+			myRootStateSet->addUniform( new osg::Uniform("unif_PanoMap", 3) );
+		}
 
 		if(myType == CubeMap)
 		{
 			myTransform->pitch = 0.0f;
 		}
-		else if(myType == Pano)
+		else if(myType == Pano || myType == StereoPano)
 		{
 			myTransform->pitch = -Math::Pi / 2;
 		}

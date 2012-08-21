@@ -207,7 +207,7 @@ void SceneView::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneView::updateUniforms()
+void SceneView::updateUniforms(int eye)
 {
     if (!_localStateSet)
     {
@@ -264,10 +264,15 @@ void SceneView::updateUniforms()
         uniform->set(osg::Matrix::inverse(getViewMatrix()));
     }
 
+	// Add the eye uniform
+	osg::Uniform* uniformEye = _localStateSet->getOrCreateUniform("unif_Eye",osg::Uniform::INT);
+    uniformEye->set(eye);
+
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneView::cull()
+void SceneView::cull(int eye)
 {
     _dynamicObjectCount = 0;
 
@@ -277,7 +282,7 @@ void SceneView::cull()
 	_renderInfo.pushCamera(_camera.get());
 
     // update the active uniforms
-    updateUniforms();
+    updateUniforms(eye);
 
     if (!_renderInfo.getState())
     {

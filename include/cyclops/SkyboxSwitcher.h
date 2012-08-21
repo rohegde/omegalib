@@ -33,7 +33,8 @@
 namespace cyclops
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	//! #PYAPI
+	//! #PYAPI Implements a panorama viewer, adding a skybox to the scene whose image can be switched
+	//! at runtime.
 	class CY_API SkyboxSwitcher: public EngineModule
 	{
 	public:
@@ -53,11 +54,11 @@ namespace cyclops
 		void handleEvent(const Event& evt);
 		void handleCommand(const String& cmd);
 
-		//! #PYAPI
+		//! #PYAPI Sets the active skybox image index
 		void setActiveSkybox(int index);
-		//! #PYAPI
+		//! #PYAPI Returns the active skybox image index
 		int getActiveSkybox();
-		//! #PYAPI
+		//! #PYAPI Returns the number of available skybox images
 		int getNumSkyboxes();
 
 	private:
