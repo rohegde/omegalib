@@ -54,7 +54,7 @@ _^If you see this, you have succesfully built omegalib. You deserve ice cream!^_
 
 Another way to run an application is to right click on it inside visual studio (all applications are in the `apps` solution folder), select *Set as StartUp Project* and click on the run button.
 
-
+---------------------------------------------------------------------------------------------------
 == Building on Linux ==
 The basic instructions are the same as for the Windows guide. Under linux, you will use make as your build system. To summarize, the process will be:
  * create a new directory for omegalib:
@@ -83,6 +83,7 @@ On some linux distributions, the build may fail due to a missing `eq/eq.h` inclu
 
 run `make equalizer` and wait for equqlizer to build, then run `make`.
 
+---------------------------------------------------------------------------------------------------
 == CMake options ==
 This section is a quick guide to some build options ofered in cmake.
  * `OMEGA_BUILD_OSG_LIB`: Enable to build the omegaOsg library and enable OpenSceneGraph support. You need an internet connection when generating a project with this option selected. Cmake will download a binary version of osg from the omegalib repository.
@@ -93,4 +94,4 @@ This section is a quick guide to some build options ofered in cmake.
  * `OMEGA_USE_DISPLAY_GLUT`: Enables GLUT display system support. GLUT support is not really tested and may be broken. By default, omegalib uses the Equalizer display system even if you leave this option on, so you should not need to change it.
  * `OMEGA_USE_EXTERNAL_OSG`: *Advanced* specifies an external osg build instead of the internal one. Used for debugging.
  * `OMEGA_USE_OPENCL`: Enables OpenCL support. You will need OpenCL-compatible hardware to select this option. omegalib will try to use an internal copy of the OpenCL SDK when enabled.
- 
+ * `OMEGA_APP_DIR`: Optional path to the omegalib applications root directory. Omegalib applications can be downloaded from this repository: https://code.google.com/p/omegalib-apps/ 
