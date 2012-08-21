@@ -229,45 +229,95 @@
     ////////////////// MULTITOUCH ////////////////////////////
 
     // Prevent scrolling
-//    document.body.addEventListener('touchmove', function (event) {
-//        event.preventDefault();
-//    }, false);
+    document.body.addEventListener('touchmove', function (event) {
+        event.preventDefault();
+    }, false);
 
     // Initialize hammer
     var hammer = new Hammer(canvas);
 
-    hammer.ondragstart = function (ev) { };
+    // Drag vars
+    var dragging = false;
+    var dragPosX, dragPosY, dragDistX, dragDistY;
+    var deltaX, deltaY;
 
+    
+    // Pinch vars
+    var pinching = false;
+    var pinchScale, pinchRotation;
+
+    // Drag functions
+    function watchDrag() {
+        if (!dragging || pinching || deltaX == null || deltaY == null) {
+            return;
+        }
+        var JSONOEvent = {
+            "event_type": "drag",
+            "deltaX": deltaX,
+            "deltaY": deltaY,
+        };
+        socket_di.send(JSON.stringify(JSONOEvent));
+    }
+
+    hammer.ondragstart = function (ev) {
+        dragging = true;
+    };
+    hammer.ondragend = function (ev) {
+        dragging = false;
+    };
     hammer.ondrag = function (ev) {
 
-        var JSONOEvent = { 
-            "event_type": "drag",
-            "positionX": ev.position.x,
-            "positionY": parseInt(ev.position.y), // y is floating by default, so cast it
-            "distanceX": ev.distanceX,
-            "distanceY": ev.distanceY
-        };
+        deltaX = ev.distanceX - dragDistX;
+        deltaY = ev.distanceY - dragDistY;
 
-//        document.getElementById("porthole_drawing").textContent = JSON.stringify(JSONOEvent);
-
-        socket_di.send(JSON.stringify(JSONOEvent));
+        dragPosX = ev.position.x;
+        dragPosY = parseInt(ev.position.y); // y is floating by default, so cast it
+        dragDistX = ev.distanceX;
+        dragDistY = ev.distanceY;
 
     };
 
-    hammer.ondragend = function (ev) { };
     hammer.onswipe = function (ev) { };
 
     hammer.ontap = function (ev) {};
     hammer.ondoubletap = function (ev) { };
-    hammer.onhold = function (ev) { };
 
-    hammer.ontransformstart = function (ev) { };
-    hammer.ontransform = function (ev) { };
-    hammer.ontransformend = function (ev) { };
+    // Pinch functions
+    function watchPinch() {
+        if (!pinching || pinchScale == null || pinchRotation == null) {
+            return;
+        }
+        var JSONOEvent = {
+            "event_type": "pinch",
+            "scale": pinchScale,
+            "rotation": pinchRotation,
+        };
+        socket_di.send(JSON.stringify(JSONOEvent));
+    }
+    hammer.ontransformstart = function (ev) { 
+        dragging = false;
+        pinching = true;
+    };
+    hammer.ontransformend = function (ev) {
+        pinching = false;
+    };
+    hammer.ontransform = function (ev) { 
+        dragging = false; // Avoid overlapping of drag and pinch events
+
+        pinchScale = ev.scale.toFixed(9);
+        pinchRotation = ev.rotation.toFixed(9);
+
+        document.getElementById("porthole_drawing").textContent = "Pinch: scale = " + pinchScale + " rotation = "+ pinchRotation;
+    };
 
     hammer.onrelease = function (ev) { };
+    hammer.onhold = function (ev) { };
 
     ///////////////////////////////////////////////////////////
+
+    // Dragging listening interval
+    setInterval(watchDrag, 200);
+    setInterval(watchPinch, 200);
 
 </script>
 
