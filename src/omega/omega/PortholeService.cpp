@@ -215,6 +215,111 @@ void print(json_value *value, int ident = 0)
 	}
 }
 
+#define MSG_EVENT_TYPE "event_type"
+#define MSG_EVENT_DRAG "drag"
+#define MSG_DELTA_X "deltaX"
+#define MSG_DELTA_Y "deltaY"
+#define MSG_EVENT_PINCH "pinch"
+#define MSG_DELTA_SCALE "scale"
+#define MSG_DELTA_ROTATION "rotation"
+
+struct recv_message{
+    string event_type;
+    float deltaX,deltaY;
+	float scale; // This value ranges about {0,2;6}: >1 is zoom in, <1 is zoom out
+	float rotation;
+};
+
+// This is the function that handle the event received by the client,
+// that has the per_session_data structure associated
+void parse_json_message(json_value *value, per_session_data* data, recv_message* message){
+
+    switch(value->type)
+    {
+    case JSON_NULL:
+        printf("null\n");
+        break;
+    case JSON_OBJECT:
+    case JSON_ARRAY:
+        for (json_value *it = value->first_child; it; it = it->next_sibling)
+        {
+            parse_json_message(it, data, message);
+        }
+        break;
+    case JSON_STRING:
+
+        // Event type
+        if (strcmp(value->name, MSG_EVENT_TYPE) == 0)
+           message->event_type = value->string_value;
+
+        break;
+    case JSON_INT:
+
+        // Delta X and Y
+		if (strcmp(value->name, MSG_DELTA_X) == 0)
+            message->deltaX = (float)value->int_value;
+		else if (strcmp(value->name, MSG_DELTA_Y) == 0)
+            message->deltaY = (float)value->int_value;
+
+        break;
+    case JSON_FLOAT:
+
+		// Delta Scale and Rotation
+		if (strcmp(value->name, MSG_DELTA_SCALE) == 0)
+			message->scale = value->float_value;
+		else if (strcmp(value->name, MSG_DELTA_ROTATION) == 0)
+			message->rotation = value->float_value;
+
+        break;
+    case JSON_BOOL:
+        break;
+    }
+
+}
+
+
+void handle_message(per_session_data* data, recv_message* message){
+
+    //cout << "MSG: " << message->event_type << endl;
+    //cout << "MSG: " << message->posX << endl;
+    //cout << "MSG: " << message->posY << endl;
+    //cout << "MSG: " << message->distX << endl;
+    //cout << "MSG: " << message->distY << endl;
+
+	// Handle drag event
+	if (strcmp(message->event_type.c_str(),MSG_EVENT_DRAG)==0){
+		
+		Engine* myEngine = Engine::instance();
+		Camera* defaultCamera = myEngine->getDefaultCamera();
+
+		//Vector3f myPosition = data->sessionCamera->getPosition();
+		Vector3f myPosition = defaultCamera->getPosition();
+		cout << "Initial position: x = " << myPosition[0] << " y = " << myPosition[1] << endl;
+        myPosition[0] += message->deltaX/10; // TODO check step
+        myPosition[1] += message->deltaY/10;
+		cout << "Final position: x = " << myPosition[0] << " y = " << myPosition[1] << endl;
+
+		defaultCamera->setPosition(myPosition);
+		//data->sessionCamera->setPosition(myPosition);
+    }
+
+	// Handle pinch event
+	if (strcmp(message->event_type.c_str(),MSG_EVENT_PINCH)==0){
+
+		Vector3f myPosition = data->sessionCamera->getPosition();
+		cout << "Initial position: z = " << myPosition[2] << endl;
+		// Zoom in
+		if (message->scale > 1)
+			myPosition[2] += message->scale/10;
+		// Zoom out
+		else if (message->scale < 1)
+			myPosition[2] -= message->scale;
+		cout << "Final position: z = " << myPosition[2] << endl;
+		data->sessionCamera->setPosition(myPosition);
+    }
+
+}
+
 int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			struct libwebsocket *wsi,
 			enum libwebsocket_callback_reasons reason,
@@ -299,18 +404,18 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 	case LWS_CALLBACK_RECEIVE:
 	{
 		//cout << (char *)in <<endl;
+        recv_message message;
 		char *errorPos = 0;
 		char *errorDesc = 0;
 		int errorLine = 0;
 		block_allocator allocator(1 << 10); // 1 KB per block
         
 		json_value *root = json_parse((char*)in, &errorPos, &errorDesc, &errorLine, &allocator);
-
-		for (json_value *it = root->first_child; it; it = it->next_sibling)
-		json_value *root = json_parse((char*)in, &errorPos, &errorDesc, &errorLine, &allocator);
 		if (root)
 		{
-			print(root);
+            print(root);
+            parse_json_message(root, data, &message);
+            handle_message(data, &message);
 		}
 
 		break;
