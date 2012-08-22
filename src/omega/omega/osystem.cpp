@@ -183,8 +183,9 @@ namespace omega
 			dm->addSource(new FilesystemDataSource("./"));
 			dm->addSource(new FilesystemDataSource(""));
 #ifdef OMEGA_APPROOT_DIRECTORY
-			dm->addSource(new FilesystemDataSource(OMEGA_APPROOT_DIRECTORY));
-			ofmsg("::: %1%", %OMEGA_APPROOT_DIRECTORY);
+			String appRootPath = StringUtils::standardisePath(OMEGA_APPROOT_DIRECTORY);
+			dm->addSource(new FilesystemDataSource(appRootPath));
+			ofmsg("::: %1%", %appRootPath);
 #endif
 			dm->addSource(new FilesystemDataSource(dataPath));
 			ofmsg("::: %1%", %dataPath);
