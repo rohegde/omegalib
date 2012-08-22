@@ -36,6 +36,8 @@
 
 #include "omega/PythonInterpreterWrapper.h"
 
+#include <boost/mpl/if.hpp>
+
 #define PYCAP_GET(pyobj, className) pyobj != NULL ? (className*)PyCapsule_GetPointer(pyobj, #className) : NULL
 
 using namespace omega;
@@ -470,7 +472,7 @@ BOOST_PYTHON_MODULE(omega)
 
 	// Event
 	const Vector3f& (Event::*getPosition1)() const = &Event::getPosition;
-	class_<Event, boost::noncopyable>("Event", no_init)
+	class_<Event, Ref<Event>, boost::noncopyable >("Event", no_init)
 		.def("getSourceId", &Event::getSourceId)
 		.def("getType", &Event::getType)
 		.def("getPosition", getPosition1, PYAPI_RETURN_VALUE)
@@ -479,7 +481,7 @@ BOOST_PYTHON_MODULE(omega)
 		;
 
 	// Engine 
-	class_<Engine, boost::noncopyable>("Engine", no_init)
+	class_<Engine, Ref<Engine>, boost::noncopyable >("Engine", no_init)
 		.def("isConsoleEnabled", &Engine::isConsoleEnabled)
 		.def("setConsoleEnabled", &Engine::setConsoleEnabled)
 		.def("getScene", &Engine::getScene, PYAPI_RETURN_POINTER)
@@ -492,7 +494,7 @@ BOOST_PYTHON_MODULE(omega)
 	void (Node::*setOrientation1)(const Quaternion&) = &Node::setOrientation;
 	Node* (Node::*getChildByIndex)(unsigned short) const = &Node::getChild;
 	Node* (Node::*getChildByName)(const String&) const = &Node::getChild;
-	class_<Node, boost::noncopyable>("Node", no_init)
+	class_<Node, Ref<Node>, boost::noncopyable >("Node", no_init)
 		.def("getPosition", &Node::getPosition, PYAPI_RETURN_VALUE)
 		.def("setPosition", setPosition1)
 		.def("getScale", &Node::getScale, PYAPI_RETURN_VALUE)
@@ -505,20 +507,20 @@ BOOST_PYTHON_MODULE(omega)
 
 		.def("numChildren", &Node::numChildren)
 		.def("getChildByName", getChildByName, PYAPI_RETURN_POINTER)
-		.def("getChildByIndex", getChildByIndex, PYAPI_RETURN_POINTER)
+		.def("getChildByIndex", getChildByIndex, return_value_policy<return_by_smart_ptr>())
 
 
 		.def("resetOrientation", &Node::resetOrientation)
 		.def("getName", &Node::getName, PYAPI_RETURN_VALUE)
-		.def("getParent", &Node::getParent, PYAPI_RETURN_POINTER)
-		.def("getChildren", &Node::getChildren, PYAPI_RETURN_POINTER)
+		.def("getParent", &Node::getParent, return_value_policy<return_by_smart_ptr>())
+		//.def("getChildren", &Node::getChildren, PYAPI_RETURN_POINTER)
 		;
 
 	// NodeList
-	PYAPI_POINTER_LIST(Node, "NodeList")
+	//PYAPI_POINTER_LIST(Node, "NodeList")
 
 	// SceneNode
-	class_<SceneNode, bases<Node>, boost::noncopyable >("SceneNode", no_init)
+	class_<SceneNode, bases<Node>, Ref<SceneNode>, boost::noncopyable >("SceneNode", no_init)
 		.def("isVisible", &SceneNode::isVisible)
 		.def("setVisible", &SceneNode::setVisible)
 		.def("isSelected", &SceneNode::isSelected)
@@ -527,8 +529,8 @@ BOOST_PYTHON_MODULE(omega)
 		.def("setSelectable", &SceneNode::setSelectable)
 	;
 
-	// SceneNode
-	class_<Camera, boost::noncopyable >("Camera", no_init)
+	// Camera
+	class_<Camera, Ref<Camera>, boost::noncopyable >("Camera", no_init)
 		.def("getPosition", &Camera::getPosition, PYAPI_RETURN_VALUE)
 		.def("setPosition", &Camera::setPosition)
 		.def("setYawPitchRoll", &Camera::setYawPitchRoll)

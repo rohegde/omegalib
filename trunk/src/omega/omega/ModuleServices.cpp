@@ -37,7 +37,7 @@ EngineModule::~EngineModule()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineModule::doInitialize(Engine* server) 
 { 
-	myEngine = server; 
+	if(myEngine == NULL) myEngine = server; 
 	if(!myInitialized) 
 	{
 		initialize(); 
