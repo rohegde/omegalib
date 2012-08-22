@@ -194,8 +194,7 @@ void SceneManager::unload()
 
 	ofmsg("SceneManager::unload: releasing %1% objects", %myObjectVector.size());
 	myObjectVector.clear();
-	myObjectDictionary.clear();
-
+	
 	ofmsg("SceneManager::unload: releasing %1% programs", %myPrograms.size());
 	myPrograms.clear();
 
@@ -207,7 +206,6 @@ void SceneManager::unload()
 void SceneManager::addEntity(Entity* obj)
 {
 	myObjectVector.push_back(obj);
-	myObjectDictionary[obj->getName()] = obj;
 
 	osg::Node* objNode = obj->getOsgNode();
 	// if we have a listener, invoke the add object callback and use its return
@@ -782,3 +780,12 @@ void SceneManager::setWandSize(float width, float length)
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+Entity* SceneManager::getEntityByName(const String& name)
+{
+	foreach(Entity* e, myObjectVector)
+	{
+		if(e->getName() == name) return e;
+	}
+	return NULL;
+}
