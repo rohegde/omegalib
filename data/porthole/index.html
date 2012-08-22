@@ -11,14 +11,12 @@
 </head>
 
 <body>
-<h3>Detected Browser: <div id=brow>...</div></h3>
-<br>
-
+<!--<h3>Detected Browser: <div id=brow>...</div></h3>-->
 <table>
 	<tr>
 <!--		<td align=center><input type=button id=offset value="Reset counter" onclick="reset();" ></td>-->
-		<td width=100 align=center><div id=porthole_drawing> </div></td>
 		<td id=wsdi_statustd align=center><div id=wsdi_status>Not initialized</div></td>
+        <td align=center><div id=porthole_drawing> </div></td>
 	</tr>
 </table>
 
@@ -148,8 +146,8 @@
 
     
     // JUST FOR TEST
-    document.getElementById("brow").textContent = " " + BrowserDetect.browser + " "
-	+ BrowserDetect.version + " " + BrowserDetect.OS + " ";
+//    document.getElementById("brow").textContent = " " + BrowserDetect.browser + " "
+//	+ BrowserDetect.version + " " + BrowserDetect.OS + " ";
 
     ////////////////// WEBSCOKET AND CANVAS ////////////////////////////
 
@@ -229,32 +227,48 @@
     ////////////////// MULTITOUCH ////////////////////////////
 
     // Prevent scrolling
-    document.body.addEventListener('touchmove', function (event) {
-        event.preventDefault();
-    }, false);
+//    document.body.addEventListener('touchmove', function (event) {
+//        event.preventDefault();
+//    }, false);
 
     // Initialize hammer
-    var hammer = new Hammer(canvas);
+    var hammer = new Hammer(canvas, {
+            prevent_default: true,
+
+            drag: true,
+            drag_vertical: true,
+            drag_horizontal: true,
+            drag_min_distance: 0,
+
+            transform: true,
+            scale_treshold: 0.01,
+            rotation_treshold: 1,
+
+            tap: false,
+            tap_double: false,
+            hold: false
+        });
 
     // Drag vars
     var dragging = false;
     var dragPosX, dragPosY, dragDistX, dragDistY;
     var deltaX, deltaY;
-
     
     // Pinch vars
     var pinching = false;
     var pinchScale, pinchRotation;
+    var deltaRotation;
 
     // Drag functions
     function watchDrag() {
-        if (!dragging || pinching || deltaX == null || deltaY == null) {
+        if (!dragging || pinching || deltaX == null || deltaY == null || 
+                deltaX == "null" || deltaY == "null") {
             return;
         }
         var JSONOEvent = {
             "event_type": "drag",
             "deltaX": deltaX,
-            "deltaY": deltaY,
+            "deltaY": deltaY
         };
         socket_di.send(JSON.stringify(JSONOEvent));
     }
@@ -284,13 +298,14 @@
 
     // Pinch functions
     function watchPinch() {
-        if (!pinching || pinchScale == null || pinchRotation == null) {
+        if (!pinching || pinchScale == null || pinchRotation == null ||
+                pinchScale == "null" || pinchRotation == "null") {
             return;
         }
         var JSONOEvent = {
             "event_type": "pinch",
             "scale": pinchScale,
-            "rotation": pinchRotation,
+            "rotation": deltaRotation,
         };
         socket_di.send(JSON.stringify(JSONOEvent));
     }
@@ -304,10 +319,12 @@
     hammer.ontransform = function (ev) { 
         dragging = false; // Avoid overlapping of drag and pinch events
 
-        pinchScale = ev.scale.toFixed(9);
-        pinchRotation = ev.rotation.toFixed(9);
+        deltaRotation = parseFloat(pinchRotation - ev.rotation);
 
-        document.getElementById("porthole_drawing").textContent = "Pinch: scale = " + pinchScale + " rotation = "+ pinchRotation;
+        pinchScale = parseFloat(ev.scale);
+        pinchRotation = ev.rotation;
+
+        //document.getElementById("porthole_drawing").textContent = "Pinch: scale = " + pinchScale + " rotation = "+ pinchRotation + " deltaRotation = "+ deltaRotation;
     };
 
     hammer.onrelease = function (ev) { };
@@ -316,8 +333,8 @@
     ///////////////////////////////////////////////////////////
 
     // Dragging listening interval
-    setInterval(watchDrag, 200);
-    setInterval(watchPinch, 200);
+    setInterval(watchDrag, 20);
+    setInterval(watchPinch, 20);
 
 </script>
 

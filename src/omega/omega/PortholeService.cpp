@@ -227,7 +227,7 @@ struct recv_message{
     string event_type;
     float deltaX,deltaY;
 	float scale; // This value ranges about {0,2;6}: >1 is zoom in, <1 is zoom out
-	float rotation;
+	float deltaRotation; 
 };
 
 // This is the function that handle the event received by the client,
@@ -264,11 +264,11 @@ void parse_json_message(json_value *value, per_session_data* data, recv_message*
         break;
     case JSON_FLOAT:
 
-		// Delta Scale and Rotation
+		// Scale and Rotation
 		if (strcmp(value->name, MSG_DELTA_SCALE) == 0)
 			message->scale = value->float_value;
 		else if (strcmp(value->name, MSG_DELTA_ROTATION) == 0)
-			message->rotation = value->float_value;
+			message->deltaRotation = value->float_value;
 
         break;
     case JSON_BOOL:
@@ -281,41 +281,77 @@ void parse_json_message(json_value *value, per_session_data* data, recv_message*
 void handle_message(per_session_data* data, recv_message* message){
 
     //cout << "MSG: " << message->event_type << endl;
-    //cout << "MSG: " << message->posX << endl;
+    //cout << "MSG: " << message->scale << endl;
     //cout << "MSG: " << message->posY << endl;
     //cout << "MSG: " << message->distX << endl;
-    //cout << "MSG: " << message->distY << endl;
+	//cout << "MSG: " << message->deltaRotation << endl;
 
 	// Handle drag event
 	if (strcmp(message->event_type.c_str(),MSG_EVENT_DRAG)==0){
+
+		// Bounds check
+		if (message->deltaX < -10 || message->deltaX > 10 ||
+			message->deltaY < -10 || message->deltaY > 10 )
+			return;
 		
 		Engine* myEngine = Engine::instance();
 		Camera* defaultCamera = myEngine->getDefaultCamera();
-
+		//Vector3f myPosition = defaultCamera->getPosition();
+		
 		//Vector3f myPosition = data->sessionCamera->getPosition();
-		Vector3f myPosition = defaultCamera->getPosition();
-		cout << "Initial position: x = " << myPosition[0] << " y = " << myPosition[1] << endl;
-        myPosition[0] += message->deltaX/10; // TODO check step
-        myPosition[1] += message->deltaY/10;
-		cout << "Final position: x = " << myPosition[0] << " y = " << myPosition[1] << endl;
-
-		defaultCamera->setPosition(myPosition);
+		//cout << "Initial position: x = " << myPosition[0] << " y = " << myPosition[1] << endl;
+        
+		// Change x,y coords
+		//myPosition[0] += message->deltaX/100; // TODO check step
+        //myPosition[1] += message->deltaY/100;
+		//defaultCamera->setPosition(myPosition);
 		//data->sessionCamera->setPosition(myPosition);
+
+		// Change pitch and yaw
+		Quaternion curOrientation = defaultCamera->getOrientation();
+		// Create the YAW and PITCH rotation quaternion
+		float yawAngle = message->deltaX/10 * Math::DegToRad;
+		float pitchAngle = message->deltaY/10 * Math::DegToRad;
+		Quaternion orientation = AngleAxis(yawAngle, Vector3f::UnitY()) * AngleAxis(pitchAngle, Vector3f::UnitX()) * AngleAxis(0, Vector3f::UnitZ());
+		// Apply rotation
+		defaultCamera->setOrientation(curOrientation * orientation);
+
+		//cout << "Final position: x = " << myPosition[0] << " y = " << myPosition[1] << endl;
+
+
     }
 
 	// Handle pinch event
-	if (strcmp(message->event_type.c_str(),MSG_EVENT_PINCH)==0){
+	else if (strcmp(message->event_type.c_str(),MSG_EVENT_PINCH)==0){
 
-		Vector3f myPosition = data->sessionCamera->getPosition();
-		cout << "Initial position: z = " << myPosition[2] << endl;
+		// ZOOM
+
+		Engine* myEngine = Engine::instance();
+		Camera* defaultCamera = myEngine->getDefaultCamera();
+		Vector3f myPosition = defaultCamera->getPosition();
+
+		//Vector3f myPosition = data->sessionCamera->getPosition();
+		//cout << "Initial position: z = " << myPosition[2] << endl;
 		// Zoom in
 		if (message->scale > 1)
-			myPosition[2] += message->scale/10;
+			myPosition[2] -= message->scale/20; // TODO check scale factor
 		// Zoom out
 		else if (message->scale < 1)
-			myPosition[2] -= message->scale;
-		cout << "Final position: z = " << myPosition[2] << endl;
-		data->sessionCamera->setPosition(myPosition);
+			myPosition[2] += (float)(1.0 - message->scale);
+		//cout << "Final position: z = " << myPosition[2] << endl;
+		//data->sessionCamera->setPosition(myPosition);
+		defaultCamera->setPosition(myPosition);
+
+
+		// ROTATION
+
+		Quaternion curOrientation = defaultCamera->getOrientation();
+		// Create the ROLL rotation quaternion
+		float rollAngle = message->deltaRotation*10 * Math::DegToRad;
+		Quaternion orientation = AngleAxis(0, Vector3f::UnitY()) * AngleAxis(0, Vector3f::UnitX()) * AngleAxis(-rollAngle, Vector3f::UnitZ());
+		// Apply rotation
+		defaultCamera->setOrientation(curOrientation * orientation);
+
     }
 
 }
@@ -404,7 +440,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 	case LWS_CALLBACK_RECEIVE:
 	{
 		//cout << (char *)in <<endl;
-        recv_message message;
+		recv_message message = {"",0,0,1,0};
 		char *errorPos = 0;
 		char *errorDesc = 0;
 		int errorLine = 0;
@@ -413,7 +449,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		json_value *root = json_parse((char*)in, &errorPos, &errorDesc, &errorLine, &allocator);
 		if (root)
 		{
-            print(root);
+            //print(root);
             parse_json_message(root, data, &message);
             handle_message(data, &message);
 		}
@@ -518,28 +554,7 @@ void ServerThread::threadProc(){
 		gettimeofday(&tv, NULL);
 
 		/*
-		 * This broadcasts to all dumb-increment-protocol connections
-		 * at 50Hz.
-		 *
-		 * We're just sending a character 'x', in these examples the
-		 * callbacks send their own per-connection content.
-		 *
-		 * You have to send something with nonzero length to get the
-		 * callback actions delivered.
-		 *
-		 * We take care of pre-and-post padding allocation.
-		 */
-
-		// WE DO NOT USE BROADCAST TO ALL DEVICES, EACH GET IT'S OWN CAMERA STREAM
-		//if (((unsigned int)tv.tv_usec - oldus) > 20000) {
-		//	libwebsockets_broadcast(
-		//			&protocols[PROTOCOL_WEBSOCKET],
-		//			&buf[LWS_SEND_BUFFER_PRE_PADDING], 1);
-		//	oldus = tv.tv_usec;
-		//}
-
-		/*
-		 * This example server does not fork or create a thread for
+		 * This server does not fork or create a thread for
 		 * websocket service, it all runs in this single loop.  So,
 		 * we have to give the websockets an opportunity to service
 		 * "manually".
