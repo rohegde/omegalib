@@ -187,6 +187,8 @@ void PythonInterpreter::initialize(const char* programName)
 	Py_DECREF(wrapperOut);
 	Py_DECREF(wrapperErr);
 
+	addPythonPath("./");
+
 	if(myShellEnabled && SystemManager::instance()->isMaster())
 	{
 		omsg("PythonInterpreter: starting interactive shell thread.");
