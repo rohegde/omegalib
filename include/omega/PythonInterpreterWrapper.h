@@ -53,11 +53,67 @@
 using namespace boost::python;
 
 #define PYAPI_RETURN_VALUE return_value_policy<copy_const_reference>()
-#define PYAPI_RETURN_POINTER return_value_policy<reference_existing_object>()
+#define PYAPI_RETURN_POINTER return_value_policy<return_by_smart_ptr>()
 #define PYAPI_RETURN_NEW_INSTANCE return_value_policy<manage_new_object>()
 //#define PYAPI_RETURN_REFERENCE return_value_policy<copy_const_reference>()
 #define PYAPI_POINTER_LIST(itemName, className) class_< List<itemName*> > (className, no_init).def("__iter__", iterator< List<itemName*>, return_internal_reference<> >());
 #define PYAPI_ENUM_VALUE(enumName, valueName) .value(#valueName, enumName::valueName)
+
+#define PYAPI_METHOD(className, methodName) .def(#methodName, &className::methodName)
+#define PYAPI_REF_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_smart_ptr>())
+#define PYAPI_STATIC_REF_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_smart_ptr>()).staticmethod(#methodName)
+
+#define PYAPI_CLASS(className) 	class_<className, boost::noncopyable >(#className, no_init)
+#define PYAPI_CLASS_WITH_CTOR(className) class_<className, boost::noncopyable >(#className)
+
+#define PYAPI_REF_CLASS(className, baseName) class_<className, bases<baseName>, boost::noncopyable, Ref<className> >(#className, no_init)
+#define PYAPI_REF_BASE_CLASS(className) class_<className, boost::noncopyable, Ref<className> >(#className, no_init)
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// SMART POINTER WRAPPING CODE FROM http://isolation-nation.blogspot.com/2008/09/returnbysmartptr-policy-for-boost.html
+// attempting to instantiate this type will result in a compiler error,
+// if that happens it means you're trying to use return_by_smart_pointer
+// on a function/method that doesn't return a pointer!
+namespace boost {
+namespace python {
+namespace detail {
+	template <class R>
+	struct return_by_smart_ptr_requires_a_pointer_return_type
+	# if defined(__GNUC__) && __GNUC__ >= 3 || defined(__EDG__)
+		{}
+	# endif
+		;
+	// this is where all the work is done, first the plain pointer is
+	// converted to a smart pointer, and then the smart pointer is embedded
+	// in a Python object
+	struct make_owning_smart_ptr_holder
+	{
+		template <class T>
+		static PyObject* execute(T* p)
+		{
+			typedef Ref<T> smart_pointer;
+			typedef objects::pointer_holder<smart_pointer, T> holder_t;
+
+			smart_pointer ptr(const_cast<T*>(p));
+			return objects::make_ptr_instance<T, holder_t>::execute(ptr);
+		}
+	};
+} // namespace detail
+
+struct return_by_smart_ptr
+{
+    template <class T>
+    struct apply
+    {
+        typedef typename boost::mpl::if_c<
+            boost::is_pointer<T>::value,
+            to_python_indirect<T, detail::make_owning_smart_ptr_holder>,
+            detail::return_by_smart_ptr_requires_a_pointer_return_type<T>
+        >::type type;
+    };
+};
+
+}} // namespace boost::python
 
 namespace omega
 {

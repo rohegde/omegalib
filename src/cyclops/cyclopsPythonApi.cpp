@@ -49,7 +49,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		;
 
 	// SceneManager
-	class_<SceneManager, boost::noncopyable>("SceneManager", no_init)
+	class_<SceneManager, boost::noncopyable, Ref<SceneManager> >("SceneManager", no_init)
 		.def("setMainLight", &SceneManager::setMainLight)
 		.def("getMainLight", &SceneManager::getMainLight, PYAPI_RETURN_POINTER)
 		.def("loadModel", &SceneManager::loadModel)
@@ -58,28 +58,28 @@ BOOST_PYTHON_MODULE(cyclops)
 		;
 
 	// Entity
-	class_<Entity, bases<SceneNode>, boost::noncopyable >("Entity", no_init)
+	class_<Entity, bases<SceneNode>, boost::noncopyable, Ref<Entity> >("Entity", no_init)
 		.def("hasEffect", &Entity::hasEffect)
 		.def("setEffect", &Entity::setEffect)
 		;
 
 	// SphereShape
-	class_<SphereShape, bases<Entity>, boost::noncopyable >("SphereShape", no_init)
+	class_<SphereShape, bases<Entity>, boost::noncopyable, Ref<SphereShape> >("SphereShape", no_init)
 		.def("create", &SphereShape::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
 		;
 
 	// PlaneShape
-	class_<PlaneShape, bases<Entity>, boost::noncopyable >("PlaneShape", no_init)
+	class_<PlaneShape, bases<Entity>, boost::noncopyable, Ref<PlaneShape> >("PlaneShape", no_init)
 		.def("create", &PlaneShape::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
 		;
 
 	// StaticObject
-	class_<StaticObject, bases<Entity>, boost::noncopyable >("StaticObject", no_init)
+	class_<StaticObject, bases<Entity>, boost::noncopyable, Ref<StaticObject> >("StaticObject", no_init)
 		.def("create", &StaticObject::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
 		;
 
 	// AnimatedObject
-	class_<AnimatedObject, bases<Entity>, boost::noncopyable >("AnimatedObject", no_init)
+	class_<AnimatedObject, bases<Entity>, boost::noncopyable, Ref<AnimatedObject> >("AnimatedObject", no_init)
 		.def("create", &AnimatedObject::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
 		.def("hasAnimations", &AnimatedObject::hasAnimations)
 		.def("getNumAnimations", &AnimatedObject::getNumAnimations)
@@ -94,7 +94,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		;
 
 	// Light
-	class_<Light, bases<Node>, boost::noncopyable >("Light", no_init)
+	class_<Light, bases<Node>, boost::noncopyable, Ref<Light> >("Light", no_init)
 		.def("create", &Light::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
 		.def("setColor", &Light::setColor)
 		.def("setAmbient", &Light::setAmbient)
@@ -107,7 +107,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		;
 
 	// ModelInfo
-	class_<ModelInfo, boost::noncopyable>("ModelInfo")
+	class_<ModelInfo, boost::noncopyable >("ModelInfo")
 		.def_readwrite("name", &ModelInfo::name)
 		.def_readwrite("description", &ModelInfo::description)
 		.def_readwrite("generateNormals", &ModelInfo::generateNormals)
@@ -116,7 +116,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def_readwrite("size", &ModelInfo::size)
 		;
 
-	class_<SkyboxSwitcher, boost::noncopyable>("SkyboxSwitcher", no_init)
+	class_<SkyboxSwitcher, boost::noncopyable, Ref<SkyboxSwitcher> >("SkyboxSwitcher", no_init)
 		.def("createAndInitialize", &SkyboxSwitcher::createAndInitialize, PYAPI_RETURN_NEW_INSTANCE).staticmethod("createAndInitialize")
 		.def("getNumSkyboxes", &SkyboxSwitcher::getNumSkyboxes)
 		.def("getActiveSkybox", &SkyboxSwitcher::getActiveSkybox)
