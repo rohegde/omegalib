@@ -44,6 +44,8 @@
 
 #include "structmember.h"
 
+#include "osystem.h"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #ifndef BOOST_PYTHON_SOURCE
 	#define BOOST_PYTHON_NO_LIB
@@ -88,10 +90,10 @@ namespace detail {
 	// in a Python object
 	struct make_owning_smart_ptr_holder
 	{
-		template <class T>
+		template <typename T>
 		static PyObject* execute(T* p)
 		{
-			typedef Ref<T> smart_pointer;
+			typedef omega::Ref<T> smart_pointer;
 			typedef objects::pointer_holder<smart_pointer, T> holder_t;
 
 			smart_pointer ptr(const_cast<T*>(p));
@@ -102,7 +104,7 @@ namespace detail {
 
 struct return_by_smart_ptr
 {
-    template <class T>
+    template <typename T>
     struct apply
     {
         typedef typename boost::mpl::if_c<
