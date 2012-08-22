@@ -320,7 +320,6 @@ namespace cyclops {
 
 		ShaderMacroDictionary myShaderMacros;
 
-		Dictionary<String, Ref<Entity> > myObjectDictionary;
 		Vector< Ref<Entity> > myObjectVector;
 		
 		Ref<Skybox> mySkyBox;
@@ -339,10 +338,6 @@ namespace cyclops {
 		Ref<omegaToolkit::TrackedObject> myWandTracker;
 		Ref<CylinderShape> myWandEntity;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline  Entity* SceneManager::getEntityByName(const String& name)
-	{ return myObjectDictionary[name]; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline  Entity* SceneManager::getEntityByIndex(int index)
