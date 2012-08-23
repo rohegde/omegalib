@@ -530,10 +530,18 @@ BOOST_PYTHON_MODULE(omega)
 	;
 
 	// Camera
-	class_<Camera, Ref<Camera>, boost::noncopyable >("Camera", no_init)
-		.def("getPosition", &Camera::getPosition, PYAPI_RETURN_VALUE)
-		.def("setPosition", &Camera::setPosition)
-		.def("setYawPitchRoll", &Camera::setYawPitchRoll)
+	PYAPI_REF_BASE_CLASS(Camera)
+		PYAPI_GETTER(Camera, getPosition)
+		PYAPI_METHOD(Camera, setPosition)
+		PYAPI_METHOD(Camera, setYawPitchRoll)
+		PYAPI_GETTER(Camera, getHeadOffset)
+		PYAPI_METHOD(Camera, setHeadOffset)
+		PYAPI_METHOD(Camera, setHeadOrientation)
+		PYAPI_GETTER(Camera, getHeadOrientation)
+		PYAPI_METHOD(Camera, isTrackingEnabled)
+		PYAPI_METHOD(Camera, setTrackingEnabled)
+		PYAPI_METHOD(Camera, getTrackerSourceId)
+		PYAPI_METHOD(Camera, setTrackerSourceId)
 		;
 
 	// Color
