@@ -62,6 +62,7 @@ using namespace boost::python;
 #define PYAPI_ENUM_VALUE(enumName, valueName) .value(#valueName, enumName::valueName)
 
 #define PYAPI_METHOD(className, methodName) .def(#methodName, &className::methodName)
+#define PYAPI_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<copy_const_reference>())
 #define PYAPI_REF_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_smart_ptr>())
 #define PYAPI_STATIC_REF_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_smart_ptr>()).staticmethod(#methodName)
 
