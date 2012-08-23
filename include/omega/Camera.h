@@ -103,11 +103,23 @@ namespace omega {
 
 		//! Observer control
 		//@{
+		//! PYAPI
 		void setHeadOffset(const Vector3f& value) { myHeadOffset = value; }
+		//! PYAPI
 		void setHeadOrientation(const Quaternion& value) { myHeadOrientation = value; }
+		//! PYAPI
 		const Vector3f& getHeadOffset() { return myHeadOffset; }
+		//! PYAPI
 		const Quaternion& getHeadOrientation() { return myHeadOrientation; }
 		const AffineTransform3& getHeadTransform();
+		//! PYAPI
+		bool isTrackingEnabled() { return myTrackingEnabled; }
+		//! PYAPI
+		void setTrackingEnabled(bool value) { myTrackingEnabled = value; }
+		//! PYAPI
+		int getTrackerSourceId() { return myTrackerSourceId; }
+		//! PYAPI
+		void setTrackerSourceId(int value) { myTrackerSourceId = value; }
 		//@}
 
 		void endDraw(const DrawContext& context);
@@ -129,6 +141,10 @@ namespace omega {
 		Quaternion myHeadOrientation;
 		//! Observer head transform
 		AffineTransform3 myHeadTransform;
+		
+		//! Tracking stuff
+		bool myTrackingEnabled;
+		int myTrackerSourceId;
 
 		Transform3 myProjection;
 
