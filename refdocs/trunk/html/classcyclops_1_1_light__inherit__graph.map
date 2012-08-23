@@ -1,4 +1,4 @@
 <map id="cyclops::Light" name="cyclops::Light">
 <area shape="rect" id="node2" href="$classomega_1_1_node.html" title="PYAPI Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="33,77,119,101"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="5,5,147,29"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,5,147,29"/>
 </map>

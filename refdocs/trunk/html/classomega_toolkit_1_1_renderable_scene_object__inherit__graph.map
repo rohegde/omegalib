@@ -2,6 +2,6 @@
 <area shape="rect" id="node9" href="$classomega_toolkit_1_1_box.html" title="omegaToolkit::Box" alt="" coords="41,235,151,259"/>
 <area shape="rect" id="node11" href="$classomega_toolkit_1_1_mesh.html" title="omegaToolkit::Mesh" alt="" coords="175,235,293,259"/>
 <area shape="rect" id="node2" href="$classomega_1_1_renderable_factory.html" title="Base class for objects that can create renderables." alt="" coords="5,77,160,101"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="12,5,153,29"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="12,5,153,29"/>
 <area shape="rect" id="node6" href="$classomega_1_1_i_scene_object.html" title="omega::ISceneObject" alt="" coords="185,77,311,101"/>
 </map>

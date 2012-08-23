@@ -1,4 +1,4 @@
 <map id="omicron::WiimoteService" name="omicron::WiimoteService">
 <area shape="rect" id="node2" href="$classomicron_1_1_service.html" title="omicron::Service" alt="" coords="25,77,127,101"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="5,5,147,29"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,5,147,29"/>
 </map>

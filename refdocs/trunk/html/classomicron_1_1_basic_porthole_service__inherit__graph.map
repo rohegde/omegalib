@@ -1,4 +1,4 @@
 <map id="omicron::BasicPortholeService" name="omicron::BasicPortholeService">
 <area shape="rect" id="node2" href="$classomicron_1_1_service.html" title="omicron::Service" alt="" coords="37,77,139,101"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="17,5,159,29"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="17,5,159,29"/>
 </map>

@@ -4,7 +4,7 @@
 <area shape="rect" id="node9" href="$classomega_toolkit_1_1_scene_renderable.html" title="omegaToolkit::SceneRenderable" alt="" coords="361,101,538,125"/>
 <area shape="rect" id="node15" href="$classomega_toolkit_1_1_teapot.html" title="omegaToolkit::Teapot" alt="" coords="386,149,513,173"/>
 <area shape="rect" id="node17" href="$classomega_toolkit_1_1ui_1_1_widget_renderable.html" title="omegaToolkit::ui::Widget\lRenderable" alt="" coords="378,301,521,337"/>
-<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="5,101,147,125"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,101,147,125"/>
 <area shape="rect" id="node11" href="$classomega_toolkit_1_1_box_renderable.html" title="omegaToolkit::BoxRenderable" alt="" coords="601,53,767,77"/>
 <area shape="rect" id="node13" href="$classomega_toolkit_1_1_mesh_renderable.html" title="omegaToolkit::MeshRenderable" alt="" coords="597,101,771,125"/>
 <area shape="rect" id="node19" href="$classomega_toolkit_1_1ui_1_1_barebone_button_renderable.html" title="omegaToolkit::ui::Barebone\lButtonRenderable" alt="" coords="607,150,761,186"/>

@@ -1,19 +1,20 @@
 <map id="omega::EngineModule" name="omega::EngineModule">
-<area shape="rect" id="node7" href="$classcyclops_1_1_scene_manager.html" title="PYAPI." alt="" coords="568,112,704,136"/>
-<area shape="rect" id="node9" href="$classomega_1_1_actor.html" title="omega::Actor" alt="" coords="592,160,680,184"/>
-<area shape="rect" id="node23" href="$classomega_1_1_event_sharing_module.html" title="omega::EventSharingModule" alt="" coords="556,208,716,232"/>
-<area shape="rect" id="node25" href="$classomega_1_1_porthole_tablet_service.html" title="Implements an interface to tablet device applications using the Porthole protocol." alt="" coords="553,256,719,280"/>
-<area shape="rect" id="node27" href="$classomega_osg_1_1_osg_module.html" title="omegaOsg::OsgModule" alt="" coords="569,304,703,328"/>
-<area shape="rect" id="node29" href="$classomega_toolkit_1_1_scene_editor_module.html" title="omegaToolkit::SceneEditor\lModule" alt="" coords="561,353,711,389"/>
-<area shape="rect" id="node31" href="$classomega_toolkit_1_1ui_1_1_menu_manager.html" title="omegaToolkit::ui::MenuManager" alt="" coords="547,413,725,437"/>
-<area shape="rect" id="node33" href="$classomega_toolkit_1_1_ui_module.html" title="omegaToolkit::UiModule" alt="" coords="568,461,704,485"/>
-<area shape="rect" id="node35" href="$classomega_vtk_1_1_vtk_module.html" title="omegaVtk::VtkModule" alt="" coords="573,509,699,533"/>
-<area shape="rect" id="node2" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="195,304,323,328"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="5,304,147,328"/>
-<area shape="rect" id="node11" href="$classomega_toolkit_1_1_controller_manipulator.html" title="omegaToolkit::Controller\lManipulator" alt="" coords="794,6,934,42"/>
-<area shape="rect" id="node13" href="$classomega_toolkit_1_1_default_mouse_interactor.html" title="omegaToolkit::DefaultMouse\lInteractor" alt="" coords="785,66,943,102"/>
-<area shape="rect" id="node15" href="$classomega_toolkit_1_1_default_two_hands_interactor.html" title="omegaToolkit::DefaultTwo\lHandsInteractor" alt="" coords="790,126,938,162"/>
-<area shape="rect" id="node17" href="$classomega_toolkit_1_1_mouse_manipulator.html" title="omegaToolkit::MouseManipulator" alt="" coords="774,187,954,211"/>
-<area shape="rect" id="node19" href="$classomega_toolkit_1_1_tracked_object.html" title="omegaToolkit::TrackedObject" alt="" coords="783,235,945,259"/>
-<area shape="rect" id="node21" href="$classomega_toolkit_1_1_wand_manipulator.html" title="Implements a wand node manipulator." alt="" coords="775,283,953,307"/>
+<area shape="rect" id="node7" href="$classcyclops_1_1_scene_manager.html" title="PYAPI." alt="" coords="568,64,704,88"/>
+<area shape="rect" id="node9" href="$classcyclops_1_1_skybox_switcher.html" title="#PYAPI Implements a panorama viewer, adding a skybox to the scene whose image can be switched at runt..." alt="" coords="565,112,707,136"/>
+<area shape="rect" id="node11" href="$classomega_1_1_actor.html" title="omega::Actor" alt="" coords="592,160,680,184"/>
+<area shape="rect" id="node25" href="$classomega_1_1_event_sharing_module.html" title="omega::EventSharingModule" alt="" coords="556,208,716,232"/>
+<area shape="rect" id="node27" href="$classomega_1_1_porthole_tablet_service.html" title="Implements an interface to tablet device applications using the Porthole protocol." alt="" coords="553,256,719,280"/>
+<area shape="rect" id="node29" href="$classomega_osg_1_1_osg_module.html" title="omegaOsg::OsgModule" alt="" coords="569,304,703,328"/>
+<area shape="rect" id="node31" href="$classomega_toolkit_1_1_scene_editor_module.html" title="omegaToolkit::SceneEditor\lModule" alt="" coords="561,353,711,389"/>
+<area shape="rect" id="node33" href="$classomega_toolkit_1_1ui_1_1_menu_manager.html" title="omegaToolkit::ui::MenuManager" alt="" coords="547,413,725,437"/>
+<area shape="rect" id="node35" href="$classomega_toolkit_1_1_ui_module.html" title="omegaToolkit::UiModule" alt="" coords="568,461,704,485"/>
+<area shape="rect" id="node37" href="$classomega_vtk_1_1_vtk_module.html" title="omegaVtk::VtkModule" alt="" coords="573,509,699,533"/>
+<area shape="rect" id="node2" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="195,280,323,304"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,280,147,304"/>
+<area shape="rect" id="node13" href="$classomega_toolkit_1_1_controller_manipulator.html" title="omegaToolkit::Controller\lManipulator" alt="" coords="794,6,934,42"/>
+<area shape="rect" id="node15" href="$classomega_toolkit_1_1_default_mouse_interactor.html" title="omegaToolkit::DefaultMouse\lInteractor" alt="" coords="785,66,943,102"/>
+<area shape="rect" id="node17" href="$classomega_toolkit_1_1_default_two_hands_interactor.html" title="omegaToolkit::DefaultTwo\lHandsInteractor" alt="" coords="790,126,938,162"/>
+<area shape="rect" id="node19" href="$classomega_toolkit_1_1_mouse_manipulator.html" title="omegaToolkit::MouseManipulator" alt="" coords="774,187,954,211"/>
+<area shape="rect" id="node21" href="$classomega_toolkit_1_1_tracked_object.html" title="omegaToolkit::TrackedObject" alt="" coords="783,235,945,259"/>
+<area shape="rect" id="node23" href="$classomega_toolkit_1_1_wand_manipulator.html" title="Implements a wand node manipulator." alt="" coords="775,283,953,307"/>
 </map>

@@ -1,5 +1,5 @@
 <map id="omega::GpuResource" name="omega::GpuResource">
 <area shape="rect" id="node5" href="$classomega_1_1_render_target.html" title="omega::RenderTarget" alt="" coords="5,149,133,173"/>
 <area shape="rect" id="node7" href="$classomega_1_1_texture.html" title="omega::Texture" alt="" coords="158,149,257,173"/>
-<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="137,5,279,29"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="137,5,279,29"/>
 </map>

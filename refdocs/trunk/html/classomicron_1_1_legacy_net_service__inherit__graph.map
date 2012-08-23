@@ -1,4 +1,4 @@
 <map id="omicron::LegacyNetService" name="omicron::LegacyNetService">
 <area shape="rect" id="node2" href="$classomicron_1_1_service.html" title="omicron::Service" alt="" coords="30,77,132,101"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="11,5,152,29"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="11,5,152,29"/>
 </map>

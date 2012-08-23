@@ -55,29 +55,38 @@
 <div class="title">cyclops::SceneLoader Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>#PYAPI Performs parsing of an xml .scene file and loads a scene.  
+ <a href="classcyclops_1_1_scene_loader.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a57d950999a2c14e79449be848b0b853b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a57d950999a2c14e79449be848b0b853b">SceneLoader</a> (<a class="el" href="class_ti_xml_document.html">TiXmlDocument</a> &amp;doc, const String &amp;path)</td></tr>
-<tr class="memitem:a1648cf481b0dd5441a70a17c475f0000"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a1648cf481b0dd5441a70a17c475f0000">startLoading</a> (<a class="el" href="classcyclops_1_1_scene_manager.html">SceneManager</a> *sm)</td></tr>
-<tr class="memitem:a6c10e6ae795d2fdecfdae3924c4a7d6b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a6c10e6ae795d2fdecfdae3924c4a7d6b">isLoadingComplete</a> ()</td></tr>
-<tr class="memitem:a92735426459e61b8c00a410ab28c6b1e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a92735426459e61b8c00a410ab28c6b1e">getLoadProgress</a> ()</td></tr>
-<tr class="memitem:a39ba515f3e26f7987b438c6ce2fab49b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a39ba515f3e26f7987b438c6ce2fab49b">loadStep</a> ()</td></tr>
+<tr class="memitem:a57d950999a2c14e79449be848b0b853b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a57d950999a2c14e79449be848b0b853b">SceneLoader</a> (<a class="el" href="class_ti_xml_document.html">TiXmlDocument</a> &amp;doc, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;path)</td></tr>
 <tr class="memitem:a274a803afca2bc6a4457782c87ba716b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a274a803afca2bc6a4457782c87ba716b">loadAssets</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *xStaticObjectFiles, <a class="el" href="classcyclops_1_1_scene_manager.html#a3e3f213ce88c8b8ec522eec61e8b00af">SceneManager::AssetType</a> type)</td></tr>
 <tr class="memitem:a6421354a8d08212daee6ae1ea8297021"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a6421354a8d08212daee6ae1ea8297021">createObjects</a> (osg::Group *root, <a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *xStaticObjectFiles)</td></tr>
 <tr class="memitem:a14e73c8902144e0a097a07ae07167225"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a14e73c8902144e0a097a07ae07167225">createPrimitives</a> (osg::Group *root, <a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *xStaticObjectFiles)</td></tr>
 <tr class="memitem:a35e085ddd878ce654ae9d93ff4f7df81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a35e085ddd878ce654ae9d93ff4f7df81">initShading</a> ()</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a1648cf481b0dd5441a70a17c475f0000"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a1648cf481b0dd5441a70a17c475f0000">startLoading</a> (<a class="el" href="classcyclops_1_1_scene_manager.html">SceneManager</a> *sm)</td></tr>
+<tr class="memdesc:a1648cf481b0dd5441a70a17c475f0000"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loader interface.  <a href="#a1648cf481b0dd5441a70a17c475f0000"></a><br/></td></tr>
+<tr class="memitem:a6c10e6ae795d2fdecfdae3924c4a7d6b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a6c10e6ae795d2fdecfdae3924c4a7d6b">isLoadingComplete</a> ()</td></tr>
+<tr class="memitem:a92735426459e61b8c00a410ab28c6b1e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a92735426459e61b8c00a410ab28c6b1e">getLoadProgress</a> ()</td></tr>
+<tr class="memitem:a39ba515f3e26f7987b438c6ce2fab49b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a39ba515f3e26f7987b438c6ce2fab49b">loadStep</a> ()</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a64a22d881e473f237e0834f3e12e21f1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceomicron.html#a62dbc12e9d4cb3f4c817259828cc75a7">Vector4f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a64a22d881e473f237e0834f3e12e21f1">readVector4f</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const String &amp;attributeName)</td></tr>
-<tr class="memitem:a36161974107feef9749a8f50eed5f064"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a36161974107feef9749a8f50eed5f064">readVector3f</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const String &amp;attributeName)</td></tr>
-<tr class="memitem:a2e879e6fc8854a2119075bbb372b21a5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a2e879e6fc8854a2119075bbb372b21a5">readVector2f</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const String &amp;attributeName)</td></tr>
-<tr class="memitem:a553fb6f748c8bf047176e1ddff2e9fb0"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a553fb6f748c8bf047176e1ddff2e9fb0">readFloat</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const String &amp;attributeName, float defaultValue=0.0f)</td></tr>
-<tr class="memitem:add4a613bcb54775f59dc87123e95b122"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#add4a613bcb54775f59dc87123e95b122">readInt</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const String &amp;attributeName, int defaultValue=0)</td></tr>
-<tr class="memitem:aa1115f5fd06d0472bc8b5490a41daa53"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#aa1115f5fd06d0472bc8b5490a41daa53">readBool</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const String &amp;attributeName, bool defaultValue=false)</td></tr>
+<tr class="memitem:a64a22d881e473f237e0834f3e12e21f1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceomicron.html#a62dbc12e9d4cb3f4c817259828cc75a7">Vector4f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a64a22d881e473f237e0834f3e12e21f1">readVector4f</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;attributeName)</td></tr>
+<tr class="memitem:a36161974107feef9749a8f50eed5f064"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a36161974107feef9749a8f50eed5f064">readVector3f</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;attributeName)</td></tr>
+<tr class="memitem:a2e879e6fc8854a2119075bbb372b21a5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a2e879e6fc8854a2119075bbb372b21a5">readVector2f</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;attributeName)</td></tr>
+<tr class="memitem:a553fb6f748c8bf047176e1ddff2e9fb0"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a553fb6f748c8bf047176e1ddff2e9fb0">readFloat</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;attributeName, float defaultValue=0.0f)</td></tr>
+<tr class="memitem:add4a613bcb54775f59dc87123e95b122"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#add4a613bcb54775f59dc87123e95b122">readInt</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;attributeName, int defaultValue=0)</td></tr>
+<tr class="memitem:aa1115f5fd06d0472bc8b5490a41daa53"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#aa1115f5fd06d0472bc8b5490a41daa53">readBool</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;attributeName, bool defaultValue=false)</td></tr>
+<tr class="memitem:aa01d0aeeb9834b4ee429c3de1d5a4fce"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classcyclops_1_1_entity.html">Entity</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#aa01d0aeeb9834b4ee429c3de1d5a4fce">getLastLoadedEntity</a> ()</td></tr>
+<tr class="memdesc:aa01d0aeeb9834b4ee429c3de1d5a4fce"><td class="mdescLeft">&#160;</td><td class="mdescRight">#PYAPI  <a href="#aa01d0aeeb9834b4ee429c3de1d5a4fce"></a><br/></td></tr>
 </table>
-<h2>Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p>#PYAPI Performs parsing of an xml .scene file and loads a scene. </p>
+</div><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a57d950999a2c14e79449be848b0b853b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -91,7 +100,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const String &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
           <td class="paramname"><em>path</em>&#160;</td>
         </tr>
         <tr>
@@ -154,6 +163,32 @@ Static Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa01d0aeeb9834b4ee429c3de1d5a4fce"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classcyclops_1_1_entity.html">Entity</a> * SceneLoader::getLastLoadedEntity </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>#PYAPI </p>
+<p>returns a pointer to the last entity loaded. Used for scripting support. </p>
 
 </div>
 </div>
@@ -259,7 +294,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const String &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
           <td class="paramname"><em>attributeName</em>, </td>
         </tr>
         <tr>
@@ -299,7 +334,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const String &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
           <td class="paramname"><em>attributeName</em>, </td>
         </tr>
         <tr>
@@ -339,7 +374,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const String &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
           <td class="paramname"><em>attributeName</em>, </td>
         </tr>
         <tr>
@@ -379,7 +414,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const String &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
           <td class="paramname"><em>attributeName</em>&#160;</td>
         </tr>
         <tr>
@@ -413,7 +448,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const String &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
           <td class="paramname"><em>attributeName</em>&#160;</td>
         </tr>
         <tr>
@@ -447,7 +482,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const String &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
           <td class="paramname"><em>attributeName</em>&#160;</td>
         </tr>
         <tr>
@@ -478,6 +513,8 @@ Static Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Loader interface. </p>
 
 </div>
 </div>

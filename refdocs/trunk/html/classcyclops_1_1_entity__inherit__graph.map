@@ -1,9 +1,10 @@
 <map id="cyclops::Entity" name="cyclops::Entity">
-<area shape="rect" id="node7" href="$classcyclops_1_1_animated_object.html" title="cyclops::AnimatedObject" alt="" coords="449,5,591,29"/>
-<area shape="rect" id="node9" href="$classcyclops_1_1_line_set.html" title="cyclops::LineSet" alt="" coords="470,53,570,77"/>
-<area shape="rect" id="node11" href="$classcyclops_1_1_plane_shape.html" title="PYAPI." alt="" coords="459,101,581,125"/>
-<area shape="rect" id="node13" href="$classcyclops_1_1_sphere_shape.html" title="PYAPI." alt="" coords="455,149,585,173"/>
-<area shape="rect" id="node15" href="$classcyclops_1_1_static_object.html" title="PYAPI." alt="" coords="458,197,582,221"/>
-<area shape="rect" id="node2" href="$classomega_1_1_scene_node.html" title="PYAPI Represents a node in the omegalib scene graph." alt="" coords="142,101,258,125"/>
-<area shape="rect" id="node4" href="$classomega_1_1_node.html" title="PYAPI Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="6,101,93,125"/>
+<area shape="rect" id="node7" href="$classcyclops_1_1_animated_object.html" title="#PYAPI Represents an object with embedded animations." alt="" coords="449,5,591,29"/>
+<area shape="rect" id="node9" href="$classcyclops_1_1_cylinder_shape.html" title="cyclops::CylinderShape" alt="" coords="453,53,587,77"/>
+<area shape="rect" id="node11" href="$classcyclops_1_1_line_set.html" title="cyclops::LineSet" alt="" coords="470,101,570,125"/>
+<area shape="rect" id="node13" href="$classcyclops_1_1_plane_shape.html" title="PYAPI." alt="" coords="459,149,581,173"/>
+<area shape="rect" id="node15" href="$classcyclops_1_1_sphere_shape.html" title="PYAPI." alt="" coords="455,197,585,221"/>
+<area shape="rect" id="node17" href="$classcyclops_1_1_static_object.html" title="PYAPI." alt="" coords="458,245,582,269"/>
+<area shape="rect" id="node2" href="$classomega_1_1_scene_node.html" title="PYAPI Represents a node in the omegalib scene graph." alt="" coords="142,125,258,149"/>
+<area shape="rect" id="node4" href="$classomega_1_1_node.html" title="PYAPI Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="6,125,93,149"/>
 </map>

@@ -70,6 +70,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a65dbd70d07db2f5141e24ddcbcf99d05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleans up runtime resources, performs final debug checks etc.  <a href="#a65dbd70d07db2f5141e24ddcbcf99d05"></a><br/></td></tr>
 <tr class="memitem:ab7e1c6618e612e421084cd82bebcaec2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_config.html">Config</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#ab7e1c6618e612e421084cd82bebcaec2">getAppConfig</a> ()</td></tr>
 <tr class="memdesc:ab7e1c6618e612e421084cd82bebcaec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the application configuration.  <a href="#ab7e1c6618e612e421084cd82bebcaec2"></a><br/></td></tr>
+<tr class="memitem:a388cb62b666fa7bea29d946ddf7ef687"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a388cb62b666fa7bea29d946ddf7ef687">setAppConfig</a> (<a class="el" href="classomicron_1_1_config.html">Config</a> *cfg)</td></tr>
+<tr class="memdesc:a388cb62b666fa7bea29d946ddf7ef687"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the application configuration.  <a href="#a388cb62b666fa7bea29d946ddf7ef687"></a><br/></td></tr>
 <tr class="memitem:aef64ccc16f74ec8cd2200a06159c78ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_config.html">Config</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aef64ccc16f74ec8cd2200a06159c78ab">getSystemConfig</a> ()</td></tr>
 <tr class="memdesc:aef64ccc16f74ec8cd2200a06159c78ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the system configuration.  <a href="#aef64ccc16f74ec8cd2200a06159c78ab"></a><br/></td></tr>
 <tr class="memitem:adfdbcdc524110db760afdac11856d89d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_data_manager.html">DataManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#adfdbcdc524110db760afdac11856d89d">getDataManager</a> ()</td></tr>
@@ -549,6 +551,33 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Starts running the current application. </p>
 <p>This method does not return until the application is done running. </p>
+
+</div>
+</div>
+<a class="anchor" id="a388cb62b666fa7bea29d946ddf7ef687"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::SystemManager::setAppConfig </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomicron_1_1_config.html">Config</a> *&#160;</td>
+          <td class="paramname"><em>cfg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the application configuration. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Changing the application configuration will not influence already loaded modules and services. </dd></dl>
 
 </div>
 </div>

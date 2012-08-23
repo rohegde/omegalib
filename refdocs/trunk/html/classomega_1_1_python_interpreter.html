@@ -50,6 +50,7 @@
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classomega_1_1_python_interpreter-members.html">List of all members</a>  </div>
@@ -64,7 +65,7 @@
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classomega_1_1_python_interpreter__inherit__graph.png" border="0" usemap="#omega_1_1_python_interpreter_inherit__map" alt="Inheritance graph"/></div>
 <map name="omega_1_1_python_interpreter_inherit__map" id="omega_1_1_python_interpreter_inherit__map">
-<area shape="rect" id="node2" href="classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="16,77,144,101"/><area shape="rect" id="node4" href="classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="9,5,151,29"/></map>
+<area shape="rect" id="node2" href="classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="16,77,144,101"/><area shape="rect" id="node4" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="9,5,151,29"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
@@ -92,7 +93,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afdd6814295e9189271ca2a947e20b4fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#afdd6814295e9189271ca2a947e20b4fb">handleEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt)</td></tr>
 <tr class="memitem:aa5c2074644ca757eb57d080ad3dbb7be"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aa5c2074644ca757eb57d080ad3dbb7be">commitSharedData</a> (<a class="el" href="classomega_1_1_shared_o_stream.html">SharedOStream</a> &amp;out)</td></tr>
 <tr class="memitem:aa3ee596e25f0a318cd1c4e99aef111ce"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aa3ee596e25f0a318cd1c4e99aef111ce">updateSharedData</a> (<a class="el" href="classomega_1_1_shared_i_stream.html">SharedIStream</a> &amp;in)</td></tr>
-<tr class="memitem:a241d2e662c4f90e88a96d0d311b6a0fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a241d2e662c4f90e88a96d0d311b6a0fe">getHelpString</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;filter)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a9f5931df952a7b8655e1f6b41fb24c0c"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classomicron_1_1_event.html">Event</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a9f5931df952a7b8655e1f6b41fb24c0c">getLastEvent</a> ()</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -106,7 +110,6 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:aded53566dfe724e8dbe5bac58494fc99"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aded53566dfe724e8dbe5bac58494fc99">myInteractiveCommandNeedsSend</a></td></tr>
 <tr class="memitem:ac3eebb0980e552d354d2502de485d4b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; void * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ac3eebb0980e552d354d2502de485d4b9">myUpdateCallbacks</a></td></tr>
 <tr class="memitem:abc5ca5481454e4f5e4df02bb5a5fc280"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; void * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#abc5ca5481454e4f5e4df02bb5a5fc280">myEventCallbacks</a></td></tr>
-<tr class="memitem:adb2a9478b72ff8b8527c844c21d93b72"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="structomega_1_1_command_help_entry.html">CommandHelpEntry</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#adb2a9478b72ff8b8527c844c21d93b72">myHelpData</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
@@ -114,8 +117,6 @@ Friends</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_static_methods_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&nbsp;Static Public Member Functions inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
-<tr class="memitem:a2ab483ab6db3edcca6495fe9465d72d2 inherit pub_static_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a2ab483ab6db3edcca6495fe9465d72d2">printObjCounts</a> ()</td></tr>
 <tr class="inherit_header pro_static_attribs_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&nbsp;Static Protected Attributes inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a436dafe8b6a5c62b5f111b644c6ed4b0 inherit pro_static_attribs_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="classomicron_1_1_reference_type.html">ReferenceType</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a436dafe8b6a5c62b5f111b644c6ed4b0">mysObjList</a></td></tr>
 </table>
@@ -318,19 +319,27 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a241d2e662c4f90e88a96d0d311b6a0fe"></a>
+<a class="anchor" id="a9f5931df952a7b8655e1f6b41fb24c0c"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> PythonInterpreter::getHelpString </td>
+          <td class="memname">static const <a class="el" href="classomicron_1_1_event.html">Event</a>* omega::PythonInterpreter::getLastEvent </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
-          <td class="paramname"><em>filter</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+<p>returns the last event received by the interpreter. Used for script interoperability </p>
 
 </div>
 </div>
@@ -591,26 +600,6 @@ Additional Inherited Members</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classomicron_1_1_list.html">List</a>&lt;void*&gt; omega::PythonInterpreter::myEventCallbacks</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="adb2a9478b72ff8b8527c844c21d93b72"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classomicron_1_1_list.html">List</a>&lt;<a class="el" href="structomega_1_1_command_help_entry.html">CommandHelpEntry</a>*&gt; omega::PythonInterpreter::myHelpData</td>
         </tr>
       </table>
   </td>
