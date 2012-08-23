@@ -165,31 +165,6 @@ void Engine::dispose()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//void Engine::clientInitialize(Renderer* client)
-//{
-//    myLock.lock();
-//	ModuleServices::initializeRenderer(this, client);
-//    myLock.unlock();
-//}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//void Engine::preDraw(Renderer* r, const DrawContext& context)
-//{
-//    myLock.lock();
-//	ModuleServices::preDraw(this, r, context);
-//    myLock.unlock();
-//}
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//void Engine::postDraw(Renderer* r, const DrawContext& context)
-//{
-//    myLock.lock();
-//	ModuleServices::postDraw(this, r, context);
-//    myLock.unlock();
-//}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void Engine::addClient(Renderer* client)
 {
     oassert(client != NULL);
@@ -269,11 +244,6 @@ void Engine::update(const UpdateContext& context)
 	getSystemManager()->getScriptInterpreter()->update(context);
 
     myScene->update(false, false);
-
-    // Update the default camera and use it to update the default omegalib observer.
-    //myDefaultCamera->update(context);
-    //Observer* obs = getSystemManager()->getDisplaySystem()->getObserver(0);
-    //myDefaultCamera->updateObserver(obs);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

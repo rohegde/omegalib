@@ -38,6 +38,8 @@ Camera::Camera(uint flags):
 	myController(NULL),
 	myControllerEnabled(false),
 	myPosition(Vector3f::Zero()),
+	myTrackingEnabled(false),
+	myTrackerSourceId(-1),
 	myOrientation(Quaternion::Identity())
 {
 	//myProjectionOffset = -Vector3f::UnitZ();
@@ -65,6 +67,9 @@ void Camera::setup(Setting& s)
 		Vector3f camOri = Config::getVector3fValue("orientation", s); 
 		setYawPitchRoll(camOri);
 	}
+	
+	myTrackerSourceId = Config::getIntValue("trackerSourceId", s, -1);
+	if(myTrackerSourceId != -1) myTrackingEnabled = true;
 
 	//setup camera controller.  The camera needs to be setup before this otherwise its values will be rewritten
 
@@ -102,6 +107,14 @@ void Camera::setup(Setting& s)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Camera::handleEvent(const Event& evt)
 {
+	if(myTrackingEnabled)
+	{
+		if(evt.getServiceType() == Event::ServiceTypeMocap && evt.getSourceId() == myTrackerSourceId)
+		{
+			myHeadOffset = evt.getPosition();
+			myHeadOrientation = evt.getOrientation();
+		}
+	}
 	if(isControllerEnabled())
 	{
 		myController->handleEvent(evt);

@@ -136,7 +136,12 @@ namespace omega
 			sArgs.setAuthor("Alessandro Febretti");
 			sArgs.setDescription("An omegalib application");
 			sArgs.setVersion(OMEGA_VERSION);
-			sArgs.process(argc, argv);
+			
+			// If argument processing fails, exit immediately.
+			if(!sArgs.process(argc, argv))
+			{
+				return -1;
+			}
 
 			if(help)
 			{
