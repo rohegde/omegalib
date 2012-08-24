@@ -14,6 +14,5 @@ This page offers basic information on how to develop applications for omegalib.
  * [BasicPython Python omegalib developement].
 
 == Configuring hardware systems ==
-
-[TODO: ref to configuration page]
-
+Omegalib uses configuration files to describe system display and input capabilities.
+ * [ConfigReference Configuration file reference]
