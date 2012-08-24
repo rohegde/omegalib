@@ -2,7 +2,7 @@
 #sidebar Sidebar
 = File management in omegalib =
 <p>*Last revision:* ver. 3.0 - 24 August 2012
-<font color=#ff0000></p>
+</p>
 
 When loading textures, models, application scripts and more, omegalib will have to interface with the target machine file system. We want file paths to be as independent as possible from the filesystem structure and omegalib installation directory. To achieve this, we use the file management functionality available from the omicron library. This functionality allows us to convert relative paths and file names to full paths, and open file streams in a location-independent way.
 
