@@ -1,7 +1,7 @@
 #summary OpenGL programming in omegalib
 #sidebar Sidebar
 = OpenGL programming in omegalib =
-<p>*Last revision:* ver. 2.1 - 26 June 2012</p>
+<p>*Last revision:* ver. 3.0 - 21 August 2012</p>
 
 This page explains how to create a basic openGL omegalib application. It is based on the `ohello` example. You can find the example source code under omegaSource/src/apps/ohello.
 
@@ -10,7 +10,7 @@ Before getting into the code, it's important to understand the structure of a ge
 Here is how your application would work:
  * create a subclass of `omega::RenderPass`
   * reimplement the `render` method to add your own openGL drawing code
- * create a subclass of `omega::ServerModule` - don't let the name confuse you: this is your main 'application class' (that is, the thing that runs updates on the cpu, processes input events and so on)
+ * create a subclass of `omega::EngineModule` - don't let the name confuse you: this is your main 'application class' (that is, the thing that runs updates on the cpu, processes input events and so on)
   * reimplement the `initializeRenderer` method to create an instance of your render pass, and attach it to the rendering thread.
  * Add a little bit of initialization code to your application `main`
  
@@ -74,9 +74,9 @@ The `render` method should contain your own drawing code. Multiple instances of 
  * `Renderer* client`: this is a pointer to the renderer object, managing the GPU rendering thread. *See also:* [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_renderer.html omega::Renderer]
  * `DrawContext& context`: this object contains information about the current draw operation. *See also:* [http://omegalib.googlecode.com/svn/refdocs/trunk/html/structomega_1_1_draw_context.html omega::DrawContext]
 
-== create a subclass of `omega::ServerModule` ==
+== create a subclass of `omega::EngineModule` ==
 {{{
-	class HelloApplication: public ServerModule
+	class HelloApplication: public EngineModule
 	{
 	public:
 		HelloApplication() {}
@@ -88,7 +88,7 @@ The `render` method should contain your own drawing code. Multiple instances of 
 	};
 }}}
 This code defines your main application class, and reimplements the `initializeRenderer` method to create a new instance of your render pass class. Straightforward. Note that the main application class could reimplement a number of other method (to perform frame updates, handle input events, synchronize shared data, etc.). 
-*See also:* [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_server_module.html omega::ServerModule]
+*See also:* [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_engine_module.html omega::EngineModule]
 
 == Add a little bit of initialization code to your application `main`==
 An omegalib application main function is very simple:

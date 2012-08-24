@@ -11,17 +11,9 @@ This page offers basic information on how to develop applications for omegalib.
  * [BasicOSG OpenSceneGraph programming in omegalib].
  * [BasicCyclops Cyclops programming in omegalib].
  * [BasicVtk Vtk programming in omegalib].
+ * [BasicPython Python omegalib developement].
 
 == Configuring hardware systems ==
 
 [TODO: ref to configuration page]
 
-== Developing omegalib applications ==
-omegalib is designed to support a variety of grapical toolkits for application developement. Programmers can write applications using OpenGL, OpenSceneGraph, vtk or the internal cyclops framework. Several exaple applications are incuded with the omegalib source distribution. The following pages offer additional information on how to create applications for omegalib.
-
-[ref to OpenGL programming page]
-[ref to osg programming page]
-[ref to vtk programming page]
-[ref to cyclops programming page]
-
-[ref to omegalib API]
