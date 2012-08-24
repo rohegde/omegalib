@@ -1,8 +1,8 @@
 #summary Getting started
 #sidebar Sidebar
 
-= Getting started with omegalb Developement =
-This page offers basic information on how to develop applications for omegalib.
+= Getting started with omegalib Developement =
+This page offers extended information on how to develop applications for omegalib.
 
 == Basic Topics ==
  * [Building Building omegalib].
@@ -12,6 +12,10 @@ This page offers basic information on how to develop applications for omegalib.
  * [BasicCyclops Cyclops programming in omegalib].
  * [BasicVtk Vtk programming in omegalib].
  * [BasicPython Python omegalib developement].
+
+== Intermediate topics ==
+ * [Filesystem File management in omegalib]
+ * [CommandLine Using the command line]
 
 == Configuring hardware systems ==
 Omegalib uses configuration files to describe system display and input capabilities.

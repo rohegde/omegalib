@@ -1,0 +1,37 @@
+#summary Command line support
+#sidebar Sidebar
+= Command line support =
+<p>*Last revision:* ver. 3.0 - 24 August 2012
+<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>
+
+All omegalib applications (yes, even the ones you create) support a few predefined command line arguments. If you application neds more, you can also add custom ones.
+
+== Predefined command line arguments ==
+The predefined command line syntax of an omegalib application is:
+{{{
+	omegaApp [configFile] [-?] [-K] [-D path] [-L path]
+}}}
+ * `configFile`: is the configuration file to use with this application (default: same as the application name with a .cfg extention, or default.cfg if the previous is not found)
+ * `-?`: prints the full command line reference (predefined AND custom options)
+ * `-K`: kill all application instances, when running on a cluster system
+ * `-D path`: changes the default omegalib data path see [Filesystem the filesystem page] for more information
+ * `-L path`: changes the path of the application log file (default: same as the application name with a .log extention)
+ 
+== Custom command line arguments ==
+You can create additional command line arguments for your application, right before calling `omain`:
+{{{
+	int main(int argc, char** argv)
+	{
+		String argString;
+		bool argFlag;
+
+		Application<MyApplication> app("myapp");
+		
+		oargs().newNamedString('s', "string", "string", "a custom string", argString);
+		oargs().newFlag('f', "flag", "a custom flag", argFlag);
+		
+		return omain(app, argc, argv);
+	}
+}}}
+
+the `oargs()` function uses the `ArgumentHelper` class to perform argument parsing. More information about `ArgumentHelper` can be found [http://graphics.stanford.edu/~drussel/Argument_helper/ here].
