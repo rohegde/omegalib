@@ -271,14 +271,8 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
         break;
     case JSON_INT:
 
-        // Delta X and Y
-		if (strcmp(value->name, MSG_DELTA_X) == 0)
-            message->deltaX = (float)value->int_value;
-		else if (strcmp(value->name, MSG_DELTA_Y) == 0)
-            message->deltaY = (float)value->int_value;
-
 		// Width and Height
-		else if (strcmp(value->name, MSG_WIDTH) == 0)
+		if (strcmp(value->name, MSG_WIDTH) == 0)
             message->width = value->int_value;
 		else if (strcmp(value->name, MSG_HEIGHT) == 0)
             message->height = value->int_value;
@@ -286,8 +280,14 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
         break;
     case JSON_FLOAT:
 
+		// Delta X and Y
+		if (strcmp(value->name, MSG_DELTA_X) == 0)
+            message->deltaX = value->float_value;
+		else if (strcmp(value->name, MSG_DELTA_Y) == 0)
+            message->deltaY = value->float_value;
+
 		// Scale and Rotation
-		if (strcmp(value->name, MSG_DELTA_SCALE) == 0)
+		else if (strcmp(value->name, MSG_DELTA_SCALE) == 0)
 			message->scale = value->float_value;
 		else if (strcmp(value->name, MSG_DELTA_ROTATION) == 0)
 			message->deltaRotation = value->float_value;
@@ -306,11 +306,6 @@ inline void handle_message(per_session_data* data, recv_message* message){
 
 	// Handle drag event
 	if (strcmp(message->event_type.c_str(),MSG_EVENT_DRAG)==0){
-
-		// Bounds check
-		if (message->deltaX < -10 || message->deltaX > 10 ||
-			message->deltaY < -10 || message->deltaY > 10 )
-			return;
 		
 		Engine* myEngine = Engine::instance();
 		Camera* defaultCamera = myEngine->getDefaultCamera();
@@ -328,8 +323,8 @@ inline void handle_message(per_session_data* data, recv_message* message){
 		// Change pitch and yaw
 		Quaternion curOrientation = defaultCamera->getOrientation();
 		// Create the YAW and PITCH rotation quaternion
-		float yawAngle = message->deltaX/10 * Math::DegToRad;
-		float pitchAngle = message->deltaY/10 * Math::DegToRad;
+		float yawAngle = message->deltaX * Math::DegToRad;
+		float pitchAngle = message->deltaY * Math::DegToRad;
 		Quaternion orientation = AngleAxis(yawAngle, Vector3f::UnitY()) * AngleAxis(pitchAngle, Vector3f::UnitX()) * AngleAxis(0, Vector3f::UnitZ());
 		// Apply rotation
 		defaultCamera->setOrientation(curOrientation * orientation);
@@ -352,10 +347,10 @@ inline void handle_message(per_session_data* data, recv_message* message){
 		//cout << "Initial position: z = " << myPosition[2] << endl;
 		// Zoom in
 		if (message->scale > 1)
-			myPosition[2] -= message->scale/20; // TODO check scale factor
+			myPosition[2] -= message->scale/10; // TODO check scale factor
 		// Zoom out
 		else if (message->scale < 1)
-			myPosition[2] += (float)(1.0 - message->scale);
+			myPosition[2] += 1.0 - message->scale;
 		//cout << "Final position: z = " << myPosition[2] << endl;
 		//data->sessionCamera->setPosition(myPosition);
 		defaultCamera->setPosition(myPosition);
@@ -365,8 +360,8 @@ inline void handle_message(per_session_data* data, recv_message* message){
 
 		Quaternion curOrientation = defaultCamera->getOrientation();
 		// Create the ROLL rotation quaternion
-		float rollAngle = message->deltaRotation*10 * Math::DegToRad;
-		Quaternion orientation = AngleAxis(0, Vector3f::UnitY()) * AngleAxis(0, Vector3f::UnitX()) * AngleAxis(-rollAngle, Vector3f::UnitZ());
+		float rollAngle = message->deltaRotation / 5 * Math::DegToRad;
+		Quaternion orientation = AngleAxis(0, Vector3f::UnitY()) * AngleAxis(0, Vector3f::UnitX()) * AngleAxis(rollAngle, Vector3f::UnitZ());
 		// Apply rotation
 		defaultCamera->setOrientation(curOrientation * orientation);
 
@@ -464,7 +459,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		json_value *root = json_parse((char*)in, &errorPos, &errorDesc, &errorLine, &allocator);
 		if (root)
 		{
-            //print(root);
+            print(root);
             parse_json_message(root, data, &message);
             handle_message(data, &message);
 		}
