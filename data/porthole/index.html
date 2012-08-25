@@ -1,13 +1,50 @@
+<!--**************************************************************************************************
+ * THE OMEGA LIB PROJECT
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Authors:										
+ *  Donghi Daniele		d.donghi@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
  <meta charset=utf-8 />
- <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>-->
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
+ <script src="./hammer.js" type="application/javascript"></script>
+ <script src="./jquery.specialevent.hammer.js" type="application/javascript"></script>
+ <script src="./browser_detect.js" type="application/javascript"></script>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
  <meta name="apple-mobile-web-app-capable" content="yes"/>
  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
- <script src="./hammer.js"></script>
- <script src="./jquery.specialevent.hammer.js"></script>
  <title>Porthole</title>
+
+ <!--CSS Style-->
+ <style type="text/css">
+    body{
+    margin: 0;
+    padding: 0
+    }
+ </style>
+
 </head>
 
 <body>
@@ -24,126 +61,18 @@
 
 <script>
 
-    //////////////////////////////////////////////////////////////////////////////
-    /* BrowserDetect came from http://www.quirksmode.org/js/detect.html */
-    var BrowserDetect = {
-        init: function () {
-            this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
-            this.version = this.searchVersion(navigator.userAgent)
-			|| this.searchVersion(navigator.appVersion)
-			|| "an unknown version";
-            this.OS = this.searchString(this.dataOS) || "an unknown OS";
-        },
-        searchString: function (data) {
-            for (var i = 0; i < data.length; i++) {
-                var dataString = data[i].string;
-                var dataProp = data[i].prop;
-                this.versionSearchString = data[i].versionSearch || data[i].identity;
-                if (dataString) {
-                    if (dataString.indexOf(data[i].subString) != -1)
-                        return data[i].identity;
-                }
-                else if (dataProp)
-                    return data[i].identity;
-            }
-        },
-        searchVersion: function (dataString) {
-            var index = dataString.indexOf(this.versionSearchString);
-            if (index == -1) return;
-            return parseFloat(dataString.substring(index + this.versionSearchString.length + 1));
-        },
-        dataBrowser: [
-		{
-		    string: navigator.userAgent,
-		    subString: "Chrome",
-		    identity: "Chrome"
-		},
-		{ string: navigator.userAgent,
-		    subString: "OmniWeb",
-		    versionSearch: "OmniWeb/",
-		    identity: "OmniWeb"
-		},
-		{
-		    string: navigator.vendor,
-		    subString: "Apple",
-		    identity: "Safari",
-		    versionSearch: "Version"
-		},
-		{
-		    prop: window.opera,
-		    identity: "Opera",
-		    versionSearch: "Version"
-		},
-		{
-		    string: navigator.vendor,
-		    subString: "iCab",
-		    identity: "iCab"
-		},
-		{
-		    string: navigator.vendor,
-		    subString: "KDE",
-		    identity: "Konqueror"
-		},
-		{
-		    string: navigator.userAgent,
-		    subString: "Firefox",
-		    identity: "Firefox"
-		},
-		{
-		    string: navigator.vendor,
-		    subString: "Camino",
-		    identity: "Camino"
-		},
-		{		// for newer Netscapes (6+)
-		    string: navigator.userAgent,
-		    subString: "Netscape",
-		    identity: "Netscape"
-		},
-		{
-		    string: navigator.userAgent,
-		    subString: "MSIE",
-		    identity: "Explorer",
-		    versionSearch: "MSIE"
-		},
-		{
-		    string: navigator.userAgent,
-		    subString: "Gecko",
-		    identity: "Mozilla",
-		    versionSearch: "rv"
-		},
-		{ 		// for older Netscapes (4-)
-		    string: navigator.userAgent,
-		    subString: "Mozilla",
-		    identity: "Netscape",
-		    versionSearch: "Mozilla"
-		}
-	],
-        dataOS: [
-		{
-		    string: navigator.platform,
-		    subString: "Win",
-		    identity: "Windows"
-		},
-		{
-		    string: navigator.platform,
-		    subString: "Mac",
-		    identity: "Mac"
-		},
-		{
-		    string: navigator.userAgent,
-		    subString: "iPhone",
-		    identity: "iPhone/iPod"
-		},
-		{
-		    string: navigator.platform,
-		    subString: "Linux",
-		    identity: "Linux"
-		}
-	]
-
-    };
     BrowserDetect.init();
 
+    ///////////////// DEFINE METADATA AT RUNTIME ////////////////////////
+    function setOrCreateMetaTag(metaName, name, value) {
+        var t = 'meta['+metaName+'='+name+']';
+        var mt = $(t);
+        if (mt.length === 0) {
+            t = '<meta '+metaName+'="'+name+'" />';
+            mt = $(t).appendTo('head');
+        }
+        mt.attr('content', value);
+    }
     
     // JUST FOR TEST
 //    document.getElementById("brow").textContent = " " + BrowserDetect.browser + " "
@@ -183,24 +112,58 @@
         return pcol + u[0];
     }
 
-    var socket_di;
+    var socket;
 
     if (BrowserDetect.browser == "Firefox" && BrowserDetect.version < 12) {
-        socket_di = new MozWebSocket(get_appropriate_ws_url(),
+        socket = new MozWebSocket(get_appropriate_ws_url(),
 				   "porthole_websocket");
     } else {
-        socket_di = new WebSocket(get_appropriate_ws_url(),
+        socket = new WebSocket(get_appropriate_ws_url(),
 				   "porthole_websocket");
     }
 
 
-    try {
-        socket_di.onopen = function () {
-            document.getElementById("wsdi_statustd").style.backgroundColor = "#40ff40";
-            document.getElementById("wsdi_status").textContent = " websocket connection opened ";
+    ///////////////////// SEND SPEC TO SERVER //////////////////////////
+    function sendSpec() {
+
+        var w=window,d=document,e=d.documentElement,g=d.getElementsByTagName('body')[0],
+            viewportwidth=w.innerWidth||e.clientWidth||g.clientWidth,
+            viewportheight=w.innerHeight||e.clientHeight||g.clientHeight;
+
+        var orientation;
+
+        if (window.orientation & 2) {
+                // landscape mode
+                orientation = "landscape";
+            } else {
+                // portrait mode
+                orientation = "portrait";
+            }
+
+        var SpecMessage = {
+            "event_type": "device_spec",
+            "width": viewportwidth,
+            "height": viewportheight,
+            "orientation": orientation
         }
 
-        socket_di.onmessage = function got_packet(msg) {
+        socket.send(JSON.stringify(SpecMessage));
+    }
+
+    window.addEventListener('orientationchange', function() {
+        // TODO Reset elements
+        sendSpec();
+        }, false);
+
+    try {
+        socket.onopen = function () {
+            document.getElementById("wsdi_statustd").style.backgroundColor = "#40ff40";
+            document.getElementById("wsdi_status").textContent = " websocket connection opened ";
+            // Send device specifications
+            sendSpec();
+        }
+
+        socket.onmessage = function got_packet(msg) {
             //            document.getElementById("porthole_drawing").textContent = msg.data + "\n";
 
             image = "data:image/png;base64," + msg.data;
@@ -210,7 +173,7 @@
 
         }
 
-        socket_di.onclose = function () {
+        socket.onclose = function () {
             document.getElementById("wsdi_statustd").style.backgroundColor = "#ff4040";
             document.getElementById("wsdi_status").textContent = " websocket connection CLOSED ";
         }
@@ -219,17 +182,12 @@
     }
 
     function reset() {
-        socket_di.send("reset\n");
+        socket.send("reset\n");
     }
 
     //////////////////////////////////////////////////////////
 
     ////////////////// MULTITOUCH ////////////////////////////
-
-    // Prevent scrolling
-//    document.body.addEventListener('touchmove', function (event) {
-//        event.preventDefault();
-//    }, false);
 
     // Initialize hammer
     var hammer = new Hammer(canvas, {
@@ -241,8 +199,8 @@
             drag_min_distance: 0,
 
             transform: true,
-            scale_treshold: 0.01,
-            rotation_treshold: 1,
+            scale_treshold: 0.001,
+            rotation_treshold: 0.01,
 
             tap: false,
             tap_double: false,
@@ -270,7 +228,7 @@
             "deltaX": deltaX,
             "deltaY": deltaY
         };
-        socket_di.send(JSON.stringify(JSONOEvent));
+        socket.send(JSON.stringify(JSONOEvent));
     }
 
     hammer.ondragstart = function (ev) {
@@ -307,7 +265,7 @@
             "scale": pinchScale,
             "rotation": deltaRotation,
         };
-        socket_di.send(JSON.stringify(JSONOEvent));
+        socket.send(JSON.stringify(JSONOEvent));
     }
     hammer.ontransformstart = function (ev) { 
         dragging = false;

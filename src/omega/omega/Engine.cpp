@@ -284,7 +284,7 @@ void Engine::destroyCamera(Camera* cam)
 {
     oassert(cam != NULL);
     myCameras.remove(cam);
-    delete cam;
+    //delete cam;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

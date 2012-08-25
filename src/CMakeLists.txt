@@ -90,6 +90,7 @@ add_subdirectory(3rdparty/websockets)
 add_subdirectory(3rdparty/glew)
 add_subdirectory(apps/ohello)
 add_subdirectory(apps/ohello2)
+add_subdirectory(apps/porthello)
 
 add_subdirectory(omegaToolkit)
 

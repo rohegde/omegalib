@@ -40,6 +40,30 @@ using namespace omicron;
 
 namespace omega {
 
+	// Porthole functions binder
+	struct PortholeFunctionsBinder
+	{
+		typedef void(*memberFunction)();
+
+		void addFunction(std::string funcName, memberFunction func)
+		{
+			funcMap[funcName] = func;
+		}
+
+		void operator()(std::string funcName)
+		{
+			std::map<std::string, memberFunction>::const_iterator it;
+
+			it = funcMap.find(funcName);
+
+			if (it == funcMap.end()) return;
+
+			return (*it->second)();
+		}
+
+		std::map<std::string, memberFunction> funcMap;
+	};
+
 	// Path to resources, such as html files
 	static string DATA_PATH; 
 

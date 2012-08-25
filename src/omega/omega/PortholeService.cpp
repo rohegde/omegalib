@@ -41,17 +41,14 @@ using namespace omicron;
 enum demo_protocols {
 	/* always first */
 	PROTOCOL_HTTP = 0,
-
 	PROTOCOL_WEBSOCKET,
-
 	/* always last */
 	DEMO_PROTOCOL_COUNT
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 /*
- * this is just an example of parsing handshake headers, you don't need this
- * in your code unless you will filter allowing connections by the header
+ * May be used for filtering allowing connections by the header
  * content
  */
 void ServerThread::dump_handshake_info(struct lws_tokens *lwst)
@@ -133,6 +130,12 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 				fprintf(stderr, "Failed to send jquery.specialevent.hammer.js\n");
 			break;
 		}
+		else if (in && strcmp((char*)in, "/browser_detect.js") == 0) {
+			if (libwebsockets_serve_http_file(wsi,
+			     (DATA_PATH+"/browser_detect.js").c_str(), "application/javascript"))
+				fprintf(stderr, "Failed to send browser_detect.js\n");
+			break;
+		}
 
 		/* send the HTML page... when it runs it'll start websockets */
 
@@ -181,7 +184,7 @@ struct a_message {
 
 // JSON simple print
 #define IDENT(n) for (int i = 0; i < n; ++i) printf("    ")
-void print(json_value *value, int ident = 0)
+inline void print(json_value *value, int ident = 0)
 {
 	IDENT(ident);
 	if (value->name) printf("\"%s\" = ", value->name);
@@ -216,9 +219,16 @@ void print(json_value *value, int ident = 0)
 }
 
 #define MSG_EVENT_TYPE "event_type"
+
+#define MSG_EVENT_SPEC "device_spec"
+#define MSG_WIDTH "width"
+#define MSG_HEIGHT "height"
+#define MSG_ORIENTATION "orientation"
+
 #define MSG_EVENT_DRAG "drag"
 #define MSG_DELTA_X "deltaX"
 #define MSG_DELTA_Y "deltaY"
+
 #define MSG_EVENT_PINCH "pinch"
 #define MSG_DELTA_SCALE "scale"
 #define MSG_DELTA_ROTATION "rotation"
@@ -227,12 +237,14 @@ struct recv_message{
     string event_type;
     float deltaX,deltaY;
 	float scale; // This value ranges about {0,2;6}: >1 is zoom in, <1 is zoom out
-	float deltaRotation; 
+	float deltaRotation;
+	int width,height;
+	string orientation;
 };
 
 // This is the function that handle the event received by the client,
 // that has the per_session_data structure associated
-void parse_json_message(json_value *value, per_session_data* data, recv_message* message){
+inline void parse_json_message(json_value *value, per_session_data* data, recv_message* message){
 
     switch(value->type)
     {
@@ -252,6 +264,10 @@ void parse_json_message(json_value *value, per_session_data* data, recv_message*
         if (strcmp(value->name, MSG_EVENT_TYPE) == 0)
            message->event_type = value->string_value;
 
+		// Orientation
+		else if (strcmp(value->name, MSG_ORIENTATION) == 0)
+            message->orientation = value->string_value;
+
         break;
     case JSON_INT:
 
@@ -260,6 +276,12 @@ void parse_json_message(json_value *value, per_session_data* data, recv_message*
             message->deltaX = (float)value->int_value;
 		else if (strcmp(value->name, MSG_DELTA_Y) == 0)
             message->deltaY = (float)value->int_value;
+
+		// Width and Height
+		else if (strcmp(value->name, MSG_WIDTH) == 0)
+            message->width = value->int_value;
+		else if (strcmp(value->name, MSG_HEIGHT) == 0)
+            message->height = value->int_value;
 
         break;
     case JSON_FLOAT:
@@ -278,13 +300,9 @@ void parse_json_message(json_value *value, per_session_data* data, recv_message*
 }
 
 
-void handle_message(per_session_data* data, recv_message* message){
+inline void handle_message(per_session_data* data, recv_message* message){
 
-    //cout << "MSG: " << message->event_type << endl;
-    //cout << "MSG: " << message->scale << endl;
-    //cout << "MSG: " << message->posY << endl;
-    //cout << "MSG: " << message->distX << endl;
-	//cout << "MSG: " << message->deltaRotation << endl;
+    cout << "MSG: " << message->event_type << endl;
 
 	// Handle drag event
 	if (strcmp(message->event_type.c_str(),MSG_EVENT_DRAG)==0){
@@ -392,9 +410,6 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		data->sessionCamera->getOutput(0)->setReadbackTarget(data->sessionCanvasPixel);
 		data->sessionCamera->getOutput(0)->setEnabled(true);
 
-		// Ask for the first available slot on this channel
-		libwebsocket_callback_on_writable(context, wsi);
-
 		break;
 	}
 
@@ -454,6 +469,12 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
             handle_message(data, &message);
 		}
 
+		// First message received is a device specs message
+		if (strcmp(message.event_type.c_str(),MSG_EVENT_SPEC)==0){
+			// Ask for the first available slot on this channel
+			libwebsocket_callback_on_writable(context, wsi);
+		}
+
 		break;
 	}
 	case LWS_CALLBACK_FILTER_PROTOCOL_CONNECTION:
@@ -462,7 +483,13 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		break;
 
 	case LWS_CALLBACK_CLOSED:
+	{
+		Engine* myEngine = Engine::instance();
+		myEngine->destroyCamera(data->sessionCamera);
+		delete data->sessionCanvasPixel;
+		//delete data->sessionPng;
 		break;
+	}
 
 	default:
 		break;
