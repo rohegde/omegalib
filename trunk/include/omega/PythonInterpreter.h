@@ -42,11 +42,11 @@ class PythonInteractiveThread;
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct CommandHelpEntry
-	{
-		String syntax;
-		String info;
-	};
+	//struct CommandHelpEntry
+	//{
+	//	String syntax;
+	//	String info;
+	//};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API PythonInterpreter: public SharedObject
@@ -57,6 +57,9 @@ namespace omega
 		{
 			CallbackUpdate, CallbackEvent
 		};
+
+		//! @internal returns the last event received by the interpreter. Used for script interoperability
+		static const Event* getLastEvent() { return mysLastEvent; }
 
 	public:
 		PythonInterpreter();
@@ -71,6 +74,7 @@ namespace omega
 		void queueInteractiveCommand(const String& command);
 
 		void registerCallback(void* callback, CallbackType type);
+		void unregisterAllCallbacks();
 
 		void addPythonPath(const char*);
 
@@ -85,7 +89,7 @@ namespace omega
 		virtual void commitSharedData(SharedOStream& out);
 		virtual void updateSharedData(SharedIStream& in);
 
-		String getHelpString(const String& filter);
+		//String getHelpString(const String& filter);
 
 	protected:
 		bool myEnabled;
@@ -102,7 +106,10 @@ namespace omega
 		List<void*> myEventCallbacks;
 		//char* myExecutablePath;
 
-		List<CommandHelpEntry*> myHelpData;
+		//List<CommandHelpEntry*> myHelpData;
+
+	private:
+		static const Event* mysLastEvent;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

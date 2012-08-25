@@ -90,9 +90,15 @@ namespace omega {
 		static void handleCommand(const String& cmd);
 		//static void initializeRenderer(Engine* srv, Renderer* r);
 		static void disposeAll();
+		static void disposeNonCoreModules();
+		static void setNonCoreMode() { mysCoreMode = false; }
+		static void setCoreMode() { mysCoreMode = true; }
+		static bool isCoreMode() { return mysCoreMode; }
 
 	private:
 		static List< Ref<EngineModule> > mysModules;
+		static List< EngineModule* > mysNonCoreModules;
+		static bool mysCoreMode;
 	};
 }; // namespace omega
 

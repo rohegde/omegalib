@@ -80,7 +80,7 @@ void Button::handleEvent(const Event& evt)
 {
 	if(isPointerInteractionEnabled())
 	{
-		Vector2f point  = Vector2f(evt.getPosition(0), evt.getPosition(1));
+		Vector2f point  = Vector2f(evt.getPosition().x(), evt.getPosition().y());
 		point = transformPoint(point);
 		if(hitTest(point))
 		{

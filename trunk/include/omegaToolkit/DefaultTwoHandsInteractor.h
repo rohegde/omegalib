@@ -29,7 +29,7 @@
 
 #include "omegaToolkitConfig.h"
 #include "omega/Actor.h"
-#include "omega/ObserverUpdateService.h"
+#include "omega/ObserverUpdateServiceExt.h"
 
 namespace omegaToolkit {
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ namespace omegaToolkit {
 		void setActiveUserId(int value);
 
 	private:
-		ObserverUpdateService* myObserverUpdateService;
+		ObserverUpdateServiceExt* myObserverUpdateService;
 		int myActiveUserId;
 		
 		float myInitialScale;

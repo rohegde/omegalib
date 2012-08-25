@@ -87,8 +87,8 @@ void ViewRayService::poll()
 			}
 
 			Vector2i pos = Vector2i(
-				evt->getPosition(0),
-				evt->getPosition(1));
+				evt->getPosition().x(),
+				evt->getPosition().y());
 
 			Ray r = myDisplay->getViewRay(pos);
 			evt->setExtraDataType(Event::ExtraDataVector3Array);

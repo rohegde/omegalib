@@ -41,6 +41,7 @@
 
 using namespace omega;
 using namespace omegaToolkit;
+using namespace omegaToolkit::ui;
 
 #define PYCAP_GET(pyobj, className) pyobj != NULL ? (className*)PyCapsule_GetPointer(pyobj, #className) : NULL
 
@@ -70,19 +71,55 @@ SceneEditorModule* sEditor = NULL;
 using namespace boost::python;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+BOOST_PYTHON_MODULE(omegaToolkit)
+{
+	PYAPI_ENUM(MenuItem::Type, MenuItemType)
+		PYAPI_ENUM_VALUE(MenuItem, Button)
+		PYAPI_ENUM_VALUE(MenuItem, Checkbox)
+		PYAPI_ENUM_VALUE(MenuItem, Slider)
+		;
+
+	PYAPI_REF_BASE_CLASS(MenuManager)
+		PYAPI_STATIC_REF_GETTER(MenuManager, createAndInitialize)
+		PYAPI_REF_GETTER(MenuManager, createMenu)
+		PYAPI_METHOD(MenuManager, setMainMenu)
+		;
+
+	PYAPI_REF_BASE_CLASS(Menu)
+		PYAPI_REF_GETTER(Menu, addItem)
+		;
+
+	PYAPI_REF_BASE_CLASS(MenuItem)
+		//PYAPI_REF_GETTER(MenuItem, addItem)
+		PYAPI_REF_GETTER(MenuItem, getSubMenu)
+		PYAPI_GETTER(MenuItem, getText)
+		PYAPI_METHOD(MenuItem, setText)
+		PYAPI_GETTER(MenuItem, getDescription)
+		PYAPI_METHOD(MenuItem, setDescription)
+		PYAPI_METHOD(MenuItem, setCommand)
+		PYAPI_GETTER(MenuItem, getCommand)
+		PYAPI_METHOD(MenuItem, setChecked)
+		PYAPI_METHOD(MenuItem, isChecked)
+		PYAPI_METHOD(MenuItem, setUserTag)
+		PYAPI_GETTER(MenuItem, getUserTag)
+		;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void OTK_API omegaToolkitPythonApiInit()
 {
-	omsg("omegaToolkitPythonApiInit()");
-	omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+	static bool sApiInitialized = false;
 
-	Dictionary<String, int> intConstants;
-	intConstants["CheckboxMenuItem"] = ui::MenuItem::Checkbox;
-	intConstants["ButtonMenuItem"] = ui::MenuItem::Button;
+	if(!sApiInitialized)
+	{
+		sApiInitialized = true;
+		omsg("omegaToolkitPythonApiInit()");
+		initomegaToolkit();
 
-	Dictionary<String, String> stringConstants;
-
-	// import the module by default
-	//interp->eval("from omegaToolkit import *");
+		// import the module by default
+		omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+		interp->eval("from omegaToolkit import *");
+	}
 }
 
 #endif

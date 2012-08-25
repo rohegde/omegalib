@@ -149,6 +149,21 @@ void OmegaViewer::handleCommand(const String& cmd)
 			sys->getScriptInterpreter()->runFile(scriptName);
 		}
 	}
+	else if(args[0] == "u")
+	{
+		// u: unload the current application.
+		SystemManager* sys = SystemManager::instance();
+		PythonInterpreter* interp = sys->getScriptInterpreter();
+
+		// unregister callbacks
+		interp->unregisterAllCallbacks();
+
+		// dispose non-core modules
+		ModuleServices::disposeNonCoreModules();
+
+		// destroy all global variables
+		interp->eval("for uniquevar in [var for var in globals().copy() if var[0] != \"_\" and var != 'clearall']: del globals()[uniquevar]");
+	}
 	else if(args[0] == "lo")
 	{
 		// lo: list objects

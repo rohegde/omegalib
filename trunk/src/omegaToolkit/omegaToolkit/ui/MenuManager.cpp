@@ -134,13 +134,15 @@ void MenuItem::setCommand(const String& command)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-String MenuItem::getCommand()
+const String& MenuItem::getCommand()
 {
+	static String emptyString("");
+
 	if(myCommand != NULL)
 	{
 		return myCommand->getCommand();
 	}
-	return "";
+	return emptyString;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
