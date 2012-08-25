@@ -62,6 +62,7 @@ namespace omega {
 		//virtual void postDraw(Renderer*, const DrawContext& context) {}
 
 		void doInitialize(Engine* server);
+		void doDispose();
 
 		virtual bool isInitialized() { return myInitialized; }
 

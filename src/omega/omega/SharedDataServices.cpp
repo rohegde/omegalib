@@ -79,7 +79,15 @@ SharedIStream& SharedIStream::operator>> ( String& str )
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SharedData::registerObject(SharedObject* module, const String& sharedId)
 {
+	ofmsg("SharedData::registerObject: registering %1%", %sharedId);
 	myObjects[sharedId] = module;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SharedData::unregisterObject(const String& sharedId)
+{
+	ofmsg("SharedData::unregisterObject: unregistering %1%", %sharedId);
+	myObjects.erase(sharedId);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -152,8 +160,22 @@ void SharedDataServices::registerObject(SharedObject* module, const String& shar
 	}
 	else
 	{
+		ofmsg("SharedDataServices::registerObject: queuing %1% for registration", %sharedId);
 		// QUEUE
 		mysRegistrationQueue[sharedId] = module;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SharedDataServices::unregisterObject(const String& id)
+{
+	if(mysSharedData != NULL) 
+	{
+		mysSharedData->unregisterObject(id);
+	}
+	else
+	{
+		oferror("SharedDataServices::unregisterObject: shared data stream unavailable while unregistering %1%", %id);
 	}
 }
 

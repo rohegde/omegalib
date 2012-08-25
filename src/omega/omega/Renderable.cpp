@@ -36,7 +36,7 @@ void RenderableCommand::execute(Renderer* r)
 	switch(command)
 	{
 	case Initialize: renderable->initialize(); break;
-	case Dispose: renderable->dispose(); delete renderable; break;
+	case Dispose: renderable->dispose(); renderable = NULL; break;
 	case Refresh: renderable->refresh(); break;
 	}
 }
@@ -53,9 +53,9 @@ Renderable::Renderable():
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderable::~Renderable()
 {
-	if(myDisposeCommand) delete myDisposeCommand;
-	if(myInitializeCommand) delete myInitializeCommand;
-	if(myRefreshCommand) delete myRefreshCommand;
+	myDisposeCommand = NULL;
+	myInitializeCommand = NULL;
+	myRefreshCommand = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

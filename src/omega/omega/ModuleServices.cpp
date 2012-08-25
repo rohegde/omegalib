@@ -56,6 +56,17 @@ void EngineModule::doInitialize(Engine* server)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineModule::doDispose()
+{
+	if(myInitialized) 
+	{
+		myInitialized = false;
+		SharedDataServices::unregisterObject(myName);
+		dispose();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void ModuleServices::addModule(EngineModule* module)
 { 
 	mysModules.push_back(module); 
@@ -125,7 +136,7 @@ void ModuleServices::disposeAll()
 {
 	foreach(EngineModule* module, mysModules)
 	{
-		module->dispose();
+		module->doDispose();
 	}
 	mysModules.clear();
 	mysNonCoreModules.clear();
@@ -137,7 +148,7 @@ void ModuleServices::disposeNonCoreModules()
 	foreach(EngineModule* module, mysNonCoreModules)
 	{
 		mysModules.remove(module);
-		module->dispose();
+		module->doDispose();
 	}
 	mysNonCoreModules.clear();
 }

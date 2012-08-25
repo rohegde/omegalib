@@ -78,10 +78,14 @@ namespace omega {
 
 		ServiceManager* getServiceManager();
 
+		//! Renderer management
+		//@{
 		void addClient(Renderer* client);
 		EngineClientList& getClients();
+		void removeRenderPass(const String& renderPassName);
+		//@}
 
-		//! Render pass management
+		//! Camera management
 		//@{
 		//! PYAPI
 		Camera* getDefaultCamera();

@@ -90,9 +90,19 @@ void UiModule::initialize()
 void UiModule::dispose()
 {
 	omsg("UiModule::dispose");
+
+	getEngine()->removeRenderPass("UiRenderPass");
+
 	myActiveWidget = NULL;
 	myWidgetFactory = NULL;
 	myUi = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+UiModule::~UiModule()
+{
+	omsg("~UiModule");
+	mysInstance = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

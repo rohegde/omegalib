@@ -77,7 +77,7 @@ void HelloApplication::initialize()
 	// Load some basic model from the omegalib meshes folder.
 	// Force the size of the object to be 0.8 meters
 	//ModelInfo torusModel("simpleModel", "demos/showcase/data/walker/walker.fbx", 2.0f);
-	ModelInfo torusModel("simpleModel", "cyclops/test/torus.fbx", 2.0f);
+	ModelInfo* torusModel = new ModelInfo("simpleModel", "cyclops/test/torus.fbx", 2.0f);
 	mySceneManager->loadModel(torusModel);
 
 	// Create a new object using the loaded model (referenced using its name, 'simpleModel')

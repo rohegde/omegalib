@@ -33,7 +33,7 @@ namespace omega {
 	class Renderer;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class IRendererCommand
+	class OMEGA_API IRendererCommand: public ReferenceType
 	{
 	public:
 		virtual void execute(Renderer*) = 0;

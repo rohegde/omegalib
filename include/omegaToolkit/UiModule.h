@@ -50,6 +50,7 @@ namespace omegaToolkit
 
 	public:
 		UiModule();
+		virtual ~UiModule();
 
 		bool isLocalEventsEnabled() { return myLocalEventsEnabled; }
 

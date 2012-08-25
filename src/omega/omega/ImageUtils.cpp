@@ -104,6 +104,7 @@ Ref<PixelData> ImageUtils::loadImage(const String& filename, bool hasFullPath)
 
 		if(info.isNull())
 		{
+			ofwarn("ImageUtils::loadImage: could not load %1%: file not found.", %filename);
 			return NULL;
 		}
 		path = info.path;
