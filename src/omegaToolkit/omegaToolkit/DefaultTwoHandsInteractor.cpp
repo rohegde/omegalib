@@ -36,7 +36,7 @@ void DefaultTwoHandsInteractor::initialize(const String& observerUpdateServiceNa
 	if(observerUpdateServiceName != "")
 	{
 		ServiceManager* sm = SystemManager::instance()->getServiceManager();
-		myObserverUpdateService =  sm->findService<ObserverUpdateService>(observerUpdateServiceName);
+		myObserverUpdateService =  sm->findService<ObserverUpdateServiceExt>(observerUpdateServiceName);
 	}
 	else
 	{

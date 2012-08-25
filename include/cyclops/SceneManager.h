@@ -290,6 +290,7 @@ namespace cyclops {
 
 	private:
 		SceneManager();
+		virtual ~SceneManager();
 
 		void addLight(Light* l);
 		void removeLight(Light* l);
@@ -302,7 +303,7 @@ namespace cyclops {
 
 	private:
 		static SceneManager* mysInstance;
-		OsgModule* myOsg;
+		Ref<OsgModule> myOsg;
 
 		// Scene manager listener
 		SceneManagerListener* myListener;

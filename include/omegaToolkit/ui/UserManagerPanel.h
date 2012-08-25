@@ -28,7 +28,7 @@
 #define __USER_MANAGER_H__
 
 #include "omegaToolkit/omegaToolkitConfig.h"
-#include "omega/ObserverUpdateService.h"
+#include "omega/ObserverUpdateServiceExt.h"
 #include "omega/Texture.h"
 #include "omegaToolkit/ui/Container.h"
 #include "omegaToolkit/ui/Image.h"
@@ -47,7 +47,7 @@ namespace omegaToolkit { namespace ui {
 
 	private:
 		Service* myOpenNIService;
-		ObserverUpdateService* myObserverUpdateService;
+		ObserverUpdateServiceExt* myObserverUpdateService;
 
 		Image* myDepthImage;
 		PixelData* myDepthImageData;

@@ -28,6 +28,10 @@
 
 using namespace omega;
 
+List< Ref<EngineModule> > ModuleServices::mysModules;
+List< EngineModule* > ModuleServices::mysNonCoreModules;
+bool ModuleServices::mysCoreMode = true;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 EngineModule::~EngineModule()
 {
@@ -55,6 +59,7 @@ void EngineModule::doInitialize(Engine* server)
 void ModuleServices::addModule(EngineModule* module)
 { 
 	mysModules.push_back(module); 
+	if(!mysCoreMode) mysNonCoreModules.push_back(module);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -123,6 +128,18 @@ void ModuleServices::disposeAll()
 		module->dispose();
 	}
 	mysModules.clear();
+	mysNonCoreModules.clear();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ModuleServices::disposeNonCoreModules()
+{
+	foreach(EngineModule* module, mysNonCoreModules)
+	{
+		mysModules.remove(module);
+		module->dispose();
+	}
+	mysNonCoreModules.clear();
 }
 
 //static void preDraw(Engine* srv, Renderer* r, const DrawContext& context)

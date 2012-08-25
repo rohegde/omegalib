@@ -191,7 +191,7 @@ void PortholeTabletService::processEvent(Event* evt)
 	{
 		if(evt->getServiceType() == Service::Pointer && evt->getServiceId() == myTabletService->getServiceId())
 		{
-			Vector2f normalizedPoint(evt->getPosition(0), 1 - evt->getPosition(1));
+			Vector2f normalizedPoint(evt->getPosition().x(), 1 - evt->getPosition().y());
 			//ofmsg("pt %1%", %normalizedPoint);
 			Ray ray = myTabletCamera->getViewRay(normalizedPoint);
 			evt->clearFlags();

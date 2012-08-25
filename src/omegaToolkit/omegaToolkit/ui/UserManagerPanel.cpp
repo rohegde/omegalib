@@ -41,7 +41,7 @@ using namespace omegaToolkit::ui;
 void UserManagerPanel::initialize(Container* owner, const String& openNIServiceName, const String& observerUpdateServiceName)
 {
 	ServiceManager* sm = SystemManager::instance()->getServiceManager();
-	myObserverUpdateService =  sm->findService<ObserverUpdateService>(observerUpdateServiceName);
+	myObserverUpdateService =  sm->findService<ObserverUpdateServiceExt>(observerUpdateServiceName);
 
 	owner->addChild(this);
 	WidgetFactory* wf = UiModule::instance()->getWidgetFactory();

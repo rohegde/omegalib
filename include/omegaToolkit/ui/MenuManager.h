@@ -69,7 +69,7 @@ namespace omegaToolkit { namespace ui {
 		void setDescription(const String& value);
 
 		void setCommand(const String& command);
-		String getCommand();
+		const String& getCommand();
 
 		//! Checkbox methods
 		//@{
@@ -80,14 +80,14 @@ namespace omegaToolkit { namespace ui {
 		//! User data management
 		//@{
 		void setUserTag(const String& value) { myUserTag = value; }
-		String getUserTag() { return myUserTag; }
+		const String& getUserTag() { return myUserTag; }
 		void* getUserData() { return myUserData; }
 		void setUserData(void* value) { myUserData = value; }
 		//@}
 
 		//! Submenu methods.
 		//@{
-		MenuItem* addItem(MenuItem::Type type);
+		//MenuItem* addItem(MenuItem::Type type);
 		//@}
 
 		//omegaToolkit::ui::Container* getContainerWidget();

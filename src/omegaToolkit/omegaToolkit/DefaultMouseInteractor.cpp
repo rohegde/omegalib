@@ -43,7 +43,7 @@ void DefaultMouseInteractor::handleEvent(const Event& evt)
 		myPointerButton2Pressed = false;
 		myPointerEventReceived = true;
 		myPointerEventData = 0;
-		myPointerPosition = Vector2f(evt.getPosition(0), evt.getPosition(1));
+		myPointerPosition = Vector2f(evt.getPosition().x(), evt.getPosition().y());
 		// We just care about Up / Down events.
 		if(evt.getType() != Event::Move)
 		{

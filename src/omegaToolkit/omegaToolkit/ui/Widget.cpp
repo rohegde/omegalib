@@ -5,7 +5,7 @@
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
- * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted 
  * provided that the following conditions are met:
@@ -140,7 +140,7 @@ void Widget::handleEvent(const Event& evt)
 
 	if(isPointerInteractionEnabled())
 	{
-		Vector2f pos2d = Vector2f(evt.getPosition(0), evt.getPosition(1));
+		Vector2f pos2d = Vector2f(evt.getPosition().x(), evt.getPosition().y());
 		if(myActive)
 		{
 			//if(evt.getType() == Event::Zoom)

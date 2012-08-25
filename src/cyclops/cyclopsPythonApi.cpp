@@ -45,37 +45,38 @@ BOOST_PYTHON_MODULE(cyclops)
 {
 	// SceneLoader
 	class_<SceneLoader, boost::noncopyable >("SceneLoader", no_init)
-		.def("getLastLoadedEntity", &SceneLoader::getLastLoadedEntity, PYAPI_RETURN_POINTER).staticmethod("getLastLoadedEntity")
+		PYAPI_STATIC_REF_GETTER(SceneLoader, getLastLoadedEntity)
 		;
 
 	// SceneManager
-	class_<SceneManager, boost::noncopyable, Ref<SceneManager> >("SceneManager", no_init)
-		.def("setMainLight", &SceneManager::setMainLight)
-		.def("getMainLight", &SceneManager::getMainLight, PYAPI_RETURN_POINTER)
-		.def("loadModel", &SceneManager::loadModel)
-		.def("setBackgroundColor", &SceneManager::setBackgroundColor)
-		.def("loadScene", &SceneManager::loadScene)
+	PYAPI_REF_BASE_CLASS(SceneManager)
+		PYAPI_METHOD(SceneManager, setMainLight)
+		PYAPI_REF_GETTER(SceneManager, getMainLight)
+		PYAPI_METHOD(SceneManager, loadModel)
+		PYAPI_METHOD(SceneManager, setBackgroundColor)
+		PYAPI_METHOD(SceneManager, loadScene)
+		PYAPI_METHOD(SceneManager, unload)
 		;
 
 	// Entity
-	class_<Entity, bases<SceneNode>, boost::noncopyable, Ref<Entity> >("Entity", no_init)
-		.def("hasEffect", &Entity::hasEffect)
-		.def("setEffect", &Entity::setEffect)
+	PYAPI_REF_CLASS(Entity, SceneNode)
+		PYAPI_METHOD(Entity, hasEffect)
+		PYAPI_METHOD(Entity, setEffect)
 		;
 
 	// SphereShape
-	class_<SphereShape, bases<Entity>, boost::noncopyable, Ref<SphereShape> >("SphereShape", no_init)
-		.def("create", &SphereShape::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
+	PYAPI_REF_CLASS(SphereShape, Entity)
+		PYAPI_STATIC_REF_GETTER(SphereShape, create)
 		;
 
 	// PlaneShape
-	class_<PlaneShape, bases<Entity>, boost::noncopyable, Ref<PlaneShape> >("PlaneShape", no_init)
-		.def("create", &PlaneShape::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
+	PYAPI_REF_CLASS(PlaneShape, Entity)
+		PYAPI_STATIC_REF_GETTER(PlaneShape, create)
 		;
 
 	// StaticObject
-	class_<StaticObject, bases<Entity>, boost::noncopyable, Ref<StaticObject> >("StaticObject", no_init)
-		.def("create", &StaticObject::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
+	PYAPI_REF_CLASS(StaticObject, Entity)
+		PYAPI_STATIC_REF_GETTER(StaticObject, create)
 		;
 
 	// AnimatedObject
@@ -117,7 +118,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		;
 
 	class_<SkyboxSwitcher, boost::noncopyable, Ref<SkyboxSwitcher> >("SkyboxSwitcher", no_init)
-		.def("createAndInitialize", &SkyboxSwitcher::createAndInitialize, PYAPI_RETURN_NEW_INSTANCE).staticmethod("createAndInitialize")
+		PYAPI_STATIC_REF_GETTER(SkyboxSwitcher, createAndInitialize)
 		.def("getNumSkyboxes", &SkyboxSwitcher::getNumSkyboxes)
 		.def("getActiveSkybox", &SkyboxSwitcher::getActiveSkybox)
 		.def("setActiveSkybox", &SkyboxSwitcher::setActiveSkybox)

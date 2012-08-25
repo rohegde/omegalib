@@ -163,8 +163,8 @@ void HelloApplication::handleEvent(const Event& evt)
 		// then multiply to get 180 degree rotations
 		DisplaySystem* ds = getEngine()->getDisplaySystem();
 		Vector2i resolution = ds->getCanvasSize();
-		myYaw = (evt.getPosition(0) / resolution[0]) * 180;
-		myPitch = (evt.getPosition(1) / resolution[1]) * 180;
+		myYaw = (evt.getPosition().x() / resolution[0]) * 180;
+		myPitch = (evt.getPosition().y() / resolution[1]) * 180;
 	}
 }
 

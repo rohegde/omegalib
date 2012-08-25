@@ -56,7 +56,7 @@ namespace omegaOsg
 
 	public:
 		OsgModule();
-		~OsgModule();
+		virtual ~OsgModule();
 
 		float getRepresentationSize();
 		void setRepresentationSize(float value);

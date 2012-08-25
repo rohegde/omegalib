@@ -129,6 +129,30 @@ static PyObject* omegaUpdateCallback(PyObject *dummy, PyObject *args)
     return result;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+static PyObject* omegaEventCallback(PyObject *dummy, PyObject *args)
+{
+    PyObject *result = NULL;
+    PyObject *temp;
+
+    if (PyArg_ParseTuple(args, "O", &temp)) 
+	{
+        if (!PyCallable_Check(temp)) 
+		{
+            PyErr_SetString(PyExc_TypeError, "parameter must be callable");
+            return NULL;
+        }
+
+		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+		interp->registerCallback(temp, PythonInterpreter::CallbackEvent);
+
+        /* Boilerplate to return "None" */
+        Py_INCREF(Py_None);
+        result = Py_None;
+    }
+    return result;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class ScriptNodeListener: public SceneNodeListener
 {
@@ -218,10 +242,6 @@ static PyMethodDef omegaMethods[] =
 		"addVisibilityListener(node, cmd)\n"
 		"Attaches a command to be executed whenever the node visibility changes."},
 
-  //  {"printChildren", printChildren, METH_VARARGS, 
-		//"printChildren(node, maxDepth)\n"
-		//"prints the node children tree up to maxDepth."},
-
 	// Renderer API
     {"rendererQueueCommand", rendererQueueCommand, METH_VARARGS, 
 		"rendererQueueCommand(funcRef)\n"
@@ -244,11 +264,18 @@ static PyMethodDef omegaMethods[] =
 		"setUpdateFunction(funcRef)\n"
 		"Registers a script function to be called before each frame is rendered"},
 
+    {"setEventFunction", omegaEventCallback, METH_VARARGS, 
+		"setEventFunction(funcRef)\n"
+		"Registers a script function to be called when events are received"},
+
     {NULL, NULL, 0, NULL}
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Engine* getEngine() { return Engine::instance(); }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const Event* getEvent() { return PythonInterpreter::getLastEvent(); }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void printChildrenHelper(Node* n, int depth, const String& prefix, const String& indentString)
@@ -394,7 +421,7 @@ BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeRollOverloads, roll, 1, 2)
 BOOST_PYTHON_MODULE(omega)
 {
 	// Event type
-	enum_<EventBase::Type>("EventType")
+	PYAPI_ENUM(EventBase::Type, EventType)
 			PYAPI_ENUM_VALUE(EventBase, Select)
 			PYAPI_ENUM_VALUE(EventBase,Toggle)
 			PYAPI_ENUM_VALUE(EventBase,ChangeValue)
@@ -423,7 +450,7 @@ BOOST_PYTHON_MODULE(omega)
 		;
 
 	// Event Flags
-	enum_<EventBase::Flags>("EventFlags")
+	PYAPI_ENUM(EventBase::Flags, EventFlags)
 			PYAPI_ENUM_VALUE(EventBase, Left)
 			PYAPI_ENUM_VALUE(EventBase,Button1)
 			PYAPI_ENUM_VALUE(EventBase,Right)
@@ -449,7 +476,7 @@ BOOST_PYTHON_MODULE(omega)
 		;
 	
 	// Event Extra Data Type
-	enum_<EventBase::ExtraDataType>("EventExtraDataType")
+	PYAPI_ENUM(EventBase::ExtraDataType, EventExtraDataType)
 			PYAPI_ENUM_VALUE(EventBase,ExtraDataNull)
 			PYAPI_ENUM_VALUE(EventBase,ExtraDataFloatArray)
 			PYAPI_ENUM_VALUE(EventBase,ExtraDataIntArray)
@@ -458,7 +485,7 @@ BOOST_PYTHON_MODULE(omega)
 		;
 
 	// Event Extra Data Type
-	enum_<EventBase::ServiceType>("ServiceType")
+	PYAPI_ENUM(EventBase::ServiceType, ServiceType)
 			PYAPI_ENUM_VALUE(EventBase,ServiceTypePointer)
 			PYAPI_ENUM_VALUE(EventBase,ServiceTypeMocap)
 			PYAPI_ENUM_VALUE(EventBase,ServiceTypeKeyboard) 
@@ -472,20 +499,23 @@ BOOST_PYTHON_MODULE(omega)
 
 	// Event
 	const Vector3f& (Event::*getPosition1)() const = &Event::getPosition;
-	class_<Event, Ref<Event>, boost::noncopyable >("Event", no_init)
-		.def("getSourceId", &Event::getSourceId)
-		.def("getType", &Event::getType)
-		.def("getPosition", getPosition1, PYAPI_RETURN_VALUE)
-		.def("getOrientation", &Event::getOrientation, PYAPI_RETURN_VALUE)
-		.def("getServiceType", &Event::getServiceType)
+	PYAPI_REF_BASE_CLASS(Event)
+		PYAPI_METHOD(Event, isKeyDown)
+		PYAPI_METHOD(Event, isKeyUp)
+		PYAPI_METHOD(Event, isButtonDown)
+		PYAPI_METHOD(Event, getSourceId)
+		PYAPI_METHOD(Event, getType)
+		PYAPI_METHOD(Event, getServiceType)
+		PYAPI_GETTER(Event, getPosition)
+		PYAPI_GETTER(Event, getOrientation)
 		;
 
 	// Engine 
-	class_<Engine, Ref<Engine>, boost::noncopyable >("Engine", no_init)
-		.def("isConsoleEnabled", &Engine::isConsoleEnabled)
-		.def("setConsoleEnabled", &Engine::setConsoleEnabled)
-		.def("getScene", &Engine::getScene, PYAPI_RETURN_POINTER)
-		.def("getDefaultCamera", &Engine::getDefaultCamera, PYAPI_RETURN_POINTER)
+	PYAPI_REF_BASE_CLASS(Engine)
+		PYAPI_METHOD(Engine, isConsoleEnabled)
+		PYAPI_METHOD(Engine, setConsoleEnabled)
+		PYAPI_REF_GETTER(Engine, getScene)
+		PYAPI_REF_GETTER(Engine, getDefaultCamera)
 		;
 
 	// Node
@@ -542,12 +572,15 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(Camera, setTrackingEnabled)
 		PYAPI_METHOD(Camera, getTrackerSourceId)
 		PYAPI_METHOD(Camera, setTrackerSourceId)
+		PYAPI_METHOD(Camera, setControllerEnabled)
+		PYAPI_METHOD(Camera, isControllerEnabled)
 		;
 
 	// Color
 	class_<Color>("Color", init<String>());
 
 	// Free Functions
+	def("getEvent", getEvent, return_value_policy<reference_existing_object>());
 	def("getEngine", getEngine, PYAPI_RETURN_POINTER);
 	def("printChildren", &printChildren);
 	def("printObjCounts", &printObjCounts);

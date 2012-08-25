@@ -36,7 +36,6 @@
 
 using namespace omega;
 
-List< Ref<EngineModule> > ModuleServices::mysModules;
 Engine* Engine::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -178,7 +177,7 @@ void Engine::refreshPointer(int pointerId, const Event& evt)
 
 	ptr->setVisible(true);
 	ptr->setPointerMode(Pointer::ModeWand);
-	ptr->setPosition(evt.getPosition(0), evt.getPosition(1));
+	ptr->setPosition(evt.getPosition().x(), evt.getPosition().y());
 
 	// Generate a view ray for the event.
 	Ray ray;

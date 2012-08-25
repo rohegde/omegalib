@@ -100,8 +100,8 @@ void WandEmulationService::updateAxes(const Event& evt)
 	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 	Vector2i resolution = ds->getCanvasSize();
 
-	float curX = evt.getPosition(0) / resolution[0];
-	float curY = evt.getPosition(1) / resolution[1];
+	float curX = evt.getPosition().x() / resolution[0];
+	float curY = evt.getPosition().y() / resolution[1];
 
 	float dx = (curX - myLastPointerPosition[0]) * pointerAxisMultiplier;
 	float dy = -(curY - myLastPointerPosition[1]) * pointerAxisMultiplier;

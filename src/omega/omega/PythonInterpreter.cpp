@@ -55,6 +55,8 @@ void omegaPythonApiInit();
 
 //PyThreadState* sMainThreadState;
 
+const Event* PythonInterpreter::mysLastEvent = NULL;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class PythonInteractiveThread: public Thread
 {
@@ -229,16 +231,16 @@ void PythonInterpreter::addModule(const char* name, PyMethodDef* methods, const 
 	}
 
 	PyMethodDef* cur = methods;
-	while(cur->ml_name != NULL)
-	{
-		CommandHelpEntry* help = new CommandHelpEntry();
-		String syntax = StringUtils::split(cur->ml_doc, "\n")[0];
-		help->syntax = syntax;
-		help->info = cur->ml_doc;
+	//while(cur->ml_name != NULL)
+	//{
+	//	CommandHelpEntry* help = new CommandHelpEntry();
+	//	String syntax = StringUtils::split(cur->ml_doc, "\n")[0];
+	//	help->syntax = syntax;
+	//	help->info = cur->ml_doc;
 
-		cur++;
-		myHelpData.push_back(help);
-	}
+	//	cur++;
+	//	myHelpData.push_back(help);
+	//}
 
 #ifdef OMEGA_READLINE_FOUND
 	cur = methods;
@@ -318,6 +320,13 @@ void PythonInterpreter::registerCallback(void* callback, CallbackType type)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::unregisterAllCallbacks()
+{
+	myUpdateCallbacks.clear();
+	myEventCallbacks.clear();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::update(const UpdateContext& context) 
 {
 	// Execute queued interactive commands first
@@ -393,24 +402,38 @@ void PythonInterpreter::updateSharedData(SharedIStream& in)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::handleEvent(const Event& evt) 
 {
+	// Save the received event to the static variable mysLastEvent.
+	// Script code will be able to retrieve it using getEvent()
+	mysLastEvent = &evt;
+
+	foreach(void* cb, myEventCallbacks)
+	{
+		// BLAGH cast
+		PyObject* pyCallback =(PyObject*)cb;
+		PyObject_CallObject(pyCallback, NULL);
+	}
+
+	// We can't guarantee the event will live outside of this call tree, so clean up the static
+	// variable. getEvent() will return None when called outside the event callback.
+	mysLastEvent = NULL;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-String PythonInterpreter::getHelpString(const String& filter)
-{
-	String result = "";
-	foreach(CommandHelpEntry* item, myHelpData)
-	{
-		if(filter == "" || StringUtils::startsWith(item->syntax, filter))
-		{
-			result.append(item->syntax);
-			result.append("|");
-			result.append(item->info);
-			result.append("|");
-		}
-	}
-	return result;
-}
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//String PythonInterpreter::getHelpString(const String& filter)
+//{
+//	String result = "";
+//	foreach(CommandHelpEntry* item, myHelpData)
+//	{
+//		if(filter == "" || StringUtils::startsWith(item->syntax, filter))
+//		{
+//			result.append(item->syntax);
+//			result.append("|");
+//			result.append(item->info);
+//			result.append("|");
+//		}
+//	}
+//	return result;
+//}
 
 
 #else
@@ -473,5 +496,8 @@ void PythonInterpreter::queueInteractiveCommand(const String& command) {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 String PythonInterpreter::getHelpString(const String& filter) { return ""; }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::unregisterAllCallbacks() {}
 
 #endif

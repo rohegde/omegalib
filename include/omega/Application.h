@@ -62,6 +62,7 @@ namespace omega {
 			registerPortholeTabletService(); 
 			ModuleServices::addModule(new EventSharingModule());
 			ModuleServices::addModule(new T());
+			ModuleServices::setNonCoreMode();
 		}
 
 	private:

@@ -55,7 +55,6 @@ SET( srcs
 		omega/MouseService.cpp
 		omega/MissionControl.cpp
 		omega/Node.cpp
-		omega/ObserverUpdateService.cpp
 		omega/ObserverUpdateServiceExt.cpp
         omega/osystem.cpp
 		omega/PixelData.cpp
@@ -108,7 +107,6 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/ModuleServices.h
 		${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Node.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateServiceExt.h
 		${OmegaLib_SOURCE_DIR}/include/omega/osystem.h
         ${OmegaLib_SOURCE_DIR}/include/omega/otypes.h
