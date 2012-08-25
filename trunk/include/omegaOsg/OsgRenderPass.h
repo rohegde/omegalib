@@ -51,7 +51,7 @@ namespace omegaOsg
 		OsgRenderPass(Renderer* client, const String& name);
 		static RenderPass* createInstance(Renderer* client) { return new OsgRenderPass(client, "OsgRenderPass"); }
 	public:
-		~OsgRenderPass();
+		virtual ~OsgRenderPass();
 
 		virtual void initialize();
 		virtual void render(Renderer* client, const DrawContext& context);

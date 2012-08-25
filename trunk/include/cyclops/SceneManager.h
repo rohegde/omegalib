@@ -54,7 +54,7 @@ namespace cyclops {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
-	class Light: public Node
+	class CY_API Light: public Node
 	{
 	friend class SceneManager;
 	public:
@@ -114,10 +114,10 @@ namespace cyclops {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
-	struct ModelInfo
+	struct ModelInfo: public ReferenceType
 	{
 		//! PYAPI
-		ModelInfo(): numFiles(1), size(0.0f), generateNormals(false), normalizeNormals(false)
+		ModelInfo(): numFiles(1), size(0.0f), generateNormals(false), normalizeNormals(false), optimize(false)
 		{}
 
 		ModelInfo(const String name, const String path, float size = 0.0f, int numFiles = 1, bool generateNormals = false, bool normalizeNormals = false)
@@ -142,6 +142,7 @@ namespace cyclops {
 		float size;
 		//! PYAPI
 		bool generateNormals;
+		bool optimize;
 		
 		bool normalizeNormals;
 	};
@@ -168,7 +169,7 @@ namespace cyclops {
 		int numNodes;
 		int id;
 
-		ModelInfo info;
+		Ref<ModelInfo> info;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -242,7 +243,7 @@ namespace cyclops {
 
 		//! Model Management
 		//@{
-		bool loadModel(const ModelInfo& info);
+		bool loadModel(ModelInfo* info);
 		ModelAsset* getModel(const String& name);
 		const List< Ref<ModelAsset> >& getModels();
 		//@}
@@ -368,25 +369,6 @@ namespace cyclops {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline int SceneManager::getNumActiveLights()
 	{ return myNumActiveLights; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Light::Light(SceneManager* scene):
-		mySceneManager(scene),
-		myColor(Color::White),
-		myAmbient(Color::Gray),
-		myAttenuation(Vector3f(1.0, 0.0, 0.0)),
-		myEnabled(false),
-		mySoftShadowWidth(0.005f),
-		mySoftShadowJitter(32),
-		myOsgLight(NULL), myOsgLightSource(NULL)
-	{
-		mySceneManager->addLight(this);
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Light::~Light()
-	{
-	}
 };
 
 #endif

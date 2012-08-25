@@ -53,6 +53,25 @@ Light* Light::create()
 	return new Light(SceneManager::instance());
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+Light::Light(SceneManager* scene):
+	mySceneManager(scene),
+	myColor(Color::White),
+	myAmbient(Color::Gray),
+	myAttenuation(Vector3f(1.0, 0.0, 0.0)),
+	myEnabled(false),
+	mySoftShadowWidth(0.005f),
+	mySoftShadowJitter(32),
+	myOsgLight(NULL), myOsgLightSource(NULL)
+{
+	mySceneManager->addLight(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+Light::~Light()
+{}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct AnimationManagerFinder : public osg::NodeVisitor 
 { 
@@ -561,23 +580,23 @@ void SceneManager::setBackgroundColor(const Color& color)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool SceneManager::loadModel(const ModelInfo& info)
+bool SceneManager::loadModel(ModelInfo* info)
 {
 	ModelAsset* asset = new ModelAsset();
-	asset->filename = info.path; /// changed filepath to filename (confirm from alassandro).
-	asset->numNodes = info.numFiles;
+	asset->filename = info->path; /// changed filepath to filename (confirm from alassandro).
+	asset->numNodes = info->numFiles;
 
-	myModelDictionary[info.name] = asset;
+	myModelDictionary[info->name] = asset;
 	myModelList.push_back(asset);
 
 	// Replace * with %1% so we can use our string formatting routines to add a number to the path strings.
-	String orfp = StringUtils::replaceAll(info.path, "*", "%1%");
-	String filePath = info.path;
+	String orfp = StringUtils::replaceAll(info->path, "*", "%1%");
+	String filePath = info->path;
 
-	for(int iterator=0; iterator < info.numFiles; iterator++)
+	for(int iterator=0; iterator < info->numFiles; iterator++)
 	{
 		// If present in the string, this line will substitute %1% with the iterator number.
-		if(info.numFiles != 1)
+		if(info->numFiles != 1)
 		{
 			filePath = ostr(orfp, %iterator);
 		}
@@ -592,14 +611,17 @@ bool SceneManager::loadModel(const ModelInfo& info)
 			osg::Node* node = osgDB::readNodeFile(assetPath, options);
 			if(node != NULL)
 			{
-				//omsg("Optimizing model");
-				//osgUtil::Optimizer optOSGFile;
-				//optOSGFile.optimize(node); //, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
+				if(info->optimize)
+				{
+					omsg("Optimizing model");
+					osgUtil::Optimizer optOSGFile;
+					optOSGFile.optimize(node); //, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
+				}
 
-				if(info.size != 0.0f)
+				if(info->size != 0.0f)
 				{
 					float r = node->getBound().radius() * 2;
-					float scale = info.size / r;
+					float scale = info->size / r;
 
 					osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform();
 					pat->setScale(osg::Vec3(scale, scale, scale));
@@ -608,20 +630,20 @@ bool SceneManager::loadModel(const ModelInfo& info)
 					node = pat;
 				}
 
-				if(info.generateNormals)
+				if(info->generateNormals)
 				{
 					omsg("Generating normals...");
 					osgUtil::SmoothingVisitor sv;
 					node->accept(sv);
 				}
 
-				if(info.normalizeNormals)
+				if(info->normalizeNormals)
 				{
 					node->getOrCreateStateSet()->setMode(GL_NORMALIZE, osg::StateAttribute::ON); 
 				}
 
 				asset->nodes.push_back(node);
-				asset->description = info.description;
+				asset->description = info->description;
 			}
 			else
 			{

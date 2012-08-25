@@ -93,6 +93,7 @@ namespace omega
 	public:
 		static void setSharedData(SharedData* data);
 		static void registerObject(SharedObject*, const String& id);
+		static void unregisterObject(const String& id);
 		static void cleanup();
 
 	private:

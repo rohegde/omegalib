@@ -36,10 +36,10 @@ namespace omega {
 	class Renderable;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct OMEGA_API RenderableCommand: IRendererCommand
+	struct OMEGA_API RenderableCommand: public IRendererCommand
 	{
 		enum Command { Initialize, Dispose, Refresh };
-		Renderable* renderable;
+		Ref<Renderable> renderable;
 		Command command;
 
 		RenderableCommand(Renderable* r, Command c): renderable(r), command(c) {}
@@ -69,9 +69,9 @@ namespace omega {
 	private:
 		Renderer* myClient;
 
-		RenderableCommand* myDisposeCommand;
-		RenderableCommand* myRefreshCommand;
-		RenderableCommand* myInitializeCommand;
+		Ref<RenderableCommand> myDisposeCommand;
+		Ref<RenderableCommand> myRefreshCommand;
+		Ref<RenderableCommand> myInitializeCommand;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

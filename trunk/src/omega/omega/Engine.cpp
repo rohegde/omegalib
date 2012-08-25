@@ -171,6 +171,24 @@ void Engine::addClient(Renderer* client)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+void Engine::removeRenderPass(const String& renderPassName)
+{
+	ofmsg("Engine: removing render pass %1%", %renderPassName);
+	foreach(Renderer* r, myClients)
+	{
+		RenderPass* rp = r->getRenderPass(renderPassName);
+		if(rp != NULL)
+		{
+			r->removeRenderPass(rp);
+		}
+		else
+		{
+			ofwarn("Engine::removeRenderPass: could not find render pass %1%", %renderPassName);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 void Engine::refreshPointer(int pointerId, const Event& evt)
 {
 	Pointer* ptr = myPointers[pointerId];

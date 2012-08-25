@@ -62,6 +62,7 @@ namespace omegaOsg
 		void setRepresentationSize(float value);
 
 		virtual void initialize();
+		virtual void dispose();
 		virtual void initializeRenderer(Renderer* r);
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt) {}

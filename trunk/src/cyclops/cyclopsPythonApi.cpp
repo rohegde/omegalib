@@ -81,7 +81,7 @@ BOOST_PYTHON_MODULE(cyclops)
 
 	// AnimatedObject
 	class_<AnimatedObject, bases<Entity>, boost::noncopyable, Ref<AnimatedObject> >("AnimatedObject", no_init)
-		.def("create", &AnimatedObject::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
+		.def("create", &AnimatedObject::create, PYAPI_RETURN_POINTER).staticmethod("create")
 		.def("hasAnimations", &AnimatedObject::hasAnimations)
 		.def("getNumAnimations", &AnimatedObject::getNumAnimations)
 		.def("playAnimation", &AnimatedObject::playAnimation)
@@ -96,7 +96,7 @@ BOOST_PYTHON_MODULE(cyclops)
 
 	// Light
 	class_<Light, bases<Node>, boost::noncopyable, Ref<Light> >("Light", no_init)
-		.def("create", &Light::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
+		.def("create", &Light::create, PYAPI_RETURN_POINTER).staticmethod("create")
 		.def("setColor", &Light::setColor)
 		.def("setAmbient", &Light::setAmbient)
 		.def("setEnabled", &Light::setEnabled)
@@ -108,13 +108,14 @@ BOOST_PYTHON_MODULE(cyclops)
 		;
 
 	// ModelInfo
-	class_<ModelInfo, boost::noncopyable >("ModelInfo")
+	class_<ModelInfo, boost::noncopyable, Ref<ModelInfo> >("ModelInfo")
 		.def_readwrite("name", &ModelInfo::name)
 		.def_readwrite("description", &ModelInfo::description)
 		.def_readwrite("generateNormals", &ModelInfo::generateNormals)
 		.def_readwrite("numFiles", &ModelInfo::numFiles)
 		.def_readwrite("path", &ModelInfo::path)
 		.def_readwrite("size", &ModelInfo::size)
+		.def_readwrite("optimize", &ModelInfo::optimize)
 		;
 
 	class_<SkyboxSwitcher, boost::noncopyable, Ref<SkyboxSwitcher> >("SkyboxSwitcher", no_init)

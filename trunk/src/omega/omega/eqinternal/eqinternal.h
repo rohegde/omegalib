@@ -76,6 +76,7 @@ class SharedData: public co::Object
 {
 public:
 	void registerObject(SharedObject* object, const String& id);
+	void unregisterObject(const String& id);
 	virtual ChangeType getChangeType() const { return INSTANCE; }
 	void setUpdateContext(const UpdateContext& ctx) { myUpdateContext = ctx; }
 	const UpdateContext& getUpdateContext() { return myUpdateContext; }

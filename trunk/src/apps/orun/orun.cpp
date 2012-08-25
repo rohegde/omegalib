@@ -162,7 +162,7 @@ void OmegaViewer::handleCommand(const String& cmd)
 		ModuleServices::disposeNonCoreModules();
 
 		// destroy all global variables
-		interp->eval("for uniquevar in [var for var in globals().copy() if var[0] != \"_\" and var != 'clearall']: del globals()[uniquevar]");
+		interp->eval("for uniquevar in [var for var in globals().copy() if var[0] != \"_\" and var != 'clearall']: print(\"deleting \" + uniquevar); del globals()[uniquevar]");
 	}
 	else if(args[0] == "lo")
 	{

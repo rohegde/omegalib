@@ -240,15 +240,15 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 
 		const char* id = xchild->Attribute("Id");
 
-		ModelInfo mi;
-		mi.name = id;
-		mi.path = filePath;
-		mi.numFiles = objcount;
-		mi.generateNormals = generateNormals;
-		mi.normalizeNormals = normalizeNormals;
+		ModelInfo* mi = new ModelInfo();
+		mi->name = id;
+		mi->path = filePath;
+		mi->numFiles = objcount;
+		mi->generateNormals = generateNormals;
+		mi->normalizeNormals = normalizeNormals;
 		
 		const char* attrSize = xchild->Attribute("Size");
-		if(attrSize != NULL) mi.size = atof(attrSize);
+		if(attrSize != NULL) mi->size = atof(attrSize);
 
 		mySceneManager->loadModel(mi);
 		
