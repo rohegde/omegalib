@@ -53,7 +53,7 @@
 	<tr>
 <!--		<td align=center><input type=button id=offset value="Reset counter" onclick="reset();" ></td>-->
 		<td id=wsdi_statustd align=center><div id=wsdi_status>Not initialized</div></td>
-        <td align=center><div id=porthole_drawing> </div></td>
+        <td><div id=porthole_drawing> </div></td>
 	</tr>
 </table>
 
@@ -196,11 +196,11 @@
             drag: true,
             drag_vertical: true,
             drag_horizontal: true,
-            drag_min_distance: 0,
+            drag_min_distance: 5,
 
             transform: true,
-            scale_treshold: 0.001,
-            rotation_treshold: 0.01,
+            scale_treshold: 0.00001,
+            rotation_treshold: 1,
 
             tap: false,
             tap_double: false,
@@ -209,44 +209,38 @@
 
     // Drag vars
     var dragging = false;
-    var dragPosX, dragPosY, dragDistX, dragDistY;
-    var deltaX, deltaY;
+    var dragPosX, dragPosY;
+    var dragOldX, dragOldY;
     
     // Pinch vars
     var pinching = false;
     var pinchScale, pinchRotation;
-    var deltaRotation;
+    var pinchOldScale, pinchOldRotation;
 
     // Drag functions
     function watchDrag() {
-        if (!dragging || pinching || deltaX == null || deltaY == null || 
-                deltaX == "null" || deltaY == "null") {
-            return;
-        }
+        if (!dragging || pinching) return;
         var JSONOEvent = {
             "event_type": "drag",
-            "deltaX": deltaX,
-            "deltaY": deltaY
+            "deltaX": parseFloat(((dragPosX - dragOldX) / canvas.width) * 90), // yaw delta
+            "deltaY": parseFloat(((dragPosY - dragOldY) / canvas.height) * 90) // pitch delta
         };
         socket.send(JSON.stringify(JSONOEvent));
+        dragOldX = dragPosX;
+        dragOldY = dragPosY;
     }
 
     hammer.ondragstart = function (ev) {
         dragging = true;
+        dragOldX = ev.position.x;
+        dragOldY = ev.position.y;
     };
     hammer.ondragend = function (ev) {
         dragging = false;
     };
     hammer.ondrag = function (ev) {
-
-        deltaX = ev.distanceX - dragDistX;
-        deltaY = ev.distanceY - dragDistY;
-
         dragPosX = ev.position.x;
         dragPosY = parseInt(ev.position.y); // y is floating by default, so cast it
-        dragDistX = ev.distanceX;
-        dragDistY = ev.distanceY;
-
     };
 
     hammer.onswipe = function (ev) { };
@@ -256,28 +250,29 @@
 
     // Pinch functions
     function watchPinch() {
-        if (!pinching || pinchScale == null || pinchRotation == null ||
-                pinchScale == "null" || pinchRotation == "null") {
-            return;
-        }
+        if (!pinching) return;
+        if (pinchScale - pinchOldScale == 0 && pinchRotation - pinchOldRotation == 0) return;
         var JSONOEvent = {
             "event_type": "pinch",
             "scale": pinchScale,
-            "rotation": deltaRotation,
+            "rotation": parseFloat(pinchRotation - pinchOldRotation)
         };
         socket.send(JSON.stringify(JSONOEvent));
+        pinchOldScale = pinchScale;
+        pinchOldRotation = pinchRotation;
     }
-    hammer.ontransformstart = function (ev) { 
+    hammer.ontransformstart = function (ev) {
         dragging = false;
         pinching = true;
-    };
+        pinchOldRotation = 0;
+        pinchRotation = ev.rotation;
+        pinchOldScale = 1;
+    }; 
     hammer.ontransformend = function (ev) {
         pinching = false;
     };
     hammer.ontransform = function (ev) { 
         dragging = false; // Avoid overlapping of drag and pinch events
-
-        deltaRotation = parseFloat(pinchRotation - ev.rotation);
 
         pinchScale = parseFloat(ev.scale);
         pinchRotation = ev.rotation;
@@ -291,8 +286,8 @@
     ///////////////////////////////////////////////////////////
 
     // Dragging listening interval
-    setInterval(watchDrag, 20);
-    setInterval(watchPinch, 20);
+    setInterval(watchDrag, 200);
+    setInterval(watchPinch, 200);
 
 </script>
 
