@@ -32,6 +32,7 @@
  <script src="./hammer.js" type="application/javascript"></script>
  <script src="./jquery.specialevent.hammer.js" type="application/javascript"></script>
  <script src="./browser_detect.js" type="application/javascript"></script>
+ <script src="./porthole_functions_binder.js" type="application/javascript"></script>
  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
  <meta name="apple-mobile-web-app-capable" content="yes"/>
  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -51,7 +52,6 @@
 <!--<h3>Detected Browser: <div id=brow>...</div></h3>-->
 <table>
 	<tr>
-<!--		<td align=center><input type=button id=offset value="Reset counter" onclick="reset();" ></td>-->
 		<td id=wsdi_statustd align=center><div id=wsdi_status>Not initialized</div></td>
         <td><div id=porthole_drawing> </div></td>
 	</tr>
@@ -166,10 +166,16 @@
         socket.onmessage = function got_packet(msg) {
             //            document.getElementById("porthole_drawing").textContent = msg.data + "\n";
 
-            image = "data:image/png;base64," + msg.data;
-            img.src = image;
+            var message = JSON.parse(msg.data);
 
-            ctx.drawImage(img, 0, 0);
+            if (message.event_type == "stream") {
+                image = "data:image/png;base64," + message.base64image;
+                img.src = image;
+                ctx.drawImage(img, 0, 0);
+            }
+            else {
+                document.getElementById("porthole_drawing").innerHTML = message.innerHTML;
+            }
 
         }
 

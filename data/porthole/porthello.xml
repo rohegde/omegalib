@@ -1,0 +1,1 @@
+<input type="button" id="TestButton" name="test" value="Click me" onclick="onClickTest()"/>
