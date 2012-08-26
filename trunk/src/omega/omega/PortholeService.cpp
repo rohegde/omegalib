@@ -3,7 +3,7 @@
  *-------------------------------------------------------------------------------------------------
  * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Donghi Daniele		d.donghi@gmail.com
+ *  Donghi Daniele			d.donghi@gmail.com
  *-------------------------------------------------------------------------------------------------
  * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
@@ -45,6 +45,34 @@ enum demo_protocols {
 	/* always last */
 	DEMO_PROTOCOL_COUNT
 };
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ServerThread::sendHtmlElements(struct libwebsocket_context *context,
+		struct libwebsocket *wsi){
+
+		// TEST Just send the first node
+		TiXmlNode* node = xmlDoc->FirstChild();
+		node->Accept( xmlPrinter );
+
+		string toSend = "{\"event_type\" : \"html_elements\", \"innerHTML\" : \"";
+		toSend.append(omicron::StringUtils::replaceAll(xmlPrinter->CStr(),"\"","\\\""));
+		toSend.append("\"}");
+
+		cout << toSend << endl;
+
+		// Send the html elements
+		int n;
+		unsigned char* buf;
+		buf = new unsigned char[LWS_SEND_BUFFER_PRE_PADDING + toSend.length() + LWS_SEND_BUFFER_POST_PADDING];
+		unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
+		n = sprintf((char *)p, "%s",toSend.c_str());
+		n = libwebsocket_write(wsi, p, n, LWS_WRITE_TEXT);
+
+		// Free the buffer
+		delete[] buf;
+
+		return;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -104,6 +132,7 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 	case LWS_CALLBACK_HTTP:
 		//fprintf(stderr, "serving HTTP URI %s\n", (char *)in);
 
+		/* Html page icon */
 		if (in && strcmp((char*)in, "/favicon.ico") == 0) {
 			if (libwebsockets_serve_http_file(wsi,
 			     (DATA_PATH+"/favicon.ico").c_str(), "image/x-icon"))
@@ -137,8 +166,37 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 			break;
 		}
 
-		/* send the HTML page... when it runs it'll start websockets */
+		/* Function Binder Javascript */
+		else if (in && strcmp((char*)in, "/porthole_functions_binder.js") == 0) {
+			
+			// Build Content TODO call a function
+			string content = "function onClickTest(){ alert(\"Button Clicked\"); }";
+			
+			// Build Message = Header + Content
+			char content_length[16];
+			sprintf (content_length, "%d", content.length());
+			string msg = "HTTP/1.0 200 OK\x0d\x0a"
+							"Server: libwebsockets\x0d\x0a"
+							"Content-Type: application/javascript\x0d\x0a"
+							"Content-Length: ";
+			msg.append(content_length);
+			msg.append("\x0d\x0a\x0d\x0a");
+			msg.append(content);
 
+			// Send the Javascript file
+			int n;
+			unsigned char* p;
+			p = new unsigned char[msg.length()];
+			n = sprintf((char*)p,msg.c_str());
+			libwebsocket_write(wsi, (unsigned char*)p, n, LWS_WRITE_HTTP);
+
+			// Free the buffer
+			delete[] p;
+
+			break;
+		}
+
+		/* HTML page... when it runs it'll start websockets */
 		if (libwebsockets_serve_http_file(wsi,
 				  (DATA_PATH+"/index.html").c_str(), "text/html"))
 			fprintf(stderr, "Failed to send HTTP file\n");
@@ -302,7 +360,7 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
 
 inline void handle_message(per_session_data* data, recv_message* message){
 
-    cout << "MSG: " << message->event_type << endl;
+    // cout << "MSG: " << message->event_type << endl;
 
 	// Handle drag event
 	if (strcmp(message->event_type.c_str(),MSG_EVENT_DRAG)==0){
@@ -422,14 +480,15 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		data->sessionPng = ImageUtils::encode(data->sessionCanvasPixel, ImageUtils::FormatPng);
 		std::string base64image = base64_encode(data->sessionPng->getData(),data->sessionPng->getSize());
 
-		//cout << base64image << endl;
-		//cout << "Size is: " << base64image.length() << endl;
+		string toSend = "{\"event_type\" : \"stream\", \"base64image\" : \"";
+		toSend.append(base64image.c_str());
+		toSend.append("\"}");
 
 		// Send the base64 image
 		unsigned char* buf;
-		buf = new unsigned char[LWS_SEND_BUFFER_PRE_PADDING + base64image.length() + LWS_SEND_BUFFER_POST_PADDING];
+		buf = new unsigned char[LWS_SEND_BUFFER_PRE_PADDING + toSend.length() + LWS_SEND_BUFFER_POST_PADDING];
 		unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
-		n = sprintf((char *)p, "%s",base64image.c_str());
+		n = sprintf((char *)p, "%s",toSend.c_str());
 		n = libwebsocket_write(wsi, p, n, LWS_WRITE_TEXT);
 		if (n < 0) {
 			fprintf(stderr, "ERROR writing to socket");
@@ -466,6 +525,10 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 
 		// First message received is a device specs message
 		if (strcmp(message.event_type.c_str(),MSG_EVENT_SPEC)==0){
+
+			// TODO Send the Html elements to the browser based on device specifications
+			sendHtmlElements(context,wsi);
+
 			// Ask for the first available slot on this channel
 			libwebsocket_callback_on_writable(context, wsi);
 		}
@@ -542,6 +605,19 @@ port(PORT), use_ssl(0), opts(0), n(0)
 		key_path = (DATA_PATH+"/server.key.pem").c_str();
 	}
 
+	// Html spec parser
+	xmlDoc = new TiXmlDocument( (DATA_PATH+"/porthello.xml").c_str() );
+	xmlPrinter = new TiXmlPrinter();
+	bool loadOkay = xmlDoc->LoadFile();
+	if (loadOkay)
+	{
+		// XML Node printer
+		xmlPrinter->SetStreamPrinting();
+	}
+	else
+	{
+		printf("Failed to load file");
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

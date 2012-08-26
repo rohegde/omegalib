@@ -35,7 +35,7 @@ using namespace omega;
 
 // Example function to be binded to a button clicked
 void onClick(){
-	cout << ">>>> Button clicked!" << endl;
+	cout << ">>>> Porthello: Button clicked!" << endl;
 }
 
 class HelloApplication;
@@ -93,7 +93,7 @@ void HelloRenderPass::initialize()
 
 	// Functions Bind
 	PortholeFunctionsBinder binder;
-	binder.addFunction("onClick", &onClick);
+	binder.addFunction("onClick()", &onClick);
 
 	// Initialize cube normals.
 	myNormals[0] = Vector3f(-1, 0, 0);
