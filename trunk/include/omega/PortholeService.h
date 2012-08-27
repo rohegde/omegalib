@@ -34,7 +34,7 @@
 #include <string.h>
 #include "websockets/libwebsockets.h"
 #include "omega/Engine.h"
-#include "omicron\xml\tinyxml.h"
+#include "omicron/xml/tinyxml.h"
 
 using namespace std;
 using namespace omicron;
