@@ -33,6 +33,9 @@
 #include "omega/ImageUtils.h"
 #include "vjson/json.h"
 
+#include "private-libwebsockets.h"
+#include "extension-deflate-stream.h"
+
 #include <iostream>
 
 using namespace omega;
@@ -67,9 +70,6 @@ void ServerThread::sendHtmlElements(struct libwebsocket_context *context,
 		unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
 		n = sprintf((char *)p, "%s",toSend.c_str());
 		n = libwebsocket_write(wsi, p, n, LWS_WRITE_TEXT);
-
-		// Free the buffer
-		delete[] buf;
 
 		return;
 }
@@ -170,8 +170,25 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 		else if (in && strcmp((char*)in, "/porthole_functions_binder.js") == 0) {
 			
 			// Build Content TODO call a function
-			string content = "function onClickTest(){ alert(\"Button Clicked\"); }";
-			
+			string content = "var socket; ";
+
+			typedef void(*memberFunction)();
+			std::map<std::string, memberFunction>::const_iterator it;
+			for(it = functionsBinder->funcMap.begin(); it != functionsBinder->funcMap.end(); it++ ){
+
+				content.append("function ");
+				content.append(it->first);
+				content.append("{ "
+									"var JSONEvent = {"
+									"	\"event_type\": \"input\","
+									"	\"function\": \"");
+				content.append(it->first);
+				content.append("\""
+									"};"
+									"socket.send(JSON.stringify(JSONEvent));"
+								"}");
+			}
+
 			// Build Message = Header + Content
 			char content_length[16];
 			sprintf (content_length, "%d", content.length());
@@ -189,9 +206,6 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 			p = new unsigned char[msg.length()];
 			n = sprintf((char*)p,msg.c_str());
 			libwebsocket_write(wsi, (unsigned char*)p, n, LWS_WRITE_HTTP);
-
-			// Free the buffer
-			delete[] p;
 
 			break;
 		}
@@ -225,6 +239,11 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 /* websocket protocol */
+
+// Struct of data to be passed across the entire session
+struct across_sessions_data {
+	PortholeFunctionsBinder* functionsBinder;
+};
 
 // Struct of data to be passed across the entire session
 struct per_session_data {
@@ -291,6 +310,9 @@ inline void print(json_value *value, int ident = 0)
 #define MSG_DELTA_SCALE "scale"
 #define MSG_DELTA_ROTATION "rotation"
 
+#define MSG_EVENT_INPUT "input"
+#define MSG_INPUT_FUNCTION "function"
+
 struct recv_message{
     string event_type;
     float deltaX,deltaY;
@@ -298,6 +320,7 @@ struct recv_message{
 	float deltaRotation;
 	int width,height;
 	string orientation;
+	string jsFunction;
 };
 
 // This is the function that handle the event received by the client,
@@ -325,6 +348,10 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
 		// Orientation
 		else if (strcmp(value->name, MSG_ORIENTATION) == 0)
             message->orientation = value->string_value;
+
+		// Input Javascript function name
+		else if (strcmp(value->name, MSG_INPUT_FUNCTION) == 0)
+            message->jsFunction = value->string_value;
 
         break;
     case JSON_INT:
@@ -532,6 +559,10 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			// Ask for the first available slot on this channel
 			libwebsocket_callback_on_writable(context, wsi);
 		}
+		else if(strcmp(message.event_type.c_str(),MSG_EVENT_INPUT)==0){
+			cout << message.jsFunction << endl;
+			functionsBinder->callFunction(message.jsFunction);
+		}
 
 		break;
 	}
@@ -581,7 +612,7 @@ struct libwebsocket_protocols protocols[] = {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ServerThread::ServerThread():
-port(PORT), use_ssl(0), opts(0), n(0)
+use_ssl(0), opts(0), n(0)
 {
 
 	// Set DATA FOLDER PATH
@@ -621,6 +652,18 @@ port(PORT), use_ssl(0), opts(0), n(0)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void ServerThread::setPort(int portNumber)
+{
+	this->port = portNumber;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ServerThread::setFunctionsBinder(PortholeFunctionsBinder* binder)
+{
+	omega::functionsBinder = binder;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServerThread::threadProc(){
 
 	// Buffer used to send/receive data using websockets
@@ -628,7 +671,7 @@ void ServerThread::threadProc(){
 						  LWS_SEND_BUFFER_POST_PADDING];
 
 	cout << ">> !! Porthole initialization" << endl;
-
+	
 	// Initialize the websockets context
 	context = libwebsocket_create_context(port, minterface, protocols,
 				libwebsocket_internal_extensions,
@@ -672,7 +715,6 @@ void ServerThread::threadProc(){
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PortholeService::PortholeService()
 {
-	portholeServer = new ServerThread();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -682,8 +724,11 @@ PortholeService::~PortholeService(){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeService::start()
+void PortholeService::start(int port, PortholeFunctionsBinder* binder)
 {
+	portholeServer = new ServerThread();
+	portholeServer->setPort(port);
+	portholeServer->setFunctionsBinder(binder);
 	portholeServer->start();
 }
 

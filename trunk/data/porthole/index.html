@@ -50,12 +50,13 @@
 
 <body>
 <!--<h3>Detected Browser: <div id=brow>...</div></h3>-->
-<table>
+<div id="porthole_content">Initializing porthole... </div>
+<!--<table>
 	<tr>
 		<td id=wsdi_statustd align=center><div id=wsdi_status>Not initialized</div></td>
         <td><div id=porthole_drawing> </div></td>
 	</tr>
-</table>
+</table>-->
 
 <!--<img src="" id="frame" style="width:840px;height:480px"/>-->
 
@@ -112,7 +113,7 @@
         return pcol + u[0];
     }
 
-    var socket;
+//    var socket;
 
     if (BrowserDetect.browser == "Firefox" && BrowserDetect.version < 12) {
         socket = new MozWebSocket(get_appropriate_ws_url(),
@@ -157,8 +158,6 @@
 
     try {
         socket.onopen = function () {
-            document.getElementById("wsdi_statustd").style.backgroundColor = "#40ff40";
-            document.getElementById("wsdi_status").textContent = " websocket connection opened ";
             // Send device specifications
             sendSpec();
         }
@@ -174,21 +173,17 @@
                 ctx.drawImage(img, 0, 0);
             }
             else {
-                document.getElementById("porthole_drawing").innerHTML = message.innerHTML;
+                document.getElementById("porthole_content").innerHTML = message.innerHTML;
             }
 
         }
 
         socket.onclose = function () {
-            document.getElementById("wsdi_statustd").style.backgroundColor = "#ff4040";
-            document.getElementById("wsdi_status").textContent = " websocket connection CLOSED ";
+            document.getElementById("porthole_content").style.backgroundColor = "#ff4040";
+            document.getElementById("porthole_content").innerHTML = " websocket connection CLOSED ";
         }
     } catch (exception) {
         alert('<p>Error' + exception);
-    }
-
-    function reset() {
-        socket.send("reset\n");
     }
 
     //////////////////////////////////////////////////////////
@@ -226,12 +221,12 @@
     // Drag functions
     function watchDrag() {
         if (!dragging || pinching) return;
-        var JSONOEvent = {
+        var JSONEvent = {
             "event_type": "drag",
             "deltaX": parseFloat(((dragPosX - dragOldX) / canvas.width) * 90), // yaw delta
             "deltaY": parseFloat(((dragPosY - dragOldY) / canvas.height) * 90) // pitch delta
         };
-        socket.send(JSON.stringify(JSONOEvent));
+        socket.send(JSON.stringify(JSONEvent));
         dragOldX = dragPosX;
         dragOldY = dragPosY;
     }
@@ -258,12 +253,12 @@
     function watchPinch() {
         if (!pinching) return;
         if (pinchScale - pinchOldScale == 0 && pinchRotation - pinchOldRotation == 0) return;
-        var JSONOEvent = {
+        var JSONEvent = {
             "event_type": "pinch",
             "scale": pinchScale,
             "rotation": parseFloat(pinchRotation - pinchOldRotation)
         };
-        socket.send(JSON.stringify(JSONOEvent));
+        socket.send(JSON.stringify(JSONEvent));
         pinchOldScale = pinchScale;
         pinchOldRotation = pinchRotation;
     }
