@@ -49,7 +49,7 @@ namespace omegaToolkit { namespace ui {
 		bool isAutoRefreshEnabled() { return myAutoRefresh; }
 
 	protected:
-		PixelData* myData;
+		Ref<PixelData> myData;
 		bool myAutoRefresh;
 	};
 
@@ -71,9 +71,5 @@ namespace omegaToolkit { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline PixelData* Image::getData() 
 	{ return myData; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Image::setData(PixelData* value) 
-	{ myData = value; refresh(); }
 }; }; // namespace omegaToolkit
 #endif

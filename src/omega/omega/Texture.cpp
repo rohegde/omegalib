@@ -70,7 +70,11 @@ void Texture::writePixels(PixelData* data)
 		int h = data->getHeight();
 		int w = data->getWidth();
 		byte* pixels = data->lockData();
-		glTexSubImage2D(GL_TEXTURE_2D, 0, xoffset, yoffset, w, h, GL_RGBA, GL_UNSIGNED_BYTE,(GLvoid*)pixels);
+
+		GLenum format = GL_RGBA;
+		if(data->getFormat() == PixelData::FormatRgb) format = GL_RGB;
+
+		glTexSubImage2D(GL_TEXTURE_2D, 0, xoffset, yoffset, w, h, format, GL_UNSIGNED_BYTE,(GLvoid*)pixels);
 		data->unlockData();
 		GLenum glErr = glGetError();
 

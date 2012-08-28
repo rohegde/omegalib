@@ -133,11 +133,15 @@ void OsgViewer::initialize()
 	{
 		Setting& sinteractor = SystemManager::settingLookup("config/interactor");
 		myInteractor = ToolkitUtils::createInteractor(sinteractor);
-		if(myInteractor == NULL)
+		if(myInteractor != NULL)
 		{
 			ModuleServices::addModule(myInteractor);
-			myInteractor->setSceneNode(mySceneNode);
 		}
+	}
+
+	if(myInteractor != NULL)
+	{
+		myInteractor->setSceneNode(mySceneNode);
 	}
 
 	// Set the osg node as the root node

@@ -63,7 +63,8 @@ Widget::Widget(Engine* server):
 	myHorizontalPrevWidget(NULL),
 	myVerticalNextWidget(NULL),
 	myVerticalPrevWidget(NULL),
-	mySize(Vector2f::Zero())
+	mySize(Vector2f::Zero()),
+	myPosition(Vector2f::Zero())
 {
 	myId = mysNameGenerator.getNext();
 	myName = mysNameGenerator.generate();

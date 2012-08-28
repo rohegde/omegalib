@@ -27,10 +27,17 @@
 #include "omega/DrawInterface.h"
 #include "omega/SceneNode.h"
 #include "omega/Renderable.h"
+#include "omega/Engine.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+SceneNode* SceneNode::create(const String& name)
+{
+	return new SceneNode(Engine::instance(), name);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::addListener(SceneNodeListener* listener)

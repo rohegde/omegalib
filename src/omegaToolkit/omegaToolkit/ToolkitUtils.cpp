@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/ToolkitUtils.h"
+#include "omegaToolkit/MouseManipulator.h"
 #include "omegaToolkit/DefaultMouseInteractor.h"
 #include "omegaToolkit/ControllerManipulator.h"
 #include "omegaToolkit/DefaultTwoHandsInteractor.h"
@@ -38,6 +39,7 @@ Actor* ToolkitUtils::createInteractor(const Setting& s)
 {
 	String interactorStyle = Config::getStringValue("style", s);
 	StringUtils::toLowerCase(interactorStyle);
+	ofmsg("Creating interactor of type %1%:", %interactorStyle);
 	if(interactorStyle == "")
 	{
 		return NULL;
@@ -45,6 +47,13 @@ Actor* ToolkitUtils::createInteractor(const Setting& s)
     else if(interactorStyle == "mouse")
     {
         DefaultMouseInteractor* interactor = new DefaultMouseInteractor();
+        interactor->setMoveButtonFlag(Event::Left);
+        interactor->setRotateButtonFlag(Event::Right);
+        return interactor;
+    }
+    else if(interactorStyle == "simpleMouse")
+    {
+        MouseManipulator* interactor = new MouseManipulator();
         interactor->setMoveButtonFlag(Event::Left);
         interactor->setRotateButtonFlag(Event::Right);
         return interactor;
@@ -67,4 +76,23 @@ Actor* ToolkitUtils::createInteractor(const Setting& s)
     }
 	ofwarn("Unknown interactor style: %1%", %interactorStyle);
 	return NULL;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Actor* ToolkitUtils::setupInteractor(const String& settingName)
+{
+	Actor* interactor = NULL;
+
+    // Set the interactor style used to manipulate meshes.
+	if(SystemManager::settingExists(settingName))
+	{
+		Setting& sinteractor = SystemManager::settingLookup(settingName);
+		interactor = ToolkitUtils::createInteractor(sinteractor);
+		if(interactor != NULL)
+		{
+			ModuleServices::addModule(interactor);
+		}
+	}
+	return interactor;
 }

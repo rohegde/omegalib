@@ -46,7 +46,8 @@ Container::Container(Engine* server):
 		myGridRows(1),
 		myGridColumns(1)
 {
-
+	// Containers have autosize enabled by default.
+	setAutosize(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -216,8 +217,8 @@ void Container::autosize(Renderer* r)
 	int height = 0;
 	foreach(Widget* w, myChildren)
 	{
-		if(w->getSize(Horizontal) > width) width = w->getSize(Horizontal);
-		if(w->getSize(Vertical) > height) height = w->getSize(Vertical);
+		if(w->getWidth() > width) width = w->getWidth();
+		if(w->getHeight() > height) height = w->getHeight();
 	}
 	if(myLayout == LayoutHorizontal)
 	{
@@ -225,7 +226,7 @@ void Container::autosize(Renderer* r)
 		width *= getNumChildren();
 		foreach(Widget* w, myChildren)
 		{
-			w->setHeight(height);
+			w->setActualSize(height, Vertical);
 		}
 	}
 	else if(myLayout == LayoutVertical)
@@ -234,7 +235,7 @@ void Container::autosize(Renderer* r)
 		height *= getNumChildren();
 		foreach(Widget* w, myChildren)
 		{
-			w->setWidth(width);
+			w->setActualSize(width, Horizontal);
 		}
 	}
 
@@ -254,7 +255,7 @@ void Container::updateChildrenNavigation()
 			w->setHorizontalNextWidget(getChildAfter(w));
 			w->setHorizontalPrevWidget(getChildBefore(w));
 			Container* parent = getContainer();
-			if(parent = NULL)
+			if(parent != NULL)
 			{
 				w->setVerticalNextWidget(parent->getChildAfter(this));
 				w->setVerticalPrevWidget(parent->getChildBefore(this));
@@ -265,7 +266,7 @@ void Container::updateChildrenNavigation()
 			w->setVerticalNextWidget(getChildAfter(w));
 			w->setVerticalPrevWidget(getChildBefore(w));
 			Container* parent = getContainer();
-			if(parent = NULL)
+			if(parent != NULL)
 			{
 				w->setHorizontalNextWidget(parent->getChildAfter(this));
 				w->setHorizontalPrevWidget(parent->getChildBefore(this));
@@ -285,7 +286,7 @@ int Container::expandStep(int availableSpace, Orientation orientation)
 	{
 		int size = w->getSize()[orientation] + childSpace;
 		w->setActualSize(size, orientation);
-		spaceLeft -= w->getSize(orientation);
+		spaceLeft -= (orientation == Horizontal ? w->getWidth(): w->getHeight());
 	}
 	return spaceLeft;
 }
@@ -303,10 +304,12 @@ void Container::updateChildrenLayoutPosition(Orientation orientation)
 	else if((orientation == Horizontal && myHorizontalAlign == AlignRight) ||
 		(orientation == Vertical && myVerticalAlign == AlignBottom))
 	{
-		p = getSize(orientation) - myPadding;
+		float size = (orientation == Horizontal ? getWidth(): getHeight());
+		p = size - myPadding;
 		foreach(Widget* w, myChildren)
 		{
-			p -= (w->getSize(orientation) + myMargin);
+			float csize = (orientation == Horizontal ? w->getWidth(): w->getHeight());
+			p -= (csize + myMargin);
 		}
 	}
 	else
@@ -342,11 +345,15 @@ void Container::updateChildrenFreeBounds(Orientation orientation)
 		else if((orientation == Horizontal && myHorizontalAlign == AlignRight) ||
 			(orientation == Vertical && myVerticalAlign == AlignBottom))
 		{
-			pos = getSize(orientation) - w->getSize(orientation) - myPadding;
+			float size = (orientation == Horizontal ? getWidth(): getHeight());
+			float csize = (orientation == Horizontal ? w->getWidth(): w->getHeight());
+
+			pos = size - csize - myPadding;
 		}
 		else
 		{
-			pos = (available - w->getSize(orientation)) / 2 + myPadding;
+			float csize = (orientation == Horizontal ? w->getWidth(): w->getHeight());
+			pos = (available - csize) / 2 + myPadding;
 		}
 
 		w->setPosition(pos, orientation);
@@ -484,7 +491,15 @@ bool Container::rayToPointerEvent(const Event& inEvt, Event& outEvt)
 	}
 
 	// Intersect the pointer ray with the container 3d plane.
-	Plane plane(my3dSettings.normal, my3dSettings.position);
+	Vector3f pos = my3dSettings.position;
+	if(my3dSettings.center)
+	{
+		float width = getWidth() * my3dSettings.scale;
+		float height = getHeight() * my3dSettings.scale;
+		pos -= Vector3f(width / 2, height / 2, 0);
+	}
+
+	Plane plane(my3dSettings.normal, pos);
 	std::pair<bool, float> result = Math::intersects(r, plane);
 	if(result.first)
 	{
@@ -492,7 +507,7 @@ bool Container::rayToPointerEvent(const Event& inEvt, Event& outEvt)
 		Vector3f intersection = r.getPoint(result.second);
 
 		// Turn the intersection point from world coordinates to pixel, ui coordinates.
-		intersection = my3dSettings.position - intersection;
+		intersection = pos - intersection;
 		
 		Vector3f widthVector = -my3dSettings.up.cross(my3dSettings.normal);
 		Vector3f heightVector = -my3dSettings.up;
@@ -587,7 +602,14 @@ void ContainerRenderable::draw3d(RenderState* state)
 		glColor4ub(255, 255, 255, (GLubyte)(c3ds.alpha * 255));
 
 		glPushMatrix();
-		glTranslatef(c3ds.position[0], c3ds.position[1], c3ds.position[2]);
+		if(!c3ds.center)
+		{
+			glTranslatef(c3ds.position[0], c3ds.position[1], c3ds.position[2]);
+		}
+		else
+		{
+			glTranslatef(c3ds.position[0] - width / 2, c3ds.position[1] - height / 2, c3ds.position[2]);
+		}
 
 		Vector3f downLeft = c3ds.up;
 		Vector3f topRight = downLeft.cross(c3ds.normal);

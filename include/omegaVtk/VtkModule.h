@@ -43,7 +43,11 @@ namespace omegaVtk
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	class OVTK_API VtkModule: public EngineModule
 	{
+	public:
 	friend class VtkAttachPoint;
+		//! Creates and initializes the vtk module singleton.
+		//! If called multiple times, subsequent calls will do nothing.
+		static VtkModule* createAndInitialize();
 	public:
 		VtkModule();
 		~VtkModule();

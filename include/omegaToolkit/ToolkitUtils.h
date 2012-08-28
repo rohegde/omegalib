@@ -36,6 +36,8 @@ namespace omegaToolkit {
 	{
 	public:
 		static Actor* createInteractor(const Setting& s);
+		static Actor* setupInteractor(const String& settingName);
+
 	private:
 		ToolkitUtils() {}
 	};

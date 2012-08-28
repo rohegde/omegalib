@@ -37,6 +37,7 @@ namespace omegaToolkit { namespace ui {
 	{
 		Container3dSettings():
 			enable3d(false),
+			center(false),
 			position(Vector3f::Zero()),
 			normal(Vector3f::UnitZ()), 
 			up(Vector3f::UnitY()),
@@ -50,6 +51,7 @@ namespace omegaToolkit { namespace ui {
 		Vector3f up;
 
 		float alpha;
+		bool center;
 
 		//! The 3d scale is the conversion factor between pixel sizes and world units.
 		//! For example, a 100x300 pixel container with a scale of 0.01 will be drawn as a 

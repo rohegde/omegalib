@@ -34,6 +34,7 @@
 #include "omegaToolkit/SceneEditorModule.h"
 #include "omegaToolkit/UiModule.h"
 #include "omegaToolkit/ui/MenuManager.h"
+#include "omegaToolkit/ToolkitUtils.h"
 
 #ifdef OMEGA_USE_PYTHON
 
@@ -73,18 +74,34 @@ using namespace boost::python;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 BOOST_PYTHON_MODULE(omegaToolkit)
 {
+	// Container
+	PYAPI_ENUM(Container::Layout, ContainerLayout)
+		PYAPI_ENUM_VALUE(Container, LayoutFree)
+		PYAPI_ENUM_VALUE(Container, LayoutHorizontal)
+		PYAPI_ENUM_VALUE(Container, LayoutVertical)
+		//PYAPI_ENUM_VALUE(Container, LayoutGrid)
+		;
+
+	// MenuItem
 	PYAPI_ENUM(MenuItem::Type, MenuItemType)
 		PYAPI_ENUM_VALUE(MenuItem, Button)
 		PYAPI_ENUM_VALUE(MenuItem, Checkbox)
 		PYAPI_ENUM_VALUE(MenuItem, Slider)
 		;
 
+	PYAPI_BASE_CLASS(ToolkitUtils)
+		PYAPI_STATIC_REF_GETTER(ToolkitUtils, createInteractor)
+		PYAPI_STATIC_REF_GETTER(ToolkitUtils, setupInteractor)
+		;
+
+	// MenuManager
 	PYAPI_REF_BASE_CLASS(MenuManager)
 		PYAPI_STATIC_REF_GETTER(MenuManager, createAndInitialize)
 		PYAPI_REF_GETTER(MenuManager, createMenu)
 		PYAPI_METHOD(MenuManager, setMainMenu)
 		;
 
+	// Menu
 	PYAPI_REF_BASE_CLASS(Menu)
 		PYAPI_REF_GETTER(Menu, addItem)
 		;
@@ -102,6 +119,69 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(MenuItem, isChecked)
 		PYAPI_METHOD(MenuItem, setUserTag)
 		PYAPI_GETTER(MenuItem, getUserTag)
+		;
+
+	// Container3dSettings
+	PYAPI_BASE_CLASS(Container3dSettings)
+		PYAPI_PROPERTY(Container3dSettings, enable3d)
+		PYAPI_PROPERTY(Container3dSettings, position)
+		PYAPI_PROPERTY(Container3dSettings, normal)
+		PYAPI_PROPERTY(Container3dSettings, scale)
+		PYAPI_PROPERTY(Container3dSettings, up)
+		PYAPI_PROPERTY(Container3dSettings, alpha)
+		;
+
+	// UiModule
+	PYAPI_REF_BASE_CLASS(UiModule)
+		PYAPI_STATIC_REF_GETTER(UiModule, instance)
+		PYAPI_REF_GETTER(UiModule, getWidgetFactory)
+		;
+
+	// WidgetFactory
+	PYAPI_REF_BASE_CLASS(WidgetFactory)
+		PYAPI_REF_GETTER(WidgetFactory, createButton)
+		PYAPI_REF_GETTER(WidgetFactory, createSlider)
+		PYAPI_REF_GETTER(WidgetFactory, createCheckButton)
+		PYAPI_REF_GETTER(WidgetFactory, createImage)
+		PYAPI_REF_GETTER(WidgetFactory, createLabel)
+		PYAPI_REF_GETTER(WidgetFactory, createContainer)
+		PYAPI_REF_GETTER(WidgetFactory, createPanel)
+		;
+
+	// Widget
+	void (Widget::*setPosition1)(const Vector2f&) = &Widget::setPosition;
+	void (Widget::*setSize1)(const Vector2f&) = &Widget::setSize;
+	PYAPI_REF_BASE_CLASS(Widget)
+		PYAPI_METHOD(Widget, setVisible)
+		PYAPI_METHOD(Widget, isVisible)
+		.def("setPosition", setPosition1)
+		PYAPI_GETTER(Widget, getPosition)
+		.def("setScale", setSize1)
+		PYAPI_GETTER(Widget, getSize)
+		PYAPI_METHOD(Widget, setName)
+		PYAPI_GETTER(Widget, getName)
+		;
+
+	// Container
+	PYAPI_REF_CLASS(Container, Widget)
+		;
+
+	// Button
+	PYAPI_REF_CLASS(Button, Widget)
+		PYAPI_METHOD(Button, getText)
+		PYAPI_METHOD(Button, setText)
+		;
+
+	// Image
+	PYAPI_REF_CLASS(Image, Widget)
+		;
+
+	// Slider
+	PYAPI_REF_CLASS(Slider, Widget)
+		;
+
+	// Label
+	PYAPI_REF_CLASS(Label, Widget)
 		;
 }
 

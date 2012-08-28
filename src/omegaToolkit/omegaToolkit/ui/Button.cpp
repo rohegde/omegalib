@@ -41,6 +41,7 @@ Button::Button(Engine* srv):
 	//myLabel.setText(name);
 	setMaximumHeight(22);
 	myColor = Color(0.2f, 0.2f, 0.2f);
+	setAutosize(true);
 	//setDebugModeEnabled(true);
 }
 
