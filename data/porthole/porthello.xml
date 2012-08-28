@@ -1,1 +1,6 @@
-<input type="button" id="TestButton" name="test" value="Click me" onclick="onClickTest()"/>
+<div>
+  <input type="button" id="TestButton" name="UP" value="UP" onclick="up()"/>
+  <input type="button" id="TestButton2" name="DOWN" value="DOWN" onclick="down()"/>
+  <input type="button" id="TestButton3" name="LEFT" value="LEFT" onclick="left()"/>
+  <input type="button" id="TestButton4" name="RIGHT" value="RIGHT" onclick="right()"/>
+</div>

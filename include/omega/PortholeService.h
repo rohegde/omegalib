@@ -1,9 +1,9 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Donghi Daniele		d.donghi@gmail.com
+ *  Donghi Daniele			d.donghi@gmail.com
  *-------------------------------------------------------------------------------------------------
  * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
@@ -28,8 +28,6 @@
 #ifndef __PORTHOLE_SERVICE_H__
 #define __PORTHOLE_SERVICE_H__
 
-#define PORT 4080
-
 #include "osystem.h"
 #include <string.h>
 #include "websockets/libwebsockets.h"
@@ -51,7 +49,7 @@ namespace omega {
 			funcMap[funcName] = func;
 		}
 
-		void operator()(std::string funcName)
+		void callFunction(std::string funcName)
 		{
 			std::map<std::string, memberFunction>::const_iterator it;
 
@@ -72,12 +70,21 @@ namespace omega {
 	static TiXmlDocument* xmlDoc;
 	static TiXmlPrinter* xmlPrinter;
 
+	// Functions binder
+	static PortholeFunctionsBinder* functionsBinder;
+
 	class OMEGA_API ServerThread: public Thread{
 
 	public:
 
 		// Constructor
 		ServerThread();
+
+		// Set port
+		void setPort(int portNumber); 
+
+		// Set funtions binder
+		void setFunctionsBinder(PortholeFunctionsBinder* binder); 
 
 		// Thread process
 		virtual void threadProc();
@@ -137,7 +144,7 @@ namespace omega {
 
 		// Setup and poll
 		virtual void setup(omicron::Setting& settings);
-		void start(); // Start the server and listen to port
+		void start(int port, PortholeFunctionsBinder* binder); // Start the server and listen to port
 		virtual void poll();
 
 		// Server instance. It will manage the incoming connections

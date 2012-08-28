@@ -34,8 +34,20 @@
 using namespace omega;
 
 // Example function to be binded to a button clicked
-void onClick(){
-	cout << ">>>> Porthello: Button clicked!" << endl;
+void up(){
+	cout << ">>>> Porthello: up" << endl;
+}
+
+void down(){
+	cout << ">>>> Porthello: down" << endl;
+}
+
+void left(){
+	cout << ">>>> Porthello: left" << endl;
+}
+
+void right(){
+	cout << ">>>> Porthello: right" << endl;
 }
 
 class HelloApplication;
@@ -85,15 +97,18 @@ void HelloRenderPass::initialize()
 {
 	RenderPass::initialize();
 
+	// Functions Bind
+	PortholeFunctionsBinder* binder = new PortholeFunctionsBinder();
+	binder->addFunction("up()", &up);
+	binder->addFunction("down()", &down);
+	binder->addFunction("left()", &left);
+	binder->addFunction("right()", &right);
+
 	// Porthole initialize the porthole service
 	PortholeService* service = new PortholeService();
 	ServiceManager* svcManager = SystemManager::instance()->getServiceManager();
 	svcManager->addService(service);
-	service->start();
-
-	// Functions Bind
-	PortholeFunctionsBinder binder;
-	binder.addFunction("onClick()", &onClick);
+	service->start(4080, binder);
 
 	// Initialize cube normals.
 	myNormals[0] = Vector3f(-1, 0, 0);
