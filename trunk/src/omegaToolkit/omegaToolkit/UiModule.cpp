@@ -60,6 +60,7 @@ void UiModule::initialize()
 
 	myWidgetFactory = new ui::DefaultWidgetFactory(getEngine());
 	myUi = new ui::Container(getEngine());
+	myUi->setAutosize(false);
 	myUi->setLayout(ui::Container::LayoutFree);
 	myUi->setUIEventHandler(getEngine());
 

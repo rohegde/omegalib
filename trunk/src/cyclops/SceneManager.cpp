@@ -79,12 +79,13 @@ struct AnimationManagerFinder : public osg::NodeVisitor
     
     AnimationManagerFinder(): am(NULL) {setTraversalMode(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN); } 
     
-    void apply(osg::Node& node) { 
-    
+    void apply(osg::Node& node) 
+	{ 
         if (am != NULL) 
             return; 
     
-        if (node.getUpdateCallback()) {        
+        if (node.getUpdateCallback())
+		{        
             am = dynamic_cast<osgAnimation::BasicAnimationManager*>(node.getUpdateCallback()); 
             return; 
         } 
@@ -93,6 +94,51 @@ struct AnimationManagerFinder : public osg::NodeVisitor
     } 
 }; 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class TextureResizeNonPowerOfTwoHintVisitor : public osg::NodeVisitor
+{
+protected:
+    void setHint(osg::StateSet * stateset)
+	{
+		//TODO: get max texture units from somewhere
+		for(int i = 0; i < 32; i++)
+		{
+			osg::StateAttribute* stateatt = stateset->getTextureAttribute(i, osg::StateAttribute::TEXTURE);
+			if(stateatt)
+			{
+				osg::Texture * texture = stateatt->asTexture();
+				if(texture)	texture->setResizeNonPowerOfTwoHint(_hint);
+			}
+		}
+	}        
+	bool _hint;
+
+public:
+    TextureResizeNonPowerOfTwoHintVisitor(bool hint): osg::NodeVisitor(TRAVERSE_ALL_CHILDREN)
+	{ _hint = hint;	}
+
+    ~TextureResizeNonPowerOfTwoHintVisitor()
+	{}
+
+    virtual void apply(osg::Node& node)
+	{
+		osg::StateSet * stateset = node.getOrCreateStateSet();
+		if(stateset) setHint(stateset);
+		traverse(node);
+	}
+
+    virtual void apply(osg::Geode& node)
+	{
+		osg::StateSet * stateset = node.getOrCreateStateSet();
+		if(stateset) setHint(stateset);
+    
+		for(int i = 0; i < node.getNumDrawables(); i++)
+		{
+			stateset = node.getDrawable(i)->getStateSet();
+			if(stateset) setHint(stateset);
+		}
+	}
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SceneManager* SceneManager::instance() 
@@ -616,6 +662,12 @@ bool SceneManager::loadModel(ModelInfo* info)
 					omsg("Optimizing model");
 					osgUtil::Optimizer optOSGFile;
 					optOSGFile.optimize(node); //, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
+				}
+
+				if(info->usePowerOfTwoTextures)
+				{
+					TextureResizeNonPowerOfTwoHintVisitor potv(true);
+					node->accept(potv);
 				}
 
 				if(info->size != 0.0f)

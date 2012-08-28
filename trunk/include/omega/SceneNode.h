@@ -59,6 +59,7 @@ namespace omega {
 	public:
 //		typedef ChildNode<SceneNode> Child;
 		enum HitType { HitBoundingSphere };
+		static SceneNode* create(const String& name);
 
 	public:
 		SceneNode(Engine* server):

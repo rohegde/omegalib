@@ -50,16 +50,34 @@ protected:
 		String shaderRoot = "cyclops/common";
 		String progName = name;
 
-		//String vertName = ostr("%1%/%2%.vert", %shaderRoot %name);
 		String vertName = ostr("%1%/%2%.vert", %shaderRoot %name);
+
+		//String vertName = ostr("%1%/%2%.vert", %shaderRoot %name);
 		String fragName;
 		if(variant != "")
 		{
-			fragName = ostr("%1%/%2%-%3%.frag", %shaderRoot %name %variant);
+			// If the name already contains a slash do not use the default cyclops shader path: this allows the user to
+			// select custom shaders.
+			if(variant.find('/') != String::npos)
+			{
+				fragName = ostr("%1%.frag", %variant);
+			}
+			else
+			{
+				fragName = ostr("%1%/%2%-%3%.frag", %shaderRoot %name %variant);
+			}
+
 			progName = ostr("%1%-%2%", %name %variant);
 			if(vertexShaderVariant)
 			{
-				vertName = ostr("%1%/%2%-%3%.vert", %shaderRoot %name %variant);
+				if(variant.find('/') != String::npos)
+				{
+					vertName = ostr("%1%.vert", %variant);
+				}
+				else
+				{
+					vertName = ostr("%1%/%2%-%3%.vert", %shaderRoot %name %variant);
+				}
 			}
 		}
 		else

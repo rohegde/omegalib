@@ -67,12 +67,14 @@ using namespace boost::python;
 #define PYAPI_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<copy_const_reference>())
 #define PYAPI_REF_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_smart_ptr>())
 #define PYAPI_STATIC_REF_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_smart_ptr>()).staticmethod(#methodName)
+#define PYAPI_PROPERTY(className, propName) .def_readwrite(#propName, &className::propName)
 
-#define PYAPI_CLASS(className) 	class_<className, boost::noncopyable >(#className, no_init)
-#define PYAPI_CLASS_WITH_CTOR(className) class_<className, boost::noncopyable >(#className)
+#define PYAPI_BASE_CLASS(className) 	class_<className, boost::noncopyable >(#className, no_init)
+#define PYAPI_BASE_CLASS_WITH_CTOR(className) class_<className, boost::noncopyable >(#className)
 
 #define PYAPI_REF_CLASS(className, baseName) class_<className, bases<baseName>, boost::noncopyable, Ref<className> >(#className, no_init)
 #define PYAPI_REF_BASE_CLASS(className) class_<className, boost::noncopyable, Ref<className> >(#className, no_init)
+#define PYAPI_REF_BASE_CLASS_WITH_CTOR(className) class_<className, boost::noncopyable, Ref<className> >(#className)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // SMART POINTER WRAPPING CODE FROM http://isolation-nation.blogspot.com/2008/09/returnbysmartptr-policy-for-boost.html

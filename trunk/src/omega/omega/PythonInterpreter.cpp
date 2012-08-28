@@ -258,7 +258,17 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 	char* str = const_cast<char*>(script.c_str());
 	if(format == NULL)
 	{
-		PyRun_SimpleString(str);
+		// Handle special 'shortcut' commands. Commands starting with a ':' won't be interpreted
+		// using the python interpreter. Instead, we will dispatch them to EngineModule::handleCommand 
+		// methods.
+		if(script.length() > 0 && script[0] == ':')
+		{
+			ModuleServices::handleCommand(script.substr(1, script.length() - 1));
+		}
+		else
+		{
+			PyRun_SimpleString(str);
+		}
 	}
 	else
 	{
@@ -337,17 +347,7 @@ void PythonInterpreter::update(const UpdateContext& context)
 			ofmsg("running %1%", %myInteractiveCommand);
 		}
 
-		// Handle special 'shortcut' commands. Commands starting with a ':' won't be interpreted
-		// using the python interpreter. Instead, we will dispatch them to EngineModule::handleCommand 
-		// methods.
-		if(myInteractiveCommand.length() > 0 && myInteractiveCommand[0] == ':')
-		{
-			ModuleServices::handleCommand(myInteractiveCommand.substr(1, myInteractiveCommand.length() - 1));
-		}
-		else
-		{
-			PyRun_SimpleString(myInteractiveCommand.c_str());
-		}
+		eval(myInteractiveCommand);
 		myInteractiveCommandNeedsExecute = false;
 	}
 	

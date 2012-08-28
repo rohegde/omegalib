@@ -117,7 +117,7 @@ namespace cyclops {
 	struct ModelInfo: public ReferenceType
 	{
 		//! PYAPI
-		ModelInfo(): numFiles(1), size(0.0f), generateNormals(false), normalizeNormals(false), optimize(false)
+		ModelInfo(): numFiles(1), size(0.0f), generateNormals(false), normalizeNormals(false), optimize(false), usePowerOfTwoTextures(true)
 		{}
 
 		ModelInfo(const String name, const String path, float size = 0.0f, int numFiles = 1, bool generateNormals = false, bool normalizeNormals = false)
@@ -143,6 +143,8 @@ namespace cyclops {
 		//! PYAPI
 		bool generateNormals;
 		bool optimize;
+
+		bool usePowerOfTwoTextures;
 		
 		bool normalizeNormals;
 	};

@@ -56,6 +56,10 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_METHOD(SceneManager, setBackgroundColor)
 		PYAPI_METHOD(SceneManager, loadScene)
 		PYAPI_METHOD(SceneManager, unload)
+		PYAPI_METHOD(SceneManager, setSkyBox)
+		PYAPI_METHOD(SceneManager, displayWand)
+		PYAPI_METHOD(SceneManager, setWandEffect)
+		PYAPI_METHOD(SceneManager, setWandSize)
 		;
 
 	// Entity
@@ -116,6 +120,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def_readwrite("path", &ModelInfo::path)
 		.def_readwrite("size", &ModelInfo::size)
 		.def_readwrite("optimize", &ModelInfo::optimize)
+		.def_readwrite("usePowerOfTwoTextures", &ModelInfo::usePowerOfTwoTextures)
 		;
 
 	class_<SkyboxSwitcher, boost::noncopyable, Ref<SkyboxSwitcher> >("SkyboxSwitcher", no_init)
@@ -123,6 +128,12 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def("getNumSkyboxes", &SkyboxSwitcher::getNumSkyboxes)
 		.def("getActiveSkybox", &SkyboxSwitcher::getActiveSkybox)
 		.def("setActiveSkybox", &SkyboxSwitcher::setActiveSkybox)
+		;
+
+	PYAPI_REF_BASE_CLASS_WITH_CTOR(Skybox)
+		PYAPI_METHOD(Skybox, loadCubeMap)
+		PYAPI_METHOD(Skybox, loadPano)
+		PYAPI_METHOD(Skybox, loadStereoPano)
 		;
 
 	// Free Functions

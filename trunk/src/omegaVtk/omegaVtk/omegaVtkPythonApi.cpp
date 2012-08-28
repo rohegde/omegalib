@@ -29,8 +29,10 @@
 #include "omegaVtk/PyVtk.h"
 #include "omega/PythonInterpreter.h"
 #include "omegaVtk/VtkModule.h"
+#include "omega/PythonInterpreterWrapper.h"
 
 using namespace omegaVtk;
+using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 class InitializeViewCommand: public IRendererCommand
@@ -47,20 +49,6 @@ public:
 };
 
 InitializeViewCommand* sInitializeViewCommand = NULL;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-static PyObject* moduleEnableVtk(PyObject* self, PyObject* args)
-{
-	// Create and register the omegalib vtk module.
-	VtkModule* mod = new VtkModule();
-	ModuleServices::addModule(mod);
-
-	// Force module initialization.
-	mod->doInitialize(Engine::instance());
-
-	Py_INCREF(Py_None);
-	return Py_None;
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 static PyObject* queueInitializeView(PyObject* self, PyObject* args)
@@ -99,55 +87,9 @@ static PyObject* attachProp(PyObject* self, PyObject* args)
 	return Py_None;
 }
 
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//static PyObject* ovtk_addButton(PyObject* self, PyObject* args)
-//{
-//	const char* buttonName;
-//	const char* command;
-//	if(!PyArg_ParseTuple(args, "s|s", &buttonName, &command)) return NULL;
-//
-//	//VtkModule::instance()->getActiveEntity()->addButton(buttonName, command);
-//
-//	return Py_BuildValue("s", "ok");
-//}
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//static PyObject* ovtk_addCheckButton(PyObject* self, PyObject* args)
-//{
-//	const char* buttonName;
-//	const char* getValueCommand;
-//	const char* changeValueCommand;
-//	if(!PyArg_ParseTuple(args, "s|s|s", &buttonName, &getValueCommand, &changeValueCommand)) return NULL;
-//
-//	//VtkModule::instance()->getActiveEntity()->addCheckButton(buttonName, getValueCommand, changeValueCommand);
-//
-//	return Py_BuildValue("s", "ok");
-//}
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//static PyObject* ovtk_addSlider(PyObject* self, PyObject* args)
-//{
-//	const char* sliderName;
-//	const char* getValueCommand;
-//	const char* changeValueCommand;
-//	float minValue;
-//	float maxValue;
-//	float step;
-//	if(!PyArg_ParseTuple(args, "s|f|f|f|s|s", &sliderName, &minValue, &maxValue, &step, &getValueCommand, &changeValueCommand)) return NULL;
-//
-//	//VtkModule::instance()->getActiveEntity()->addSlider(sliderName, minValue, maxValue, step, getValueCommand, changeValueCommand);
-//
-//	return Py_BuildValue("s", "ok");
-//}
-//
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 static PyMethodDef ovtkMethods[] = 
 {
-    {"moduleEnableVtk", moduleEnableVtk, METH_VARARGS, 
-		"moduleEnableVtk()\n" 
-		"Enables omegalib vtk support."},
-
     {"attachProp", attachProp, METH_VARARGS, 
 		"attachProp(actor, sceneNode)\n"
 			"Attaches a vtk 3d prop to an omegalib scene node."},
@@ -160,10 +102,25 @@ static PyMethodDef ovtkMethods[] =
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+BOOST_PYTHON_MODULE(omegaVtk)
+{
+	// SceneLoader
+	PYAPI_REF_CLASS(VtkModule)
+		PYAPI_STATIC_REF_GETTER(VtkModule, createAndInitialize)
+		;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void OVTK_API omegaVtkPythonApiInit()
 {
-	omsg("omegaVtkPythonApiInit()");
-	omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-	interp->addModule("omegaVtk", ovtkMethods);
+	static bool sApiInitialized = false;
+
+	if(!sApiInitialized)
+	{
+		omsg("omegaVtkPythonApiInit()");
+		omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+		interp->addModule("omegaVtk", ovtkMethods);
+		initomegaVtk();
+	}
 }
 

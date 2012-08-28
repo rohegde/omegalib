@@ -31,6 +31,7 @@
 #include "omega/PythonInterpreter.h"
 #include "omega/SystemManager.h"
 #include "omega/Engine.h"
+#include "omega/Actor.h"
 
 #ifdef OMEGA_USE_PYTHON
 
@@ -309,6 +310,18 @@ void printObjCounts()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+bool settingExists(const String& settingName)
+{
+	return SystemManager::settingExists(settingName);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const Setting& settingLookup(const String& settingName)
+{
+	return SystemManager::settingLookup(settingName);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 struct Vector3f_to_python
 {
 	static PyObject* convert(Vector3f const& value)
@@ -356,6 +369,56 @@ struct Vector3f_from_python
 		void* storage = (
 			(converter::rvalue_from_python_storage<Vector3f>*)data)->storage.bytes;
 		new (storage) Vector3f(x, y, z);
+		data->convertible = storage;
+	}
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+struct Vector2f_to_python
+{
+	static PyObject* convert(Vector2f const& value)
+	{
+		// If we haven't looked up for the Vector3 class, let's do it now.
+		static PyObject* sVector2Class = NULL;
+		if(sVector2Class == NULL)
+		{
+			PyObject* moduleDict = PyModule_GetDict(sEuclidModule);
+			sVector2Class = PyDict_GetItemString(moduleDict, "Vector2");
+		}
+
+		// Create a new euclid.Vector3 instance using the omega::Vector3f components
+		// as arguments.
+		boost::python::tuple vec = boost::python::make_tuple(value[0], value[1]);
+		PyObject* vector2obj = PyObject_CallObject(sVector2Class, vec.ptr());
+		return incref(vector2obj);
+	}
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+struct Vector2f_from_python
+{
+	Vector2f_from_python()
+	{
+		converter::registry::push_back(&convertible, &construct, type_id<Vector2f>());
+	}
+
+	static void* convertible(PyObject* obj)
+	{
+		// We don't really care if the object is of type Vector3. We just require
+		// it to have x, y attributes.
+		if(!PyObject_HasAttrString(obj, "x") ||
+			!PyObject_HasAttrString(obj, "y")) return 0;
+		return obj;
+	}
+
+	static void construct(PyObject* obj, converter::rvalue_from_python_stage1_data* data)
+	{
+		float x = extract<float>(PyObject_GetAttrString(obj, "x"));
+		float y = extract<float>(PyObject_GetAttrString(obj, "y"));
+
+		void* storage = (
+			(converter::rvalue_from_python_storage<Vector2f>*)data)->storage.bytes;
+		new (storage) Vector2f(x, y);
 		data->convertible = storage;
 	}
 };
@@ -550,13 +613,14 @@ BOOST_PYTHON_MODULE(omega)
 	//PYAPI_POINTER_LIST(Node, "NodeList")
 
 	// SceneNode
-	class_<SceneNode, bases<Node>, Ref<SceneNode>, boost::noncopyable >("SceneNode", no_init)
-		.def("isVisible", &SceneNode::isVisible)
-		.def("setVisible", &SceneNode::setVisible)
-		.def("isSelected", &SceneNode::isSelected)
-		.def("setSelected", &SceneNode::setSelected)
-		.def("isSelectable", &SceneNode::isSelectable)
-		.def("setSelectable", &SceneNode::setSelectable)
+	PYAPI_REF_CLASS(SceneNode, Node)
+		PYAPI_STATIC_REF_GETTER(SceneNode, create)
+		PYAPI_METHOD(SceneNode, isVisible)
+		PYAPI_METHOD(SceneNode, setVisible)
+		PYAPI_METHOD(SceneNode, isSelected)
+		PYAPI_METHOD(SceneNode, setSelected)
+		PYAPI_METHOD(SceneNode, isSelectable)
+		PYAPI_METHOD(SceneNode, setSelectable)
 	;
 
 	// Camera
@@ -579,11 +643,22 @@ BOOST_PYTHON_MODULE(omega)
 	// Color
 	class_<Color>("Color", init<String>());
 
+	// Setting
+	PYAPI_BASE_CLASS(Setting);
+
+	// Actor
+	PYAPI_REF_BASE_CLASS(Actor)
+		PYAPI_METHOD(Actor, setSceneNode)
+		PYAPI_REF_GETTER(Actor, getSceneNode)
+		;
+
 	// Free Functions
 	def("getEvent", getEvent, return_value_policy<reference_existing_object>());
 	def("getEngine", getEngine, PYAPI_RETURN_POINTER);
 	def("printChildren", &printChildren);
 	def("printObjCounts", &printObjCounts);
+	def("settingLookup", &settingLookup, PYAPI_RETURN_VALUE);
+	def("settingExists", &settingExists);
 };
 
 // Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)
@@ -608,6 +683,10 @@ void omegaPythonApiInit()
 	// Register omega::Vector3f <-> euclid.Vector3 converters
 	boost::python::to_python_converter<Vector3f, Vector3f_to_python>();
 	Vector3f_from_python();
+
+	// Register omega::Vector2f <-> euclid.Vector2 converters
+	boost::python::to_python_converter<Vector2f, Vector2f_to_python>();
+	Vector2f_from_python();
 
 	// Register omega::Quaternion <-> euclid.Quaternion converters
 	boost::python::to_python_converter<Quaternion, Quaternion_to_python>();

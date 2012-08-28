@@ -68,14 +68,14 @@ namespace omegaToolkit { namespace ui {
         void setDebugModeEnabled(bool value) { myDebugModeEnabled = value; }
 
         //! Returns the widget name.
-        String getName();
+        const String& getName();
         //! Sets the widget name.
         void setName(const String& name);
 
         //! Position and rotation
         //@{
         //! Gets the widget position.
-        Vector2f& getPosition() { return myPosition; }
+        const Vector2f& getPosition() { return myPosition; }
         //! Sets the widget position
         void setPosition(const omega::Vector2f& value) { myPosition = value; }
         void setPosition(int value, int dimension) { myPosition[dimension] = value; }
@@ -94,16 +94,16 @@ namespace omegaToolkit { namespace ui {
         //! Size constraints
         //@{
         //! Gets the widget size
-        Vector2f& getSize();
-        float getSize(Orientation orientation);
+        const Vector2f& getSize();
+        //float getSize(Orientation orientation);
         float getWidth();
         float getHeight();
         //! Sets the widget size.
         void setSize(const Vector2f& value);
         void setWidth(float value);
         void setHeight(float value);
-        Vector2f& getMinimumSize();
-        Vector2f& getMaximumSize();
+        const Vector2f& getMinimumSize();
+        const Vector2f& getMaximumSize();
         void setMinimumSize(const Vector2f& value);
         int getMinimumWidth();
         int getMinimumHeight();
@@ -256,7 +256,7 @@ namespace omegaToolkit { namespace ui {
     };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    inline String Widget::getName() 
+    inline const String& Widget::getName() 
     { return myName; }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -283,14 +283,14 @@ namespace omegaToolkit { namespace ui {
     { return myAutosize; }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    inline Vector2f& Widget::getSize() 
+    inline const Vector2f& Widget::getSize() 
     { return mySize; }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    inline float Widget::getSize(Orientation orientation)
-    {
-        return mySize[orientation];
-    }
+    //inline float Widget::getSize(Orientation orientation)
+    //{
+    //    return mySize[orientation];
+    //}
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     inline float Widget::getWidth()
@@ -328,11 +328,11 @@ namespace omegaToolkit { namespace ui {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    inline Vector2f& Widget::getMinimumSize() 
+    inline const Vector2f& Widget::getMinimumSize() 
     { return myMinimumSize; }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    inline Vector2f& Widget::getMaximumSize() 
+    inline const Vector2f& Widget::getMaximumSize() 
     { return myMaximumSize; }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
