@@ -39,7 +39,7 @@ StaticObject::StaticObject(SceneManager* scene, const String& modelName):
 	Entity(scene)
 {
 	myModel = scene->getModel(modelName);
-	if(myModel != NULL)
+	if(myModel != NULL && myModel->nodes.size() > 0)
 	{
 		initialize(myModel->nodes[0]);
 	}

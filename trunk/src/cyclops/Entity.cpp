@@ -41,6 +41,9 @@ Entity::Entity(SceneManager* scene):
 		mySceneManager(scene),
 		myOsgNode(NULL),
 		myEffect(NULL),
+		myStateSet(NULL),
+		myAlphaUniform(NULL),
+		myAlpha(1.0f),
 		myOsgSceneObject(NULL)
 {
 	myEffect = new EffectNode();
@@ -64,11 +67,43 @@ void Entity::initialize(osg::Node* node)
 	myOsgSceneObject = new OsgSceneObject(myOsgNode);
 	myEffect->addChild(myOsgSceneObject->getTransformedNode());
 
+	myStateSet = myOsgNode->getOrCreateStateSet();
+	myAlphaUniform = new osg::Uniform("unif_Alpha", myAlpha);
+	myStateSet->addUniform(myAlphaUniform);
+
 	// OsgSceneObject is the 'glue point' between an osg Node and an omegalib scene node.
 	addObject(myOsgSceneObject);
 
 	// Now add this drawable object to the scene.
 	mySceneManager->addEntity(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::setAlpha(float value)
+{
+	myAlpha = value;
+	if(myAlphaUniform != NULL)
+	{
+		myAlphaUniform->set(myAlpha);
+		if(myAlpha < 1.0)
+		{
+			if(myStateSet->getRenderingHint() == osg::StateSet::OPAQUE_BIN)
+			{
+				ofmsg("Entity::setAlpha: entity %1% switched to transparent bin", %getName());
+			}
+			myStateSet->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+			myStateSet->setMode(GL_BLEND, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+		}
+		else
+		{
+			if(myStateSet->getRenderingHint() == osg::StateSet::TRANSPARENT_BIN)
+			{
+				ofmsg("Entity::setAlpha: entity %1% switched to opaque bin", %getName());
+			}
+			myStateSet->setRenderingHint(osg::StateSet::OPAQUE_BIN);
+			myStateSet->setMode(GL_BLEND, osg::StateAttribute::OFF);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

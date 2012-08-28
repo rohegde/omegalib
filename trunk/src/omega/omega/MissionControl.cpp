@@ -60,7 +60,7 @@ void MissionControlConnection::handleData()
 		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
 		if(interp != NULL)
 		{
-			interp->queueInteractiveCommand(command);
+			interp->queueCommand(command);
 		}
 	}
 	//if(!strncmp(header, "help", 4)) 

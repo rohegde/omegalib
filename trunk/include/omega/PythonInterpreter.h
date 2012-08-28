@@ -23,10 +23,6 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *-------------------------------------------------------------------------------------------------
- * Original code Copyright (c) Kitware, Inc.
- * All rights reserved.
- * See Copyright.txt or http://www.paraview.org/HTML/Copyright.html for details.
  *************************************************************************************************/
 #ifndef __PYTHON_INTERPRETER_H__
 #define __PYTHON_INTERPRETER_H__
@@ -71,7 +67,10 @@ namespace omega
 		void addModule(const char* name, PyMethodDef* methods, const Dictionary<String, int> intConstants, const Dictionary<String, String> stringConstants);
 		void eval(const String& script, const char* format = NULL, ...);
 		void runFile(const String& filename);
-		void queueInteractiveCommand(const String& command);
+
+		//! Queues a command for execution. If the local flag is set, the command will be executed only on
+		//! the local node.
+		void queueCommand(const String& command, bool local = false);
 
 		void registerCallback(void* callback, CallbackType type);
 		void unregisterAllCallbacks();

@@ -44,6 +44,7 @@
 #include <omegaOsg.h>
 #include <omegaToolkit.h>
 
+class ModelLoaderThread;
 namespace cyclops {
 	using namespace omega;
 	using namespace omegaOsg;
@@ -117,7 +118,7 @@ namespace cyclops {
 	struct ModelInfo: public ReferenceType
 	{
 		//! PYAPI
-		ModelInfo(): numFiles(1), size(0.0f), generateNormals(false), normalizeNormals(false), optimize(false), usePowerOfTwoTextures(true)
+		ModelInfo(): numFiles(1), size(0.0f), generateNormals(false), normalizeNormals(false), optimize(false), usePowerOfTwoTextures(true), buildKdTree(false)
 		{}
 
 		ModelInfo(const String name, const String path, float size = 0.0f, int numFiles = 1, bool generateNormals = false, bool normalizeNormals = false)
@@ -145,6 +146,7 @@ namespace cyclops {
 		bool optimize;
 
 		bool usePowerOfTwoTextures;
+		bool buildKdTree;
 		
 		bool normalizeNormals;
 	};
@@ -205,7 +207,6 @@ namespace cyclops {
 		}
 	};
 
-
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
 	class CY_API SceneManager: public EngineModule
@@ -213,6 +214,7 @@ namespace cyclops {
 	friend class Entity;
 	friend class Light;
 	public:
+		typedef AsyncTask< pair< Ref<ModelInfo>, bool > > LoadModelAsyncTask;
 		typedef Dictionary<String, String> ShaderMacroDictionary;
 		enum AssetType { ModelAssetType };
 
@@ -246,6 +248,8 @@ namespace cyclops {
 		//! Model Management
 		//@{
 		bool loadModel(ModelInfo* info);
+		LoadModelAsyncTask* loadModelAsync(ModelInfo* info);
+		void loadModelAsync(ModelInfo* info, const String& callback);
 		ModelAsset* getModel(const String& name);
 		const List< Ref<ModelAsset> >& getModels();
 		//@}
@@ -318,6 +322,7 @@ namespace cyclops {
 		// Model data (stored as dictionary and list for convenience)
 		Dictionary<String, Ref<ModelAsset> > myModelDictionary;
 		List< Ref<ModelAsset> > myModelList;
+		ModelLoaderThread* myModelLoaderThread;
 
 		Dictionary<String, Ref<osg::Texture2D> > myTextures;
 		Dictionary<String, Ref<ProgramAsset> > myPrograms;

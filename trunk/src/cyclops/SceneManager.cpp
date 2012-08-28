@@ -47,6 +47,47 @@ SceneManager* SceneManager::mysInstance = NULL;
 	const int SceneManager::MaxLights;
 #endif
 
+Lock sModelQueueLock;
+Queue< Ref<SceneManager::LoadModelAsyncTask> > sModelQueue;
+bool sShutdownLoaderThread = false;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class ModelLoaderThread: public Thread
+{
+public:
+	ModelLoaderThread(SceneManager* mng): mySceneManager(mng)
+	{}
+
+	virtual void threadProc()
+	{
+		omsg("ModelLoaderThread: start");
+
+		while(!sShutdownLoaderThread)
+		{
+			if(sModelQueue.size() > 0)
+			{
+				sModelQueueLock.lock();
+
+				Ref<SceneManager::LoadModelAsyncTask> task = sModelQueue.front();
+				sModelQueue.pop();
+
+				bool res = mySceneManager->loadModel(task->getData().first);
+				task->getData().second = res;
+
+				task->notifyComplete();
+
+				sModelQueueLock.unlock();
+			}
+			osleep(100);
+		}
+
+		omsg("ModelLoaderThread: shutdown");
+	}
+
+private:
+	SceneManager* mySceneManager;
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Light* Light::create()
 {
@@ -180,12 +221,23 @@ SceneManager::SceneManager():
 
 	myOsg = new OsgModule();
 	ModuleServices::addModule(myOsg);
+
+	myModelLoaderThread = NULL;
+	sShutdownLoaderThread = false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SceneManager::~SceneManager()
 {
 	mysInstance = NULL;
+
+	if(myModelLoaderThread != NULL)
+	{
+		sShutdownLoaderThread = true;
+		myModelLoaderThread->stop();
+		delete myModelLoaderThread;
+		myModelLoaderThread = NULL;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,6 +291,9 @@ void SceneManager::initialize()
 	setShaderMacroToFile("fsinclude envMap", "cyclops/common/envMap/noEnvMap.frag");
 
 	resetShadowSettings(myShadowSettings);
+
+	myModelLoaderThread = new ModelLoaderThread(this);
+	myModelLoaderThread->start();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -254,6 +309,12 @@ void SceneManager::dispose()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::unload()
 {
+	sShutdownLoaderThread = true;
+	myModelLoaderThread->stop();
+	ofmsg("SceneManager::unload: emptying load queue (%1% queued items)", %sModelQueue.size());
+	while(!sModelQueue.empty()) sModelQueue.pop();
+	sShutdownLoaderThread = false;
+
 	ofmsg("SceneManager::unload: releasing %1% models", %myModelList.size());
 	myModelList.clear();
 	myModelDictionary.clear();
@@ -626,6 +687,24 @@ void SceneManager::setBackgroundColor(const Color& color)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+SceneManager::LoadModelAsyncTask* SceneManager::loadModelAsync(ModelInfo* info)
+{
+	sModelQueueLock.lock();
+	LoadModelAsyncTask* task = new LoadModelAsyncTask();
+	task->setData( LoadModelAsyncTask::Data(info, true) );
+	sModelQueue.push(task);
+	sModelQueueLock.unlock();
+	return task;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::loadModelAsync(ModelInfo* info, const String& callback)
+{
+	LoadModelAsyncTask* task = loadModelAsync(info);
+	task->setCompletionCommand(callback);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool SceneManager::loadModel(ModelInfo* info)
 {
 	ModelAsset* asset = new ModelAsset();
@@ -653,6 +732,15 @@ bool SceneManager::loadModel(ModelInfo* info)
 			ofmsg("Loading model %1%", %filePath);
 			osgDB::Options* options = new osgDB::Options; 
 			options->setOptionString("noTesselateLargePolygons noTriStripPolygons noRotation"); 
+
+			if(info->buildKdTree)
+			{
+				osgDB::Registry::instance()->setBuildKdTreesHint(osgDB::ReaderWriter::Options::BUILD_KDTREES);
+			}
+			else
+			{
+				osgDB::Registry::instance()->setBuildKdTreesHint(osgDB::ReaderWriter::Options::DO_NOT_BUILD_KDTREES);
+			}
 
 			osg::Node* node = osgDB::readNodeFile(assetPath, options);
 			if(node != NULL)

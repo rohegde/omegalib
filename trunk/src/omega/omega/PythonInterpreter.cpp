@@ -23,16 +23,14 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *-------------------------------------------------------------------------------------------------
- * Original code Copyright (c) Kitware, Inc.
- * All rights reserved.
- * See Copyright.txt or http://www.paraview.org/HTML/Copyright.html for details.
  *************************************************************************************************/
 #include "omega/PythonInterpreter.h"
 #include "omega/SystemManager.h"
 #include "omega/ModuleServices.h"
 
 using namespace omega;
+
+const Event* PythonInterpreter::mysLastEvent = NULL;
 
 #ifdef OMEGA_USE_PYTHON
 
@@ -54,8 +52,6 @@ using namespace omega;
 void omegaPythonApiInit();
 
 //PyThreadState* sMainThreadState;
-
-const Event* PythonInterpreter::mysLastEvent = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class PythonInteractiveThread: public Thread
@@ -90,7 +86,7 @@ public:
 			
 			//ofmsg("line read: %1%", %line);
 
-			interp->queueInteractiveCommand(line);
+			interp->queueCommand(line);
 		}
 		omsg("Ending console interactive thread");
 	}
@@ -367,7 +363,7 @@ void PythonInterpreter::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::queueInteractiveCommand(const String& command)
+void PythonInterpreter::queueCommand(const String& command, bool local)
 {
 	//oassert(!myInteractiveCommandNeedsExecute && 
 	//	!myInteractiveCommandNeedsSend);
@@ -376,7 +372,7 @@ void PythonInterpreter::queueInteractiveCommand(const String& command)
 
 	myInteractiveCommandLock.lock();
 	myInteractiveCommandNeedsExecute = true;
-	myInteractiveCommandNeedsSend = true;
+	myInteractiveCommandNeedsSend = !local;
 	myInteractiveCommand = command;
 	myInteractiveCommandLock.unlock();
 }
@@ -492,10 +488,7 @@ void PythonInterpreter::commitSharedData(SharedOStream& out) {}
 void PythonInterpreter::updateSharedData(SharedIStream& in) {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::queueInteractiveCommand(const String& command) {}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-String PythonInterpreter::getHelpString(const String& filter) { return ""; }
+void PythonInterpreter::queueCommand(const String& command, bool local) {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::unregisterAllCallbacks() {}
