@@ -28,6 +28,7 @@
 #include "omegaConfig.h"
 #include "omega/ApplicationBase.h"
 #include "omega/Application.h"
+#include "omega/AsyncTask.h"
 #include "omega/DisplaySystem.h"
 #include "omega/EventSharingModule.h"
 #include "omega/GpuBuffer.h"

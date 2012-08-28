@@ -83,6 +83,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/Actor.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Application.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ApplicationBase.h
+		${OmegaLib_SOURCE_DIR}/include/omega/AsyncTask.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Camera.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CameraController.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CameraOutput.h

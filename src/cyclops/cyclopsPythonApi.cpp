@@ -49,10 +49,12 @@ BOOST_PYTHON_MODULE(cyclops)
 		;
 
 	// SceneManager
+	void (SceneManager::*loadModelAsync1)(ModelInfo*, const String&) = &SceneManager::loadModelAsync;
 	PYAPI_REF_BASE_CLASS(SceneManager)
 		PYAPI_METHOD(SceneManager, setMainLight)
 		PYAPI_REF_GETTER(SceneManager, getMainLight)
 		PYAPI_METHOD(SceneManager, loadModel)
+		.def("loadModelAsync", loadModelAsync1)
 		PYAPI_METHOD(SceneManager, setBackgroundColor)
 		PYAPI_METHOD(SceneManager, loadScene)
 		PYAPI_METHOD(SceneManager, unload)
@@ -66,6 +68,8 @@ BOOST_PYTHON_MODULE(cyclops)
 	PYAPI_REF_CLASS(Entity, SceneNode)
 		PYAPI_METHOD(Entity, hasEffect)
 		PYAPI_METHOD(Entity, setEffect)
+		PYAPI_METHOD(Entity, getAlpha)
+		PYAPI_METHOD(Entity, setAlpha)
 		;
 
 	// SphereShape

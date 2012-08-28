@@ -296,7 +296,7 @@ void OmegaViewer::initialize()
 	if(sDefaultScript != "")
 	{
 		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-		interp->queueInteractiveCommand(ostr("orun(\"%1%\")", %sDefaultScript));
+		interp->queueCommand(ostr("orun(\"%1%\")", %sDefaultScript));
 	}
 
 	myAppDrawer->initialize();

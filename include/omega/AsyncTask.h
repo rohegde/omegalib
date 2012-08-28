@@ -24,65 +24,53 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __CY_DRAWABLE_OBJECT__
-#define __CY_DRAWABLE_OBJECT__
+#ifndef __ASYNC_TASK__
+#define __ASYNC_TASK__
 
-#include "cyclopsConfig.h"
-#include "EffectNode.h"
+#include "osystem.h"
+#include "omega/SystemManager.h"
+#include "omega/PythonInterpreter.h"
 
-#include <osg/Group>
-
-#define OMEGA_NO_GL_HEADERS
-#include <omega.h>
-#include <omegaOsg.h>
-#include <omegaToolkit.h>
-
-namespace cyclops {
-	using namespace omega;
-	using namespace omegaOsg;
-
-	class SceneManager;
-
+namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! PYAPI
-	class CY_API Entity: public SceneNode
+	template<typename T>
+	class AsyncTask: public ReferenceType
 	{
 	public:
-		Entity(SceneManager* scene);
+		typedef T Data;
 
-		// Function called each frame to update the entity state.
-		virtual void update(const UpdateContext& context) {}
+	public:
+		AsyncTask(): myProgress(0), myComplete(false) {}
 
-		osg::Node* getOsgNode() { return myEffect; }
-		//SceneNode* getSceneNode() { return mySceneNode; }
+		T& getData() { return myData; }
+		void setData(const T& data) { myData = data; }
 
-		void setTag(const String& value) { myTag = value; }
-		const String& getTag() { return myTag; } 
+		bool isComplete() { return myComplete; }
+		int getProgress() { return myProgress; }
+		void setProgress(int value) { myProgress = value; }
 
-		bool hasEffect();
-		void setEffect(const String& effectDefinition);
+		void  notifyComplete()
+		{
+			myProgress = 100;
+			myComplete = true;
 
-		void setAlpha(float value);
-		float getAlpha() { return myAlpha; }
+			if(myCompletionCommand.size() > 0)
+			{
+				PythonInterpreter* pi = SystemManager::instance()->getScriptInterpreter();
+				// Queue a script command for execution on the main thread.
+				pi->queueCommand(myCompletionCommand, true);
+			}
+		}
 
-	protected:
-		void initialize(osg::Node* node);
+		void setCompletionCommand(const String& cmd) { myCompletionCommand = cmd; }
+		const String& getCompletionCommand() { return myCommand; }
 
 	private:
-		SceneManager* mySceneManager;
-
-		String myTag;
-
-		osg::StateSet* myStateSet;
-		osg::Uniform* myAlphaUniform;
-		float myAlpha;
-
-		osg::Node* myOsgNode;
-		//SceneNode* mySceneNode;
-		OsgSceneObject* myOsgSceneObject;
-
-		EffectNode* myEffect;
+		T myData;
+		bool myComplete;
+		int myProgress;
+		String myCompletionCommand;
 	};
-};
+}; // namespace omega
 
 #endif
