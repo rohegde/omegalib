@@ -43,6 +43,7 @@
 #include <vtksys/ios/sstream>
 #include <vtkstd/map>
 #include <vtkstd/string>
+#include <vtksys/cstddef>
 
 // Silent warning like
 // "dereferencing type-punned pointer will break strict-aliasing rules"

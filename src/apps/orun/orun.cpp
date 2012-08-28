@@ -319,7 +319,8 @@ void OmegaViewer::update(const UpdateContext& context)
 void OmegaViewer::handleEvent(const Event& evt)
 {
 	// '`' key toggles app drawer.
-	if(evt.isKeyDown(KC_HOME))
+	if(evt.isKeyDown(KC_HOME) || 
+			evt.isButtonDown(Event::Button3))
 	{
 		if(myAppDrawer->isVisible()) myAppDrawer->hide();
 		else  myAppDrawer->show();

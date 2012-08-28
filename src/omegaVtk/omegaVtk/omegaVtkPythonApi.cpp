@@ -105,7 +105,7 @@ static PyMethodDef ovtkMethods[] =
 BOOST_PYTHON_MODULE(omegaVtk)
 {
 	// SceneLoader
-	PYAPI_REF_CLASS(VtkModule)
+	PYAPI_REF_BASE_CLASS(VtkModule)
 		PYAPI_STATIC_REF_GETTER(VtkModule, createAndInitialize)
 		;
 }

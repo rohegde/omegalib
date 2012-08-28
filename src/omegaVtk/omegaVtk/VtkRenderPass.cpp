@@ -91,9 +91,12 @@ void VtkRenderPass::resetPropQueues()
 	for(int i = 0; i < NumQueues; i++) myPropQueueSize[i] = 0;
 }
 
+Lock sLock;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkRenderPass::render(Renderer* mng, const DrawContext& context)
 {
+sLock.lock();
 	if(context.task == DrawContext::SceneDrawTask)
 	{
 		//RenderState state;
@@ -137,4 +140,5 @@ void VtkRenderPass::render(Renderer* mng, const DrawContext& context)
 		glPopAttrib();
 		glPopMatrix();
 	}
+sLock.unlock();
 }
