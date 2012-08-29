@@ -98,7 +98,7 @@ void ConsoleRenderable::draw(RenderState* state)
 	float x = 0; 
 	float y = 0;
 	float lineHeight = fi.size + 4;
-	float lineWidth = SystemManager::instance()->getDisplaySystem()->getCanvasSize().x(); 
+	float lineWidth = fi.size * 100; //SystemManager::instance()->getDisplaySystem()->getCanvasSize().x(); 
 
 	getRenderer()->drawRect(Vector2f(0, 0), Vector2f(lineWidth, lineHeight * (myOwner->myLines + 1)), myOwner->myBackgroundColor);
 

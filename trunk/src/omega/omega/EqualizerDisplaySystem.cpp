@@ -580,6 +580,9 @@ void EqualizerDisplaySystem::killCluster()
 			}
 		}
 	}
+	
+	// kindof hack but it works: kill master instance.
+	olaunch(ostr("killall %1%", %SystemManager::instance()->getApplication()->getName()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
