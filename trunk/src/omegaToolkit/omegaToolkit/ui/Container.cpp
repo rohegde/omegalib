@@ -666,7 +666,9 @@ void ContainerRenderable::draw(RenderState* state)
 		{
 			if(myOwner->get3dSettings().enable3d)
 			{
-				if(myRenderTarget == NULL)
+				if(myRenderTarget == NULL || 
+					myTexture->getWidth() != myOwner->getWidth() ||
+					myTexture->getHeight() != myOwner->getHeight())
 				{
 					myTexture = new Texture(state->context->gpuContext);
 					myTexture->initialize(myOwner->getWidth(), myOwner->getHeight());
