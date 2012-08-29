@@ -198,6 +198,7 @@ void Renderer::innerDraw(const DrawContext& context)
 
 		getRenderer()->beginDraw2D(context);
 
+		
 		if(myServer->isConsoleEnabled())
 		{
 			myServer->getConsole()->getRenderable(this)->draw(&state);

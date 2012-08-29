@@ -160,6 +160,7 @@ namespace omega
 				// otherwise, disable logging.
 				if(logRemoteNodes)
 				{
+					omsg("Remote node logging enabled");
 					String hostLogFilename = masterHostname + "-" + logFilename;
 					ologopen(hostLogFilename.c_str());
 				}

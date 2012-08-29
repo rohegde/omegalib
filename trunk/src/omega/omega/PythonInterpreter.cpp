@@ -371,7 +371,10 @@ void PythonInterpreter::queueCommand(const String& command, bool local)
 	//oassert(!myInteractiveCommandNeedsExecute && 
 	//	!myInteractiveCommandNeedsSend);
 	
-	//ofmsg("Queuing command %1%", %command);
+	if(myInteractiveCommandNeedsExecute)
+	{
+		ofwarn("Command already queued! Previous: %1% New: %2%", %myInteractiveCommand %command);
+	}
 
 	myInteractiveCommandLock.lock();
 	myInteractiveCommandNeedsExecute = true;
@@ -391,10 +394,23 @@ void PythonInterpreter::commitSharedData(SharedOStream& out)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::updateSharedData(SharedIStream& in)
 {
-	in >> myInteractiveCommandNeedsExecute;
-	if(myInteractiveCommandNeedsExecute)
+	bool interactiveCommandReceived;
+	String interactiveCommand;
+	
+	in >> interactiveCommandReceived;
+	if(interactiveCommandReceived)
 	{
-		in >> myInteractiveCommand;
+		in >> interactiveCommand;
+	}
+	
+	if(myInteractiveCommandNeedsExecute && interactiveCommandReceived)
+	{
+		ofwarn("Command conflict: local %1% received %2%", %myInteractiveCommand %interactiveCommand);
+	}
+	else if(interactiveCommandReceived)
+	{
+		myInteractiveCommandNeedsExecute = true;
+		myInteractiveCommand = interactiveCommand;
 	}
 }
 
