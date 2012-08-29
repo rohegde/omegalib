@@ -63,7 +63,7 @@ namespace omega {
 		}
 
 		void setCompletionCommand(const String& cmd) { myCompletionCommand = cmd; }
-		const String& getCompletionCommand() { return myCommand; }
+		const String& getCompletionCommand() { return myCompletionCommand; }
 
 	private:
 		T myData;
