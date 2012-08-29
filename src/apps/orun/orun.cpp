@@ -261,7 +261,7 @@ void AppDrawer::hide()
 
 	myVisible = false;
 	myContainer->setEnabled(false);
-	myContainer->setDebugModeEnabled(true);
+	//myContainer->setDebugModeEnabled(true);
 
 	UiModule::instance()->activateWidget(NULL);
 
