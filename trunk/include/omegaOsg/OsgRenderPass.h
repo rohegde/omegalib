@@ -58,7 +58,7 @@ namespace omegaOsg
 
 	private:
 		OsgModule* myModule;
-		SceneView* mySceneView;
+		Ref<SceneView> mySceneView;
 		
 		// Statistics
 		Stat* myTriangleCountStat;

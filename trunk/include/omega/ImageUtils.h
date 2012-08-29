@@ -29,8 +29,7 @@
 
 #include "osystem.h"
 #include "omega/PixelData.h"
-
-
+#include "omega/AsyncTask.h"
 
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,6 +38,19 @@ namespace omega {
 	{
 	public:
 		enum ImageFormat { FormatPng };
+
+		struct LoadImageAsyncTaskData
+		{
+			LoadImageAsyncTaskData() {}
+			LoadImageAsyncTaskData(const String& _path, bool _isFullPath):
+				path(_path), isFullPath(_isFullPath) {}
+				
+			Ref<PixelData> image;
+			String path;
+			bool isFullPath;
+		};
+
+		typedef AsyncTask<LoadImageAsyncTaskData> LoadImageAsyncTask;
 	public:
 		//! Preallocated memory management
 		//@{
@@ -56,6 +68,9 @@ namespace omega {
 
 		//! Load an image from a file.
 		static Ref<PixelData> loadImage(const String& filename, bool hasFullPath = false);
+		//! Load image from a file (async)
+		static LoadImageAsyncTask* loadImageAsync(const String& filename, bool hasFullPath = false);
+
 		static ByteArray* encode(PixelData* data, ImageFormat format);
 
 		static void internalInitialize();
@@ -65,6 +80,7 @@ namespace omega {
 		static Vector<void*> sPreallocBlocks;
 		static size_t sPreallocBlockSize;
 		static int sLoadPreallocBlock;
+		static Thread* sImageLoaderThread;
 
 	private:
 		ImageUtils() {}

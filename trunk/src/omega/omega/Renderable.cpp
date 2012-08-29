@@ -43,49 +43,31 @@ void RenderableCommand::execute(Renderer* r)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderable::Renderable():
-	myClient(NULL),
-	myDisposeCommand(NULL),
-	myInitializeCommand(NULL),
-	myRefreshCommand(NULL)
+	myClient(NULL)
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderable::~Renderable()
 {
-	myDisposeCommand = NULL;
-	myInitializeCommand = NULL;
-	myRefreshCommand = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void Renderable::postDisposeCommand()
 {
-	if(myDisposeCommand == NULL)
-	{
-		myDisposeCommand = new RenderableCommand(this, RenderableCommand::Dispose);
-	}
-	myClient->queueCommand(myDisposeCommand);
+	myClient->queueCommand(new RenderableCommand(this, RenderableCommand::Dispose));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void Renderable::postInitializeCommand()
 {
-	if(myInitializeCommand == NULL)
-	{
-		myInitializeCommand = new RenderableCommand(this, RenderableCommand::Initialize);
-	}
-	myClient->queueCommand(myInitializeCommand);
+	myClient->queueCommand(new RenderableCommand(this, RenderableCommand::Initialize));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void Renderable::postRefreshCommand()
 {
-	if(myRefreshCommand == NULL)
-	{
-		myRefreshCommand = new RenderableCommand(this, RenderableCommand::Refresh);
-	}
-	myClient->queueCommand(myRefreshCommand);
+	myClient->queueCommand(new RenderableCommand(this, RenderableCommand::Refresh));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

@@ -272,9 +272,9 @@ Node* Node::getChild(unsigned short index) const
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Node* Node::removeChild(unsigned short index)
+void Node::removeChild(unsigned short index)
 {
-    Node* ret;
+    Ref<Node> ret;
     if (index < mChildren.size())
     {
         ChildNodeMap::iterator i = mChildren.begin();
@@ -286,18 +286,17 @@ Node* Node::removeChild(unsigned short index)
         mChildren.erase(i);
 		mChildrenList.remove(i->second.get());
         ret->setParent(NULL);
-        return ret;
     }
     else
     {
         owarn("Child index out of bounds.");
     }
-    return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Node* Node::removeChild(Node* child)
+void Node::removeChild(Node* child)
 {
+	Ref<Node> tempRef = child;
     if (child)
     {
         ChildNodeMap::iterator i = mChildren.find(child->getName());
@@ -312,7 +311,6 @@ Node* Node::removeChild(Node* child)
             child->setParent(NULL);
         }
     }
-    return child;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -665,7 +663,7 @@ Node* Node::getChild(const String& name) const
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Node* Node::removeChild(const String& name)
+void Node::removeChild(const String& name)
 {
     ChildNodeMap::iterator i = mChildren.find(name);
 
@@ -674,16 +672,12 @@ Node* Node::removeChild(const String& name)
 		owarn(String("Child node named " + name + " does not exist.").c_str());
     }
 
-    Node* ret = i->second.get();
+    Ref<Node> ret = i->second.get();
     // Cancel any pending update
     cancelUpdate(ret);
 
     mChildren.erase(i);
     ret->setParent(NULL);
-
-    return ret;
-
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

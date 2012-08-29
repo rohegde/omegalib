@@ -103,6 +103,8 @@ class OmegaViewer: public EngineModule
 {
 public:
 	OmegaViewer();
+	~OmegaViewer()
+	{}
 
 	virtual void initialize();
 	void update(const UpdateContext& context);
@@ -338,7 +340,17 @@ void OmegaViewer::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OmegaViewer::run(const String& appName)
 {
-	String baseName = appName + "/" + appName;
+	String baseName;
+	// If appName is a path, treat it differently than just an application name.
+	if(appName.find('/') != String::npos)
+	{
+		baseName = appName;
+	}
+	else
+	{
+		baseName = appName + "/" + appName;
+	}
+
 	String scriptName = baseName + ".py";
 	String cfgName = baseName + ".cfg";
 
@@ -433,7 +445,7 @@ void OmegaViewer::handleCommand(const String& cmd)
 	else if(args[0] == "q")
 	{
 		// q: quit
-		oexit(0);
+		SystemManager::instance()->postExitRequest();
 	}
 }
 

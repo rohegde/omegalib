@@ -55,7 +55,6 @@ OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node), myInitialized(fal
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgSceneObject::~OsgSceneObject()
 {
-	myTransform->unref();
 	myTransform = NULL;
 }
 

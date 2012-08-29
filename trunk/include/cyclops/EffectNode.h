@@ -48,6 +48,7 @@ namespace cyclops {
 
 	public:
 		EffectNode();
+		virtual ~EffectNode();
 
 		EffectNode(const EffectNode& copy, const osg::CopyOp& op = osg::CopyOp::SHALLOW_COPY) : osgFX::Effect(copy, op) {	}
 

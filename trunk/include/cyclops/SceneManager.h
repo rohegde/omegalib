@@ -302,6 +302,7 @@ namespace cyclops {
 		void addLight(Light* l);
 		void removeLight(Light* l);
 		void addEntity(Entity* obj);
+		void removeEntity(Entity* obj);
 		void updateLights();
 		void loadConfiguration();
 		void loadShader(osg::Shader* shader, const String& name);
@@ -330,7 +331,8 @@ namespace cyclops {
 
 		ShaderMacroDictionary myShaderMacros;
 
-		Vector< Ref<Entity> > myObjectVector;
+		Vector< Entity* > myObjectVector;
+		Dictionary<Entity*, osg::Node*> myEntityNodeMap;
 		
 		Ref<Skybox> mySkyBox;
 
