@@ -150,6 +150,7 @@ BOOST_PYTHON_MODULE(omegaViewer)
 		PYAPI_METHOD(AppDrawer, getDrawerScale)
 		PYAPI_METHOD(AppDrawer, getIconSize)
 		PYAPI_METHOD(AppDrawer, setIconSize)
+		PYAPI_REF_GETTER(AppDrawer, getContainer)
 		;
 
 	// AppInfo
@@ -260,6 +261,7 @@ void AppDrawer::hide()
 
 	myVisible = false;
 	myContainer->setEnabled(false);
+	myContainer->setDebugModeEnabled(true);
 
 	UiModule::instance()->activateWidget(NULL);
 
@@ -441,6 +443,12 @@ void OmegaViewer::handleCommand(const String& cmd)
 		// ls is really just a shortcut for printChildren(getEngine().getScene(), <tree depth>)
 		SystemManager* sys = SystemManager::instance();
 		sys->getScriptInterpreter()->eval("printChildren(getEngine().getScene(), 10");
+	}
+	else if(args[0] == "c")
+	{
+		// c: toggle console
+		bool isConsoleEnabled = getEngine()->isConsoleEnabled();
+		getEngine()->setConsoleEnabled(!isConsoleEnabled);
 	}
 	else if(args[0] == "q")
 	{

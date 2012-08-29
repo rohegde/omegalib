@@ -35,7 +35,7 @@ using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Console::Console():
-	myLines(8),
+	myLines(16),
 	myBackgroundColor(Color(0, 0, 0, 0.6f))
 {
 	myConsoleColors['!'] = Color(0.8f, 0.8f, 0.1f);
@@ -100,13 +100,17 @@ void ConsoleRenderable::draw(RenderState* state)
 	float lineHeight = fi.size + 4;
 	float lineWidth = fi.size * 100; //SystemManager::instance()->getDisplaySystem()->getCanvasSize().x(); 
 
-	getRenderer()->drawRect(Vector2f(0, 0), Vector2f(lineWidth, lineHeight * (myOwner->myLines + 1)), myOwner->myBackgroundColor);
+	const DisplayTileConfig* tile = state->context->tile;
+	float cx = tile->offset.x();
+	float cy = tile->offset.y();
+	
+	getRenderer()->drawRect(Vector2f(cx, cy), Vector2f(lineWidth, lineHeight * (myOwner->myLines + 1)), myOwner->myBackgroundColor);
 
 	if(myFont != NULL)
 	{
-		getRenderer()->drawRectOutline(Vector2f(-1, 0), Vector2f(lineWidth + 2, lineHeight - 2), Color::Gray);
+		getRenderer()->drawRectOutline(Vector2f(cx - 1, cy), Vector2f(lineWidth + 2, lineHeight - 2), Color::Gray);
 		glColor4f(1.0f, 0.9f, 0.3f, 1);
-		getRenderer()->drawText(myOwner->myHeadline, myFont, Vector2f(x + 2, y + 2), Font::HALeft | Font::VATop);
+		getRenderer()->drawText(myOwner->myHeadline, myFont, Vector2f(cx + x + 2, cy + y + 2), Font::HALeft | Font::VATop);
 		y += lineHeight;
 
 		foreach(String& s, myOwner->myLineBuffer)
@@ -114,12 +118,12 @@ void ConsoleRenderable::draw(RenderState* state)
 			if(myOwner->myConsoleColors.find(s[0]) != myOwner->myConsoleColors.end())
 			{
 				glColor4fv(myOwner->myConsoleColors[s[0]].data());
-				getRenderer()->drawText(s.substr(1), myFont, Vector2f(x + 2, y + 2), Font::HALeft | Font::VATop);
+				getRenderer()->drawText(s.substr(1), myFont, Vector2f(cx + x + 2, cy + y + 2), Font::HALeft | Font::VATop);
 			}
 			else
 			{
-				glColor4f(1, 1, 1, 1);
-				getRenderer()->drawText(s, myFont, Vector2f(x + 2, y + 2), Font::HALeft | Font::VATop);
+				glColor4f(1, 1, 0, 1);
+				getRenderer()->drawText(s, myFont, Vector2f(cx + x + 2, cy + y + 2), Font::HALeft | Font::VATop);
 			}
 			y += lineHeight;
 		}
