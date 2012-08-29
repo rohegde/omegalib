@@ -367,7 +367,7 @@ namespace omega {
             There is also an alternate version which drops a named
             child from this node.
         */
-        virtual Node* removeChild(unsigned short index);
+        virtual void removeChild(unsigned short index);
         /** Drops the specified child from this node. 
         @remarks
         Does not delete the node, just detaches it from
@@ -375,14 +375,14 @@ namespace omega {
         There is also an alternate version which drops a named
         child from this node.
         */
-        virtual Node* removeChild(Node* child);
+        virtual void removeChild(Node* child);
 
         /** Drops the named child from this node. 
         @remarks
             Does not delete the node, just detaches it from
             this parent, potentially to be reattached elsewhere.
         */
-        virtual Node* removeChild(const String& name);
+        virtual void removeChild(const String& name);
         /** Removes all child Nodes attached to this node. Does not delete the nodes, just detaches them from
             this parent, potentially to be reattached elsewhere.
         */

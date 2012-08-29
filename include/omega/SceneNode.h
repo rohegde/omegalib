@@ -140,7 +140,7 @@ namespace omega {
 
 		List<SceneNodeListener*> myListeners;
 
-		List<ISceneObject*> myObjects;
+		List< Ref<ISceneObject> > myObjects;
 
 		bool mySelectable;
 		bool mySelected;

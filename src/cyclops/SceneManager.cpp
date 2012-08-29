@@ -72,9 +72,11 @@ public:
 				sModelQueue.pop();
 
 				bool res = mySceneManager->loadModel(task->getData().first);
-				task->getData().second = res;
-
-				task->notifyComplete();
+				if(!sShutdownLoaderThread)
+				{
+					task->getData().second = res;
+					task->notifyComplete();
+				}
 
 				sModelQueueLock.unlock();
 			}
@@ -325,6 +327,10 @@ void SceneManager::unload()
 	myNumActiveLights = 0;
 
 	ofmsg("SceneManager::unload: releasing %1% objects", %myObjectVector.size());
+	foreach(Entity* e, myObjectVector)
+	{
+		e->getParent()->removeChild(e);
+	}
 	myObjectVector.clear();
 	
 	ofmsg("SceneManager::unload: releasing %1% programs", %myPrograms.size());
@@ -346,8 +352,18 @@ void SceneManager::addEntity(Entity* obj)
 	{
 		objNode = myListener->onObjectAdded(obj);
 	}
+	
+	myEntityNodeMap[obj] = objNode;
 
-	myScene->addChild(obj->getOsgNode());
+	myScene->addChild(objNode);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::removeEntity(Entity* obj)
+{
+	osg::Node* child = myEntityNodeMap[obj];
+	myScene->removeChild(child);
+	myEntityNodeMap.erase(obj);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

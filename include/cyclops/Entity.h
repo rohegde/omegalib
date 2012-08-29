@@ -49,6 +49,7 @@ namespace cyclops {
 	{
 	public:
 		Entity(SceneManager* scene);
+		virtual ~Entity();
 
 		// Function called each frame to update the entity state.
 		virtual void update(const UpdateContext& context) {}
@@ -77,11 +78,11 @@ namespace cyclops {
 		osg::Uniform* myAlphaUniform;
 		float myAlpha;
 
-		osg::Node* myOsgNode;
+		Ref<osg::Node> myOsgNode;
 		//SceneNode* mySceneNode;
-		OsgSceneObject* myOsgSceneObject;
+		Ref<OsgSceneObject> myOsgSceneObject;
 
-		EffectNode* myEffect;
+		Ref<EffectNode> myEffect;
 	};
 };
 

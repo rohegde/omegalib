@@ -80,7 +80,7 @@ namespace cyclops {
 		Ref<osg::Geode> myGeode;
 		Ref<osg::Uniform> myTextureUniform;
 
-		MoveSkyWithEyePointTransform* myTransform;
+		Ref<MoveSkyWithEyePointTransform> myTransform;
 
 		Type myType;
 	};

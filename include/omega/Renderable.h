@@ -69,9 +69,9 @@ namespace omega {
 	private:
 		Renderer* myClient;
 
-		Ref<RenderableCommand> myDisposeCommand;
-		Ref<RenderableCommand> myRefreshCommand;
-		Ref<RenderableCommand> myInitializeCommand;
+		//Ref<RenderableCommand> myDisposeCommand;
+		//Ref<RenderableCommand> myRefreshCommand;
+		//Ref<RenderableCommand> myInitializeCommand;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

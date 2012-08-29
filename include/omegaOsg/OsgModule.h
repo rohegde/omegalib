@@ -58,9 +58,6 @@ namespace omegaOsg
 		OsgModule();
 		virtual ~OsgModule();
 
-		float getRepresentationSize();
-		void setRepresentationSize(float value);
-
 		virtual void initialize();
 		virtual void dispose();
 		virtual void initializeRenderer(Renderer* r);
@@ -76,20 +73,10 @@ namespace omegaOsg
 	private:
 		static OsgModule* mysInstance;
 
-		float myRepresentationSize;
-
 		//OsgSceneObject* myRootSceneObject;
 		Ref<osg::Node> myRootNode;
 		Ref<osg::FrameStamp> myFrameStamp;
 		Ref<osg::NodeVisitor> myUpdateVisitor;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline float OsgModule::getRepresentationSize()
-	{ return myRepresentationSize; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline void OsgModule::setRepresentationSize(float value)
-	{ myRepresentationSize = value; }
 };
 #endif

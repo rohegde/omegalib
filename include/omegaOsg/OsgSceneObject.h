@@ -61,8 +61,8 @@ namespace omegaOsg
 		virtual bool isInitialized() { return myInitialized; }
 		virtual void initialize(Engine* server) { myInitialized = true; }
 	private:
-		osg::Node* myNode;
-		osg::MatrixTransform* myTransform;
+		Ref<osg::Node> myNode;
+		Ref<osg::MatrixTransform> myTransform;
 		AlignedBox3 myBBox;
 		bool myInitialized;
 	};

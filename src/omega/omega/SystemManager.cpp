@@ -115,7 +115,6 @@ SystemManager::~SystemManager()
 
 	if(myServiceManager != NULL) delete myServiceManager;
 	if(myDisplaySystem != NULL) delete myDisplaySystem;
-	if(myInterpreter != NULL) delete myInterpreter;
 	if(myStatsManager != NULL) delete myStatsManager;
 	
 	myDisplaySystem = NULL;
@@ -326,6 +325,13 @@ void SystemManager::cleanup()
 		myServiceManager->stop();
 		myServiceManager->dispose();
 	}
+
+	if(myInterpreter != NULL) 
+	{
+		delete myInterpreter;
+		myInterpreter = NULL;
+	}
+	
 
 	delete mysInstance;
 	mysInstance = NULL;

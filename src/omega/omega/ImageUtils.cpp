@@ -35,6 +35,50 @@ Vector<void*> ImageUtils::sPreallocBlocks;
 size_t ImageUtils::sPreallocBlockSize;
 int ImageUtils::sLoadPreallocBlock = -1;
 
+Lock sImageQueueLock;
+Queue< Ref<ImageUtils::LoadImageAsyncTask> > sImageQueue;
+bool sShutdownLoaderThread = false;
+
+Thread* ImageUtils::sImageLoaderThread = NULL;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class ImageLoaderThread: public Thread
+{
+public:
+	ImageLoaderThread()
+	{}
+
+	virtual void threadProc()
+	{
+		omsg("ImageLoaderThread: start");
+
+		while(!sShutdownLoaderThread)
+		{
+			if(sImageQueue.size() > 0)
+			{
+				sImageQueueLock.lock();
+
+				Ref<ImageUtils::LoadImageAsyncTask> task = sImageQueue.front();
+				sImageQueue.pop();
+
+				Ref<PixelData> res = ImageUtils::loadImage(task->getData().path, task->getData().isFullPath);
+				if(!sShutdownLoaderThread)
+				{
+					task->getData().image = res;
+					task->notifyComplete();
+				}
+
+				sImageQueueLock.unlock();
+			}
+			osleep(100);
+		}
+
+		omsg("ImageLoaderThread: shutdown");
+	}
+
+private:
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool ImageUtils::preallocateBlocks(size_t size, int numBlocks)
 {
@@ -91,6 +135,23 @@ void ImageUtils::internalDispose()
 		free(ptr);
 	}
 	sPreallocBlocks.empty();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ImageUtils::LoadImageAsyncTask* ImageUtils::loadImageAsync(const String& filename, bool hasFullPath)
+{
+	if(sImageLoaderThread == NULL)
+	{
+		sImageLoaderThread = new ImageLoaderThread();
+		sImageLoaderThread->start();
+	}
+
+	sImageQueueLock.lock();
+	LoadImageAsyncTask* task = new LoadImageAsyncTask();
+	task->setData( LoadImageAsyncTask::Data(filename, hasFullPath) );
+	sImageQueue.push(task);
+	sImageQueueLock.unlock();
+	return task;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

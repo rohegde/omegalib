@@ -35,7 +35,7 @@ namespace omega {
 	struct RenderState;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API ISceneObject
+	class OMEGA_API ISceneObject: public ReferenceType
 	{
 	public:
 		virtual void update(SceneNode* owner) = 0;

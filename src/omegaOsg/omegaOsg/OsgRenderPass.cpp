@@ -55,7 +55,6 @@ OsgRenderPass::OsgRenderPass(Renderer* client, const String& name): RenderPass(c
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgRenderPass::~OsgRenderPass()
 {
-	mySceneView->unref();
 	mySceneView = NULL;
 }
 
