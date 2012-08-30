@@ -243,7 +243,10 @@ void AppDrawer::show()
 	myContainer->setEnabled(true);
 
 	myContainer->get3dSettings().alpha = 0.0f;
+	my3dSettings.enable3d = true;
 	my3dSettings.alpha = 1.0f;
+	my3dSettings.up = Vector3f(0, 1, 0);
+	my3dSettings.normal = Vector3f(0, 0, 1);
 
 	myContainer->get3dSettings().scale = myDrawerScale / 2000;
 	my3dSettings.scale = myDrawerScale / 1000;
@@ -251,6 +254,7 @@ void AppDrawer::show()
 	Camera* cam = Engine::instance()->getDefaultCamera();
 	Vector3f pos = cam->getPosition() + cam->getHeadOffset();
 	pos.z() -= 2.5;
+	ofmsg("App drawer position: %1%", %pos);
 	my3dSettings.position = pos;
 }
 
