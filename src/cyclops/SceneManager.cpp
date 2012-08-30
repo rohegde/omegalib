@@ -773,6 +773,11 @@ bool SceneManager::loadModel(ModelInfo* info)
 					TextureResizeNonPowerOfTwoHintVisitor potv(true);
 					node->accept(potv);
 				}
+				else
+				{
+					TextureResizeNonPowerOfTwoHintVisitor potv(false);
+					node->accept(potv);
+				}
 
 				if(info->size != 0.0f)
 				{
