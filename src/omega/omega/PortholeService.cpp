@@ -50,31 +50,6 @@ enum demo_protocols {
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerThread::sendHtmlElements(struct libwebsocket_context *context,
-		struct libwebsocket *wsi){
-
-		// TEST Just send the first node
-		TiXmlNode* node = xmlDoc->FirstChild();
-		node->Accept( xmlPrinter );
-
-		string toSend = "{\"event_type\" : \"html_elements\", \"innerHTML\" : \"";
-		toSend.append(omicron::StringUtils::replaceAll(xmlPrinter->CStr(),"\"","\\\""));
-		toSend.append("\"}");
-
-		cout << toSend << endl;
-
-		// Send the html elements
-		int n;
-		unsigned char* buf;
-		buf = new unsigned char[LWS_SEND_BUFFER_PRE_PADDING + toSend.length() + LWS_SEND_BUFFER_POST_PADDING];
-		unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
-		n = sprintf((char *)p, "%s",toSend.c_str());
-		n = libwebsocket_write(wsi, p, n, LWS_WRITE_TEXT);
-
-		return;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 /*
  * May be used for filtering allowing connections by the header
  * content
@@ -250,6 +225,7 @@ struct per_session_data {
 	Camera* sessionCamera;
 	PixelData* sessionCanvasPixel;
 	ByteArray* sessionPng;
+	PortholeGUI* guiManager;
 	unsigned int oldus; // Last message sent timestamp
 };
 
@@ -258,6 +234,29 @@ struct a_message {
 	void *payload;
 	size_t len;
 };
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void sendHtmlElements(struct per_session_data* data, struct libwebsocket_context *context,
+		struct libwebsocket *wsi){
+
+		string deviceBasedHtml = data->guiManager->create();
+
+		string toSend = "{\"event_type\" : \"html_elements\", \"innerHTML\" : \"";
+		toSend.append(omicron::StringUtils::replaceAll(deviceBasedHtml.c_str(),"\"","\\\""));
+		toSend.append("\"}");
+
+		//cout << toSend << endl;
+
+		// Send the html elements
+		int n;
+		unsigned char* buf;
+		buf = new unsigned char[LWS_SEND_BUFFER_PRE_PADDING + toSend.length() + LWS_SEND_BUFFER_POST_PADDING];
+		unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
+		n = sprintf((char *)p, "%s",toSend.c_str());
+		n = libwebsocket_write(wsi, p, n, LWS_WRITE_TEXT);
+
+		return;
+}
 
 // JSON simple print
 #define IDENT(n) for (int i = 0; i < n; ++i) printf("    ")
@@ -385,7 +384,8 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
 }
 
 
-inline void handle_message(per_session_data* data, recv_message* message){
+inline void handle_message(per_session_data* data, recv_message* message, 
+		struct libwebsocket_context *context, struct libwebsocket *wsi){
 
     // cout << "MSG: " << message->event_type << endl;
 
@@ -451,6 +451,24 @@ inline void handle_message(per_session_data* data, recv_message* message){
 		defaultCamera->setOrientation(curOrientation * orientation);
 
     }
+
+	// First message received is a device specs message
+	else if (strcmp(message->event_type.c_str(),MSG_EVENT_SPEC)==0){
+
+		// Porthole GUI manager TODO filename
+		data->guiManager = new PortholeGUI( (DATA_PATH+"/porthello.xml").c_str() );
+		data->guiManager->setDeviceSpecifications(message->width,message->height,message->orientation);
+
+		// TODO Send the Html elements to the browser based on device specifications
+		sendHtmlElements(data,context,wsi);
+
+		// Ask for the first available slot on this channel
+		libwebsocket_callback_on_writable(context, wsi);
+	}
+	else if(strcmp(message->event_type.c_str(),MSG_EVENT_INPUT)==0){
+		cout << message->jsFunction << endl;
+		functionsBinder->callFunction(message->jsFunction);
+	}
 
 }
 
@@ -547,21 +565,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		{
             print(root);
             parse_json_message(root, data, &message);
-            handle_message(data, &message);
-		}
-
-		// First message received is a device specs message
-		if (strcmp(message.event_type.c_str(),MSG_EVENT_SPEC)==0){
-
-			// TODO Send the Html elements to the browser based on device specifications
-			sendHtmlElements(context,wsi);
-
-			// Ask for the first available slot on this channel
-			libwebsocket_callback_on_writable(context, wsi);
-		}
-		else if(strcmp(message.event_type.c_str(),MSG_EVENT_INPUT)==0){
-			cout << message.jsFunction << endl;
-			functionsBinder->callFunction(message.jsFunction);
+            handle_message(data, &message, context, wsi);
 		}
 
 		break;
@@ -636,19 +640,6 @@ use_ssl(0), opts(0), n(0)
 		key_path = (DATA_PATH+"/server.key.pem").c_str();
 	}
 
-	// Html spec parser
-	xmlDoc = new TiXmlDocument( (DATA_PATH+"/porthello.xml").c_str() );
-	xmlPrinter = new TiXmlPrinter();
-	bool loadOkay = xmlDoc->LoadFile();
-	if (loadOkay)
-	{
-		// XML Node printer
-		xmlPrinter->SetStreamPrinting();
-	}
-	else
-	{
-		printf("Failed to load file");
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
