@@ -74,6 +74,7 @@ SET( srcs
 		omega/Texture.cpp
 		omega/WandEmulationService.cpp
 		omega/PortholeService.cpp
+		omega/PortholeGUI.cpp
         )
 		
 ###################################################################################################
@@ -128,6 +129,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
 		${OmegaLib_SOURCE_DIR}/include/omega/WandEmulationService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/PortholeService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/PortholeGUI.h
 		)
         
 ###################################################################################################

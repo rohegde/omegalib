@@ -33,46 +33,18 @@
 #include "websockets/libwebsockets.h"
 #include "omega/Engine.h"
 #include "omicron/xml/tinyxml.h"
+#include "PortholeGUI.h"
 
 using namespace std;
 using namespace omicron;
 
 namespace omega {
 
-	// Porthole functions binder
-	struct PortholeFunctionsBinder
-	{
-		typedef void(*memberFunction)();
-
-		void addFunction(std::string funcName, memberFunction func)
-		{
-			funcMap[funcName] = func;
-		}
-
-		void callFunction(std::string funcName)
-		{
-			std::map<std::string, memberFunction>::const_iterator it;
-
-			it = funcMap.find(funcName);
-
-			if (it == funcMap.end()) return;
-
-			return (*it->second)();
-		}
-
-		std::map<std::string, memberFunction> funcMap;
-	};
-
 	// Path to resources, such as html files
 	static string DATA_PATH; 
-	
-	// XML vars
-	static TiXmlDocument* xmlDoc;
-	static TiXmlPrinter* xmlPrinter;
 
-	// Functions binder
-	static PortholeFunctionsBinder* functionsBinder;
-
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! Implements, in a separate thread, the HTTP server for Porthole Service
 	class OMEGA_API ServerThread: public Thread{
 
 	public:
@@ -103,10 +75,6 @@ namespace omega {
 			struct libwebsocket *wsi,
 			enum libwebsocket_callback_reasons reason,
 					       void *user, void *in, size_t len);
-
-		//
-		static void sendHtmlElements(struct libwebsocket_context *context,
-			struct libwebsocket *wsi);
 
 		// Base64 encode/decode functions
 		static string base64_encode(unsigned char const* , unsigned int len);

@@ -1,6 +1,20 @@
-<div>
-  <input type="button" id="TestButton" name="UP" value="UP" onclick="up()"/>
-  <input type="button" id="TestButton2" name="DOWN" value="DOWN" onclick="down()"/>
-  <input type="button" id="TestButton3" name="LEFT" value="LEFT" onclick="left()"/>
-  <input type="button" id="TestButton4" name="RIGHT" value="RIGHT" onclick="right()"/>
-</div>
+<gui>
+  
+  <gui_elements>
+    <gui_element id="element1" type="HTML">
+      <div>
+      <input type="button" id="TestButton" name="UP" value="UP" onclick="up()"/>
+      <input type="button" id="TestButton2" name="DOWN" value="DOWN" onclick="down()"/>
+      <input type="button" id="TestButton3" name="LEFT" value="LEFT" onclick="left()"/>
+      <input type="button" id="TestButton4" name="RIGHT" value="RIGHT" onclick="right()"/>
+      </div>
+    </gui_element>
+    <gui_element id="element2" type="googlemap" />
+    <gui_element id="element3" type="camera_stream" camera="default"/>
+  </gui_elements>
+  
+  <gui_disposition>
+    <element2 />
+  </gui_disposition>
+  
+</gui>
