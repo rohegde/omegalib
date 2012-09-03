@@ -100,7 +100,7 @@ SystemManager::SystemManager():
 	myIsMaster(true),
 	myMissionControlServer(NULL),
 	myMissionControlEnabled(false),
-	myMissionControlPort(22500),
+	myMissionControlPort(MissionControlServer::DefaultPort),
 	myRenderOnMaster(true)
 {
 	myDataManager = DataManager::getInstance();

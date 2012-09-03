@@ -34,39 +34,6 @@
 using namespace omegaVtk;
 using namespace omega;
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-class InitializeViewCommand: public IRendererCommand
-{
-public:
-	void execute(Renderer* r)
-	{
-		VtkModule* vtk = VtkModule::instance();
-		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-		vtk->beginClientInitialize(r);
-		interp->eval("initializeView()");
-		vtk->endClientInitialize();
-	}
-};
-
-InitializeViewCommand* sInitializeViewCommand = NULL;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-static PyObject* queueInitializeView(PyObject* self, PyObject* args)
-{
-	if(sInitializeViewCommand == NULL) 
-	{
-		sInitializeViewCommand = new InitializeViewCommand();
-	}
-	Engine* engine = Engine::instance();
-	foreach(Renderer* r, engine->getClients())
-	{
-		r->queueCommand(sInitializeViewCommand);
-	}
-
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 static PyObject* attachProp(PyObject* self, PyObject* args)
 {
@@ -90,13 +57,9 @@ static PyObject* attachProp(PyObject* self, PyObject* args)
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 static PyMethodDef ovtkMethods[] = 
 {
-    {"attachProp", attachProp, METH_VARARGS, 
+    {"vtkAttachProp", attachProp, METH_VARARGS, 
 		"attachProp(actor, sceneNode)\n"
 			"Attaches a vtk 3d prop to an omegalib scene node."},
-
-    {"queueInitializeView", queueInitializeView, METH_VARARGS, 
-	"queueInitializeView()\n"
-		"queues a call to initializeView(). Must be called after creation of vtk objects to finish vtk scene initialization."},
 
     {NULL, NULL, 0, NULL}
 };
@@ -107,6 +70,8 @@ BOOST_PYTHON_MODULE(omegaVtk)
 	// SceneLoader
 	PYAPI_REF_BASE_CLASS(VtkModule)
 		PYAPI_STATIC_REF_GETTER(VtkModule, createAndInitialize)
+		PYAPI_METHOD(VtkModule, attachProp)
+		PYAPI_METHOD(VtkModule, detachProp)
 		;
 }
 

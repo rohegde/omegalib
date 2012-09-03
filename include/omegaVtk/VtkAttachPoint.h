@@ -59,6 +59,11 @@ namespace omegaVtk {
 		void attachProp(vtkProp3D* prop);
 		void detachProp(vtkProp3D* prop);
 
+		void queueProps(VtkRenderPass* rp);
+
+		bool isDirty() { return myDirty; }
+		void setDirty(bool value) { myDirty = value; }
+
 	private:
 		//! Gets the first available vtk prop from the attached renderables.
 		vtkProp3D* getFirstProp();
@@ -70,6 +75,8 @@ namespace omegaVtk {
 		bool myInitialized;
 
 		List<vtkProp3D*> myProps;
+
+		bool myDirty;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////

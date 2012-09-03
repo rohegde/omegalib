@@ -29,6 +29,10 @@
 
 using namespace omega;
 
+#ifdef OMEGA_OS_LINUX
+const int MissionControlServer::DefaultPort;
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 MissionControlConnection::MissionControlConnection(ConnectionInfo ci, MissionControlServer* server): 
 	TcpConnection(ci),

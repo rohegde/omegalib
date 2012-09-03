@@ -43,7 +43,6 @@ class VtkScene: public EngineModule
 public:
 	VtkScene();
 	virtual void initialize();
-	virtual void initializeRenderer(Renderer* r);
 
 private:
 	VtkModule* myVtkModule;
@@ -93,21 +92,9 @@ void VtkScene::initialize()
 	myActor->SetMapper(myPolyDataMapper); 
 	myActor->GetProperty()->SetColor(0,0,1);
 
+	myVtkModule->attachProp(myActor, mySceneNode);
 	// Setup the camera
 	getEngine()->getDefaultCamera()->focusOn(getEngine()->getScene());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkScene::initializeRenderer(Renderer* r)
-{
-	// For each omegalib renderer thread, create vtk polydata mappers and actors.
-	//myActor[r]->SetPosition(0,0,-1);
-
-	// Here is where the magic happens: use the omegalib vtk module to attach the vtk actor to the
-	// node we created in initialize. 
-	myVtkModule->beginClientInitialize(r);
-	myVtkModule->attachProp(myActor, mySceneNode);
-	myVtkModule->endClientInitialize();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

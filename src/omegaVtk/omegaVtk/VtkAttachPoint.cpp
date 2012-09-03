@@ -35,7 +35,8 @@ using namespace omega;
 using namespace omegaVtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkAttachPoint::VtkAttachPoint()
+VtkAttachPoint::VtkAttachPoint():
+	myDirty(false)
 {
 	myMatrix = vtkMatrix4x4::New();
 }
@@ -49,12 +50,14 @@ VtkAttachPoint::~VtkAttachPoint()
 void VtkAttachPoint::attachProp(vtkProp3D* prop)
 {
 	myProps.push_back(prop);
+	myDirty = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkAttachPoint::detachProp(vtkProp3D* prop)
 {
 	myProps.remove(prop);
+	myDirty = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -121,4 +124,20 @@ const AlignedBox3* VtkAttachPoint::getBoundingBox()
 		return &myBBox;
 	}
 	return NULL;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkAttachPoint::queueProps(VtkRenderPass* rp)
+{
+	foreach(vtkProp3D* prop, myProps)
+	{
+		if(prop->HasTranslucentPolygonalGeometry())
+		{
+			rp->queueProp(prop, VtkRenderPass::QueueTransparent);
+		}
+		else
+		{
+			rp->queueProp(prop, VtkRenderPass::QueueOpaque);
+		}
+	}
 }

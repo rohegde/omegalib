@@ -61,7 +61,6 @@ VtkModule::VtkModule()
 {
 	myInstance = this;
 	myActiveClient = NULL;
-	myActiveRenderPass = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,65 +82,71 @@ void VtkModule::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkModule::dispose()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkModule::initializeRenderer(Renderer* r)
 {
 	VtkRenderPass* vtkrp = new VtkRenderPass(r, "VtkRenderPass");
 	vtkrp->setUserData(this);
 	r->addRenderPass(vtkrp, true);
-}
+	myRenderPasses.push_back(vtkrp);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkModule::beginClientInitialize(Renderer* client)
-{
-	oassert(myActiveClient == NULL);
-
-	myClientLock.lock();
-	myActiveClient = client;
-	myActiveRenderPass = dynamic_cast<VtkRenderPass*>(myActiveClient->getRenderPass("VtkRenderPass"));
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkModule::endClientInitialize()
-{
-	if(myActiveClient != NULL)
+	typedef Dictionary<SceneNode*, VtkAttachPoint*>::Item DItem;
+	foreach(DItem item, myAttachPoints)
 	{
-		myActiveClient = NULL;
-		myActiveRenderPass = NULL;
-		myClientLock.unlock();
-	}
-	else
-	{
-		owarn("VtkModule::endClientInitialize: beginClientInitialize has not been called. Returning.");
+		item->queueProps(vtkrp);
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkModule::attachProp(vtkProp3D* actor, SceneNode* node)
 {
-	if(myActiveClient != NULL)
+	VtkAttachPoint* vtkap = myAttachPoints[node];
+	if(vtkap == NULL)
 	{
-		if(actor->HasTranslucentPolygonalGeometry())
-		{
-			myActiveRenderPass->queueProp(actor, VtkRenderPass::QueueTransparent);
-		}
-		else
-		{
-			myActiveRenderPass->queueProp(actor, VtkRenderPass::QueueOpaque);
-		}
-
-		VtkAttachPoint* vtkap = myAttachPoints[node];
-		if(vtkap == NULL)
-		{
-			ofmsg("VtkModule::attachProp: creating attach point for node %1%", %node->getName());
-			vtkap = new VtkAttachPoint();
-			myAttachPoints[node] = vtkap;
-			node->addObject(vtkap);
-		}
-		vtkap->attachProp(actor);
+		ofmsg("VtkModule::attachProp: creating attach point for node %1%", %node->getName());
+		vtkap = new VtkAttachPoint();
+		myAttachPoints[node] = vtkap;
+		node->addObject(vtkap);
 	}
-	else
+	vtkap->attachProp(actor);
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkModule::detachProp(vtkProp3D* actor, SceneNode* node)
+{
+	VtkAttachPoint* vtkap = myAttachPoints[node];
+	if(vtkap != NULL)
 	{
-		owarn("VtkModule::addActor: beginClientInitialize has not been called. Returning");
+		vtkap->detachProp(actor);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkModule::update(const UpdateContext& context)
+{
+	bool itemDirty = false;
+
+	typedef Dictionary<SceneNode*, VtkAttachPoint*>::Item DItem;
+
+	// See if any attach point is dirty.
+	foreach(DItem item, myAttachPoints)	itemDirty |= item->isDirty();
+
+	// If any item is dirty, reset render queues for all renderers
+	if(itemDirty)
+	{
+		foreach(VtkRenderPass* rp, myRenderPasses)
+		{
+			rp->resetPropQueues();
+			foreach(DItem item, myAttachPoints)
+			{
+				item->queueProps(rp);
+			}
+		}
 	}
 }
 

@@ -55,18 +55,15 @@ namespace omegaVtk
 		static VtkModule* instance();
 
 		virtual void initialize();
+		virtual void dispose();
 		virtual void initializeRenderer(Renderer* r);
-		virtual void update(const UpdateContext& context) {}
+		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt) {}
 
 		Engine* getEngine() { return myEngine; }
 
-		//! Client-side API
-		//@{
-		void beginClientInitialize(Renderer* client);
-		void endClientInitialize();
 		void attachProp(vtkProp3D* actor, SceneNode* node);
-		//@}
+		void detachProp(vtkProp3D* actor, SceneNode* node);
 
 	private:
 		static VtkModule* myInstance;
@@ -75,7 +72,7 @@ namespace omegaVtk
 
 		Engine* myEngine;
 		Lock myClientLock;
-		VtkRenderPass* myActiveRenderPass;
+		List<VtkRenderPass*> myRenderPasses;
 		Renderer* myActiveClient;
 	};
 
