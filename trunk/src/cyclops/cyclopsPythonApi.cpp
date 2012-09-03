@@ -28,7 +28,6 @@
 #include "cyclops/SceneManager.h"
 #include "cyclops/AnimatedObject.h"
 #include "cyclops/SceneLoader.h"
-#include "cyclops/SkyboxSwitcher.h"
 #include "cyclops/SceneLoader.h"
 
 #ifdef OMEGA_USE_PYTHON
@@ -127,17 +126,16 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def_readwrite("usePowerOfTwoTextures", &ModelInfo::usePowerOfTwoTextures)
 		;
 
-	class_<SkyboxSwitcher, boost::noncopyable, Ref<SkyboxSwitcher> >("SkyboxSwitcher", no_init)
-		PYAPI_STATIC_REF_GETTER(SkyboxSwitcher, createAndInitialize)
-		.def("getNumSkyboxes", &SkyboxSwitcher::getNumSkyboxes)
-		.def("getActiveSkybox", &SkyboxSwitcher::getActiveSkybox)
-		.def("setActiveSkybox", &SkyboxSwitcher::setActiveSkybox)
-		;
+	//class_<SkyboxSwitcher, boost::noncopyable, Ref<SkyboxSwitcher> >("SkyboxSwitcher", no_init)
+	//	PYAPI_STATIC_REF_GETTER(SkyboxSwitcher, createAndInitialize)
+	//	.def("getNumSkyboxes", &SkyboxSwitcher::getNumSkyboxes)
+	//	.def("getActiveSkybox", &SkyboxSwitcher::getActiveSkybox)
+	//	.def("setActiveSkybox", &SkyboxSwitcher::setActiveSkybox)
+	//	PYAPI_REF_GETTER(SkyboxSwitcher, getSkybox)
+	//	;
 
 	PYAPI_REF_BASE_CLASS_WITH_CTOR(Skybox)
 		PYAPI_METHOD(Skybox, loadCubeMap)
-		PYAPI_METHOD(Skybox, loadPano)
-		PYAPI_METHOD(Skybox, loadStereoPano)
 		;
 
 	// Free Functions

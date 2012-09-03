@@ -47,10 +47,6 @@ namespace cyclops {
 	class CY_API Skybox: public ReferenceType
 	{
 	public:
-		enum Type { CubeMap, Pano, StereoPano };
-		static void setPreallocBlock(int blockId, DrawContext::Eye eye);
-
-	public:
 		Skybox();
 		virtual ~Skybox();
 
@@ -59,30 +55,21 @@ namespace cyclops {
 		//! Loads cube map images from the specified directory.
 		//! Images must be named posx, negx, posy, negy, posz, negz and have the specified file extension.
 		bool loadCubeMap(const String& cubemapDir, const String& extension);
-		bool loadPano(const String& panoName);
-		bool loadStereoPano(const String& panoName, const String& extension);
 
 		osg::Node* getNode() { return myNode; }
-		Type getType() { return myType; }
 
 	private:
 		osg::Node* createSkyBox();
 		void updateSkyBox();
 
 	private:
-		// Preallocated block ids for left, right, cyclop eyes.
-		static int mysPreallocBlock[3];
-
 		Ref<osg::StateSet> myRootStateSet;
 		Ref<osg::Texture> myTexture;
-		Ref<osg::Texture> myTextureR;
 		Ref<osg::Node> myNode;
 		Ref<osg::Geode> myGeode;
 		Ref<osg::Uniform> myTextureUniform;
 
 		Ref<MoveSkyWithEyePointTransform> myTransform;
-
-		Type myType;
 	};
 };
 

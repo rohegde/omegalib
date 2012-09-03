@@ -33,7 +33,6 @@
 #include "cyclops/AnimatedObject.h"
 #include "cyclops/Shapes.h"
 #include "cyclops/Skybox.h"
-#include "cyclops/SkyboxSwitcher.h"
 
 void CY_API cyclopsPythonApiInit();
 

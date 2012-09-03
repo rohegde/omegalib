@@ -51,9 +51,12 @@ private:
 	//DefaultMouseInteractor* myMouseInteractor;
 	vtkSphereSource* mySphere;
 
+	vtkPolyDataMapper* myPolyDataMapper;
+	vtkActor* myActor;
+
 	// Client objecs.
-	RendererObject<vtkPolyDataMapper*> myPolyDataMapper;
-	RendererObject<vtkActor*> myActor;
+	//RendererObject<vtkPolyDataMapper*> myPolyDataMapper;
+	//RendererObject<vtkActor*> myActor;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,6 +87,12 @@ void VtkScene::initialize()
 	//myMouseInteractor->setSceneNode(mySceneNode);
 	//ModuleServices::addModule(myMouseInteractor);
 
+	myPolyDataMapper = vtkPolyDataMapper::New();
+	myPolyDataMapper->SetInput(mySphere->GetOutput());
+	myActor = vtkActor::New(); 
+	myActor->SetMapper(myPolyDataMapper); 
+	myActor->GetProperty()->SetColor(0,0,1);
+
 	// Setup the camera
 	getEngine()->getDefaultCamera()->focusOn(getEngine()->getScene());
 }
@@ -92,17 +101,12 @@ void VtkScene::initialize()
 void VtkScene::initializeRenderer(Renderer* r)
 {
 	// For each omegalib renderer thread, create vtk polydata mappers and actors.
-	myPolyDataMapper[r] = vtkPolyDataMapper::New();
-	myPolyDataMapper[r]->SetInput(mySphere->GetOutput());
-	myActor[r] = vtkActor::New(); 
-	myActor[r]->SetMapper(myPolyDataMapper[r]); 
-	myActor[r]->GetProperty()->SetColor(0,0,1);
 	//myActor[r]->SetPosition(0,0,-1);
 
 	// Here is where the magic happens: use the omegalib vtk module to attach the vtk actor to the
 	// node we created in initialize. 
 	myVtkModule->beginClientInitialize(r);
-	myVtkModule->attachProp(myActor[r], mySceneNode);
+	myVtkModule->attachProp(myActor, mySceneNode);
 	myVtkModule->endClientInitialize();
 }
 
