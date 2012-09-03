@@ -221,8 +221,7 @@ SceneManager::SceneManager():
 	cyclopsPythonApiInit();
 #endif
 
-	myOsg = new OsgModule();
-	ModuleServices::addModule(myOsg);
+	myOsg = OsgModule::instance();
 
 	myModelLoaderThread = NULL;
 	sShutdownLoaderThread = false;

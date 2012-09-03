@@ -43,6 +43,17 @@ OsgModule* OsgModule::mysInstance = NULL;
 //bool OsgModule::mysAmbientOverrideHack = true;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+OsgModule* OsgModule::instance() 
+{ 
+	if(mysInstance == NULL)
+	{
+		mysInstance = new OsgModule();
+		ModuleServices::addModule(mysInstance);
+	}
+	return mysInstance; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgModule::OsgModule():
 	EngineModule("OsgModule")
 {

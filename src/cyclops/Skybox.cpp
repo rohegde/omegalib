@@ -72,26 +72,12 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int Skybox::mysPreallocBlock[3];
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Skybox::setPreallocBlock(int blockId, DrawContext::Eye eye)
-{
-	mysPreallocBlock[eye] = blockId;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Skybox::Skybox():
 	myTexture(NULL), myNode(NULL), myRootStateSet(NULL)
 {
 	// Allocate and delete MoveSkyWithEyePointTransform, since we can't use Ref<> inside the Skybox header 
 	// (because MoveSkyWithEyePointTransform is defined within this file)
 	myTransform = new MoveSkyWithEyePointTransform();
-
-	// Init prealloc block ids to -1 (to disable usage of prealloc blocks)
-	mysPreallocBlock[DrawContext::EyeCyclop] = -1;
-	mysPreallocBlock[DrawContext::EyeLeft] = -1;
-	mysPreallocBlock[DrawContext::EyeRight] = -1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -111,69 +97,8 @@ void Skybox::initialize(osg::StateSet* rootStateSet)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool Skybox::loadPano(const String& panoName)
-{
-	myType = Pano;
-
-	// Change prealloc block state
-	int prevBlock = ImageUtils::getLoadPreallocatedBlock();
-	ImageUtils::setLoadPreallocatedBlock(mysPreallocBlock[DrawContext::EyeCyclop]);
-
-	osg::Image* pano = osgDB::readImageFile(panoName);
-
-	// Reset prealloc block state
-	ImageUtils::setLoadPreallocatedBlock(prevBlock);
-
-	if(pano)
-	{
-		osg::Texture2D* panoTex = new osg::Texture2D();
-		panoTex->setImage(pano);
-		myTexture = panoTex;
-		updateSkyBox();
-		return true;
-	}
-	return false;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool Skybox::loadStereoPano(const String& panoName, const String& extension)
-{
-	myType = StereoPano;
-
-	// Change prealloc block state
-	int prevBlock = ImageUtils::getLoadPreallocatedBlock();
-
-	ImageUtils::setLoadPreallocatedBlock(mysPreallocBlock[DrawContext::EyeLeft]);
-	String fileName = ostr(panoName, %"L");
-	osg::Image* panoL = osgDB::readImageFile(ostr("%1%.%2%", %fileName %extension));
-
-	ImageUtils::setLoadPreallocatedBlock(mysPreallocBlock[DrawContext::EyeRight]);
-	fileName = ostr(panoName, %"R");
-	osg::Image* panoR = osgDB::readImageFile(ostr("%1%.%2%", %fileName %extension));
-
-	// Reset prealloc block state
-	ImageUtils::setLoadPreallocatedBlock(prevBlock);
-
-	if(panoL && panoR)
-	{
-		osg::Texture2D* panoTexL = new osg::Texture2D();
-		panoTexL->setImage(panoL);
-		myTexture = panoTexL;
-
-		osg::Texture2D* panoTexR = new osg::Texture2D();
-		panoTexR->setImage(panoR);
-		myTextureR = panoTexR;
-
-		updateSkyBox();
-	}
-	return false;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool Skybox::loadCubeMap(const String& cubemapDir, const String& extension)
 {
-	myType = CubeMap;
-
     Ref<osg::TextureCubeMap> cubemap = new osg::TextureCubeMap;
 
 	Ref<osg::Image> imagePosX = osgDB::readImageFile(cubemapDir + "/posx." + extension);
@@ -234,7 +159,6 @@ osg::Node* Skybox::createSkyBox()
 		stateset->setAttributeAndModes(depth, osg::StateAttribute::ON );
 
 		stateset->setRenderBinDetails(-1,"RenderBin");
-
 		
 		osg::Geometry* geometry = osgwTools::makeAltAzSphere(10.0, 24, 24);
 		//osg::Geometry* geometry = osgwTools::makeGeodesicSphere(0.1f, 8);
@@ -268,27 +192,10 @@ void Skybox::updateSkyBox()
 
 		SceneManager* sm = SceneManager::instance();
 		ProgramAsset* cubeMapProgram = NULL;
-		if(myType == CubeMap)
-		{
-			cubeMapProgram = sm->getProgram(
-				"skybox-cube", 
-				"cyclops/common/Skybox.vert", 
-				"cyclops/common/Skybox.frag");
-		}
-		else if(myType == Pano)
-		{
-			cubeMapProgram = sm->getProgram(
-				"skybox-pano", 
-				"cyclops/common/Skybox-pano.vert", 
-				"cyclops/common/Skybox-pano.frag");
-		}
-		else if(myType == StereoPano)
-		{
-			cubeMapProgram = sm->getProgram(
-				"skybox-stereopano", 
-				"cyclops/common/Skybox-pano.vert", 
-				"cyclops/common/Skybox-stereopano.frag");
-		}
+		cubeMapProgram = sm->getProgram(
+			"skybox-cube", 
+			"cyclops/common/Skybox.vert", 
+			"cyclops/common/Skybox.frag");
 
 		osg::StateSet* stateset = myGeode->getOrCreateStateSet();
 		if(cubeMapProgram != NULL)
@@ -299,37 +206,13 @@ void Skybox::updateSkyBox()
 		// Setup the root state set to apply the environment map to scene objects.
 		// Use Texture stage 3, 6 for the environment map (0-2 reserved for object textures, 4,5 reserved for shadow maps)
 		myRootStateSet->setTextureAttributeAndModes(3, myTexture, osg::StateAttribute::ON);
-		if(myType == StereoPano)
-		{
-			myRootStateSet->setTextureAttributeAndModes(6, myTextureR, osg::StateAttribute::ON);
-		}
 
 		if(myTextureUniform != NULL)
 		{
 			myRootStateSet->removeUniform(myTextureUniform);
 		}
 
-		if(myType == CubeMap)
-		{
-			myRootStateSet->addUniform( new osg::Uniform("unif_CubeMap", 3) );
-		}
-		else if(myType == Pano)
-		{
-			myRootStateSet->addUniform( new osg::Uniform("unif_PanoMap", 3) );
-		}
-		else if(myType == StereoPano)
-		{
-			myRootStateSet->addUniform( new osg::Uniform("unif_PanoMapL", 3) );
-			myRootStateSet->addUniform( new osg::Uniform("unif_PanoMapR", 6) );
-		}
-
-		if(myType == CubeMap)
-		{
-			myTransform->pitch = 0.0f;
-		}
-		else if(myType == Pano || myType == StereoPano)
-		{
-			myTransform->pitch = -Math::Pi / 2;
-		}
+		myRootStateSet->addUniform( new osg::Uniform("unif_CubeMap", 3) );
+		myTransform->pitch = 0.0f;
 	}
 }

@@ -52,7 +52,7 @@ namespace omegaOsg
 	class OOSG_API OsgModule: public EngineModule
 	{
 	public:
-		static OsgModule* instance() { return mysInstance; }
+		static OsgModule* instance();
 
 	public:
 		OsgModule();

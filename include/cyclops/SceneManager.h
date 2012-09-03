@@ -287,7 +287,7 @@ namespace cyclops {
 		//List<Entity*>::Range getObjects();
 		//@}
 
-		osg::Node* getOsgRoot() { return myScene; }
+		osg::Group* getOsgRoot() { return myScene; }
 		osg::Texture2D* getTexture(const String& name);
 		ProgramAsset* getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);
 		void initShading();

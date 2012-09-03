@@ -32,7 +32,6 @@ set(SRCS
 		LineSet.cpp
 		Shapes.cpp
 		Skybox.cpp
-		SkyboxSwitcher.cpp
 		SceneLoader.cpp
 		SceneManager.cpp
 		StaticObject.cpp
@@ -46,7 +45,6 @@ set(HEADERS
 		${CMAKE_SOURCE_DIR}/include/cyclops/cyclopsConfig.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/Shapes.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/Skybox.h
-		${CMAKE_SOURCE_DIR}/include/cyclops/SkyboxSwitcher.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/StaticObject.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/SceneLoader.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/SceneManager.h)
