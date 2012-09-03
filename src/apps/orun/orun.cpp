@@ -113,6 +113,9 @@ public:
 
 	AppDrawer* getAppDrawer() { return myAppDrawer; }
 
+	void setAppDrawerToggleButton(Event::Flags value) { myAppDrawerToggleButton = value; }
+	Event::Flags getAppDrawerToggleButton() { return myAppDrawerToggleButton; }
+
 public:
 	//! Start the selected application
 	void run(const String& appName);
@@ -122,6 +125,7 @@ public:
 private:
 	Ref<UiModule> myUiModule;
 	Ref<AppDrawer> myAppDrawer;
+	Event::Flags myAppDrawerToggleButton;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -137,6 +141,8 @@ BOOST_PYTHON_MODULE(omegaViewer)
 	PYAPI_REF_BASE_CLASS(OmegaViewer)
 		PYAPI_METHOD(OmegaViewer, run)
 		PYAPI_METHOD(OmegaViewer, reset)
+		PYAPI_METHOD(OmegaViewer, getAppDrawerToggleButton)
+		PYAPI_METHOD(OmegaViewer, setAppDrawerToggleButton)
 		PYAPI_REF_GETTER(OmegaViewer, getAppDrawer)
 		;
 
@@ -276,6 +282,8 @@ void AppDrawer::hide()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OmegaViewer::OmegaViewer()
 {
+	myAppDrawerToggleButton = Event::Button3;
+
 	gViewerInstance = this;
 
 	myUiModule = new UiModule();
@@ -328,7 +336,7 @@ void OmegaViewer::handleEvent(const Event& evt)
 {
 	// '`' key toggles app drawer.
 	if(evt.isKeyDown(KC_HOME) || 
-			evt.isButtonDown(Event::Button3))
+			evt.isButtonDown(myAppDrawerToggleButton))
 	{
 		if(myAppDrawer->isVisible()) myAppDrawer->hide();
 		else  myAppDrawer->show();
