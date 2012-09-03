@@ -1,6 +1,7 @@
 @fsinclude shadowMap
 
 uniform vec4 unif_Ambient;
+uniform float unif_Alpha;
 
 varying vec3 var_Normal;
 varying vec3 var_EyeVector;
@@ -56,7 +57,7 @@ LitSurfaceData computeLighting(SurfaceData surf)
 	// Add ambient component from main light.
 	ld.luminance += surf.albedo * unif_Ambient;
 	
-	ld.luminance.a = surf.albedo.a;
+	ld.luminance.a = surf.albedo.a * unif_Alpha;
 	// Add emissive surface component to final luminance.
 	ld.luminance += surf.emissive;
 	
