@@ -140,6 +140,7 @@ add_subdirectory(omega)
 if(PYTHONLIBS_FOUND)
 	# We need to add orun here because its config file uses build options defined above
 	add_subdirectory(apps/orun)
+	add_subdirectory(apps/mcsend)
 endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)

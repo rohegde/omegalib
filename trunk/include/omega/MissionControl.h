@@ -58,6 +58,8 @@ namespace omega {
 	class MissionControlServer: public TcpServer, public ILogListener
 	{
 	public:
+		static const int DefaultPort = 22500;
+	public:
 		virtual void initialize();
 		virtual void dispose();
 

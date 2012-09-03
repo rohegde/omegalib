@@ -74,15 +74,19 @@ void VtkRenderPass::initialize()
 	//myTranslucentPass->SetTranslucentPass(vtkTranslucentPass::New());
 }
 
+Lock sLock;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void VtkRenderPass::queueProp(vtkProp* actor, QueueType queue)
 {
+sLock.lock();
 	oassert(queue < NumQueues);
 
 	if(myPropQueueSize[queue] < MaxQueuedProps)
 	{
 		myPropQueue[queue][myPropQueueSize[queue]++] = actor;
 	}
+sLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,8 +94,6 @@ void VtkRenderPass::resetPropQueues()
 {
 	for(int i = 0; i < NumQueues; i++) myPropQueueSize[i] = 0;
 }
-
-Lock sLock;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkRenderPass::render(Renderer* mng, const DrawContext& context)
