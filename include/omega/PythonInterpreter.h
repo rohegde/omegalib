@@ -113,26 +113,26 @@ namespace omega
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements a renderer command that runs a python statement when executed.
-	class ScriptRendererCommand: public IRendererCommand
-	{
-	public:
-		ScriptRendererCommand()
-		{
-			myInterp = SystemManager::instance()->getScriptInterpreter();
-			myStatement = "";
-		}
+	//class ScriptRendererCommand: public IRendererCommand
+	//{
+	//public:
+	//	ScriptRendererCommand()
+	//	{
+	//		myInterp = SystemManager::instance()->getScriptInterpreter();
+	//		myStatement = "";
+	//	}
 
-		void setStatement(const String& value) { myStatement = value; }
+	//	void setStatement(const String& value) { myStatement = value; }
 
-		void execute(Renderer* r)
-		{
-			myInterp->eval(myStatement);
-		}
+	//	void execute(Renderer* r)
+	//	{
+	//		myInterp->eval(myStatement);
+	//	}
 
-	private:
-		String myStatement;
-		PythonInterpreter* myInterp;
-	};
+	//private:
+	//	String myStatement;
+	//	PythonInterpreter* myInterp;
+	//};
 };
 #endif
 
