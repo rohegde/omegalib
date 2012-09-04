@@ -100,11 +100,7 @@ string PortholeGUI::create(){
 	// Parse the GUI elements
 	for (TiXmlNode* pChild = guiElements->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
 
-		string id = "";
-		string type = "";
-		string cameraType = "";
-
-		string htmlValue = "";
+		PortholeElement element;
 
 		// Parse attributes
 		TiXmlAttribute* pAttrib = pChild->ToElement()->FirstAttribute();
@@ -115,28 +111,30 @@ string PortholeGUI::create(){
 
 			// Save id attribute
 			if (strcmp(attribute.c_str(),"id")==0){
-					id = pAttrib->Value();
+				element.id = pAttrib->Value();
 			}
 
 			// Save type attribute
 			else if (strcmp(attribute.c_str(),"type")==0){
-					type = pAttrib->Value();
+				element.type = pAttrib->Value();
 			}
 
 			// Save camera type attribute
 			else if (strcmp(attribute.c_str(),"camera")==0){
-					cameraType = pAttrib->Value();
+				element.cameraType = pAttrib->Value();
 			}
 
 			// Next attribute
 			pAttrib = pAttrib->Next();
 		}
 
-		StringUtils::toLowerCase(type);
-		StringUtils::toLowerCase(cameraType);
+		StringUtils::toLowerCase(element.type);
+		StringUtils::toLowerCase(element.cameraType);
 
 		// For HTML elements, just add all the content to the element
-		if  (strcmp(type.c_str(),"html")==0){
+		if  (strcmp(element.type.c_str(),"html")==0){
+
+			element.htmlValue = "<div style=\" width : 100%; height : 100%;\" >";
 
 			// Parse the GUI elements
 			for (TiXmlNode* pHtmlChild = pChild->FirstChildElement(); pHtmlChild != 0; pHtmlChild = pHtmlChild->NextSiblingElement()){
@@ -144,48 +142,33 @@ string PortholeGUI::create(){
 				// TODO concat children 
 				pHtmlChild->Accept( xmlPrinter );
 				//cout << "Added: " << id << " -> " << xmlPrinter->CStr() << endl;
-				htmlValue.append(xmlPrinter->CStr());
+				element.htmlValue.append(xmlPrinter->CStr());
 
 			}
+
+			element.htmlValue.append("</div>");
 
 		}
 
 		// For googlemaps element, create a div element that will contain a googlemaps view
-		else if (strcmp(type.c_str(),"googlemap")==0){
-			htmlValue = "<div  style=\" padding : 5px \"><input id=\"searchTextField\" type=\"text\" style=\"width : 100%; height : 20px;\"></div>";
-			htmlValue.append("<div id=\"map-canvas\" class=\"map_container\" style=\"width:");
-			htmlValue.append(boost::lexical_cast<string>(device->deviceWidth)+"px; height:"+
+		else if (strcmp(element.type.c_str(),"googlemap")==0){
+			element.htmlValue = "<div  style=\" padding : 5px \"><input id=\"searchTextField\" type=\"text\" style=\"width : 100%; height : 20px;\"></div>";
+			element.htmlValue.append("<div id=\"map-canvas\" class=\"map_container\" style=\"width:");
+			element.htmlValue.append(boost::lexical_cast<string>(device->deviceWidth)+"px; height:"+
 							  boost::lexical_cast<string>(device->deviceHeight)+"px \" ");
-			htmlValue.append("></div>");
+			element.htmlValue.append("></div>");
 		}
 
 		// For a camera stream
-		else if (strcmp(type.c_str(),"camera_stream")==0){
-
-			// Create a session camera
-			//if (strcmp(cameraType.c_str(),"custom")==0){
-			//	createCustomCamera();
-			//}
-			//else if (strcmp(cameraType.c_str(),"default")==0){
-			//	Engine* myEngine = Engine::instance();
-			//	Camera* defaultCamera = myEngine->getDefaultCamera();
-
-			//	// TODO check dimensions
-			//	PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 860, 460); // TODO save for future delete
-			//	defaultCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
-			//	defaultCamera->getOutput(0)->setEnabled(true);
-
-			//	sessionCameras.push_back(std::pair<Camera*,PixelData*>(defaultCamera,sessionCanvas));
-			//}
-
-			htmlValue = "<canvas id=\"camera-canvas\" class=\"camera_container\" style=\"width:";
-			htmlValue.append(boost::lexical_cast<string>(device->deviceWidth)+"px; height:" +
-							  boost::lexical_cast<string>(device->deviceHeight)+ "px \" ");
-			htmlValue.append("></canvas>");
+		else if (strcmp(element.type.c_str(),"camera_stream")==0){
+			element.htmlValue = "<canvas id=\"camera-canvas\" class=\"camera_container\" style=\"width:";
+			element.htmlValue.append(boost::lexical_cast<string>(device->deviceWidth)+"px; height:"+
+							  boost::lexical_cast<string>(device->deviceHeight)+"px \" ");
+			element.htmlValue.append("></canvas>");
 		}
 
-		if(id.length() > 0 && type.length() > 0){
-			elementsMap[id] = htmlValue;
+		if(element.id.length() > 0 && element.type.length() > 0){
+			elementsMap[element.id] = element;
 		}
 
 	}
@@ -196,9 +179,50 @@ string PortholeGUI::create(){
 		// Get element name: should correspond to id TODO check
 		const char* id = pChild->ToElement()->Value();
 
-		string htmlElement = elementsMap[id];
+		PortholeElement element = elementsMap[id];
 
-		result.append(htmlElement);
+		string width="", height="";
+
+		// Parse attributes
+		TiXmlAttribute* pAttrib = pChild->ToElement()->FirstAttribute();
+		while(pAttrib){
+
+			string attribute = pAttrib->Name();
+			StringUtils::toLowerCase(attribute);
+
+			// Save id attribute
+			if (strcmp(attribute.c_str(),"width")==0){
+				width = pAttrib->Value();
+			}
+
+			// Save type attribute
+			else if (strcmp(attribute.c_str(),"height")==0){
+				height = pAttrib->Value();
+			}
+
+			// Next attribute
+			pAttrib = pAttrib->Next();
+		}
+
+		result.append("<div style=\" width : "+ width +"; height : "+ height +"; \" >"+ element.htmlValue +"</div>");
+
+		// Create a session camera
+		if (strcmp(element.type.c_str(),"camera_stream")==0){
+			if (strcmp(element.cameraType.c_str(),"custom")==0){
+				createCustomCamera();
+			}
+			else if (strcmp(element.cameraType.c_str(),"default")==0){
+				Engine* myEngine = Engine::instance();
+				Camera* defaultCamera = myEngine->getDefaultCamera();
+
+				// TODO check dimensions
+				PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 860, 460); // TODO save for future delete
+				defaultCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
+				defaultCamera->getOutput(0)->setEnabled(true);
+
+				sessionCameras.push_back(std::pair<Camera*,PixelData*>(defaultCamera,sessionCanvas));
+			}
+		}
 
 	}
 

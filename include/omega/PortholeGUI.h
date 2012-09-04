@@ -77,7 +77,15 @@ namespace omega {
 		int minHeight;
 		string type;
 		string orientation;
-	}PortholeInterfaceType;
+	} PortholeInterfaceType;
+
+	// An element object
+	typedef struct PortholeElement{
+		string id;
+		string type;
+		string cameraType; // Defined if type is camera stream
+		string htmlValue;
+	} PortholeElement;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements the HTML GUI Manager for Porthole Service
@@ -115,8 +123,8 @@ namespace omega {
 		// The device for which an interface will be created
 		PortholeDevice* device;
 
-		// A map between an element id and the element data as html string
-		std::map<string, string> elementsMap;
+		// A map between an element id and the element data
+		std::map<string, PortholeElement> elementsMap;
 
 		// A map between a device type and its GUI elements (as a list of node id string)
 		std::map<PortholeInterfaceType, vector<string>> devicesMap;
