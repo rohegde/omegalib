@@ -477,6 +477,30 @@ struct Quaternion_from_python
 	}
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void querySceneRay(const Vector3f& origin, const Vector3f& dir, boost::python::object callback)
+{
+	const SceneQueryResultList& sqrl = Engine::instance()->querySceneRay(Ray(origin, dir));
+    boost::python::list l;
+	foreach(SceneQueryResult sqr, sqrl)
+	{
+		callback(boost::python::ptr(sqr.node), sqr.distance);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Camera* getDefaultCamera()
+{
+	return Engine::instance()->getDefaultCamera();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+SceneNode* getScene()
+{
+	return Engine::instance()->getScene();
+}
+
+
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeYawOverloads, yaw, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodePitchOverloads, pitch, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeRollOverloads, roll, 1, 2) 
@@ -655,6 +679,9 @@ BOOST_PYTHON_MODULE(omega)
 	// Free Functions
 	def("getEvent", getEvent, return_value_policy<reference_existing_object>());
 	def("getEngine", getEngine, PYAPI_RETURN_POINTER);
+	def("getDefaultCamera", getDefaultCamera, PYAPI_RETURN_POINTER);
+	def("getScene", getScene, PYAPI_RETURN_POINTER);
+	def("querySceneRay", querySceneRay);
 	def("printChildren", &printChildren);
 	def("printObjCounts", &printObjCounts);
 	def("settingLookup", &settingLookup, PYAPI_RETURN_VALUE);

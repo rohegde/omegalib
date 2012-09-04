@@ -51,7 +51,7 @@ const SceneQueryResultList& RaySceneQuery::execute(uint flags)
 void RaySceneQuery::queryNode(SceneNode* node, SceneQueryResultList& list, bool queryFirst)
 {
 	bool selected = false;
-	if(node->isSelectable())
+	if(node->isSelectable() && node->isVisible())
 	{
 		const Sphere& s = node->getBoundingSphere();
 		//ofmsg("Bsphere for node %1% is   center: %2%   radius: %3%", %node->getName() %s.getCenter() %s.getRadius());

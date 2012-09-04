@@ -183,10 +183,6 @@ Ref<PixelData> ImageUtils::loadImage(const String& filename, bool hasFullPath)
 		return NULL;
 	}
 
-	//FIBITMAP* temp = image;
-	//image = FreeImage_ConvertTo32Bits(image);
-	//FreeImage_Unload(temp);
-
 	uint bpp = FreeImage_GetBPP(image);
 	int width = FreeImage_GetWidth(image);
 	int height = FreeImage_GetHeight(image);
@@ -206,6 +202,15 @@ Ref<PixelData> ImageUtils::loadImage(const String& filename, bool hasFullPath)
 	{
 		pixelData = new PixelData(PixelData::FormatRgba, width, height, pdata);
 		pixelOffset = 4;
+	}
+	else if(bpp == 8)
+	{
+		// COnvert 8 bit palettized images to 24 bits.
+		FIBITMAP* temp = image;
+		image = FreeImage_ConvertTo24Bits(image);
+		FreeImage_Unload(temp);
+		pixelData = new PixelData(PixelData::FormatRgb, width, height, pdata);
+		pixelOffset = 3;
 	}
 	else
 	{
