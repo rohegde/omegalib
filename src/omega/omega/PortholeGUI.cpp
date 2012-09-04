@@ -53,7 +53,7 @@ PortholeGUI::PortholeGUI(const char* documentName){
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 PortholeGUI::~PortholeGUI(){
-	// TODO
+	Engine::instance()->destroyCamera(sessionCameras.at(0).first);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -216,7 +216,7 @@ string PortholeGUI::create(){
 				Camera* defaultCamera = myEngine->getDefaultCamera();
 
 				// TODO check dimensions
-				PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 860, 460); // TODO save for future delete
+				PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 860, 480); // TODO save for future delete
 				defaultCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
 				defaultCamera->getOutput(0)->setEnabled(true);
 
@@ -237,7 +237,7 @@ void PortholeGUI::createCustomCamera(){
 		Engine* myEngine = Engine::instance();
 
 		// TODO check dimensions
-		PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 840, 460);
+		PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 860, 480);
 
 		uint flags = Camera::ForceMono | Camera::DrawScene;
 
