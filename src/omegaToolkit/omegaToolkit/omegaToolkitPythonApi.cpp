@@ -87,6 +87,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_ENUM_VALUE(MenuItem, Button)
 		PYAPI_ENUM_VALUE(MenuItem, Checkbox)
 		PYAPI_ENUM_VALUE(MenuItem, Slider)
+		PYAPI_ENUM_VALUE(MenuItem, SubMenu)
 		;
 
 	PYAPI_BASE_CLASS(ToolkitUtils)
