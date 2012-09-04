@@ -89,10 +89,10 @@ int main(int argc, char** argv)
 	}
 
 	asio::io_service ioService;
-	MCSender ssender = MCSender(ConnectionInfo(ioService));
-	ssender.open(host, port);
-	ssender.command = command;
-	while(!ssender.done)
+	Ref<MCSender> ssender = new MCSender(ConnectionInfo(ioService));
+	ssender->open(host, port);
+	ssender->command = command;
+	while(!ssender->done)
 	{
 		ioService.run_one();
 		omega::osleep(500);
