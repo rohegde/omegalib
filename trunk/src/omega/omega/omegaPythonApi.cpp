@@ -30,6 +30,7 @@
  *************************************************************************************************/
 #include "omega/PythonInterpreter.h"
 #include "omega/SystemManager.h"
+#include "omega/DisplaySystem.h"
 #include "omega/Engine.h"
 #include "omega/Actor.h"
 
@@ -44,7 +45,7 @@
 using namespace omega;
 
 //! Static instance of ScriptRendererCommand, used by rendererQueueCommand
-ScriptRendererCommand* sScriptRendererCommand = NULL;
+//ScriptRendererCommand* sScriptRendererCommand = NULL;
 
 PyObject* sEuclidModule = NULL;
 
@@ -87,24 +88,24 @@ static PyObject* omegaRun(PyObject* self, PyObject* args)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-static PyObject* rendererQueueCommand(PyObject* self, PyObject* args)
-{
-	const char* statement;
-	if(!PyArg_ParseTuple(args, "s", &statement)) return NULL;
-
-	if(sScriptRendererCommand == NULL) 
-	{
-		sScriptRendererCommand = new ScriptRendererCommand();
-	}
-	sScriptRendererCommand->setStatement(statement);
-	Engine* engine = Engine::instance();
-	foreach(Renderer* r, engine->getClients())
-	{
-		r->queueCommand(sScriptRendererCommand);
-	}
-	Py_INCREF(Py_None);
-	return Py_None;
-}
+//static PyObject* rendererQueueCommand(PyObject* self, PyObject* args)
+//{
+//	const char* statement;
+//	if(!PyArg_ParseTuple(args, "s", &statement)) return NULL;
+//
+//	if(sScriptRendererCommand == NULL) 
+//	{
+//		sScriptRendererCommand = new ScriptRendererCommand();
+//	}
+//	sScriptRendererCommand->setStatement(statement);
+//	Engine* engine = Engine::instance();
+//	foreach(Renderer* r, engine->getClients())
+//	{
+//		r->queueCommand(sScriptRendererCommand);
+//	}
+//	Py_INCREF(Py_None);
+//	return Py_None;
+//}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 static PyObject* omegaUpdateCallback(PyObject *dummy, PyObject *args)
@@ -243,10 +244,10 @@ static PyMethodDef omegaMethods[] =
 		"addVisibilityListener(node, cmd)\n"
 		"Attaches a command to be executed whenever the node visibility changes."},
 
-	// Renderer API
-    {"rendererQueueCommand", rendererQueueCommand, METH_VARARGS, 
-		"rendererQueueCommand(funcRef)\n"
-		"Queues a script fuction to be executed once on all running rendering threads"},
+	//// Renderer API
+ //   {"rendererQueueCommand", rendererQueueCommand, METH_VARARGS, 
+	//	"rendererQueueCommand(funcRef)\n"
+	//	"Queues a script fuction to be executed once on all running rendering threads"},
 
 	// Base omegalib API
 	{"oexit", omegaExit, METH_VARARGS, 
@@ -489,6 +490,15 @@ void querySceneRay(const Vector3f& origin, const Vector3f& dir, boost::python::o
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+boost::python::tuple getRayFromEvent(const Event* evt)
+{
+	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+	Ray r;
+	bool res = ds->getViewRayFromEvent(*evt, r);
+	return boost::python::make_tuple(res, r.getOrigin(), r.getDirection());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Camera* getDefaultCamera()
 {
 	return Engine::instance()->getDefaultCamera();
@@ -572,16 +582,16 @@ BOOST_PYTHON_MODULE(omega)
 		;
 
 	// Event Extra Data Type
-	PYAPI_ENUM(EventBase::ServiceType, ServiceType)
-			PYAPI_ENUM_VALUE(EventBase,ServiceTypePointer)
-			PYAPI_ENUM_VALUE(EventBase,ServiceTypeMocap)
-			PYAPI_ENUM_VALUE(EventBase,ServiceTypeKeyboard) 
-			PYAPI_ENUM_VALUE(EventBase,ServiceTypeController)
-			PYAPI_ENUM_VALUE(EventBase,ServiceTypeUi) 
-			PYAPI_ENUM_VALUE(EventBase,ServiceTypeGeneric)
-			PYAPI_ENUM_VALUE(EventBase,ServiceTypeBrain)
-			PYAPI_ENUM_VALUE(EventBase,ServiceTypeWand) 
-			PYAPI_ENUM_VALUE(EventBase,ServiceTypeAudio)
+	PYAPI_ENUM(Service::ServiceType, ServiceType)
+			PYAPI_ENUM_VALUE(Service,Pointer)
+			PYAPI_ENUM_VALUE(Service,Mocap)
+			PYAPI_ENUM_VALUE(Service,Keyboard) 
+			PYAPI_ENUM_VALUE(Service,Controller)
+			PYAPI_ENUM_VALUE(Service,Ui) 
+			PYAPI_ENUM_VALUE(Service,Generic)
+			PYAPI_ENUM_VALUE(Service,Brain)
+			PYAPI_ENUM_VALUE(Service,Wand) 
+			PYAPI_ENUM_VALUE(Service,Audio)
 			;
 
 	// Event
@@ -645,6 +655,8 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(SceneNode, setSelected)
 		PYAPI_METHOD(SceneNode, isSelectable)
 		PYAPI_METHOD(SceneNode, setSelectable)
+		PYAPI_METHOD(SceneNode, isBoundingBoxVisible)
+		PYAPI_METHOD(SceneNode, setBoundingBoxVisible)
 	;
 
 	// Camera
@@ -682,6 +694,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("getDefaultCamera", getDefaultCamera, PYAPI_RETURN_POINTER);
 	def("getScene", getScene, PYAPI_RETURN_POINTER);
 	def("querySceneRay", querySceneRay);
+	def("getRayFromEvent", getRayFromEvent);
 	def("printChildren", &printChildren);
 	def("printObjCounts", &printObjCounts);
 	def("settingLookup", &settingLookup, PYAPI_RETURN_VALUE);
