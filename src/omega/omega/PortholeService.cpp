@@ -140,6 +140,12 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 				fprintf(stderr, "Failed to send browser_detect.js\n");
 			break;
 		}
+		else if (in && strcmp((char*)in, "/ui.geo_autocomplete.js") == 0) {
+			if (libwebsockets_serve_http_file(wsi,
+			     (DATA_PATH+"/ui.geo_autocomplete.js").c_str(), "application/javascript"))
+				fprintf(stderr, "Failed to send ui.geo_autocomplete.js\n");
+			break;
+		}
 
 		/* Function Binder Javascript */
 		else if (in && strcmp((char*)in, "/porthole_functions_binder.js") == 0) {
@@ -222,9 +228,6 @@ struct across_sessions_data {
 
 // Struct of data to be passed across the entire session
 struct per_session_data {
-	Camera* sessionCamera;
-	PixelData* sessionCanvasPixel;
-	ByteArray* sessionPng;
 	PortholeGUI* guiManager;
 	unsigned int oldus; // Last message sent timestamp
 };
@@ -453,6 +456,7 @@ inline void handle_message(per_session_data* data, recv_message* message,
     }
 
 	// First message received is a device specs message
+	// Create the GUI manager
 	else if (strcmp(message->event_type.c_str(),MSG_EVENT_SPEC)==0){
 
 		// Porthole GUI manager TODO filename
@@ -487,32 +491,24 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 	{
 		fprintf(stderr, "callback_websocket: LWS_CALLBACK_ESTABLISHED\n");
 
+		// Set timestamp to 0 millis
 		data->oldus = 0;
-
-		/* Camera initialization */
-		Engine* myEngine = Engine::instance();
-
-		// TODO check dimensions
-		data->sessionCanvasPixel = new PixelData(PixelData::FormatRgb, 840, 480);
-
-		uint flags = Camera::ForceMono | Camera::DrawScene;
-
-		data->sessionCamera = myEngine->createCamera(flags);
-		data->sessionCamera->setProjection(60, 1, 0.1f, 100);
-		data->sessionCamera->setAutoAspect(true);
-
-		// Initialize the tablet camera position to be the same as the main camera.
-		Camera* defaultCamera = myEngine->getDefaultCamera();
-		data->sessionCamera->setPosition(defaultCamera->getPosition());
-
-		data->sessionCamera->getOutput(0)->setReadbackTarget(data->sessionCanvasPixel);
-		data->sessionCamera->getOutput(0)->setEnabled(true);
 
 		break;
 	}
 
+	/* On socket writable from server to client */
 	case LWS_CALLBACK_SERVER_WRITEABLE:
 	{
+
+		// Check if we have stream to send: if not, pass the token
+		if ( data->guiManager->numberOfStreamsToSend() <= 0 ){
+			libwebsocket_callback_on_writable(context, wsi);
+			return 0;
+		}
+
+		cout << data->guiManager->numberOfStreamsToSend() << endl;
+
 		// Write at 50Hz, so just pass the token and return "ok" if it's too early for us
 		struct timeval tv;
 		gettimeofday(&tv, NULL);
@@ -521,13 +517,22 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			return 0;
 		}
 
+		// Get camera data
+		vector<std::pair<Camera*,PixelData*>> sessionCameras = data->guiManager->getSessionCameras();
+
+		// TODO for each camera
+		std::pair<Camera*,PixelData*> sessionCamera = sessionCameras.at(0);
+		Camera* camera = sessionCamera.first;
+		PixelData* canvas = sessionCamera.second;
+
 		// Get camera image as PNG and base64 encode it, because only simple strings could be sent via websockets  
-		data->sessionPng = ImageUtils::encode(data->sessionCanvasPixel, ImageUtils::FormatPng);
-		std::string base64image = base64_encode(data->sessionPng->getData(),data->sessionPng->getSize());
+		ByteArray* png = ImageUtils::encode(canvas, ImageUtils::FormatPng);
+		std::string base64image = base64_encode(png->getData(),png->getSize());
 
 		string toSend = "{\"event_type\" : \"stream\", \"base64image\" : \"";
 		toSend.append(base64image.c_str());
-		toSend.append("\"}");
+		toSend.append("\", \"image_width\" : " + boost::lexical_cast<string>(data->guiManager->getDevice()->deviceWidth) + ","
+						  "\"image_height\" : " + boost::lexical_cast<string>(data->guiManager->getDevice()->deviceHeight) +"}" );
 
 		// Send the base64 image
 		unsigned char* buf;
@@ -577,10 +582,8 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 
 	case LWS_CALLBACK_CLOSED:
 	{
-		Engine* myEngine = Engine::instance();
-		myEngine->destroyCamera(data->sessionCamera);
-		delete data->sessionCanvasPixel;
-		//delete data->sessionPng;
+		// Call gui destructor
+		delete data->guiManager;
 		break;
 	}
 

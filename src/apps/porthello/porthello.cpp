@@ -149,7 +149,7 @@ void HelloRenderPass::render(Renderer* client, const DrawContext& context)
 {
 	if(context.task == DrawContext::SceneDrawTask)
 	{
-		client->getRenderer()->beginDraw3D(context);
+		//client->getRenderer()->beginDraw3D(context);
 
 		// Enable depth testing and lighting.
 		glEnable(GL_DEPTH_TEST);
@@ -180,7 +180,7 @@ void HelloRenderPass::render(Renderer* client, const DrawContext& context)
 			glEnd();
 		}
 
-		client->getRenderer()->endDraw();
+		//client->getRenderer()->endDraw();
 	}
 }
 

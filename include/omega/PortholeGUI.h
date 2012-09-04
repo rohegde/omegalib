@@ -28,6 +28,8 @@
 #ifndef __PORTHOLE_GUI_H__
 #define __PORTHOLE_GUI_H__
 
+#include "omega/Camera.h"
+#include "omega/Application.h"
 #include "omicron/xml/tinyxml.h"
 
 using namespace omicron;
@@ -86,6 +88,7 @@ namespace omega {
 		// Constructor
 		PortholeGUI( const char * documentName );
 
+		// TODO deallocate new objects
 		~PortholeGUI();
 
 		// Create the device spicifc html interface
@@ -93,6 +96,15 @@ namespace omega {
 
 		// Set device specifications
 		void setDeviceSpecifications(int width, int height, string orientation);
+
+		// Return an object that contains the device specifications
+		PortholeDevice* getDevice() { return device; }
+
+		// Number of cameras to stream over the network
+		int numberOfStreamsToSend() { return sessionCameras.size(); } 
+
+		// Get session stream data
+		vector<std::pair<Camera*,PixelData*>> getSessionCameras() { return sessionCameras; }
 
 	private:
 
@@ -112,8 +124,14 @@ namespace omega {
 		// All the possible interfaces
 		vector<PortholeInterfaceType> interfaces; 
 
+		// All cameras
+		vector<std::pair<Camera*,PixelData*>> sessionCameras;
+
 		// Create the devices
 		void setPossibleInterfaces();
+
+		// Create a Porthole custom camera and a PixelData associated
+		void createCustomCamera(); 
 
 	};
 
