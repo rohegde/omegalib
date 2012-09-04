@@ -189,13 +189,14 @@ Widget* Container::getChildAfter(const Widget* child)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Widget* Container::getChildByIndex(int index)
 {
-	oassert(getNumChildren() > index);
-
-	int i = 0;
-	foreach(Widget* w, myChildren)
+	if(getNumChildren() > index)
 	{
-		if(i == index) return w;
-		i++;
+		int i = 0;
+		foreach(Widget* w, myChildren)
+		{
+			if(i == index) return w;
+			i++;
+		}
 	}
 	return NULL;
 }
@@ -574,7 +575,6 @@ void Container::activate()
 	Widget* child = getChildByIndex(0);
 	if(child != NULL) UiModule::instance()->activateWidget(child);
 	else UiModule::instance()->activateWidget(NULL);
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
