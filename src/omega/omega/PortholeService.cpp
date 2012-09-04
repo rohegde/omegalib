@@ -516,7 +516,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		}
 
 		// Get camera data
-		vector<std::pair<Camera*,PixelData*>> sessionCameras = data->guiManager->getSessionCameras();
+		vector<std::pair<Camera*,PixelData*> > sessionCameras = data->guiManager->getSessionCameras();
 
 		// TODO for each camera
 		std::pair<Camera*,PixelData*> sessionCamera = sessionCameras.at(0);
