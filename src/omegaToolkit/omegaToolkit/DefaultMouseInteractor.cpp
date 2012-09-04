@@ -45,7 +45,7 @@ void DefaultMouseInteractor::handleEvent(const Event& evt)
 		myPointerEventData = 0;
 		myPointerPosition = Vector2f(evt.getPosition().x(), evt.getPosition().y());
 		// We just care about Up / Down events.
-		if(evt.getType() != Event::Move)
+		//if(evt.getType() != Event::Move)
 		{
 			myPointerEventType = evt.getType();
 		}
@@ -92,19 +92,18 @@ void DefaultMouseInteractor::updateNode()
 			myStartScale = myNode->getScale()[0];
 			myHandlePosition = handlePos; 
 			myHandleDistance = (myHandlePosition - myPointerRay.getOrigin()).norm();
-			//myNode->setSelected(true);
+			myNodeActive = true;
 			//ofmsg("Ray origin %1% Direction %2% Handle Distance: %3%", %myPointerRay.getOrigin() %myPointerRay.getDirection() %myHandleDistance);
 		}
 	}
 	else if(myPointerEventType == Event::Up)
 	{
-		//myNode->setSelected(false);
+		myNodeActive = false;;
 	}
-	
-	//else if(myPointerEventType == Event::Move)
+	else if(myPointerEventType == Event::Move)
 	{
 		// Manipulate object, if one is active.
-		if(myNode->isSelected())
+		if(myNodeActive)
 		{
 			if(myPointerButton1Pressed)
 			{
