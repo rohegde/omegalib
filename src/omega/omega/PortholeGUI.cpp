@@ -239,7 +239,7 @@ void PortholeGUI::createCustomCamera(){
 		// TODO check dimensions
 		PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 860, 480);
 
-		uint flags = Camera::ForceMono | Camera::DrawScene;
+		uint flags = Camera::ForceMono | Camera::DrawScene | Camera::Offscreen;
 
 		Camera* sessionCamera = myEngine->createCamera(flags);
 		sessionCamera->setProjection(60, 1, 0.1f, 100);
@@ -247,7 +247,7 @@ void PortholeGUI::createCustomCamera(){
 
 		// Initialize the tablet camera position to be the same as the main camera.
 		Camera* defaultCamera = myEngine->getDefaultCamera();
-		sessionCamera->setPosition(defaultCamera->getPosition());
+		sessionCamera->setPosition(defaultCamera->getPosition() + defaultCamera->getHeadOffset());
 
 		sessionCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
 		sessionCamera->getOutput(0)->setEnabled(true);

@@ -255,6 +255,10 @@ void Engine::handleEvent(const Event& evt)
 void Engine::update(const UpdateContext& context)
 {
 	myDefaultCamera->update(context);
+	foreach(Camera* c, myCameras)
+	{
+		c->update(context);
+	}
 
     ModuleServices::update(this, context);
 
