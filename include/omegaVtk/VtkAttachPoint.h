@@ -31,6 +31,8 @@
 
 #include "ovtkbase.h"
 
+#include <vtkActor.h>
+
 class vtkProp3D;
 class vtkMatrix4x4;
 namespace omegaVtk {
