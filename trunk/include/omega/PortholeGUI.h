@@ -119,7 +119,7 @@ namespace omega {
 		int numberOfStreamsToSend() { return sessionCameras.size(); } 
 
 		// Get session stream data
-		vector<std::pair<Camera*,PixelData*>> getSessionCameras() { return sessionCameras; }
+		vector<std::pair<Camera*,PixelData*> > getSessionCameras() { return sessionCameras; }
 
 	private:
 
@@ -134,13 +134,13 @@ namespace omega {
 		std::map<string, PortholeElement> elementsMap;
 
 		// A map between a device type and its GUI elements (as a list of node id string)
-		std::map<PortholeInterfaceType, vector<string>> devicesMap;
+		std::map<PortholeInterfaceType, vector<string> > devicesMap;
 
 		// All the possible interfaces
 		vector<PortholeInterfaceType> interfaces; 
 
 		// All cameras
-		vector<std::pair<Camera*,PixelData*>> sessionCameras;
+		vector<std::pair<Camera*,PixelData*> > sessionCameras;
 
 		// Create the devices
 		void setPossibleInterfaces();
