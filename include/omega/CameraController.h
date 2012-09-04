@@ -48,7 +48,7 @@ namespace omega {
 			};
 
 	public:
-		CameraController(): myCamera(NULL), myOriginalOrientation( Quaternion::Identity() ) {}
+		CameraController(): myCamera(NULL), myOriginalOrientation( Quaternion::Identity() ), mySpeed(2.0f) {}
 
 		virtual void setup(Setting& s) {}
 		virtual void update(const UpdateContext& context) {}
@@ -56,6 +56,9 @@ namespace omega {
 		virtual void reset(); 
 		void setCamera(Camera* value) { myCamera = value; reset();}
 		Camera* getCamera() { return myCamera; }
+		
+		float getSpeed() { return mySpeed; }
+		void setSpeed(float value) { mySpeed = value; }
 
 		//! Utility method: updates the camera position using speed, yaw pich roll, and a time step.
 		void updateCamera(const Vector3f& speed, float yaw, float pitch, float roll, float dt);
@@ -67,6 +70,9 @@ namespace omega {
 	private:
 		Camera* myCamera;
 		Quaternion myOriginalOrientation;
+		
+	protected:
+		float mySpeed;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -144,15 +150,14 @@ namespace omega {
 
 	private:
 		// Navigation stuff.
-		float mySpeed;
-		float myStrafeMultiplier;
+		Vector3f myMoveVector;
+		
 		float myYawMultiplier;
 		float myPitchMultiplier;
-		uint myMoveFlags;
 		bool myRotating;
-		Vector3f myLastPointerPosition;
 		float myYaw;
 		float myPitch;	
+		Vector3f myLastPointerPosition;
 	};
 }; // namespace omega
 
