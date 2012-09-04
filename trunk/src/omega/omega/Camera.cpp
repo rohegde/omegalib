@@ -40,7 +40,8 @@ Camera::Camera(uint flags):
 	myPosition(Vector3f::Zero()),
 	myTrackingEnabled(false),
 	myTrackerSourceId(-1),
-	myOrientation(Quaternion::Identity())
+	myOrientation(Quaternion::Identity()),
+	myHeadOrientation(Quaternion::Identity())
 {
 	//myProjectionOffset = -Vector3f::UnitZ();
 
@@ -176,12 +177,17 @@ const DrawContext& Camera::beginDraw(const DrawContext& context)
 	DrawContext& dc = myDrawContext[context.gpuContext->getId()];
 
 	dc = context;
+	//AffineTransform3 hti = myHeadTransform.inverse();
+	//dc.modelview = hti * myViewTransform;
+
+	// DO not apply any head transformation for custom cameras
 	dc.modelview = myViewTransform;
+
 	dc.viewport = output->getReadbackViewport();
 	if(myAutoAspect)
 	{
 		float aspect = (float)dc.viewport.width() / dc.viewport.height();
-		setProjection(myFov, aspect, myNearZ, myFarZ);
+		setProjection(myFov, 1.0f / aspect, myNearZ, myFarZ);
 	}
 	dc.projection = myProjection;
 
