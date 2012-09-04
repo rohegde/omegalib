@@ -52,6 +52,11 @@ PortholeGUI::PortholeGUI(const char* documentName){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+PortholeGUI::~PortholeGUI(){
+	// TODO
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 void PortholeGUI::setPossibleInterfaces(){
 
 	PortholeInterfaceType smallPort = {426,320,"small","portrait"},
@@ -97,6 +102,7 @@ string PortholeGUI::create(){
 
 		string id = "";
 		string type = "";
+		string cameraType = "";
 
 		string htmlValue = "";
 
@@ -117,25 +123,37 @@ string PortholeGUI::create(){
 					type = pAttrib->Value();
 			}
 
+			// Save camera type attribute
+			else if (strcmp(attribute.c_str(),"camera")==0){
+					cameraType = pAttrib->Value();
+			}
+
 			// Next attribute
 			pAttrib = pAttrib->Next();
 		}
 
 		StringUtils::toLowerCase(type);
+		StringUtils::toLowerCase(cameraType);
 
 		// For HTML elements, just add all the content to the element
 		if  (strcmp(type.c_str(),"html")==0){
+
+			// Parse the GUI elements
+			for (TiXmlNode* pHtmlChild = pChild->FirstChildElement(); pHtmlChild != 0; pHtmlChild = pHtmlChild->NextSiblingElement()){
 				
-			// TODO concat children 
-			pChild->FirstChild()->Accept( xmlPrinter );
-			//cout << "Added: " << id << " -> " << xmlPrinter->CStr() << endl;
-			htmlValue = xmlPrinter->CStr();
+				// TODO concat children 
+				pHtmlChild->Accept( xmlPrinter );
+				//cout << "Added: " << id << " -> " << xmlPrinter->CStr() << endl;
+				htmlValue.append(xmlPrinter->CStr());
+
+			}
 
 		}
 
 		// For googlemaps element, create a div element that will contain a googlemaps view
 		else if (strcmp(type.c_str(),"googlemap")==0){
-			htmlValue = "<div id=\"map-canvas\" class=\"map_container\" style=\"width:";
+			htmlValue = "<div  style=\" padding : 5px \"><input id=\"searchTextField\" type=\"text\" style=\"width : 100%; height : 20px;\"></div>";
+			htmlValue.append("<div id=\"map-canvas\" class=\"map_container\" style=\"width:");
 			htmlValue.append(boost::lexical_cast<string>(device->deviceWidth)+"px; height:"+
 							  boost::lexical_cast<string>(device->deviceHeight)+"px \" ");
 			htmlValue.append("></div>");
@@ -143,9 +161,26 @@ string PortholeGUI::create(){
 
 		// For a camera stream
 		else if (strcmp(type.c_str(),"camera_stream")==0){
+
+			// Create a session camera
+			//if (strcmp(cameraType.c_str(),"custom")==0){
+			//	createCustomCamera();
+			//}
+			//else if (strcmp(cameraType.c_str(),"default")==0){
+			//	Engine* myEngine = Engine::instance();
+			//	Camera* defaultCamera = myEngine->getDefaultCamera();
+
+			//	// TODO check dimensions
+			//	PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 860, 460); // TODO save for future delete
+			//	defaultCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
+			//	defaultCamera->getOutput(0)->setEnabled(true);
+
+			//	sessionCameras.push_back(std::pair<Camera*,PixelData*>(defaultCamera,sessionCanvas));
+			//}
+
 			htmlValue = "<canvas id=\"camera-canvas\" class=\"camera_container\" style=\"width:";
-			htmlValue.append(boost::lexical_cast<string>(device->deviceWidth)+"px; height:"+
-							  boost::lexical_cast<string>(device->deviceHeight)+"px \" ");
+			htmlValue.append(boost::lexical_cast<string>(device->deviceWidth)+"px; height:" +
+							  boost::lexical_cast<string>(device->deviceHeight)+ "px \" ");
 			htmlValue.append("></canvas>");
 		}
 
@@ -168,5 +203,32 @@ string PortholeGUI::create(){
 	}
 
 	return result;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeGUI::createCustomCamera(){
+
+		/* Camera initialization */
+		Engine* myEngine = Engine::instance();
+
+		// TODO check dimensions
+		PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 840, 460);
+
+		uint flags = Camera::ForceMono | Camera::DrawScene;
+
+		Camera* sessionCamera = myEngine->createCamera(flags);
+		sessionCamera->setProjection(60, 1, 0.1f, 100);
+		sessionCamera->setAutoAspect(true);
+
+		// Initialize the tablet camera position to be the same as the main camera.
+		Camera* defaultCamera = myEngine->getDefaultCamera();
+		sessionCamera->setPosition(defaultCamera->getPosition());
+
+		sessionCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
+		sessionCamera->getOutput(0)->setEnabled(true);
+
+		// Save the new Camera and PixelData objects
+		sessionCameras.push_back(std::pair<Camera*,PixelData*>(sessionCamera,sessionCanvas));
 
 }
