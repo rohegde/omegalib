@@ -507,8 +507,6 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			return 0;
 		}
 
-		cout << data->guiManager->numberOfStreamsToSend() << endl;
-
 		// Write at 50Hz, so just pass the token and return "ok" if it's too early for us
 		struct timeval tv;
 		gettimeofday(&tv, NULL);

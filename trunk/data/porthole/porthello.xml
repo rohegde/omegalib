@@ -1,6 +1,7 @@
 <gui>
   
   <gui_elements>
+    
     <gui_element id="element1" type="HTML">
       <div>
       <input type="button" id="TestButton" name="UP" value="UP" onclick="up()"/>
@@ -9,12 +10,18 @@
       <input type="button" id="TestButton4" name="RIGHT" value="RIGHT" onclick="right()"/>
       </div>
     </gui_element>
+    
     <gui_element id="element2" type="googlemap" />
+    
     <gui_element id="element3" type="camera_stream" camera="default"/>
+    
   </gui_elements>
   
   <gui_disposition>
-    <element2 />
+    
+    <element1 width="100%" height="20%" />
+    <element3 width="100%" height="80%" />
+    
   </gui_disposition>
   
 </gui>
