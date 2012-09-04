@@ -262,6 +262,8 @@ void AppDrawer::show()
 	pos.z() -= 2.5;
 	ofmsg("App drawer position: %1%", %pos);
 	my3dSettings.position = pos;
+	
+	UiModule::instance()->activateWidget(myContainer);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

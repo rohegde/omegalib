@@ -199,13 +199,11 @@ void GamepadCameraController::update(const UpdateContext& context)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 WandCameraController::WandCameraController():
-	mySpeed(2.0f),
-	myStrafeMultiplier(1.0f),
-	myYawMultiplier(0.02f),
+	myYawMultiplier(0.001f),
 	myPitchMultiplier(-0.01f),
 	myYaw(0),
 	myPitch(0),
-	myMoveFlags(0)
+	myLastPointerPosition(0, 0, 0)
 {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -221,29 +219,31 @@ void WandCameraController::handleEvent(const Event& evt)
 {
 	if(evt.getServiceType() == Service::Wand)
 	{
-		myMoveFlags = evt.getFlags();
+		float x = evt.getExtraDataFloat(0);
+		float y = evt.getExtraDataFloat(1);
+		myYaw += x * myYawMultiplier;
+
+		myMoveVector = evt.getOrientation() * Vector3f(0, 0, y);
 		
 		// Button6 = Left Analog pressed.
-		if(evt.isFlagSet(Event::Button6)) myRotating = true;
+		if(evt.isFlagSet(Event::Button6)) 
+		{
+			myRotating = true;
+			myLastPointerPosition = evt.getPosition();
+		}
 		else myRotating = false;
-			
+		
 		if(myRotating)
 		{
-			Vector3f dpos = evt.getPosition() - myLastPointerPosition;
-			//ofmsg("pos %1%, dpos: %2%", %evt.getPosition() %dpos);
-			float x = evt.getExtraDataFloat(0);
-			float y = evt.getExtraDataFloat(1);
-			myYaw += x * myYawMultiplier;
-			myPitch += y * myPitchMultiplier;
+			float speedMul = 1 + (evt.getPosition() - myLastPointerPosition).norm();
+			myMoveVector *= speedMul;
 		}
-		myLastPointerPosition = evt.getPosition();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void WandCameraController::update(const UpdateContext& context)
 {
-	Vector3f speed = computeSpeedVector(myMoveFlags, mySpeed, myStrafeMultiplier);
-	updateCamera(speed, myYaw, myPitch, 0, context.dt);
+	updateCamera(myMoveVector, myYaw, myPitch, 0, context.dt);
 }
 
