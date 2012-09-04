@@ -38,7 +38,11 @@ namespace omegaToolkit {
 		DefaultMouseInteractor():
 		    Actor("DefaultMouseInteractor"),
 			myMoveButtonFlag(Event::Left),
-			myRotateButtonFlag(Event::Right){}
+			myRotateButtonFlag(Event::Right)
+			{
+				setPriority(PriorityLow);
+				myNodeActive = false;
+			}
 
 		virtual void handleEvent(const Event& evt);
 
@@ -69,6 +73,7 @@ namespace omegaToolkit {
 		int myPointerEventData;
 		bool myPointerButton1Pressed;
 		bool myPointerButton2Pressed;
+		bool myNodeActive;
 	};
 }; // namespace omegaToolkit
 
