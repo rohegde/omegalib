@@ -30,6 +30,7 @@
 
 #include "omega/Camera.h"
 #include "omega/Application.h"
+#include "omega/PythonInterpreter.h"
 #include "omicron/xml/tinyxml.h"
 
 using namespace omicron;
@@ -54,6 +55,12 @@ namespace omega {
 			it = funcMap.find(funcName);
 
 			if (it == funcMap.end()) return;
+			if(*it->second == NULL)
+			{
+				PythonInterpreter* pi = SystemManager::instance()->getScriptInterpreter();
+				pi->queueCommand(funcName);
+				return;
+			}
 
 			return (*it->second)();
 		}
