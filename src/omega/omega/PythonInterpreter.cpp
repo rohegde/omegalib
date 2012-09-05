@@ -150,10 +150,6 @@ void PythonInterpreter::setup(const Setting& setting)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::initialize(const char* programName)
 {
-	// Reset interactive command flags
-	myInteractiveCommandNeedsExecute = false;
-	myInteractiveCommandNeedsSend = false;
-
 	// Register self as shared object
 	SharedDataServices::registerObject(this, "interp");
 
@@ -339,20 +335,33 @@ void PythonInterpreter::unregisterAllCallbacks()
 void PythonInterpreter::update(const UpdateContext& context) 
 {
 	// Execute queued interactive commands first
-	if(myInteractiveCommandNeedsExecute)
+	if(myCommandQueue.size() != 0)
 	{
-		if(myDebugShell)
+		// List of commands to be removed from queue
+		List<QueuedCommand*> cmdsToRemove;
+		foreach(QueuedCommand* qc, myCommandQueue)
 		{
-			ofmsg("running %1%", %myInteractiveCommand);
+			if(qc->needsExecute) 
+			{
+				if(myDebugShell)
+				{
+					ofmsg("running %1%", %qc->command);
+				}
+				eval(qc->command);
+				qc->needsExecute = false;
+			}
+			// Purge commands from list
+			if(!qc->needsExecute && !qc->needsSend) cmdsToRemove.push_back(qc);
 		}
-
-		eval(myInteractiveCommand);
-		myInteractiveCommandNeedsExecute = false;
+		foreach(QueuedCommand* qc, cmdsToRemove)
+		{
+			myCommandQueue.remove(qc);
+			delete qc;
+		}
 	}
 	
 	PyObject *arglist;
 	arglist = Py_BuildValue("(lff)", (long int)context.frameNum, context.time, context.dt);
-
 
 	foreach(void* cb, myUpdateCallbacks)
 	{
@@ -371,46 +380,42 @@ void PythonInterpreter::queueCommand(const String& command, bool local)
 	//oassert(!myInteractiveCommandNeedsExecute && 
 	//	!myInteractiveCommandNeedsSend);
 	
-	if(myInteractiveCommandNeedsExecute)
-	{
-		ofwarn("Command already queued! Previous: %1% New: %2%", %myInteractiveCommand %command);
-	}
-
 	myInteractiveCommandLock.lock();
-	myInteractiveCommandNeedsExecute = true;
-	myInteractiveCommandNeedsSend = !local;
-	myInteractiveCommand = command;
+	myCommandQueue.push_back(new QueuedCommand(command, true, !local));
 	myInteractiveCommandLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::commitSharedData(SharedOStream& out)
 {
-	out << myInteractiveCommandNeedsSend;
-	if(myInteractiveCommandNeedsSend) out << myInteractiveCommand;
-	myInteractiveCommandNeedsSend = false;
+	// Count number of commands that need sending
+	int i = 0;
+	foreach(const QueuedCommand* qc, myCommandQueue) if(qc->needsSend) i++;
+
+	// Send commands
+	out << i;
+	foreach(QueuedCommand* qc, myCommandQueue) 
+	{
+		if(qc->needsSend)
+		{
+			out << qc->command;
+			qc->needsSend = false;
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::updateSharedData(SharedIStream& in)
 {
-	bool interactiveCommandReceived;
-	String interactiveCommand;
+	int cmdCount;
 	
-	in >> interactiveCommandReceived;
-	if(interactiveCommandReceived)
+	in >> cmdCount;
+	for(int i = 0; i < cmdCount; i++)
 	{
-		in >> interactiveCommand;
-	}
-	
-	if(myInteractiveCommandNeedsExecute && interactiveCommandReceived)
-	{
-		ofwarn("Command conflict: local %1% received %2%", %myInteractiveCommand %interactiveCommand);
-	}
-	else if(interactiveCommandReceived)
-	{
-		myInteractiveCommandNeedsExecute = true;
-		myInteractiveCommand = interactiveCommand;
+		String cmd;
+		in >> cmd;
+		// Add command to the local command queue.
+		queueCommand(cmd, true);
 	}
 }
 
