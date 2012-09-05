@@ -38,6 +38,9 @@ using namespace std;
 
 namespace omega {
 
+	// Id to be assigned to new cameras
+	static int camerasIncrementalId = 0;
+
 	// Porthole functions binder
 	struct PortholeFunctionsBinder{
 
@@ -94,6 +97,13 @@ namespace omega {
 		string htmlValue;
 	} PortholeElement;
 
+	typedef struct PortholeCamera{
+		int id;
+		Camera* camera;
+		PixelData* canvas;
+		unsigned int oldusStreamSent; // Timestamp of last stream sent via socket
+	} PortholeCamera;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements the HTML GUI Manager for Porthole Service
 	class OMEGA_API PortholeGUI{
@@ -107,7 +117,7 @@ namespace omega {
 		~PortholeGUI();
 
 		// Create the device spicifc html interface
-		string create();
+		string create(bool firstTime);
 
 		// Set device specifications
 		void setDeviceSpecifications(int width, int height, string orientation);
@@ -119,7 +129,7 @@ namespace omega {
 		int numberOfStreamsToSend() { return sessionCameras.size(); } 
 
 		// Get session stream data
-		vector<std::pair<Camera*,PixelData*> > getSessionCameras() { return sessionCameras; }
+		std::map<int,PortholeCamera> getSessionCameras() { return sessionCameras; } 
 
 	private:
 
@@ -140,13 +150,17 @@ namespace omega {
 		vector<PortholeInterfaceType> interfaces; 
 
 		// All cameras
-		vector<std::pair<Camera*,PixelData*> > sessionCameras;
+		std::map<int,PortholeCamera> sessionCameras;
 
 		// Create the devices
 		void setPossibleInterfaces();
 
 		// Create a Porthole custom camera and a PixelData associated
 		void createCustomCamera(); 
+
+		void modCustomCamera(int cameraIterator);
+
+		vector<int> camerasId; 
 
 	};
 

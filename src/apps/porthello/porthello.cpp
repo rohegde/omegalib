@@ -99,7 +99,7 @@ void HelloRenderPass::initialize()
 
 	// Functions Bind
 	PortholeFunctionsBinder* binder = new PortholeFunctionsBinder();
-	binder->addFunction("up()", NULL);
+	binder->addFunction("up()", &up);
 	binder->addFunction("down()", &down);
 	binder->addFunction("left()", &left);
 	binder->addFunction("right()", &right);
