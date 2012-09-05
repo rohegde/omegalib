@@ -91,15 +91,24 @@ namespace omega
 		//String getHelpString(const String& filter);
 
 	protected:
+		struct QueuedCommand
+		{
+			QueuedCommand(const String& cmd, bool bneedsExecute, bool bneedsSend):
+				command(cmd), needsExecute(bneedsExecute), needsSend(bneedsSend)
+			{}
+			String command;
+			bool needsExecute;
+			bool needsSend;
+		};
+
+	protected:
 		bool myEnabled;
 		bool myShellEnabled;
 		bool myDebugShell;
 		PythonInteractiveThread* myInteractiveThread;
 
 		Lock myInteractiveCommandLock;
-		String myInteractiveCommand;
-		bool myInteractiveCommandNeedsExecute;
-		bool myInteractiveCommandNeedsSend;
+		List<QueuedCommand*> myCommandQueue;
 
 		List<void*> myUpdateCallbacks;
 		List<void*> myEventCallbacks;
