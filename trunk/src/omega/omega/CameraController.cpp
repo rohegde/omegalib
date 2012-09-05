@@ -199,7 +199,7 @@ void GamepadCameraController::update(const UpdateContext& context)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 WandCameraController::WandCameraController():
-	myYawMultiplier(0.001f),
+	myYawMultiplier(0.01f),
 	myPitchMultiplier(-0.01f),
 	myYaw(0),
 	myPitch(0),
@@ -221,21 +221,30 @@ void WandCameraController::handleEvent(const Event& evt)
 	{
 		float x = evt.getExtraDataFloat(0);
 		float y = evt.getExtraDataFloat(1);
+		
+		// Thresholds
+		if(x < 0.1f && x > -0.1f) x = 0;
+		if(y < 0.1f && y > -0.1f) y = 0;
+		
 		myYaw += x * myYawMultiplier;
 
 		myMoveVector = evt.getOrientation() * Vector3f(0, 0, y);
 		
 		// Button6 = Left Analog pressed.
-		if(evt.isFlagSet(Event::Button6)) 
+		if(evt.isButtonDown(Event::Button6)) 
 		{
 			myRotating = true;
 			myLastPointerPosition = evt.getPosition();
 		}
-		else myRotating = false;
+		if(evt.isButtonUp(Event::Button6)) 
+		{
+			myRotating = false;
+		}
 		
 		if(myRotating)
 		{
 			float speedMul = 1 + (evt.getPosition() - myLastPointerPosition).norm();
+			ofmsg("Speedmul %1%", %speedMul);
 			myMoveVector *= speedMul;
 		}
 	}

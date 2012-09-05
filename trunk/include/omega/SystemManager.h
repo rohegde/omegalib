@@ -54,6 +54,9 @@ namespace omega
 	public:
 		// Get the singleton instance of the system manager.
 		static SystemManager* instance();
+		
+		//! sets up the system configuration
+		void setupConfig(Config* cfg);
 
 		//! Initializes the system manager
 		void setup(Config* cfg);
@@ -115,12 +118,11 @@ namespace omega
 
 		MissionControlServer* getMissionControlServer() { return myMissionControlServer; }
 
+		void setupServiceManager();
+		void setupDisplaySystem();
 	private:
 		SystemManager();
 		~SystemManager();
-
-		void setupServiceManager();
-		void setupDisplaySystem();
 
 	private:
 		// Singleton instance.
