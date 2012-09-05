@@ -226,26 +226,30 @@ void WandCameraController::handleEvent(const Event& evt)
 		if(x < 0.1f && x > -0.1f) x = 0;
 		if(y < 0.1f && y > -0.1f) y = 0;
 		
-		myYaw += x * myYawMultiplier;
+		myYaw += -x * myYawMultiplier;
 
 		myMoveVector = evt.getOrientation() * Vector3f(0, 0, y);
 		
 		// Button6 = Left Analog pressed.
-		if(evt.isButtonDown(Event::Button6)) 
+		if(evt.isFlagSet(Event::Button6)) 
 		{
+			if(myRotating == false)
+			{
+				myLastPointerPosition = evt.getPosition();
+			}
 			myRotating = true;
-			myLastPointerPosition = evt.getPosition();
 		}
-		if(evt.isButtonUp(Event::Button6)) 
+		else
 		{
 			myRotating = false;
 		}
 		
 		if(myRotating)
 		{
-			float speedMul = 1 + (evt.getPosition() - myLastPointerPosition).norm();
-			ofmsg("Speedmul %1%", %speedMul);
-			myMoveVector *= speedMul;
+			Vector3f dv = (evt.getPosition() - myLastPointerPosition) * 20;
+			float speedMul = 1 + dv.norm();
+			//ofmsg("Speedmul %1%", %speedMul);
+			myMoveVector += dv;
 		}
 	}
 }
