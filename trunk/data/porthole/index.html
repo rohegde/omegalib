@@ -69,6 +69,8 @@
 
 <script>
 
+    var firstTime = 1;
+
     // Mobile or desktop
     var isMobile;
     if (screen.width <= 699) {
@@ -163,7 +165,8 @@
             "event_type": "device_spec",
             "width": viewportwidth,
             "height": viewportheight,
-            "orientation": orientation
+            "orientation": orientation,
+            "first_time": firstTime
         }
 
         socket.send(JSON.stringify(SpecMessage));
@@ -204,6 +207,8 @@
                 }
                 addEvent(window, "orientationchange", sendSpec);
 
+                firstTime = 0;
+
             }
 
         }
@@ -238,6 +243,7 @@
         if (!dragging || pinching) return;
         var JSONEvent = {
             "event_type": "drag",
+            "camera_id": parseInt(camera.getAttribute("data-camera_id")),
             "deltaX": parseFloat(((dragPosX - dragOldX) / camera.width) * 90), // yaw delta
             "deltaY": parseFloat(((dragPosY - dragOldY) / camera.height) * 90) // pitch delta
         };
@@ -252,6 +258,7 @@
         if (pinchScale - pinchOldScale == 0 && pinchRotation - pinchOldRotation == 0) return;
         var JSONEvent = {
             "event_type": "pinch",
+            "camera_id": parseInt(camera.getAttribute("data-camera_id")),
             "scale": pinchScale,
             "rotation": parseFloat(pinchRotation - pinchOldRotation)
         };
@@ -261,7 +268,7 @@
     }
 
     // Dragging listening interval
-    setInterval(watchDrag, 200);
+    setInterval(watchDrag, 10);
     setInterval(watchPinch, 200);
 
     ///////////////////////////////////////////////////////////

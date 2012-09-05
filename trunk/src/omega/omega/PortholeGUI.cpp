@@ -31,7 +31,8 @@ using namespace omega;
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-PortholeGUI::PortholeGUI(const char* documentName){
+PortholeGUI::PortholeGUI(const char* documentName)
+{
 
 	xmlDoc = new TiXmlDocument( documentName );
 	xmlPrinter = new TiXmlPrinter();
@@ -53,7 +54,7 @@ PortholeGUI::PortholeGUI(const char* documentName){
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 PortholeGUI::~PortholeGUI(){
-	Engine::instance()->destroyCamera(sessionCameras.at(0).first);
+	Engine::instance()->destroyCamera(sessionCameras.at(0).camera);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,8 +91,9 @@ void PortholeGUI::setDeviceSpecifications(int width, int height, string orientat
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-string PortholeGUI::create(){
+string PortholeGUI::create(bool firstTime){
 
+	int cameraIterator = 0;
 	string result = "";
 
 	TiXmlNode* guiElements = xmlDoc->FirstChildElement()->FirstChildElement();
@@ -161,7 +163,7 @@ string PortholeGUI::create(){
 
 		// For a camera stream
 		else if (strcmp(element.type.c_str(),"camera_stream")==0){
-			element.htmlValue = "<canvas id=\"camera-canvas\" class=\"camera_container\" style=\"width:";
+			element.htmlValue = "<canvas id=\"camera-canvas\" class=\"camera_container\" data-camera_id = \"#####\" style=\"width:";
 			element.htmlValue.append(boost::lexical_cast<string>(device->deviceWidth)+"px; height:"+
 							  boost::lexical_cast<string>(device->deviceHeight)+"px \" ");
 			element.htmlValue.append("></canvas>");
@@ -204,13 +206,24 @@ string PortholeGUI::create(){
 			pAttrib = pAttrib->Next();
 		}
 
-		result.append("<div style=\" width : "+ width +"; height : "+ height +"; \" >"+ element.htmlValue +"</div>");
-
 		// Create a session camera
 		if (strcmp(element.type.c_str(),"camera_stream")==0){
 			if (strcmp(element.cameraType.c_str(),"custom")==0){
-				createCustomCamera();
+
+				if (firstTime){
+					createCustomCamera();
+					// Update camera id on html
+					element.htmlValue = StringUtils::replaceAll(element.htmlValue,"#####",boost::lexical_cast<string>(camerasIncrementalId));
+				}
+				else{
+					modCustomCamera(cameraIterator);
+					// Update camera id on html
+					element.htmlValue = StringUtils::replaceAll(element.htmlValue,"#####",boost::lexical_cast<string>(camerasId.at(cameraIterator)));
+					cameraIterator++;
+				}
 			}
+
+			// TODO check first time
 			else if (strcmp(element.cameraType.c_str(),"default")==0){
 				Engine* myEngine = Engine::instance();
 				Camera* defaultCamera = myEngine->getDefaultCamera();
@@ -220,9 +233,14 @@ string PortholeGUI::create(){
 				defaultCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
 				defaultCamera->getOutput(0)->setEnabled(true);
 
-				sessionCameras.push_back(std::pair<Camera*,PixelData*>(defaultCamera,sessionCanvas));
+				PortholeCamera camera = {++camerasIncrementalId,defaultCamera, sessionCanvas, 0};
+				sessionCameras[camera.id] = camera;
+				camerasId.push_back(camera.id);
 			}
+
 		}
+
+		result.append("<div style=\" width : "+ width +"; height : "+ height +"; \" >"+ element.htmlValue +"</div>");
 
 	}
 
@@ -237,7 +255,7 @@ void PortholeGUI::createCustomCamera(){
 		Engine* myEngine = Engine::instance();
 
 		// TODO check dimensions
-		PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 860, 480);
+		PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  device->deviceWidth,  device->deviceHeight);
 
 		uint flags = Camera::ForceMono | Camera::DrawScene | Camera::Offscreen;
 
@@ -253,6 +271,17 @@ void PortholeGUI::createCustomCamera(){
 		sessionCamera->getOutput(0)->setEnabled(true);
 
 		// Save the new Camera and PixelData objects
-		sessionCameras.push_back(std::pair<Camera*,PixelData*>(sessionCamera,sessionCanvas));
+		PortholeCamera camera = {++camerasIncrementalId,sessionCamera, sessionCanvas, 0};
+		sessionCameras[camera.id] = camera;
+		camerasId.push_back(camera.id); 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeGUI::modCustomCamera(int cameraIterator){
+
+	// Retrieve the camera to be modified
+	PortholeCamera portholeCamera = sessionCameras[camerasId.at(cameraIterator)];
+
+	// TODO 
 
 }
