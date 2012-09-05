@@ -243,6 +243,9 @@ void SystemManager::setupDisplaySystem()
 
 		String displaySystemType;
 		stDS.lookupValue("type", displaySystemType);
+		
+		ofmsg("SystemManager::setupDisplaySystem: type = %1%", %displaySystemType);
+		
 		if(displaySystemType == "Equalizer")
 		{
 #ifdef OMEGA_USE_DISPLAY_EQUALIZER
