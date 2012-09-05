@@ -224,6 +224,7 @@ namespace omega
 			
 			if(kill)
 			{
+				sys->setApplication(&app);
 				sys->setupConfig(cfg);
 				sys->setupDisplaySystem();
 				DisplaySystem* ds = sys->getDisplaySystem();

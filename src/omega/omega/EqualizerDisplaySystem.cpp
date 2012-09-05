@@ -563,8 +563,10 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::killCluster() 
 {
+	omsg("EqualizerDisplaySystem::killCluster");
 	if(SystemManager::instance()->isMaster())
 	{
+		ofmsg("number of nodes: %1%", %myDisplayConfig.numNodes);
 		for(int n = 0; n < myDisplayConfig.numNodes; n++)
 		{
 			DisplayNodeConfig& nc = myDisplayConfig.nodes[n];
