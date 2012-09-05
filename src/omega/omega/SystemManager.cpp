@@ -134,6 +134,34 @@ void SystemManager::setup(Config* appcfg)
 {
 	omsg("SystemManager::setup");
 
+	setupConfig(appcfg);
+	
+	try
+	{
+		setupServiceManager();
+		setupDisplaySystem();
+		if(myInterpreter->isEnabled())
+		{
+			if(mySystemConfig->exists("config"))
+			{
+				const Setting& sConfig = mySystemConfig->lookup("config");
+				myInterpreter->setup(sConfig);
+
+				// See if mission control is enabled.
+				myMissionControlEnabled = Config::getBoolValue("missionControlEnabled", sConfig, false);
+				myMissionControlPort = Config::getIntValue("missionControlPort", sConfig, myMissionControlPort);
+			}
+		}
+	}
+	catch(libconfig::SettingTypeException ste)
+	{
+		oferror("Wrong setting type at %1% (HINT: make floats have a decimal part in your configuration)", %ste.getPath());
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SystemManager::setupConfig(Config* appcfg)
+{
 	if(!appcfg->isLoaded()) appcfg->load();
 	oassert(appcfg->isLoaded());
 
@@ -165,28 +193,6 @@ void SystemManager::setup(Config* appcfg)
 	if(!mySystemConfig->isLoaded()) mySystemConfig->load();
 
 	oassert(mySystemConfig->isLoaded());
-
-	try
-	{
-		setupServiceManager();
-		setupDisplaySystem();
-		if(myInterpreter->isEnabled())
-		{
-			if(mySystemConfig->exists("config"))
-			{
-				const Setting& sConfig = mySystemConfig->lookup("config");
-				myInterpreter->setup(sConfig);
-
-				// See if mission control is enabled.
-				myMissionControlEnabled = Config::getBoolValue("missionControlEnabled", sConfig, false);
-				myMissionControlPort = Config::getIntValue("missionControlPort", sConfig, myMissionControlPort);
-			}
-		}
-	}
-	catch(libconfig::SettingTypeException ste)
-	{
-		oferror("Wrong setting type at %1% (HINT: make floats have a decimal part in your configuration)", %ste.getPath());
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -221,32 +221,32 @@ namespace omega
 			ofmsg("::: found config: %1%", %curCfgFilename);
 
 			Config* cfg = new Config(curCfgFilename);
-		
-			sys->setApplication(&app);
-			if(remote)
-			{
-				sys->setupRemote(cfg, masterHostname);
-			}
-			else
-			{
-				sys->setup(cfg);
-			}
-			sys->initialize();
-
+			
 			if(kill)
 			{
+				sys->setupConfig(cfg);
+				sys->setupDisplaySystem();
 				DisplaySystem* ds = sys->getDisplaySystem();
 				ds->killCluster();
 			}
 			else
 			{
+				sys->setApplication(&app);
+				if(remote)
+				{
+					sys->setupRemote(cfg, masterHostname);
+				}
+				else
+				{
+					sys->setup(cfg);
+				}
+				sys->initialize();
 				sys->run();
+				sys->cleanup();
+
+				omsg("===================== ReferenceType object leaks follow:");
+				ReferenceType::printObjCounts();
 			}
-
-			sys->cleanup();
-
-			omsg("===================== ReferenceType object leaks follow:");
-			ReferenceType::printObjCounts();
 
 			ologclose();
 		}
