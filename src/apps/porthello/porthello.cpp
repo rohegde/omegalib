@@ -108,7 +108,11 @@ void HelloRenderPass::initialize()
 	PortholeService* service = new PortholeService();
 	ServiceManager* svcManager = SystemManager::instance()->getServiceManager();
 	svcManager->addService(service);
-	service->start(4080, binder);
+
+	string fullPath;
+	DataManager::findFile("porthole/porthello.xml", fullPath);
+
+	service->start(4080, (char*)fullPath.c_str(), binder);
 
 	// Initialize cube normals.
 	myNormals[0] = Vector3f(-1, 0, 0);

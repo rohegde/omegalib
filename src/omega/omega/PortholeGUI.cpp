@@ -30,22 +30,14 @@
 using namespace omega;
 using namespace std;
 
+PortholeFunctionsBinder* PortholeGUI::functionsBinder = NULL;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
-PortholeGUI::PortholeGUI(const char* documentName)
+PortholeGUI::PortholeGUI()
 {
 
-	xmlDoc = new TiXmlDocument( documentName );
+	//xmlDoc = new TiXmlDocument( documentName );
 	xmlPrinter = new TiXmlPrinter();
-	bool loadOkay = xmlDoc->LoadFile();
-	if (loadOkay)
-	{
-		// XML Node printer
-		xmlPrinter->SetStreamPrinting();
-	}
-	else
-	{
-		printf("Failed to load file");
-	}
 
 	// Create Devices
 	setPossibleInterfaces();
@@ -99,6 +91,190 @@ string PortholeGUI::create(bool firstTime){
 	TiXmlNode* guiElements = xmlDoc->FirstChildElement()->FirstChildElement();
 	TiXmlNode* guiDisposition = guiElements->NextSiblingElement();
 
+	// Parse the GUI elemets disposition
+	for (TiXmlNode* pChild = guiDisposition->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
+		
+		// Get element name: should correspond to id TODO check
+		const char* id = pChild->ToElement()->Value();
+
+		PortholeElement element = elementsMap[id];
+
+		string width="", height="";
+
+		// Parse attributes
+		TiXmlAttribute* pAttrib = pChild->ToElement()->FirstAttribute();
+		while(pAttrib){
+
+			string attribute = pAttrib->Name();
+			StringUtils::toLowerCase(attribute);
+
+			// Save id attribute
+			if (strcmp(attribute.c_str(),"width")==0){
+				width = pAttrib->Value();
+			}
+
+			// Save type attribute
+			else if (strcmp(attribute.c_str(),"height")==0){
+				height = pAttrib->Value();
+			}
+
+			// Next attribute
+			pAttrib = pAttrib->Next();
+		}
+
+		// For googlemaps element, create a div element that will contain a googlemaps view
+		if (strcmp(element.type.c_str(),"googlemap")==0){
+			element.htmlValue = "<div  style=\" padding : 5px \"><input id=\"searchTextField\" type=\"text\" style=\"width : 100%; height : 20px;\"></div>";
+			element.htmlValue.append("<div id=\"map-canvas\" class=\"map_container\" style=\"width:");
+			element.htmlValue.append(boost::lexical_cast<string>(device->deviceWidth)+"px; height:"+
+							  boost::lexical_cast<string>(device->deviceHeight)+"px \" ");
+			element.htmlValue.append("></div>");
+		}
+
+		// Create a session camera
+		if (strcmp(element.type.c_str(),"camera_stream")==0){
+
+			int cameraId = 0;
+
+			// TODO check first time FIXME Not working
+			if (strcmp(element.cameraType.c_str(),"default")==0){
+				Engine* myEngine = Engine::instance();
+				Camera* defaultCamera = myEngine->getDefaultCamera();
+
+				// TODO check dimensions
+				PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 860, 480); // TODO save for future delete
+				defaultCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
+				defaultCamera->getOutput(0)->setEnabled(true);
+
+				PortholeCamera camera = {++camerasIncrementalId,defaultCamera, sessionCanvas, 0};
+				sessionCameras[camera.id] = camera;
+				camerasId.push_back(camera.id);
+			}
+			// Custom camera case
+			else {
+				if (firstTime){
+					createCustomCamera();
+					// Update camera id on html
+					cameraId = camerasIncrementalId;
+				}
+				else{
+					modCustomCamera(cameraIterator);
+					// Update camera id on html
+					cameraId = camerasId.at(cameraIterator);
+					cameraIterator++;
+				}
+			}
+
+			element.htmlValue = "<canvas id=\"camera-canvas\" class=\"camera_container\" data-camera_id = \"" +
+								boost::lexical_cast<string>(cameraId) + "\" style=\"width:" +
+								boost::lexical_cast<string>(840)+"px; height:"+
+							    boost::lexical_cast<string>(480)+"px \" " +
+								"></canvas>";
+
+		}
+
+		result.append("<div style=\" width : "+ width +"; height : "+ height +"; \" >"+ element.htmlValue +"</div>");
+
+	}
+
+	return result;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeGUI::createCustomCamera(){
+
+		/* Camera initialization */
+		Engine* myEngine = Engine::instance();
+
+		// TODO check dimensions
+		PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  860,  480);
+
+		uint flags = Camera::ForceMono | Camera::DrawScene | Camera::Offscreen;
+
+		Camera* sessionCamera = myEngine->createCamera(flags);
+		sessionCamera->setProjection(60, 1, 0.1f, 100);
+		sessionCamera->setAutoAspect(true);
+
+		// Initialize the tablet camera position to be the same as the main camera.
+		Camera* defaultCamera = myEngine->getDefaultCamera();
+		sessionCamera->setPosition(defaultCamera->getPosition() + defaultCamera->getHeadOffset());
+
+		sessionCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
+		sessionCamera->getOutput(0)->setEnabled(true);
+
+		// Save the new Camera and PixelData objects
+		PortholeCamera camera = {++camerasIncrementalId,sessionCamera, sessionCanvas, 0};
+		sessionCameras[camera.id] = camera;
+		camerasId.push_back(camera.id); 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeGUI::modCustomCamera(int cameraIterator){
+
+	// Retrieve the camera to be modified
+	PortholeCamera portholeCamera = sessionCameras[camerasId.at(cameraIterator)];
+
+	// TODO 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+/*Recursive*/void PortholeGUI::searchNode(TiXmlElement* node){
+
+	if ( !node ) return;
+
+	// Parse attributes
+	TiXmlAttribute* pAttrib = node->FirstAttribute();
+	while(pAttrib){
+
+		string attribute = pAttrib->Name();
+		StringUtils::toLowerCase(attribute);
+
+		// Save id attribute if not defined by user as cpp function
+		if (HTML::isEvent(attribute) && !functionsBinder->isCppDefined(pAttrib->Value())){
+			cout << "Adding script " << pAttrib->Value() << endl; 
+			string key = "python_script"+boost::lexical_cast<string>(functionsBinder->scriptNumber)+"()";
+			functionsBinder->addPythonScript(pAttrib->Value(), key); // Insert the new script
+			pAttrib->SetValue(key.c_str());
+		}
+
+		// Next attribute
+		pAttrib = pAttrib->Next();
+	}
+
+	// Check recursively
+	for (TiXmlElement* pChild = node->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
+		searchNode(pChild);
+	}
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+vector<string> PortholeGUI::findHtmlScripts(){
+
+	vector<string> result;
+
+	TiXmlNode* guiElements = xmlDoc->FirstChildElement()->FirstChildElement();
+
+	searchNode(guiElements->ToElement());
+
+	return result;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeGUI::parseXmlFile(char* xmlPath){
+	omega::xmlDoc = new TiXmlDocument(xmlPath);
+	bool loadOkay = xmlDoc->LoadFile();
+	if (!loadOkay){
+		printf("!!! Porthole: Failed to load XML file");
+		abort();
+	}
+
+	findHtmlScripts();
+
+	TiXmlNode* guiElements = xmlDoc->FirstChildElement()->FirstChildElement();
+	TiXmlPrinter* xmlPrinter = new TiXmlPrinter();
+
 	// Parse the GUI elements
 	for (TiXmlNode* pChild = guiElements->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
 
@@ -136,8 +312,6 @@ string PortholeGUI::create(bool firstTime){
 		// For HTML elements, just add all the content to the element
 		if  (strcmp(element.type.c_str(),"html")==0){
 
-			element.htmlValue = "<div style=\" width : 100%; height : 100%;\" >";
-
 			// Parse the GUI elements
 			for (TiXmlNode* pHtmlChild = pChild->FirstChildElement(); pHtmlChild != 0; pHtmlChild = pHtmlChild->NextSiblingElement()){
 				
@@ -145,28 +319,11 @@ string PortholeGUI::create(bool firstTime){
 				pHtmlChild->Accept( xmlPrinter );
 				//cout << "Added: " << id << " -> " << xmlPrinter->CStr() << endl;
 				element.htmlValue.append(xmlPrinter->CStr());
+				// delete new line
+				element.htmlValue.erase(std::remove(element.htmlValue.begin(), element.htmlValue.end(), '\n'), element.htmlValue.end());
 
 			}
 
-			element.htmlValue.append("</div>");
-
-		}
-
-		// For googlemaps element, create a div element that will contain a googlemaps view
-		else if (strcmp(element.type.c_str(),"googlemap")==0){
-			element.htmlValue = "<div  style=\" padding : 5px \"><input id=\"searchTextField\" type=\"text\" style=\"width : 100%; height : 20px;\"></div>";
-			element.htmlValue.append("<div id=\"map-canvas\" class=\"map_container\" style=\"width:");
-			element.htmlValue.append(boost::lexical_cast<string>(device->deviceWidth)+"px; height:"+
-							  boost::lexical_cast<string>(device->deviceHeight)+"px \" ");
-			element.htmlValue.append("></div>");
-		}
-
-		// For a camera stream
-		else if (strcmp(element.type.c_str(),"camera_stream")==0){
-			element.htmlValue = "<canvas id=\"camera-canvas\" class=\"camera_container\" data-camera_id = \"#####\" style=\"width:";
-			element.htmlValue.append(boost::lexical_cast<string>(device->deviceWidth)+"px; height:"+
-							  boost::lexical_cast<string>(device->deviceHeight)+"px \" ");
-			element.htmlValue.append("></canvas>");
 		}
 
 		if(element.id.length() > 0 && element.type.length() > 0){
@@ -174,114 +331,5 @@ string PortholeGUI::create(bool firstTime){
 		}
 
 	}
-
-	// Parse the GUI elemets disposition
-	for (TiXmlNode* pChild = guiDisposition->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
-		
-		// Get element name: should correspond to id TODO check
-		const char* id = pChild->ToElement()->Value();
-
-		PortholeElement element = elementsMap[id];
-
-		string width="", height="";
-
-		// Parse attributes
-		TiXmlAttribute* pAttrib = pChild->ToElement()->FirstAttribute();
-		while(pAttrib){
-
-			string attribute = pAttrib->Name();
-			StringUtils::toLowerCase(attribute);
-
-			// Save id attribute
-			if (strcmp(attribute.c_str(),"width")==0){
-				width = pAttrib->Value();
-			}
-
-			// Save type attribute
-			else if (strcmp(attribute.c_str(),"height")==0){
-				height = pAttrib->Value();
-			}
-
-			// Next attribute
-			pAttrib = pAttrib->Next();
-		}
-
-		// Create a session camera
-		if (strcmp(element.type.c_str(),"camera_stream")==0){
-			if (strcmp(element.cameraType.c_str(),"custom")==0){
-
-				if (firstTime){
-					createCustomCamera();
-					// Update camera id on html
-					element.htmlValue = StringUtils::replaceAll(element.htmlValue,"#####",boost::lexical_cast<string>(camerasIncrementalId));
-				}
-				else{
-					modCustomCamera(cameraIterator);
-					// Update camera id on html
-					element.htmlValue = StringUtils::replaceAll(element.htmlValue,"#####",boost::lexical_cast<string>(camerasId.at(cameraIterator)));
-					cameraIterator++;
-				}
-			}
-
-			// TODO check first time
-			else if (strcmp(element.cameraType.c_str(),"default")==0){
-				Engine* myEngine = Engine::instance();
-				Camera* defaultCamera = myEngine->getDefaultCamera();
-
-				// TODO check dimensions
-				PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 860, 480); // TODO save for future delete
-				defaultCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
-				defaultCamera->getOutput(0)->setEnabled(true);
-
-				PortholeCamera camera = {++camerasIncrementalId,defaultCamera, sessionCanvas, 0};
-				sessionCameras[camera.id] = camera;
-				camerasId.push_back(camera.id);
-			}
-
-		}
-
-		result.append("<div style=\" width : "+ width +"; height : "+ height +"; \" >"+ element.htmlValue +"</div>");
-
-	}
-
-	return result;
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeGUI::createCustomCamera(){
-
-		/* Camera initialization */
-		Engine* myEngine = Engine::instance();
-
-		// TODO check dimensions
-		PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  device->deviceWidth,  device->deviceHeight);
-
-		uint flags = Camera::ForceMono | Camera::DrawScene | Camera::Offscreen;
-
-		Camera* sessionCamera = myEngine->createCamera(flags);
-		sessionCamera->setProjection(60, 1, 0.1f, 100);
-		sessionCamera->setAutoAspect(true);
-
-		// Initialize the tablet camera position to be the same as the main camera.
-		Camera* defaultCamera = myEngine->getDefaultCamera();
-		sessionCamera->setPosition(defaultCamera->getPosition() + defaultCamera->getHeadOffset());
-
-		sessionCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
-		sessionCamera->getOutput(0)->setEnabled(true);
-
-		// Save the new Camera and PixelData objects
-		PortholeCamera camera = {++camerasIncrementalId,sessionCamera, sessionCanvas, 0};
-		sessionCameras[camera.id] = camera;
-		camerasId.push_back(camera.id); 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeGUI::modCustomCamera(int cameraIterator){
-
-	// Retrieve the camera to be modified
-	PortholeCamera portholeCamera = sessionCameras[camerasId.at(cameraIterator)];
-
-	// TODO 
 
 }
