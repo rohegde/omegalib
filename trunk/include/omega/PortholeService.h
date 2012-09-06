@@ -58,6 +58,8 @@ namespace omega {
 		// Set funtions binder
 		void setFunctionsBinder(PortholeFunctionsBinder* binder); 
 
+		void setXMLfile(char* xmlPath);
+
 		// Thread process
 		virtual void threadProc();
 
@@ -112,7 +114,7 @@ namespace omega {
 
 		// Setup and poll
 		virtual void setup(omicron::Setting& settings);
-		void start(int port, PortholeFunctionsBinder* binder); // Start the server and listen to port
+		void start(int port, char* xmlPath, PortholeFunctionsBinder* binder); // Start the server and listen to port
 		virtual void poll();
 
 		// Server instance. It will manage the incoming connections

@@ -37,6 +37,7 @@
 #include "extension-deflate-stream.h"
 
 #include <iostream>
+#include <iomanip>
 
 using namespace omega;
 using namespace omicron;
@@ -150,20 +151,38 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 		/* Function Binder Javascript */
 		else if (in && strcmp((char*)in, "/porthole_functions_binder.js") == 0) {
 			
-			// Build Content TODO call a function
+			// Build Content. Socket var is used to hold the JS socket object
 			string content = "var socket; ";
-
-			typedef void(*memberFunction)();
-			std::map<std::string, memberFunction>::const_iterator it;
-			for(it = functionsBinder->funcMap.begin(); it != functionsBinder->funcMap.end(); it++ ){
-
+			
+			// Python scripts
+			PortholeFunctionsBinder* functionsBinder = PortholeGUI::getPortholeFunctionsBinder();
+			std::map<std::string, string>::const_iterator py_it;
+			for(py_it = functionsBinder->pythonFunMap.begin(); py_it != functionsBinder->pythonFunMap.end(); py_it++){
 				content.append("function ");
-				content.append(it->first);
+				content.append(py_it->first);
 				content.append("{ "
 									"var JSONEvent = {"
 									"	\"event_type\": \"input\","
 									"	\"function\": \"");
-				content.append(it->first);
+				content.append(py_it->first);
+				content.append("\""
+									"};"
+									"socket.send(JSON.stringify(JSONEvent));"
+								"}");
+			}
+
+			// Cpp functions
+			typedef void(*memberFunction)();
+			std::map<std::string, memberFunction>::const_iterator cpp_it;
+			for(cpp_it = functionsBinder->cppFuncMap.begin(); cpp_it != functionsBinder->cppFuncMap.end(); cpp_it++ ){
+
+				content.append("function ");
+				content.append(cpp_it->first);
+				content.append("{ "
+									"var JSONEvent = {"
+									"	\"event_type\": \"input\","
+									"	\"function\": \"");
+				content.append(cpp_it->first);
 				content.append("\""
 									"};"
 									"socket.send(JSON.stringify(JSONEvent));"
@@ -469,11 +488,6 @@ inline void handle_message(per_session_data* data, recv_message* message,
 	// Create the GUI manager
 	else if (strcmp(message->event_type.c_str(),MSG_EVENT_SPEC)==0){
 
-		if (message->firstTime){
-			// Porthole GUI manager TODO filename
-			data->guiManager = new PortholeGUI( (DATA_PATH+"/porthello.xml").c_str() );
-		}
-
 		data->guiManager->setDeviceSpecifications(message->width,message->height,message->orientation);
 
 		// TODO Send the Html elements to the browser based on device specifications
@@ -483,8 +497,8 @@ inline void handle_message(per_session_data* data, recv_message* message,
 		libwebsocket_callback_on_writable(context, wsi);
 	}
 	else if(strcmp(message->event_type.c_str(),MSG_EVENT_INPUT)==0){
-		cout << message->jsFunction << endl;
-		functionsBinder->callFunction(message->jsFunction);
+		//cout << message->jsFunction << endl;
+		PortholeGUI::getPortholeFunctionsBinder()->callFunction(message->jsFunction);
 	}
 
 }
@@ -503,6 +517,10 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 	case LWS_CALLBACK_ESTABLISHED:
 	{
 		fprintf(stderr, "callback_websocket: LWS_CALLBACK_ESTABLISHED\n");
+
+		// Allocate gui manager
+		data->guiManager = new PortholeGUI();
+
 		break;
 	}
 
@@ -666,7 +684,12 @@ void ServerThread::setPort(int portNumber)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServerThread::setFunctionsBinder(PortholeFunctionsBinder* binder)
 {
-	omega::functionsBinder = binder;
+	PortholeGUI::setPortholeFunctionsBinder(binder);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ServerThread::setXMLfile(char* xmlPath){
+	PortholeGUI::parseXmlFile(xmlPath);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -730,11 +753,12 @@ PortholeService::~PortholeService(){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeService::start(int port, PortholeFunctionsBinder* binder)
+void PortholeService::start(int port, char* xmlPath, PortholeFunctionsBinder* binder)
 {
 	portholeServer = new ServerThread();
 	portholeServer->setPort(port);
 	portholeServer->setFunctionsBinder(binder);
+	portholeServer->setXMLfile(xmlPath);
 	portholeServer->start();
 }
 
