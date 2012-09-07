@@ -132,6 +132,7 @@ void Entity::followCamera(Camera* cam)
 	{
 		myTracker = new omegaToolkit::TrackedObject();
 		ModuleServices::addModule(myTracker);
+		myTracker->setSceneNode(this);
 	}
 	myTracker->setReferenceCamera(cam);
 }
@@ -143,6 +144,7 @@ void Entity::followTrackable(int trackableId)
 	{
 		myTracker = new omegaToolkit::TrackedObject();
 		ModuleServices::addModule(myTracker);
+		myTracker->setSceneNode(this);
 	}
 	myTracker->setTrackableSourceId(trackableId);
 }
