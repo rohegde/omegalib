@@ -70,6 +70,10 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_METHOD(Entity, setEffect)
 		PYAPI_METHOD(Entity, getAlpha)
 		PYAPI_METHOD(Entity, setAlpha)
+		PYAPI_METHOD(Entity, followCamera)
+		PYAPI_METHOD(Entity, followTrackable)
+		PYAPI_METHOD(Entity, setFollowOffset)
+		PYAPI_METHOD(Entity, unfollow)
 		;
 
 	// SphereShape

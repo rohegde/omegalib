@@ -37,6 +37,7 @@ TrackedObject::TrackedObject():
 		myPositionTrackingEnabled(true),
 		myOffset(0, 0, 0),
 		myTrackedPosition(0, 0, 0),
+		myReferenceCamera(NULL),
 		myTrackedOrientation(Quaternion::Identity())
 {
 }
@@ -64,10 +65,20 @@ void TrackedObject::update(const UpdateContext& context)
 	{
 		if(myPositionTrackingEnabled)
 		{
-			myNode->setPosition(myTrackedPosition + myOffset);
+			Vector3f pos = myTrackedPosition + myOffset;
+			if(myReferenceCamera != NULL)
+			{
+				pos = myReferenceCamera->localToWorldPosition(pos);
+			}
+			myNode->setPosition(pos);
 		}
 		if(myOrientationTrackingEnabled)
 		{
+			Quaternion orientation = myTrackedOrientation;
+			if(myReferenceCamera != NULL)
+			{
+				orientation = myReferenceCamera->localToWorldOrientation(orientation);
+			}
 			myNode->setOrientation(myTrackedOrientation);
 			myNode->yaw(Math::Pi);
 		}
