@@ -250,5 +250,5 @@ Vector3f Camera::localToWorldPosition(const Vector3f& position)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Quaternion Camera::localToWorldOrientation(const Quaternion& orientation)
 {
-	return orientation * myOrientation;
+	return myOrientation * orientation;
 }
