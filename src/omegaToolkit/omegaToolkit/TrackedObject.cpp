@@ -80,7 +80,8 @@ void TrackedObject::update(const UpdateContext& context)
 				orientation = myReferenceCamera->localToWorldOrientation(orientation);
 			}
 			myNode->setOrientation(myTrackedOrientation);
-			myNode->yaw(Math::Pi);
+			myNode->yaw(-Math::Pi);
+			
 		}
 	}
 }

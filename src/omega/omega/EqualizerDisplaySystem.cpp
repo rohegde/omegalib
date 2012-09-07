@@ -742,7 +742,7 @@ bool EqualizerDisplaySystem::getViewRayFromEvent(const Event& evt, Ray& ray, boo
 	{
 		Camera* camera = Engine::instance()->getDefaultCamera();
 		ray.setOrigin(camera->localToWorldPosition(evt.getPosition()));
-		ray.setDirection(camera->localToWorldOrientation(evt.getOrientation()) * Vector3f::UnitZ());
+		ray.setDirection(camera->localToWorldOrientation(evt.getOrientation()) * -Vector3f::UnitZ());
 
 		return true;
 	}

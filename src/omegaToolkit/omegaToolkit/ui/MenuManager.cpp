@@ -523,7 +523,7 @@ void MenuManager::autoPlaceMenu(Menu* menu, const Event& evt)
 		if(SystemManager::instance()->getDisplaySystem()->getViewRayFromEvent(evt, ray))
 		{
 			Vector3f pos = ray.getPoint(myDefaultMenuPosition[2]);
-
+			//ofmsg("menu position: %1%", %pos);
 			Container3dSettings& c3ds = menu->get3dSettings();
 			Widget* menuWidget = menu->getContainer();
 			Vector3f offset = Vector3f(0, menuWidget->getHeight() * c3ds.scale, 0);
