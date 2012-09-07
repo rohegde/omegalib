@@ -1,11 +1,11 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
- * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted 
  * provided that the following conditions are met:
@@ -66,6 +66,11 @@ namespace cyclops {
 		void setAlpha(float value);
 		float getAlpha() { return myAlpha; }
 
+		void followCamera(Camera* cam);
+		void followTrackable(int trackableId);
+		void setFollowOffset(const Vector3f offset);
+		void unfollow();
+
 	protected:
 		void initialize(osg::Node* node);
 
@@ -83,6 +88,7 @@ namespace cyclops {
 		Ref<OsgSceneObject> myOsgSceneObject;
 
 		Ref<EffectNode> myEffect;
+		Ref<omegaToolkit::TrackedObject> myTracker;
 	};
 };
 

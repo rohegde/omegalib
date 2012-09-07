@@ -239,3 +239,16 @@ Ray Camera::getViewRay(const Vector2f& normalizedPoint)
 		normalizedPoint[1] * 2.0f - 1.0f);
 	return Math::unprojectNormalized(pt, myViewTransform, myProjection);
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Vector3f Camera::localToWorldPosition(const Vector3f& position)
+{
+	Vector3f res = myPosition + myOrientation * position;
+    return res;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Quaternion Camera::localToWorldOrientation(const Quaternion& orientation)
+{
+	return orientation * myOrientation;
+}

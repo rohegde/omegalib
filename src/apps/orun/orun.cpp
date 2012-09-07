@@ -166,7 +166,7 @@ BOOST_PYTHON_MODULE(omegaViewer)
 		PYAPI_PROPERTY(AppInfo, iconFile)
 		;
 
-	def("getViewer", getViewer, PYAPI_RETURN_POINTER);
+	def("getViewer", getViewer, PYAPI_RETURN_REF);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

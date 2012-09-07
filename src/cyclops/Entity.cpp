@@ -125,3 +125,40 @@ void Entity::setEffect(const String& effectDefinition)
 	myEffect->setDefinition(effectDefinition);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::followCamera(Camera* cam)
+{
+	if(myTracker == NULL)
+	{
+		myTracker = new omegaToolkit::TrackedObject();
+		ModuleServices::addModule(myTracker);
+	}
+	myTracker->setReferenceCamera(cam);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::followTrackable(int trackableId)
+{
+	if(myTracker == NULL)
+	{
+		myTracker = new omegaToolkit::TrackedObject();
+		ModuleServices::addModule(myTracker);
+	}
+	myTracker->setTrackableSourceId(trackableId);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::setFollowOffset(const Vector3f offset)
+{
+	myTracker->setOffset(offset);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::unfollow()
+{
+	if(myTracker != NULL)
+	{
+		ModuleServices::removeModule(myTracker);
+		myTracker = NULL;
+	}
+}

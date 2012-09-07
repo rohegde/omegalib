@@ -122,6 +122,12 @@ namespace omega {
 		void setTrackerSourceId(int value) { myTrackerSourceId = value; }
 		//@}
 
+		//! Converts a point from local to world coordinates using the camera position and orientation
+		Vector3f localToWorldPosition(const Vector3f& position);
+		//! converts an orientation to the world reference frame using the camera orientation
+		Quaternion localToWorldOrientation(const Quaternion& orientation);
+
+
 		void endDraw(const DrawContext& context);
 		const DrawContext& beginDraw(const DrawContext& context);
 		void startFrame(const FrameInfo& frame);

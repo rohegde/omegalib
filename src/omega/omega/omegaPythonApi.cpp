@@ -632,15 +632,14 @@ BOOST_PYTHON_MODULE(omega)
 		.def("pitch", &Node::pitch, NodePitchOverloads())
 		.def("roll", &Node::roll, NodeRollOverloads())
 
-		.def("numChildren", &Node::numChildren)
-		.def("getChildByName", getChildByName, PYAPI_RETURN_POINTER)
-		.def("getChildByIndex", getChildByIndex, return_value_policy<return_by_smart_ptr>())
+		PYAPI_METHOD(Node, numChildren)
+		.def("getChildByName", getChildByName, PYAPI_RETURN_REF)
+		.def("getChildByIndex", getChildByIndex, PYAPI_RETURN_REF)
 
-
-		.def("resetOrientation", &Node::resetOrientation)
-		.def("getName", &Node::getName, PYAPI_RETURN_VALUE)
-		.def("getParent", &Node::getParent, return_value_policy<return_by_smart_ptr>())
-		//.def("getChildren", &Node::getChildren, PYAPI_RETURN_POINTER)
+		PYAPI_METHOD(Node, resetOrientation)
+		PYAPI_GETTER(Node, getName)
+		PYAPI_REF_GETTER(Node, getParent)
+		//.def("getChildren", &Node::getChildren, PYAPI_RETURN_REF)
 		;
 
 	// NodeList
@@ -674,6 +673,8 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(Camera, setTrackerSourceId)
 		PYAPI_METHOD(Camera, setControllerEnabled)
 		PYAPI_METHOD(Camera, isControllerEnabled)
+		PYAPI_METHOD(Camera, localToWorldPosition)
+		PYAPI_METHOD(Camera, localToWorldOrientation)
 		;
 
 	// Color
@@ -690,9 +691,9 @@ BOOST_PYTHON_MODULE(omega)
 
 	// Free Functions
 	def("getEvent", getEvent, return_value_policy<reference_existing_object>());
-	def("getEngine", getEngine, PYAPI_RETURN_POINTER);
-	def("getDefaultCamera", getDefaultCamera, PYAPI_RETURN_POINTER);
-	def("getScene", getScene, PYAPI_RETURN_POINTER);
+	def("getEngine", getEngine, PYAPI_RETURN_REF);
+	def("getDefaultCamera", getDefaultCamera, PYAPI_RETURN_REF);
+	def("getScene", getScene, PYAPI_RETURN_REF);
 	def("querySceneRay", querySceneRay);
 	def("getRayFromEvent", getRayFromEvent);
 	def("printChildren", &printChildren);

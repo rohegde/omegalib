@@ -933,18 +933,23 @@ void SceneManager::recompileShaders()
 void SceneManager::displayWand(uint wandId, uint trackableId)
 {
 	// Simple single-wand implementation: we ignore wandId
-	if(myWandTracker == NULL)
+	if(myWandEntity == NULL)
 	{
-		myWandTracker = new omegaToolkit::TrackedObject();
-		ModuleServices::addModule(myWandTracker);
-
 		myWandEntity = new CylinderShape(this, 1, 1, 0.1);
-		myWandTracker->setSceneNode(myWandEntity);
-		myWandTracker->setTrackableSourceId(wandId);
-		myWandTracker->setTrackableServiceType(Event::ServiceTypeWand);
-
 		setWandSize(0.01f, 2);
 		myWandEntity->setEffect("colored -d white");
+	}
+	myWandEntity->setVisible(true);
+	myWandEntity->followTrackable(trackableId);
+	myWandEntity->followCamera(getEngine()->getDefaultCamera());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::hideWand(uint wandId)
+{
+	if(myWandEntity != NULL)
+	{
+		myWandEntity->setVisible(false);
 	}
 }
 

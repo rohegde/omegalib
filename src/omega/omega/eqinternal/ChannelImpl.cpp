@@ -161,10 +161,6 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 
     if(ds->isDrawStatisticsEnabled())
     {
-        drawStatistics();
-    }
-    else if(ds->isDrawFpsEnabled())
-    {
         glMatrixMode( GL_PROJECTION );
         glLoadIdentity();
         applyScreenFrustum();
@@ -172,8 +168,19 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
         glMatrixMode( GL_MODELVIEW );
         glDisable( GL_LIGHTING );
 
-        getWindow()->drawFPS();
+        drawStatistics();
     }
+    //else if(ds->isDrawFpsEnabled())
+    //{
+    //    glMatrixMode( GL_PROJECTION );
+    //    glLoadIdentity();
+    //    applyScreenFrustum();
+
+    //    glMatrixMode( GL_MODELVIEW );
+    //    glDisable( GL_LIGHTING );
+
+    //    getWindow()->drawFPS();
+    //}
 
     EQ_GL_CALL( resetAssemblyState( ));
 #endif
