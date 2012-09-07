@@ -319,17 +319,3 @@ Engine::CameraCollection::ConstRange Engine::getCameras() const
 {
     return CameraCollection::ConstRange(myCameras.begin(), myCameras.end());
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Vector3f Engine::sensorToWorldPosition(const Vector3f& position)
-{
-    Vector3f res;
-    return res;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Quaternion Engine::sensorToWorldOrientation(const Quaternion& orientation)
-{
-  Quaternion res;
-  return res;
-}

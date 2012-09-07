@@ -257,6 +257,7 @@ namespace cyclops {
 		//! Wand Management
 		//@{
 		void displayWand(uint wandId, uint trackableId);
+		void hideWand(uint wandId);
 		void setWandEffect(uint wandId, const String& effect);
 		void setWandSize(float width, float length);
 		//@}

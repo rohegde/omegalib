@@ -32,10 +32,10 @@ using namespace omegaToolkit;
 TrackedObject::TrackedObject(): 
 	Actor(),
 		myTrackableServiceType(Event::ServiceTypeMocap),
-		myTrackableSourceId(0),
+		myTrackableSourceId(-1),
 		myOrientationTrackingEnabled(true),
 		myPositionTrackingEnabled(true),
-		myTrackingOffset(0, 0, 0),
+		myOffset(0, 0, 0),
 		myTrackedPosition(0, 0, 0),
 		myTrackedOrientation(Quaternion::Identity())
 {
@@ -49,7 +49,8 @@ TrackedObject::~TrackedObject()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void TrackedObject::handleEvent(const Event& evt)
 {
-	if(evt.getServiceType() == myTrackableServiceType && evt.getSourceId() == myTrackableSourceId)
+	if(evt.getServiceType() == myTrackableServiceType && 
+		evt.getSourceId() == myTrackableSourceId)
 	{
 		myTrackedPosition = evt.getPosition();
 		myTrackedOrientation = evt.getOrientation();
@@ -63,7 +64,7 @@ void TrackedObject::update(const UpdateContext& context)
 	{
 		if(myPositionTrackingEnabled)
 		{
-			myNode->setPosition(myTrackedPosition + myTrackingOffset);
+			myNode->setPosition(myTrackedPosition + myOffset);
 		}
 		if(myOrientationTrackingEnabled)
 		{

@@ -86,6 +86,7 @@ namespace omega {
 	{
 	public:
 		static void addModule(EngineModule* module);
+		static void removeModule(EngineModule* module);
 		static void update(Engine* srv, const UpdateContext& context);
 		static void handleEvent(const Event& evt);
 		static void handleCommand(const String& cmd);
