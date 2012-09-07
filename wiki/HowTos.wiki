@@ -3,17 +3,20 @@
 
 This page contains suggestions, code snippets and tips that are not elaborate enough (yet) to become a full tutorial.
 
-= Building on Visual Studio =
+= General =
+== FAQ ==
+=== "I set the camera position to (x, y, z) but the output is not what I expected" ===
+Cameras in omegalib (and in other VR toolkits) work a little differently than what yo could expect in classic graphic engines. There are two things that influence the final camera view:
+ * The camera position and orientation, which infuence the view transform. They determine the conversion between the physical space in your system , and the space used your virtual world.
+ * The *head position and orientation*, which influence both the view and the projection transforms. They represent the position of the observer in the phisical space. head transform, camera transform and display geometry all contribute in determining what will appear on the screens.
+== Code Snippets ==
+=== 
+
+= Visual Studio 2010 =
 omegalib supports builds in visual studio 2008 and 2010. Both 32 and 64 bit builds should work, but currently only
 Visual studio 2010 32 bit builds are tested regularly.
 
-== General Tips & Tricks ==
-=== Speeding up builds ===
-After the first build, it is possible to speed up successive builds by unloading projects in the 3rdparty folder. These dependencies need to be built only once per configuration, so they can be disabled after the first build. This way, the build system won't have to go through them to check if they are up to date. 
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/UnloadProjects.png" width="300"/></p><p align="middle">
-_^To unload third party projects, right-click on the 3rdparty folder and select "Unload Projects in Solution Folder"^_
-
-== Visual Studio 2010 Notes ==
+== Troubleshooting ==
 === "When building omegalib from scratch with equalizer enabled the build fails with the compiler complaining about not finding `lexer.cpp`" ===
 This error is due to some incorrect dependencies in the equalizer project, and visual studio spawning multiple compiler processes on multiprocessor machines. Simply ignore the error and build the solution again. After one-two additional builds the problem should go away. This won't happen anymore, unless you rebuild omegalib from scratch.
 
@@ -32,3 +35,9 @@ _^How to build equalizer separately to solve this error.^_
 === "In Debug mode the build succeeds but the program will fail running with a 0xc0150002 error" ===
 Some of the libraries used internally by omegalib need the Visual Studio 2008 Debug CRT to run.
 To solve this issue install Visual C++ Express 2008 (post link)
+
+== General Tips & Tricks ==
+=== Speeding up builds ===
+After the first build, it is possible to speed up successive builds by unloading projects in the 3rdparty folder. These dependencies need to be built only once per configuration, so they can be disabled after the first build. This way, the build system won't have to go through them to check if they are up to date. 
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/UnloadProjects.png" width="300"/></p><p align="middle">
+_^To unload third party projects, right-click on the 3rdparty folder and select "Unload Projects in Solution Folder"^_

@@ -22,3 +22,6 @@ After starting orun, typing:
 
 === Stopping orun ===
 To stop an orun program, press esc, type `oexit()` or `:q` at the orun console, or run `orun -K` on another terminal.
+
+=== python Applications ===
+When using the `:r <applicationName>` command, orun will 
