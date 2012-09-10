@@ -39,8 +39,15 @@ namespace omega {
 	public:
 		typedef T Data;
 
+		///////////////////////////////////////////////////////////////////////////////////////////////
+		class IAsyncTaskHandler
+		{
+		public:
+			virtual void onTaskCompleted(AsyncTask<T>* task) = 0;
+		};
+
 	public:
-		AsyncTask(): myProgress(0), myComplete(false) {}
+		AsyncTask(): myProgress(0), myComplete(false), myHandler(NULL) {}
 
 		T& getData() { return myData; }
 		void setData(const T& data) { myData = data; }
@@ -49,11 +56,21 @@ namespace omega {
 		int getProgress() { return myProgress; }
 		void setProgress(int value) { myProgress = value; }
 
-		void  notifyComplete()
+		void  notifyComplete(bool failed = false, const String& completionMessage = "")
 		{
+			myFailed = failed;
+			myCompletionMessage = completionMessage;
+
 			myProgress = 100;
 			myComplete = true;
 
+			// Call completion handler, if present.
+			if(myHandler != NULL) 
+			{
+				myHandler->onTaskCompleted(this);
+			}
+
+			// Run completion script command, if present
 			if(myCompletionCommand.size() > 0)
 			{
 				PythonInterpreter* pi = SystemManager::instance()->getScriptInterpreter();
@@ -65,11 +82,24 @@ namespace omega {
 		void setCompletionCommand(const String& cmd) { myCompletionCommand = cmd; }
 		const String& getCompletionCommand() { return myCompletionCommand; }
 
+		void setCompletionHandler(IAsyncTaskHandler* handler) { myHandler = handler; }
+		IAsyncTaskHandler* setCompletionHandler() { return myHandler; }
+
+		void setTaskId(const String& value) {myTaskId = value; }
+		const String& getTaskId();
+
+		bool hasFailed() { return myFailed; }
+		const String& getCompletionMessage() { return myCompletionMessage; }
+
 	private:
 		T myData;
+		String myTaskId;
 		bool myComplete;
 		int myProgress;
+		bool myFailed;
+		String myCompletionMessage;
 		String myCompletionCommand;
+		IAsyncTaskHandler* myHandler;
 	};
 }; // namespace omega
 

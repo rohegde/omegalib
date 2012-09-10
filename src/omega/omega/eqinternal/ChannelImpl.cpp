@@ -54,11 +54,18 @@ bool ChannelImpl::configInit(const eq::uint128_t& initID)
     EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
     String name = getName();
 
-    vector<String> args = StringUtils::split(name, "x,");
-	int ix = atoi(args[0].c_str());
-	int iy = atoi(args[1].c_str());
+	if(name == "stats")
+	{
+		myDC.tile = &ds->getDisplayConfig().statsTile;
+	}
+	else
+	{
+		vector<String> args = StringUtils::split(name, "x,");
+		int ix = atoi(args[0].c_str());
+		int iy = atoi(args[1].c_str());
 
-	myDC.tile = &ds->getDisplayConfig().tiles[ix][iy];
+		myDC.tile = &ds->getDisplayConfig().tiles[ix][iy];
+	}
 
     return true;
 }
@@ -128,8 +135,11 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 
     setupDrawContext(&myDC, frameID);
 
-    myDC.task = DrawContext::SceneDrawTask;
-    client->draw(myDC);
+	if(!myDC.tile->drawStats)
+    {
+		myDC.task = DrawContext::SceneDrawTask;
+		client->draw(myDC);
+	}
 
 #ifdef ENABLE_OVERLAY_TASK
     if(getEye() != eq::fabric::EYE_CYCLOP)
@@ -159,7 +169,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 
 	EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)getClient()->getDisplaySystem();
 
-    if(ds->isDrawStatisticsEnabled())
+	if(myDC.tile->drawStats)
     {
         glMatrixMode( GL_PROJECTION );
         glLoadIdentity();
@@ -170,17 +180,17 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 
         drawStatistics();
     }
-    //else if(ds->isDrawFpsEnabled())
-    //{
-    //    glMatrixMode( GL_PROJECTION );
-    //    glLoadIdentity();
-    //    applyScreenFrustum();
+    else if(myDC.tile->drawFps)
+    {
+        glMatrixMode( GL_PROJECTION );
+        glLoadIdentity();
+        applyScreenFrustum();
 
-    //    glMatrixMode( GL_MODELVIEW );
-    //    glDisable( GL_LIGHTING );
+        glMatrixMode( GL_MODELVIEW );
+        glDisable( GL_LIGHTING );
 
-    //    getWindow()->drawFPS();
-    //}
+        getWindow()->drawFPS();
+    }
 
     EQ_GL_CALL( resetAssemblyState( ));
 #endif

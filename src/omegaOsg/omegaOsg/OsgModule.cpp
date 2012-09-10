@@ -43,6 +43,48 @@ OsgModule* OsgModule::mysInstance = NULL;
 //bool OsgModule::mysAmbientOverrideHack = true;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+osg::Image* OsgModule::pixelDataToOsg(PixelData* img)
+{
+	bool leaveMemoryAlone = false;
+
+	// If the image delete is disabled, the image does not own the pixel buffer. Tell the
+	// same to osg::Image. Otherwise, pass the buffer ownership to osg::Image.
+	if(img->isDeleteDisabled())
+	{
+		leaveMemoryAlone = true;
+	}
+	else
+	{
+		img->setDeleteDisabled(true);
+	}
+	int s = img->getWidth();
+    int t = img->getHeight();
+    int r = 1;
+
+    int internalFormat = img->getBpp() / 8;
+
+    unsigned int pixelFormat =
+        internalFormat == 1 ? GL_LUMINANCE :
+    internalFormat == 2 ? GL_LUMINANCE_ALPHA :
+    internalFormat == 3 ? GL_RGB :
+    internalFormat == 4 ? GL_RGBA : (GLenum)-1;
+
+    unsigned int dataType = GL_UNSIGNED_BYTE;
+
+    osg::Image* pOsgImage = new osg::Image;
+    pOsgImage->setImage(s,t,r,
+        internalFormat,
+        pixelFormat,
+        dataType,
+		img->lockData(),
+		leaveMemoryAlone ? osg::Image::NO_DELETE : osg::Image::USE_MALLOC_FREE);
+
+	img->unlockData();
+
+	return pOsgImage;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgModule* OsgModule::instance() 
 { 
 	if(mysInstance == NULL)

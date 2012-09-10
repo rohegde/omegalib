@@ -45,6 +45,8 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	struct DisplayTileConfig
 	{
+		DisplayTileConfig(): drawStats(false), drawFps(false) {}
+
 		Vector2i index;
 		Vector2i resolution;
 		Vector2i offset;
@@ -52,6 +54,8 @@ namespace omega
 		Vector3f center;
 		float yaw;
 		float pitch;
+		bool drawStats;
+		bool drawFps;
 
 		Vector3f topLeft;
 		Vector3f bottomLeft;
@@ -88,6 +92,10 @@ namespace omega
 		//! Display configuration type.
 		ConfigType type;
 
+		//! Open a statistics window on the master node.
+		bool displayStatsOnMaster;
+		DisplayTileConfig statsTile;
+
 		//! Number of horizontal / vertical tiles in the display system
 		Vector2i numTiles;
 
@@ -119,6 +127,7 @@ namespace omega
 		
 		//! Tile configurations.
 		DisplayTileConfig tiles[MaxTiles][MaxTiles];
+		DisplayTileConfig specialTiles[MaxTiles];
 
 		//! Total display resolution. Will be computed automatically during the setup process, users should leave this blank.
 		Vector2i displayResolution;

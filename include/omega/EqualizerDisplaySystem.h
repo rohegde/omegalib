@@ -92,14 +92,12 @@ namespace omega
 		//! This method is called from the node init function. Performs observer initialization.
 		void finishInitialize(ConfigImpl* config);
 
-		bool isDrawFpsEnabled() { return myDrawFps; }
-		bool isDrawStatisticsEnabled() { return myDrawStatistics; }
-
 		void exitConfig();
 
 	private:
 		void generateEqConfig();
 		void setupEqInitArgs(int& numArgs, const char** argv);
+		String buildTileConfig(String indent, const String tileName, int x, int y, int width, int height, int device, bool fullscreen);
 
 	private:
 		SystemManager* mySys;
@@ -114,8 +112,6 @@ namespace omega
 
 		// Debug
 		bool myDebugMouse;
-		bool myDrawFps;
-		bool myDrawStatistics;
 	};
 
 }; // namespace omega

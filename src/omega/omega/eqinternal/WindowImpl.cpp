@@ -48,9 +48,11 @@ bool WindowImpl::configInit(const uint128_t& initID)
 {
     // Get the tile index from the window name.
     String name = getName();
-    vector<String> args = StringUtils::split(name, "x,");
-    myIndex = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
-
+	if(name != "stats")
+	{
+		vector<String> args = StringUtils::split(name, "x,");
+		myIndex = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
+	}
 	return Window::configInit(initID);
 }
 
