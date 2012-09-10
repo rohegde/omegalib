@@ -40,6 +40,7 @@ namespace osg
 	class Node;
 	class FrameStamp;
 	class NodeVisitor;
+	class Image;
 }
 
 namespace omegaOsg
@@ -53,6 +54,7 @@ namespace omegaOsg
 	{
 	public:
 		static OsgModule* instance();
+		static osg::Image* pixelDataToOsg(PixelData* img);
 
 	public:
 		OsgModule();

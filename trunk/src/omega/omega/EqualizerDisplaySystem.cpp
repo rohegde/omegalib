@@ -136,28 +136,14 @@ void EqualizerDisplaySystem::generateEqConfig()
 			}
 			
 			String tileName = ostr("%1%x%2%", %tc.index[0] %tc.index[1]);
-			String viewport = ostr("viewport [%1% %2% %3% %4%]", %winX %winY %eqcfg.tileResolution[0] %eqcfg.tileResolution[1]);
+			String tileCfg = buildTileConfig(indent, tileName, winX, winY, eqcfg.tileResolution[0], eqcfg.tileResolution[1], tc.device, eqcfg.fullscreen);
+			result += tileCfg;
+		}
 
-			String tileCfg = "";
-			START_BLOCK(tileCfg, "pipe");
-				tileCfg +=
-					L("port = 0") +
-					L(ostr("device = %1%", %tc.device));
-			START_BLOCK(tileCfg, "window");
-			tileCfg +=
-				L("name \"" + tileName + "\"") +
-				L(viewport) +
-				L("channel { name \"" + tileName + "\"}");
-			if(eqcfg.fullscreen)
-			{
-				START_BLOCK(tileCfg, "attributes");
-				tileCfg +=
-					L("hint_fullscreen ON") +
-					L("hint_decoration OFF");
-				END_BLOCK(tileCfg);
-			}
-			END_BLOCK(tileCfg)
-			END_BLOCK(tileCfg)
+		// If enabled, create stats window on master node.
+		if(eqcfg.displayStatsOnMaster && !nc.isRemote)
+		{
+			String tileCfg = buildTileConfig(indent, "stats", 20, 20, eqcfg.statsTile.resolution[0], eqcfg.statsTile.resolution[1], 0, false);
 			result += tileCfg;
 		}
 
@@ -321,6 +307,24 @@ void EqualizerDisplaySystem::generateEqConfig()
 		tileViewportX += tileViewportWidth;
 	}
 
+	if(eqcfg.displayStatsOnMaster)
+	{
+		String tileCfg = "";
+		START_BLOCK(tileCfg, "segment");
+		tileCfg +=
+				L("name \"stats\"") +
+				L("channel \"stats\"") +
+				L("viewport [0 0 1 1]");
+		START_BLOCK(tileCfg, "wall");
+		tileCfg +=
+			L("bottom_left [ -1 -0.5 0 ]") +
+			L("bottom_right [ 1 -0.5 0 ]") +
+			L("top_left [ -1 0.5 0 ]");
+		END_BLOCK(tileCfg)
+		END_BLOCK(tileCfg)
+		result += tileCfg;
+	}
+
 	END_BLOCK(result);
 
 	// compound
@@ -384,6 +388,12 @@ void EqualizerDisplaySystem::generateEqConfig()
 		}
 	}
 
+	if(eqcfg.displayStatsOnMaster)
+	{
+		String tileCfg = "\t\tchannel ( segment \"stats\" layout \"layout\" view \"main\" )\n";
+		result += tileCfg;
+	}
+
 	// end compound
 	END_BLOCK(result)
 
@@ -399,13 +409,41 @@ void EqualizerDisplaySystem::generateEqConfig()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+String EqualizerDisplaySystem::buildTileConfig(String indent, const String tileName, int x, int y, int width, int height, int device, bool fullscreen)
+{
+	String viewport = ostr("viewport [%1% %2% %3% %4%]", %x %y %width %height);
+
+	String tileCfg = "";
+	START_BLOCK(tileCfg, "pipe");
+		tileCfg +=
+			L("port = 0") +
+			L(ostr("device = %1%", %device));
+	START_BLOCK(tileCfg, "window");
+	tileCfg +=
+		L("name \"" + tileName + "\"") +
+		L(viewport) +
+		L("channel { name \"" + tileName + "\"}");
+	if(fullscreen)
+	{
+		START_BLOCK(tileCfg, "attributes");
+		tileCfg +=
+			L("hint_fullscreen ON") +
+			L("hint_decoration OFF");
+		END_BLOCK(tileCfg);
+	}
+	END_BLOCK(tileCfg)
+	END_BLOCK(tileCfg)
+	return tileCfg;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::setup(Setting& scfg) 
 {
 	mySetting = &scfg;
 	DisplayConfig& cfg = myDisplayConfig;
 
-	myDrawFps = Config::getBoolValue("drawFps", scfg);
-	myDrawStatistics = Config::getBoolValue("drawStatistics", scfg);
+	//myDrawFps = Config::getBoolValue("drawFps", scfg);
+	//myDrawStatistics = Config::getBoolValue("drawStatistics", scfg);
 
 	String cfgType = Config::getStringValue("geometry", scfg, "ConfigPlanar");
 	if(cfgType == "ConfigPlanar") cfg.type = DisplayConfig::ConfigPlanar;
@@ -438,6 +476,13 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 
 	bool renderOnMaster = false;
 
+	cfg.displayStatsOnMaster = Config::getBoolValue("displayStatsOnMaster", scfg, false);
+	if(cfg.displayStatsOnMaster)
+	{
+		cfg.statsTile.resolution = Vector2i(800, cfg.numTiles[0] * cfg.numTiles[1] * 40 + 120);
+		cfg.statsTile.drawStats = true;
+	}
+
 	for(int i = 0; i < sTiles.getLength(); i++)
 	{
 		const Setting& sTileHost = sTiles[i];
@@ -462,7 +507,6 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 			const Setting& sTile = sTileHost[j];
 			if(sTile.getType() == Setting::TypeGroup)
 			{
-				// Parse tile index.
 				std::vector<std::string> args = StringUtils::split(String(sTile.getName()), "xt");
 				Vector2i index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
 
@@ -534,9 +578,6 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	// Launch application instances on secondary nodes.
 	if(SystemManager::instance()->isMaster())
 	{
-		// Make sure to kill previous instances on all nodes.
-		//killCluster();
-
 		for(int n = 0; n < myDisplayConfig.numNodes; n++)
 		{
 			DisplayNodeConfig& nc = myDisplayConfig.nodes[n];
@@ -553,7 +594,6 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 				int port = myDisplayConfig.basePort + nc.port;
 				String cmd = ostr("%1% %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
 				olaunch(cmd);
-				//osleep(myDisplayConfig.launcherInterval);
 			}
 		}
 		osleep(myDisplayConfig.launcherInterval);

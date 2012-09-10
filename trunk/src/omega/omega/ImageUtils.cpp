@@ -149,6 +149,7 @@ ImageUtils::LoadImageAsyncTask* ImageUtils::loadImageAsync(const String& filenam
 	sImageQueueLock.lock();
 	LoadImageAsyncTask* task = new LoadImageAsyncTask();
 	task->setData( LoadImageAsyncTask::Data(filename, hasFullPath) );
+	task->setTaskId(filename);
 	sImageQueue.push(task);
 	sImageQueueLock.unlock();
 	return task;
