@@ -100,8 +100,6 @@ namespace omega
 		bool displayStatsOnMaster;
 		DisplayTileConfig statsTile;
 
-		bool disableConfigGenerator;
-
 		//! Number of horizontal / vertical tiles in the display system
 		Vector2i numTiles;
 
