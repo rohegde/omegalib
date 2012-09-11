@@ -120,20 +120,21 @@ namespace omega {
 		int scriptNumber;
 	};
 
+	// This will old a possible interface
+	typedef struct PortholeInterfaceType{
+		int minWidth;
+		int minHeight;
+		string id;
+		string orientation;
+	} PortholeInterfaceType;
+
 	// A device specifications object
 	typedef struct PortholeDevice{
 		int deviceWidth;
 		int deviceHeight;
 		string deviceOrientation; // Portrait or Landscape
+		PortholeInterfaceType interfaceType;
 	} PortholeDevice;
-
-	// This will old a possible interface
-	typedef struct PortholeInterfaceType{
-		int minWidth;
-		int minHeight;
-		string type;
-		string orientation;
-	} PortholeInterfaceType;
 
 	// An element object
 	typedef struct PortholeElement{
@@ -152,9 +153,6 @@ namespace omega {
 
 	// Xml Document
 	static TiXmlDocument* xmlDoc;
-
-	// A map between an element id and the element data
-	static std::map<string, PortholeElement> elementsMap;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements the HTML GUI Manager for Porthole Service
@@ -199,17 +197,8 @@ namespace omega {
 		// The device for which an interface will be created
 		PortholeDevice* device;
 
-		// A map between a device type and its GUI elements (as a list of node id string)
-		std::map<PortholeInterfaceType, vector<string> > devicesMap;
-
-		// All the possible interfaces
-		vector<PortholeInterfaceType> interfaces; 
-
 		// All cameras
 		std::map<int,PortholeCamera> sessionCameras;
-
-		// Create the devices
-		void setPossibleInterfaces();
 
 		// Create a Porthole custom camera and a PixelData associated
 		void createCustomCamera(); 
@@ -223,6 +212,14 @@ namespace omega {
 		// Functions binder object
 		static PortholeFunctionsBinder* functionsBinder;
 
+		// All the possible interfaces
+		static vector<PortholeInterfaceType> interfaces; 
+
+		// A map between a device type and its GUI elements
+		static std::map<string, TiXmlElement* > interfacesMap;
+
+		// A map between an element id and the element data
+		static std::map<string, PortholeElement> elementsMap;
 	};
 
 };

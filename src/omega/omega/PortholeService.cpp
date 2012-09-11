@@ -201,12 +201,8 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 			msg.append(content);
 
 			// Send the Javascript file
-			int n;
-			unsigned char* p;
-			p = new unsigned char[msg.length()];
-			n = sprintf((char*)p,msg.c_str());
-			libwebsocket_write(wsi, (unsigned char*)p, n, LWS_WRITE_HTTP);
-
+			libwebsocket_write(wsi, (unsigned char*)msg.c_str(), msg.length(), LWS_WRITE_HTTP);
+			
 			break;
 		}
 
@@ -275,6 +271,8 @@ void sendHtmlElements(bool firstTime, struct per_session_data* data, struct libw
 		unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
 		n = sprintf((char *)p, "%s",toSend.c_str());
 		n = libwebsocket_write(wsi, p, n, LWS_WRITE_TEXT);
+
+		delete[] buf;
 
 		return;
 }
@@ -558,9 +556,9 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 
 			string toSend = "{\"event_type\" : \"stream\", \"base64image\" : \"";
 			toSend.append(base64image.c_str());
-			toSend.append("\", \"image_width\" : " + boost::lexical_cast<string>(data->guiManager->getDevice()->deviceWidth) + ","
-								"\"image_height\" : " + boost::lexical_cast<string>(data->guiManager->getDevice()->deviceHeight) +"," +
-								"\"camera_id\" : " + boost::lexical_cast<string>(sessionCamera.id) + "}");
+			toSend.append("\", \"image_width\" : " + boost::lexical_cast<string>(840) + ","
+								"\"image_height\" : " + boost::lexical_cast<string>(860*data->guiManager->getDevice()->deviceHeight/data->guiManager->getDevice()->deviceWidth) 
+								+", \"camera_id\" : " + boost::lexical_cast<string>(sessionCamera.id) + "}");
 
 			// Send the base64 image
 			unsigned char* buf;
@@ -673,6 +671,10 @@ use_ssl(0), opts(0), n(0)
 		key_path = (DATA_PATH+"/server.key.pem").c_str();
 	}
 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ServerThread::~ServerThread(){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

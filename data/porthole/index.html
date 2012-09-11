@@ -47,10 +47,12 @@
 
  <!--CSS Style-->
  <style type="text/css">
-    body{
+    html, body
+    {
+        width: 100%;
+        height: 100%;
         margin: 0;
-        padding: 0;
-        overflow: hidden
+        overflow: auto
     }
     .ui-autocomplete { overflow-y: auto; width:300px;}
     * html .ui-autocomplete { /* IE max- */height: expression( this.scrollHeight > 320 ? "320px" : "auto" ); }
@@ -63,7 +65,7 @@
 <body>
 <!--<h3>Detected Browser: <div id=brow>...</div></h3>-->
 
-<div id="porthole_content">Initializing porthole... </div>
+<div id="porthole_content"  style=" width : 100%; height : 100%; ">Initializing porthole... </div>
 
 <!--<img src="" id="frame" style="width:840px;height:480px"/>-->
 
@@ -190,9 +192,8 @@
             if (message.event_type == "stream") {
                 image = "data:image/png;base64," + message.base64image;
                 img.src = image;
-                camera.width = message.image_width;
-                camera.height = message.image_height;
-                ctx.drawImage(img, 0, 0);
+                ctx.drawImage(img, 0, 0, camera.width, camera.height);
+
             }
             else {
                 document.getElementById("porthole_content").innerHTML = message.innerHTML;
@@ -214,7 +215,6 @@
         }
 
         socket.onclose = function () {
-            document.getElementById("porthole_content").style.backgroundColor = "#ff4040";
             document.getElementById("porthole_content").innerHTML = " websocket connection CLOSED ";
         }
     } catch (exception) {
@@ -277,6 +277,9 @@
         camera = document.getElementById('camera-canvas');
 
         if (camera == null) return;
+
+        camera.width = camera.parentNode.clientWidth;
+        camera.height = camera.parentNode.clientHeight;
 
         ctx = camera.getContext("2d");
 
