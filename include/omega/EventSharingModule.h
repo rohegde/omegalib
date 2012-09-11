@@ -51,9 +51,10 @@ namespace omega
 
 		virtual void commitSharedData(SharedOStream& out);
 		virtual void updateSharedData(SharedIStream& in);
+		virtual void dispose();
 
 	private:
-		static EventSharingModule* mysInstance;
+		static Ref<EventSharingModule> mysInstance;
 
 		Lock myQueueLock;
 		Event myEventQueue[MaxSharedEventsQueue];

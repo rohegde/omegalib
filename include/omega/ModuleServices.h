@@ -70,6 +70,8 @@ namespace omega {
 
 		Priority getPriority() { return myPriority; }
 		void setPriority(Priority value) { myPriority = value; }
+		
+		const String& getName() { return myName; }
 
 	private:
 		Ref<Engine> myEngine;
