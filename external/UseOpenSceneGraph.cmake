@@ -44,8 +44,8 @@ else()
 endif()
 
 # reduced component set.
-set(OSG_COMPONENTS osg osgAnimation osgDB osgFX osgManipulator osgShadow osgUtil OpenThreads)
-#set(OSG_COMPONENTS osg osgAnimation osgDB osgFX osgGA osgManipulator osgShadow osgTerrain osgText osgUtil osgVolume osgWidget OpenThreads)
+#set(OSG_COMPONENTS osg osgAnimation osgDB osgFX osgManipulator osgShadow osgUtil OpenThreads)
+set(OSG_COMPONENTS osg osgAnimation osgDB osgFX osgGA osgManipulator osgShadow osgTerrain osgText osgUtil osgVolume osgViewer osgSim osgWidget OpenThreads)
 
 if(OMEGA_OS_WIN)
 	if(OMEGA_USE_EXTERNAL_OSG)
