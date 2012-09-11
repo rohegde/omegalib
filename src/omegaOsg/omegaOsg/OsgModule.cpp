@@ -36,6 +36,7 @@
 #include <osg/FrameStamp>
 
 #include "omegaOsg/ReaderFreeImage.h"
+#include "fbx/ReaderWriterFBX.h"
 
 using namespace omegaOsg;
 
@@ -108,6 +109,7 @@ OsgModule::OsgModule():
     myUpdateVisitor->setFrameStamp( myFrameStamp );
 
     osgDB::Registry::instance()->addReaderWriter(new ReaderFreeImage());
+	osgDB::Registry::instance()->addReaderWriter(new ReaderWriterFBX());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

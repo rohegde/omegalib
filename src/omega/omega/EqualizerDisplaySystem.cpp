@@ -95,7 +95,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 	START_BLOCK(result, "server");
 
 	START_BLOCK(result, "config");
-	result += L("latency 0");
+	result += L("latency 1");
 
 	for(int n = 0; n < eqcfg.numNodes; n++)
 	{
@@ -111,14 +111,13 @@ void EqualizerDisplaySystem::generateEqConfig()
 				L(ostr("port %1%", %port));
 			END_BLOCK(result);
 			START_BLOCK(result, "attributes");
-			result +=
-				L("thread_model LOCAL_SYNC");
+			result +=L("thread_model ASYNC");
 			END_BLOCK(result);
 		}
 		else
 		{
 			START_BLOCK(result, "appNode");
-			result += L("attributes { thread_model LOCAL_SYNC }");
+			result += L("attributes { thread_model ASYNC }");
 		}
 
 
@@ -419,6 +418,7 @@ String EqualizerDisplaySystem::buildTileConfig(String indent, const String tileN
 	String tileCfg = "";
 	START_BLOCK(tileCfg, "pipe");
 		tileCfg +=
+			L(ostr("name = \"%1%-%2%\"", %tileName %device)) +
 			L("port = 0") +
 			L(ostr("device = %1%", %device));
 	START_BLOCK(tileCfg, "window");
@@ -486,6 +486,7 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	cfg.displayStatsOnMaster = Config::getBoolValue("displayStatsOnMaster", scfg, false);
 	if(cfg.displayStatsOnMaster)
 	{
+		cfg.statsTile.offset = Vector2i(0, 0);
 		cfg.statsTile.resolution = Vector2i(800, cfg.numTiles[0] * cfg.numTiles[1] * 40 + 120);
 		cfg.statsTile.drawStats = true;
 	}
@@ -819,3 +820,26 @@ bool EqualizerDisplaySystem::getViewRayFromEvent(const Event& evt, Ray& ray, boo
 	return false;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EqualizerDisplaySystem::toggleStats(const String& statList)
+{
+	Vector<String> stats = StringUtils::split(statList, " ");
+	foreach(String stat, stats)
+	{
+		if(myEnabledStats.find(stat) == myEnabledStats.end())
+		{
+			myEnabledStats[stat] = true;
+		}
+		else
+		{
+			myEnabledStats[stat] = !myEnabledStats[stat];
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool EqualizerDisplaySystem::isStatEnabled(const String& stat)
+{
+	if(myEnabledStats.find(stat) == myEnabledStats.end()) return false;
+	return myEnabledStats[stat];
+}

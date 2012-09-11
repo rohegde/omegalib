@@ -31,6 +31,7 @@
 #include "omega/PythonInterpreter.h"
 #include "omega/SystemManager.h"
 #include "omega/DisplaySystem.h"
+#include "omega/EqualizerDisplaySystem.h"
 #include "omega/Engine.h"
 #include "omega/Actor.h"
 
@@ -510,6 +511,12 @@ SceneNode* getScene()
 	return Engine::instance()->getScene();
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void toggleStats(const String& stats)
+{
+	EqualizerDisplaySystem* eqds = dynamic_cast<EqualizerDisplaySystem*>(SystemManager::instance()->getDisplaySystem());
+	eqds->toggleStats(stats);
+}
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeYawOverloads, yaw, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodePitchOverloads, pitch, 1, 2) 
@@ -700,6 +707,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("printObjCounts", &printObjCounts);
 	def("settingLookup", &settingLookup, PYAPI_RETURN_VALUE);
 	def("settingExists", &settingExists);
+	def("toggleStats", &toggleStats);
 };
 
 // Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)

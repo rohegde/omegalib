@@ -222,6 +222,7 @@ public:
 protected:
     void setupDrawContext(DrawContext* context, const uint128_t& spin);
 
+	void drawStats();
     virtual bool configInit(const uint128_t& initID);
     virtual void frameDraw( const uint128_t& spin );
     virtual void frameViewFinish(const uint128_t& spin);
@@ -234,6 +235,9 @@ private:
     DrawContext myDC;
     uint128_t myLastFrame;
     omicron::Ref<RenderTarget> myDrawBuffer;
+
+	omicron::Ref<Texture> myStatsTexture;
+    omicron::Ref<RenderTarget> myStatsBuffer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
