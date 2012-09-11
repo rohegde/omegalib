@@ -457,6 +457,8 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	cfg.referenceOffset = Config::getVector3fValue("referenceOffset", scfg);
 	cfg.tileSize = Config::getVector2fValue("tileSize", scfg);
 	cfg.bezelSize = Config::getVector2fValue("bezelSize", scfg);
+	ofmsg("Bezel size: %1%", %cfg.bezelSize);
+	
 	cfg.autoOffsetWindows = Config::getBoolValue("autoOffsetWindows", scfg);
 	cfg.tileResolution = Config::getVector2iValue("tileResolution", scfg);
 	cfg.windowOffset = Config::getVector2iValue("windowOffset", scfg);
