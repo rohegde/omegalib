@@ -69,6 +69,8 @@ void EngineModule::doDispose()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ModuleServices::addModule(EngineModule* module)
 { 
+	ofmsg("ModuleServices::addModule: %1%", %module->getName());
+	
 	mysModules.push_back(module); 
 	if(!mysCoreMode) mysNonCoreModules.push_back(module);
 }
@@ -76,6 +78,8 @@ void ModuleServices::addModule(EngineModule* module)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ModuleServices::removeModule(EngineModule* module)
 {
+	ofmsg("ModuleServices::removeModule: %1%", %module->getName());
+	
 	if(module != NULL)
 	{
 		mysModules.remove(module);
@@ -144,6 +148,8 @@ void ModuleServices::handleCommand(const String& cmd)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ModuleServices::disposeAll()
 {
+	omsg("ModuleServices::disposeAll");
+	
 	foreach(EngineModule* module, mysModules)
 	{
 		module->doDispose();
@@ -155,6 +161,8 @@ void ModuleServices::disposeAll()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ModuleServices::disposeNonCoreModules()
 {
+	omsg("ModuleServices::disposeNonCoreModules");
+	
 	foreach(EngineModule* module, mysNonCoreModules)
 	{
 		mysModules.remove(module);

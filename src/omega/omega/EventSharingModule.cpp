@@ -29,7 +29,7 @@
 
 using namespace omega;
 
-EventSharingModule* EventSharingModule::mysInstance = NULL;
+Ref<EventSharingModule> EventSharingModule::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 EventSharingModule::EventSharingModule():
@@ -113,4 +113,11 @@ void EventSharingModule::updateSharedData(SharedIStream& in)
 		//sm->unlockEvents();
 	}
 	myQueueLock.unlock();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EventSharingModule::dispose()
+{
+	omsg("EventSharingModule::dispose");
+	mysInstance = NULL;
 }

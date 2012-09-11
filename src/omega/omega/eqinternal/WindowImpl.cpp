@@ -36,13 +36,15 @@ using namespace std;
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 WindowImpl::WindowImpl(eq::Pipe* parent): 
-    eq::Window(parent)
+    eq::Window(parent),
+	myIndex(Vector2i::Zero())
 {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 WindowImpl::~WindowImpl() 
 {}
 
+omicron::Lock sInitLock;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool WindowImpl::configInit(const uint128_t& initID)
 {
@@ -52,8 +54,13 @@ bool WindowImpl::configInit(const uint128_t& initID)
 	{
 		vector<String> args = StringUtils::split(name, "x,");
 		myIndex = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
+		ofmsg("WindowImpl::configInit: tile %1%", %myIndex);
 	}
-	return Window::configInit(initID);
+	// Serialize window init execution since we are tinkering with x cursors on linux inside there.
+	sInitLock.lock();
+	bool res = Window::configInit(initID);
+	sInitLock.unlock();
+	return res;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
