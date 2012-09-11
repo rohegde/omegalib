@@ -539,8 +539,3 @@ osgDB::ReaderWriter::WriteResult ReaderWriterFBX::writeNode(
 
     return WriteResult::ERROR_IN_WRITING_FILE;
 }
-
-///////////////////////////////////////////////////////////////////////////
-// Add ourself to the Registry to instantiate the reader/writer.
-
-REGISTER_OSGPLUGIN(fbx, ReaderWriterFBX)

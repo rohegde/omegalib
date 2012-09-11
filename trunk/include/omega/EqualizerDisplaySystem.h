@@ -94,6 +94,9 @@ namespace omega
 
 		void exitConfig();
 
+		void toggleStats(const String& statList);
+		bool isStatEnabled(const String& stat);
+
 	private:
 		void generateEqConfig();
 		void setupEqInitArgs(int& numArgs, const char** argv);
@@ -112,6 +115,7 @@ namespace omega
 
 		// Debug
 		bool myDebugMouse;
+		Dictionary<String, bool> myEnabledStats;
 	};
 
 }; // namespace omega
