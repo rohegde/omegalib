@@ -403,9 +403,12 @@ void EqualizerDisplaySystem::generateEqConfig()
 	// end server
 	END_BLOCK(result)
 
-	FILE* f = fopen(OMEGA_EQ_TMP_FILE, "w");
-	fputs(result.c_str(), f);
-	fclose(f);
+	if(!eqcfg.disableConfigGenerator)
+	{
+		FILE* f = fopen(OMEGA_EQ_TMP_FILE, "w");
+		fputs(result.c_str(), f);
+		fclose(f);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -462,6 +465,8 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
 	cfg.orientObserverToTile = Config::getBoolValue("orientObserverToTile", scfg);
 
+	cfg.disableConfigGenerator = Config::getBoolValue("disableConfigGenerator", scfg, false);
+	
 	cfg.displayResolution = cfg.tileResolution.cwiseProduct(cfg.numTiles);
 	ofmsg("Total display resolution: %1%", %cfg.displayResolution);
 
