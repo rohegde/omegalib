@@ -80,6 +80,10 @@ namespace omega
 		// UGLY CONSTANTS.
 		static const int MaxTiles = 64;
 		static const int MaxNodes = 64;
+		
+		DisplayConfig(): disableConfigGenerator(false) {}
+		
+		bool disableConfigGenerator;
 
 		// ! Configuration type enum
 		enum ConfigType {
