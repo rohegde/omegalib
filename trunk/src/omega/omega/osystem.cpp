@@ -120,6 +120,12 @@ namespace omega
 				"Prints this application help screen",
 				help);
 
+			sArgs.newFlag(
+				'r',
+				"log-remote",
+				"generate log for remote nodes",
+				logRemoteNodes);
+				
 			sArgs.newNamedString(
 				'D',
 				"data",
