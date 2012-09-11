@@ -43,7 +43,9 @@ else()
 	set(OSG_INCLUDES ${EXTLIB_DIR}/include)
 endif()
 
-set(OSG_COMPONENTS osg osgAnimation osgDB osgFX osgGA osgManipulator osgShadow osgSim osgTerrain osgText osgUtil osgVolume osgViewer osgWidget OpenThreads)
+# reduced component set.
+set(OSG_COMPONENTS osg osgAnimation osgDB osgFX osgManipulator osgShadow osgUtil OpenThreads)
+#set(OSG_COMPONENTS osg osgAnimation osgDB osgFX osgGA osgManipulator osgShadow osgTerrain osgText osgUtil osgVolume osgWidget OpenThreads)
 
 if(OMEGA_OS_WIN)
 	if(OMEGA_USE_EXTERNAL_OSG)
