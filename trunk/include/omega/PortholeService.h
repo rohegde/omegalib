@@ -52,6 +52,9 @@ namespace omega {
 		// Constructor
 		ServerThread();
 
+		// Destructor
+		~ServerThread();
+
 		// Set port
 		void setPort(int portNumber); 
 

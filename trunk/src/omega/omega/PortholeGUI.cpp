@@ -30,45 +30,21 @@
 using namespace omega;
 using namespace std;
 
-PortholeFunctionsBinder* PortholeGUI::functionsBinder = NULL;
+PortholeFunctionsBinder* PortholeGUI::functionsBinder;
+vector<PortholeInterfaceType> PortholeGUI::interfaces;
+std::map<string, TiXmlElement* > PortholeGUI::interfacesMap;
+std::map<string, PortholeElement> PortholeGUI::elementsMap;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 PortholeGUI::PortholeGUI()
 {
-
-	//xmlDoc = new TiXmlDocument( documentName );
 	xmlPrinter = new TiXmlPrinter();
-
-	// Create Devices
-	setPossibleInterfaces();
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 PortholeGUI::~PortholeGUI(){
-	Engine::instance()->destroyCamera(sessionCameras.at(0).camera);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeGUI::setPossibleInterfaces(){
-
-	PortholeInterfaceType smallPort = {426,320,"small","portrait"},
-						  smallLand = {320,426,"small","landscape"},
-						  mediumPort = {470,320,"medium","portrait"},
-						  mediumLand = {320,470,"medium","landscape"},
-						  largePort = {640,480,"large","portrait"},
-						  largeLand = {480,640,"large","landscape"},
-						  xlargePort = {960,720,"xlarge","portrait"},
-						  xlargeLand = {720,960,"xlarge","landscape"};
-
-	interfaces.push_back(smallPort);
-	interfaces.push_back(smallLand);
-	interfaces.push_back(mediumPort);
-	interfaces.push_back(mediumLand);
-	interfaces.push_back(largePort);
-	interfaces.push_back(largeLand);
-	interfaces.push_back(xlargePort);
-	interfaces.push_back(xlargeLand);
+	delete xmlPrinter;
+	delete device;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,6 +55,13 @@ void PortholeGUI::setDeviceSpecifications(int width, int height, string orientat
 	device->deviceWidth = width;
 	device->deviceHeight = height;
 	device->deviceOrientation = orientation;
+	
+	for(int i=0; i<interfaces.size(); i++){
+		if (width > interfaces.at(i).minWidth && 
+			height > interfaces.at(i).minHeight &&
+			orientation.compare(interfaces.at(i).orientation)==0)
+			device->interfaceType = interfaces.at(i);
+	}
 
 }
 
@@ -88,14 +71,16 @@ string PortholeGUI::create(bool firstTime){
 	int cameraIterator = 0;
 	string result = "";
 
-	TiXmlNode* guiElements = xmlDoc->FirstChildElement()->FirstChildElement();
-	TiXmlNode* guiDisposition = guiElements->NextSiblingElement();
+	string interfaceKey = device->interfaceType.id + device->interfaceType.orientation;
+	TiXmlElement* root = interfacesMap[interfaceKey];
+
+	if (root == NULL) return "Interface not available for this device";
 
 	// Parse the GUI elemets disposition
-	for (TiXmlNode* pChild = guiDisposition->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
+	for (TiXmlElement* pChild = root->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
 		
 		// Get element name: should correspond to id TODO check
-		const char* id = pChild->ToElement()->Value();
+		const char* id = pChild->Value();
 
 		PortholeElement element = elementsMap[id];
 
@@ -142,7 +127,7 @@ string PortholeGUI::create(bool firstTime){
 				Camera* defaultCamera = myEngine->getDefaultCamera();
 
 				// TODO check dimensions
-				PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 860, 480); // TODO save for future delete
+				PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 860, 860*device->deviceHeight/device->deviceWidth); // TODO save for future delete
 				defaultCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
 				defaultCamera->getOutput(0)->setEnabled(true);
 
@@ -166,10 +151,8 @@ string PortholeGUI::create(bool firstTime){
 			}
 
 			element.htmlValue = "<canvas id=\"camera-canvas\" class=\"camera_container\" data-camera_id = \"" +
-								boost::lexical_cast<string>(cameraId) + "\" style=\"width:" +
-								boost::lexical_cast<string>(840)+"px; height:"+
-							    boost::lexical_cast<string>(480)+"px \" " +
-								"></canvas>";
+								boost::lexical_cast<string>(cameraId) +
+								"\"></canvas>";
 
 		}
 
@@ -188,7 +171,7 @@ void PortholeGUI::createCustomCamera(){
 		Engine* myEngine = Engine::instance();
 
 		// TODO check dimensions
-		PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  860,  480);
+		PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  860,  860*device->deviceHeight/device->deviceWidth);
 
 		uint flags = Camera::ForceMono | Camera::DrawScene | Camera::Offscreen;
 
@@ -215,7 +198,13 @@ void PortholeGUI::modCustomCamera(int cameraIterator){
 	// Retrieve the camera to be modified
 	PortholeCamera portholeCamera = sessionCameras[camerasId.at(cameraIterator)];
 
-	// TODO 
+	Camera* sessionCamera = portholeCamera.camera;
+
+	// TODO check dimensions
+	PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  860,  860*device->deviceHeight/device->deviceWidth);
+	sessionCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
+	sessionCamera->getOutput(0)->setEnabled(true);
+	portholeCamera.canvas = sessionCanvas;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -270,6 +259,7 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 		abort();
 	}
 
+	// Recursive search for Python Scripts inside events handlers
 	findHtmlScripts();
 
 	TiXmlNode* guiElements = xmlDoc->FirstChildElement()->FirstChildElement();
@@ -330,6 +320,61 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 			elementsMap[element.id] = element;
 		}
 
+	}
+
+	TiXmlNode* guiDisposition = guiElements->NextSiblingElement();
+
+	// Parse the GUI elemets disposition
+	// For each specified interface size
+	for (TiXmlElement* pInterfaceChild = guiDisposition->FirstChildElement(); pInterfaceChild != 0; pInterfaceChild = pInterfaceChild->NextSiblingElement()){
+
+			// Get element name
+			string interfaceId = string(pInterfaceChild->Value());
+
+			int minWidth=0, minHeight=0;
+
+			// Parse attributes
+			TiXmlAttribute* pAttrib = pInterfaceChild->FirstAttribute();
+			while(pAttrib){
+
+				string attribute = pAttrib->Name();
+				StringUtils::toLowerCase(attribute);
+
+				// Save id attribute
+				if (strcmp(attribute.c_str(),"minwidth")==0){
+					minWidth = pAttrib->IntValue();
+				}
+
+				// Save type attribute
+				else if (strcmp(attribute.c_str(),"minheight")==0){
+					minHeight = pAttrib->IntValue();
+				}
+
+				// Next attribute
+				pAttrib = pAttrib->Next();
+			}
+
+		// For each orientation
+		for (TiXmlElement* pOrientationChild = pInterfaceChild->FirstChildElement(); pOrientationChild != 0; pOrientationChild = pOrientationChild->NextSiblingElement()){
+				
+			// Get element name
+			string orientation = string(pOrientationChild->Value());
+			StringUtils::toLowerCase(orientation);
+
+			// Check orientation and save node in the map
+			if (orientation.compare("portrait")==0 || orientation.compare("port")==0){
+				PortholeInterfaceType interfaceType = {minWidth,minHeight,interfaceId,"portrait"};
+				interfaces.push_back(interfaceType);
+				cout << ">> Added interface:" << interfaceId << " " << orientation << " " << minWidth << " " << minHeight << endl;
+				interfacesMap[interfaceId + orientation] = pOrientationChild;
+			}
+			else if (orientation.compare("landscape")==0 || orientation.compare("land")==0){
+				PortholeInterfaceType interfaceType = {minWidth,minHeight,interfaceId,"landscape"};
+				interfaces.push_back(interfaceType);
+				cout << ">> Added interface:" << interfaceId << " " << orientation << " " << minWidth << " " << minHeight << endl;
+				interfacesMap[interfaceId + orientation] = pOrientationChild;
+			}
+		}	
 	}
 
 }
