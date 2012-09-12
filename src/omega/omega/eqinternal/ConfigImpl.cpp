@@ -284,7 +284,7 @@ void ConfigImpl::updateSharedData( )
 {
 	if(!mySharedData.isMaster())
 	{
-		mySharedData.sync();
+		mySharedData.sync(co::VERSION_NEXT);
 	}
 }
 
