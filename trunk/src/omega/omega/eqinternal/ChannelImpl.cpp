@@ -336,10 +336,10 @@ void ChannelImpl::drawStats()
     }
     const Viewport& vp = getViewport();
     const uint32_t width = uint32_t( pvp.w/vp.w );
-    uint32_t scale = 1;
+    float scale = 0.2;
 
     while( (xMax - xMin) / scale > width )
-        scale *= 10;
+        scale *= 2;
 
     xMax  /= scale;
     int64_t xStart = xMax - width + SPACE;
@@ -427,8 +427,8 @@ void ChannelImpl::drawStats()
                   case Statistic::CONFIG_WAIT_FINISH_FRAME:
                   case Statistic::CHANNEL_FRAME_WAIT_READY:
                   case Statistic::CHANNEL_FRAME_WAIT_SENDTOKEN:
-                    y1 -= SPACE;
-                    y2 += SPACE;
+                    y1 -= SPACE*2;
+                    y2 += SPACE*2;
                     break;
 
                   case Statistic::CHANNEL_FRAME_COMPRESS:
@@ -453,7 +453,7 @@ void ChannelImpl::drawStats()
                     break;
                 }
                 
-                const eq::Vector3f color( Statistic::getColor( stat.type ) - dim );
+                const eq::Vector3f color( Statistic::getColor( stat.type ) );
                 glColor3fv( color.array );
 
                 glBegin( GL_QUADS );
