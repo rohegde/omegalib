@@ -375,7 +375,7 @@ void ChannelImpl::drawStats()
             EntityData& data = l->second;
 
 			EqualizerDisplaySystem* eqds = dynamic_cast<EqualizerDisplaySystem*>(getClient()->getDisplaySystem());
-			if(data.name[0] != '_' && !eqds->isStatEnabled(data.name)) continue;
+			if(data.name[0] != '.' && !eqds->isStatEnabled(data.name)) continue;
 
             if( data.yPos == 0 )
             {
