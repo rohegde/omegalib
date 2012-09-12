@@ -116,8 +116,8 @@ void EventSharingModule::updateSharedData(SharedIStream& in)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//void EventSharingModule::dispose()
-//{
-//	omsg("EventSharingModule::dispose");
-//	mysInstance = NULL;
-//}
+void EventSharingModule::dispose()
+{
+	omsg("EventSharingModule::dispose");
+	mysInstance = NULL;
+}
