@@ -95,7 +95,9 @@ void EqualizerDisplaySystem::generateEqConfig()
 	START_BLOCK(result, "server");
 
 	START_BLOCK(result, "config");
-	result += L("latency 1");
+	// Latency > 0 makes everything explode when a local node is initialized, due to 
+	// multiple shared data messages sent to slave nodes before they initialize their local objects
+	result += L("latency 0");
 
 	for(int n = 0; n < eqcfg.numNodes; n++)
 	{
@@ -154,7 +156,6 @@ void EqualizerDisplaySystem::generateEqConfig()
 	if(eqcfg.orientObserverToTile)
 	{
 		// observers
-		//START_BLOCK(result, "observer");
 		for(int x = 0; x < eqcfg.numTiles[0]; x++)
 		{
 			for(int y = 0; y < eqcfg.numTiles[1]; y++)
@@ -164,14 +165,11 @@ void EqualizerDisplaySystem::generateEqConfig()
 					L(ostr("observer { name \"observer%1%x%2%\" }", %x %y));
 			}
 		}
-		//END_BLOCK(result)
 	}
-	else
-	{
-		// observer
-		result += 
-			L("observer { name \"observer0\" }");
-	}
+
+	// Always create the default observer
+	result += 
+		L("observer { name \"observer0\" }");
 
 	// layout
 	START_BLOCK(result, "layout");
@@ -215,17 +213,34 @@ void EqualizerDisplaySystem::generateEqConfig()
 		END_BLOCK(result)
 	}
 	END_BLOCK(result)
+	// ------------------------------------------ END layout
 
+	// Simple layout for extra tiles
+	START_BLOCK(result, "layout");
+	result += 
+		L("name \"simpleLayout\"");
+
+	START_BLOCK(result, "view");
+
+	result += 
+		L("name \"main\"") +
+		L("observer \"observer0\"") +
+		L("viewport [0 0 1 1]");
+	
+	END_BLOCK(result)
+	END_BLOCK(result)
+	// ------------------------------------------ END simple layout
+
+	// Main canvas
 	START_BLOCK(result, "canvas");
 	result += 
+		L("name \"mainCanvas\"") +
 		L("layout \"layout\"");
 
 	Vector3f canvasTopLeft = Vector3f(
 		-eqcfg.referenceTile[0] * eqcfg.tileSize[0] - eqcfg.tileSize[0] / 2,
 		eqcfg.referenceTile[1] * eqcfg.tileSize[1] + eqcfg.tileSize[1] / 2,
 		0) + eqcfg.referenceOffset;
-
-
 
 	tileViewportX = 0.0f;
 	tileViewportY = 0.0f;
@@ -305,10 +320,18 @@ void EqualizerDisplaySystem::generateEqConfig()
 		tileViewportY = 0.0f;
 		tileViewportX += tileViewportWidth;
 	}
+	END_BLOCK(result);
+	// ------------------------------------------ END main canvas
 
+	// stats canvas
 	if(eqcfg.displayStatsOnMaster)
 	{
+		START_BLOCK(result, "canvas");
+		result += 
+			L("name \"statsCanvas\"") +
+			L("layout \"simpleLayout\"");
 		String tileCfg = "";
+
 		START_BLOCK(tileCfg, "segment");
 		tileCfg +=
 				L("name \"stats\"") +
@@ -322,11 +345,12 @@ void EqualizerDisplaySystem::generateEqConfig()
 		END_BLOCK(tileCfg)
 		END_BLOCK(tileCfg)
 		result += tileCfg;
+		END_BLOCK(result);
 	}
+	// ------------------------------------------ END stats canvas
 
-	END_BLOCK(result);
 
-	// compound
+	// compounds
 	START_BLOCK(result, "compound")
 #ifdef EQ_USE_SWAP_BARRIER
 	START_BLOCK(result, "swapbarrier")
@@ -353,7 +377,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 				String tileCfg = "";
 				START_BLOCK(tileCfg, "compound");
 				tileCfg += 
-					L("channel ( segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )") +
+					L("channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )") +
 					L("eye [LEFT RIGHT]") +
 					L("attributes { stereo_mode PASSIVE }");
 				START_BLOCK(tileCfg, "compound");
@@ -381,7 +405,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 			}
 			else
 			{
-				String tileCfg = "\t\tchannel ( segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )\n";
+				String tileCfg = "\t\tchannel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )\n";
 				result += tileCfg;
 			}
 		}
@@ -389,12 +413,12 @@ void EqualizerDisplaySystem::generateEqConfig()
 
 	if(eqcfg.displayStatsOnMaster)
 	{
-		String tileCfg = "\t\tchannel ( segment \"stats\" layout \"layout\" view \"main\" )\n";
+		String tileCfg = "\t\tchannel ( canvas \"statsCanvas\" segment \"stats\" layout \"simpleLayout\" view \"main\" )\n";
 		result += tileCfg;
 	}
 
-	// end compound
 	END_BLOCK(result)
+	// ------------------------------------------ END compounds
 
 	// end config
 	END_BLOCK(result)
@@ -600,7 +624,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 				executable = StringUtils::replaceAll(executable, "%d", cCurrentPath);
 				
 				int port = myDisplayConfig.basePort + nc.port;
-				String cmd = ostr("%1% %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
+				String cmd = ostr("%1% -c %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
 				olaunch(cmd);
 			}
 		}
