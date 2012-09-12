@@ -97,7 +97,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 	START_BLOCK(result, "config");
 	// Latency > 0 makes everything explode when a local node is initialized, due to 
 	// multiple shared data messages sent to slave nodes before they initialize their local objects
-	result += L("latency 0");
+	result += L("latency 1");
 
 	for(int n = 0; n < eqcfg.numNodes; n++)
 	{
