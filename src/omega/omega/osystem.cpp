@@ -103,9 +103,10 @@ namespace omega
 
 			bool logRemoteNodes = false;
 
-			sArgs.newOptionalString(
+			sArgs.newNamedString(
+				'c',
 				"config", 
-				ostr("configuration file to use with this application (default: %1% or default.cfg if the previous is not found)", %configFilename).c_str(),
+				ostr("configuration file to use with this application (default: %1% or default.cfg if the previous is not found)", %configFilename).c_str(), "",
 				configFilename);
 
 			sArgs.newFlag(
@@ -154,6 +155,8 @@ namespace omega
 				sArgs.writeUsage(std::cout);
 				return 0;
 			}
+
+			logRemoteNodes = true;
 
 			std::vector<std::string> args = StringUtils::split(configFilename, "@");
 			configFilename = args[0];
