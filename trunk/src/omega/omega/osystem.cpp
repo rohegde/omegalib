@@ -156,8 +156,6 @@ namespace omega
 				return 0;
 			}
 
-			logRemoteNodes = true;
-
 			std::vector<std::string> args = StringUtils::split(configFilename, "@");
 			configFilename = args[0];
 			if(args.size() == 2)
