@@ -295,7 +295,7 @@ void ChannelImpl::drawStats()
             std::vector< Statistic >& stats = j->second;
             std::sort( stats.begin(), stats.end(), _compare );
 
-            for( Statistics::const_iterator k = stats.begin(); 
+            for( std::vector< Statistic >::const_iterator k = stats.begin(); 
                  k != stats.end(); ++k )
             {
                 const Statistic& stat = *k;
@@ -387,7 +387,7 @@ void ChannelImpl::drawStats()
 
             uint32_t y = data.yPos;
 
-            for( Statistics::const_iterator k = stats.begin(); 
+            for( std::vector< Statistic >::const_iterator k = stats.begin(); 
                  k != stats.end(); ++k )
             {
                 const Statistic& stat = *k;
