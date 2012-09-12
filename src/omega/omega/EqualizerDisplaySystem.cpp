@@ -113,13 +113,13 @@ void EqualizerDisplaySystem::generateEqConfig()
 				L(ostr("port %1%", %port));
 			END_BLOCK(result);
 			START_BLOCK(result, "attributes");
-			result +=L("thread_model ASYNC");
+			result +=L("thread_model DRAW_SYNC");
 			END_BLOCK(result);
 		}
 		else
 		{
 			START_BLOCK(result, "appNode");
-			result += L("attributes { thread_model ASYNC }");
+			result += L("attributes { thread_model DRAW_SYNC }");
 		}
 
 
@@ -413,7 +413,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 
 	if(eqcfg.displayStatsOnMaster)
 	{
-		String tileCfg = "\t\tchannel ( canvas \"statsCanvas\" segment \"stats\" layout \"simpleLayout\" view \"main\" )\n";
+		String tileCfg = "\t\tcompound { channel ( canvas \"statsCanvas\" segment \"stats\" layout \"simpleLayout\" view \"main\" ) }\n";
 		result += tileCfg;
 	}
 
@@ -511,7 +511,7 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	if(cfg.displayStatsOnMaster)
 	{
 		cfg.statsTile.offset = Vector2i(0, 0);
-		cfg.statsTile.resolution = Vector2i(800, cfg.numTiles[0] * cfg.numTiles[1] * 40 + 120);
+		cfg.statsTile.resolution = Vector2i(480, 860);
 		cfg.statsTile.drawStats = true;
 	}
 
