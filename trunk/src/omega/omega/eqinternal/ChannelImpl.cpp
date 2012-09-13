@@ -243,8 +243,78 @@ struct IdleData
 static bool _compare( const Statistic& stat1, const Statistic& stat2 )
 { return stat1.type < stat2.type; }
 
+struct StatisticData
+{
+    const Statistic::Type type;
+    const std::string name;
+    const Color color;
+};
+
+static StatisticData _statisticData[] =
+{{ Statistic::NONE,
+   "NO EVENT",     Color( 0.f, 0.f, 0.f ) }, 
+ { Statistic::CHANNEL_CLEAR,
+   "clear",        Color( .5f, 1.0f, .5f ) }, 
+ { Statistic::CHANNEL_DRAW,
+   "draw",         Color( 0.f, .9f, 0.f ) }, 
+ { Statistic::CHANNEL_DRAW_FINISH,
+   "finish draw",  Color( 0.f, .5f, 0.f ) }, 
+ { Statistic::CHANNEL_ASSEMBLE,
+   "assemble",     Color( 1.0f, 1.0f, 0.f ) },
+ { Statistic::CHANNEL_FRAME_WAIT_READY,
+   "wait frame",   Color( 1.0f, 0.f, 0.f ) }, 
+ { Statistic::CHANNEL_READBACK,
+   "readback",     Color( 1.0f, .5f, .5f ) }, 
+ { Statistic::CHANNEL_VIEW_FINISH,
+   "view finish",  Color( 1.f, 0.f, 1.0f ) }, 
+ { Statistic::CHANNEL_FRAME_TRANSMIT,
+   "transmit",     Color( 0.f, 0.f, 1.0f ) }, 
+ { Statistic::CHANNEL_FRAME_COMPRESS,
+   "compress",     Color( 0.f, .7f, 1.f ) }, 
+ { Statistic::CHANNEL_FRAME_WAIT_SENDTOKEN,
+   "wait send token", Color( 1.f, 0.f, 0.f ) }, 
+ { Statistic::WINDOW_FINISH,
+   "finish",       Color( 1.0f, 1.0f, 0.f ) },
+ { Statistic::WINDOW_THROTTLE_FRAMERATE,
+   "throttle",     Color( 1.0f, 0.f, 1.f ) }, 
+ { Statistic::WINDOW_SWAP_BARRIER,
+   "barrier",      Color( 1.0f, 0.f, 0.f ) }, 
+ { Statistic::WINDOW_SWAP,
+   "swap",         Color( 1.f, 1.f, 1.f ) }, 
+ { Statistic::WINDOW_FPS,
+   "FPS",          Color( 1.f, 1.f, 1.f ) }, 
+ { Statistic::PIPE_IDLE,
+   "pipe idle",    Color( 1.f, 1.f, 1.f ) }, 
+ { Statistic::NODE_FRAME_DECOMPRESS,
+   "decompress",   Color( 0.f, .7f, 1.f ) }, 
+ { Statistic::CONFIG_START_FRAME,
+   "start frame",  Color( .5f, 1.0f, .5f ) }, 
+ { Statistic::CONFIG_FINISH_FRAME,
+   "finish frame", Color( .5f, .5f, .5f ) }, 
+ { Statistic::CONFIG_WAIT_FINISH_FRAME,
+   "wait finish",  Color( 1.0f, 0.f, 0.f ) }, 
+ { Statistic::ALL,
+   "ALL EVENTS",   Color( 0.0f, 0.f, 0.f ) }} ;
+
+
+const std::string& StatisticGetName( const Statistic::Type type )
+{
+    return _statisticData[ type ].name;
+}
+
+const Color& StatisticGetColor( const Statistic::Type type )
+{
+    return _statisticData[ type ].color;
+}
+
+
 void ChannelImpl::drawStats()
 {
+	EqualizerDisplaySystem* eqds = dynamic_cast<EqualizerDisplaySystem*>(getClient()->getDisplaySystem());
+
+	bool allStats = eqds->isStatEnabled("all");
+	bool compact = eqds->isStatEnabled("compact");
+
     const PixelViewport& pvp = getPixelViewport();
     EQASSERT( pvp.hasArea( ));
     if( !pvp.hasArea( ))
@@ -336,7 +406,7 @@ void ChannelImpl::drawStats()
     }
     const Viewport& vp = getViewport();
     const uint32_t width = uint32_t( pvp.w/vp.w );
-    float scale = 0.2;
+    float scale = 0.2f;
 
     while( (xMax - xMin) / scale > width )
         scale *= 2;
@@ -374,15 +444,23 @@ void ChannelImpl::drawStats()
 
             EntityData& data = l->second;
 
-			EqualizerDisplaySystem* eqds = dynamic_cast<EqualizerDisplaySystem*>(getClient()->getDisplaySystem());
-			if(data.name[0] != '.' && !eqds->isStatEnabled(data.name)) continue;
+			if(!allStats && data.name[0] != '.' && !eqds->isStatEnabled(data.name)) continue;
 
             if( data.yPos == 0 )
             {
                 data.yPos = nextY;
-                nextY -= (HEIGHT + SPACE);
-                if( data.doubleHeight )
-                    nextY -= (HEIGHT + SPACE);
+				if(compact) 
+				{
+					nextY -= (HEIGHT + SPACE) / 6;
+					if( data.doubleHeight )
+						nextY -= (HEIGHT + SPACE) / 6;
+				}
+				else
+				{
+					nextY -= (HEIGHT + SPACE);
+					if( data.doubleHeight )
+						nextY -= (HEIGHT + SPACE);
+				}
             }
 
             uint32_t y = data.yPos;
@@ -418,6 +496,8 @@ void ChannelImpl::drawStats()
 
                 float y1 = static_cast< float >( y );
                 float y2 = static_cast< float >( y - HEIGHT );
+				if(compact) y2 = static_cast< float >( y - HEIGHT / 6);
+
                 const float x1 = static_cast< float >( startTime - xStart );
                 const float x2 = static_cast< float >( endTime   - xStart );
                 std::stringstream text;
@@ -427,8 +507,8 @@ void ChannelImpl::drawStats()
                   case Statistic::CONFIG_WAIT_FINISH_FRAME:
                   case Statistic::CHANNEL_FRAME_WAIT_READY:
                   case Statistic::CHANNEL_FRAME_WAIT_SENDTOKEN:
-                    y1 -= SPACE*2;
-                    y2 += SPACE*2;
+                    y1 -= SPACE;
+                    y2 += SPACE;
                     break;
 
                   case Statistic::CHANNEL_FRAME_COMPRESS:
@@ -441,20 +521,20 @@ void ChannelImpl::drawStats()
                         data.compressors.insert( stat.plugins[1] );
                     break;
 
-                  case Statistic::CHANNEL_READBACK:
+                  /*case Statistic::CHANNEL_READBACK:
                     text << unsigned( 100.f * stat.ratio ) << '%';
                     if( stat.plugins[ 0 ]  > EQ_COMPRESSOR_NONE )
                         data.downloaders.insert( stat.plugins[0] );
                     if( stat.plugins[ 1 ]  > EQ_COMPRESSOR_NONE )
                         data.downloaders.insert( stat.plugins[1] );
-                    break;
+                    break;*/
 
                 default:
                     break;
                 }
                 
-                const eq::Vector3f color( Statistic::getColor( stat.type ) );
-                glColor3fv( color.array );
+                const Color& color( StatisticGetColor( stat.type ) );
+				glColor3fv( color.data() );
 
                 glBegin( GL_QUADS );
                     glVertex3f( x2, y1, 0.f );
@@ -495,37 +575,41 @@ void ChannelImpl::drawStats()
     }
 
     //----- Entitity names
-    for( std::map< uint32_t, EntityData >::const_iterator i = entities.begin();
-         i != entities.end(); ++i )
-    {
-        const EntityData& data = i->second;
+	// no entity names in compact mode
+	if(!compact)
+	{
+		for( std::map< uint32_t, EntityData >::const_iterator i = entities.begin();
+			 i != entities.end(); ++i )
+		{
+			const EntityData& data = i->second;
 
-        glColor3f( 1.f, 1.f, 1.f );
-        //glRasterPos3f( 60.f, data.yPos-SPACE-12.0f, 0.99f );
-		di->drawText(data.name, fnt, omega::Vector2f(60.f, data.yPos-SPACE-12.0f), Font::HALeft | Font::VATop);
-        //font->draw( data.name );
+			glColor3f( 1.f, 1.f, 1.f );
+			//glRasterPos3f( 60.f, data.yPos-SPACE-12.0f, 0.99f );
+			di->drawText(data.name, fnt, omega::Vector2f(60.f, data.yPos-SPACE-12.0f), Font::HALeft | Font::VATop);
+			//font->draw( data.name );
 
-        //std::stringstream downloaders;
-        //for( std::set<uint32_t>::const_iterator j = data.downloaders.begin();
-        //     j != data.downloaders.end(); ++j )
-        //{
-        //    downloaders << " 0x" << std::hex << *j << std::dec;
-        //}
-        //if( !downloaders.str().empty( ))
-        //    font->draw( std::string( ", down" ) + downloaders.str( ));
+			//std::stringstream downloaders;
+			//for( std::set<uint32_t>::const_iterator j = data.downloaders.begin();
+			//     j != data.downloaders.end(); ++j )
+			//{
+			//    downloaders << " 0x" << std::hex << *j << std::dec;
+			//}
+			//if( !downloaders.str().empty( ))
+			//    font->draw( std::string( ", down" ) + downloaders.str( ));
 
-        //std::stringstream compressors;
-        //for( std::set<uint32_t>::const_iterator j = data.compressors.begin();
-        //     j != data.compressors.end(); ++j )
-        //{
-        //    compressors << " 0x" << std::hex << *j << std::dec;
-        //}
-        //if( !compressors.str().empty( ))
-        //{
-        //    glRasterPos3f( 80.f, data.yPos - HEIGHT - 2*SPACE - 12.0f, 0.99f );
-        //    font->draw( std::string( "compressors" ) + compressors.str( ));
-        //}
-    }
+			//std::stringstream compressors;
+			//for( std::set<uint32_t>::const_iterator j = data.compressors.begin();
+			//     j != data.compressors.end(); ++j )
+			//{
+			//    compressors << " 0x" << std::hex << *j << std::dec;
+			//}
+			//if( !compressors.str().empty( ))
+			//{
+			//    glRasterPos3f( 80.f, data.yPos - HEIGHT - 2*SPACE - 12.0f, 0.99f );
+			//    font->draw( std::string( "compressors" ) + compressors.str( ));
+			//}
+		}
+	}
 
     //----- Global stats (scale, GPU idle)
     glColor3f( 1.f, 1.f, 1.f );
@@ -604,7 +688,7 @@ void ChannelImpl::drawStats()
         const float y1 = static_cast< float >( nextY );
         const float y2 = static_cast< float >( nextY - HEIGHT );
 
-        glColor3fv( Statistic::getColor( type ).array );
+        glColor3fv( StatisticGetColor( type ).data() );
         glBegin( GL_QUADS );
             glVertex3f( x2, y1, 0.f );
             glVertex3f( x,  y1, 0.f );
@@ -614,7 +698,7 @@ void ChannelImpl::drawStats()
 
         glColor3f( 0.f, 0.f, 0.f );
         //glRasterPos3f( x+1.f, nextY-12.f, 0.f );
-		di->drawText(Statistic::getName( type ), fnt, omega::Vector2f(x+1.f, nextY-10.f), Font::HALeft | Font::VATop);
+		di->drawText(StatisticGetName( type ), fnt, omega::Vector2f(x+1.f, nextY-10.f), Font::HALeft | Font::VATop);
         //font->draw( Statistic::getName( type ));
     }
     // nextY -= (HEIGHT + SPACE);
