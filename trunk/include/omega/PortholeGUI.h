@@ -148,6 +148,7 @@ namespace omega {
 		int id;
 		Camera* camera;
 		PixelData* canvas;
+		bool followDefault;
 		unsigned int oldusStreamSent; // Timestamp of last stream sent via socket
 	} PortholeCamera;
 
@@ -201,7 +202,7 @@ namespace omega {
 		std::map<int,PortholeCamera> sessionCameras;
 
 		// Create a Porthole custom camera and a PixelData associated
-		void createCustomCamera(); 
+		void createCustomCamera(bool followDefaultCamera); 
 
 		void modCustomCamera(int cameraIterator);
 
