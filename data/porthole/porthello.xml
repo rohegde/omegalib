@@ -20,7 +20,7 @@
   
   <gui_disposition>
 
-    <small minWidth="426" minHeight="320">
+    <small minWidth="0" minHeight="0">
       <portrait>
         <element3 width="100%" height="100%" />
       </portrait>
@@ -31,20 +31,19 @@
     
     <medium minWidth="470" minHeight="320">
       <portrait>
-        <element3 width="100%" height="100%" />
+        <element1 width="100%" height="100%" />
       </portrait>
       <landscape>
-        <element3 width="100%" height="100%" />
+        <element1 width="100%" height="100%" />
       </landscape>
     </medium>
     
     <large minWidth="640" minHeight="480">
       <portrait>
         <element1 width="100%" height="10%" />
-        <element3 width="100%" height="90%" />
       </portrait>
       <landscape>
-        <element3 width="100%" height="100%" />
+        <element1 width="100%" height="10%" />
       </landscape>   
     </large>
     

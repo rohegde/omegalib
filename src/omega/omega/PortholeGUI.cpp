@@ -121,24 +121,22 @@ string PortholeGUI::create(bool firstTime){
 
 			int cameraId = 0;
 
-			// TODO check first time FIXME Not working
+			// FIXME Not working
 			if (strcmp(element.cameraType.c_str(),"default")==0){
-				Engine* myEngine = Engine::instance();
-				Camera* defaultCamera = myEngine->getDefaultCamera();
-
-				// TODO check dimensions
-				PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, 860, 860*device->deviceHeight/device->deviceWidth); // TODO save for future delete
-				defaultCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
-				defaultCamera->getOutput(0)->setEnabled(true);
-
-				PortholeCamera camera = {++camerasIncrementalId,defaultCamera, sessionCanvas, 0};
-				sessionCameras[camera.id] = camera;
-				camerasId.push_back(camera.id);
+				if (firstTime){
+					createCustomCamera(true);
+					// Update camera id on html
+					cameraId = camerasIncrementalId;
+				}
+				else{
+					// TODO
+					cameraIterator++;
+				}
 			}
 			// Custom camera case
 			else {
 				if (firstTime){
-					createCustomCamera();
+					createCustomCamera(false);
 					// Update camera id on html
 					cameraId = camerasIncrementalId;
 				}
@@ -165,7 +163,7 @@ string PortholeGUI::create(bool firstTime){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeGUI::createCustomCamera(){
+void PortholeGUI::createCustomCamera(bool followDefaultCamera){
 
 		/* Camera initialization */
 		Engine* myEngine = Engine::instance();
@@ -179,7 +177,7 @@ void PortholeGUI::createCustomCamera(){
 		sessionCamera->setProjection(60, 1, 0.1f, 100);
 		sessionCamera->setAutoAspect(true);
 
-		// Initialize the tablet camera position to be the same as the main camera.
+		// Initialize the camera position to be the same as the main camera.
 		Camera* defaultCamera = myEngine->getDefaultCamera();
 		sessionCamera->setPosition(defaultCamera->getPosition() + defaultCamera->getHeadOffset());
 
@@ -187,7 +185,7 @@ void PortholeGUI::createCustomCamera(){
 		sessionCamera->getOutput(0)->setEnabled(true);
 
 		// Save the new Camera and PixelData objects
-		PortholeCamera camera = {++camerasIncrementalId,sessionCamera, sessionCanvas, 0};
+		PortholeCamera camera = {++camerasIncrementalId,sessionCamera, sessionCanvas, followDefaultCamera, 0};
 		sessionCameras[camera.id] = camera;
 		camerasId.push_back(camera.id); 
 }

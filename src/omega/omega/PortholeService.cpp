@@ -106,7 +106,7 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 
 	switch (reason) {
 	case LWS_CALLBACK_HTTP:
-		//fprintf(stderr, "serving HTTP URI %s\n", (char *)in);
+		fprintf(stderr, "serving HTTP URI %s\n", (char *)in);
 
 		/* Html page icon */
 		if (in && strcmp((char*)in, "/favicon.ico") == 0) {
@@ -158,16 +158,16 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 			PortholeFunctionsBinder* functionsBinder = PortholeGUI::getPortholeFunctionsBinder();
 			std::map<std::string, string>::const_iterator py_it;
 			for(py_it = functionsBinder->pythonFunMap.begin(); py_it != functionsBinder->pythonFunMap.end(); py_it++){
-				content.append("function ");
+				content.append(" function ");
 				content.append(py_it->first);
-				content.append("{ "
+				content.append(" { "
 									"var JSONEvent = {"
-									"	\"event_type\": \"input\","
-									"	\"function\": \"");
+									"\"event_type\": \"input\","
+									"\"function\": \"");
 				content.append(py_it->first);
 				content.append("\""
-									"};"
-									"socket.send(JSON.stringify(JSONEvent));"
+									"}; console.log(JSON.stringify(socket)); "
+									"doSend(JSON.stringify(JSONEvent));"
 								"}");
 			}
 
@@ -176,16 +176,16 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 			std::map<std::string, memberFunction>::const_iterator cpp_it;
 			for(cpp_it = functionsBinder->cppFuncMap.begin(); cpp_it != functionsBinder->cppFuncMap.end(); cpp_it++ ){
 
-				content.append("function ");
+				content.append(" function ");
 				content.append(cpp_it->first);
-				content.append("{ "
+				content.append(" { "
 									"var JSONEvent = {"
-									"	\"event_type\": \"input\","
-									"	\"function\": \"");
+									"\"event_type\": \"input\","
+									"\"function\": \"");
 				content.append(cpp_it->first);
 				content.append("\""
-									"};"
-									"socket.send(JSON.stringify(JSONEvent));"
+									"}; console.log(JSON.stringify(socket)); "
+									"doSend(JSON.stringify(JSONEvent));"
 								"}");
 			}
 
@@ -550,6 +550,13 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			Camera* camera = sessionCamera.camera;
 			PixelData* canvas = sessionCamera.canvas;
 
+			// If camera need to be equal to default camera, update position
+			if (sessionCamera.followDefault){
+				Camera* defaultCamera = Engine::instance()->getDefaultCamera();
+				camera->setPosition(defaultCamera->getPosition() + defaultCamera->getHeadOffset());
+				camera->setOrientation(defaultCamera->getOrientation());
+			}
+
 			// Get camera image as PNG and base64 encode it, because only simple strings could be sent via websockets  
 			ByteArray* png = ImageUtils::encode(canvas, ImageUtils::FormatPng);
 			std::string base64image = base64_encode(png->getData(),png->getSize());
@@ -736,7 +743,7 @@ void ServerThread::threadProc(){
 		 * in process of closing
 		 */
 
-		n = libwebsocket_service(context, 50);
+		n = libwebsocket_service(context, 20);
 	}
 
 	// Destroy context when main loop ends
