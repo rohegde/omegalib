@@ -167,7 +167,7 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 				content.append(py_it->first);
 				content.append("\""
 									"}; console.log(JSON.stringify(socket)); "
-									"doSend(JSON.stringify(JSONEvent));"
+									"socket.send(JSON.stringify(JSONEvent));"
 								"}");
 			}
 
@@ -178,14 +178,14 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 
 				content.append(" function ");
 				content.append(cpp_it->first);
-				content.append(" { "
+				content.append("{ "
 									"var JSONEvent = {"
 									"\"event_type\": \"input\","
 									"\"function\": \"");
 				content.append(cpp_it->first);
 				content.append("\""
 									"}; console.log(JSON.stringify(socket)); "
-									"doSend(JSON.stringify(JSONEvent));"
+									"socket.send(JSON.stringify(JSONEvent));"
 								"}");
 			}
 
@@ -743,7 +743,7 @@ void ServerThread::threadProc(){
 		 * in process of closing
 		 */
 
-		n = libwebsocket_service(context, 20);
+		n = libwebsocket_service(context, 50);
 	}
 
 	// Destroy context when main loop ends
