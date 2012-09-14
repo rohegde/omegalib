@@ -105,6 +105,8 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 	// Menu
 	PYAPI_REF_BASE_CLASS(Menu)
 		PYAPI_REF_GETTER(Menu, addItem)
+		PYAPI_METHOD(Menu, show)
+		PYAPI_METHOD(Menu, hide)
 		;
 
 	PYAPI_REF_BASE_CLASS(MenuItem)
