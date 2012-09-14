@@ -180,7 +180,7 @@ Menu::Menu(const String& name, MenuManager* manager):
 	myContainer = wf->createPanel("container", ui->getUi());
 	myContainer->setPosition(Vector2f(10, 10));
 
-	my3dSettings.enable3d = true; //MenuManager::instance()->isMenu3dEnabled();
+	my3dSettings.enable3d = MenuManager::instance()->is3dMenuEnabled();
 	myContainer->setAutosize(true);
 }
 
@@ -418,6 +418,7 @@ void MenuManager::initialize()
 		myRayPlaceEnabled = Config::getBoolValue("menuRayPlaceEnabled", sUi, myRayPlaceEnabled);
 		myDefaultMenuPosition = Config::getVector3fValue("menuDefaultPosition", sUi, myDefaultMenuPosition);
 		myDefaultMenuScale = Config::getFloatValue("menuDefaultScale", sUi, myDefaultMenuScale);
+		my3dMenuEnabled = Config::getBoolValue("menu3dEnabled", sUi, myDefaultMenuScale);
 
 		// Parse menu toggle button name (if present)
 		String toggleButtonName = Config::getStringValue("menuToggleButton", sUi, "");
