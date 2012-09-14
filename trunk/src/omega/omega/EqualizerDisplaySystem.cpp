@@ -135,6 +135,11 @@ void EqualizerDisplaySystem::generateEqConfig()
 				winX = tc.index[0] * eqcfg.tileResolution[0] + eqcfg.windowOffset[0];
 				winY = tc.index[1] * eqcfg.tileResolution[1] + eqcfg.windowOffset[1];
 			}
+			else
+			{
+				winX = tc.position[0];
+				winY = tc.position[1];
+			}
 			
 			String tileName = ostr("%1%x%2%", %tc.index[0] %tc.index[1]);
 			String tileCfg = buildTileConfig(indent, tileName, winX, winY, eqcfg.tileResolution[0], eqcfg.tileResolution[1], tc.device, eqcfg.fullscreen);
@@ -551,8 +556,26 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 				tc.yaw = Config::getFloatValue("yaw", sTile, 0);
 				tc.pitch = Config::getFloatValue("pitch", sTile, 0);
 
-				tc.resolution = cfg.tileResolution;
-				tc.offset = tc.index.cwiseProduct(tc.resolution);
+				tc.position = Config::getVector2iValue("position", sTile);
+				tc.disableScene = Config::getBoolValue("disableScene", sTile);
+
+				if(sTile.exists("resolution"))
+				{
+					tc.offset = Config::getVector2iValue("resolution", sTile);
+				}
+				else
+				{
+					tc.resolution = cfg.tileResolution;
+				}
+
+				if(sTile.exists("offset"))
+				{
+					tc.offset = Config::getVector2iValue("offset", sTile);
+				}
+				else
+				{
+					tc.offset = tc.index.cwiseProduct(tc.resolution);
+				}
 
 				ncfg.tiles[ncfg.numTiles] = &tc;
 				ncfg.numTiles++;
