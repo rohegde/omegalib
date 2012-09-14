@@ -45,17 +45,24 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	struct DisplayTileConfig
 	{
-		DisplayTileConfig(): drawStats(false), drawFps(false) {}
+		DisplayTileConfig(): drawStats(false), drawFps(false), disableScene(false) {}
 
 		Vector2i index;
 		Vector2i resolution;
+
+		//! 2d offset of window content
 		Vector2i offset;
+
+		//! Window position (when autooffset is not used)
+		Vector2i position;
+
 		int device;
 		Vector3f center;
 		float yaw;
 		float pitch;
 		bool drawStats;
 		bool drawFps;
+		bool disableScene;
 
 		Vector3f topLeft;
 		Vector3f bottomLeft;
