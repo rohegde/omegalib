@@ -242,7 +242,7 @@ void Engine::handleEvent(const Event& evt)
 		if(evt.getServiceType() == Service::Pointer  || evt.getServiceType() == Service::Wand/*&& evt.getSourceId() > 0*/)
 		{
 			int pointerId = evt.getSourceId();
-			refreshPointer(pointerId, evt);
+			//refreshPointer(pointerId, evt);
 		}
 		if(!evt.isProcessed()) 
 		{
