@@ -276,7 +276,7 @@ uint32_t ConfigImpl::startFrame( const uint128_t& version )
 
 	myServer->update(uc);
 
-    return eq::Config::startFrame( version );
+	return eq::Config::startFrame( version );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

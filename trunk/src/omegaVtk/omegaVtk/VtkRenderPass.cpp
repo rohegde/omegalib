@@ -98,7 +98,6 @@ void VtkRenderPass::resetPropQueues()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkRenderPass::render(Renderer* mng, const DrawContext& context)
 {
-sLock.lock();
 	if(context.task == DrawContext::SceneDrawTask)
 	{
 		//RenderState state;
@@ -119,16 +118,20 @@ sLock.lock();
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_LIGHTING);
 
+sLock.lock();
 		myRenderState->SetPropArrayAndCount(myPropQueue[QueueOpaque], myPropQueueSize[QueueOpaque]);
 		myOpaquePass->Render(myRenderState);
+sLock.unlock();
 
 		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 		//glBlendFunc(GL_ONE, GL_ONE);
 		//glDisable(GL_DEPTH_TEST);
 
+sLock.lock();
 		myRenderState->SetPropArrayAndCount(myPropQueue[QueueTransparent], myPropQueueSize[QueueTransparent]);
 		myTranslucentPass->Render(myRenderState);
+sLock.unlock();
 	
 		// Volume rendering not supported for now: it requires forwarding to vtk information
 		// about the view through the renderer active camera (vtkCamera) and also information
@@ -136,11 +139,12 @@ sLock.lock();
 		// vtkCamera and vtkRenderer
 		//myVolumetricPass->Render(myRenderState);
 	
+sLock.lock();
 		myRenderState->SetPropArrayAndCount(myPropQueue[QueueOverlay], myPropQueueSize[QueueOverlay]);
 		myOverlayPass->Render(myRenderState);
+sLock.unlock();
 
 		glPopAttrib();
 		glPopMatrix();
 	}
-sLock.unlock();
 }
