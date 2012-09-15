@@ -444,7 +444,7 @@ void ChannelImpl::drawStats()
 
             EntityData& data = l->second;
 
-			if(!allStats && data.name[0] != '.' && !eqds->isStatEnabled(data.name)) continue;
+			//if(data.name[0] != '.' && !eqds->isStatEnabled(data.name)) continue;
 
             if( data.yPos == 0 )
             {

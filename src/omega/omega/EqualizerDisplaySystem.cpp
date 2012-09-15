@@ -38,8 +38,7 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
-// Uncomment to enable swap barrier on compounds (kinda buggy atm)
-//#define EQ_USE_SWAP_BARRIER
+#define EQ_USE_SWAP_BARRIER
 
 #define OMEGA_EQ_TMP_FILE "./_eqcfg.eqc"
 
@@ -97,7 +96,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 	START_BLOCK(result, "config");
 	// Latency > 0 makes everything explode when a local node is initialized, due to 
 	// multiple shared data messages sent to slave nodes before they initialize their local objects
-	result += L("latency 0");
+	result += L("latency 2");
 
 	for(int n = 0; n < eqcfg.numNodes; n++)
 	{
@@ -357,13 +356,6 @@ void EqualizerDisplaySystem::generateEqConfig()
 
 	// compounds
 	START_BLOCK(result, "compound")
-#ifdef EQ_USE_SWAP_BARRIER
-	START_BLOCK(result, "swapbarrier")
-	result +=
-		L("name \"defaultbarrier\"");
-	END_BLOCK(result)
-#endif
-
 	for(int x = 0; x < eqcfg.numTiles[0]; x++)
 	{
 		for(int y = 0; y < eqcfg.numTiles[1]; y++)
@@ -381,6 +373,9 @@ void EqualizerDisplaySystem::generateEqConfig()
 			{
 				String tileCfg = "";
 				START_BLOCK(tileCfg, "compound");
+#ifdef EQ_USE_SWAP_BARRIER
+				tileCfg += L("swapbarrier { name \"defaultbarrier\" }");
+#endif
 				tileCfg += 
 					L("channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )") +
 					L("eye [LEFT RIGHT]") +
@@ -388,7 +383,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 				START_BLOCK(tileCfg, "compound");
 				tileCfg += 
 					L("eye [RIGHT]") +
-					L("attributes { stereo_mode PASSIVE }") +
+					//L("attributes { stereo_mode PASSIVE }") +
 					L("channel \"" + segmentName + "\"") +
 					L("pixel [ 0 0 1 2 ]") +
 					L("outputframe { name \"" + segmentName + "r\" type texture }");
@@ -396,7 +391,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 				START_BLOCK(tileCfg, "compound");
 				tileCfg += 
 					L("eye [LEFT]") +
-					L("attributes { stereo_mode PASSIVE }") +
+					//L("attributes { stereo_mode PASSIVE }") +
 					L("channel \"" + segmentName + "\"") +
 					L("pixel [ 0 1 1 2 ]") +
 					L("outputframe { name \"" + segmentName + "l\" type texture }");
@@ -410,7 +405,11 @@ void EqualizerDisplaySystem::generateEqConfig()
 			}
 			else
 			{
+#ifdef EQ_USE_SWAP_BARRIER
+				String tileCfg = "\t\tcompound { swapbarrier { name \"defaultbarrier\" } channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" ) }\n";
+#else
 				String tileCfg = "\t\tchannel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )\n";
+#endif
 				result += tileCfg;
 			}
 		}

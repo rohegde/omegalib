@@ -118,6 +118,7 @@ protected:
 		bool transparent = false;
 		bool vertexShaderVariant = false;
 		bool additive = false;
+		bool disableDepth = false;
 		String variation = "";
 		libconfig::ArgumentHelper ah;
 		ah.newString("effectName", "the effect name", effectName);
@@ -128,6 +129,7 @@ protected:
 		ah.newFlag('V', "Vertex", "enable vertex shader variant", vertexShaderVariant);
 		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
 		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
+		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
 		ah.process(def.c_str());
 
 		SceneManager* sm = SceneManager::instance();
@@ -138,10 +140,14 @@ protected:
 			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
 			ss->addUniform( new osg::Uniform("unif_Shininess", (float)shininess) );
 			ss->addUniform( new osg::Uniform("unif_Gloss", (float)gloss) );
+			if(disableDepth)
+			{
+				ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
+			}
 			if(transparent)
 			{
 				ss->setMode(GL_BLEND, osg::StateAttribute::ON);
-				ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF); 
+				//ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF); 
 				ss->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
 				if(additive)
 				{
@@ -184,7 +190,9 @@ protected:
 		bool transparent = false;
 		bool additive = false;
 		bool vertexShaderVariant = false;
+		bool disableDepth = false;
 		libconfig::ArgumentHelper ah;
+		
 		ah.newString("effectName", "the effect name", effectName);
 		ah.newNamedString('d', "diffuse", "diffuse texture", "diffuse texture file name", diffuse);
 		ah.newNamedString('v', "variant", "shader variant", "fragment shader variant", variant);
@@ -192,9 +200,10 @@ protected:
 		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
 		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
 		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
+		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
 		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
 		ah.process(def.c_str());
-
+		
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
 		osg::Program* prog = NULL;
@@ -209,6 +218,10 @@ protected:
 
 			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
 
+			if(disableDepth)
+			{
+				ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
+			}
 			if(transparent)
 			{
 				ss->setMode(GL_BLEND, osg::StateAttribute::ON);
