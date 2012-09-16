@@ -20,7 +20,8 @@ SurfaceData getSurfaceData(void)
 	sd.emissive.rgb = gl_Color.rgb;	
 	float vx = pow(abs((var_TexCoord.x - 0.5) * 2), unif_Shininess);
 	float vy = pow(abs((var_TexCoord.y - 0.5) * 2), unif_Shininess);
-	sd.emissive.a = (vx + vy);
+	if(unif_Gloss == 0.0) sd.emissive.a = (vx + vy);
+	else sd.emissive.a = (vx + vy) * min(unif_Gloss * gl_Color.r, 1.0);
 	if(sd.emissive.a <= 0) discard;
 
 	sd.albedo.a=0.0;
