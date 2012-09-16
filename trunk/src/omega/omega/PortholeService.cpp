@@ -135,12 +135,6 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 				fprintf(stderr, "Failed to send jquery.specialevent.hammer.js\n");
 			break;
 		}
-		else if (in && strcmp((char*)in, "/browser_detect.js") == 0) {
-			if (libwebsockets_serve_http_file(wsi,
-			     (DATA_PATH+"/browser_detect.js").c_str(), "application/javascript"))
-				fprintf(stderr, "Failed to send browser_detect.js\n");
-			break;
-		}
 		else if (in && strcmp((char*)in, "/ui.geo_autocomplete.js") == 0) {
 			if (libwebsockets_serve_http_file(wsi,
 			     (DATA_PATH+"/ui.geo_autocomplete.js").c_str(), "application/javascript"))
@@ -539,10 +533,10 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 
 			PortholeCamera sessionCamera = it->second;
 
-			// Write at 50Hz, so continue if it's too early for us
+			// Write at 25Hz, so continue if it's too early for us
 			struct timeval tv;
 			gettimeofday(&tv, NULL);
-			if (((unsigned int)tv.tv_usec - sessionCamera.oldusStreamSent) < 20000) {
+			if (((unsigned int)tv.tv_usec - sessionCamera.oldusStreamSent) < 40000) {
 				continue;
 			}
 
@@ -603,7 +597,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		json_value *root = json_parse((char*)in, &errorPos, &errorDesc, &errorLine, &allocator);
 		if (root)
 		{
-            print(root);
+            //print(root);
             parse_json_message(root, data, &message);
             handle_message(data, &message, context, wsi);
 		}

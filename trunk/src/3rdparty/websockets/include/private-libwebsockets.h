@@ -91,7 +91,7 @@ static
 #else
 static inline
 #endif
-void debug(const char *format, ...)
+__inline void debug(const char *format, ...)
 {
 	va_list ap;
 	va_start(ap, format); vfprintf(stderr, format, ap); va_end(ap);
@@ -102,7 +102,7 @@ static
 #else
 static inline
 #endif
-void debug(const char *format, ...)
+__inline void debug(const char *format, ...)
 {
 }
 #endif

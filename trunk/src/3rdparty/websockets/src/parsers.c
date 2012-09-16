@@ -637,6 +637,9 @@ handle_first:
 	case LWS_RXPS_EAT_UNTIL_76_FF:
 		if (c == 0xff) {
 			wsi->lws_rx_parse_state = LWS_RXPS_NEW;
+			// Put \0 to make sure char* cast will be seen as string
+			wsi->rx_user_buffer[LWS_SEND_BUFFER_PRE_PADDING +
+					(wsi->rx_user_buffer_head++)] = '\0';
 			goto issue;
 		}
 		wsi->rx_user_buffer[LWS_SEND_BUFFER_PRE_PADDING +
