@@ -29,25 +29,27 @@
       </landscape>
     </small>
     
-    <medium minWidth="470" minHeight="320">
+    <medium minWidth="320" minHeight="470">
       <portrait>
-        <element1 width="100%" height="100%" />
+        <element1 width="100%" height="10%" />
+        <element3 width="100%" height="90%" />
       </portrait>
       <landscape>
-        <element1 width="100%" height="100%" />
+        <element3 width="100%" height="100%" />
       </landscape>
     </medium>
     
-    <large minWidth="640" minHeight="480">
+    <large minWidth="480" minHeight="640">
       <portrait>
         <element1 width="100%" height="10%" />
+        <element3 width="100%" height="90%" />
       </portrait>
       <landscape>
-        <element1 width="100%" height="10%" />
+        <element3 width="100%" height="10%" />
       </landscape>   
     </large>
     
-    <xlarge minWidth="960" minHeight="720">
+    <xlarge minWidth="720" minHeight="960">
       <portrait>
         <element1 width="100%" height="10%" />
         <element3 width="100%" height="90%" />

@@ -38,7 +38,6 @@
 
  <script src="./hammer.js" type="application/javascript"></script>
  <script src="./jquery.specialevent.hammer.js" type="application/javascript"></script>
- <script src="./browser_detect.js" type="application/javascript"></script>
  <script src="./porthole_functions_binder.js" type="application/javascript"></script>
  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
  <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -87,8 +86,6 @@
         event.preventDefault();
     }, false); 
 
-    BrowserDetect.init();
-
     ///////////////// DEFINE METADATA AT RUNTIME ////////////////////////
     function setOrCreateMetaTag(metaName, name, value) {
         var t = 'meta['+metaName+'='+name+']';
@@ -136,14 +133,14 @@
         return pcol + u[0];
     }
 
-    if (BrowserDetect.browser == "Firefox" && BrowserDetect.version < 12) {
-        socket = new MozWebSocket(get_appropriate_ws_url(),
-				   "porthole_websocket");
+    if ("WebSocket" in window) {
+        socket = new WebSocket(get_appropriate_ws_url(), "porthole_websocket");
+    } else if ("MozWebSocket" in window) {
+        socket = new MozWebSocket(get_appropriate_ws_url(), "porthole_websocket");
     } else {
-        socket = new WebSocket(get_appropriate_ws_url(),
-				   "porthole_websocket");
+        document.getElementById("porthole_content").innerHTML = 
+            "This Browser does not support WebSockets.<br />If using Opera, make sure to enable WebSockets.";
     }
-
 
     ///////////////////// SEND SPEC TO SERVER //////////////////////////
 

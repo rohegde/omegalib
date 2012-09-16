@@ -367,9 +367,9 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 				interfacesMap[interfaceId + orientation] = pOrientationChild;
 			}
 			else if (orientation.compare("landscape")==0 || orientation.compare("land")==0){
-				PortholeInterfaceType interfaceType = {minWidth,minHeight,interfaceId,"landscape"};
+				PortholeInterfaceType interfaceType = {minHeight,minWidth,interfaceId,"landscape"};
 				interfaces.push_back(interfaceType);
-				cout << ">> Added interface:" << interfaceId << " " << orientation << " " << minWidth << " " << minHeight << endl;
+				cout << ">> Added interface:" << interfaceId << " " << orientation << " " << minHeight << " " << minWidth << endl;
 				interfacesMap[interfaceId + orientation] = pOrientationChild;
 			}
 		}	
