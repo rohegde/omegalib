@@ -169,7 +169,7 @@ void PortholeGUI::createCustomCamera(bool followDefaultCamera){
 		Engine* myEngine = Engine::instance();
 
 		// TODO check dimensions
-		PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  860,  860*device->deviceHeight/device->deviceWidth);
+		PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  600,  600*device->deviceHeight/device->deviceWidth);
 
 		uint flags = Camera::ForceMono | Camera::DrawScene | Camera::Offscreen;
 
@@ -199,7 +199,7 @@ void PortholeGUI::modCustomCamera(int cameraIterator){
 	Camera* sessionCamera = portholeCamera.camera;
 
 	// TODO check dimensions
-	PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  860,  860*device->deviceHeight/device->deviceWidth);
+	PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  600,  600*device->deviceHeight/device->deviceWidth);
 	sessionCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
 	sessionCamera->getOutput(0)->setEnabled(true);
 	portholeCamera.canvas = sessionCanvas;

@@ -116,29 +116,37 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 			break;
 		}
 
-		/* Multitouch scripts */
-		else if (in && strcmp((char*)in, "/hammer.js") == 0) {
-			if (libwebsockets_serve_http_file(wsi,
-			     (DATA_PATH+"/hammer.js").c_str(), "application/javascript"))
-				fprintf(stderr, "Failed to send hammer.js\n");
-			break;
-		}
-		else if (in && strcmp((char*)in, "/jquery.hammer.js") == 0) {
-			if (libwebsockets_serve_http_file(wsi,
-			     (DATA_PATH+"/jquery.hammer.js").c_str(), "application/javascript"))
-				fprintf(stderr, "Failed to send jquery.hammer.js\n");
-			break;
-		}
-		else if (in && strcmp((char*)in, "/jquery.specialevent.hammer.js") == 0) {
-			if (libwebsockets_serve_http_file(wsi,
-			     (DATA_PATH+"/jquery.specialevent.hammer.js").c_str(), "application/javascript"))
-				fprintf(stderr, "Failed to send jquery.specialevent.hammer.js\n");
-			break;
-		}
+		///* Multitouch scripts */
+		//else if (in && strcmp((char*)in, "/hammer.js") == 0) {
+		//	if (libwebsockets_serve_http_file(wsi,
+		//	     (DATA_PATH+"/hammer.js").c_str(), "application/javascript"))
+		//		fprintf(stderr, "Failed to send hammer.js\n");
+		//	break;
+		//}
+		//else if (in && strcmp((char*)in, "/jquery.hammer.js") == 0) {
+		//	if (libwebsockets_serve_http_file(wsi,
+		//	     (DATA_PATH+"/jquery.hammer.js").c_str(), "application/javascript"))
+		//		fprintf(stderr, "Failed to send jquery.hammer.js\n");
+		//	break;
+		//}
+		//else if (in && strcmp((char*)in, "/jquery.specialevent.hammer.js") == 0) {
+		//	if (libwebsockets_serve_http_file(wsi,
+		//	     (DATA_PATH+"/jquery.specialevent.hammer.js").c_str(), "application/javascript"))
+		//		fprintf(stderr, "Failed to send jquery.specialevent.hammer.js\n");
+		//	break;
+		//}
 		else if (in && strcmp((char*)in, "/ui.geo_autocomplete.js") == 0) {
 			if (libwebsockets_serve_http_file(wsi,
 			     (DATA_PATH+"/ui.geo_autocomplete.js").c_str(), "application/javascript"))
 				fprintf(stderr, "Failed to send ui.geo_autocomplete.js\n");
+			break;
+		}
+
+		/* Porthole CSS */
+		else if (in && strcmp((char*)in, "/porthole.css") == 0) {
+			if (libwebsockets_serve_http_file(wsi,
+				css_path.c_str(), "text/css"))
+				fprintf(stderr, "Failed to send porthole.css\n");
 			break;
 		}
 
@@ -557,8 +565,8 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 
 			string toSend = "{\"event_type\" : \"stream\", \"base64image\" : \"";
 			toSend.append(base64image.c_str());
-			toSend.append("\", \"image_width\" : " + boost::lexical_cast<string>(840) + ","
-								"\"image_height\" : " + boost::lexical_cast<string>(860*data->guiManager->getDevice()->deviceHeight/data->guiManager->getDevice()->deviceWidth) 
+			toSend.append("\", \"image_width\" : " + boost::lexical_cast<string>(430) + ","
+								"\"image_height\" : " + boost::lexical_cast<string>(430*data->guiManager->getDevice()->deviceHeight/data->guiManager->getDevice()->deviceWidth) 
 								+", \"camera_id\" : " + boost::lexical_cast<string>(sessionCamera.id) + "}");
 
 			// Send the base64 image
@@ -696,6 +704,11 @@ void ServerThread::setXMLfile(char* xmlPath){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void ServerThread::setCSSPath(char* cssPath){
+	css_path = std::string(cssPath);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServerThread::threadProc(){
 
 	// Buffer used to send/receive data using websockets
@@ -756,12 +769,13 @@ PortholeService::~PortholeService(){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeService::start(int port, char* xmlPath, PortholeFunctionsBinder* binder)
+void PortholeService::start(int port, char* xmlPath, char* cssPath, PortholeFunctionsBinder* binder)
 {
 	portholeServer = new ServerThread();
 	portholeServer->setPort(port);
 	portholeServer->setFunctionsBinder(binder);
 	portholeServer->setXMLfile(xmlPath);
+	portholeServer->setCSSPath(cssPath);
 	portholeServer->start();
 }
 

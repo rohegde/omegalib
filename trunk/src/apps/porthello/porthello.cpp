@@ -109,10 +109,13 @@ void HelloRenderPass::initialize()
 	ServiceManager* svcManager = SystemManager::instance()->getServiceManager();
 	svcManager->addService(service);
 
-	string fullPath;
-	DataManager::findFile("porthole/porthello.xml", fullPath);
+	string fullPath_xml;
+	DataManager::findFile("porthole/porthello.xml", fullPath_xml);
 
-	service->start(4080, (char*)fullPath.c_str(), binder);
+	string fullPath_css;
+	DataManager::findFile("porthole/porthello.css", fullPath_css);
+
+	service->start(4080, (char*)fullPath_xml.c_str(), (char*)fullPath_css.c_str(), binder);
 
 	// Initialize cube normals.
 	myNormals[0] = Vector3f(-1, 0, 0);

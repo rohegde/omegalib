@@ -43,6 +43,9 @@ namespace omega {
 	// Path to resources, such as html files
 	static string DATA_PATH; 
 
+	// CSS path
+	static string css_path;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements, in a separate thread, the HTTP server for Porthole Service
 	class OMEGA_API ServerThread: public Thread{
@@ -62,6 +65,9 @@ namespace omega {
 		void setFunctionsBinder(PortholeFunctionsBinder* binder); 
 
 		void setXMLfile(char* xmlPath);
+
+		// Set funtions binder
+		void setCSSPath(char* cssPath); 
 
 		// Thread process
 		virtual void threadProc();
@@ -99,7 +105,6 @@ namespace omega {
 		int use_ssl;
 		const char* cert_path;
 		const char* key_path;
-
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -117,7 +122,7 @@ namespace omega {
 
 		// Setup and poll
 		virtual void setup(omicron::Setting& settings);
-		void start(int port, char* xmlPath, PortholeFunctionsBinder* binder); // Start the server and listen to port
+		void start(int port, char* xmlPath, char* cssPath, PortholeFunctionsBinder* binder); // Start the server and listen to port
 		virtual void poll();
 
 		// Server instance. It will manage the incoming connections
