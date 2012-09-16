@@ -4,11 +4,11 @@
     
     <gui_element id="element1" type="HTML">
       <div>
-        <input type="button" id="TestButton" name="PythonTEST" value="PythonTEST" onclick="print('>>Hello python')"/>
-        <input type="button" id="TestButton" name="UP" value="UP" onclick="up()"/>
-        <input type="button" id="TestButton2" name="DOWN" value="DOWN" onclick="down()"/>
-        <input type="button" id="TestButton3" name="LEFT" value="LEFT" onclick="left()"/>
-        <input type="button" id="TestButton4" name="RIGHT" value="RIGHT" onclick="right()"/>
+        <input type="button" class="button" id="TestButton" name="PythonTEST" value="PythonTEST" onclick="print('>>Hello python')" />
+        <input type="button" class="button" id="TestButton" name="UP" value="UP" onclick="up()"/>
+        <input type="button" class="button" id="TestButton2" name="DOWN" value="DOWN" onclick="down()"/>
+        <input type="button" class="button" id="TestButton3" name="LEFT" value="LEFT" onclick="left()"/>
+        <input type="button" class="button" id="TestButton4" name="RIGHT" value="RIGHT" onclick="right()"/>
       </div>
     </gui_element>
     
@@ -45,7 +45,7 @@
         <element3 width="100%" height="90%" />
       </portrait>
       <landscape>
-        <element3 width="100%" height="10%" />
+        <element3 width="100%" height="100%" />
       </landscape>   
     </large>
     
