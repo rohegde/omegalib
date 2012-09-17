@@ -57,7 +57,8 @@
 
 <body>
 
- <div id="porthole_content"  style=" width : 100%; height : 100%; ">Initializing porthole... </div>
+ <div id="porthole_content"  style=" width : 100%; height : 95%; ">Initializing porthole... </div>
+ <div id="DEBUG" style=" width : 100%; height : 5%; "> </div>
 
  <script src="http://raw.github.com/devongovett/png.js/master/zlib.js"></script>
  <script src="http://raw.github.com/devongovett/png.js/master/png.js"></script>
@@ -194,7 +195,7 @@
             if (message.event_type == "stream") {
                 image = "data:image/png;base64," + message.base64image;
                 img.src = image;
-                ctx.drawImage(img, 0, 0, camera.width, camera.height);
+//                ctx.drawImage(img, 0, 0, camera.width, camera.height);
 
             }
             else {
@@ -270,10 +271,39 @@
     }
 
     // Dragging listening interval
-    setInterval(watchDrag, 10);
-    setInterval(watchPinch, 200);
+    setInterval(watchDrag, 16);
+    setInterval(watchPinch, 16);
 
     ///////////////////////////////////////////////////////////
+
+    // Delta time of request animation frame function calls, in Millis
+    var lastT, dt;
+    var debugDiv;
+    var looping = false;
+
+    window.requestAnimFrame = (function () {
+        return window.requestAnimationFrame ||
+              window.webkitRequestAnimationFrame ||
+              window.mozRequestAnimationFrame ||
+              window.oRequestAnimationFrame ||
+              window.msRequestAnimationFrame ||
+              function (callback) {
+                  window.setTimeout(callback, 1000 / 60);
+              };
+          })();
+
+    // Main camera rendering loop 
+    (function cameraLoop() {
+        requestAnimFrame(cameraLoop);
+        if (looping && ctx != null){
+            ctx.drawImage(img, 0, 0, camera.width, camera.height);
+            // Keep framerate of the camera
+            newT = new Date().getTime();
+            dt = newT - lastT;
+            lastT = newT;
+            debugDiv.textContent = "FPS: " + parseInt(1000 / dt);
+        }
+    })();
 
     function initializeCameraStreams() {
         camera = document.getElementById('camera-canvas');
@@ -284,6 +314,10 @@
         camera.height = camera.parentNode.clientHeight;
 
         ctx = camera.getContext("2d");
+
+        // OK, we have the camera, so start camera loop
+        debugDiv = document.getElementById("DEBUG"); // DEBUG
+        looping = true;
 
         hammer = new Hammer(camera, {
             prevent_default: true,

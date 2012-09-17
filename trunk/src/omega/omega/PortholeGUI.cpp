@@ -107,7 +107,11 @@ string PortholeGUI::create(bool firstTime){
 			pAttrib = pAttrib->Next();
 		}
 
+		/*
+		*	GOOGLE MAPS
+		*/
 		// For googlemaps element, create a div element that will contain a googlemaps view
+		// TODO Size of map canvas
 		if (strcmp(element.type.c_str(),"googlemap")==0){
 			element.htmlValue = "<div  style=\" padding : 5px \"><input id=\"searchTextField\" type=\"text\" style=\"width : 100%; height : 20px;\"></div>";
 			element.htmlValue.append("<div id=\"map-canvas\" class=\"map_container\" style=\"width:");
@@ -116,8 +120,11 @@ string PortholeGUI::create(bool firstTime){
 			element.htmlValue.append("></div>");
 		}
 
+		/*
+		*	CAMERA STREAM
+		*/
 		// Create a session camera
-		if (strcmp(element.type.c_str(),"camera_stream")==0){
+		else if (strcmp(element.type.c_str(),"camera_stream")==0){
 
 			int cameraId = 0;
 
@@ -154,6 +161,8 @@ string PortholeGUI::create(bool firstTime){
 
 		}
 
+		// Create the HTML result for this element. embedded into a (width,size) div element
+		// TODO Layouts Vertical/Horizontal/Grid/Relative
 		result.append("<div style=\" width : "+ width +"; height : "+ height +"; \" >"+ element.htmlValue +"</div>");
 
 	}
@@ -163,31 +172,49 @@ string PortholeGUI::create(bool firstTime){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+/* 
+*	Camera creation function
+*	followDefaultCamera: true if camera shold reflect the default camera position and orientation
+*/
 void PortholeGUI::createCustomCamera(bool followDefaultCamera){
 
-		/* Camera initialization */
-		Engine* myEngine = Engine::instance();
+	// Get the global engine
+	Engine* myEngine = Engine::instance();
 
-		// TODO check dimensions
-		PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  600,  600*device->deviceHeight/device->deviceWidth);
+	// Initialize camera size
+	// Workaround. This avoid a canvas drawing bug
+	// Round down width to a multiple of 4.
+	int width = (int)(device->deviceWidth / 4) * 4;
+	int height = width*((float)device->deviceHeight/device->deviceWidth);
+	cout << "Width -> initially " << device->deviceWidth  << " chosen: " << width << endl;
 
-		uint flags = Camera::ForceMono | Camera::DrawScene | Camera::Offscreen;
+	//for (int i=width; i > 3; ++i){
+	//	if ( i%4 == 0){
+	//		
+	//		width = i;
+	//		break;
+	//	}
+	//}
 
-		Camera* sessionCamera = myEngine->createCamera(flags);
-		sessionCamera->setProjection(60, 1, 0.1f, 100);
-		sessionCamera->setAutoAspect(true);
+	PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  width,  height);
 
-		// Initialize the camera position to be the same as the main camera.
-		Camera* defaultCamera = myEngine->getDefaultCamera();
-		sessionCamera->setPosition(defaultCamera->getPosition() + defaultCamera->getHeadOffset());
+	uint flags = Camera::ForceMono | Camera::DrawScene | Camera::Offscreen;
 
-		sessionCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
-		sessionCamera->getOutput(0)->setEnabled(true);
+	Camera* sessionCamera = myEngine->createCamera(flags);
+	sessionCamera->setProjection(60, 1, 0.1f, 100);
+	sessionCamera->setAutoAspect(true);
 
-		// Save the new Camera and PixelData objects
-		PortholeCamera camera = {++camerasIncrementalId,sessionCamera, sessionCanvas, followDefaultCamera, 0};
-		sessionCameras[camera.id] = camera;
-		camerasId.push_back(camera.id); 
+	// Initialize the camera position to be the same as the main camera.
+	Camera* defaultCamera = myEngine->getDefaultCamera();
+	sessionCamera->setPosition(defaultCamera->getPosition() + defaultCamera->getHeadOffset());
+
+	sessionCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
+	sessionCamera->getOutput(0)->setEnabled(true);
+
+	// Save the new Camera and PixelData objects
+	PortholeCamera camera = {++camerasIncrementalId,sessionCamera, sessionCanvas, followDefaultCamera, 0};
+	sessionCameras[camera.id] = camera;
+	camerasId.push_back(camera.id); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
