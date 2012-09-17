@@ -88,7 +88,7 @@ namespace omega
 		static const int MaxTiles = 64;
 		static const int MaxNodes = 64;
 		
-		DisplayConfig(): disableConfigGenerator(false) {}
+		DisplayConfig(): disableConfigGenerator(false), latency(1) {}
 		
 		bool disableConfigGenerator;
 
@@ -109,6 +109,7 @@ namespace omega
 
 		//! Number of horizontal / vertical tiles in the display system
 		Vector2i numTiles;
+		int latency;
 
 		//! (Used only for planar configurtions) Index of the tile whose center will be used as the origin of the display system geometry.
 		Vector2i referenceTile;
