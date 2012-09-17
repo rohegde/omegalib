@@ -89,7 +89,7 @@
 #ifdef WIN32
 static
 #else
-static inline
+static 
 #endif
 __inline void debug(const char *format, ...)
 {
