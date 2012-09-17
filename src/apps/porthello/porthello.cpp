@@ -47,7 +47,14 @@ void left(){
 }
 
 void right(){
-	cout << ">>>> Porthello: right" << endl;
+	//Vector3f myPosition = data->sessionCamera->getPosition();
+	//cout << "Initial position: x = " << myPosition[0] << " y = " << myPosition[1] << endl;
+	// Change x,y coords
+	//myPosition[0] += message->deltaX/100; // TODO check step
+    //myPosition[1] += message->deltaY/100;
+	//defaultCamera->setPosition(myPosition);
+	//data->sessionCamera->setPosition(myPosition);	
+	//cout << "Final position: x = " << myPosition[0] << " y = " << myPosition[1] << endl;
 }
 
 class HelloApplication;

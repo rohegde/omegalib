@@ -57,11 +57,9 @@
 
 <body>
 
- <div id="porthole_content"  style=" width : 100%; height : 95%; ">Initializing porthole... </div>
- <div id="DEBUG" style=" width : 100%; height : 5%; "> </div>
+ <div id="porthole_content"  style=" width : 100%; height : 100%; ">Initializing porthole... </div>
+ <!-- <div id="DEBUG" style=" width : 100%; height : 5%; "> </div> -->
 
- <script src="http://raw.github.com/devongovett/png.js/master/zlib.js"></script>
- <script src="http://raw.github.com/devongovett/png.js/master/png.js"></script>
  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
 
  <!--Google Maps libs START-->
@@ -139,16 +137,10 @@
         return pcol + u[0];
     }
 
-    if ("WebSocket" in window) {
-        socket = new WebSocket(get_appropriate_ws_url(), "porthole_websocket");
-    } else if ("MozWebSocket" in window) {
-        socket = new MozWebSocket(get_appropriate_ws_url(), "porthole_websocket");
-    } else {
-        document.getElementById("porthole_content").innerHTML = 
-            "This Browser does not support WebSockets.<br />If using Opera, make sure to enable WebSockets.";
-    }
-
     ///////////////////// SEND SPEC TO SERVER //////////////////////////
+
+    var SEND_SPEC_INTERVAL = 1000; // in Millis 
+    var send_spec_waiting = false;
 
     function sendSpec() {
 
@@ -173,18 +165,41 @@
             "orientation": orientation,
             "first_time": firstTime
         }
-
         socket.send(JSON.stringify(SpecMessage));
+
+        send_spec_waiting = false; // sendSpecTimeout could be called again
     }
+
+    function sendSpecTimeout() {
+        if (!send_spec_waiting) {
+            send_spec_waiting = true;
+            window.setTimeout(sendSpec, SEND_SPEC_INTERVAL);
+        }
+    }
+
+    ///////////////////// CAMERA STREAM VARS //////////////////////////
 
     var img = new Image();
     var ctx;
     var camera;
 
+    ///////////////////// WEBSOKET FUNCTIONS //////////////////////////
+
     try {
+
+        if ("WebSocket" in window) {
+            socket = new WebSocket(get_appropriate_ws_url(), "porthole_websocket");
+        } else if ("MozWebSocket" in window) {
+            socket = new MozWebSocket(get_appropriate_ws_url(), "porthole_websocket");
+        } else {
+            document.getElementById("porthole_content").innerHTML =
+            "This Browser does not support WebSockets.<br />If using Opera, make sure to enable WebSockets.";
+        }
+
         socket.onopen = function () {
             // Send device specifications
             sendSpec();
+            firstTime = 0;
         }
 
         socket.onmessage = function got_packet(msg) {
@@ -195,10 +210,8 @@
             if (message.event_type == "stream") {
                 image = "data:image/png;base64," + message.base64image;
                 img.src = image;
-//                ctx.drawImage(img, 0, 0, camera.width, camera.height);
-
             }
-            else {
+            else if (message.event_type == "html_elements") {
                 document.getElementById("porthole_content").innerHTML = message.innerHTML;
 
                 // TEST googlemap initialization
@@ -207,18 +220,22 @@
 
                 // Add events listeners
                 if (!isMobile) {
-                    addEvent(window, "resize", sendSpec);
+                    addEvent(window, "resize", sendSpecTimeout);
+                    //window.onresize = sendSpec;
+                    addEvent(window, "orientationchange", sendSpecTimeout);
                 }
-                addEvent(window, "orientationchange", sendSpec);
-
-                firstTime = 0;
-
+                else if (isMobile) {
+                    addEvent(window, "orientationchange", sendSpecTimeout);
+                }
             }
 
         }
 
         socket.onclose = function () {
             document.getElementById("porthole_content").innerHTML = " websocket connection CLOSED ";
+            if (looping) {
+                looping = false;
+            }
         }
     } catch (exception) {
         alert('<p>Error' + exception);
@@ -243,7 +260,6 @@
 
     // Drag functions
     function watchDrag() {
-        if (!dragging || pinching) return;
         var JSONEvent = {
             "event_type": "drag",
             "camera_id": parseInt(camera.getAttribute("data-camera_id")),
@@ -257,7 +273,6 @@
 
     // Pinch functions
     function watchPinch() {
-        if (!pinching) return;
         if (pinchScale - pinchOldScale == 0 && pinchRotation - pinchOldRotation == 0) return;
         var JSONEvent = {
             "event_type": "pinch",
@@ -269,10 +284,6 @@
         pinchOldScale = pinchScale;
         pinchOldRotation = pinchRotation;
     }
-
-    // Dragging listening interval
-    setInterval(watchDrag, 16);
-    setInterval(watchPinch, 16);
 
     ///////////////////////////////////////////////////////////
 
@@ -289,19 +300,27 @@
               window.msRequestAnimationFrame ||
               function (callback) {
                   window.setTimeout(callback, 1000 / 60);
-              };
+            };
           })();
 
-    // Main camera rendering loop 
+    /*
+    * Main camera rendering loop 
+    */
     (function cameraLoop() {
         requestAnimFrame(cameraLoop);
         if (looping && ctx != null){
+
+            if (pinching) 
+                watchPinch(); // Update pinching
+            else if (dragging && !pinching)
+                watchDrag(); // Update dragging
+
             ctx.drawImage(img, 0, 0, camera.width, camera.height);
             // Keep framerate of the camera
             newT = new Date().getTime();
             dt = newT - lastT;
             lastT = newT;
-            debugDiv.textContent = "FPS: " + parseInt(1000 / dt);
+            //debugDiv.textContent = "FPS: " + parseInt(1000 / dt);
         }
     })();
 

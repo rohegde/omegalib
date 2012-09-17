@@ -186,15 +186,7 @@ void PortholeGUI::createCustomCamera(bool followDefaultCamera){
 	// Round down width to a multiple of 4.
 	int width = (int)(device->deviceWidth / 4) * 4;
 	int height = width*((float)device->deviceHeight/device->deviceWidth);
-	cout << "Width -> initially " << device->deviceWidth  << " chosen: " << width << endl;
-
-	//for (int i=width; i > 3; ++i){
-	//	if ( i%4 == 0){
-	//		
-	//		width = i;
-	//		break;
-	//	}
-	//}
+	//cout << "Width -> initially " << device->deviceWidth  << " chosen: " << width << endl;
 
 	PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  width,  height);
 
@@ -225,11 +217,38 @@ void PortholeGUI::modCustomCamera(int cameraIterator){
 
 	Camera* sessionCamera = portholeCamera.camera;
 
-	// TODO check dimensions
-	PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  600,  600*device->deviceHeight/device->deviceWidth);
-	sessionCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
+	// Get the global engine
+	Engine* myEngine = Engine::instance();
+
+	// Initialize camera size
+	// Workaround. This avoid a canvas drawing bug
+	// Round down width to a multiple of 4.
+	int width = (int)(device->deviceWidth / 4) * 4;
+	int height = width*((float)device->deviceHeight/device->deviceWidth);
+
+	// Code not working
+	portholeCamera.canvas = new PixelData(PixelData::FormatRgb, width, height);
+	sessionCamera->getOutput(0)->setReadbackTarget(portholeCamera.canvas);
 	sessionCamera->getOutput(0)->setEnabled(true);
-	portholeCamera.canvas = sessionCanvas;
+
+	//PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, width, height);
+
+	//uint flags = Camera::ForceMono | Camera::DrawScene | Camera::Offscreen;
+
+	//// New camera equals to old but with different size of canvas... WORKAROUND to fix a bug
+	//Camera* newCamera = myEngine->createCamera(flags);
+	//newCamera->setProjection(60, 1, 0.1f, 100);
+	//newCamera->setAutoAspect(true);
+	//newCamera->setPosition(sessionCamera->getPosition() + sessionCamera->getHeadOffset());
+	//newCamera->setOrientation(sessionCamera->getOrientation());
+	//newCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
+	//newCamera->getOutput(0)->setEnabled(true);
+
+	//portholeCamera.camera = newCamera;
+	//portholeCamera.canvas = sessionCanvas;
+
+	//// Remove old camera
+	//Engine::instance()->destroyCamera(sessionCamera);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -330,7 +349,7 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 			// Parse the GUI elements
 			for (TiXmlNode* pHtmlChild = pChild->FirstChildElement(); pHtmlChild != 0; pHtmlChild = pHtmlChild->NextSiblingElement()){
 				
-				// TODO concat children 
+				// TODO FIXME not inside div -> fail
 				pHtmlChild->Accept( xmlPrinter );
 				//cout << "Added: " << id << " -> " << xmlPrinter->CStr() << endl;
 				element.htmlValue.append(xmlPrinter->CStr());
