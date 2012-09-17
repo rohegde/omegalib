@@ -419,23 +419,19 @@ inline void handle_message(per_session_data* data, recv_message* message,
 
     // cout << "MSG: " << message->event_type << endl;
 
-	// Handle drag event
+	// Handle DRAG event
 	if (strcmp(message->event_type.c_str(),MSG_EVENT_DRAG)==0 &&
 		  data->guiManager->numberOfStreamsToSend() > 0){
 
+		Camera* camera;
+
 		// Get the corresponding camera to be modified
 		PortholeCamera sessionCamera = data->guiManager->getSessionCameras()[message->cameraId];
-		Camera* camera = sessionCamera.camera;
-		PixelData* canvas = sessionCamera.canvas;
-		
-		//Vector3f myPosition = data->sessionCamera->getPosition();
-		//cout << "Initial position: x = " << myPosition[0] << " y = " << myPosition[1] << endl;
-        
-		// Change x,y coords
-		//myPosition[0] += message->deltaX/100; // TODO check step
-        //myPosition[1] += message->deltaY/100;
-		//defaultCamera->setPosition(myPosition);
-		//data->sessionCamera->setPosition(myPosition);
+		if (sessionCamera.followDefault == true){
+			camera = Engine::instance()->getDefaultCamera();
+		}
+		else
+			camera = sessionCamera.camera;
 
 		// Change pitch and yaw
 		Quaternion curOrientation = camera->getOrientation();
@@ -445,21 +441,21 @@ inline void handle_message(per_session_data* data, recv_message* message,
 		Quaternion orientation = AngleAxis(yawAngle, Vector3f::UnitY()) * AngleAxis(pitchAngle, Vector3f::UnitX()) * AngleAxis(0, Vector3f::UnitZ());
 		// Apply rotation
 		camera->setOrientation(curOrientation * orientation);
-
-		//cout << "Final position: x = " << myPosition[0] << " y = " << myPosition[1] << endl;
-
-
     }
 
-	// Handle pinch event
+	// Handle PINCH event
 	else if (strcmp(message->event_type.c_str(),MSG_EVENT_PINCH)==0 &&
 		  data->guiManager->numberOfStreamsToSend() > 0){
 
 		// ZOOM
+		Camera* camera;
 
 		// Get the corresponding camera to be modified
 		PortholeCamera sessionCamera = data->guiManager->getSessionCameras()[message->cameraId];
-		Camera* camera = sessionCamera.camera;
+		if (sessionCamera.followDefault == true)
+			camera = Engine::instance()->getDefaultCamera();
+		else
+			camera = sessionCamera.camera;
 
 		Vector3f myPosition = camera->getPosition();
 		//cout << "Initial position: z = " << myPosition[2] << endl;
@@ -552,6 +548,8 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			Camera* camera = sessionCamera.camera;
 			PixelData* canvas = sessionCamera.canvas;
 
+			cout << "Pixel data width: " << canvas->getWidth() << " height: " << canvas->getHeight() << endl;
+
 			// If camera need to be equal to default camera, update position
 			if (sessionCamera.followDefault){
 				Camera* defaultCamera = Engine::instance()->getDefaultCamera();
@@ -563,6 +561,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			ByteArray* png = ImageUtils::encode(canvas, ImageUtils::FormatPng);
 			std::string base64image = base64_encode(png->getData(),png->getSize());
 
+			// TODO update width height ( not used now anyway )
 			string toSend = "{\"event_type\" : \"stream\", \"base64image\" : \"";
 			toSend.append(base64image.c_str());
 			toSend.append("\", \"image_width\" : " + boost::lexical_cast<string>(430) + ","

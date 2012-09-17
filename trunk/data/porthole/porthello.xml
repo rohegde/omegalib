@@ -9,7 +9,7 @@
         <input type="button" class="button" id="TestButton2" name="DOWN" value="DOWN" onclick="down()"/>
         <input type="button" class="button" id="TestButton3" name="LEFT" value="LEFT" onclick="left()"/>
         <input type="button" class="button" id="TestButton4" name="RIGHT" value="RIGHT" onclick="right()"/>
-      </div>
+       </div>
     </gui_element>
     
     <gui_element id="element2" type="googlemap" />
