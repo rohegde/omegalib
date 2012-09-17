@@ -96,7 +96,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 	START_BLOCK(result, "config");
 	// Latency > 0 makes everything explode when a local node is initialized, due to 
 	// multiple shared data messages sent to slave nodes before they initialize their local objects
-	result += L("latency 2");
+	result += L(ostr("latency %1%", %eqcfg.latency));
 
 	for(int n = 0; n < eqcfg.numNodes; n++)
 	{
@@ -491,6 +491,7 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	cfg.tileResolution = Config::getVector2iValue("tileResolution", scfg);
 	cfg.windowOffset = Config::getVector2iValue("windowOffset", scfg);
 
+	cfg.latency = Config::getBoolValue("latency", scfg);
 	cfg.interleaved = Config::getBoolValue("interleaved", scfg);
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
 	cfg.orientObserverToTile = Config::getBoolValue("orientObserverToTile", scfg);
