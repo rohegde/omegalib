@@ -226,8 +226,11 @@ protected:
     virtual bool configInit(const uint128_t& initID);
     virtual void frameDraw( const uint128_t& spin );
     virtual void frameViewFinish(const uint128_t& spin);
+	//virtual void frameViewStart( const co::base::uint128_t& frameID );
 
     omega::RendererBase* getClient();
+
+	void setupStencil(int gliWindowWidth, int gliWindowHeight);
 
 private:
     eq::Window* myWindow;
@@ -235,6 +238,8 @@ private:
     DrawContext myDC;
     uint128_t myLastFrame;
     omicron::Ref<RenderTarget> myDrawBuffer;
+
+	bool myStencilInitialized;
 
 	omicron::Ref<Texture> myStatsTexture;
     omicron::Ref<RenderTarget> myStatsBuffer;

@@ -169,6 +169,7 @@ uint ConfigImpl::processMouseButtons(uint btns)
     return buttons;
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 {
