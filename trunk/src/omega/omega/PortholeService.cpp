@@ -426,12 +426,12 @@ inline void handle_message(per_session_data* data, recv_message* message,
 		Camera* camera;
 
 		// Get the corresponding camera to be modified
-		PortholeCamera sessionCamera = data->guiManager->getSessionCameras()[message->cameraId];
-		if (sessionCamera.followDefault == true){
+		PortholeCamera* sessionCamera = data->guiManager->getSessionCameras()[message->cameraId];
+		if (sessionCamera->followDefault == true){
 			camera = Engine::instance()->getDefaultCamera();
 		}
 		else
-			camera = sessionCamera.camera;
+			camera = sessionCamera->camera;
 
 		// Change pitch and yaw
 		Quaternion curOrientation = camera->getOrientation();
@@ -451,11 +451,11 @@ inline void handle_message(per_session_data* data, recv_message* message,
 		Camera* camera;
 
 		// Get the corresponding camera to be modified
-		PortholeCamera sessionCamera = data->guiManager->getSessionCameras()[message->cameraId];
-		if (sessionCamera.followDefault == true)
+		PortholeCamera* sessionCamera = data->guiManager->getSessionCameras()[message->cameraId];
+		if (sessionCamera->followDefault == true)
 			camera = Engine::instance()->getDefaultCamera();
 		else
-			camera = sessionCamera.camera;
+			camera = sessionCamera->camera;
 
 		Vector3f myPosition = camera->getPosition();
 		//cout << "Initial position: z = " << myPosition[2] << endl;
@@ -531,27 +531,28 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		}
 
 		// For each camera to be streamed
-		map<int, PortholeCamera> map = data->guiManager->getSessionCameras();
-		for (std::map<int, PortholeCamera>::iterator it = map.begin(); it != map.end(); ++it)
+		map<int, PortholeCamera*> map = data->guiManager->getSessionCameras();
+		for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
 		{
 
-			PortholeCamera sessionCamera = it->second;
+			PortholeCamera* sessionCamera = it->second;
 
 			// Write at 25Hz, so continue if it's too early for us
 			struct timeval tv;
 			gettimeofday(&tv, NULL);
-			if (((unsigned int)tv.tv_usec - sessionCamera.oldusStreamSent) < 40000) {
+			if (((unsigned int)tv.tv_usec - sessionCamera->oldusStreamSent) < 40000) {
 				continue;
 			}
 
 			// Get the corresponding camera to be modified
-			Camera* camera = sessionCamera.camera;
-			PixelData* canvas = sessionCamera.canvas;
+			Camera* camera = sessionCamera->camera;
+			PixelData* canvas = sessionCamera->canvas;
 
-			cout << "Pixel data width: " << canvas->getWidth() << " height: " << canvas->getHeight() << endl;
+			//cout << "Stream " << canvas << endl;
+			//cout << "Pixel data width: " << canvas->getWidth() << " height: " << canvas->getHeight() << endl;
 
 			// If camera need to be equal to default camera, update position
-			if (sessionCamera.followDefault){
+			if (sessionCamera->followDefault){
 				Camera* defaultCamera = Engine::instance()->getDefaultCamera();
 				camera->setPosition(defaultCamera->getPosition() + defaultCamera->getHeadOffset());
 				camera->setOrientation(defaultCamera->getOrientation());
@@ -566,7 +567,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			toSend.append(base64image.c_str());
 			toSend.append("\", \"image_width\" : " + boost::lexical_cast<string>(430) + ","
 								"\"image_height\" : " + boost::lexical_cast<string>(430*data->guiManager->getDevice()->deviceHeight/data->guiManager->getDevice()->deviceWidth) 
-								+", \"camera_id\" : " + boost::lexical_cast<string>(sessionCamera.id) + "}");
+								+", \"camera_id\" : " + boost::lexical_cast<string>(sessionCamera->id) + "}");
 
 			// Send the base64 image
 			unsigned char* buf;
@@ -583,7 +584,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			delete[] buf;
 
 			// Save new timestamp
-			sessionCamera.oldusStreamSent = tv.tv_usec;
+			sessionCamera->oldusStreamSent = tv.tv_usec;
 
 		}
 

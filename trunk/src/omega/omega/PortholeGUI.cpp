@@ -31,9 +31,9 @@ using namespace omega;
 using namespace std;
 
 PortholeFunctionsBinder* PortholeGUI::functionsBinder;
-vector<PortholeInterfaceType> PortholeGUI::interfaces;
+vector<PortholeInterfaceType*> PortholeGUI::interfaces;
 std::map<string, TiXmlElement* > PortholeGUI::interfacesMap;
-std::map<string, PortholeElement> PortholeGUI::elementsMap;
+std::map<string, PortholeElement*> PortholeGUI::elementsMap;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 PortholeGUI::PortholeGUI()
@@ -57,9 +57,9 @@ void PortholeGUI::setDeviceSpecifications(int width, int height, string orientat
 	device->deviceOrientation = orientation;
 	
 	for(int i=0; i<interfaces.size(); i++){
-		if (width > interfaces.at(i).minWidth && 
-			height > interfaces.at(i).minHeight &&
-			orientation.compare(interfaces.at(i).orientation)==0)
+		if (width > interfaces.at(i)->minWidth && 
+			height > interfaces.at(i)->minHeight &&
+			orientation.compare(interfaces.at(i)->orientation)==0)
 			device->interfaceType = interfaces.at(i);
 	}
 
@@ -71,7 +71,7 @@ string PortholeGUI::create(bool firstTime){
 	int cameraIterator = 0;
 	string result = "";
 
-	string interfaceKey = device->interfaceType.id + device->interfaceType.orientation;
+	string interfaceKey = device->interfaceType->id + device->interfaceType->orientation;
 	TiXmlElement* root = interfacesMap[interfaceKey];
 
 	if (root == NULL) return "Interface not available for this device";
@@ -82,7 +82,7 @@ string PortholeGUI::create(bool firstTime){
 		// Get element name: should correspond to id TODO check
 		const char* id = pChild->Value();
 
-		PortholeElement element = elementsMap[id];
+		PortholeElement* element = elementsMap[id];
 
 		string width="", height="";
 
@@ -112,24 +112,24 @@ string PortholeGUI::create(bool firstTime){
 		*/
 		// For googlemaps element, create a div element that will contain a googlemaps view
 		// TODO Size of map canvas
-		if (strcmp(element.type.c_str(),"googlemap")==0){
-			element.htmlValue = "<div  style=\" padding : 5px \"><input id=\"searchTextField\" type=\"text\" style=\"width : 100%; height : 20px;\"></div>";
-			element.htmlValue.append("<div id=\"map-canvas\" class=\"map_container\" style=\"width:");
-			element.htmlValue.append(boost::lexical_cast<string>(device->deviceWidth)+"px; height:"+
+		if (strcmp(element->type.c_str(),"googlemap")==0){
+			element->htmlValue = "<div  style=\" padding : 5px \"><input id=\"searchTextField\" type=\"text\" style=\"width : 100%; height : 20px;\"></div>";
+			element->htmlValue.append("<div id=\"map-canvas\" class=\"map_container\" style=\"width:");
+			element->htmlValue.append(boost::lexical_cast<string>(device->deviceWidth)+"px; height:"+
 							  boost::lexical_cast<string>(device->deviceHeight)+"px \" ");
-			element.htmlValue.append("></div>");
+			element->htmlValue.append("></div>");
 		}
 
 		/*
 		*	CAMERA STREAM
 		*/
 		// Create a session camera
-		else if (strcmp(element.type.c_str(),"camera_stream")==0){
+		else if (strcmp(element->type.c_str(),"camera_stream")==0){
 
 			int cameraId = 0;
 
 			// FIXME Not working
-			if (strcmp(element.cameraType.c_str(),"default")==0){
+			if (strcmp(element->cameraType.c_str(),"default")==0){
 				if (firstTime){
 					createCustomCamera(true);
 					// Update camera id on html
@@ -155,7 +155,7 @@ string PortholeGUI::create(bool firstTime){
 				}
 			}
 
-			element.htmlValue = "<canvas id=\"camera-canvas\" class=\"camera_container\" data-camera_id = \"" +
+			element->htmlValue = "<canvas id=\"camera-canvas\" class=\"camera_container\" data-camera_id = \"" +
 								boost::lexical_cast<string>(cameraId) +
 								"\"></canvas>";
 
@@ -163,7 +163,7 @@ string PortholeGUI::create(bool firstTime){
 
 		// Create the HTML result for this element. embedded into a (width,size) div element
 		// TODO Layouts Vertical/Horizontal/Grid/Relative
-		result.append("<div style=\" width : "+ width +"; height : "+ height +"; \" >"+ element.htmlValue +"</div>");
+		result.append("<div style=\" width : "+ width +"; height : "+ height +"; \" >"+ element->htmlValue +"</div>");
 
 	}
 
@@ -204,18 +204,23 @@ void PortholeGUI::createCustomCamera(bool followDefaultCamera){
 	sessionCamera->getOutput(0)->setEnabled(true);
 
 	// Save the new Camera and PixelData objects
-	PortholeCamera camera = {++camerasIncrementalId,sessionCamera, sessionCanvas, followDefaultCamera, 0};
-	sessionCameras[camera.id] = camera;
-	camerasId.push_back(camera.id); 
+	PortholeCamera* camera = new PortholeCamera();
+	camera->id = ++camerasIncrementalId;
+	camera->camera =sessionCamera;
+	camera->canvas = sessionCanvas;
+	camera->followDefault = followDefaultCamera;
+	camera->oldusStreamSent = 0;
+	sessionCameras[camera->id] = camera;
+	camerasId.push_back(camera->id); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void PortholeGUI::modCustomCamera(int cameraIterator){
 
 	// Retrieve the camera to be modified
-	PortholeCamera portholeCamera = sessionCameras[camerasId.at(cameraIterator)];
+	PortholeCamera* portholeCamera = sessionCameras[camerasId.at(cameraIterator)];
 
-	Camera* sessionCamera = portholeCamera.camera;
+	Camera* sessionCamera = portholeCamera->camera;
 
 	// Get the global engine
 	Engine* myEngine = Engine::instance();
@@ -227,9 +232,12 @@ void PortholeGUI::modCustomCamera(int cameraIterator){
 	int height = width*((float)device->deviceHeight/device->deviceWidth);
 
 	// Code not working
-	portholeCamera.canvas = new PixelData(PixelData::FormatRgb, width, height);
-	sessionCamera->getOutput(0)->setReadbackTarget(portholeCamera.canvas);
+	portholeCamera->canvas = new PixelData(PixelData::FormatRgb, width, height);
+	sessionCamera->getOutput(0)->setReadbackTarget(portholeCamera->canvas);
 	sessionCamera->getOutput(0)->setEnabled(true);
+
+	//cout << "Mod camera pointer: " << portholeCamera->canvas << endl;
+	//cout << "Pixel data width: " << portholeCamera->canvas->getWidth() << " height: " << portholeCamera->canvas->getHeight() << endl;
 
 	//PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, width, height);
 
@@ -312,7 +320,7 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 	// Parse the GUI elements
 	for (TiXmlNode* pChild = guiElements->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
 
-		PortholeElement element;
+		PortholeElement* element = new PortholeElement();
 
 		// Parse attributes
 		TiXmlAttribute* pAttrib = pChild->ToElement()->FirstAttribute();
@@ -323,28 +331,28 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 
 			// Save id attribute
 			if (strcmp(attribute.c_str(),"id")==0){
-				element.id = pAttrib->Value();
+				element->id = pAttrib->Value();
 			}
 
 			// Save type attribute
 			else if (strcmp(attribute.c_str(),"type")==0){
-				element.type = pAttrib->Value();
+				element->type = pAttrib->Value();
 			}
 
 			// Save camera type attribute
 			else if (strcmp(attribute.c_str(),"camera")==0){
-				element.cameraType = pAttrib->Value();
+				element->cameraType = pAttrib->Value();
 			}
 
 			// Next attribute
 			pAttrib = pAttrib->Next();
 		}
 
-		StringUtils::toLowerCase(element.type);
-		StringUtils::toLowerCase(element.cameraType);
+		StringUtils::toLowerCase(element->type);
+		StringUtils::toLowerCase(element->cameraType);
 
 		// For HTML elements, just add all the content to the element
-		if  (strcmp(element.type.c_str(),"html")==0){
+		if  (strcmp(element->type.c_str(),"html")==0){
 
 			// Parse the GUI elements
 			for (TiXmlNode* pHtmlChild = pChild->FirstChildElement(); pHtmlChild != 0; pHtmlChild = pHtmlChild->NextSiblingElement()){
@@ -352,16 +360,16 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 				// TODO FIXME not inside div -> fail
 				pHtmlChild->Accept( xmlPrinter );
 				//cout << "Added: " << id << " -> " << xmlPrinter->CStr() << endl;
-				element.htmlValue.append(xmlPrinter->CStr());
+				element->htmlValue.append(xmlPrinter->CStr());
 				// delete new line
-				element.htmlValue.erase(std::remove(element.htmlValue.begin(), element.htmlValue.end(), '\n'), element.htmlValue.end());
+				element->htmlValue.erase(std::remove(element->htmlValue.begin(), element->htmlValue.end(), '\n'), element->htmlValue.end());
 
 			}
 
 		}
 
-		if(element.id.length() > 0 && element.type.length() > 0){
-			elementsMap[element.id] = element;
+		if(element->id.length() > 0 && element->type.length() > 0){
+			elementsMap[element->id] = element;
 		}
 
 	}
@@ -407,13 +415,21 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 
 			// Check orientation and save node in the map
 			if (orientation.compare("portrait")==0 || orientation.compare("port")==0){
-				PortholeInterfaceType interfaceType = {minWidth,minHeight,interfaceId,"portrait"};
+				PortholeInterfaceType* interfaceType = new PortholeInterfaceType();
+				interfaceType->minWidth = minWidth;
+				interfaceType->minHeight = minHeight;
+				interfaceType->id = interfaceId;
+				interfaceType->orientation = "portrait";
 				interfaces.push_back(interfaceType);
 				cout << ">> Added interface:" << interfaceId << " " << orientation << " " << minWidth << " " << minHeight << endl;
 				interfacesMap[interfaceId + orientation] = pOrientationChild;
 			}
 			else if (orientation.compare("landscape")==0 || orientation.compare("land")==0){
-				PortholeInterfaceType interfaceType = {minHeight,minWidth,interfaceId,"landscape"};
+				PortholeInterfaceType* interfaceType = new PortholeInterfaceType();
+				interfaceType->minWidth = minHeight;
+				interfaceType->minHeight = minWidth;
+				interfaceType->id = interfaceId;
+				interfaceType->orientation = "landscape";
 				interfaces.push_back(interfaceType);
 				cout << ">> Added interface:" << interfaceId << " " << orientation << " " << minHeight << " " << minWidth << endl;
 				interfacesMap[interfaceId + orientation] = pOrientationChild;
