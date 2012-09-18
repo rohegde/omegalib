@@ -45,7 +45,7 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	struct DisplayTileConfig
 	{
-		DisplayTileConfig(): drawStats(false), drawFps(false), disableScene(false) {}
+		DisplayTileConfig(): drawStats(false), drawFps(false), disableScene(false), disableOverlay(false) {}
 
 		Vector2i index;
 		Vector2i resolution;
@@ -63,6 +63,7 @@ namespace omega
 		bool drawStats;
 		bool drawFps;
 		bool disableScene;
+		bool disableOverlay;
 
 		Vector3f topLeft;
 		Vector3f bottomLeft;
@@ -88,8 +89,7 @@ namespace omega
 		static const int MaxTiles = 64;
 		static const int MaxNodes = 64;
 		
-		DisplayConfig(): disableConfigGenerator(false), latency(1) {}
-		
+		DisplayConfig(): disableConfigGenerator(false), latency(1), enableStencilInterleaver(false), enableSwapSync(true) {}		
 		bool disableConfigGenerator;
 
 		// ! Configuration type enum
@@ -131,8 +131,20 @@ namespace omega
 
 		//! Enable interleaved stereo rendering.
 		bool interleaved;
+		//! Enable stencl-based interleaved stereo. Faster but requires use of stencil buffer.
+		bool enableStencilInterleaver;
+
+		//! Enable vsync on all tiles
+		bool enableVSync;
+		//! Enable swap sync on cluster displays
+		bool enableSwapSync;
+			 
+
 		//! Enable fullscreen rendering.
 		bool fullscreen;
+
+		// Display fps on each tile.
+		bool drawFps;
 
 		//! When set to true, observer orientation will be kept aligned to each tile normal.
 		bool orientObserverToTile;
