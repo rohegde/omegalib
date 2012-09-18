@@ -78,7 +78,7 @@ namespace omega {
 	static int camerasIncrementalId = 0;
 
 	// Porthole functions binder
-	struct PortholeFunctionsBinder{
+	struct PortholeFunctionsBinder: ReferenceType{
 
 		typedef void(*memberFunction)();
 
@@ -121,7 +121,7 @@ namespace omega {
 	};
 
 	// This will old a possible interface
-	typedef struct PortholeInterfaceType{
+	typedef struct PortholeInterfaceType: ReferenceType{
 		int minWidth;
 		int minHeight;
 		string id;
@@ -129,35 +129,35 @@ namespace omega {
 	} PortholeInterfaceType;
 
 	// A device specifications object
-	typedef struct PortholeDevice{
+	typedef struct PortholeDevice: ReferenceType{
 		int deviceWidth;
 		int deviceHeight;
 		string deviceOrientation; // Portrait or Landscape
-		PortholeInterfaceType interfaceType;
+		PortholeInterfaceType* interfaceType;
 	} PortholeDevice;
 
 	// An element object
-	typedef struct PortholeElement{
+	typedef struct PortholeElement: ReferenceType{
 		string id;
 		string type;
 		string cameraType; // Defined if type is camera stream
 		string htmlValue;
 	} PortholeElement;
 
-	typedef struct PortholeCamera{
+	typedef struct PortholeCamera: ReferenceType{
 		int id;
 		Camera* camera;
 		PixelData* canvas;
 		bool followDefault;
 		unsigned int oldusStreamSent; // Timestamp of last stream sent via socket
-	} PortholeCamera;
+	}PortholeCamera;
 
 	// Xml Document
 	static TiXmlDocument* xmlDoc;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements the HTML GUI Manager for Porthole Service
-	class OMEGA_API PortholeGUI{
+	class OMEGA_API PortholeGUI: ReferenceType{
 
 	public:
 
@@ -180,7 +180,7 @@ namespace omega {
 		int numberOfStreamsToSend() { return sessionCameras.size(); } 
 
 		// Get session stream data
-		std::map<int,PortholeCamera> getSessionCameras() { return sessionCameras; } 
+		std::map<int,PortholeCamera*> getSessionCameras() { return sessionCameras; } 
 
 		static vector<string> findHtmlScripts();
 
@@ -199,7 +199,7 @@ namespace omega {
 		PortholeDevice* device;
 
 		// All cameras
-		std::map<int,PortholeCamera> sessionCameras;
+		std::map<int,PortholeCamera*> sessionCameras;
 
 		// Create a Porthole custom camera and a PixelData associated
 		void createCustomCamera(bool followDefaultCamera); 
@@ -214,13 +214,13 @@ namespace omega {
 		static PortholeFunctionsBinder* functionsBinder;
 
 		// All the possible interfaces
-		static vector<PortholeInterfaceType> interfaces; 
+		static vector<PortholeInterfaceType*> interfaces; 
 
 		// A map between a device type and its GUI elements
 		static std::map<string, TiXmlElement* > interfacesMap;
 
 		// A map between an element id and the element data
-		static std::map<string, PortholeElement> elementsMap;
+		static std::map<string, PortholeElement*> elementsMap;
 	};
 
 };
