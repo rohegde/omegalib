@@ -55,7 +55,7 @@ namespace cyclops {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
-	class CY_API Light: public Node
+	class CY_API Light: public SceneNode
 	{
 	friend class SceneManager;
 	public:
