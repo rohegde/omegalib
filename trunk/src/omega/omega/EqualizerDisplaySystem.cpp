@@ -38,8 +38,6 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
-#define EQ_USE_SWAP_BARRIER
-
 #define OMEGA_EQ_TMP_FILE "./_eqcfg.eqc"
 
 #define L(line) indent + line + "\n"
@@ -353,7 +351,6 @@ void EqualizerDisplaySystem::generateEqConfig()
 	}
 	// ------------------------------------------ END stats canvas
 
-
 	// compounds
 	START_BLOCK(result, "compound")
 	for(int x = 0; x < eqcfg.numTiles[0]; x++)
@@ -371,46 +368,70 @@ void EqualizerDisplaySystem::generateEqConfig()
 
 			if(eqcfg.interleaved)
 			{
-				String tileCfg = "";
-				START_BLOCK(tileCfg, "compound");
-#ifdef EQ_USE_SWAP_BARRIER
-				tileCfg += L("swapbarrier { name \"defaultbarrier\" }");
-#endif
-				tileCfg += 
-					L("channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )") +
-					L("eye [LEFT RIGHT]") +
-					L("attributes { stereo_mode PASSIVE }");
-				START_BLOCK(tileCfg, "compound");
-				tileCfg += 
-					L("eye [RIGHT]") +
-					//L("attributes { stereo_mode PASSIVE }") +
-					L("channel \"" + segmentName + "\"") +
-					L("pixel [ 0 0 1 2 ]") +
-					L("outputframe { name \"" + segmentName + "r\" type texture }");
-				END_BLOCK(tileCfg);
-				START_BLOCK(tileCfg, "compound");
-				tileCfg += 
-					L("eye [LEFT]") +
-					//L("attributes { stereo_mode PASSIVE }") +
-					L("channel \"" + segmentName + "\"") +
-					L("pixel [ 0 1 1 2 ]") +
-					L("outputframe { name \"" + segmentName + "l\" type texture }");
-				END_BLOCK(tileCfg);
-				tileCfg +=
-					L("inputframe { name \"" + segmentName + "r\" }") +
-					L("inputframe { name \"" + segmentName + "l\" }");
-				END_BLOCK(tileCfg);
+				if(eqcfg.enableStencilInterleaver)
+				{
+					String tileCfg = "";
+					START_BLOCK(tileCfg, "compound");
+					if(eqcfg.enableSwapSync)
+					{
+						tileCfg += L("swapbarrier { name \"defaultbarrier\" }");
+					}
+					tileCfg += 
+						L("channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )") +
+						L("eye [LEFT RIGHT]") +
+						L("task [DRAW]") +
+						L("attributes { stereo_mode PASSIVE }");
+					END_BLOCK(tileCfg);
+					result += tileCfg;
+				}
+				else
+				{
+					String tileCfg = "";
+					START_BLOCK(tileCfg, "compound");
+					if(eqcfg.enableSwapSync)
+					{
+						tileCfg += L("swapbarrier { name \"defaultbarrier\" }");
+					}
+					tileCfg += 
+						L("channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )") +
+						L("eye [LEFT RIGHT]") +
+						L("attributes { stereo_mode PASSIVE }");
+					START_BLOCK(tileCfg, "compound");
+					tileCfg += 
+						L("eye [RIGHT]") +
+						//L("attributes { stereo_mode PASSIVE }") +
+						L("channel \"" + segmentName + "\"") +
+						L("pixel [ 0 0 1 2 ]") +
+						L("outputframe { name \"" + segmentName + "r\" type texture }");
+					END_BLOCK(tileCfg);
+					START_BLOCK(tileCfg, "compound");
+					tileCfg += 
+						L("eye [LEFT]") +
+						//L("attributes { stereo_mode PASSIVE }") +
+						L("channel \"" + segmentName + "\"") +
+						L("pixel [ 0 1 1 2 ]") +
+						L("outputframe { name \"" + segmentName + "l\" type texture }");
+					END_BLOCK(tileCfg);
+					tileCfg +=
+						L("inputframe { name \"" + segmentName + "r\" }") +
+						L("inputframe { name \"" + segmentName + "l\" }");
+					END_BLOCK(tileCfg);
 
-				result += tileCfg;
+					result += tileCfg;
+				}
 			}
 			else
 			{
-#ifdef EQ_USE_SWAP_BARRIER
-				String tileCfg = "\t\tcompound { swapbarrier { name \"defaultbarrier\" } channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" ) }\n";
-#else
-				String tileCfg = "\t\tchannel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )\n";
-#endif
-				result += tileCfg;
+				if(eqcfg.enableSwapSync)
+				{
+					String tileCfg = "\t\tcompound { swapbarrier { name \"defaultbarrier\" } channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" ) }\n";
+					result += tileCfg;
+				}
+				else
+				{
+					String tileCfg = "\t\tchannel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )\n";
+					result += tileCfg;
+				}
 			}
 		}
 	}
@@ -493,6 +514,7 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 
 	cfg.latency = Config::getBoolValue("latency", scfg);
 	cfg.interleaved = Config::getBoolValue("interleaved", scfg);
+	cfg.enableStencilInterleaver = Config::getBoolValue("enableStencilInterleaver", scfg);
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
 	cfg.orientObserverToTile = Config::getBoolValue("orientObserverToTile", scfg);
 
@@ -519,6 +541,11 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 		cfg.statsTile.resolution = Vector2i(480, 860);
 		cfg.statsTile.drawStats = true;
 	}
+
+	bool drawFps = Config::getBoolValue("drawFps", scfg, false);
+
+	cfg.enableVSync= Config::getBoolValue("enableVSync", scfg, false);
+	cfg.enableSwapSync = Config::getBoolValue("enableSwapSync", scfg, true);
 
 	for(int i = 0; i < sTiles.getLength(); i++)
 	{
@@ -548,6 +575,7 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 				Vector2i index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
 
 				DisplayTileConfig& tc = cfg.tiles[index[0]][index[1]];
+				tc.drawFps = drawFps;
 				tc.index = index;
 				//tc.interleaved = Config::getBoolValue("interleaved", sTile);
 				tc.device = Config::getIntValue("device", sTile);

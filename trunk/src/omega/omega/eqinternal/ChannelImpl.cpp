@@ -34,11 +34,11 @@ using namespace std;
 using namespace eq;
 
 //! Comment do disable running of overlay render tasks.
-#define ENABLE_OVERLAY_TASK
+//#define ENABLE_OVERLAY_TASK
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ChannelImpl::ChannelImpl( eq::Window* parent ) 
-    :eq::Channel( parent ), myWindow(parent), myDrawBuffer(NULL) 
+    :eq::Channel( parent ), myWindow(parent), myDrawBuffer(NULL), myStencilInitialized(false)
 {
 }
 
@@ -110,6 +110,14 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 
     context->modelview = mw * cam->getViewTransform();
 
+	// Setup the stencil buffer if needed.
+	const DisplayConfig& dcfg = ds->getDisplayConfig();
+	if(dcfg.interleaved && dcfg.enableStencilInterleaver && !myStencilInitialized)
+	{
+		setupStencil(myDC.tile->resolution[0], myDC.tile->resolution[1]);
+		myStencilInitialized = true;
+	}
+
     // Setup draw buffer
     //if(myDrawBuffer == NULL)
     //{
@@ -123,11 +131,14 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 {
     eq::Channel::frameDraw( frameID );
 
-    // Clear the frame buffer using the background color specified in display system.
-    DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
-    const Color& b = ds->getBackgroundColor();
-    glClearColor(b[0], b[1], b[2], b[3]);
-    glClear(GL_COLOR_BUFFER_BIT);
+	if(getEye() == eq::fabric::EYE_LEFT || getEye() == eq::fabric::EYE_CYCLOP) 
+	{
+		// This is the first eye being drawn: clear the depth and color buffers.
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+		const Color& b = ds->getBackgroundColor();
+		glClearColor(b[0], b[1], b[2], b[3]);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
 
     //ofmsg("frameDraw: channel %1% frame %2%", %this %frameID);
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
@@ -135,26 +146,36 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 
     setupDrawContext(&myDC, frameID);
 
-	if(!myDC.tile->drawStats)
-    {
-		myDC.task = DrawContext::SceneDrawTask;
-		client->draw(myDC);
+	// Configure stencil test when rendering interleaved with stencil is enabled.
+	if(myStencilInitialized)
+	{
+		if(myDC.eye == DrawContext::EyeLeft)
+		{
+			glStencilFunc(GL_NOTEQUAL,1,1); // draws if stencil <> 1
+		}
+		else if(myDC.eye == DrawContext::EyeRight)
+		{
+			glStencilFunc(GL_EQUAL,1,1); // draws if stencil <> 0
+ 		}
 	}
 
-#ifdef ENABLE_OVERLAY_TASK
+	// Draw scene
+	myDC.task = DrawContext::SceneDrawTask;
+	client->draw(myDC);
+
+	// Draw overlay when drawing stereo, otherwise we will do a single overlay drawing pass in
+	// frameViewFinish
     if(getEye() != eq::fabric::EYE_CYCLOP)
     {
         myDC.task = DrawContext::OverlayDrawTask;
         getClient()->draw(myDC);
     }
-#endif 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 {
     eq::Channel::frameViewFinish( frameID );
-#ifdef ENABLE_OVERLAY_TASK
     if(getEye() != eq::fabric::EYE_LAST && getEye() != eq::fabric::EYE_CYCLOP) return;
 
     setupDrawContext(&myDC, frameID);
@@ -209,7 +230,6 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
     }
 
     EQ_GL_CALL( resetAssemblyState( ));
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -217,6 +237,46 @@ omega::RendererBase* ChannelImpl::getClient()
 {
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
     return pipe->getClient();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ChannelImpl::setupStencil(int gliWindowWidth, int gliWindowHeight)
+{
+	GLint gliStencilBits;
+	glGetIntegerv(GL_STENCIL_BITS,&gliStencilBits);
+
+	GLint gliY;
+	// seting screen-corresponding geometry
+	glViewport(0,0,gliWindowWidth,gliWindowHeight);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glMatrixMode (GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0.0,gliWindowWidth-1,0.0,gliWindowHeight-1);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+		
+	// clearing and configuring stencil drawing
+	glDrawBuffer(GL_BACK);
+	glEnable(GL_STENCIL_TEST);
+	glClearStencil(0);
+	glClear(GL_STENCIL_BUFFER_BIT);
+	glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE); // colorbuffer is copied to stencil
+	glDisable(GL_DEPTH_TEST);
+	glStencilFunc(GL_ALWAYS,1,1); // to avoid interaction with stencil content
+	
+	// drawing stencil pattern
+	glColor4f(1,1,1,0);	// alfa is 0 not to interfere with alpha tests
+	for (gliY=0; gliY<gliWindowHeight; gliY+=2)
+	{
+		glLineWidth(1);
+		glBegin(GL_LINES);
+			glVertex2f(0,gliY);
+			glVertex2f(gliWindowWidth,gliY);
+		glEnd();	
+	}
+	glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP); // disabling changes in stencil buffer
+	glFlush();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
