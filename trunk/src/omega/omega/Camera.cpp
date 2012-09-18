@@ -32,7 +32,8 @@ using namespace omega;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Camera::Camera(uint flags):
+Camera::Camera(Engine* e, uint flags):
+	SceneNode(e),
 	myAutoAspect(false),
 	myFlags(flags),
 	myController(NULL),
