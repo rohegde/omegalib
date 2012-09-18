@@ -141,6 +141,7 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 		glClearColor(b[0], b[1], b[2], b[3]);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
+	
 
     //ofmsg("frameDraw: channel %1% frame %2%", %this %frameID);
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
@@ -254,7 +255,7 @@ void ChannelImpl::setupStencil(int gliWindowWidth, int gliWindowHeight)
 	glLoadIdentity();
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0.0,gliWindowWidth-1,0.0,gliWindowHeight-1);
+	gluOrtho2D(0.5,gliWindowWidth + 0.5,0.5,gliWindowHeight + 0.5);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 		

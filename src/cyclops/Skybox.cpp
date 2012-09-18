@@ -172,13 +172,13 @@ osg::Node* Skybox::createSkyBox()
 		myTransform->setCullingActive(false);
 		myTransform->addChild(myGeode);
 
-		osg::ClearNode* clearNode = new osg::ClearNode;
-		clearNode->setClearColor(osg::Vec4(0.0, 1.0, 1.0, 1.0));
-		clearNode->addChild(myTransform);
+		// osg::ClearNode* clearNode = new osg::ClearNode;
+		// clearNode->setClearColor(osg::Vec4(0.0, 1.0, 1.0, 1.0));
+		// clearNode->addChild(myTransform);
 
 		updateSkyBox();
 
-		return clearNode;
+		return myTransform;
 	}
 	return NULL;
 }
