@@ -108,7 +108,7 @@ void Engine::initialize()
 	// Read draw pointers option.
 	myDrawPointers = syscfg->getBoolValue("config/drawPointers", myDrawPointers);
 
-    myDefaultCamera = new Camera();
+    myDefaultCamera = new Camera(this);
 
 	// Load camera config form system config file
 	if(syscfg->exists("config/camera"))
@@ -295,7 +295,7 @@ void Engine::drawPointers(Renderer* client, RenderState* state)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Camera* Engine::createCamera(uint flags)
 {
-    Camera* cam = new Camera(flags);
+    Camera* cam = new Camera(this, flags);
     myCameras.push_back(cam);
     return cam;
 }

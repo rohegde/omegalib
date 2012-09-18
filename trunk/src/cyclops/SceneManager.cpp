@@ -99,6 +99,7 @@ Light* Light::create()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 Light::Light(SceneManager* scene):
+	SceneNode(scene->getEngine()),
 	mySceneManager(scene),
 	myColor(Color::White),
 	myAmbient(Color::Gray),
