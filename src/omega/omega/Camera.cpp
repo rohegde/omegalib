@@ -27,6 +27,10 @@
 #include "omega/RenderTarget.h"
 #include "omega/Camera.h"
 #include "omega/CameraOutput.h"
+#include "omega/WandCameraController.h"
+#include "omega/GamepadCameraController.h"
+#include "omega/MouseCameraController.h"
+#include "omega/KeyboardMouseCameraController.h"
 
 using namespace omega;
 

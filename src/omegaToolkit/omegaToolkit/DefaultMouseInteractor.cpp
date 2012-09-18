@@ -37,7 +37,7 @@ void DefaultMouseInteractor::handleEvent(const Event& evt)
 	{
 		// If a node is assigned to this actor and is selected, we consider mouse events consumed
 		// by this actor.
-		if(myNode != NULL && myNode->isSelected()) evt.setProcessed();
+		if(myNode != NULL && myNodeActive) evt.setProcessed();
 
 		myPointerButton1Pressed = false;
 		myPointerButton2Pressed = false;
@@ -70,18 +70,7 @@ void DefaultMouseInteractor::updateNode()
 {
 	// Exit immediately if we received no pointer event or if there is no node attached to this
 	// interactor
-	if(!myPointerEventReceived || myNode == NULL) return;
-
-	//if(getEngine()->isMaster())
-	//{
-	//ofmsg("MST Ray origin %1% Direction %2%", %myPointerRay.getOrigin() %myPointerRay.getDirection());
-	//}
-	//else
-	//{
-	//	ofmsg("SRV Ray origin %1% Direction %2%", %myPointerRay.getOrigin() %myPointerRay.getDirection());
-	//}
-
-
+	if(!myPointerEventReceived || myNode == NULL || !myNode->isVisible()) return;
 	if(myPointerEventType == Event::Down)
 	{
 		Vector3f handlePos;
@@ -98,7 +87,7 @@ void DefaultMouseInteractor::updateNode()
 	}
 	else if(myPointerEventType == Event::Up)
 	{
-		myNodeActive = false;;
+		myNodeActive = false;
 	}
 	else if(myPointerEventType == Event::Move)
 	{

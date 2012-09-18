@@ -39,6 +39,10 @@ SET( srcs
 		omega/ApplicationBase.cpp
 		omega/Camera.cpp
 		omega/CameraController.cpp
+		omega/KeyboardMouseCameraController.cpp
+		omega/GamepadCameraController.cpp
+		omega/MouseCameraController.cpp
+		omega/WandCameraController.cpp
 		omega/CameraOutput.cpp
 		omega/CylindricalDisplayConfig.cpp
 		omega/Console.cpp
@@ -87,6 +91,10 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/AsyncTask.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Camera.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CameraController.h
+		${OmegaLib_SOURCE_DIR}/include/omega/KeyboardMouseCameraController.h
+		${OmegaLib_SOURCE_DIR}/include/omega/GamepadCameraController.h
+		${OmegaLib_SOURCE_DIR}/include/omega/MouseCameraController.h
+		${OmegaLib_SOURCE_DIR}/include/omega/WandCameraController.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CameraOutput.h
 		${OmegaLib_SOURCE_DIR}/include/omega/EventSharingModule.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h
