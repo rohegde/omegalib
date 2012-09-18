@@ -36,7 +36,7 @@
 
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Camera: public ReferenceType
+	class OMEGA_API Camera: public SceneNode
 	{
 	public:
 		enum CameraFlags
@@ -48,7 +48,7 @@ namespace omega {
 			DefaultFlags = DrawScene | DrawOverlay
 		};
 	public:
-		Camera(uint flags = DefaultFlags);
+		Camera(Engine* engine, uint flags = DefaultFlags);
 
 		bool isOffscreen() { return myFlags & Offscreen; }
 
