@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "eqinternal.h"
 #include "omega/DisplaySystem.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 using namespace co::base;
