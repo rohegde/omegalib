@@ -73,6 +73,7 @@ include_directories(
 
 # Add some libraries used for display support.
 include(${OmegaLib_SOURCE_DIR}/external/UseFreeImage.cmake)
+
 include(${OmegaLib_SOURCE_DIR}/external/UseFreeType.cmake)
 include(${OmegaLib_SOURCE_DIR}/external/UseFtgl.cmake)
 include_directories(

@@ -37,7 +37,10 @@ namespace omega {
 	class OMEGA_API ImageUtils
 	{
 	public:
-		enum ImageFormat { FormatPng };
+		enum ImageFormat { 
+			FormatPng,
+			FormatJpeg
+		};
 
 		struct LoadImageAsyncTaskData
 		{

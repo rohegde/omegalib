@@ -246,6 +246,7 @@ struct across_sessions_data {
 // Struct of data to be passed across the entire session
 struct per_session_data {
 	PortholeGUI* guiManager;
+	unsigned long long oldus;
 };
 
 // Struct of a socket message: payload and its length
@@ -327,14 +328,17 @@ inline void print(json_value *value, int ident = 0)
 #define MSG_DELTA_X "deltaX"
 #define MSG_DELTA_Y "deltaY"
 
+#define MSG_CAMERA_ID "camera_id"
+
 #define MSG_EVENT_PINCH "pinch"
 #define MSG_DELTA_SCALE "scale"
 #define MSG_DELTA_ROTATION "rotation"
 
-#define MSG_CAMERA_ID "camera_id"
-
 #define MSG_EVENT_INPUT "input"
 #define MSG_INPUT_FUNCTION "function"
+
+#define MSG_EVENT_CAMERA_MOD "camera_mod"
+#define MSG_CAMERA_SIZE "size"
 
 struct recv_message{
     string event_type;
@@ -346,6 +350,7 @@ struct recv_message{
 	string jsFunction;
 	int cameraId;
 	bool firstTime;
+	float cameraSize; // New size: {0,1}
 };
 
 // This is the function that handle the event received by the client,
@@ -406,6 +411,10 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
 		else if (strcmp(value->name, MSG_DELTA_ROTATION) == 0)
 			message->deltaRotation = value->float_value;
 
+		// Camera mod
+		else if (strcmp(value->name, MSG_CAMERA_SIZE) == 0)
+			message->cameraSize = value->float_value;
+
         break;
     case JSON_BOOL:
         break;
@@ -417,7 +426,7 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
 inline void handle_message(per_session_data* data, recv_message* message, 
 		struct libwebsocket_context *context, struct libwebsocket *wsi){
 
-    // cout << "MSG: " << message->event_type << endl;
+    //cout << "MSG: " << message->event_type << endl;
 
 	// Handle DRAG event
 	if (strcmp(message->event_type.c_str(),MSG_EVENT_DRAG)==0 &&
@@ -480,18 +489,25 @@ inline void handle_message(per_session_data* data, recv_message* message,
 
     }
 
-	// First message received is a device specs message
+	// First message received is a device spec message
 	// Create the GUI manager
 	else if (strcmp(message->event_type.c_str(),MSG_EVENT_SPEC)==0){
 
 		data->guiManager->setDeviceSpecifications(message->width,message->height,message->orientation);
 
-		// TODO Send the Html elements to the browser based on device specifications
+		// Send the Html elements to the browser based on device specifications
 		sendHtmlElements(message->firstTime,data,context,wsi);
 
 		// Ask for the first available slot on this channel
 		libwebsocket_callback_on_writable(context, wsi);
 	}
+
+	// Modify the camera size if FPS in client is too low
+	else if (strcmp(message->event_type.c_str(),MSG_EVENT_CAMERA_MOD)==0){
+		data->guiManager->modCustomCamera(message->cameraId, message->cameraSize);
+	}
+
+	// Javascript function bind
 	else if(strcmp(message->event_type.c_str(),MSG_EVENT_INPUT)==0){
 		//cout << message->jsFunction << endl;
 		PortholeGUI::getPortholeFunctionsBinder()->callFunction(message->jsFunction);
@@ -516,6 +532,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 
 		// Allocate gui manager
 		data->guiManager = new PortholeGUI();
+		data->oldus = 0;
 
 		break;
 	}
@@ -530,19 +547,23 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			return 0;
 		}
 
+		// Write at 60Hz, so continue if it's too early for us
+		struct timeval tv;
+		gettimeofday(&tv, NULL);
+		unsigned long long millisecondsSinceEpoch =
+			(unsigned long long)(tv.tv_sec) * 1000 +
+			(unsigned long long)(tv.tv_usec) / 1000;
+		if ((millisecondsSinceEpoch - data->oldus) < 17) {
+			libwebsocket_callback_on_writable(context, wsi);
+			return 0;
+		}
+
 		// For each camera to be streamed
 		map<int, PortholeCamera*> map = data->guiManager->getSessionCameras();
 		for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
 		{
 
 			PortholeCamera* sessionCamera = it->second;
-
-			// Write at 25Hz, so continue if it's too early for us
-			struct timeval tv;
-			gettimeofday(&tv, NULL);
-			if (((unsigned int)tv.tv_usec - sessionCamera->oldusStreamSent) < 40000) {
-				continue;
-			}
 
 			// Get the corresponding camera to be modified
 			Camera* camera = sessionCamera->camera;
@@ -559,14 +580,14 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			}
 
 			// Get camera image as PNG and base64 encode it, because only simple strings could be sent via websockets  
-			ByteArray* png = ImageUtils::encode(canvas, ImageUtils::FormatPng);
+			ByteArray* png = ImageUtils::encode(canvas, ImageUtils::FormatJpeg);
 			std::string base64image = base64_encode(png->getData(),png->getSize());
 
 			// TODO update width height ( not used now anyway )
 			string toSend = "{\"event_type\" : \"stream\", \"base64image\" : \"";
 			toSend.append(base64image.c_str());
-			toSend.append("\", \"image_width\" : " + boost::lexical_cast<string>(430) + ","
-								"\"image_height\" : " + boost::lexical_cast<string>(430*data->guiManager->getDevice()->deviceHeight/data->guiManager->getDevice()->deviceWidth) 
+			toSend.append("\", \"image_width\" : " + boost::lexical_cast<string>(0) + ","
+								"\"image_height\" : " + boost::lexical_cast<string>(0) 
 								+", \"camera_id\" : " + boost::lexical_cast<string>(sessionCamera->id) + "}");
 
 			// Send the base64 image
@@ -583,10 +604,10 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			// Free the buffer
 			delete[] buf;
 
-			// Save new timestamp
-			sessionCamera->oldusStreamSent = tv.tv_usec;
-
 		}
+
+		// Save new timestamp
+		data->oldus = millisecondsSinceEpoch;
 
 		libwebsocket_callback_on_writable(context, wsi);
 
