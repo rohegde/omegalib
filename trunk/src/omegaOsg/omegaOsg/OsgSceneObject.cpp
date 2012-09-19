@@ -29,6 +29,8 @@
 
 #include <osg/Node>
 #include <osg/MatrixTransform>
+#include <osgUtil/LineSegmentIntersector>
+#include <osgUtil/IntersectionVisitor>
 
 using namespace omegaOsg;
 
@@ -84,3 +86,28 @@ void OsgSceneObject::onVisibleChanged(SceneNode* source, bool value)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgSceneObject::onSelectedChanged(SceneNode* source, bool value) 
 {}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool OsgSceneObject::intersectRay(const Ray& ray, Vector3f* hitPoint)
+{
+	osg::Vec3d orig(ray.getOrigin().x(), ray.getOrigin().y(), ray.getOrigin().z());
+
+	Vector3f rend = ray.getPoint(1000);
+
+	osg::Vec3d end(rend.x(), rend.y(), rend.z());
+	osgUtil::LineSegmentIntersector* lsi = new osgUtil::LineSegmentIntersector(orig, end);
+	osgUtil::IntersectionVisitor iv(lsi);
+
+	myNode->accept(iv);
+
+	if(!lsi->containsIntersections()) return false;
+
+	osgUtil::LineSegmentIntersector::Intersection i = lsi->getFirstIntersection();
+	
+	osg::Vec3d intersect = i.getWorldIntersectPoint();
+
+	hitPoint->x() = intersect[0];
+	hitPoint->y() = intersect[1];
+	hitPoint->z() = intersect[2];
+	return true;
+}

@@ -240,6 +240,22 @@ void SceneNode::drawBoundingBox()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool SceneNode::hit(const Ray& ray, Vector3f* hitPoint, HitType hitType)
 {
+	if(hitType == HitBest)
+	{
+		bool hasCustomIntersectors = false;
+		foreach(ISceneObject* iso, myObjects)
+		{
+			if(iso->hasCustomRayIntersector())
+			{
+				hasCustomIntersectors = true;
+				if(iso->intersectRay(ray, hitPoint)) return true;
+			}
+		}
+
+		// If no attached scene object has a custom ray intersector, fall back to the bounding sphere technique
+		if(!hasCustomIntersectors) hitType = HitBoundingSphere;
+	}
+
 	if(hitType == HitBoundingSphere)
 	{
 		const Sphere& s = getBoundingSphere();

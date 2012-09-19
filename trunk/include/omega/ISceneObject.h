@@ -43,6 +43,8 @@ namespace omega {
 		virtual const AlignedBox3* getBoundingBox() = 0;
 		virtual bool hasBoundingBox() = 0;
 		virtual bool isInitialized() = 0;
+		virtual bool hasCustomRayIntersector() { return false; }
+		virtual bool intersectRay(const Ray& ray, Vector3f* hitPoint) { return false; }
 		virtual void initialize(Engine* server) = 0;
 	};
 }; // namespace omega
