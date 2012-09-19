@@ -33,6 +33,9 @@
 #include "omega/PythonInterpreter.h"
 #include "omicron/xml/tinyxml.h"
 
+// define initial image quality: {0,1}
+#define IMAGE_QUALITY 1
+
 using namespace omicron;
 using namespace std;
 
@@ -149,7 +152,9 @@ namespace omega {
 		Camera* camera;
 		PixelData* canvas;
 		bool followDefault;
-		unsigned int oldusStreamSent; // Timestamp of last stream sent via socket
+		int canvasWidth, canvasHeight;
+		float size; // 1.0 is default value = device size
+		//unsigned int oldusStreamSent; // Timestamp of last stream sent via socket
 	}PortholeCamera;
 
 	// Xml Document
@@ -182,6 +187,10 @@ namespace omega {
 		// Get session stream data
 		std::map<int,PortholeCamera*> getSessionCameras() { return sessionCameras; } 
 
+		// Mod the camera with id cameraId 
+		// size: the ratio of camera: 1.0 is full size ( = device width )
+		void modCustomCamera(int cameraId, float size);
+
 		static vector<string> findHtmlScripts();
 
 		static void parseXmlFile(char* xmlPath);
@@ -198,13 +207,11 @@ namespace omega {
 		// The device for which an interface will be created
 		PortholeDevice* device;
 
-		// All cameras
+		// All cameras, mapped by camera id
 		std::map<int,PortholeCamera*> sessionCameras;
 
 		// Create a Porthole custom camera and a PixelData associated
 		void createCustomCamera(bool followDefaultCamera); 
-
-		void modCustomCamera(int cameraIterator);
 
 		vector<int> camerasId; 
 

@@ -148,9 +148,9 @@ string PortholeGUI::create(bool firstTime){
 					cameraId = camerasIncrementalId;
 				}
 				else{
-					modCustomCamera(cameraIterator);
 					// Update camera id on html
 					cameraId = camerasId.at(cameraIterator);
+					modCustomCamera(cameraId, 1.0);
 					cameraIterator++;
 				}
 			}
@@ -184,7 +184,7 @@ void PortholeGUI::createCustomCamera(bool followDefaultCamera){
 	// Initialize camera size
 	// Workaround. This avoid a canvas drawing bug
 	// Round down width to a multiple of 4.
-	int width = (int)(device->deviceWidth / 4) * 4;
+	int width = (int)( IMAGE_QUALITY * device->deviceWidth / 4 ) * 4;
 	int height = width*((float)device->deviceHeight/device->deviceWidth);
 	//cout << "Width -> initially " << device->deviceWidth  << " chosen: " << width << endl;
 
@@ -199,7 +199,6 @@ void PortholeGUI::createCustomCamera(bool followDefaultCamera){
 	// Initialize the camera position to be the same as the main camera.
 	Camera* defaultCamera = myEngine->getDefaultCamera();
 	sessionCamera->setPosition(defaultCamera->getPosition() + defaultCamera->getHeadOffset());
-
 	sessionCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
 	sessionCamera->getOutput(0)->setEnabled(true);
 
@@ -208,17 +207,20 @@ void PortholeGUI::createCustomCamera(bool followDefaultCamera){
 	camera->id = ++camerasIncrementalId;
 	camera->camera =sessionCamera;
 	camera->canvas = sessionCanvas;
+	camera->canvasWidth = width;
+	camera->canvasHeight = height;
+	camera->size = IMAGE_QUALITY;
 	camera->followDefault = followDefaultCamera;
-	camera->oldusStreamSent = 0;
+	/*camera->oldusStreamSent = 0;*/
 	sessionCameras[camera->id] = camera;
 	camerasId.push_back(camera->id); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeGUI::modCustomCamera(int cameraIterator){
+void PortholeGUI::modCustomCamera(int cameraId, float size){ 
 
 	// Retrieve the camera to be modified
-	PortholeCamera* portholeCamera = sessionCameras[camerasId.at(cameraIterator)];
+	PortholeCamera* portholeCamera = sessionCameras[cameraId];
 
 	Camera* sessionCamera = portholeCamera->camera;
 
@@ -228,35 +230,15 @@ void PortholeGUI::modCustomCamera(int cameraIterator){
 	// Initialize camera size
 	// Workaround. This avoid a canvas drawing bug
 	// Round down width to a multiple of 4.
-	int width = (int)(device->deviceWidth / 4) * 4;
+	int width = (int)((size * portholeCamera->size * device->deviceWidth) / 4) * 4;
 	int height = width*((float)device->deviceHeight/device->deviceWidth);
 
-	// Code not working
+	// Set new camera target
 	portholeCamera->canvas = new PixelData(PixelData::FormatRgb, width, height);
 	sessionCamera->getOutput(0)->setReadbackTarget(portholeCamera->canvas);
 	sessionCamera->getOutput(0)->setEnabled(true);
 
-	//cout << "Mod camera pointer: " << portholeCamera->canvas << endl;
-	//cout << "Pixel data width: " << portholeCamera->canvas->getWidth() << " height: " << portholeCamera->canvas->getHeight() << endl;
-
-	//PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb, width, height);
-
-	//uint flags = Camera::ForceMono | Camera::DrawScene | Camera::Offscreen;
-
-	//// New camera equals to old but with different size of canvas... WORKAROUND to fix a bug
-	//Camera* newCamera = myEngine->createCamera(flags);
-	//newCamera->setProjection(60, 1, 0.1f, 100);
-	//newCamera->setAutoAspect(true);
-	//newCamera->setPosition(sessionCamera->getPosition() + sessionCamera->getHeadOffset());
-	//newCamera->setOrientation(sessionCamera->getOrientation());
-	//newCamera->getOutput(0)->setReadbackTarget(sessionCanvas);
-	//newCamera->getOutput(0)->setEnabled(true);
-
-	//portholeCamera.camera = newCamera;
-	//portholeCamera.canvas = sessionCanvas;
-
-	//// Remove old camera
-	//Engine::instance()->destroyCamera(sessionCamera);
+	portholeCamera->size = portholeCamera->size * size;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

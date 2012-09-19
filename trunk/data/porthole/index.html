@@ -28,7 +28,7 @@
 <html lang="en">
 <head>
  <meta charset=utf-8 />
- <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+ <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
  <meta name="apple-mobile-web-app-capable" content="yes"/>
  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
  <title>Porthole</title>
@@ -44,25 +44,24 @@
         height: 100%;
         margin: 0;
         overflow: auto;
-        font: 78%/120% arial, sans-serif;
-        line-height: 120%;
     }
     .ui-autocomplete { overflow-y: auto; width:300px;}
     * html .ui-autocomplete { /* IE max- */height: expression( this.scrollHeight > 320 ? "320px" : "auto" ); }
     .ui-autocomplete { max-height: 320px; }
     .ui-autocomplete li { font-size:10pt; }
  </style>
-
+<!--     canvas { -webkit-transform: scale3d(2, 2, 0);  -webkit-transform-origin: 0 0; }-->
 </head>
 
 <body>
 
- <div id="porthole_content"  style=" width : 100%; height : 100%; " data-role="page" data-theme="b">Initializing porthole... </div>
- <!-- <div id="DEBUG" style=" width : 100%; height : 5%; "> </div> -->
+ <div id="porthole_content"  style=" width : 100%; height : 95%; " data-role="page" data-theme="b">Initializing porthole... </div>
+ <div id="DEBUG" style=" width : 100%; height : 5%; "> </div>
 
  <!--JQuery + JQueryMobile-->
-<!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" type="text/css"/>
  <script src="http://code.jquery.com/jquery-1.7.1.min.js" type="application/javascript"></script>
+ <!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" type="text/css"/>
+ 
  <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js" type="application/javascript"></script>-->
 
  <!--Google Maps libs START-->
@@ -211,7 +210,7 @@
             var message = JSON.parse(msg.data);
 
             if (message.event_type == "stream") {
-                image = "data:image/png;base64," + message.base64image;
+                image = "data:image/jpeg;base64," + message.base64image;
                 img.src = image;
             }
             else if (message.event_type == "html_elements") {
@@ -222,8 +221,8 @@
                 initializeCameraStreams();
 
                 // Add events listeners
-                    addEvent(window, "resize", sendSpecTimeout);
-                    addEvent(window, "orientationchange", sendSpecTimeout);
+                addEvent(window, "resize", sendSpecTimeout);
+                addEvent(window, "orientationchange", sendSpecTimeout);
             }
 
         }
@@ -288,6 +287,19 @@
     var lastT, dt;
     var debugDiv;
     var looping = false;
+    var overFPS = false;
+    var FPS_MIN = 40;
+    var FPS_DELTA = 5000; // In Millis
+    var overSTART = 0;
+
+    function sendChangeResolution(change_type, size){
+         var JSONEvent = {
+            "event_type": "camera_mod",
+            "camera_id": parseInt(camera.getAttribute("data-camera_id")),
+            "size": size
+        };
+        socket.send(JSON.stringify(JSONEvent));
+    }
 
     window.requestAnimFrame = (function () {
         return window.requestAnimationFrame ||
@@ -313,11 +325,25 @@
                 watchDrag(); // Update dragging
 
             ctx.drawImage(img, 0, 0, camera.width, camera.height);
+
             // Keep framerate of the camera
-            newT = new Date().getTime();
-            dt = newT - lastT;
-            lastT = newT;
-            //debugDiv.textContent = "FPS: " + parseInt(1000 / dt);
+            now = new Date().getTime();
+            dt = now - lastT;
+            lastT = now;
+            debugDiv.textContent = "FPS: " + parseInt(1000 / dt);
+
+//            if ( ( 1000 / dt ) > FPS_MIN){
+//                overFPS = false;
+//            }
+//            else{
+//                // If first time we are over FPS, save Now
+//                if ( !overFPS ) overSTART = now;
+//                overFPS = true;
+//                if ( ( now - overSTART ) > FPS_DELTA ){
+//                    sendChangeResolution("ratio", 0.9);
+//                }
+//            }
+
         }
     })();
 

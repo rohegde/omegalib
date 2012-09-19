@@ -247,35 +247,79 @@ Ref<PixelData> ImageUtils::loadImage(const String& filename, bool hasFullPath)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ByteArray* ImageUtils::encode(PixelData* data, ImageFormat format)
 {
-	// Allocate a freeimage bitmap and memory buffer to do the conversion.
-	//FIBITMAP* fibmp = FreeImage_Allocate(data->getWidth(), data->getHeight(), 32, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
-	FIMEMORY* fmem = FreeImage_OpenMemory();
+	switch (format){
+	// PNG
+	case ImageFormat::FormatPng :
+		{
+			// Allocate a freeimage bitmap and memory buffer to do the conversion.
+			//FIBITMAP* fibmp = FreeImage_Allocate(data->getWidth(), data->getHeight(), 32, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
+			FIMEMORY* fmem = FreeImage_OpenMemory();
 
-	// For some reason it looks like color masks are ignored right now. Maybe it is just when encoding to png.
-	byte* pdpixels = data->lockData();
-	FIBITMAP* fibmp = FreeImage_ConvertFromRawBits(
-		pdpixels,
-		data->getWidth(),
-		data->getHeight(),
-		data->getPitch(),
-		data->getBpp(),
-		data->getRedMask(), data->getGreenMask(), data->getBlueMask());
+			// For some reason it looks like color masks are ignored right now. Maybe it is just when encoding to png.
+			byte* pdpixels = data->lockData();
+			FIBITMAP* fibmp = FreeImage_ConvertFromRawBits(
+				pdpixels,
+				data->getWidth(),
+				data->getHeight(),
+				data->getPitch(),
+				data->getBpp(),
+				data->getRedMask(), data->getGreenMask(), data->getBlueMask());
 
-	// Encode the bitmap to a freeimage memory buffer
-	FreeImage_SaveToMemory(FIF_PNG, fibmp, fmem);
+			// Encode the bitmap to a freeimage memory buffer
+			FreeImage_SaveToMemory(FIF_PNG, fibmp, fmem);
 
-	// Copy the freeimage memory buffer to omegalib bytearray
-	BYTE* fmemdata = NULL;
-	DWORD fmemsize = 0;
-	FreeImage_AcquireMemory(fmem, &fmemdata, &fmemsize);
-	ByteArray* encodedData = new ByteArray(fmemsize);
-	encodedData->copyFrom(fmemdata, fmemsize);
+			// Copy the freeimage memory buffer to omegalib bytearray
+			BYTE* fmemdata = NULL;
+			DWORD fmemsize = 0;
+			FreeImage_AcquireMemory(fmem, &fmemdata, &fmemsize);
+			ByteArray* encodedData = new ByteArray(fmemsize);
+			encodedData->copyFrom(fmemdata, fmemsize);
 
-	// Release resources
-	FreeImage_CloseMemory(fmem);
-	FreeImage_Unload(fibmp);
+			// Release resources
+			FreeImage_CloseMemory(fmem);
+			FreeImage_Unload(fibmp);
 
-	data->unlockData();
+			data->unlockData();
 
-	return encodedData;
+			return encodedData;
+		}
+	// JPEG
+	case ImageFormat::FormatJpeg :
+	// JPEG is default
+	default:
+		{
+			// Allocate a freeimage bitmap and memory buffer to do the conversion.
+			//FIBITMAP* fibmp = FreeImage_Allocate(data->getWidth(), data->getHeight(), 32, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
+			FIMEMORY* fmem = FreeImage_OpenMemory();
+
+			// For some reason it looks like color masks are ignored right now. Maybe it is just when encoding to png.
+			byte* pdpixels = data->lockData();
+			FIBITMAP* fibmp = FreeImage_ConvertFromRawBits(
+				pdpixels,
+				data->getWidth(),
+				data->getHeight(),
+				data->getPitch(),
+				data->getBpp(),
+				data->getRedMask(), data->getGreenMask(), data->getBlueMask());
+
+			// Encode the bitmap to a freeimage memory buffer
+			FreeImage_SaveToMemory(FIF_JPEG, fibmp, fmem);
+
+			// Copy the freeimage memory buffer to omegalib bytearray
+			BYTE* fmemdata = NULL;
+			DWORD fmemsize = 0;
+			FreeImage_AcquireMemory(fmem, &fmemdata, &fmemsize);
+			ByteArray* encodedData = new ByteArray(fmemsize);
+			encodedData->copyFrom(fmemdata, fmemsize);
+
+			// Release resources
+			FreeImage_CloseMemory(fmem);
+			FreeImage_Unload(fibmp);
+
+			data->unlockData();
+
+			return encodedData;
+		}
+
+	}
 }
