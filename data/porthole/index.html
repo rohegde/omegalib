@@ -32,8 +32,6 @@
  <meta name="apple-mobile-web-app-capable" content="yes"/>
  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
  <title>Porthole</title>
-
- <link rel="stylesheet" type="text/css" href="./porthole.css" />
  <script type="application/javascript" src="./porthole_functions_binder.js" ></script>
 
  <!--CSS Style-->
@@ -55,14 +53,14 @@
 
 <body>
 
- <div id="porthole_content"  style=" width : 100%; height : 95%; " data-role="page" data-theme="b">Initializing porthole... </div>
- <div id="DEBUG" style=" width : 100%; height : 5%; "> </div>
+ <div id="porthole_content"  style=" width : 100%; height : 100%; " data-theme="b">Initializing porthole... </div>
+<!-- <div id="DEBUG" style=" width : 100%; height : 5%; "> </div>-->
 
  <!--JQuery + JQueryMobile-->
  <script src="http://code.jquery.com/jquery-1.7.1.min.js" type="application/javascript"></script>
- <!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" type="text/css"/>
- 
- <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js" type="application/javascript"></script>-->
+ <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" type="text/css"/>
+ <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js" type="application/javascript"></script>
+ <link rel="stylesheet" type="text/css" href="./porthole.css" />
 
  <!--Google Maps libs START-->
 <!-- <script src="http://maps.google.com/maps/api/js?sensor=true&libraries=places" type="text/javascript"></script>
@@ -75,6 +73,11 @@
  <script src="https://raw.github.com/EightMedia/hammer.js/master/jquery.specialevent.hammer.js" type="application/javascript"></script>
 
  <script type="application/javascript">
+
+     // Avoid JqueryMobile to resize our server-side content
+     if ($("#porthole_content").height() < $(window).height()) {
+         $("#porthole_content").height($(window).height());
+     }
 
     var firstTime = 1;
 
@@ -215,6 +218,7 @@
             }
             else if (message.event_type == "html_elements") {
                 document.getElementById("porthole_content").innerHTML = message.innerHTML;
+                $("#porthole_content").trigger('create');
 
                 // TEST googlemap initialization
                 initializeGoogleMaps();
@@ -327,10 +331,10 @@
             ctx.drawImage(img, 0, 0, camera.width, camera.height);
 
             // Keep framerate of the camera
-            now = new Date().getTime();
-            dt = now - lastT;
-            lastT = now;
-            debugDiv.textContent = "FPS: " + parseInt(1000 / dt);
+//            now = new Date().getTime();
+//            dt = now - lastT;
+//            lastT = now;
+//            debugDiv.textContent = "FPS: " + parseInt(1000 / dt);
 
 //            if ( ( 1000 / dt ) > FPS_MIN){
 //                overFPS = false;

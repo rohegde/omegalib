@@ -3,13 +3,15 @@
   <gui_elements>
     
     <gui_element id="element1" type="HTML">
-      <div>
-        <input type="button" class="button" id="TestButton" name="PythonTEST" value="PythonTEST" onclick="print('>>Hello python')" />
-        <input type="button" class="button" id="TestButton" name="UP" value="UP" onclick="up()"/>
-        <input type="button" class="button" id="TestButton2" name="DOWN" value="DOWN" onclick="down()"/>
-        <input type="button" class="button" id="TestButton3" name="LEFT" value="LEFT" onclick="left()"/>
-        <input type="button" class="button" id="TestButton4" name="RIGHT" value="RIGHT" onclick="right()"/>
-       </div>
+      <div class="div-aligned">
+        <fieldset  data-type="horizontal" class="">
+          <!--<input type="button" id="TestButton" name="PythonTEST" value="PythonTEST" data-role="button" onclick="print('>>Hello python')" />-->
+          <input type="button" value="UP" data-role="button" onclick="up()" data-inline="true" data-corner="false" class=""/>
+          <input type="button" value="DOWN" data-role="button" onclick="down()" data-inline="true" data-corner="false" class=""/>
+          <input type="button" value="LEFT" data-role="button" onclick="left()" data-inline="true" data-corner="false" class=""/>
+          <input type="button" value="RIGHT" data-role="button" onclick="right()" data-inline="true" data-corner="false" class=""/>
+        </fieldset>
+      </div>
     </gui_element>
     
     <gui_element id="element2" type="googlemap" />
