@@ -547,13 +547,13 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			return 0;
 		}
 
-		// Write at 60Hz, so continue if it's too early for us
+		// Write at 50Hz, so continue if it's too early for us
 		struct timeval tv;
 		gettimeofday(&tv, NULL);
 		unsigned long long millisecondsSinceEpoch =
 			(unsigned long long)(tv.tv_sec) * 1000 +
 			(unsigned long long)(tv.tv_usec) / 1000;
-		if ((millisecondsSinceEpoch - data->oldus) < 17) {
+		if ((millisecondsSinceEpoch - data->oldus) < 20) {
 			libwebsocket_callback_on_writable(context, wsi);
 			return 0;
 		}
