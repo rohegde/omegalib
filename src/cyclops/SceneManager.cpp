@@ -765,7 +765,7 @@ bool SceneManager::loadModel(ModelInfo* info)
 				{
 					omsg("Optimizing model");
 					osgUtil::Optimizer optOSGFile;
-					optOSGFile.optimize(node); //, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
+					optOSGFile.optimize(node, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
 				}
 
 				if(info->usePowerOfTwoTextures)
