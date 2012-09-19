@@ -46,7 +46,7 @@ namespace omega {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! PYAPI Represents a node in the omegalib scene graph.
+	//! Represents a node in the omegalib scene graph.
 	//! @remarks
 	//!		SceneNode instances add some functionality over the Node base class. Namely:
 	//!			- renderable objects can be attached to a scene node;
@@ -58,7 +58,11 @@ namespace omega {
 	{
 	public:
 //		typedef ChildNode<SceneNode> Child;
-		enum HitType { HitBoundingSphere };
+		enum HitType { 
+			//! Perform hit tests on object bounding sphere
+			HitBoundingSphere, 
+			//! Perform hit tests using best available intersector for the node.
+			HitBest };
 		static SceneNode* create(const String& name);
 
 	public:

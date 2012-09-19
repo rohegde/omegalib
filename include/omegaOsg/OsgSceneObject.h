@@ -60,6 +60,9 @@ namespace omegaOsg
 
 		virtual bool isInitialized() { return myInitialized; }
 		virtual void initialize(Engine* server) { myInitialized = true; }
+
+		virtual bool hasCustomRayIntersector() { return true; }
+		virtual bool intersectRay(const Ray& ray, Vector3f* hitPoint);
 	private:
 		Ref<osg::Node> myNode;
 		Ref<osg::MatrixTransform> myTransform;
