@@ -34,6 +34,7 @@
 #include "omega/EqualizerDisplaySystem.h"
 #include "omega/Engine.h"
 #include "omega/Actor.h"
+#include "omega/PortholeService.h"
 
 #ifdef OMEGA_USE_PYTHON
 
@@ -701,6 +702,11 @@ BOOST_PYTHON_MODULE(omega)
 	PYAPI_REF_BASE_CLASS(Actor)
 		PYAPI_METHOD(Actor, setSceneNode)
 		PYAPI_REF_GETTER(Actor, getSceneNode)
+		;
+
+	// PortholeService
+	PYAPI_REF_BASE_CLASS(PortholeService)
+		PYAPI_STATIC_REF_GETTER(PortholeService, createAndInitialize)
 		;
 
 	// Free Functions

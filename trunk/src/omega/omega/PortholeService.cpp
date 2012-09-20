@@ -781,6 +781,25 @@ void ServerThread::threadProc(){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+PortholeService* PortholeService::createAndInitialize(int port, const String& xmlPath, const String& cssPath)
+{
+	PortholeService* service = new PortholeService();
+	ServiceManager* svcManager = SystemManager::instance()->getServiceManager();
+	svcManager->addService(service);
+
+	string fullPath_xml;
+	DataManager::findFile(xmlPath, fullPath_xml);
+
+	string fullPath_css;
+	DataManager::findFile(cssPath, fullPath_css);
+
+	PortholeFunctionsBinder* binder = new PortholeFunctionsBinder();
+	service->start(port, (char*)fullPath_xml.c_str(), (char*)fullPath_css.c_str(), binder);
+
+	return service;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 PortholeService::PortholeService()
 {
 }
