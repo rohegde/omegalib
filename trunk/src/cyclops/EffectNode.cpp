@@ -119,6 +119,7 @@ protected:
 		bool vertexShaderVariant = false;
 		bool additive = false;
 		bool disableDepth = false;
+		bool disableCull = false;
 		String variation = "";
 		libconfig::ArgumentHelper ah;
 		ah.newString("effectName", "the effect name", effectName);
@@ -130,6 +131,7 @@ protected:
 		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
 		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
 		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
+		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
 		ah.process(def.c_str());
 
 		SceneManager* sm = SceneManager::instance();
@@ -162,6 +164,14 @@ protected:
 			}
 		}
 
+		if(disableCull)
+		{
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF|osg::StateAttribute::OVERRIDE );
+		}
+		else
+		{
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON|osg::StateAttribute::OVERRIDE );
+		}
 
 		// If we have colors, add material attribute
 		if(diffuse != "")
@@ -191,6 +201,7 @@ protected:
 		bool additive = false;
 		bool vertexShaderVariant = false;
 		bool disableDepth = false;
+		bool disableCull = false;
 		libconfig::ArgumentHelper ah;
 		
 		ah.newString("effectName", "the effect name", effectName);
@@ -202,6 +213,7 @@ protected:
 		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
 		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
 		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
+		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
 		ah.process(def.c_str());
 		
 		SceneManager* sm = SceneManager::instance();
@@ -232,6 +244,15 @@ protected:
 					ss->setAttribute(bf);
 				}
 			}
+		}
+
+		if(disableCull)
+		{
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF|osg::StateAttribute::OVERRIDE );
+		}
+		else
+		{
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON|osg::StateAttribute::OVERRIDE );
 		}
 
 		if(diffuse != "")
