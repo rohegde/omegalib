@@ -61,17 +61,11 @@ namespace omega {
 		//const Vector3f& getProjectionOffset() { return myProjectionOffset; }
 		//void setProjectionOffset(const Vector3f& value) { myProjectionOffset = value; }
 
-		const Quaternion& getOrientation();
-		void setOrientation(const Quaternion& value, bool resetController=true);
-		
+		void setOrientationAndResetController(const Quaternion& value);
+
 		//! PYAPI
 		void setYawPitchRoll(const Vector3f& yawPitchRoll);
 				
-		//! PYAPI
-		const Vector3f& getPosition();
-		//! PYAPI
-		void setPosition(const Vector3f& value);
-
 		const AffineTransform3& getViewTransform();
 
 		void setProjection(float fov, float aspect, float nearZ, float farZ);
@@ -134,10 +128,6 @@ namespace omega {
 		void finishFrame(const FrameInfo& frame);
 
 	private:
-		//! View position.
-		Vector3f myPosition;
-		//! View orientation.
-		Quaternion myOrientation;
 		//! View transform
 		AffineTransform3 myViewTransform;
 
@@ -181,23 +171,11 @@ namespace omega {
 	{ myAutoAspect = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const Quaternion& Camera::getOrientation()
-	{ return myOrientation; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Camera::setOrientation(const Quaternion& value, bool resetController)
+	inline void Camera::setOrientationAndResetController(const Quaternion& value)
 	{ 
-		myOrientation = value; 
-		if(resetController && myController != NULL) myController->reset();
+		SceneNode::setOrientation(value);
+		if(myController != NULL) myController->reset();
 	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const Vector3f& Camera::getPosition() 
-	{ return myPosition; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Camera::setPosition(const Vector3f& value) 
-	{ myPosition = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Camera::setYawPitchRoll(const Vector3f& yawPitchRoll) 
@@ -205,7 +183,7 @@ namespace omega {
 		Quaternion orientation = AngleAxis(yawPitchRoll[0], Vector3f::UnitX()) * 
 			AngleAxis(yawPitchRoll[1], Vector3f::UnitY()) * 
 			AngleAxis(yawPitchRoll[2], Vector3f::UnitZ());
-		setOrientation(orientation);
+		SceneNode::setOrientation(orientation);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

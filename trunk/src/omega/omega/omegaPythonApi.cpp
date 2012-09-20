@@ -628,6 +628,11 @@ BOOST_PYTHON_MODULE(omega)
 	void (Node::*setOrientation1)(const Quaternion&) = &Node::setOrientation;
 	Node* (Node::*getChildByIndex)(unsigned short) const = &Node::getChild;
 	Node* (Node::*getChildByName)(const String&) const = &Node::getChild;
+	
+	void (Node::*removeChildByRef)(Node*) = &Node::removeChild;
+	void (Node::*removeChildByName)(const String&) = &Node::removeChild;
+	void (Node::*removeChildByIndex)(unsigned short) = &Node::removeChild;
+
 	class_<Node, Ref<Node>, boost::noncopyable >("Node", no_init)
 		.def("getPosition", &Node::getPosition, PYAPI_RETURN_VALUE)
 		.def("setPosition", setPosition1)
@@ -640,8 +645,12 @@ BOOST_PYTHON_MODULE(omega)
 		.def("roll", &Node::roll, NodeRollOverloads())
 
 		PYAPI_METHOD(Node, numChildren)
+		PYAPI_METHOD(Node, addChild)
 		.def("getChildByName", getChildByName, PYAPI_RETURN_REF)
 		.def("getChildByIndex", getChildByIndex, PYAPI_RETURN_REF)
+		.def("removeChildByRef", removeChildByRef)
+		.def("removeChildByName", removeChildByName)
+		.def("removeChildByIndex", removeChildByIndex)
 
 		PYAPI_METHOD(Node, resetOrientation)
 		PYAPI_GETTER(Node, getName)
@@ -666,9 +675,7 @@ BOOST_PYTHON_MODULE(omega)
 	;
 
 	// Camera
-	PYAPI_REF_BASE_CLASS(Camera)
-		PYAPI_GETTER(Camera, getPosition)
-		PYAPI_METHOD(Camera, setPosition)
+	PYAPI_REF_CLASS(Camera, Node)
 		PYAPI_METHOD(Camera, setYawPitchRoll)
 		PYAPI_GETTER(Camera, getHeadOffset)
 		PYAPI_METHOD(Camera, setHeadOffset)

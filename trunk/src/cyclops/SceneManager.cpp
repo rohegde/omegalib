@@ -407,7 +407,7 @@ void SceneManager::updateLights()
 			osg::Light* ol = l->myOsgLight;
 			osg::LightSource* ols = l->myOsgLightSource;
 
-			const Vector3f pos = l->getPosition();
+			const Vector3f pos = l->getDerivedPosition();
 			const Vector3f& att = l->getAttenuation();
 
 			int lightId = i++;

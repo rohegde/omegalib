@@ -109,6 +109,8 @@ void Engine::initialize()
 	myDrawPointers = syscfg->getBoolValue("config/drawPointers", myDrawPointers);
 
     myDefaultCamera = new Camera(this);
+	// By default attach camera to scene root.
+	myScene->addChild(myDefaultCamera);
 
 	// Load camera config form system config file
 	if(syscfg->exists("config/camera"))
@@ -296,6 +298,8 @@ void Engine::drawPointers(Renderer* client, RenderState* state)
 Camera* Engine::createCamera(uint flags)
 {
     Camera* cam = new Camera(this, flags);
+	// By default attach camera to scene root.
+	myScene->addChild(cam);
     myCameras.push_back(cam);
     return cam;
 }
