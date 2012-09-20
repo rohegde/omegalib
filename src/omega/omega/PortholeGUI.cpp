@@ -256,7 +256,7 @@ void PortholeGUI::modCustomCamera(int cameraId, float size){
 		// Save id attribute if not defined by user as cpp function
 		if (HTML::isEvent(attribute) && !functionsBinder->isCppDefined(pAttrib->Value())){
 			cout << "Adding script " << pAttrib->Value() << endl; 
-			string key = "python_script"+boost::lexical_cast<string>(functionsBinder->scriptNumber)+"()";
+			string key = "python_script"+boost::lexical_cast<string>(functionsBinder->scriptNumber)+"(event)";
 			functionsBinder->addPythonScript(pAttrib->Value(), key); // Insert the new script
 			pAttrib->SetValue(key.c_str());
 		}

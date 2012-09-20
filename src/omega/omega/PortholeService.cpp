@@ -116,25 +116,6 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 			break;
 		}
 
-		///* Multitouch scripts */
-		//else if (in && strcmp((char*)in, "/hammer.js") == 0) {
-		//	if (libwebsockets_serve_http_file(wsi,
-		//	     (DATA_PATH+"/hammer.js").c_str(), "application/javascript"))
-		//		fprintf(stderr, "Failed to send hammer.js\n");
-		//	break;
-		//}
-		//else if (in && strcmp((char*)in, "/jquery.hammer.js") == 0) {
-		//	if (libwebsockets_serve_http_file(wsi,
-		//	     (DATA_PATH+"/jquery.hammer.js").c_str(), "application/javascript"))
-		//		fprintf(stderr, "Failed to send jquery.hammer.js\n");
-		//	break;
-		//}
-		//else if (in && strcmp((char*)in, "/jquery.specialevent.hammer.js") == 0) {
-		//	if (libwebsockets_serve_http_file(wsi,
-		//	     (DATA_PATH+"/jquery.specialevent.hammer.js").c_str(), "application/javascript"))
-		//		fprintf(stderr, "Failed to send jquery.specialevent.hammer.js\n");
-		//	break;
-		//}
 		else if (in && strcmp((char*)in, "/ui.geo_autocomplete.js") == 0) {
 			if (libwebsockets_serve_http_file(wsi,
 			     (DATA_PATH+"/ui.geo_autocomplete.js").c_str(), "application/javascript"))
@@ -162,19 +143,21 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 			for(py_it = functionsBinder->pythonFunMap.begin(); py_it != functionsBinder->pythonFunMap.end(); py_it++){
 				content.append(" function ");
 				content.append(py_it->first);
-				content.append(" { "
+				content.append("{ "
 									"var JSONEvent = {"
 									"\"event_type\": \"input\","
+									"\"button\": event.button,"
+									"\"char\": getChar(event),"
 									"\"function\": \"");
 				content.append(py_it->first);
 				content.append("\""
-									"}; console.log(JSON.stringify(socket)); "
+									"};"
 									"socket.send(JSON.stringify(JSONEvent));"
 								"}");
 			}
 
 			// Cpp functions
-			typedef void(*memberFunction)();
+			typedef void(*memberFunction)(PortholeEvent&);
 			std::map<std::string, memberFunction>::const_iterator cpp_it;
 			for(cpp_it = functionsBinder->cppFuncMap.begin(); cpp_it != functionsBinder->cppFuncMap.end(); cpp_it++ ){
 
@@ -183,10 +166,12 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 				content.append("{ "
 									"var JSONEvent = {"
 									"\"event_type\": \"input\","
+									"\"button\": event.button,"
+									"\"char\": getChar(event),"
 									"\"function\": \"");
 				content.append(cpp_it->first);
 				content.append("\""
-									"}; console.log(JSON.stringify(socket)); "
+									"};"
 									"socket.send(JSON.stringify(JSONEvent));"
 								"}");
 			}
@@ -336,6 +321,8 @@ inline void print(json_value *value, int ident = 0)
 
 #define MSG_EVENT_INPUT "input"
 #define MSG_INPUT_FUNCTION "function"
+#define MSG_INPUT_BUTTON "button"
+#define MSG_INPUT_CHAR "char"
 
 #define MSG_EVENT_CAMERA_MOD "camera_mod"
 #define MSG_CAMERA_SIZE "size"
@@ -351,6 +338,8 @@ struct recv_message{
 	int cameraId;
 	bool firstTime;
 	float cameraSize; // New size: {0,1}
+	int button;
+	char key;
 };
 
 // This is the function that handle the event received by the client,
@@ -382,6 +371,14 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
 		// Input Javascript function name
 		else if (strcmp(value->name, MSG_INPUT_FUNCTION) == 0)
             message->jsFunction = value->string_value;
+
+		// Input mouse button value (0|1|2)
+		else if (strcmp(value->name, MSG_INPUT_BUTTON) == 0)
+			message->button = atoi(value->string_value);
+
+		// Input key value
+		else if (strcmp(value->name, MSG_INPUT_BUTTON) == 0)
+			message->key = value->string_value[0];
 
         break;
     case JSON_INT:
@@ -509,8 +506,10 @@ inline void handle_message(per_session_data* data, recv_message* message,
 
 	// Javascript function bind
 	else if(strcmp(message->event_type.c_str(),MSG_EVENT_INPUT)==0){
-		//cout << message->jsFunction << endl;
-		PortholeGUI::getPortholeFunctionsBinder()->callFunction(message->jsFunction);
+		// Create event
+		PortholeEvent ev = {message->jsFunction, message->button, message->key, 0, data->guiManager->getSessionCameras()};
+		// Call the function or python script
+		PortholeGUI::getPortholeFunctionsBinder()->callFunction(message->jsFunction, ev);
 	}
 
 }
@@ -569,9 +568,6 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			Camera* camera = sessionCamera->camera;
 			PixelData* canvas = sessionCamera->canvas;
 
-			//cout << "Stream " << canvas << endl;
-			//cout << "Pixel data width: " << canvas->getWidth() << " height: " << canvas->getHeight() << endl;
-
 			// If camera need to be equal to default camera, update position
 			if (sessionCamera->followDefault){
 				Camera* defaultCamera = Engine::instance()->getDefaultCamera();
@@ -586,9 +582,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			// TODO update width height ( not used now anyway )
 			string toSend = "{\"event_type\" : \"stream\", \"base64image\" : \"";
 			toSend.append(base64image.c_str());
-			toSend.append("\", \"image_width\" : " + boost::lexical_cast<string>(0) + ","
-								"\"image_height\" : " + boost::lexical_cast<string>(0) 
-								+", \"camera_id\" : " + boost::lexical_cast<string>(sessionCamera->id) + "}");
+			toSend.append("\", \"camera_id\" : " + boost::lexical_cast<string>(sessionCamera->id) + "}");
 
 			// Send the base64 image
 			unsigned char* buf;

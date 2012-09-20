@@ -74,6 +74,17 @@
 
  <script type="application/javascript">
 
+     // event.type must be keypress
+     function getChar(event) {
+         if (event.which == null) {
+             return String.fromCharCode(event.keyCode) // IE
+         } else if (event.which != 0 && event.charCode != 0) {
+             return String.fromCharCode(event.which)   // the rest
+         } else {
+             return null // special key
+         }
+     }
+
      // Avoid JqueryMobile to resize our server-side content
      if ($("#porthole_content").height() < $(window).height()) {
          $("#porthole_content").height($(window).height());
@@ -218,7 +229,14 @@
             }
             else if (message.event_type == "html_elements") {
                 document.getElementById("porthole_content").innerHTML = message.innerHTML;
+
+                // Set jquery mobile interface
                 $("#porthole_content").trigger('create');
+
+                // Make slider responsive
+                $('a[role*="slider"]').touchend(function (event, ui) {
+                    alert("Touch Value = " + $(this).attr("aria-valuenow"));
+                });
 
                 // TEST googlemap initialization
                 initializeGoogleMaps();
@@ -227,6 +245,7 @@
                 // Add events listeners
                 addEvent(window, "resize", sendSpecTimeout);
                 addEvent(window, "orientationchange", sendSpecTimeout);
+
             }
 
         }
