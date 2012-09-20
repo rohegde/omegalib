@@ -112,6 +112,7 @@ namespace omega {
 	class OMEGA_API PortholeService: public Service{
 
 	public:
+		static PortholeService* createAndInitialize(int port, const String& xmlPath, const String& cssPath);
 
 		//! Allocator function (will be used to register the service inside SystemManager)
 		static PortholeService* New() { return new PortholeService(); }
