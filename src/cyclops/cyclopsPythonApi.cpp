@@ -1,11 +1,11 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
- * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted 
  * provided that the following conditions are met:
@@ -62,6 +62,8 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_METHOD(SceneManager, hideWand)
 		PYAPI_METHOD(SceneManager, setWandEffect)
 		PYAPI_METHOD(SceneManager, setWandSize)
+		PYAPI_GETTER(SceneManager, getCurrentShadowSettings)
+		PYAPI_METHOD(SceneManager, resetShadowSettings)
 		;
 
 	// Entity
@@ -131,13 +133,11 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def_readwrite("usePowerOfTwoTextures", &ModelInfo::usePowerOfTwoTextures)
 		;
 
-	//class_<SkyboxSwitcher, boost::noncopyable, Ref<SkyboxSwitcher> >("SkyboxSwitcher", no_init)
-	//	PYAPI_STATIC_REF_GETTER(SkyboxSwitcher, createAndInitialize)
-	//	.def("getNumSkyboxes", &SkyboxSwitcher::getNumSkyboxes)
-	//	.def("getActiveSkybox", &SkyboxSwitcher::getActiveSkybox)
-	//	.def("setActiveSkybox", &SkyboxSwitcher::setActiveSkybox)
-	//	PYAPI_REF_GETTER(SkyboxSwitcher, getSkybox)
-	//	;
+	// ShadowSetings
+	class_<ShadowSettings>("ShadowSettings")
+		.def_readwrite("shadowsEnabled", &ShadowSettings::shadowsEnabled)
+		.def_readwrite("shadowResolutionRatio", &ShadowSettings::shadowResolutionRatio)
+		;
 
 	PYAPI_REF_BASE_CLASS_WITH_CTOR(Skybox)
 		PYAPI_METHOD(Skybox, loadCubeMap)
