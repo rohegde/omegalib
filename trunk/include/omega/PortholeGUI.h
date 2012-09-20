@@ -45,6 +45,28 @@ namespace omega {
 
 		static const int eventsNumber = 19;
 
+		enum Event{
+			OnLoad,
+			OnUnload,
+			OnBlur,
+			OnChange,
+			OnFocus,
+			OnReset,
+			OnSelect,
+			OnSubmit,
+			OnAbort,
+			OnKeyDown,
+			OnKeyPress,
+			OnKeyUp,
+			OnClick,
+			OnDblClick,
+			OnMouseDown,
+			OnMouseMove,
+			OnMouseOut,
+			OnMouseOver,
+			OnMouseUp
+		};
+
 		// All HTML compatible events that could be found parsing the application xml
 		static const string events[eventsNumber] = {
 			"onload",  /* Script to be run when a document load */
@@ -80,49 +102,6 @@ namespace omega {
 	// Id to be assigned to new cameras
 	static int camerasIncrementalId = 0;
 
-	// Porthole functions binder
-	struct PortholeFunctionsBinder: ReferenceType{
-
-		typedef void(*memberFunction)();
-
-		void addFunction(std::string funcName, memberFunction func)
-		{
-			cppFuncMap[funcName] = func;
-		}
-
-		void addPythonScript(std::string script, string key){
-			pythonFunMap[key] = script;
-			scriptNumber++;
-		}
-
-		void callFunction(std::string funcName)
-		{
-			std::map<std::string, memberFunction>::const_iterator cpp_it;
-			cpp_it = cppFuncMap.find(funcName);
-			if (cpp_it != cppFuncMap.end())	return (*cpp_it->second)();
-
-			std::map<std::string, string>::const_iterator py_it;
-			py_it = pythonFunMap.find(funcName);
-			if (py_it != pythonFunMap.end()){
-				PythonInterpreter* pi = SystemManager::instance()->getScriptInterpreter();
-				pi->queueCommand(py_it->second); 
-			}
-			return;
-		}
-
-		bool isCppDefined(string funcName)
-		{
-			std::map<std::string, memberFunction>::const_iterator it;
-			it = cppFuncMap.find(funcName);
-			if (it != cppFuncMap.end()) return true;
-			return false;
-		}
-
-		std::map<std::string, memberFunction> cppFuncMap;
-		std::map<std::string, string> pythonFunMap;
-		int scriptNumber;
-	};
-
 	// This will old a possible interface
 	typedef struct PortholeInterfaceType: ReferenceType{
 		int minWidth;
@@ -147,6 +126,7 @@ namespace omega {
 		string htmlValue;
 	} PortholeElement;
 
+	// A omega Camera wrapper for Porthole
 	typedef struct PortholeCamera: ReferenceType{
 		int id;
 		Camera* camera;
@@ -156,6 +136,60 @@ namespace omega {
 		float size; // 1.0 is default value = device size
 		//unsigned int oldusStreamSent; // Timestamp of last stream sent via socket
 	}PortholeCamera;
+
+	// An obj binded with a Javascript event
+	typedef struct PortholeEvent{
+		std::string htmlEvent;
+		int mouseButton;
+		char key;
+		float value;
+		std::map<int,PortholeCamera*> sessionCameras;
+	}PortholeEvent;
+
+	// Porthole functions binder
+	struct PortholeFunctionsBinder: ReferenceType{
+
+		typedef void(*memberFunction)(PortholeEvent&);
+
+		void addFunction(std::string funcName, memberFunction func)
+		{
+			cppFuncMap[funcName] = func;
+		}
+
+		void addPythonScript(std::string script, string key){
+			pythonFunMap[key] = script;
+			scriptNumber++;
+		}
+
+		void callFunction(std::string funcName, PortholeEvent &ev)
+		{
+			std::map<std::string, memberFunction>::const_iterator cpp_it;
+			cpp_it = cppFuncMap.find(funcName);
+			if (cpp_it != cppFuncMap.end())	return (*cpp_it->second)(ev);
+
+			std::map<std::string, string>::const_iterator py_it;
+			py_it = pythonFunMap.find(funcName);
+			if (py_it != pythonFunMap.end()){
+				PythonInterpreter* pi = SystemManager::instance()->getScriptInterpreter();
+				pi->queueCommand(py_it->second); 
+			}
+			return;
+		}
+
+		bool isCppDefined(string funcName)
+		{
+			std::map<std::string, memberFunction>::const_iterator it;
+			it = cppFuncMap.find(funcName);
+			if (it != cppFuncMap.end()) return true;
+			return false;
+		}
+
+		std::map<std::string, memberFunction> cppFuncMap;
+		std::map<std::string, string> pythonFunMap;
+		int scriptNumber;
+	};
+
+
 
 	// Xml Document
 	static TiXmlDocument* xmlDoc;

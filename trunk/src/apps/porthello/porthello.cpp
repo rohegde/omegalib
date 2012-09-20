@@ -34,27 +34,44 @@
 using namespace omega;
 
 // Example function to be binded to a button clicked
-void up(){
-	cout << ">>>> Porthello: up" << endl;
+void up(PortholeEvent &ev){
+	map<int, PortholeCamera*> map = ev.sessionCameras;
+	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
+	{
+		Vector3f myPosition = it->second->camera->getPosition();
+		myPosition[1] += 0.05f;
+		it->second->camera->setPosition(myPosition);
+	}
 }
 
-void down(){
-	cout << ">>>> Porthello: down" << endl;
+void down(PortholeEvent &ev){
+	map<int, PortholeCamera*> map = ev.sessionCameras;
+	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
+	{
+		Vector3f myPosition = it->second->camera->getPosition();
+		myPosition[1] -= 0.05f;
+		it->second->camera->setPosition(myPosition);
+	}
 }
 
-void left(){
-	cout << ">>>> Porthello: left" << endl;
+void left(PortholeEvent &ev){
+	map<int, PortholeCamera*> map = ev.sessionCameras;
+	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
+	{
+		Vector3f myPosition = it->second->camera->getPosition();
+		myPosition[0] -= 0.05f;
+		it->second->camera->setPosition(myPosition);
+	}
 }
 
-void right(){
-	//Vector3f myPosition = data->sessionCamera->getPosition();
-	//cout << "Initial position: x = " << myPosition[0] << " y = " << myPosition[1] << endl;
-	// Change x,y coords
-	//myPosition[0] += message->deltaX/100; // TODO check step
-    //myPosition[1] += message->deltaY/100;
-	//defaultCamera->setPosition(myPosition);
-	//data->sessionCamera->setPosition(myPosition);	
-	//cout << "Final position: x = " << myPosition[0] << " y = " << myPosition[1] << endl;
+void right(PortholeEvent &ev){
+	map<int, PortholeCamera*> map = ev.sessionCameras;
+	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
+	{
+		Vector3f myPosition = it->second->camera->getPosition();
+		myPosition[0] += 0.05f;
+		it->second->camera->setPosition(myPosition);
+	}
 }
 
 class HelloApplication;
@@ -106,10 +123,10 @@ void HelloRenderPass::initialize()
 
 	// Functions Bind
 	PortholeFunctionsBinder* binder = new PortholeFunctionsBinder();
-	binder->addFunction("up()", &up);
-	binder->addFunction("down()", &down);
-	binder->addFunction("left()", &left);
-	binder->addFunction("right()", &right);
+	binder->addFunction("up(event)", &up);
+	binder->addFunction("down(event)", &down);
+	binder->addFunction("left(event)", &left);
+	binder->addFunction("right(event)", &right);
 
 	// Porthole initialize the porthole service
 	PortholeService* service = new PortholeService();
