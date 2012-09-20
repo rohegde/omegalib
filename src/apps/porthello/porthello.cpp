@@ -34,6 +34,16 @@
 using namespace omega;
 
 // Example function to be binded to a button clicked
+void zoomSlider(PortholeEvent &ev){
+	map<int, PortholeCamera*> map = ev.sessionCameras;
+	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
+	{
+		Vector3f myPosition = it->second->camera->getPosition();
+		myPosition[2] = ev.value/100; // TODO check scale factor
+		it->second->camera->setPosition(myPosition);
+	}
+}
+
 void up(PortholeEvent &ev){
 	map<int, PortholeCamera*> map = ev.sessionCameras;
 	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
@@ -127,6 +137,7 @@ void HelloRenderPass::initialize()
 	binder->addFunction("down(event)", &down);
 	binder->addFunction("left(event)", &left);
 	binder->addFunction("right(event)", &right);
+	binder->addFunction("zoomSlider(event)", &zoomSlider);
 
 	// Porthole initialize the porthole service
 	PortholeService* service = new PortholeService();

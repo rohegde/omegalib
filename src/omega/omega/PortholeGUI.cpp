@@ -38,12 +38,10 @@ std::map<string, PortholeElement*> PortholeGUI::elementsMap;
 ///////////////////////////////////////////////////////////////////////////////////////////////
 PortholeGUI::PortholeGUI()
 {
-	xmlPrinter = new TiXmlPrinter();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 PortholeGUI::~PortholeGUI(){
-	delete xmlPrinter;
 	delete device;
 }
 
@@ -297,7 +295,6 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 	findHtmlScripts();
 
 	TiXmlNode* guiElements = xmlDoc->FirstChildElement()->FirstChildElement();
-	TiXmlPrinter* xmlPrinter = new TiXmlPrinter();
 
 	// Parse the GUI elements
 	for (TiXmlNode* pChild = guiElements->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
@@ -339,6 +336,7 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 			// Parse the GUI elements
 			for (TiXmlNode* pHtmlChild = pChild->FirstChildElement(); pHtmlChild != 0; pHtmlChild = pHtmlChild->NextSiblingElement()){
 				
+				TiXmlPrinter* xmlPrinter = new TiXmlPrinter();
 				// TODO FIXME not inside div -> fail
 				pHtmlChild->Accept( xmlPrinter );
 				//cout << "Added: " << id << " -> " << xmlPrinter->CStr() << endl;
@@ -346,6 +344,7 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 				// delete new line
 				element->htmlValue.erase(std::remove(element->htmlValue.begin(), element->htmlValue.end(), '\n'), element->htmlValue.end());
 
+				delete xmlPrinter;
 			}
 
 		}
