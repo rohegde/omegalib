@@ -41,7 +41,7 @@ void CameraController::updateCamera(const Vector3f& speed, float yaw, float pitc
 		Vector3f ns = orientation * speed;
 		Vector3f position = myCamera->getPosition() + (ns * dt);
 		myCamera->setPosition(position);
-		myCamera->setOrientation(orientation , false);
+		myCamera->setOrientationAndResetController(orientation);
 	}
 }
 

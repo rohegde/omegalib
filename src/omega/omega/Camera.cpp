@@ -42,10 +42,8 @@ Camera::Camera(Engine* e, uint flags):
 	myFlags(flags),
 	myController(NULL),
 	myControllerEnabled(false),
-	myPosition(Vector3f::Zero()),
 	myTrackingEnabled(false),
 	myTrackerSourceId(-1),
-	myOrientation(Quaternion::Identity()),
 	myHeadOrientation(Quaternion::Identity())
 {
 	//myProjectionOffset = -Vector3f::UnitZ();
@@ -141,15 +139,16 @@ void Camera::update(const UpdateContext& context)
 	myHeadTransform.rotate(myHeadOrientation);
 
 	// Update view transform.
-	myViewTransform = Math::makeViewMatrix(myPosition, myOrientation);
+	myViewTransform = Math::makeViewMatrix(mPosition, mOrientation);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 void Camera::focusOn(SceneNode* node)
 {
 	const Sphere& bs = node->getBoundingSphere();
-	myOrientation = Quaternion::Identity();
-	myPosition = bs.getCenter() + Vector3f(0, 0, bs.getRadius());
+	mOrientation = Quaternion::Identity();
+	mPosition = bs.getCenter() + Vector3f(0, 0, bs.getRadius());
+    needUpdate();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -248,12 +247,12 @@ Ray Camera::getViewRay(const Vector2f& normalizedPoint)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Vector3f Camera::localToWorldPosition(const Vector3f& position)
 {
-	Vector3f res = myPosition + myOrientation * position;
+	Vector3f res = mPosition + mOrientation * position;
     return res;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Quaternion Camera::localToWorldOrientation(const Quaternion& orientation)
 {
-	return myOrientation * orientation;
+	return mOrientation * orientation;
 }
