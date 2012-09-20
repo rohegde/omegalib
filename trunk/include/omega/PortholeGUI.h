@@ -235,9 +235,6 @@ namespace omega {
 
 	private:
 
-		// XML
-		TiXmlPrinter* xmlPrinter;
-
 		// The device for which an interface will be created
 		PortholeDevice* device;
 

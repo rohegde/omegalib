@@ -148,6 +148,7 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 									"\"event_type\": \"input\","
 									"\"button\": event.button,"
 									"\"char\": getChar(event),"
+									"\"value\": event.target.value,"
 									"\"function\": \"");
 				content.append(py_it->first);
 				content.append("\""
@@ -168,6 +169,7 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 									"\"event_type\": \"input\","
 									"\"button\": event.button,"
 									"\"char\": getChar(event),"
+									"\"value\": event.target.value,"
 									"\"function\": \"");
 				content.append(cpp_it->first);
 				content.append("\""
@@ -323,6 +325,7 @@ inline void print(json_value *value, int ident = 0)
 #define MSG_INPUT_FUNCTION "function"
 #define MSG_INPUT_BUTTON "button"
 #define MSG_INPUT_CHAR "char"
+#define MSG_INPUT_VALUE "value"
 
 #define MSG_EVENT_CAMERA_MOD "camera_mod"
 #define MSG_CAMERA_SIZE "size"
@@ -338,7 +341,7 @@ struct recv_message{
 	int cameraId;
 	bool firstTime;
 	float cameraSize; // New size: {0,1}
-	int button;
+	int button, value;
 	char key;
 };
 
@@ -379,6 +382,9 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
 		// Input key value
 		else if (strcmp(value->name, MSG_INPUT_BUTTON) == 0)
 			message->key = value->string_value[0];
+
+		else if (strcmp(value->name, MSG_INPUT_VALUE) == 0)
+			message->value = atoi(value->string_value);
 
         break;
     case JSON_INT:
@@ -507,7 +513,7 @@ inline void handle_message(per_session_data* data, recv_message* message,
 	// Javascript function bind
 	else if(strcmp(message->event_type.c_str(),MSG_EVENT_INPUT)==0){
 		// Create event
-		PortholeEvent ev = {message->jsFunction, message->button, message->key, 0, data->guiManager->getSessionCameras()};
+		PortholeEvent ev = {message->jsFunction, message->button, message->key, message->value, data->guiManager->getSessionCameras()};
 		// Call the function or python script
 		PortholeGUI::getPortholeFunctionsBinder()->callFunction(message->jsFunction, ev);
 	}
