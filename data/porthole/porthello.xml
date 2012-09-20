@@ -6,10 +6,10 @@
       <div class="div-aligned">
         <fieldset  data-type="horizontal" class="">
           <!--<input type="button" id="TestButton" name="PythonTEST" value="PythonTEST" data-role="button" onclick="print('>>Hello python')" />-->
-          <input type="button" value="UP" data-role="button" onmousedown="up(event)" data-inline="true" data-corner="false" class=""/>
-          <input type="button" value="DOWN" data-role="button" onmousedown="down(event)" data-inline="true" data-corner="false" class=""/>
-          <input type="button" value="LEFT" data-role="button" onmousedown="left(event)" data-inline="true" data-corner="false" class=""/>
-          <input type="button" value="RIGHT" data-role="button" onmousedown="right(event)" data-inline="true" data-corner="false" class=""/>
+          <input type="button" value="UP" data-role="button" onmousedown="up(event)" data-inline="true" data-corner="false" data-continuous="true" class=""/>
+          <input type="button" value="DOWN" data-role="button" onmousedown="down(event)" data-inline="true" data-corner="false" data-continuous="true" class=""/>
+          <input type="button" value="LEFT" data-role="button" onmousedown="left(event)" data-inline="true" data-corner="false" data-continuous="true" class=""/>
+          <input type="button" value="RIGHT" data-role="button" onmousedown="right(event)" data-inline="true" data-corner="false" data-continuous="true" class=""/>
         </fieldset>
       </div>
     </gui_element>

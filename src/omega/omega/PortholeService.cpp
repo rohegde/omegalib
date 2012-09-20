@@ -135,7 +135,7 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 		else if (in && strcmp((char*)in, "/porthole_functions_binder.js") == 0) {
 			
 			// Build Content. Socket var is used to hold the JS socket object
-			string content = "var socket; ";
+			string content = "var socket; var JSONToSend; var sendContinuous;";
 			
 			// Python scripts
 			PortholeFunctionsBinder* functionsBinder = PortholeGUI::getPortholeFunctionsBinder();
@@ -152,7 +152,8 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 									"\"function\": \"");
 				content.append(py_it->first);
 				content.append("\""
-									"};"
+									"}; JSONToSend = JSONEvent;"
+									"sendContinuous = event.target.getAttribute(\"data-continuous\");"
 									"socket.send(JSON.stringify(JSONEvent));"
 								"}");
 			}
@@ -173,7 +174,8 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 									"\"function\": \"");
 				content.append(cpp_it->first);
 				content.append("\""
-									"};"
+									"}; JSONToSend = JSONEvent;"
+									"sendContinuous = event.target.getAttribute(\"data-continuous\");"
 									"socket.send(JSON.stringify(JSONEvent));"
 								"}");
 			}
@@ -626,7 +628,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		json_value *root = json_parse((char*)in, &errorPos, &errorDesc, &errorLine, &allocator);
 		if (root)
 		{
-            //print(root);
+            print(root);
             parse_json_message(root, data, &message);
             handle_message(data, &message, context, wsi);
 		}

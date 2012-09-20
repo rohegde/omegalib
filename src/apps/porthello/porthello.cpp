@@ -49,7 +49,7 @@ void up(PortholeEvent &ev){
 	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
 	{
 		Vector3f myPosition = it->second->camera->getPosition();
-		myPosition[1] += 0.05f;
+		myPosition[1] += 0.025f;
 		it->second->camera->setPosition(myPosition);
 	}
 }
@@ -59,7 +59,7 @@ void down(PortholeEvent &ev){
 	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
 	{
 		Vector3f myPosition = it->second->camera->getPosition();
-		myPosition[1] -= 0.05f;
+		myPosition[1] -= 0.025f;
 		it->second->camera->setPosition(myPosition);
 	}
 }
@@ -69,7 +69,7 @@ void left(PortholeEvent &ev){
 	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
 	{
 		Vector3f myPosition = it->second->camera->getPosition();
-		myPosition[0] -= 0.05f;
+		myPosition[0] -= 0.025f;
 		it->second->camera->setPosition(myPosition);
 	}
 }
@@ -79,7 +79,7 @@ void right(PortholeEvent &ev){
 	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
 	{
 		Vector3f myPosition = it->second->camera->getPosition();
-		myPosition[0] += 0.05f;
+		myPosition[0] += 0.025f;
 		it->second->camera->setPosition(myPosition);
 	}
 }

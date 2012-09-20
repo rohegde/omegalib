@@ -52,9 +52,6 @@
 
 <body>
 
- <div id="porthole_content"  style=" width : 100%; height : 100%; " data-theme="b">Initializing porthole... </div>
-<!-- <div id="DEBUG" style=" width : 100%; height : 5%; "> </div>-->
-
  <!--JQuery + JQueryMobile-->
  <script src="http://code.jquery.com/jquery-1.7.1.min.js" type="application/javascript"></script>
  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" type="text/css"/>
@@ -72,6 +69,13 @@
 
  <script src="http://raw.github.com/EightMedia/hammer.js/master/hammer.js" type="application/javascript"></script>
  <script src="https://raw.github.com/EightMedia/hammer.js/master/jquery.specialevent.hammer.js" type="application/javascript"></script>
+
+ <div id="porthole_content"  style=" width : 100%; height : 100%; " data-theme="b">
+   <div data-role="header">
+	<h1>Porthole Initialization</h1>
+   </div>
+ </div>
+<!-- <div id="DEBUG" style=" width : 100%; height : 5%; "> </div>-->
 
  <script type="application/javascript">
 
@@ -105,7 +109,17 @@
     // Disable global scrolling
     document.body.addEventListener('touchmove', function (event) {
         event.preventDefault();
-    }, false); 
+    }, false);
+
+    // Save if user is tapping
+    var mouseDown = 0;
+    // Start tracking if user is tapping or not
+    document.body.onmousedown = function () {
+        mouseDown = 1;
+    }
+    document.body.onmouseup = function () {
+        mouseDown = 0;
+    }
 
     ///////////////// DEFINE METADATA AT RUNTIME ////////////////////////
     function setOrCreateMetaTag(metaName, name, value) {
@@ -231,12 +245,11 @@
             else if (message.event_type == "html_elements") {
                 document.getElementById("porthole_content").innerHTML = message.innerHTML;
 
+                // Height fix
+                $("#porthole_content").height($(window).height());
+                
                 // Set jquery mobile interface
                 $("#porthole_content").trigger('create');
-
-
-                // Make slider responsive
-
 
                 // TEST googlemap initialization
                 initializeGoogleMaps();
@@ -348,6 +361,11 @@
                 watchDrag(); // Update dragging
 
             ctx.drawImage(img, 0, 0, camera.width, camera.height);
+
+            // Button streaming value
+            if (mouseDown==1 && sendContinuous == "true" && JSONToSend != undefined && JSONToSend != null){
+                socket.send(JSON.stringify(JSONToSend));
+            }
 
             // Keep framerate of the camera
 //            now = new Date().getTime();
