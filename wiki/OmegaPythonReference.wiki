@@ -6,49 +6,65 @@
 = Module omega =
 The omega module contains all the core functionality of omegalib like scene graph management and event handling. It also offers a few utility functions to manage verious aspects of an omegalib application.
 
-Module classes:
- * `Event`
- * `Engine`
- * `Node`
- * `SceneNode`
- * `Camera`
- * `Color`
- * `Setting`
- * `Actor`
+-------------------------------------------------------------------------------
+==  `class SceneNode` ==
+Wraps the [omega::SceneNode link] C++ class. Base class for nodes in the scene graph
 
-Module enumerations:
- * `EventType`
- * `EventFlags`
- * `EventExtraDataType`
- * `ServiceType`
+=== Methods ===
+==== `create(name)` ====
+Creates a scene node with the specified name
 
-Module free functions:
- * `getEvent`
- * `getEngine`
- * `getDefaultCamera`
- * `getScene`
- * `querySceneRay`
- * `getRayFromEvent`
- * `printChildren`
- * `printObjCounts`
- * `settingLookup`
- * `settingExists`
- * `toggleStats`
- * `addSelectionListener`
- * `addVisibilityListener`
- * `oexit`
- * `ofindFile`
- * `orun`
- * `setUpdateFunction`
- * `setEventFunction`
+==== `getName()` ====
+Gets the node name
+	
+==== `getPosition()` ====
+==== `setPosition(pos)` ====
+Get and set the node position
+{{{
+	node.setPosition(Vector3(0, 0, 0))
+}}}
+
+==== `getScale()` ====
+==== `setScale(pos)` ====
+Get and set the node scale
+{{{
+	scale = node.getScale()
+	scale = scale * 2
+	node.setScale(scale)
+}}}
 
 -------------------------------------------------------------------------------
-==  `class Node` ==
-Wraps the [omega::Node link] C++ class. Base class for nodes in the scene graph
+	setOrientation(orientation)
+	quaternion getOrientation()
+	yaw(radians)
+	pitch(radians)
+	roll(radians)
+	
+	# Node hierarchy
+	numChildren()
+	getChildByName(name)
+	getChildByIndex(index)
+	getParent()
+	
+	# Visibility
+	isVisible()
+	setVisible(value)
+	
+	# Bounding box
+	isBoundingBoxVisible()
+	setBoundingBoxVisible(value)
+	
+	# Selection control
+	isSelected()
+	setSelected(value)
+	isSelectable()
+	setSelectable(value)
+	
 
 === Methods ===
 {{{
 	# Basic
+	create(name)
 	getName()
 	
 	# Node manipulation
@@ -67,9 +83,24 @@ Wraps the [omega::Node link] C++ class. Base class for nodes in the scene graph
 	getChildByName(name)
 	getChildByIndex(index)
 	getParent()
+	
+	# Visibility
+	isVisible()
+	setVisible(value)
+	
+	# Bounding box
+	isBoundingBoxVisible()
+	setBoundingBoxVisible(value)
+	
+	# Selection control
+	isSelected()
+	setSelected(value)
+	isSelectable()
+	setSelectable(value)
 }}}
 
-=== Example ===
+=== A Basic Example ===
+The following code shows some basic operations on scene nodes.
 {{{
 	# gets the root scene node
 	root = getEngine().getScene()
