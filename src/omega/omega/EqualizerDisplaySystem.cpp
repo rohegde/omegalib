@@ -512,7 +512,7 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	cfg.tileResolution = Config::getVector2iValue("tileResolution", scfg);
 	cfg.windowOffset = Config::getVector2iValue("windowOffset", scfg);
 
-	cfg.latency = Config::getBoolValue("latency", scfg);
+	cfg.latency = Config::getIntValue("latency", scfg);
 	cfg.interleaved = Config::getBoolValue("interleaved", scfg);
 	cfg.enableStencilInterleaver = Config::getBoolValue("enableStencilInterleaver", scfg);
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);

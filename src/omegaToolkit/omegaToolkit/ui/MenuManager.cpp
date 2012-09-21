@@ -529,8 +529,15 @@ void MenuManager::autoPlaceMenu(Menu* menu, const Event& evt)
 			Widget* menuWidget = menu->getContainer();
 			Vector3f offset = Vector3f(0, menuWidget->getHeight() * c3ds.scale, 0);
 			c3ds.position = pos - offset;
-			//c3ds.normal = -ray.getDirection();
-			c3ds.normal = Vector3f(0, 0, 1);
+			c3ds.normal = -ray.getDirection();
+			
+			// Find up vector.
+			DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+			Camera* cam = Engine::instance()->getDefaultCamera();			
+			Vector3f up = Vector3f::UnitY();
+			c3ds.up = cam->getOrientation() * up;
+			
+			//c3ds.normal = Vector3f(0, 0, 1);
 			c3ds.scale = myDefaultMenuScale;
 		}
 	}
