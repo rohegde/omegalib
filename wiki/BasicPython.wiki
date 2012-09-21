@@ -23,5 +23,10 @@ After starting orun, typing:
 === Stopping orun ===
 To stop an orun program, press esc, type `oexit()` or `:q` at the orun console, or run `orun -K` on another terminal.
 
-=== python Applications ===
-When using the `:r <applicationName>` command, orun will 
+=== omegalib Python Reference ===
+omegalib exposes 4 main python modules:
+ * [`omega` OmegaPyhonReference] the core omegalib module
+ * `omegaToolkit` a module with a few utility classes
+ * `cyclops` a simple osg-based graphic engine
+ * `euclid` a 3d geometry module
+ 
