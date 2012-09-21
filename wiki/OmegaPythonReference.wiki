@@ -14,6 +14,7 @@ Wraps the [omega::SceneNode link] C++ class. Base class for nodes in the scene g
 === Methods ===
 || Method || Description ||
 || `create(name)` || Creates a scene node with the specified name ||
+|| `getPosition()` || ||
 || `setPosition(pos)` || Get and set the node position ||
 
 -------------------------------------------------------------------------------
