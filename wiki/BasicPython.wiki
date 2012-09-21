@@ -25,7 +25,7 @@ To stop an orun program, press esc, type `oexit()` or `:q` at the orun console, 
 
 === omegalib Python Reference ===
 omegalib exposes 4 main python modules:
- * [`omega` OmegaPythonReference] the core omegalib module
+ * [OmegaPythonReference `omega`] the core omegalib module
  * `omegaToolkit` a module with a few utility classes
  * `cyclops` a simple osg-based graphic engine
  * `euclid` a 3d geometry module
