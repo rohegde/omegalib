@@ -28,5 +28,5 @@ omegalib exposes 4 main python modules:
  * [OmegaPythonReference `omega`] the core omegalib module
  * `omegaToolkit` a module with a few utility classes
  * `cyclops` a simple osg-based graphic engine
- * `euclid` a 3d geometry module
+ * [http://code.google.com/p/pyeuclid/source/browse/trunk/euclid.txt `euclid`] a 3d geometry module
  
