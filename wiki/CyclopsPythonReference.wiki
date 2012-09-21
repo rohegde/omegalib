@@ -1,0 +1,45 @@
+#summary Python reference: module cyclops
+#sidebar Sidebar
+
+<p>*Last revision:* ver. 3.0 - 27 June 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+
+<wiki:toc max_depth="4" />
+
+= Module cyclops =
+Cyclops is a utility library that sits on top of omegalib and OpenSceneGraph, and it is designed to simplify developement of applications that need to draw complex and visually pleasant scenes, without having to deal with the low-level details of osg. SOme of cyclops features are:
+ * Support for loading scenes defined in a simple xml format
+ * Easy creation of primitive shapes, like planes, spheres, cubes and so on
+ * Out-of-the-box support for soft shadows
+ * An expandable shaders and effects library
+-------------------------------------------------------------------------------
+==  Free Functions ==
+
+=== `getSceneManager()` ===
+Returns a reference to the cyclops scene manager
+
+-------------------------------------------------------------------------------
+==  `class SceneManager` ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_scene_node.html omega::SceneNode] C++ class. Manages a cyclops scene and its associated resources.
+
+=== Methods ===
+|| Method(s) || Description ||
+|| *Backgrond* || ||
+|| `setBackgroundColor(color)` || ||
+|| `setSkyBox(skybox)` || ||
+|| *Scene management* || ||
+|| `loadModel(modelInfo)` || Loads a model defined by the data in `modelInfo` ||
+|| `loadModelAsync(modelInfo, command)` || Queues a model for loading. Call the command in the `command` string when loading is done (successful or not) ||
+|| `loadScene(path)` || Loads a cyclops xml scene file ||
+|| `unload()` || Cleans the scene and releases all associated resources ||
+|| *Wand* || ||
+|| `displayWand(wandId, trackableId)` || Displays a wand (identified by `wandId`) and attaches it to a trackable object `trackableId` ||
+|| `setWandEffect(wandId, effect)` || Sets the render effect for wand `wandId` ||
+|| `setWandSize(width, height)` ||  ||
+|| *Shadow support* || ||
+|| `getMainLight()`, `setMainLight(light)` || Sets the main scene light. When shadow mapping is enabled, it will be used to cast shadows ||
+|| `getCurrentShadowSettings()` || Gets the current settings for shadow mapping ||
+|| `resetShadowSettings(settings)` || Resets the shadow settings. Can be used to turn shadow maps on and off, and to change their quality ||
+
+-------------------------------------------------------------------------------
+==  `class Entity` ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_scene_node.html omega::SceneNode] C++ class. Manages a cyclops scene and its associated resources.
