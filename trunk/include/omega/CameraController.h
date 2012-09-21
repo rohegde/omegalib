@@ -62,6 +62,7 @@ namespace omega {
 
 		//! Utility method: updates the camera position using speed, yaw pich roll, and a time step.
 		void updateCamera(const Vector3f& speed, float yaw, float pitch, float roll, float dt);
+		void updateCamera(const Vector3f& speed, const Quaternion& orientation, float dt);
 
 		//! Utility method: return a speed vector depeding on move flags and speed multipliers.
 		//! Useful for turning digital input from keyboards / gamepads into speed information.

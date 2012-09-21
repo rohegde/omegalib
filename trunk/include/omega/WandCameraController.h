@@ -51,11 +51,13 @@ namespace omega {
 		float myRotateSpeed;
 		//float myPitchMultiplier;
 		bool myFreeFly;
-		float myYaw;
 		float myPitch;	
+		float myYaw;
+		float myRoll;	
 		
 		Vector3f myLastPointerPosition;
 		Quaternion myLastPointerOrientation;
+		Quaternion myAxisCorrection;
 	};
 }; // namespace omega
 

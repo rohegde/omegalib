@@ -141,6 +141,8 @@ namespace omegaToolkit { namespace ui {
 
 		void update(const UpdateContext& context);
 
+		void placeOnWand(const Event& evt, float distance, float scale);
+		
 		omegaToolkit::ui::Container* getContainer() { return myContainer; }
 		omegaToolkit::ui::Container3dSettings& get3dSettings() { return my3dSettings; }
 
