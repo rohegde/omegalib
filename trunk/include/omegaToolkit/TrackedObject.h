@@ -44,6 +44,9 @@ namespace omegaToolkit {
 		void setOffset(Vector3f value) { myOffset = value; }
 		Vector3f getOffset() { return myOffset; }
 
+		void setOrientationOffset(const Quaternion& value) { myOrientationOffset = value; }
+		Quaternion getOrientationOffset() { return myOrientationOffset; }
+		
 		void setPositionTrackingEnabled(bool value) { myPositionTrackingEnabled = value; }
 		bool isPositionTrackingEnabled() { return myPositionTrackingEnabled; }
 
@@ -56,9 +59,6 @@ namespace omegaToolkit {
 		void setTrackableSourceId(int value) { myTrackableSourceId = value; }
 		int getTrackableSourceId() { return myTrackableSourceId; }
 
-		void setReferenceCamera(Camera* cam) { myReferenceCamera = cam; }
-		Camera* getReferenceCamera() { return myReferenceCamera; }
-
 	private:
 		Vector3f myTrackedPosition;
 		Quaternion myTrackedOrientation;
@@ -66,11 +66,10 @@ namespace omegaToolkit {
 		bool myPositionTrackingEnabled;
 		bool myOrientationTrackingEnabled;
 		Vector3f myOffset;
+		Quaternion myOrientationOffset;
 
 		Event::ServiceType myTrackableServiceType;
 		int myTrackableSourceId;
-
-		Ref<Camera> myReferenceCamera;
 	};
 }; // namespace omegaToolkit
 

@@ -66,9 +66,8 @@ namespace cyclops {
 		void setAlpha(float value);
 		float getAlpha() { return myAlpha; }
 
-		void followCamera(Camera* cam);
 		void followTrackable(int trackableId);
-		void setFollowOffset(const Vector3f offset);
+		void setFollowOffset(const Vector3f& offset, const Quaternion& ooffset);
 		void unfollow();
 
 	protected:
