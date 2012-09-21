@@ -45,14 +45,17 @@ namespace omega {
 
 	private:
 		// Navigation stuff.
-		Vector3f myMoveVector;
+		Vector3f mySpeed;
+		Quaternion myTorque;
 		
-		float myYawMultiplier;
-		float myPitchMultiplier;
-		bool myRotating;
+		float myRotateSpeed;
+		//float myPitchMultiplier;
+		bool myFreeFly;
 		float myYaw;
 		float myPitch;	
+		
 		Vector3f myLastPointerPosition;
+		Quaternion myLastPointerOrientation;
 	};
 }; // namespace omega
 
