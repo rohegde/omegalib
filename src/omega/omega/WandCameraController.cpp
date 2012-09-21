@@ -36,8 +36,10 @@ WandCameraController::WandCameraController():
 	myPitch(0),
 	myLastPointerPosition(0, 0, 0),
 	mySpeed(0, 0, 0),
+	myFreeFly(false),
 	myTorque(Quaternion::Identity())
 {
+	myAxisCorrection = Quaternion::Identity(); //AngleAxis(-Math::Pi / 2, Vector3f::UnitY());
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void CameraController::reset()
@@ -52,16 +54,18 @@ void WandCameraController::handleEvent(const Event& evt)
 {
 	if(evt.getServiceType() == Service::Wand)
 	{
-		//float x = evt.getExtraDataFloat(0);
-		//float y = evt.getExtraDataFloat(1);
+		float x = evt.getExtraDataFloat(0);
+		float y = evt.getExtraDataFloat(1);
 		
 		// Thresholds
-		//if(x < 0.1f && x > -0.1f) x = 0;
-		//if(y < 0.1f && y > -0.1f) y = 0;
+		if(x < 0.1f && x > -0.1f) x = 0;
+		if(y < 0.1f && y > -0.1f) y = 0;
 		
-		//myYaw = -x * myRotateSpeed;
+		myYaw = -x * myRotateSpeed;
 
-		//myMoveVector = evt.getOrientation() * Vector3f(0, 0, y);
+		mySpeed = evt.getOrientation() * Vector3f(0, 0, y);
+		
+		myAxisCorrection = getCamera()->getOrientation();
 		
 		// Button6 = Left Analog pressed.
 		if(evt.isFlagSet(Event::Button6)) 
@@ -69,40 +73,55 @@ void WandCameraController::handleEvent(const Event& evt)
 			if(myFreeFly == false)
 			{
 				myLastPointerPosition = evt.getPosition();
-				myLastPointerOrientation = evt.getOrientation();
+				Quaternion o = evt.getOrientation() * myAxisCorrection;
+				myLastPointerOrientation = o.inverse();
 			}
 			myFreeFly = true;
 		}
 		else
 		{
 			myFreeFly = false;
+			myTorque = Quaternion::Identity();
 		}
 		
 		
 		if(myFreeFly)
 		{
-			Vector3f dv = (evt.getPosition() - myLastPointerPosition) * 20;
+			Vector3f dv = (evt.getPosition() - myLastPointerPosition) * 8;
 			//float speedMul = 1 + dv.norm();
 			//ofmsg("Speedmul %1%", %speedMul);
-			mySpeed = dv;
-			myTorque = myLastPointerOrientation.inverse() * evt.getOrientation();
-			myTorque = myTorque * AngleAxis(Math::Pi / 2, Vector3f::UnitY());
-			myTorque = myTorque.slerp(1.0f - myRotateSpeed, Quaternion::Identity());
+			mySpeed += dv;
+			Quaternion o = evt.getOrientation() * myAxisCorrection;
+			myTorque = myLastPointerOrientation * o;
+			// myYaw = newO.yaw();
+			// myPitch = newO.pitch();
+			// myRoll = newO.roll();
+			
+			// ofmsg("$%1% %2% %3%", %myPitch %myYaw %myRoll);
+			//myTorque = myLastPointerOrientation * newO;
+			//myTorque = myTorque.slerp(1.0f - myRotateSpeed, Quaternion::Identity());
 		}
 	}
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
 void WandCameraController::update(const UpdateContext& context)
 {
-	//updateCamera(myMoveVector, myYaw, myPitch, 0, context.dt);
+	myTorque = Quaternion::Identity().slerp(context.dt * 0.2f, myTorque) * AngleAxis(myYaw, Vector3f::UnitY());
+	
+	Camera* c = getCamera();
+	if(c != NULL)
+	{
+		c->translate(mySpeed * context.dt, Node::TransformLocal);
+		c->rotate(myTorque, Node::TransformLocal);
+	}
+	
 	//Quaternion o = getCamera()->getOrientation();
 	
-	getCamera()->translate(mySpeed * context.dt);
-	getCamera()->rotate(myTorque.slerp(context.dt, Quaternion::Identity()), Node::TransformLocal);
+	//getCamera()->translate(mySpeed * context.dt, Node::TransformLocal);
+	//getCamera()->rotate(myTorque.slerp(context.dt, Quaternion::Identity()), Node::TransformLocal);
 	
 	
-	mySpeed = mySpeed * 0.5f;
-	myTorque = myTorque.slerp(0.5f, Quaternion::Identity());
+	mySpeed = mySpeed * 0.8f;
+	//myTorque = myTorque.slerp(0.5f, Quaternion::Identity());
 }
 

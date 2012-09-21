@@ -30,19 +30,23 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void CameraController::updateCamera(const Vector3f& speed, float yaw, float pitch, float roll, float dt)
+void CameraController::updateCamera(const Vector3f& speed, const Quaternion& orientation, float dt)
 {
 	if(myCamera != NULL)
 	{
-		//Quaternion navOrientation = AngleAxis(roll, Vector3f::UnitZ()) * AngleAxis(-yaw, Vector3f::UnitY()) * AngleAxis(-pitch, Vector3f::UnitX());
-		Quaternion orientation =   AngleAxis(yaw, Vector3f::UnitY()) * AngleAxis(pitch, Vector3f::UnitX()) * AngleAxis(roll, Vector3f::UnitZ());
-		orientation = myOriginalOrientation * orientation;
-		//navOrientation = navOrientation * myOriginalOrientation.inverse();
-		Vector3f ns = orientation * speed;
+		Quaternion o = myOriginalOrientation * orientation;
+		Vector3f ns = o * speed;
 		Vector3f position = myCamera->getPosition() + (ns * dt);
 		myCamera->setPosition(position);
-		myCamera->setOrientationAndResetController(orientation);
+		myCamera->setOrientationAndResetController(o);
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void CameraController::updateCamera(const Vector3f& speed, float yaw, float pitch, float roll, float dt)
+{
+	Quaternion orientation =   AngleAxis(yaw, Vector3f::UnitY()) * AngleAxis(pitch, Vector3f::UnitX()) * AngleAxis(roll, Vector3f::UnitZ());
+	updateCamera(speed, orientation, dt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
