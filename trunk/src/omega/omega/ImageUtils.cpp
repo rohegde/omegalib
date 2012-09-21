@@ -249,7 +249,7 @@ ByteArray* ImageUtils::encode(PixelData* data, ImageFormat format)
 {
 	switch (format){
 	// PNG
-	case ImageFormat::FormatPng :
+	case FormatPng :
 		{
 			// Allocate a freeimage bitmap and memory buffer to do the conversion.
 			//FIBITMAP* fibmp = FreeImage_Allocate(data->getWidth(), data->getHeight(), 32, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
@@ -284,7 +284,7 @@ ByteArray* ImageUtils::encode(PixelData* data, ImageFormat format)
 			return encodedData;
 		}
 	// JPEG
-	case ImageFormat::FormatJpeg :
+	case FormatJpeg :
 	// JPEG is default
 	default:
 		{

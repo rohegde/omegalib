@@ -942,7 +942,8 @@ void SceneManager::displayWand(uint wandId, uint trackableId)
 	}
 	myWandEntity->setVisible(true);
 	myWandEntity->followTrackable(trackableId);
-	myWandEntity->followCamera(getEngine()->getDefaultCamera());
+	myWandEntity->setFollowOffset(Vector3f(0, 0, 0), Quaternion(AngleAxis(Math::Pi, Vector3f::UnitY())));
+	getEngine()->getDefaultCamera()->addChild(myWandEntity);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
