@@ -38,13 +38,15 @@
 using namespace std;
 using namespace omicron;
 
+#define PREFETCHING_FILES true
+
 namespace omega {
 
-	// Path to resources, such as html files
-	static string DATA_PATH; 
+	//! Path to resources, such as html files
+	static String DATA_PATH; 
 
-	// CSS path
-	static string css_path;
+	//! CSS path
+	static String css_path;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements, in a separate thread, the HTTP server for Porthole Service
@@ -87,10 +89,6 @@ namespace omega {
 			enum libwebsocket_callback_reasons reason,
 					       void *user, void *in, size_t len);
 
-		// Base64 encode/decode functions
-		static string base64_encode(unsigned char const* , unsigned int len);
-		static string base64_decode(string const& s);
-
 	private:
 
 		// Server params
@@ -112,6 +110,9 @@ namespace omega {
 	class OMEGA_API PortholeService: public Service{
 
 	public:
+
+		// Wrapper for creation and start of the service
+		//! PYAPI
 		static PortholeService* createAndInitialize(int port, const String& xmlPath, const String& cssPath);
 
 		//! Allocator function (will be used to register the service inside SystemManager)

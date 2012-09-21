@@ -120,6 +120,12 @@
     document.body.onmouseup = function () {
         mouseDown = 0;
     }
+    document.body.ontouchstart = function () {
+        mouseDown = 1;
+    }
+    document.body.ontouchend = function () {
+        mouseDown = 0;
+    }
 
     ///////////////// DEFINE METADATA AT RUNTIME ////////////////////////
     function setOrCreateMetaTag(metaName, name, value) {

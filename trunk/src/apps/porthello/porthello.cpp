@@ -35,53 +35,33 @@ using namespace omega;
 
 // Example function to be binded to a button clicked
 void zoomSlider(PortholeEvent &ev){
-	map<int, PortholeCamera*> map = ev.sessionCameras;
-	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
-	{
-		Vector3f myPosition = it->second->camera->getPosition();
-		myPosition[2] = ev.value/100; // TODO check scale factor
-		it->second->camera->setPosition(myPosition);
-	}
+	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
+	myPosition[2] = ev.value/100; // TODO check scale factor
+	ev.sessionCamera->camera->setPosition(myPosition);
 }
 
 void up(PortholeEvent &ev){
-	map<int, PortholeCamera*> map = ev.sessionCameras;
-	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
-	{
-		Vector3f myPosition = it->second->camera->getPosition();
-		myPosition[1] += 0.025f;
-		it->second->camera->setPosition(myPosition);
-	}
+	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
+	myPosition[1] += 0.025f;
+	ev.sessionCamera->camera->setPosition(myPosition);
 }
 
 void down(PortholeEvent &ev){
-	map<int, PortholeCamera*> map = ev.sessionCameras;
-	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
-	{
-		Vector3f myPosition = it->second->camera->getPosition();
-		myPosition[1] -= 0.025f;
-		it->second->camera->setPosition(myPosition);
-	}
+	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
+	myPosition[1] -= 0.025f;
+	ev.sessionCamera->camera->setPosition(myPosition);
 }
 
 void left(PortholeEvent &ev){
-	map<int, PortholeCamera*> map = ev.sessionCameras;
-	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
-	{
-		Vector3f myPosition = it->second->camera->getPosition();
-		myPosition[0] -= 0.025f;
-		it->second->camera->setPosition(myPosition);
-	}
+	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
+	myPosition[0] -= 0.025f;
+	ev.sessionCamera->camera->setPosition(myPosition);
 }
 
 void right(PortholeEvent &ev){
-	map<int, PortholeCamera*> map = ev.sessionCameras;
-	for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
-	{
-		Vector3f myPosition = it->second->camera->getPosition();
-		myPosition[0] += 0.025f;
-		it->second->camera->setPosition(myPosition);
-	}
+	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
+	myPosition[0] += 0.025f;
+	ev.sessionCamera->camera->setPosition(myPosition);
 }
 
 class HelloApplication;

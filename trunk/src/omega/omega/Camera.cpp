@@ -48,6 +48,9 @@ Camera::Camera(Engine* e, uint flags):
 {
 	//myProjectionOffset = -Vector3f::UnitZ();
 
+	// set camera Id and increment the counter
+	this->myCameraId = omega::CamerasCounter++;
+
 	for(int i = 0; i < GpuContext::MaxContexts; i++)
 	{
 		myOutput[i] = new CameraOutput(isOffscreen());

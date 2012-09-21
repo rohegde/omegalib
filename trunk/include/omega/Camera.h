@@ -35,6 +35,8 @@
 #include "omega/CameraOutput.h"
 
 namespace omega {
+	//! Id to be assigned to crated cameras
+	static int CamerasCounter = 0;
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API Camera: public SceneNode
 	{
@@ -127,6 +129,8 @@ namespace omega {
 		void startFrame(const FrameInfo& frame);
 		void finishFrame(const FrameInfo& frame);
 
+		int getCameraId();
+
 	private:
 		//! View transform
 		AffineTransform3 myViewTransform;
@@ -160,6 +164,9 @@ namespace omega {
 		// Navigation stuff.
 		Ref<CameraController> myController;
 		bool myControllerEnabled;
+
+		// Camera Id
+		int myCameraId;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -193,6 +200,10 @@ namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline const AffineTransform3& Camera::getViewTransform()
 	{ return myViewTransform; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline int Camera::getCameraId()
+	{ return myCameraId; }
 }; // namespace omega
 
 #endif
