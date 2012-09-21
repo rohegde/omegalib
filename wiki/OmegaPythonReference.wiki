@@ -11,6 +11,14 @@ The omega module contains all the core functionality of omegalib like scene grap
 -------------------------------------------------------------------------------
 ==  `class SceneNode` ==
 Wraps the [omega::SceneNode link] C++ class. Base class for nodes in the scene graph
+=== Methods ===
+|| Method || Description ||
+|| `create(name)` || Creates a scene node with the specified name ||
+|| `setPosition(pos)` || Get and set the node position ||
+
+-------------------------------------------------------------------------------
+==  `class SceneNode` ==
+Wraps the [omega::SceneNode link] C++ class. Base class for nodes in the scene graph
 
 === Methods ===
 ==== `create(name)` ====
