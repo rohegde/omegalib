@@ -3,6 +3,8 @@
 
 <p>*Last revision:* ver. 3.0 - 27 June 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
+<wiki:toc max_depth="4" />
+
 = Module omega =
 The omega module contains all the core functionality of omegalib like scene graph management and event handling. It also offers a few utility functions to manage verious aspects of an omegalib application.
 
