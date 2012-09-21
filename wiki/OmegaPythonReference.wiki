@@ -10,46 +10,40 @@ The omega module contains all the core functionality of omegalib like scene grap
 
 -------------------------------------------------------------------------------
 ==  `class SceneNode` ==
-Wraps the [omega::SceneNode link] C++ class. Base class for nodes in the scene graph
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_scene_node.html omega::SceneNode] C++ class. Base class for nodes in the scene graph
 === Methods ===
-|| Method || Description ||
+|| Method(s) || Description ||
 || `create(name)` || Creates a scene node with the specified name ||
-|| `getPosition()` || ||
-|| `setPosition(pos)` || Get and set the node position ||
+|| `getPosition()` || Gets the node position ||
+|| `setPosition(pos)`, `getPosition()` || Gets and sets the node position ||
+|| `getScale()`, `setScale(pos)` || Gets and sets the node scale ||
+|| `getOrientation()`, `setOrientation(orientation)` || Gets and sets the node orientation ||
+|| `yaw()`, `pitch()`, `roll()` || Applies a yaw, pitch or roll to the node ||
 
--------------------------------------------------------------------------------
-==  `class SceneNode` ==
-Wraps the [omega::SceneNode link] C++ class. Base class for nodes in the scene graph
-
-=== Methods ===
-==== `create(name)` ====
-Creates a scene node with the specified name
-
-==== `getName()` ====
-Gets the node name
+=== Examples ===
+==== Basic ====
+{{{
+	# gets the root scene node
+	root = getEngine().getScene()
+	# prints the node position
+	print(root.getPosition()
 	
-==== `getPosition()` ====
-==== `setPosition(pos)` ====
-Get and set the node position
-{{{
-	node.setPosition(Vector3(0, 0, 0))
+	root.setPosition(Vector3(0, 2, -2))
+	
+	# scale is returned as a Vector3
+	scale = root.getScale()
+	scale.x = 0.1
+	root.setScale(scale)
+	
+	# orientation is of Quaternion type
+	print(root.getOrientation())
+	
+	# yaw, pitch roll are in radians	
+	root.yaw(1)
 }}}
 
-==== `getScale()` ====
-==== `setScale(pos)` ====
-Get and set the node scale
-{{{
-	scale = node.getScale()
-	scale = scale * 2
-	node.setScale(scale)
-}}}
 
 -------------------------------------------------------------------------------
-	setOrientation(orientation)
-	quaternion getOrientation()
-	yaw(radians)
-	pitch(radians)
-	roll(radians)
 	
 	# Node hierarchy
 	numChildren()
@@ -110,27 +104,6 @@ Get and set the node scale
 	setSelectable(value)
 }}}
 
-=== A Basic Example ===
-The following code shows some basic operations on scene nodes.
-{{{
-	# gets the root scene node
-	root = getEngine().getScene()
-	# prints the node position
-	print(root.getPosition()
-	
-	root.setPosition(Vector3(0, 2, -2))
-	
-	# scale is returned as a Vector3
-	scale = root.getScale()
-	scale.x = 0.1
-	root.setScale(scale)
-	
-	# orientation is of Quaternion type
-	print(root.getOrientation())
-	
-	# yaw, pitch roll are in radians	
-	root.yaw(1)
-}}}
 
 -------------------------------------------------------------------------------
 ==  `class Event` ==
