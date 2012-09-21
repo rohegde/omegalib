@@ -507,6 +507,12 @@ Camera* getDefaultCamera()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Camera* getCameraById(int id)
+{
+	return PortholeGUI::CamerasMap[id]->camera;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneNode* getScene()
 {
 	return Engine::instance()->getScene();
@@ -713,6 +719,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("getEvent", getEvent, return_value_policy<reference_existing_object>());
 	def("getEngine", getEngine, PYAPI_RETURN_REF);
 	def("getDefaultCamera", getDefaultCamera, PYAPI_RETURN_REF);
+	def("getCameraById", getCameraById, PYAPI_RETURN_REF);
 	def("getScene", getScene, PYAPI_RETURN_REF);
 	def("querySceneRay", querySceneRay);
 	def("getRayFromEvent", getRayFromEvent);

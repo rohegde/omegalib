@@ -42,6 +42,10 @@
 using namespace omega;
 using namespace omicron;
 
+// Base64 encode/decode functions
+inline string base64_encode(unsigned char const* , unsigned int len);
+inline string base64_decode(string const& s);
+
 enum demo_protocols {
 	/* always first */
 	PROTOCOL_HTTP = 0,
@@ -431,16 +435,14 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
 inline void handle_message(per_session_data* data, recv_message* message, 
 		struct libwebsocket_context *context, struct libwebsocket *wsi){
 
-    //cout << "MSG: " << message->event_type << endl;
-
 	// Handle DRAG event
 	if (strcmp(message->event_type.c_str(),MSG_EVENT_DRAG)==0 &&
-		  data->guiManager->numberOfStreamsToSend() > 0){
+		  data->guiManager->isCameraReadyToStream() ){
 
 		Camera* camera;
 
 		// Get the corresponding camera to be modified
-		PortholeCamera* sessionCamera = data->guiManager->getSessionCameras()[message->cameraId];
+		PortholeCamera* sessionCamera = data->guiManager->getSessionCamera();
 		if (sessionCamera->followDefault == true){
 			camera = Engine::instance()->getDefaultCamera();
 		}
@@ -459,13 +461,13 @@ inline void handle_message(per_session_data* data, recv_message* message,
 
 	// Handle PINCH event
 	else if (strcmp(message->event_type.c_str(),MSG_EVENT_PINCH)==0 &&
-		  data->guiManager->numberOfStreamsToSend() > 0){
+		data->guiManager->isCameraReadyToStream() > 0){
 
 		// ZOOM
 		Camera* camera;
 
 		// Get the corresponding camera to be modified
-		PortholeCamera* sessionCamera = data->guiManager->getSessionCameras()[message->cameraId];
+		PortholeCamera* sessionCamera = data->guiManager->getSessionCamera();
 		if (sessionCamera->followDefault == true)
 			camera = Engine::instance()->getDefaultCamera();
 		else
@@ -509,13 +511,13 @@ inline void handle_message(per_session_data* data, recv_message* message,
 
 	// Modify the camera size if FPS in client is too low
 	else if (strcmp(message->event_type.c_str(),MSG_EVENT_CAMERA_MOD)==0){
-		data->guiManager->modCustomCamera(message->cameraId, message->cameraSize);
+		data->guiManager->modCustomCamera(message->cameraSize);
 	}
 
 	// Javascript function bind
 	else if(strcmp(message->event_type.c_str(),MSG_EVENT_INPUT)==0){
 		// Create event
-		PortholeEvent ev = {message->jsFunction, message->button, message->key, message->value, data->guiManager->getSessionCameras()};
+		PortholeEvent ev = {message->jsFunction, message->button, message->key, message->value, data->guiManager->getSessionCamera()};
 		// Call the function or python script
 		PortholeGUI::getPortholeFunctionsBinder()->callFunction(message->jsFunction, ev);
 	}
@@ -549,7 +551,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 	{
 
 		// Check if we have stream to send: if not, pass the token
-		if ( data->guiManager->numberOfStreamsToSend() <= 0 ){
+		if ( !data->guiManager->isCameraReadyToStream() ){
 			libwebsocket_callback_on_writable(context, wsi);
 			return 0;
 		}
@@ -565,48 +567,42 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			return 0;
 		}
 
-		// For each camera to be streamed
-		map<int, PortholeCamera*> map = data->guiManager->getSessionCameras();
-		for (std::map<int, PortholeCamera*>::iterator it = map.begin(); it != map.end(); ++it)
-		{
 
-			PortholeCamera* sessionCamera = it->second;
+		PortholeCamera* sessionCamera = data->guiManager->getSessionCamera();
 
-			// Get the corresponding camera to be modified
-			Camera* camera = sessionCamera->camera;
-			PixelData* canvas = sessionCamera->canvas;
+		// Get the corresponding camera to be modified
+		Camera* camera = sessionCamera->camera;
+		PixelData* canvas = sessionCamera->canvas;
 
-			// If camera need to be equal to default camera, update position
-			if (sessionCamera->followDefault){
-				Camera* defaultCamera = Engine::instance()->getDefaultCamera();
-				camera->setPosition(defaultCamera->getPosition() + defaultCamera->getHeadOffset());
-				camera->setOrientation(defaultCamera->getOrientation());
-			}
-
-			// Get camera image as PNG and base64 encode it, because only simple strings could be sent via websockets  
-			ByteArray* png = ImageUtils::encode(canvas, ImageUtils::FormatJpeg);
-			std::string base64image = base64_encode(png->getData(),png->getSize());
-
-			// TODO update width height ( not used now anyway )
-			string toSend = "{\"event_type\" : \"stream\", \"base64image\" : \"";
-			toSend.append(base64image.c_str());
-			toSend.append("\", \"camera_id\" : " + boost::lexical_cast<string>(sessionCamera->id) + "}");
-
-			// Send the base64 image
-			unsigned char* buf;
-			buf = new unsigned char[LWS_SEND_BUFFER_PRE_PADDING + toSend.length() + LWS_SEND_BUFFER_POST_PADDING];
-			unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
-			n = sprintf((char *)p, "%s",toSend.c_str());
-			n = libwebsocket_write(wsi, p, n, LWS_WRITE_TEXT);
-			if (n < 0) {
-				fprintf(stderr, "ERROR writing to socket");
-				return 1;
-			}
-
-			// Free the buffer
-			delete[] buf;
-
+		// If camera need to be equal to default camera, update position
+		if (sessionCamera->followDefault){
+			Camera* defaultCamera = Engine::instance()->getDefaultCamera();
+			camera->setPosition(defaultCamera->getPosition() + defaultCamera->getHeadOffset());
+			camera->setOrientation(defaultCamera->getOrientation());
 		}
+
+		// Get camera image as PNG and base64 encode it, because only simple strings could be sent via websockets  
+		ByteArray* png = ImageUtils::encode(canvas, ImageUtils::FormatJpeg);
+		std::string base64image = base64_encode(png->getData(),png->getSize());
+
+		// TODO update width height ( not used now anyway )
+		string toSend = "{\"event_type\" : \"stream\", \"base64image\" : \"";
+		toSend.append(base64image.c_str());
+		toSend.append("\", \"camera_id\" : " + boost::lexical_cast<string>(sessionCamera->id) + "}");
+
+		// Send the base64 image
+		unsigned char* buf;
+		buf = new unsigned char[LWS_SEND_BUFFER_PRE_PADDING + toSend.length() + LWS_SEND_BUFFER_POST_PADDING];
+		unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
+		n = sprintf((char *)p, "%s",toSend.c_str());
+		n = libwebsocket_write(wsi, p, n, LWS_WRITE_TEXT);
+		if (n < 0) {
+			fprintf(stderr, "ERROR writing to socket");
+			return 1;
+		}
+
+		// Free the buffer
+		delete[] buf;
 
 		// Save new timestamp
 		data->oldus = millisecondsSinceEpoch;
@@ -628,7 +624,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		json_value *root = json_parse((char*)in, &errorPos, &errorDesc, &errorLine, &allocator);
 		if (root)
 		{
-            print(root);
+            //print(root);
             parse_json_message(root, data, &message);
             handle_message(data, &message, context, wsi);
 		}
@@ -845,11 +841,11 @@ static const std::string base64_chars =
              "0123456789+/";
 
 
-static inline bool is_base64(unsigned char c) {
+inline bool is_base64(unsigned char c) {
   return (isalnum(c) || (c == '+') || (c == '/'));
 }
 
-std::string ServerThread::base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
+inline std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
   std::string ret;
   int i = 0;
   int j = 0;
@@ -892,7 +888,7 @@ std::string ServerThread::base64_encode(unsigned char const* bytes_to_encode, un
 
 }
 
-std::string ServerThread::base64_decode(std::string const& encoded_string) {
+inline std::string base64_decode(std::string const& encoded_string) {
   int in_len = encoded_string.size();
   int i = 0;
   int j = 0;

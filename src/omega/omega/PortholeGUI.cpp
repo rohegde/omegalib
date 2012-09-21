@@ -34,10 +34,12 @@ PortholeFunctionsBinder* PortholeGUI::functionsBinder;
 vector<PortholeInterfaceType*> PortholeGUI::interfaces;
 std::map<string, TiXmlElement* > PortholeGUI::interfacesMap;
 std::map<string, PortholeElement*> PortholeGUI::elementsMap;
+std::map<int, PortholeCamera*> PortholeGUI::CamerasMap;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 PortholeGUI::PortholeGUI()
 {
+	this->sessionCamera = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,7 +68,6 @@ void PortholeGUI::setDeviceSpecifications(int width, int height, string orientat
 ///////////////////////////////////////////////////////////////////////////////////////////////
 string PortholeGUI::create(bool firstTime){
 
-	int cameraIterator = 0;
 	string result = "";
 
 	string interfaceKey = device->interfaceType->id + device->interfaceType->orientation;
@@ -124,37 +125,31 @@ string PortholeGUI::create(bool firstTime){
 		// Create a session camera
 		else if (strcmp(element->type.c_str(),"camera_stream")==0){
 
-			int cameraId = 0;
-
-			// FIXME Not working
+			// Default camera case
 			if (strcmp(element->cameraType.c_str(),"default")==0){
 				if (firstTime){
-					createCustomCamera(true);
 					// Update camera id on html
-					cameraId = camerasIncrementalId;
+					createCustomCamera(true);
 				}
 				else{
-					// TODO
-					cameraIterator++;
+					// TODO check
+					modCustomCamera(1.0);
 				}
 			}
 			// Custom camera case
 			else {
 				if (firstTime){
-					createCustomCamera(false);
 					// Update camera id on html
-					cameraId = camerasIncrementalId;
+					createCustomCamera(false);
 				}
 				else{
 					// Update camera id on html
-					cameraId = camerasId.at(cameraIterator);
-					modCustomCamera(cameraId, 1.0);
-					cameraIterator++;
+					modCustomCamera(1.0);
 				}
 			}
 
 			element->htmlValue = "<canvas id=\"camera-canvas\" class=\"camera_container\" data-camera_id = \"" +
-								boost::lexical_cast<string>(cameraId) +
+								boost::lexical_cast<string>(sessionCamera->id) +
 								"\"></canvas>";
 
 		}
@@ -202,23 +197,25 @@ void PortholeGUI::createCustomCamera(bool followDefaultCamera){
 
 	// Save the new Camera and PixelData objects
 	PortholeCamera* camera = new PortholeCamera();
-	camera->id = ++camerasIncrementalId;
+	camera->id = sessionCamera->getCameraId();
 	camera->camera =sessionCamera;
 	camera->canvas = sessionCanvas;
 	camera->canvasWidth = width;
 	camera->canvasHeight = height;
 	camera->size = IMAGE_QUALITY;
 	camera->followDefault = followDefaultCamera;
-	/*camera->oldusStreamSent = 0;*/
-	sessionCameras[camera->id] = camera;
-	camerasId.push_back(camera->id); 
+
+	// Save new camera
+	PortholeGUI::CamerasMap[camera->id] = camera; // Global map
+	this->sessionCamera = camera; // Session
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeGUI::modCustomCamera(int cameraId, float size){ 
+void PortholeGUI::modCustomCamera(float size){ 
 
 	// Retrieve the camera to be modified
-	PortholeCamera* portholeCamera = sessionCameras[cameraId];
+	PortholeCamera* portholeCamera = this->sessionCamera;
 
 	Camera* sessionCamera = portholeCamera->camera;
 

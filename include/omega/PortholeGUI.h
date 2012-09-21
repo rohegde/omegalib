@@ -33,6 +33,12 @@
 #include "omega/PythonInterpreter.h"
 #include "omicron/xml/tinyxml.h"
 
+#define PORTHOLE_EVENT_TOKEN_CAMERA_ID "%id%"
+#define PORTHOLE_EVENT_TOKEN_VALUE "%value%"
+#define PORTHOLE_EVENT_TOKEN_KEY "%key%"
+#define PORTHOLE_EVENT_TOKEN_MOUSE_BTN "%btn%"
+#define PORTHOLE_EVENT_TOKEN_EVENT "%event%"
+
 // define initial image quality: {0,1}
 #define IMAGE_QUALITY 1
 
@@ -99,9 +105,6 @@ namespace omega {
 
 	};
 
-	// Id to be assigned to new cameras
-	static int camerasIncrementalId = 0;
-
 	// This will old a possible interface
 	typedef struct PortholeInterfaceType: ReferenceType{
 		int minWidth;
@@ -143,7 +146,7 @@ namespace omega {
 		int mouseButton;
 		char key;
 		float value;
-		std::map<int,PortholeCamera*> sessionCameras;
+		PortholeCamera* sessionCamera;
 	}PortholeEvent;
 
 	// Porthole functions binder
@@ -171,7 +174,12 @@ namespace omega {
 			py_it = pythonFunMap.find(funcName);
 			if (py_it != pythonFunMap.end()){
 				PythonInterpreter* pi = SystemManager::instance()->getScriptInterpreter();
-				pi->queueCommand(py_it->second); 
+				String pythonScript = omicron::StringUtils::replaceAll(py_it->second, PORTHOLE_EVENT_TOKEN_CAMERA_ID, boost::lexical_cast<std::string>(ev.sessionCamera->id));
+				pythonScript = omicron::StringUtils::replaceAll(pythonScript, PORTHOLE_EVENT_TOKEN_VALUE, boost::lexical_cast<std::string>(ev.value));
+				pythonScript = omicron::StringUtils::replaceAll(pythonScript, PORTHOLE_EVENT_TOKEN_KEY, boost::lexical_cast<std::string>(ev.key));
+				pythonScript = omicron::StringUtils::replaceAll(pythonScript, PORTHOLE_EVENT_TOKEN_MOUSE_BTN, boost::lexical_cast<std::string>(ev.mouseButton));
+				pythonScript = omicron::StringUtils::replaceAll(pythonScript, PORTHOLE_EVENT_TOKEN_EVENT, boost::lexical_cast<std::string>(ev.sessionCamera->id));
+				pi->queueCommand(pythonScript); 
 			}
 			return;
 		}
@@ -216,14 +224,14 @@ namespace omega {
 		PortholeDevice* getDevice() { return device; }
 
 		// Number of cameras to stream over the network
-		int numberOfStreamsToSend() { return sessionCameras.size(); } 
+		bool isCameraReadyToStream() { return (sessionCamera != NULL); } 
 
 		// Get session stream data
-		std::map<int,PortholeCamera*> getSessionCameras() { return sessionCameras; } 
+		PortholeCamera* getSessionCamera() { return sessionCamera; } 
 
 		// Mod the camera with id cameraId 
 		// size: the ratio of camera: 1.0 is full size ( = device width )
-		void modCustomCamera(int cameraId, float size);
+		void modCustomCamera(float size);
 
 		static vector<string> findHtmlScripts();
 
@@ -233,18 +241,19 @@ namespace omega {
 		static PortholeFunctionsBinder* getPortholeFunctionsBinder() { return functionsBinder; }
 		static void setPortholeFunctionsBinder(PortholeFunctionsBinder* binder) { functionsBinder = binder;  functionsBinder->scriptNumber=0;}
 
+		//! Global map of cameras by id
+		static std::map<int, PortholeCamera*> CamerasMap;
+
 	private:
 
 		// The device for which an interface will be created
 		PortholeDevice* device;
 
-		// All cameras, mapped by camera id
-		std::map<int,PortholeCamera*> sessionCameras;
+		// The camera of this session
+		PortholeCamera* sessionCamera;
 
 		// Create a Porthole custom camera and a PixelData associated
 		void createCustomCamera(bool followDefaultCamera); 
-
-		vector<int> camerasId; 
 
 		static void searchNode(TiXmlElement* node);
 
