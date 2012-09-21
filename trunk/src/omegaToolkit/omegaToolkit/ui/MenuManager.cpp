@@ -343,6 +343,31 @@ void Menu::hide()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Menu::placeOnWand(const Event& evt, float distance, float scale)
+{
+	Ray ray;
+	if(SystemManager::instance()->getDisplaySystem()->getViewRayFromEvent(evt, ray))
+	{
+		Vector3f pos = ray.getPoint(distance);
+		//ofmsg("menu position: %1%", %pos);
+		Container3dSettings& c3ds = get3dSettings();
+		Widget* menuWidget = myContainer;
+		Vector3f offset = Vector3f(0, menuWidget->getHeight() * c3ds.scale, 0);
+		c3ds.position = pos - offset;
+		c3ds.normal = -ray.getDirection();
+		
+		// Find up vector.
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+		Camera* cam = Engine::instance()->getDefaultCamera();			
+		Vector3f up = Vector3f::UnitY();
+		c3ds.up = cam->getOrientation() * up;
+		
+		//c3ds.normal = Vector3f(0, 0, 1);
+		c3ds.scale = scale;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Menu::toggle()
 {
 	if(myContainer->isVisible()) hide();
@@ -520,26 +545,7 @@ void MenuManager::autoPlaceMenu(Menu* menu, const Event& evt)
 {
 	if(myRayPlaceEnabled)
 	{
-		Ray ray;
-		if(SystemManager::instance()->getDisplaySystem()->getViewRayFromEvent(evt, ray))
-		{
-			Vector3f pos = ray.getPoint(myDefaultMenuPosition[2]);
-			//ofmsg("menu position: %1%", %pos);
-			Container3dSettings& c3ds = menu->get3dSettings();
-			Widget* menuWidget = menu->getContainer();
-			Vector3f offset = Vector3f(0, menuWidget->getHeight() * c3ds.scale, 0);
-			c3ds.position = pos - offset;
-			c3ds.normal = -ray.getDirection();
-			
-			// Find up vector.
-			DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
-			Camera* cam = Engine::instance()->getDefaultCamera();			
-			Vector3f up = Vector3f::UnitY();
-			c3ds.up = cam->getOrientation() * up;
-			
-			//c3ds.normal = Vector3f(0, 0, 1);
-			c3ds.scale = myDefaultMenuScale;
-		}
+		menu->placeOnWand(evt, myDefaultMenuPosition[2], myDefaultMenuScale);
 	}
 	else
 	{
