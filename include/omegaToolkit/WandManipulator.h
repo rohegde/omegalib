@@ -40,14 +40,13 @@ namespace omegaToolkit {
 	public:
 		WandManipulator():
 		    Actor("WandManipulator"),
-			myMoveButtonFlag(Event::Button6),
+			myMoveButtonFlag(Event::Button1),
 			myRotateButtonFlag(Event::Button5),
 			myButton1Pressed(false),
 			myButton2Pressed(false),
 			myXAxis(0),
 			myYAxis(0),
-			myZAxis(0),
-			myNodeSelected(false) {}
+			myNodeActive(false) {}
 
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& conext);
@@ -65,21 +64,21 @@ namespace omegaToolkit {
 		float myHandleDistance;
 		Vector3f myHandlePosition;
 		Sphere myStartBSphere;
+		
+		Quaternion myWandOrientation;
+		Quaternion myStartOrientation;
 
 		// pointer event data.
 		bool myPointerEventReceived;
-		Vector2f myPointerPosition;
 		Ray myPointerRay;
 		Event::Type myPointerEventType;
-		int myPointerEventData;
 
-		bool myNodeSelected;
 		bool myButton1Pressed;
 		bool myButton2Pressed;
 
 		float myXAxis;
 		float myYAxis;
-		float myZAxis;
+		bool myNodeActive;
 	};
 }; // namespace omegaToolkit
 
