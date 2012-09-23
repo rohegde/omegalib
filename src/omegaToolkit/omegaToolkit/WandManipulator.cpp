@@ -36,43 +36,55 @@ void WandManipulator::handleEvent(const Event& evt)
 	{
 		// If a node is assigned to this actor and is selected, we consider mouse events consumed
 		// by this actor.
-		if(myNode != NULL && myNodeSelected) evt.setProcessed();
+		if(myNode != NULL && myNodeActive) evt.setProcessed();
 
-		myButton1Pressed = false;
-		myButton2Pressed = false;
 		myPointerEventReceived = true;
-		myPointerEventData = 0;
+		//myPointerEventData = 0;
 
-		myPointerPosition = Vector2f(evt.getPosition().x(), evt.getPosition().y());
-		// We just care about Up / Down events.
-		if(evt.getType() != Event::Move)
+		//myPointerPosition = Vector2f(evt.getPosition().x(), evt.getPosition().y());
+		myPointerEventType = evt.getType();
+		
+		if(evt.isFlagSet(myRotateButtonFlag)) 
 		{
-			myPointerEventType = evt.getType();
+			myButton2Pressed = true;
 		}
-		if(evt.isFlagSet(myMoveButtonFlag)) myButton1Pressed = true;
-		if(evt.isFlagSet(myRotateButtonFlag)) myButton2Pressed = true;
+		else myButton2Pressed = false;
 		
 		SystemManager::instance()->getDisplaySystem()->getViewRayFromEvent(evt, myPointerRay);
 
-		if(evt.getExtraDataItems() >= 4 && evt.getExtraDataType() == Event::ExtraDataFloatArray)
+		if(evt.getExtraDataItems() >= 2 && evt.getExtraDataType() == Event::ExtraDataFloatArray)
 		{
 			myXAxis = evt.getExtraDataFloat(0);
 			myYAxis = evt.getExtraDataFloat(1);
-			
-			// Simulate Button 1 presses using Z Axis.
-			float pressThresh = 0.5;
-			if(evt.getExtraDataFloat(4) > pressThresh)
-			{			
-				myButton1Pressed = true;
-				if(myZAxis <= pressThresh) myPointerEventType = Event::Down;
-			}
-			else
-			{
-				myButton1Pressed = false;
-				if(myZAxis > pressThresh) myPointerEventType = Event::Up;
-			}
-			myZAxis = evt.getExtraDataFloat(4);
 		}
+		
+		// if axis 4 is available, use it as button 1
+		if(evt.getExtraDataItems() >= 4 && evt.getExtraDataType() == Event::ExtraDataFloatArray)
+		{
+			if(evt.getExtraDataFloat(4) > 0.5f) 
+			{	
+				if(myButton1Pressed == false)
+				{
+					myPointerEventType = Event::Down;
+				}
+				myButton1Pressed = true;
+			}
+			else 
+			{
+				if(myButton1Pressed == true)
+				{
+					myPointerEventType = Event::Up;
+				}
+				myButton1Pressed = false;
+			}
+		}
+		else
+		{
+			// If axis 4 is not available, handle button 1 as a normal button
+			if(evt.isFlagSet(myMoveButtonFlag)) myButton1Pressed = true;
+			else myButton1Pressed = true;
+		}
+		myWandOrientation = evt.getOrientation();
 	}
 }
 
@@ -81,43 +93,51 @@ void WandManipulator::update(const UpdateContext& context)
 {
 	// Exit immediately if we received no pointer event or if there is no node attached to this
 	// interactor
-	if(!myPointerEventReceived || myNode == NULL) return;
-
-	if(myPointerEventType == Event::Down && (myButton1Pressed || myButton2Pressed))
+	if(!myPointerEventReceived || myNode == NULL || !myNode->isVisible()) return;
+	if(myPointerEventType == Event::Down)
 	{
 		Vector3f handlePos;
 		if(myNode->hit(myPointerRay, &handlePos, SceneNode::HitBoundingSphere))
 		{
 			myStartBSphere = myNode->getBoundingSphere();
-			myHandlePosition = handlePos; //myStartBSphere.getCenter() - handlePos; 
-			myHandleDistance = (myPointerRay.getOrigin() - myStartBSphere.getCenter()).norm();
-			myNodeSelected = true;
-			ofmsg("Handle distance: %1% Handle position: %2%", %myHandleDistance %myHandlePosition);
+			myStartOrientation = myWandOrientation.inverse() * myNode->getOrientation();
+			//myStartRayDirection = myPointerRay.getDirection();
+			myHandlePosition = (handlePos - myNode->getPosition()); 
+			myHandleDistance = (handlePos - myPointerRay.getOrigin()).norm();
+			myNodeActive = true;
+			
+			ofmsg("handlepos %1% myHandlePosition %2%", %handlePos %myHandlePosition);
+			ofmsg("Ray origin %1% Direction %2% Handle Distance: %3%", %myPointerRay.getOrigin() %myPointerRay.getDirection() %myHandleDistance);
 		}
 	}
-
-	// Manipulate object, if one is active.
-	if(myNode->isSelected())
+	else if(myPointerEventType == Event::Up)
 	{
-		if(myButton1Pressed && myNodeSelected)
+		myNodeActive = false;
+	}
+	else if(myPointerEventType == Event::Update)
+	{
+		// Manipulate object, if one is active.
+		if(myNodeActive)
 		{
-			//myHandleDistance += myYAxis * context.dt;
-			Vector3f newPos = myPointerRay.getPoint(myHandleDistance); 
-			myNode->setPosition(newPos);
-		}
-		else
-		{
-			myNodeSelected = false;
-		}
-		
-		if(myButton2Pressed)
-		{
-			float yaw = myXAxis * context.dt;
-			float pitch = -myYAxis * context.dt;
-			Quaternion quat = AngleAxis(pitch, Vector3f::UnitX()) * AngleAxis(yaw, Vector3f::UnitY());
-			myNode->rotate(quat, Node::TransformWorld);
-			//Vector3f newPos = myPointerRay.getPoint(myHandleDistance); 
-			//myNode->setPosition(newPos);
+			if(myButton1Pressed)
+			{
+				Vector3f newPos = myPointerRay.getPoint(myHandleDistance) - myHandlePosition;
+				myNode->setPosition(newPos);
+				myNode->setOrientation(myWandOrientation * myStartOrientation);
+			}
+			else if(myButton2Pressed)
+			{
+				// Intersect the ray with the bounding sphere. 
+				// If the point is outside the bounding sphere, perform no rotation.
+				std::pair<bool, float> p = myPointerRay.intersects(myStartBSphere);
+				if(p.first)
+				{
+					Vector3f pt = myPointerRay.getPoint(p.second);
+					pt -= myStartBSphere.getCenter();
+					Quaternion rot = Math::buildRotation(myHandlePosition, pt , Vector3f::Zero() );
+					//myNode->setOrientation(rot * myStartOrientation);
+				}
+			}
 		}
 	}
 	

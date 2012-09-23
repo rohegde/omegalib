@@ -262,7 +262,7 @@ bool SceneNode::hit(const Ray& ray, Vector3f* hitPoint, HitType hitType)
 		std::pair<bool, float> h = ray.intersects(s);
 		if(h.first)
 		{
-			(*hitPoint) = ray.getPoint(h.second) - s.getCenter();
+			(*hitPoint) = ray.getPoint(h.second);
 		}
 		return h.first;
 	}
