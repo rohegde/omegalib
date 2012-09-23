@@ -98,17 +98,11 @@ namespace omega {
 
 		// Options
 		//@{
-		//! PYAPI
 		bool isSelectable();
-		//! PYAPI
 		void setSelectable(bool value);
-		//! PYAPI
 		bool isVisible();
-		//! PYAPI
 		void setVisible(bool value);
-		//! PYAPI
 		void setSelected(bool value);
-		//! PYAPI
 		bool isSelected();
 		//@}
 
