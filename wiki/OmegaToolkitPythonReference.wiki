@@ -1,205 +1,103 @@
-#summary Python reference: module cyclops
+#summary Python reference: module omegaToolkit
 #sidebar Sidebar
 
 <p>*Last revision:* ver. 3.0 - 22 September 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
 <wiki:toc max_depth="4" />
 
-= Module cyclops =
-Cyclops is a utility library that sits on top of omegalib and OpenSceneGraph, and it is designed to simplify developement of applications that need to draw complex and visually pleasant scenes, without having to deal with the low-level details of osg. SOme of cyclops features are:
- * Support for loading scenes defined in a simple xml format
- * Easy creation of primitive shapes, like planes, spheres, cubes and so on
- * Out-of-the-box support for soft shadows
- * An expandable shaders and effects library
+= Module omegaToolkit =
+omegaToolkit is a utility module for omegalib. It exposes some non-core functionalities such as
+ * a 2D / 3D graphical user interface
+ * a set of object manipulator techniques based on mouse / touch, 3d wands and kinect tracking
+ 
 -------------------------------------------------------------------------------
-==  Free Functions ==
-
-=== `getSceneManager()` ===
-Returns a reference to the cyclops scene manager
-
--------------------------------------------------------------------------------
-==  `class SceneManager` ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_scene_manager.html cyclops::SceneManager] C++ class. Manages a cyclops scene and its associated resources.
+==  `class ToolkitUtils` ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1_toolkit_utils.html omegaTookit::ToolkitUtils] C++ class. Offers some generic utility static functions.
 
 === Methods ===
 || Method(s) || Description ||
-|| *Backgrond* || ||
-|| `setBackgroundColor(color)` || ||
-|| `setSkyBox(skybox)` || ||
-|| *Scene management* || ||
-|| `loadModel(modelInfo)` || Loads a model defined by the data in `modelInfo` ||
-|| `loadModelAsync(modelInfo, command)` || Queues a model for loading. Call the command in the `command` string when loading is done (successful or not) ||
-|| `loadScene(path)` || Loads a cyclops xml scene file ||
-|| `unload()` || Cleans the scene and releases all associated resources ||
-|| *Wand* || ||
-|| `displayWand(wandId, trackableId)` || Displays a wand (identified by `wandId`) and attaches it to a trackable object `trackableId` ||
-|| `setWandEffect(wandId, effect)` || Sets the render effect for wand `wandId` ||
-|| `setWandSize(width, height)` ||  ||
-|| *Shadow support* || ||
-|| `getMainLight()`, `setMainLight(light)` || Sets the main scene light. When shadow mapping is enabled, it will be used to cast shadows ||
-|| `getCurrentShadowSettings()` || Gets the current settings for shadow mapping ||
-|| `resetShadowSettings(settings)` || Resets the shadow settings. Can be used to turn shadow maps on and off, and to change their quality ||
-
--------------------------------------------------------------------------------
-==  `class Entity` (extends `SceneNode`) ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_entity.html cyclops::Entity] C++ class. Entities are extended scene nodes that offer additional functionality for 3d model visualization, like transparency, rendering effects and link to motion capture tracked objects. Upon creation, entities are attached to the scene root, but they can be attached to different nodes in the scene after creation.
-
-=== Methods ===
-|| Method(s) || Description ||
-|| `hasEffect()` || Returns true if an effect is set for the entity ||
-|| `setEffect(effectDefinition)` || Sets the rendering effect for the entity ||
-|| `getAlpha()`, `setAlpha(value)` || Gets or sets the transparency for the entity (between 0 and 1) ||
-|| `followTrackable(trackabeId)` || Starts following the motion-captured trackable `trackableId` ||
-|| `setFollowOffset(offset, orientationOffset)` || Sets the tracking position and orientation offset applied to this object, with respect to the motion captured trackable ||
-|| `unfollow()` || Stops following a motion-captured trackable ||
-
--------------------------------------------------------------------------------
-==  `class SphereShape` (extends `SphereShape`) ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_sphere_shape.html cyclops::SphereShape]. Defines a sphere that can be added to the scene
-
-=== Methods ===
-|| Method(s) || Description ||
-|| `create(radius, subdivisions)` *static* || Returns true if an effect is set for the entity ||
+|| `createInteractor(setting)` *static* || Creates an interactor object from a setting object ||
+|| `setupInteractor(settingName)` *static* || Creates an interactor object from a setting name ||
 
 === Examples ===
-==== Creation ====
+==== Interactor creation ====
 {{{
-	# Create a sphere with a radius on 1 meter, with a 4 subdivision level.
-	s = SphereShape.create(1, 4)
-	# Make the sphere half-transparent and move it
-	s.setAlpha(0.5)
-	s.setPosition(Vector3(0, 1.5, 0))
+	node = SceneNode.create('node')
+	
+	# [ ... ] attach stuff to the node here
+	
+	# Create a standard interactor based on the settings under config/interactor
+	# The config/interactor section of the system configuration file specifies what
+	# interactor should be used depending on the hardware platform we are using (VR system, laptop, etc)
+	interactor = ToolkitUtils.setupInteractor("config/interactor")
+	
+	# If we succesfully created an interactor, let's attach the node to it
+	if(interactor != None):
+		interactor.setSceneNode(node)
 }}}
 
 -------------------------------------------------------------------------------
-==  `class PlaneShape` (extends `Entity`) ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_plane_shape.html cyclops::PlaneShape]. Defines a plane that can be added to the scene
+==  `class MenuManager` ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_menu_manager.html omegaTookit::ui::MenuManager] C++ class. Offers a simple to use menu system to control applications.
 
 === Methods ===
 || Method(s) || Description ||
-|| `create(width, height)` *static* || Creates a plane with the specified width and height, on the X-Y plane ||
-
--------------------------------------------------------------------------------
-==  `class StaticObject` (extends `Entity`) ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_static_object.html cyclops::StaticObject]. Creates an object using a loaded 3d model
-
-=== Methods ===
-|| Method(s) || Description ||
-|| `create(modelName)` *static* || Creates an object using a loaded model with the specified name ||
+|| `createAndInitialize()` *static* || Creates a new instance of the MenManager and initializes it ||
+|| `createMenu(name)` || Creates a new menu and returns it ||
+|| `setMainMenu(menu)` || Sets the specified menu object as the main menu (it will be opened when a system-specific key or button will be pressed ||
 
 === Examples ===
-==== Sync model loading and creation ====
+==== Basic ====
 {{{
-	# Load a torus model
-	mi = ModelInfo()
-	mi.name = "torus"
-	mi.path = "cyclops/test/torus.fbx"
-	scene.loadModel(mi)
-	
-	# Create a green torus
-	t1 = StaticObject.create("torus")
-	t1.setPosition(Vector3(-1, 0, 0))
-	t1.setEffect("colored -d green")
-	
-	# Create a red torus
-	t1 = StaticObject.create("torus")
-	t1.setPosition(Vector3(1, 0, 0))
-	t1.setEffect("colored -d red")
-}}}
-
-==== Async model loading and creation ====
-{{{
-	# Same as the previous example, but uses asynchronous loading
-	mi = ModelInfo()
-	mi.name = "torus"
-	mi.path = "cyclops/test/torus.fbx"
-	
-	# After this call control returns immediately to the script.
-	# onTorusLoaded() will be called once the model is done loading.
-	scene.loadModelAsync(mi, "onTorusLoaded()")
-	
-	def onTorusLoaded():
-		# Create a green torus
-		t1 = StaticObject.create("torus")
-		t1.setPosition(Vector3(-1, 0, 0))
-		t1.setEffect("colored -d green")
-		
-		# Create a red torus
-		t1 = StaticObject.create("torus")
-		t1.setPosition(Vector3(1, 0, 0))
-		t1.setEffect("colored -d red")
+	# Create an empty menu and set it as the main menu
+	mm = MenuManager.createAndInitialize()
+	menu = mm.createMenu('menu')
+	mm.setMainMenu(menu)
 }}}
 
 -------------------------------------------------------------------------------
-==  `class AnimatedObject` (extends `Entity`) ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_animated_object.html cyclops::AnimatedObject]. Creates an object using a loaded 3d model. If the model contains animations, they can be played back through this class. Models using the Autodesk .fbx format are supported by default. `AnimatedObject` also supports loading a set of separate model files that can be played back in a flipbook-style animation.
+==  `class Menu` ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_menu.html omegaTookit::ui::Menu] C++ class. Represents a menu. Menus can contain buttons, sliders, checkboxes and sub menus
 
 === Methods ===
 || Method(s) || Description ||
-|| `create(modelName)` *static* || Creates an object using a loaded model with the specified name ||
-|| `hasAnimations()` || Returns true if the object contains animations ||
-|| `getNumAnimations()` ||  ||
-|| `playAnimation(animId)` ||  ||
-|| `loopAnimation(animId)` ||  ||
-|| `pauseAnimation(animId)` ||  ||
-|| `stopAllAnimations()` ||  ||
-|| `getCurAnimation()` ||  ||
-|| `getAnimationLength(animId)` ||  ||
-|| `getAnimationStart(animId)` ||  ||
-|| `setAnimationStart(animId)` ||  ||
+|| `addItem(type)` || Adds an item to the menu. Type can be one of `MenuItem.Button`, `MenuItem.Checkbox`, `MenuItem.Slider`, `MenuItem.SubMenu` ||
+|| `show()` || Displays the menu ||
+|| `hide()` || Hides the menu ||
 
 -------------------------------------------------------------------------------
-==  `class Light` (extends `SceneNode`) ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_light.html cyclops::Light]. Defines a light for a cyclops scene. After creation, lights are automatically attached to the scene root node.
+==  `class MenuItem` ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_menu_item.html omegaTookit::ui::Menu] C++ class. Represents an item in a menu
 
 === Methods ===
 || Method(s) || Description ||
-|| `create()` *static* || Creates a new light object ||
-|| `setColor(color)` || Sets the diffuse color for this light ||
-|| `setAmbient(color)` || Sets the ambient color for this light. Ambient color will be considered only for the main scene light (see `SceneManager.setMainLight`) ||
-|| `isEnabled()`, `setEnabled(value)` || Gets or sets the light enabled value ||
-|| `getSoftShadowJitter()`, `setSoftShadowJitter(value)` || Gets or sets soft shadow jitter value for this light. Used only for the main light when shadows are enabled ||
-|| `getSoftShadowWidth()`, `setSoftShadowWidth(value)` || Gets or sets soft shadow width value for this light. Used only for the main light when shadows are enabled ||
+|| `getText()`, `setText(string)` || Gets or sets the label for the menu item ||
+|| `getDescription()`, `setDescription(string)` || Gets or sets the description for the menu item ||
+|| `getCommand()`, `setCommand(string)` || Gets or sets the script command to be executed when the menu item is activated or changed ||
+|| `isChecked()`, `setChecked(value)` || Gets or sets the checked status for checkbox menu items ||
+|| `getUserTag()`, `setUserTag(value)` || Gets or sets a string user tag associated to this menu item ||
+|| `getSubMenu()` || Returns the sub menu attached to this menu item. Valid only for `MenuItem.SubMenu` item types ||
 
 -------------------------------------------------------------------------------
-==  `class ModelInfo` ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_model_info.html cyclops::ModelInfo]. Contains the name of a model to load and load options.
-
-=== Properties ===
-|| Properties || Description ||
-|| `name` || The unique name for this model ||
-|| `description` || A description for this model. Can be used in user interfaces ||
-|| `generateNormals` || when set to `True`, cyclops will generate normals for the loaded model ||
-|| `numFiles` || If set to a value other than 1, cyclops will attempt to load multiple models the string `%1` in the model path will be substituded by a model index ||
-|| `path` || The relative path to the model. File lookup follows the rules defined in [https://code.google.com/p/omegalib/wiki/Filesystem the filesystem page] ||
-|| `size` || The size of the loaded model in meters. If left to 0, the original model size will be preserved ||
-|| `optimize` || When set to `True` cyclops will perform some optimizations on the loaded model to increase rendering performance. This is a recommended setting. ||
-|| `usePowerOfTwoTextures` || When set to `True` non-power-of-two textures will e converted to power of two. Can be usually left set to false. ||
+==  `class Container3dSettings` ==
 
 -------------------------------------------------------------------------------
-==  `class ShadowSettings` ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_shadow_settings.html cyclops::ShadowSettings]. Contains shadow setting for the scene
-
-=== Properties ===
-|| Properties || Description ||
-|| `shadowsEnabled` || Set to `True` cyclops will render shadows using the main light as the shadow map reference light ||
-|| `shadowsResolutionRation` ||  ||
+==  `class UiModule` ==
 
 -------------------------------------------------------------------------------
-==  `class Skybox` ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_skybox.html cyclops::Skybox]. Defines a sky box for the scene, using a cube map texture
+==  `class WidgetFactory` ==
 
-=== Methods ===
-|| Method(s) || Description ||
-|| `loadCubeMap(path, extension)` || loads a cube map using a set of six textures contained in the specified path ||
+-------------------------------------------------------------------------------
+==  `class Widget` ==
 
-=== Examples ===
-==== Basic example ====
-{{{
-	# Load a cube map and attach it to the scene
-	# the textures in common/cubemaps/grid4 must be named
-	# posx.png, posy.png, negx.png, negy.png, posz.png, negz.png
-	skybox = Skybox()
-	skybox.loadCubeMap("common/cubemaps/grid4", "png")
-	getSceneManager().setSkyBox(skybox)
-}}}
+-------------------------------------------------------------------------------
+==  `class Container` (extends `Widget`) ==
+
+-------------------------------------------------------------------------------
+==  `class Button` (extends `Widget`) ==
+
+-------------------------------------------------------------------------------
+==  `class Image` (extends `Widget`) ==
+
+-------------------------------------------------------------------------------
+==  `class Label` (extends `Widget`) ==
