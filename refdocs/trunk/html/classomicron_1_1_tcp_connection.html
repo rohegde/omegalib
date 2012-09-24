@@ -50,6 +50,8 @@
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classomicron_1_1_tcp_connection-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -63,7 +65,16 @@
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classomicron_1_1_tcp_connection__inherit__graph.png" border="0" usemap="#omicron_1_1_tcp_connection_inherit__map" alt="Inheritance graph"/></div>
 <map name="omicron_1_1_tcp_connection_inherit__map" id="omicron_1_1_tcp_connection_inherit__map">
-<area shape="rect" id="node5" href="classomega_1_1_mission_control_connection.html" title="omega::MissionControlConnection" alt="" coords="5,149,189,173"/><area shape="rect" id="node7" href="classomicron_1_1_tablet_connection.html" title="omicron::TabletConnection" alt="" coords="214,149,364,173"/><area shape="rect" id="node2" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="123,5,264,29"/></map>
+<area shape="rect" id="node5" href="classomega_1_1_mission_control_connection.html" title="omega::MissionControlConnection" alt="" coords="382,5,567,29"/><area shape="rect" id="node7" href="classomicron_1_1_tablet_connection.html" title="omicron::TabletConnection" alt="" coords="399,53,550,77"/><area shape="rect" id="node9" href="classomicron_1_1_tcp_client_connection.html" title="omicron::TcpClientConnection" alt="" coords="392,101,557,125"/><area shape="rect" id="node2" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,53,147,77"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for omicron::TcpConnection:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classomicron_1_1_tcp_connection__coll__graph.png" border="0" usemap="#omicron_1_1_tcp_connection_coll__map" alt="Collaboration graph"/></div>
+<map name="omicron_1_1_tcp_connection_coll__map" id="omicron_1_1_tcp_connection_coll__map">
+<area shape="rect" id="node2" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="7,104,148,128"/><area shape="rect" id="node4" href="classomicron_1_1_list.html" title="omicron::List\&lt; Reference\lType * \&gt;" alt="" coords="5,6,149,42"/><area shape="rect" id="node10" href="structomicron_1_1_connection_info.html" title="omicron::ConnectionInfo" alt="" coords="377,104,519,128"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
@@ -75,7 +86,7 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a94cb479aafb0c38eca371b5563962c8b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_tcp_connection.html#a94cb479aafb0c38eca371b5563962c8b">TcpConnection</a> (<a class="el" href="structomicron_1_1_connection_info.html">ConnectionInfo</a> ci)</td></tr>
+<tr class="memitem:a6709528dfcf0d4641f8cea85e7874607"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_tcp_connection.html#a6709528dfcf0d4641f8cea85e7874607">TcpConnection</a> (const <a class="el" href="structomicron_1_1_connection_info.html">ConnectionInfo</a> &amp;ci)</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ac569c4ea34d516981cd7bb3be77fa300"><td class="memItemLeft" align="right" valign="top">tcp::socket &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_tcp_connection.html#ac569c4ea34d516981cd7bb3be77fa300">getSocket</a> ()</td></tr>
 <tr class="memdesc:ac569c4ea34d516981cd7bb3be77fa300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connection properties.  <a href="#ac569c4ea34d516981cd7bb3be77fa300"></a><br/></td></tr>
@@ -105,6 +116,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4b8526fb1b60859c3d898d24ab2d78fb inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a4b8526fb1b60859c3d898d24ab2d78fb">~ReferenceType</a> ()</td></tr>
 <tr class="memitem:ab697105dd0bd4549995d9996f142daa1 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#ab697105dd0bd4549995d9996f142daa1">ref</a> ()</td></tr>
 <tr class="memitem:ab142bd02b19831effeeb43d7db1d4e7f inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#ab142bd02b19831effeeb43d7db1d4e7f">unref</a> ()</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a629b7210c23783fb97b730be1f58d1ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_tcp_connection.html#a629b7210c23783fb97b730be1f58d1ed">doHandleConnected</a> ()</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:aec43da10976787e2d829c4077dd4ace5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomicron_1_1_connection_info.html">ConnectionInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_tcp_connection.html#aec43da10976787e2d829c4077dd4ace5">myConnectionInfo</a></td></tr>
+<tr class="memitem:a0205d584b620052dac6f620fbaab9160"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_tcp_connection.html#a84f4e13c22f193f275a6bd71590e17af">ConnectionState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_tcp_connection.html#a0205d584b620052dac6f620fbaab9160">myState</a></td></tr>
+<tr class="memitem:a4041db2adbdede1e0284f0d04f5b71b6"><td class="memItemLeft" align="right" valign="top">tcp::socket&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_tcp_connection.html#a4041db2adbdede1e0284f0d04f5b71b6">mySocket</a></td></tr>
+<tr class="memitem:acd15d5e3006a29acef3748739ed78f3d"><td class="memItemLeft" align="right" valign="top">asio::streambuf&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_tcp_connection.html#acd15d5e3006a29acef3748739ed78f3d">myInputBuffer</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
@@ -141,14 +163,14 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a94cb479aafb0c38eca371b5563962c8b"></a>
+<a class="anchor" id="a6709528dfcf0d4641f8cea85e7874607"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">omicron::TcpConnection::TcpConnection </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structomicron_1_1_connection_info.html">ConnectionInfo</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structomicron_1_1_connection_info.html">ConnectionInfo</a> &amp;&#160;</td>
           <td class="paramname"><em>ci</em></td><td>)</td>
           <td></td>
         </tr>
@@ -192,6 +214,29 @@ Additional Inherited Members</h2></td></tr>
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a629b7210c23783fb97b730be1f58d1ed"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omicron::TcpConnection::doHandleConnected </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -506,6 +551,87 @@ Additional Inherited Members</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2>Member Data Documentation</h2>
+<a class="anchor" id="aec43da10976787e2d829c4077dd4ace5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structomicron_1_1_connection_info.html">ConnectionInfo</a> omicron::TcpConnection::myConnectionInfo</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="acd15d5e3006a29acef3748739ed78f3d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">asio::streambuf omicron::TcpConnection::myInputBuffer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4041db2adbdede1e0284f0d04f5b71b6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tcp::socket omicron::TcpConnection::mySocket</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0205d584b620052dac6f620fbaab9160"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomicron_1_1_tcp_connection.html#a84f4e13c22f193f275a6bd71590e17af">ConnectionState</a> omicron::TcpConnection::myState</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

@@ -1,0 +1,7 @@
+<map id="cyclops::ModelAsset" name="cyclops::ModelAsset">
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="260,11,401,35"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_list.html" title="omicron::List\&lt; Reference\lType * \&gt;" alt="" coords="5,5,149,41"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_ref.html" title="omicron::Ref\&lt; ModelInfo \&gt;" alt="" coords="253,59,408,83"/>
+<area shape="rect" id="node14" title="STL class." alt="" coords="295,223,367,247"/>
+<area shape="rect" id="node16" title="STL class." alt="" coords="22,217,133,253"/>
+</map>

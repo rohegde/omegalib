@@ -1,4 +1,4 @@
 <map id="omega::GamepadCameraController" name="omega::GamepadCameraController">
 <area shape="rect" id="node2" href="$classomega_1_1_camera_controller.html" title="omega::CameraController" alt="" coords="27,77,173,101"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="29,5,171,29"/>
+<area shape="rect" id="node4" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="36,5,164,29"/>
 </map>

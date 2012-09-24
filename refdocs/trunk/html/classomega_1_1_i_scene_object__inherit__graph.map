@@ -1,7 +1,8 @@
 <map id="omega::ISceneObject" name="omega::ISceneObject">
-<area shape="rect" id="node3" href="$classomega_osg_1_1_osg_scene_object.html" title="omegaOsg::OsgSceneObject" alt="" coords="182,5,343,29"/>
-<area shape="rect" id="node5" href="$classomega_toolkit_1_1_renderable_scene_object.html" title="omegaToolkit::Renderable\lSceneObject" alt="" coords="189,54,337,90"/>
-<area shape="rect" id="node11" href="$classomega_vtk_1_1_vtk_attach_point.html" title="omegaVtk::VtkAttachPoint" alt="" coords="189,115,337,139"/>
-<area shape="rect" id="node7" href="$classomega_toolkit_1_1_box.html" title="omegaToolkit::Box" alt="" coords="397,36,507,60"/>
-<area shape="rect" id="node9" href="$classomega_toolkit_1_1_mesh.html" title="omegaToolkit::Mesh" alt="" coords="393,84,511,108"/>
+<area shape="rect" id="node5" href="$classomega_osg_1_1_osg_scene_object.html" title="omegaOsg::OsgSceneObject" alt="" coords="371,5,533,29"/>
+<area shape="rect" id="node7" href="$classomega_toolkit_1_1_renderable_scene_object.html" title="omegaToolkit::Renderable\lSceneObject" alt="" coords="378,54,526,90"/>
+<area shape="rect" id="node13" href="$classomega_vtk_1_1_vtk_attach_point.html" title="omegaVtk::VtkAttachPoint" alt="" coords="378,115,526,139"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,60,147,84"/>
+<area shape="rect" id="node9" href="$classomega_toolkit_1_1_box.html" title="omegaToolkit::Box" alt="" coords="586,36,697,60"/>
+<area shape="rect" id="node11" href="$classomega_toolkit_1_1_mesh.html" title="omegaToolkit::Mesh" alt="" coords="582,84,701,108"/>
 </map>

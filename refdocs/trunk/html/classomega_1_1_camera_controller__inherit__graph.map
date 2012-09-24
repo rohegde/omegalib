@@ -1,7 +1,8 @@
 <map id="omega::CameraController" name="omega::CameraController">
-<area shape="rect" id="node5" href="$classomega_1_1_gamepad_camera_controller.html" title="omega::GamepadCameraController" alt="" coords="390,5,581,29"/>
-<area shape="rect" id="node7" href="$classomega_1_1_keyboard_mouse_camera_controller.html" title="omega::KeyboardMouseCamera\lController" alt="" coords="397,54,573,90"/>
-<area shape="rect" id="node9" href="$classomega_1_1_mouse_camera_controller.html" title="omega::MouseCameraController" alt="" coords="397,115,574,139"/>
-<area shape="rect" id="node11" href="$classomega_1_1_wand_camera_controller.html" title="omega::WandCameraController" alt="" coords="398,163,573,187"/>
-<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,88,147,112"/>
+<area shape="rect" id="node7" href="$classomega_1_1_gamepad_camera_controller.html" title="omega::GamepadCameraController" alt="" coords="553,5,743,29"/>
+<area shape="rect" id="node9" href="$classomega_1_1_keyboard_mouse_camera_controller.html" title="omega::KeyboardMouseCamera\lController" alt="" coords="560,54,736,90"/>
+<area shape="rect" id="node11" href="$classomega_1_1_mouse_camera_controller.html" title="omega::MouseCameraController" alt="" coords="559,115,737,139"/>
+<area shape="rect" id="node13" href="$classomega_1_1_wand_camera_controller.html" title="omega::WandCameraController" alt="" coords="561,163,735,187"/>
+<area shape="rect" id="node2" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="181,88,309,112"/>
+<area shape="rect" id="node4" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="5,88,133,112"/>
 </map>

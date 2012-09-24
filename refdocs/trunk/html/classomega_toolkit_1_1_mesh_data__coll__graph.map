@@ -1,0 +1,10 @@
+<map id="omegaToolkit::MeshData" name="omegaToolkit::MeshData">
+<area shape="rect" id="node6" href="$classomicron_1_1_vector.html" title="omicron::Vector\&lt; Vector3f \&gt;" alt="" coords="195,175,357,199"/>
+<area shape="rect" id="node8" title="STL class." alt="" coords="5,175,144,199"/>
+<area shape="rect" id="node10" href="$classomicron_1_1_vector.html" title="omicron::Vector\&lt; Vector2f \&gt;" alt="" coords="195,248,357,272"/>
+<area shape="rect" id="node12" title="STL class." alt="" coords="5,248,144,272"/>
+<area shape="rect" id="node14" href="$classomicron_1_1_vector.html" title="omicron::Vector\&lt; Triangle \&gt;" alt="" coords="197,296,355,320"/>
+<area shape="rect" id="node16" title="STL class." alt="" coords="7,296,143,320"/>
+<area shape="rect" id="node18" href="$classomicron_1_1_vector.html" title="omicron::Vector\&lt; Color \&gt;" alt="" coords="203,344,349,368"/>
+<area shape="rect" id="node20" title="STL class." alt="" coords="13,344,136,368"/>
+</map>

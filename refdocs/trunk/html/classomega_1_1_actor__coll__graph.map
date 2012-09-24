@@ -1,0 +1,6 @@
+<map id="omega::Actor" name="omega::Actor">
+<area shape="rect" id="node2" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="5,80,133,104"/>
+<area shape="rect" id="node4" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="5,5,133,29"/>
+<area shape="rect" id="node6" href="$classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph." alt="" coords="158,80,273,104"/>
+<area shape="rect" id="node8" href="$classomega_1_1_node.html" title="PYAPI Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="173,5,259,29"/>
+</map>

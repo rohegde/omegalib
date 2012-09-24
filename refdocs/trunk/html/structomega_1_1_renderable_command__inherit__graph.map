@@ -1,3 +1,4 @@
 <map id="omega::RenderableCommand" name="omega::RenderableCommand">
-<area shape="rect" id="node2" href="$classomega_1_1_i_renderer_command.html" title="omega::IRendererCommand" alt="" coords="7,5,165,29"/>
+<area shape="rect" id="node2" href="$classomega_1_1_i_renderer_command.html" title="omega::IRendererCommand" alt="" coords="7,77,165,101"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="16,5,157,29"/>
 </map>

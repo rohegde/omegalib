@@ -1,6 +1,7 @@
 <map id="omega::Node" name="omega::Node">
-<area shape="rect" id="node5" href="$classcyclops_1_1_light.html" title="PYAPI." alt="" coords="5,149,93,173"/>
-<area shape="rect" id="node7" href="$classomega_1_1_scene_node.html" title="PYAPI Represents a node in the omegalib scene graph." alt="" coords="118,149,233,173"/>
-<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="41,5,183,29"/>
-<area shape="rect" id="node9" href="$classcyclops_1_1_entity.html" title="PYAPI." alt="" coords="129,221,223,245"/>
+<area shape="rect" id="node5" href="$classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph." alt="" coords="109,149,224,173"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="96,5,237,29"/>
+<area shape="rect" id="node7" href="$classcyclops_1_1_entity.html" title="PYAPI." alt="" coords="5,221,99,245"/>
+<area shape="rect" id="node9" href="$classcyclops_1_1_light.html" title="PYAPI." alt="" coords="123,221,211,245"/>
+<area shape="rect" id="node11" href="$classomega_1_1_camera.html" title="omega::Camera" alt="" coords="235,221,333,245"/>
 </map>

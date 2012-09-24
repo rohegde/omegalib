@@ -55,6 +55,9 @@
 <div class="title">omega::ServerThread Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Implements, in a separate thread, the HTTP server for Porthole Service.  
+ <a href="classomega_1_1_server_thread.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for omega::ServerThread:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -64,10 +67,24 @@
 <map name="omega_1_1_server_thread_inherit__map" id="omega_1_1_server_thread_inherit__map">
 <area shape="rect" id="node2" href="classomicron_1_1_thread.html" title="omicron::Thread" alt="" coords="19,5,120,29"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for omega::ServerThread:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classomega_1_1_server_thread__coll__graph.png" border="0" usemap="#omega_1_1_server_thread_coll__map" alt="Collaboration graph"/></div>
+<map name="omega_1_1_server_thread_coll__map" id="omega_1_1_server_thread_coll__map">
+<area shape="rect" id="node2" href="classomicron_1_1_thread.html" title="omicron::Thread" alt="" coords="19,5,120,29"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:add6afee95a602948317d79de2b8c8047"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_thread.html#add6afee95a602948317d79de2b8c8047">ServerThread</a> ()</td></tr>
+<tr class="memitem:abe8eca98c2b2b3c6665026461b0c917d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_thread.html#abe8eca98c2b2b3c6665026461b0c917d">~ServerThread</a> ()</td></tr>
+<tr class="memitem:ad0db591b8e68f8dcf1ebe3de8bc785a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_thread.html#ad0db591b8e68f8dcf1ebe3de8bc785a4">setPort</a> (int portNumber)</td></tr>
+<tr class="memitem:a96f9311048f31bdb4eb3bc1a79e4abc8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_thread.html#a96f9311048f31bdb4eb3bc1a79e4abc8">setFunctionsBinder</a> (<a class="el" href="structomega_1_1_porthole_functions_binder.html">PortholeFunctionsBinder</a> *binder)</td></tr>
+<tr class="memitem:acceaa1625acec79d581498a4ccbc9d3c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_thread.html#acceaa1625acec79d581498a4ccbc9d3c">setXMLfile</a> (char *xmlPath)</td></tr>
+<tr class="memitem:a7aea82780056eb737635680c1472ce9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_thread.html#a7aea82780056eb737635680c1472ce9b">setCSSPath</a> (char *cssPath)</td></tr>
 <tr class="memitem:ac67838c12d826f2dbb8132855b761309"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_thread.html#ac67838c12d826f2dbb8132855b761309">threadProc</a> ()</td></tr>
 <tr class="inherit_header pub_methods_classomicron_1_1_thread"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomicron_1_1_thread')"><img src="closed.png" alt="-"/>&nbsp;Public Member Functions inherited from <a class="el" href="classomicron_1_1_thread.html">omicron::Thread</a></td></tr>
 <tr class="memitem:ab916cd8260ae2e665d1176eba3ca19bd inherit pub_methods_classomicron_1_1_thread"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_thread.html#ab916cd8260ae2e665d1176eba3ca19bd">Thread</a> ()</td></tr>
@@ -80,10 +97,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:afe9d49d9816f03d88e2813cf0374e3cf"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_thread.html#afe9d49d9816f03d88e2813cf0374e3cf">dump_handshake_info</a> (struct <a class="el" href="structlws__tokens.html">lws_tokens</a> *lwst)</td></tr>
 <tr class="memitem:a53b58101caea27b8673f632e08e9f150"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_thread.html#a53b58101caea27b8673f632e08e9f150">callback_http</a> (struct <a class="el" href="structlibwebsocket__context.html">libwebsocket_context</a> *context, struct <a class="el" href="structlibwebsocket.html">libwebsocket</a> *wsi, enum libwebsocket_callback_reasons reason, void *user, void *in, size_t len)</td></tr>
 <tr class="memitem:a424515cb7d6d6f4fd07b3885bb29d858"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_thread.html#a424515cb7d6d6f4fd07b3885bb29d858">callback_websocket</a> (struct <a class="el" href="structlibwebsocket__context.html">libwebsocket_context</a> *context, struct <a class="el" href="structlibwebsocket.html">libwebsocket</a> *wsi, enum libwebsocket_callback_reasons reason, void *user, void *in, size_t len)</td></tr>
-<tr class="memitem:ad43eccb910fb333b1cba7d67c661be34"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_thread.html#ad43eccb910fb333b1cba7d67c661be34">base64_encode</a> (unsigned char const *, unsigned int len)</td></tr>
-<tr class="memitem:acd844a4a4e74bc0ffcc6952fc25eda96"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_thread.html#acd844a4a4e74bc0ffcc6952fc25eda96">base64_decode</a> (string const &amp;s)</td></tr>
 </table>
-<h2>Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p>Implements, in a separate thread, the HTTP server for Porthole Service. </p>
+</div><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="add6afee95a602948317d79de2b8c8047"></a>
 <div class="memitem">
 <div class="memproto">
@@ -99,65 +116,22 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="abe8eca98c2b2b3c6665026461b0c917d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ServerThread::~ServerThread </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2>Member Function Documentation</h2>
-<a class="anchor" id="acd844a4a4e74bc0ffcc6952fc25eda96"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string ServerThread::base64_decode </td>
-          <td>(</td>
-          <td class="paramtype">std::string const &amp;&#160;</td>
-          <td class="paramname"><em>encoded_string</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ad43eccb910fb333b1cba7d67c661be34"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string ServerThread::base64_encode </td>
-          <td>(</td>
-          <td class="paramtype">unsigned char const *&#160;</td>
-          <td class="paramname"><em>bytes_to_encode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a53b58101caea27b8673f632e08e9f150"></a>
 <div class="memitem">
 <div class="memproto">
@@ -294,6 +268,70 @@ Static Public Member Functions</h2></td></tr>
 <span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a7aea82780056eb737635680c1472ce9b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ServerThread::setCSSPath </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>cssPath</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a96f9311048f31bdb4eb3bc1a79e4abc8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ServerThread::setFunctionsBinder </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structomega_1_1_porthole_functions_binder.html">PortholeFunctionsBinder</a> *&#160;</td>
+          <td class="paramname"><em>binder</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad0db591b8e68f8dcf1ebe3de8bc785a4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ServerThread::setPort </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>portNumber</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="acceaa1625acec79d581498a4ccbc9d3c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ServerThread::setXMLfile </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>xmlPath</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>

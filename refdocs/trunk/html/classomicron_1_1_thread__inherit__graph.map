@@ -1,3 +1,4 @@
 <map id="omicron::Thread" name="omicron::Thread">
-<area shape="rect" id="node3" href="$classomega_1_1_server_thread.html" title="omega::ServerThread" alt="" coords="5,77,133,101"/>
+<area shape="rect" id="node3" href="$class_model_loader_thread.html" title="ModelLoaderThread" alt="" coords="5,77,123,101"/>
+<area shape="rect" id="node5" href="$classomega_1_1_server_thread.html" title="Implements, in a separate thread, the HTTP server for Porthole Service." alt="" coords="147,77,275,101"/>
 </map>

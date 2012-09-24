@@ -1,0 +1,6 @@
+<map id="omega::PortholeService" name="omega::PortholeService">
+<area shape="rect" id="node2" href="$classomicron_1_1_service.html" title="omicron::Service" alt="" coords="26,80,128,104"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,5,147,29"/>
+<area shape="rect" id="node6" href="$classomega_1_1_server_thread.html" title="Implements, in a separate thread, the HTTP server for Porthole Service." alt="" coords="156,80,284,104"/>
+<area shape="rect" id="node8" href="$classomicron_1_1_thread.html" title="omicron::Thread" alt="" coords="171,5,272,29"/>
+</map>

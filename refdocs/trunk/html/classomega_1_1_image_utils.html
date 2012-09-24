@@ -48,6 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classomega_1_1_image_utils-members.html">List of all members</a>  </div>
@@ -59,15 +60,24 @@
 <p>Loads and manages image data.  
  <a href="classomega_1_1_image_utils.html#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_image_utils_1_1_load_image_async_task_data.html">LoadImageAsyncTaskData</a></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a3adea18d896812a9499e62290793f35c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a3adea18d896812a9499e62290793f35c">ImageFormat</a> { <a class="el" href="classomega_1_1_image_utils.html#a3adea18d896812a9499e62290793f35caaf417fed57d57e7b161dae94359b5a5a">FormatPng</a>
+<tr class="memitem:a3adea18d896812a9499e62290793f35c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a3adea18d896812a9499e62290793f35c">ImageFormat</a> { <a class="el" href="classomega_1_1_image_utils.html#a3adea18d896812a9499e62290793f35caaf417fed57d57e7b161dae94359b5a5a">FormatPng</a>, 
+<a class="el" href="classomega_1_1_image_utils.html#a3adea18d896812a9499e62290793f35cabcdf1b1343922928bde2830c5d4594d7">FormatJpeg</a>
  }</td></tr>
+<tr class="memitem:a7d4ba2105bb9584f509346fef33e2ea2"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classomega_1_1_async_task.html">AsyncTask</a><br class="typebreak"/>
+&lt; <a class="el" href="structomega_1_1_image_utils_1_1_load_image_async_task_data.html">LoadImageAsyncTaskData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a7d4ba2105bb9584f509346fef33e2ea2">LoadImageAsyncTask</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ad31ab848e93c11b312e2c1f2341cffc0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_ref.html">Ref</a>&lt; <a class="el" href="structomega_1_1_pixel_data.html">PixelData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#ad31ab848e93c11b312e2c1f2341cffc0">loadImage</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;filename, bool hasFullPath=false)</td></tr>
 <tr class="memdesc:ad31ab848e93c11b312e2c1f2341cffc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a file.  <a href="#ad31ab848e93c11b312e2c1f2341cffc0"></a><br/></td></tr>
+<tr class="memitem:a386b9c6734e07212ca5b90c6b6734b2c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1_image_utils.html#a7d4ba2105bb9584f509346fef33e2ea2">LoadImageAsyncTask</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a386b9c6734e07212ca5b90c6b6734b2c">loadImageAsync</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;filename, bool hasFullPath=false)</td></tr>
+<tr class="memdesc:a386b9c6734e07212ca5b90c6b6734b2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load image from a file (async)  <a href="#a386b9c6734e07212ca5b90c6b6734b2c"></a><br/></td></tr>
 <tr class="memitem:abf0dee73ad2ee17169c11fb1797b31af"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structomicron_1_1_byte_array.html">ByteArray</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#abf0dee73ad2ee17169c11fb1797b31af">encode</a> (<a class="el" href="structomega_1_1_pixel_data.html">PixelData</a> *data, <a class="el" href="classomega_1_1_image_utils.html#a3adea18d896812a9499e62290793f35c">ImageFormat</a> format)</td></tr>
 <tr class="memitem:a2fa94e6047770e5383a8e47783b70bbb"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a2fa94e6047770e5383a8e47783b70bbb">internalInitialize</a> ()</td></tr>
 <tr class="memitem:aff53aa5f29908ae61515349430562917"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#aff53aa5f29908ae61515349430562917">internalDispose</a> ()</td></tr>
@@ -83,7 +93,20 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Loads and manages image data. </p>
-</div><h2>Member Enumeration Documentation</h2>
+</div><h2>Member Typedef Documentation</h2>
+<a class="anchor" id="a7d4ba2105bb9584f509346fef33e2ea2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="classomega_1_1_async_task.html">AsyncTask</a>&lt;<a class="el" href="structomega_1_1_image_utils_1_1_load_image_async_task_data.html">LoadImageAsyncTaskData</a>&gt; <a class="el" href="classomega_1_1_image_utils.html#a7d4ba2105bb9584f509346fef33e2ea2">omega::ImageUtils::LoadImageAsyncTask</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2>Member Enumeration Documentation</h2>
 <a class="anchor" id="a3adea18d896812a9499e62290793f35c"></a>
 <div class="memitem">
 <div class="memproto">
@@ -95,6 +118,8 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em><a class="anchor" id="a3adea18d896812a9499e62290793f35caaf417fed57d57e7b161dae94359b5a5a"></a>FormatPng</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a3adea18d896812a9499e62290793f35cabcdf1b1343922928bde2830c5d4594d7"></a>FormatJpeg</em>&nbsp;</td><td>
 </td></tr>
 </table>
 </dd>
@@ -309,6 +334,42 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Load an image from a file. </p>
+
+</div>
+</div>
+<a class="anchor" id="a386b9c6734e07212ca5b90c6b6734b2c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1_image_utils.html#a7d4ba2105bb9584f509346fef33e2ea2">ImageUtils::LoadImageAsyncTask</a> * ImageUtils::loadImageAsync </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>hasFullPath</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Load image from a file (async) </p>
 
 </div>
 </div>

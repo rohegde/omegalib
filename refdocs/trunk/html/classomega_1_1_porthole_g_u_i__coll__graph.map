@@ -1,0 +1,5 @@
+<map id="omega::PortholeGUI" name="omega::PortholeGUI">
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="144,104,285,128"/>
+<area shape="rect" id="node8" href="$struct_porthole_camera.html" title="PortholeCamera" alt="" coords="99,213,197,237"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_list.html" title="omicron::List\&lt; Reference\lType * \&gt;" alt="" coords="143,6,287,42"/>
+</map>

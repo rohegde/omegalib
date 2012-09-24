@@ -1,0 +1,8 @@
+<map id="omega::SceneNode" name="omega::SceneNode">
+<area shape="rect" id="node2" href="$classomega_1_1_node.html" title="PYAPI Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="507,254,594,278"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="167,6,308,30"/>
+<area shape="rect" id="node13" href="$classomicron_1_1_name_generator.html" title="Utility class to generate a sequentially numbered series of names." alt="" coords="166,298,309,322"/>
+<area shape="rect" id="node15" title="STL class." alt="" coords="5,261,77,285"/>
+<area shape="rect" id="node23" href="$classomicron_1_1_list.html" title="omicron::List\&lt; Node * \&gt;" alt="" coords="168,427,307,451"/>
+<area shape="rect" id="node25" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, Ref\&lt; Node \&gt; \&gt;" alt="" coords="166,476,309,512"/>
+</map>

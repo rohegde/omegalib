@@ -1,0 +1,10 @@
+<map id="omega::Node" name="omega::Node">
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="265,11,407,35"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_list.html" title="omicron::List\&lt; Reference\lType * \&gt;" alt="" coords="11,5,155,41"/>
+<area shape="rect" id="node13" href="$classomicron_1_1_name_generator.html" title="Utility class to generate a sequentially numbered series of names." alt="" coords="265,237,407,261"/>
+<area shape="rect" id="node17" title="STL class." alt="" coords="47,265,119,289"/>
+<area shape="rect" id="node25" href="$classomicron_1_1_list.html" title="omicron::List\&lt; Node * \&gt;" alt="" coords="267,432,405,456"/>
+<area shape="rect" id="node27" title="STL class." alt="" coords="25,432,140,456"/>
+<area shape="rect" id="node29" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, Ref\&lt; Node \&gt; \&gt;" alt="" coords="265,481,407,517"/>
+<area shape="rect" id="node31" href="$classstdext_1_1hash__map.html" title="stdext::hash_map\&lt; String,\l Ref\&lt; Node \&gt; \&gt;" alt="" coords="6,481,159,517"/>
+</map>

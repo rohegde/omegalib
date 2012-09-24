@@ -1,0 +1,12 @@
+<map id="omega::RenderState" name="omega::RenderState">
+<area shape="rect" id="node2" href="$classomega_1_1_render_pass.html" title="omega::RenderPass" alt="" coords="433,5,551,29"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,41,147,65"/>
+<area shape="rect" id="node22" href="$classomega_1_1_gpu_context.html" title="omega::GpuContext" alt="" coords="276,89,396,113"/>
+<area shape="rect" id="node32" href="$classomega_1_1_renderer_base.html" title="omega::RendererBase" alt="" coords="271,41,401,65"/>
+<area shape="rect" id="node6" href="$structomega_1_1_draw_context.html" title="Contains information about the context in which a drawing operation is taking place." alt="" coords="577,295,703,319"/>
+<area shape="rect" id="node8" href="$classomega_1_1_render_target.html" title="omega::RenderTarget" alt="" coords="271,185,401,209"/>
+<area shape="rect" id="node12" href="$structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="265,295,407,319"/>
+<area shape="rect" id="node18" href="$structomicron_1_1_rect.html" title="Stores a rectangular region in integer units." alt="" coords="291,452,381,476"/>
+<area shape="rect" id="node20" href="$structomega_1_1_channel_info.html" title="Contains information about a drawing channel." alt="" coords="275,500,397,524"/>
+<area shape="rect" id="node30" href="$classomega_1_1_renderer.html" title="omega::Renderer" alt="" coords="587,169,693,193"/>
+</map>

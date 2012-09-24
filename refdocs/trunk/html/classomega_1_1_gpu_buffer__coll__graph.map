@@ -1,0 +1,5 @@
+<map id="omega::GpuBuffer" name="omega::GpuBuffer">
+<area shape="rect" id="node2" href="$classomega_1_1_gpu_data.html" title="omega::GpuData" alt="" coords="5,80,109,104"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="68,5,209,29"/>
+<area shape="rect" id="node6" href="$classomega_1_1_gpu_manager.html" title="Loads images and manages OpenGL textures." alt="" coords="133,80,256,104"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_ti_xml_visitor.html" title="Implements the interface to the &quot;Visitor pattern&quot; (see the Accept() method.) If you call the Accept()..." alt="" coords="5,5,80,29"/>
+<area shape="rect" id="node3" href="$class_ti_xml_printer.html" title="Print to memory functionality." alt="" coords="129,5,207,29"/>
+</map>
