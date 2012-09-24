@@ -46,6 +46,7 @@ void WandManipulator::handleEvent(const Event& evt)
 		
 		if(evt.isFlagSet(myRotateButtonFlag)) 
 		{
+				//omsg("BUNGA");
 			myButton2Pressed = true;
 		}
 		else myButton2Pressed = false;
@@ -97,17 +98,20 @@ void WandManipulator::update(const UpdateContext& context)
 	if(myPointerEventType == Event::Down)
 	{
 		Vector3f handlePos;
-		if(myNode->hit(myPointerRay, &handlePos, SceneNode::HitBoundingSphere))
+		if(myNode->hit(myPointerRay, &handlePos, SceneNode::HitBest))
 		{
 			myStartBSphere = myNode->getBoundingSphere();
+			myStartWandOrientationInv = myWandOrientation.inverse();
 			myStartOrientation = myWandOrientation.inverse() * myNode->getOrientation();
 			//myStartRayDirection = myPointerRay.getDirection();
 			myHandlePosition = (handlePos - myNode->getPosition()); 
 			myHandleDistance = (handlePos - myPointerRay.getOrigin()).norm();
 			myNodeActive = true;
 			
-			ofmsg("handlepos %1% myHandlePosition %2%", %handlePos %myHandlePosition);
-			ofmsg("Ray origin %1% Direction %2% Handle Distance: %3%", %myPointerRay.getOrigin() %myPointerRay.getDirection() %myHandleDistance);
+			//omsg("HITTTTTTTTTTTTTTTTTTTTTTTTT");
+			
+			//ofmsg("handlepos %1% myHandlePosition %2%", %handlePos %myHandlePosition);
+			//ofmsg("Ray origin %1% Direction %2% Handle Distance: %3%", %myPointerRay.getOrigin() %myPointerRay.getDirection() %myHandleDistance);
 		}
 	}
 	else if(myPointerEventType == Event::Up)
@@ -121,22 +125,15 @@ void WandManipulator::update(const UpdateContext& context)
 		{
 			if(myButton1Pressed)
 			{
-				Vector3f newPos = myPointerRay.getPoint(myHandleDistance) - myHandlePosition;
+				Quaternion newO = myStartWandOrientationInv * myWandOrientation;
+				Vector3f hp  = newO * myHandlePosition;
+				Vector3f newPos = myPointerRay.getPoint(myHandleDistance) - hp;
 				myNode->setPosition(newPos);
 				myNode->setOrientation(myWandOrientation * myStartOrientation);
 			}
 			else if(myButton2Pressed)
 			{
-				// Intersect the ray with the bounding sphere. 
-				// If the point is outside the bounding sphere, perform no rotation.
-				std::pair<bool, float> p = myPointerRay.intersects(myStartBSphere);
-				if(p.first)
-				{
-					Vector3f pt = myPointerRay.getPoint(p.second);
-					pt -= myStartBSphere.getCenter();
-					Quaternion rot = Math::buildRotation(myHandlePosition, pt , Vector3f::Zero() );
-					//myNode->setOrientation(rot * myStartOrientation);
-				}
+				myNode->setOrientation(myWandOrientation * myStartOrientation);
 			}
 		}
 	}
