@@ -40,22 +40,27 @@ namespace omega {
 	public:
 		WandCameraController();
 
-		void update(const UpdateContext& context);
-		void handleEvent(const Event& evt);
+		virtual void handleCommand(const String& cmd);
+		virtual void update(const UpdateContext& context);
+		virtual void handleEvent(const Event& evt);
 
 	private:
 		// Navigation stuff.
 		Vector3f mySpeed;
 		Quaternion myTorque;
+
+		bool myFreeFlyEnabled;
 		
 		float myRotateSpeed;
 		//float myPitchMultiplier;
 		bool myFreeFly;
+		
 		float myPitch;	
 		float myYaw;
 		float myRoll;	
 		
 		Vector3f myLastPointerPosition;
+		Vector3f myLastPointerDirection;
 		Quaternion myLastPointerOrientation;
 		Quaternion myAxisCorrection;
 	};

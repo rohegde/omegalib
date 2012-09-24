@@ -243,7 +243,7 @@ void Node::addChild(Node* child)
 {
     if (child->mParent)
     {
-		owarn(String(child->getName() + "' already was a child of '" + child->mParent->getName() + "'.").c_str());
+		child->mParent->removeChild(child);
     }
 
     mChildren.insert(ChildNodeMap::value_type(child->getName(), child));

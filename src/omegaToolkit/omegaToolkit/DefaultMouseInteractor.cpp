@@ -74,7 +74,7 @@ void DefaultMouseInteractor::updateNode()
 	if(myPointerEventType == Event::Down)
 	{
 		Vector3f handlePos;
-		if(myNode->hit(myPointerRay, &handlePos, SceneNode::HitBoundingSphere))
+		if(myNode->hit(myPointerRay, &handlePos, SceneNode::HitBest))
 		{
 			myStartBSphere = myNode->getBoundingSphere();
 			myStartOrientation = myNode->getOrientation();

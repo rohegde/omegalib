@@ -27,6 +27,7 @@
 #include "omega/RenderTarget.h"
 #include "omega/Camera.h"
 #include "omega/CameraOutput.h"
+#include "omega/ModuleServices.h"
 #include "omega/WandCameraController.h"
 #include "omega/GamepadCameraController.h"
 #include "omega/MouseCameraController.h"
@@ -86,14 +87,14 @@ void Camera::setup(Setting& s)
 
 	if(controllerName != "")
 	{
-		myController = NULL;
+		CameraController* controller = NULL;
 		ofmsg("Camera controller: %1%", %controllerName);
-		if(controllerName == "keyboardmouse") myController = new KeyboardMouseCameraController();
-		if(controllerName == "mouse") myController = new MouseCameraController();
-		if(controllerName == "wand") myController = new WandCameraController();
-		if(controllerName == "gamepad") myController = new GamepadCameraController();
+		if(controllerName == "keyboardmouse") controller = new KeyboardMouseCameraController();
+		if(controllerName == "mouse") controller = new MouseCameraController();
+		if(controllerName == "wand") controller = new WandCameraController();
+		if(controllerName == "gamepad") controller = new GamepadCameraController();
 
-		setController(myController);
+		setController(controller);
 		if(myController != NULL) 
 		{
 			myController->setup(s);
@@ -122,20 +123,11 @@ void Camera::handleEvent(const Event& evt)
 			myHeadOrientation = evt.getOrientation();
 		}
 	}
-	if(isControllerEnabled())
-	{
-		myController->handleEvent(evt);
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Camera::update(const UpdateContext& context)
 {
-	if(isControllerEnabled())
-	{
-		myController->update(context);
-	}
-
 	// Update the view transform
 	myHeadTransform = AffineTransform3::Identity();
 	myHeadTransform.translate(myHeadOffset);
@@ -258,4 +250,20 @@ Vector3f Camera::localToWorldPosition(const Vector3f& position)
 Quaternion Camera::localToWorldOrientation(const Quaternion& orientation)
 {
 	return mOrientation * orientation;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Camera::setController(CameraController* value) 
+{ 
+	if(myController != NULL)
+	{
+		ModuleServices::removeModule(myController);
+	}
+
+	myController = value; 
+	if(myController != NULL)
+	{
+		myController->setCamera(this);
+		ModuleServices::addModule(myController);
+	}
 }

@@ -30,6 +30,21 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+CameraController::CameraController(): 
+	myCamera(NULL), 
+	myOriginalOrientation( Quaternion::Identity() ), 
+	mySpeed(2.0f) 
+{ 
+	setPriority(PriorityLow); 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool CameraController::isEnabled()
+{
+	return (myCamera != NULL && myCamera->isControllerEnabled());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void CameraController::updateCamera(const Vector3f& speed, const Quaternion& orientation, float dt)
 {
 	if(myCamera != NULL)
@@ -63,3 +78,18 @@ Vector3f CameraController::computeSpeedVector(uint moveFlags, float speed, float
 	return vSpeed;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void CameraController::reset()
+{
+	if( getCamera() != NULL )
+	{
+		myOriginalOrientation = getCamera()->getOrientation();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void Camera::setOrientationAndResetController(const Quaternion& value)
+{ 
+	SceneNode::setOrientation(value);
+	if(myController != NULL) myController->reset();
+}

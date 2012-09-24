@@ -45,6 +45,7 @@ MouseCameraController::MouseCameraController():
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MouseCameraController::handleEvent(const Event& evt)
 {
+	if(!isEnabled() || evt.isProcessed()) return;
 	if(evt.getServiceType() == Service::Pointer)
 	{
 		if(evt.isFlagSet(Event::Left))
@@ -71,6 +72,7 @@ void MouseCameraController::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MouseCameraController::update(const UpdateContext& context)
 {
+	if(!isEnabled()) return;
 	updateCamera(myMoveDir, myYaw, myPitch, 0, context.dt);
 	myMoveDir = Vector3f::Zero();
 	reset();

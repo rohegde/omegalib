@@ -29,12 +29,13 @@
 
 #include "osystem.h"
 #include "ApplicationBase.h"
+#include "ModuleServices.h"
 
 namespace omega {
 	class Camera;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API CameraController: public ReferenceType
+	class OMEGA_API CameraController: public EngineModule
 	{
 	public:
 		enum MoveFlags { 
@@ -48,7 +49,9 @@ namespace omega {
 			};
 
 	public:
-		CameraController(): myCamera(NULL), myOriginalOrientation( Quaternion::Identity() ), mySpeed(2.0f) {}
+		CameraController();
+
+		bool isEnabled();
 
 		virtual void setup(Setting& s) {}
 		virtual void update(const UpdateContext& context) {}
