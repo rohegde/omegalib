@@ -67,6 +67,7 @@ namespace omegaToolkit {
 		
 		Quaternion myWandOrientation;
 		Quaternion myStartOrientation;
+		Quaternion myStartWandOrientationInv;
 
 		// pointer event data.
 		bool myPointerEventReceived;
