@@ -27,7 +27,7 @@
 #include "omegaOsg/OsgSceneObject.h"
 #include "omega/SceneNode.h"
 
-#include <osg/Node>
+#include <osg/Node> 
 #include <osg/MatrixTransform>
 #include <osgUtil/LineSegmentIntersector>
 #include <osgUtil/IntersectionVisitor>
@@ -90,15 +90,17 @@ void OsgSceneObject::onSelectedChanged(SceneNode* source, bool value)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool OsgSceneObject::intersectRay(const Ray& ray, Vector3f* hitPoint)
 {
-	osg::Vec3d orig(ray.getOrigin().x(), ray.getOrigin().y(), ray.getOrigin().z());
-
+	Vector3f rstart = ray.getOrigin();
 	Vector3f rend = ray.getPoint(1000);
 
-	osg::Vec3d end(rend.x(), rend.y(), rend.z());
-	osgUtil::LineSegmentIntersector* lsi = new osgUtil::LineSegmentIntersector(orig, end);
+	osg::Vec3d orig(rstart[0], rstart[1], rstart[2]);
+	osg::Vec3d end(rend[0], rend[1], rend[2]);
+
+
+	Ref<osgUtil::LineSegmentIntersector> lsi = new osgUtil::LineSegmentIntersector(orig, end);
 	osgUtil::IntersectionVisitor iv(lsi);
 
-	myNode->accept(iv);
+	myTransform->accept(iv);
 
 	if(!lsi->containsIntersections()) return false;
 

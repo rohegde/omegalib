@@ -31,12 +31,13 @@
 #include "omega/ApplicationBase.h"
 #include "omega/SceneNode.h"
 #include "omega/RenderTarget.h"
-#include "omega/CameraController.h"
 #include "omega/CameraOutput.h"
 
 namespace omega {
 	//! Id to be assigned to crated cameras
 	static int CamerasCounter = 0;
+
+	class CameraController;
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API Camera: public SceneNode
 	{
@@ -86,7 +87,7 @@ namespace omega {
 
 		//! Navigation management
 		//@{
-		void setController(CameraController* value) { myController = value; if(myController != NULL) myController->setCamera(this); }
+		void setController(CameraController* value);
 		CameraController* getController() { return myController; }
 		bool isControllerEnabled() { return myController != NULL && myControllerEnabled; }
 		void setControllerEnabled(bool value) { myControllerEnabled = value; }
@@ -162,7 +163,10 @@ namespace omega {
 		DrawContext myDrawContext[GpuContext::MaxContexts];
 
 		// Navigation stuff.
-		Ref<CameraController> myController;
+		//Ref<CameraController> myController;
+		// Changed to normal pointer to break include loop Camera>CameraController>EngineModule>Engine>Camera
+		CameraController* myController;
+
 		bool myControllerEnabled;
 
 		// Camera Id
@@ -176,13 +180,6 @@ namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Camera::setAutoAspect(bool value)
 	{ myAutoAspect = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Camera::setOrientationAndResetController(const Quaternion& value)
-	{ 
-		SceneNode::setOrientation(value);
-		if(myController != NULL) myController->reset();
-	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Camera::setYawPitchRoll(const Vector3f& yawPitchRoll) 

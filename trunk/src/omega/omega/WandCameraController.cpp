@@ -37,21 +37,34 @@ WandCameraController::WandCameraController():
 	myLastPointerPosition(0, 0, 0),
 	mySpeed(0, 0, 0),
 	myFreeFly(false),
+	myFreeFlyEnabled(false),
 	myTorque(Quaternion::Identity())
 {
 	myAxisCorrection = Quaternion::Identity(); //AngleAxis(-Math::Pi / 2, Vector3f::UnitY());
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void CameraController::reset()
+void WandCameraController::handleCommand(const String& cmd)
 {
-	if( getCamera() != NULL )
+	Vector<String> args = StringUtils::split(cmd);
+	if(args[0] == "?")
 	{
-		myOriginalOrientation = getCamera()->getOrientation();
+		// ?: print help
+		omsg("WandCameraController");
+		omsg("\t freefly - toggle freefly mode");
+	}
+	else if(args[0] == "freefly")
+	{
+		// freefly: toggle freefly mode
+		myFreeFlyEnabled = !myFreeFlyEnabled;
+		ofmsg("WandCameraController: freeFlyEnabled = %1%", %myFreeFlyEnabled);
 	}
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void WandCameraController::handleEvent(const Event& evt)
 {
+	if(!isEnabled() || evt.isProcessed()) return;
 	if(evt.getServiceType() == Service::Wand)
 	{
 		float x = evt.getExtraDataFloat(0);
@@ -75,6 +88,7 @@ void WandCameraController::handleEvent(const Event& evt)
 				myLastPointerPosition = evt.getPosition();
 				Quaternion o = evt.getOrientation() * myAxisCorrection;
 				myLastPointerOrientation = o.inverse();
+				myLastPointerDirection = evt.getOrientation() * -Vector3f::UnitZ();
 			}
 			myFreeFly = true;
 		}
@@ -92,7 +106,11 @@ void WandCameraController::handleEvent(const Event& evt)
 			//ofmsg("Speedmul %1%", %speedMul);
 			mySpeed += dv;
 			Quaternion o = evt.getOrientation() * myAxisCorrection;
-			myTorque = myLastPointerOrientation * o;
+
+			if(myFreeFlyEnabled)
+			{
+				myTorque = myLastPointerOrientation * o;
+			}
 			// myYaw = newO.yaw();
 			// myPitch = newO.pitch();
 			// myRoll = newO.roll();
@@ -106,6 +124,7 @@ void WandCameraController::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////
 void WandCameraController::update(const UpdateContext& context)
 {
+	if(!isEnabled()) return;
 	myTorque = Quaternion::Identity().slerp(context.dt * 0.2f, myTorque) * AngleAxis(myYaw, Vector3f::UnitY());
 	
 	Camera* c = getCamera();

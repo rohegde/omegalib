@@ -621,14 +621,6 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_GETTER(Event, getOrientation)
 		;
 
-	// Engine 
-	PYAPI_REF_BASE_CLASS(Engine)
-		PYAPI_METHOD(Engine, isConsoleEnabled)
-		PYAPI_METHOD(Engine, setConsoleEnabled)
-		PYAPI_REF_GETTER(Engine, getScene)
-		PYAPI_REF_GETTER(Engine, getDefaultCamera)
-		;
-
 	// Node
 	void (Node::*setPosition1)(const Vector3f&) = &Node::setPosition;
 	void (Node::*setScale1)(const Vector3f&) = &Node::setScale;

@@ -46,6 +46,8 @@ KeyboardMouseCameraController::KeyboardMouseCameraController():
 #define NAV_KEY(k, f) if(evt.isKeyDown(k)) myMoveFlags |= f; if(evt.isKeyUp(k)) myMoveFlags &= ~f; 
 void KeyboardMouseCameraController::handleEvent(const Event& evt)
 {
+	if(!isEnabled() || evt.isProcessed()) return;
+
 	if(evt.getServiceType() == Service::Keyboard)
 	{
 		NAV_KEY('d', MoveRight);
@@ -73,6 +75,8 @@ void KeyboardMouseCameraController::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void KeyboardMouseCameraController::update(const UpdateContext& context)
 {
+	if(!isEnabled()) return;
+
 	Vector3f speed = computeSpeedVector(myMoveFlags, mySpeed, myStrafeMultiplier);
 	updateCamera(speed, myYaw, myPitch, 0, context.dt);
 	reset();

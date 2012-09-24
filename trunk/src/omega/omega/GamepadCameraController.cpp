@@ -41,6 +41,7 @@ GamepadCameraController::GamepadCameraController():
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void GamepadCameraController::handleEvent(const Event& evt)
 {
+	if(!isEnabled() || evt.isProcessed()) return;
 	if(evt.getServiceType() == Service::Controller)
 	{
 		float n = 1000;
@@ -65,6 +66,7 @@ void GamepadCameraController::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void GamepadCameraController::update(const UpdateContext& context)
 {
+	if(!isEnabled()) return;
 	updateCamera(mySpeedVector, myYaw, myPitch, 0, context.dt);
 }
 

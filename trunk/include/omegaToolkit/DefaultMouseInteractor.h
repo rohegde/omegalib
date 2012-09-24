@@ -40,7 +40,7 @@ namespace omegaToolkit {
 			myMoveButtonFlag(Event::Left),
 			myRotateButtonFlag(Event::Right)
 			{
-				setPriority(PriorityLow);
+				//setPriority(PriorityLow);
 				myNodeActive = false;
 			}
 
