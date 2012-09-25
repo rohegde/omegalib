@@ -274,8 +274,8 @@ void ChannelImpl::setupStencil(int gliWindowWidth, int gliWindowHeight)
 	{
 		glLineWidth(1);
 		glBegin(GL_LINES);
-			glVertex2f(0.5f, gliY + 0.5f);
-			glVertex2f(gliWindowWidth + 0.5f, gliY + 0.5f);
+			glVertex2f(0, gliY);
+			glVertex2f(gliWindowWidth, gliY);
 		glEnd();	
 	}
 	glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP); // disabling changes in stencil buffer
