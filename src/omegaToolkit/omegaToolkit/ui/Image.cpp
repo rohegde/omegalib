@@ -39,7 +39,8 @@ Image::Image(Engine* srv):
 	myAutoRefresh(false),
 	myData(NULL)
 {
-
+	// By default labels are set to not enabled, so they won't take part in navigation.
+	setEnabled(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

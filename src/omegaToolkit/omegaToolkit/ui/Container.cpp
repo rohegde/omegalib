@@ -243,7 +243,10 @@ void Container::autosize(Renderer* r)
 	width += myMargin * 2;
 	height += myMargin * 2;
 
-	setSize(Vector2f(width, height));
+	mySize = Vector2f(width, height);
+	myMinimumSize = mySize;
+	myMaximumSize = mySize;
+	//setSize(Vector2f(width, height));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -367,7 +370,7 @@ void Container::resetChildrenSize(Orientation orientation)
 	// Initialize widget width to 0
 	foreach(Widget* w, myChildren)
 	{ 
-		w->setActualSize(0, orientation); 
+		w->mySize[orientation] = 0;
 	}
 }
 
@@ -670,7 +673,7 @@ void ContainerRenderable::draw(RenderState* state)
 					myTexture->getWidth() != myOwner->getWidth() ||
 					myTexture->getHeight() != myOwner->getHeight())
 				{
-					myTexture = new Texture(state->context->gpuContext);
+ 					myTexture = new Texture(state->context->gpuContext);
 					myTexture->initialize(myOwner->getWidth(), myOwner->getHeight());
 					myRenderTarget = new RenderTarget(state->context->gpuContext, RenderTarget::RenderToTexture);
 					myRenderTarget->setTextureTarget(myTexture);

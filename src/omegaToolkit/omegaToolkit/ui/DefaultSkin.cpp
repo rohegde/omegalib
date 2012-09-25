@@ -67,8 +67,8 @@ void DefaultButtonRenderable::drawContent()
 		}
 	}
 
-	myOwner->getLabel()->setPosition(Vector2f::Zero());
-	myOwner->getLabel()->setSize(size);
+	//myOwner->getLabel()->setPosition(Vector2f::Zero());
+	//myOwner->getLabel()->setSize(size);
 
 	myOwner->getLabel()->setColor(col);
 	LabelRenderable* lr = (LabelRenderable*)myOwner->getLabel()->getRenderable(getClient());

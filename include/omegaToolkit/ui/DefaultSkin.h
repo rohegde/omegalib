@@ -73,7 +73,7 @@ namespace omegaToolkit { namespace ui {
 	{
 	friend class DefaultButtonRenderable;
 	public:
-		DefaultButton(Engine* srv): Button(srv) {}
+		DefaultButton(Engine* srv): Button(srv) { }
 		virtual ~DefaultButton() {}
 		virtual Renderable* createRenderable()  { return new DefaultButtonRenderable(this); }
 	};

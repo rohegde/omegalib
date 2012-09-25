@@ -41,7 +41,8 @@ Label::Label(Engine* srv):
 	myAutosizeHorizontalPadding(6),
 	myAutosizeVerticalPadding(6)
 {
-
+	// By default labels are set to not enabled, so they won't take part in navigation.
+	setEnabled(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

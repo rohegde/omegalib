@@ -1,11 +1,11 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
- * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted 
  * provided that the following conditions are met:
@@ -128,6 +128,10 @@ namespace omegaToolkit { namespace ui {
 		MenuManager* getManager() { return myManager; }
 
 		MenuItem* addItem(MenuItem::Type type);
+		//! Utility method to create a button
+		MenuItem* addButton(const String& label, const String& command);
+		//! Utility method to create a sub-menu
+		Menu* addSubMenu(const String& label);
 
 		void focus();
 		void show();
@@ -141,10 +145,13 @@ namespace omegaToolkit { namespace ui {
 
 		void update(const UpdateContext& context);
 
-		void placeOnWand(const Event& evt, float distance, float scale);
+		void placeOnWand(const Event& evt);
 		
 		omegaToolkit::ui::Container* getContainer() { return myContainer; }
 		omegaToolkit::ui::Container3dSettings& get3dSettings() { return my3dSettings; }
+
+		void setLabel(const String& label);
+		String getLabel();
 
 	private:
 		Menu(const String& name, MenuManager* manager);
@@ -165,6 +172,7 @@ namespace omegaToolkit { namespace ui {
 
 		bool myVisible;
 
+		Ref<omegaToolkit::ui::Label> myLabelWidget;
 		Ref<omegaToolkit::ui::Container> myContainer;
 		omegaToolkit::ui::Container3dSettings my3dSettings;
 	};
@@ -191,6 +199,7 @@ namespace omegaToolkit { namespace ui {
 		void autoPlaceMenu(Menu* menu, const Event& evt);
 
 		float getDefaultMenuScale() { return myDefaultMenuScale; }
+		float getDefaultMenuDistance() { return myDefaultMenuPosition.z(); }
 
 		// Specifies whether camera navigation should be disabled when inside a menu
 		void setNavigationSuspended(bool value) { myNavigationSuspended = value; }

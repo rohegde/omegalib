@@ -485,9 +485,16 @@ void querySceneRay(const Vector3f& origin, const Vector3f& dir, boost::python::o
 {
 	const SceneQueryResultList& sqrl = Engine::instance()->querySceneRay(Ray(origin, dir));
     boost::python::list l;
-	foreach(SceneQueryResult sqr, sqrl)
+	if(sqrl.size() == 0)
 	{
-		callback(boost::python::ptr(sqr.node), sqr.distance);
+		callback(boost::python::ptr<SceneNode*>(NULL), 0);
+	}
+	else
+	{
+		foreach(SceneQueryResult sqr, sqrl)
+		{
+			callback(boost::python::ptr(sqr.node), sqr.distance);
+		}
 	}
 }
 
