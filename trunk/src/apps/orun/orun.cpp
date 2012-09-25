@@ -422,12 +422,29 @@ void OmegaViewer::handleCommand(const String& cmd)
 	Vector<String> args = StringUtils::split(cmd);
 	if(args[0] == "?")
 	{
+		SystemManager* sys = SystemManager::instance();
+		PythonInterpreter* interp = sys->getScriptInterpreter();
 		// ?: command help
-		omsg("OmegaViewer");
-		omsg("\t r <appName> - run the specified script application");
-		omsg("\t lo          - list live objects");
-		omsg("\t ln          - print the scene node tree");
-		omsg("\t q           - quit");
+		if(args.size() == 2)
+		{
+			// Print members of specified object
+			if(args[1] == ".")	interp->eval("for m in [x for x in dir() if x[0] != \"_\"]: print(m)");
+			else interp->eval(ostr("for m in [x for x in dir(%1%) if x[0] != \"_\"]: print(m)", %args[1]));
+		}
+		else if(args.size() == 3)
+		{
+			// Print members of specified object starting with a prefix
+			if(args[1] == ".") interp->eval(ostr("for m in [x for x in dir() if x[0] != \"_\" and x.startswith('%1%')]: print(m)", %args[2]));
+			else interp->eval(ostr("for m in [x for x in dir(%1%) if x[0] != \"_\" and x.startswith('%2%')]: print(m)", %args[1] %args[2]));
+		}
+		else
+		{
+			omsg("OmegaViewer");
+			omsg("\t r <appName> - run the specified script application");
+			omsg("\t lo          - list live objects");
+			omsg("\t ln          - print the scene node tree");
+			omsg("\t q           - quit");
+		}
 	}
 	else if(args[0] == "r" && args.size() > 1)
 	{
