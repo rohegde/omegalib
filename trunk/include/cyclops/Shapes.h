@@ -71,11 +71,10 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! PYAPI
 	class CY_API PlaneShape: public Entity
 	{
 	public:
-		//! PYAPI Convenience method for creating PlaneShape
+		//! Convenience method for creating PlaneShape
 		static PlaneShape* create(float width, float height);
 
 	public:
@@ -84,6 +83,23 @@ namespace cyclops {
 	private:
 		float myWidth;
 		float myHeight;
+		Vector2f myTiling;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class CY_API BoxShape: public Entity
+	{
+	public:
+		//! Convenience method for creating BoxShape
+		static BoxShape* create(float width, float height, float depth);
+
+	public:
+		BoxShape(SceneManager* scene, float width = 1.0f, float height = 1.0f, float depth = 1.0, Vector2f tiling = Vector2f::Ones());
+
+	private:
+		float myWidth;
+		float myHeight;
+		float myDepth;
 		Vector2f myTiling;
 	};
 };

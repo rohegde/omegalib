@@ -168,9 +168,17 @@ namespace omegaToolkit { namespace ui {
         virtual void autosize(Renderer* r) {}
         virtual void updateSize(Renderer* r);
 
+        //! style
+		//@{
+		void setStyle(const String& style);
+		String getStyleValue(const String& key, const String& defaultValue = "");
+		void setStyleValue(const String& key, const String& value);
+		//@}
+
     protected:
-		virtual void activate() { }
+		virtual void activate() {}
 		virtual void deactivate() {}
+		virtual void updateStyle();
 
         //! internal layout management
         //@{
@@ -183,6 +191,8 @@ namespace omegaToolkit { namespace ui {
 		Container* getContainer() { return myContainer; }
         Vector2f transformPoint(const omega::Vector2f& point);
         void dispatchUIEvent(const Event& evt);
+
+
 
     protected:
         omega::Vector2f myPosition;
@@ -233,6 +243,24 @@ namespace omegaToolkit { namespace ui {
         omega::Vector2f myMinimumSize;
         omega::Vector2f myMaximumSize;
         bool myAutosize;
+
+		// Style data
+		Dictionary<String, String> myStyleDictionary;
+
+		// Fill style data
+		bool myFillEnabled;
+		Color myFillColor;
+
+		// Border style data
+		struct BorderStyle
+		{
+			void fromString(const String& str);
+
+			Color color;
+			int width;
+		};
+
+		BorderStyle myBorders[4];
     };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -303,10 +331,13 @@ namespace omegaToolkit { namespace ui {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     inline void Widget::setSize(const omega::Vector2f& value) 
     { 
-        requestLayoutRefresh(); 
-        mySize = value; 
-        myMinimumSize = value; 
-        myMaximumSize = value; 
+		if(value != mySize)
+		{
+			requestLayoutRefresh(); 
+			mySize = value; 
+			myMinimumSize = value; 
+			myMaximumSize = value; 
+		}
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

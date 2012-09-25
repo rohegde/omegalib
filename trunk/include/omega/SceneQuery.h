@@ -34,6 +34,7 @@ namespace omega {
 	struct SceneQueryResult
 	{
 		SceneNode* node;
+		Vector3f hitPoint;
 		float distance;
 	};
 

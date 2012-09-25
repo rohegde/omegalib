@@ -146,3 +146,37 @@ PlaneShape::PlaneShape(SceneManager* scene, float width, float height, Vector2f 
 
 	initialize(node);
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+BoxShape* BoxShape::create(float width, float height, float depth)
+{
+	return new BoxShape(SceneManager::instance(), width, height, depth);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+BoxShape::BoxShape(SceneManager* scene, float width, float height, float depth, Vector2f tiling):
+	Entity(scene), 
+		myHeight(height),
+		myWidth(width),
+		myDepth(depth),
+		myTiling(tiling)
+{
+	osg::Geometry* box = osgwTools::makeBox(osg::Vec3d(myWidth / 2, myHeight / 2, myDepth / 2));
+	box->setColorArray(NULL);
+	box->setColorBinding(osg::Geometry::BIND_OFF);
+
+	osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
+	tsg->generate(box, 0);
+	osg::Vec4Array* a_tangent = tsg->getTangentArray();
+	box->setVertexAttribArray (6, a_tangent);
+	box->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
+
+	osg::Geode* node = new osg::Geode();
+	osg::StateSet* fx = node->getOrCreateStateSet();
+	fx->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(tiling[0], tiling[1])));
+	box->setStateSet(fx);
+	node->addDrawable(box);
+	tsg->unref();
+
+	initialize(node);
+}

@@ -53,15 +53,13 @@ void RaySceneQuery::queryNode(SceneNode* node, SceneQueryResultList& list, bool 
 	bool selected = false;
 	if(node->isSelectable() && node->isVisible())
 	{
-		const Sphere& s = node->getBoundingSphere();
-		//ofmsg("Bsphere for node %1% is   center: %2%   radius: %3%", %node->getName() %s.getCenter() %s.getRadius());
-		std::pair<bool, float> resPair = myRay.intersects(s);
-		if(resPair.first)
+		Vector3f hitPoint;
+		if(node->hit(myRay, &hitPoint, SceneNode::HitBest))
 		{
-			//omsg("INTERSECT");
 			SceneQueryResult res;
 			res.node = node;
-			res.distance = resPair.second;
+			res.hitPoint = hitPoint;
+			res.distance = (hitPoint - myRay.getOrigin()).norm();
 			list.push_back(res);
 		}
 	}

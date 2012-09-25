@@ -105,8 +105,14 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 	// Menu
 	PYAPI_REF_BASE_CLASS(Menu)
 		PYAPI_REF_GETTER(Menu, addItem)
+		PYAPI_REF_GETTER(Menu, addButton)
+		PYAPI_REF_GETTER(Menu, addSubMenu)
 		PYAPI_METHOD(Menu, show)
 		PYAPI_METHOD(Menu, hide)
+		PYAPI_METHOD(Menu, isVisible)
+		PYAPI_METHOD(Menu, setLabel)
+		PYAPI_METHOD(Menu, getLabel)
+		PYAPI_METHOD(Menu, placeOnWand)
 		;
 
 	PYAPI_REF_BASE_CLASS(MenuItem)
@@ -138,6 +144,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 	PYAPI_REF_BASE_CLASS(UiModule)
 		PYAPI_STATIC_REF_GETTER(UiModule, instance)
 		PYAPI_REF_GETTER(UiModule, getWidgetFactory)
+		PYAPI_REF_GETTER(UiModule, getUi)
 		;
 
 	// WidgetFactory
@@ -163,6 +170,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_GETTER(Widget, getSize)
 		PYAPI_METHOD(Widget, setName)
 		PYAPI_GETTER(Widget, getName)
+		PYAPI_METHOD(Widget, setStyle)
 		;
 
 	// Container

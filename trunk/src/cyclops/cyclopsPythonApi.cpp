@@ -87,6 +87,11 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_STATIC_REF_GETTER(PlaneShape, create)
 		;
 
+	// BoxShape
+	PYAPI_REF_CLASS(BoxShape, Entity)
+		PYAPI_STATIC_REF_GETTER(BoxShape, create)
+		;
+
 	// StaticObject
 	PYAPI_REF_CLASS(StaticObject, Entity)
 		PYAPI_STATIC_REF_GETTER(StaticObject, create)

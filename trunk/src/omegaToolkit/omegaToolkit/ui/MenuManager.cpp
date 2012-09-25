@@ -1,11 +1,11 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
- * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted 
  * provided that the following conditions are met:
@@ -180,8 +180,26 @@ Menu::Menu(const String& name, MenuManager* manager):
 	myContainer = wf->createPanel("container", ui->getUi());
 	myContainer->setPosition(Vector2f(10, 10));
 
+	myLabelWidget = wf->createLabel("menuLabel", myContainer, "Menu");
+	//myLabelWidget->setAutosize(true);
+	myLabelWidget->setStyle("border-bottom: 2 white");
+
 	my3dSettings.enable3d = MenuManager::instance()->is3dMenuEnabled();
 	myContainer->setAutosize(true);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Menu::setLabel(const String& label)
+{
+	myLabelWidget->setText(label);
+	if(label != "") myLabelWidget->setVisible(true);
+	else myLabelWidget->setVisible(false);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+String Menu::getLabel() 
+{ 
+	return 	myLabelWidget->getText();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -190,6 +208,23 @@ MenuItem* Menu::addItem(MenuItem::Type type)
 	MenuItem* item = new MenuItem(type, this);
 	myMenuItems.push_back(item);
 	return item;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+MenuItem* Menu::addButton(const String& label, const String& command)
+{
+	MenuItem* item = addItem(MenuItem::Button);
+	item->setText(label);
+	item->setCommand(command);
+	return item;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Menu* Menu::addSubMenu(const String& label)
+{
+	MenuItem* item = addItem(MenuItem::SubMenu);
+	item->setText(label);
+	return item->getSubMenu();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -343,8 +378,11 @@ void Menu::hide()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Menu::placeOnWand(const Event& evt, float distance, float scale)
+void Menu::placeOnWand(const Event& evt)
 {
+	MenuManager* mm = MenuManager::instance();
+	float distance = mm->getDefaultMenuDistance();
+	float scale = mm->getDefaultMenuScale();
 	Ray ray;
 	if(SystemManager::instance()->getDisplaySystem()->getViewRayFromEvent(evt, ray))
 	{
@@ -545,7 +583,7 @@ void MenuManager::autoPlaceMenu(Menu* menu, const Event& evt)
 {
 	if(myRayPlaceEnabled)
 	{
-		menu->placeOnWand(evt, myDefaultMenuPosition[2], myDefaultMenuScale);
+		menu->placeOnWand(evt);
 	}
 	else
 	{

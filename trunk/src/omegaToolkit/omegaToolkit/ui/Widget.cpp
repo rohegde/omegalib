@@ -68,6 +68,10 @@ Widget::Widget(Engine* server):
 {
 	myId = mysNameGenerator.getNext();
 	myName = mysNameGenerator.generate();
+
+	myFillEnabled = false;
+	memset(myBorders, 0, sizeof(BorderStyle) * 4);
+
 	UiModule::instance()->myWidgets[myId] = this;
 }
 
@@ -315,13 +319,16 @@ void Widget::updateSize(Renderer* r)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::setActualSize(int value, Orientation orientation, bool force) 
 {
-	requestLayoutRefresh();
-	if(!force)
+	if(mySize[orientation] != value)
 	{
-		if(value < myMinimumSize[orientation]) value = myMinimumSize[orientation];
-		if(value > myMaximumSize[orientation]) value = myMaximumSize[orientation];
+		//requestLayoutRefresh();
+		if(!force)
+		{
+			if(value < myMinimumSize[orientation]) value = myMinimumSize[orientation];
+			if(value > myMaximumSize[orientation]) value = myMaximumSize[orientation];
+		}
+		mySize[orientation] = value; 
 	}
-	mySize[orientation] = value; 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -334,6 +341,78 @@ int Widget::getId()
 Renderable* Widget::createRenderable()
 {
 	return new WidgetRenderable(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::setStyle(const String& style)
+{
+	String nnstyle = StringUtils::replaceAll(style, "\n", "");
+	Vector<String> tokens = StringUtils::split(nnstyle, ";");
+	foreach(String token, tokens)
+	{
+		Vector<String> args = StringUtils::split(token, ":");
+		setStyleValue(args[0], args[1]);
+	}
+	updateStyle();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+String Widget::getStyleValue(const String& key, const String& defaultValue)
+{
+	Dictionary<String, String>::iterator it = myStyleDictionary.find(key);
+	if(it == myStyleDictionary.end()) return defaultValue;
+	return it->second;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::setStyleValue(const String& key, const String& value)
+{
+	String pk = key;
+	String pv = value;
+	StringUtils::trim(pk);
+	StringUtils::trim(pv);
+	myStyleDictionary[pk] = pv;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::BorderStyle::fromString(const String& str)
+{
+	Vector<String> args = StringUtils::split(str, " ");
+	width = boost::lexical_cast<int>(args[0]);
+	if(args.size() == 2) color = Color(args[1]);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::updateStyle()
+{
+	String bkstyle = getStyleValue("fill");
+	if(bkstyle != "")
+	{
+		myFillEnabled = true;
+		myFillColor = Color(bkstyle);
+	}
+	else
+	{
+		myFillEnabled = false;
+	}
+
+	String bdstyle = getStyleValue("border");
+	if(bdstyle != "")
+	{
+		myBorders[0].fromString(bdstyle);
+		myBorders[1] = myBorders[0];
+		myBorders[2] = myBorders[0];
+		myBorders[3] = myBorders[0];
+	}
+
+	bdstyle = getStyleValue("border-top");
+	if(bdstyle != "") myBorders[0].fromString(bdstyle);
+	bdstyle = getStyleValue("border-right");
+	if(bdstyle != "") myBorders[1].fromString(bdstyle);
+	bdstyle = getStyleValue("border-bottom");
+	if(bdstyle != "") myBorders[2].fromString(bdstyle);
+	bdstyle = getStyleValue("border-left");
+	if(bdstyle != "") myBorders[3].fromString(bdstyle);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -387,8 +466,46 @@ void WidgetRenderable::draw(RenderState* state)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void WidgetRenderable::drawContent()
 {
+	DrawInterface* di = getRenderer();
+	if(myOwner->myFillEnabled)
+	{
+		di->drawRect(Vector2f::Zero(), myOwner->mySize, myOwner->myFillColor);
+	}
+	if(myOwner->myBorders[0].width != 0)
+	{
+		glLineWidth(myOwner->myBorders[0].width);
+		glColor4fv(myOwner->myBorders[0].color.data());
+		glBegin(GL_LINES);
+		glVertex2f(0, 0); glVertex2f(myOwner->mySize[0], 0);
+		glEnd();
+	}
+	if(myOwner->myBorders[1].width != 0)
+	{
+		glLineWidth(myOwner->myBorders[1].width);
+		glColor4fv(myOwner->myBorders[1].color.data());
+		glBegin(GL_LINES);
+		glVertex2f(myOwner->mySize[0], 0); glVertex2f(myOwner->mySize[0], myOwner->mySize[1]);
+		glEnd();
+	}
+	if(myOwner->myBorders[2].width != 0)
+	{
+		glLineWidth(myOwner->myBorders[2].width);
+		glColor4fv(myOwner->myBorders[2].color.data());
+		glBegin(GL_LINES);
+		glVertex2f(myOwner->mySize[0], myOwner->mySize[1]); glVertex2f(0, myOwner->mySize[1]);
+		glEnd();
+	}
+	if(myOwner->myBorders[3].width != 0)
+	{
+		glLineWidth(myOwner->myBorders[3].width);
+		glColor4fv(myOwner->myBorders[3].color.data());
+		glBegin(GL_LINES);
+		glVertex2f(0, myOwner->mySize[1]); glVertex2f(0, 0);
+		glEnd();
+	}
 	if(myOwner->myDebugModeEnabled)
 	{
-		getRenderer()->drawRectOutline(Vector2f::Zero(), myOwner->mySize, myOwner->myDebugModeColor);
+		di->drawRectOutline(Vector2f::Zero(), myOwner->mySize, myOwner->myDebugModeColor);
 	}
 }
+
