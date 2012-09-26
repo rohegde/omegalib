@@ -6,6 +6,7 @@
 		* [OmegaPythonReference module omega]
 		* [CyclopsPythonReference module cyclops]
 		* [OmegaToolkitPythonReference module omegaToolkit]
+ * [EffectReference Effects and Shaders]
 	* [ConfigReference Configuration files]
 	* [http://omegalib.googlecode.com/svn/refdocs/trunk/html/index.html API reference (trunk)]
 	* [HowTos How-tos & FAQ]
