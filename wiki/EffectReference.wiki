@@ -35,14 +35,25 @@ In general the effect string definition will look like `<effect-type> [-option [
 
 -------------------------------------------------------------------------------
 ==  Colored shading ==
+|| *Effect Definition* || *Result* ||
+|| `colored bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/red.png" width="300"/> ||
+|| `colored bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/grey.png" width="300"/> ||
+|| `colored bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/bluePlastic.png" width="300"/> ||
+|| `colored bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/blues1.png" width="300"/> ||
+|| `colored bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/additive.png" width="300"/> ||
 
 -------------------------------------------------------------------------------
 ==  Textured shading ==
+|| *Effect Definition* || *Result* ||
+|| `textured bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/textured1.png" width="300"/> ||
+|| `textured bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/texturedgrad.png" width="300"/> ||
 
 -------------------------------------------------------------------------------
 ==  Custom shading ==
+|| *Effect Definition* || *Result* ||
+|| `custom bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/custom2.png" width="300"/> ||
 
 -------------------------------------------------------------------------------
 ==  Multipass shading ==
 || *Effect Definition* || *Result* ||
-|| `multipass bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/BasicCyclops/cyhello.png" width="300"/> ||
+|| `multipass bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/multipass.png" width="300"/> ||
