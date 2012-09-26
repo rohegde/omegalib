@@ -37,6 +37,7 @@ namespace omegaToolkit {
 	public:
 		static Actor* createInteractor(const Setting& s);
 		static Actor* setupInteractor(const String& settingName);
+		static PixelData* getKinectDepthCameraImage(const String& kinectServiceName);
 
 	private:
 		ToolkitUtils() {}
