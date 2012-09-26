@@ -1,0 +1,30 @@
+#summary Extending Omegalib
+#sidebar Sidebar
+= Extending Omegalib =
+<p>*Last revision:* ver. 3.0 - 24 September 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font>
+</p>
+
+This document illustrates the best ways to extend omegalib functionality depending on your needs. Various classes in omegalib can be derived to integrate additional functionality in omegalib. Some of them (like camera controllers) cover a very specific area of the framework. Others offer potentially broader functionality, so it may be difficult to decide which way to go when new functionality is needed. 
+
+A few questions that may help the decision process are:
+ * Do I need to tinker with rendering code?
+ * Do I need to generate input events / add support for a new physical or logical input device?
+ * Do I need to control nodes in the scene graph?
+ * Do I need to share custom data with other nodes in a cluster configuration?
+ 
+The main classes to derive in omegalib are:
+ * Service
+ * EngineModule
+ * RenderPass
+ * Renderable
+ * ISceneObject
+ * Actor
+
+We will discuss them in more detail in the following sections.
+
+== Service ==
+== EngineModule ==
+== RenderPass ==
+== Renderable ==
+== ISceneObject ==
+== Actor ==

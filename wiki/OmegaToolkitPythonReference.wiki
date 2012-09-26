@@ -62,8 +62,12 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 === Methods ===
 || Method(s) || Description ||
 || `addItem(type)` || Adds an item to the menu. Type can be one of `MenuItem.Button`, `MenuItem.Checkbox`, `MenuItem.Slider`, `MenuItem.SubMenu` ||
+|| `addButton(label, command)` || Convenience method for adding a button item and associating a command to it. Returns a reference to the created `MenuItem` ||
+|| `addSubMenu(label)` || Convenience method for adding a sub menu. Returns a reference to the created `Menu` ||
 || `show()` || Displays the menu ||
 || `hide()` || Hides the menu ||
+|| `placeOnWand(event)` || Places the menu along the wand ray contained in the passed event ||
+|| `isVisible()` || ||
 
 -------------------------------------------------------------------------------
 ==  `class MenuItem` ==
@@ -89,15 +93,20 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 
 -------------------------------------------------------------------------------
 ==  `class Widget` ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_widget.html omegaTookit::ui::Widget] C++ class. Base class for GUI elements
 
 -------------------------------------------------------------------------------
 ==  `class Container` (extends `Widget`) ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_container.html omegaTookit::ui::Container] C++ class. Base class for GUI container elements
 
 -------------------------------------------------------------------------------
 ==  `class Button` (extends `Widget`) ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_button.html omegaTookit::ui::Button] C++ class. Repreenta a generic button
 
 -------------------------------------------------------------------------------
 ==  `class Image` (extends `Widget`) ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_image.html omegaTookit::ui::Image] C++ class. 
 
 -------------------------------------------------------------------------------
 ==  `class Label` (extends `Widget`) ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_label.html omegaTookit::ui::Label] C++ class. 

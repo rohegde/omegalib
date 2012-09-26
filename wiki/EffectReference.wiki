@@ -1,253 +1,48 @@
-#summary Python reference: module omega
+#summary Cyclops Effects and Shaders
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.0 - 27 June 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+<p>*Last revision:* ver. 3.0 - 26 September 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
 <wiki:toc max_depth="4" />
 
-= Module omega =
-The omega module contains all the core functionality of omegalib like scene graph management and event handling. It also offers a few utility functions to manage verious aspects of an omegalib application.
+= Cyclops Effects and Shaders =
+The cyclops library offers some helper functionality to add vertex and fragment shaders to cyclops objects (that is, everything derived from the `Entity` class).
+Shaders are attached to entities using *effects*. Effects simplify support of several shading features like per-pixel lighting with multiple lights, shadow maps and multipass shading support.
+Effects can be applied using the `Entity.setEffect` method. `setEffect` takes a string *effect definition*, containing the effect type, custom shaders and optional arguments
+
+An example of applying effects in python follows:
+{{{
+	# Create a cube and make it red
+	box = BoxShape.create(0.5, 0.5, 0.5)
+	box.setEffect("colored -d red")
+}}}
+
+In general the effect string definition will look like `<effect-type> [-option [value]]+`
 
 -------------------------------------------------------------------------------
-==  Free Functions ==
+==  Common Options ==
+|| *Option* || *Meaning* ||
+|| `-t`		|| Enable alpha blending ||
+|| `-a`		|| Enable additive blending (requires `-t`) ||
+|| `-D`		|| Disable depth testing ||
+|| `-C`		|| Disable backface culling ||
+|| `-g <value>`		|| Sets the specular gloss value (usually between 0 and 1). This parameter sets the `unif_Gloss` uniform in the fragment shader ||
+|| `-s <value>`		|| Sets the specular shininess value (usually between 0 and 100+). This parameter sets the `unif_Shininess` uniform in the fragment shader ||
+|| `-v <variation>`		|| Sets a custom fragment shader (more on this follows) ||
+|| `-V`		|| Enables a custom vertex and fragment shader (more on this follows) ||
 
-=== `getDefaultCamera()` ===
-Returns the main omegalib camera instance
-
-=== `getCameraById(id)` ===
-Retrieves a camera based on its id (*currently supported by Porthole service only*)
-
-=== `getScene()` ===
-Returns the root node of the scene.
-
-Example:
-{{{
-	# Move the entire scene
-	root = getScene()
-	root.setPosition(Vector3(0, 2, 0))
-}}}
-
-=== `setUpdateFunction()` ===
-Sets a callback functionto to be called for each frame. The function will take three parameters: 
-	* frame number
-	* time since application start (in seconds)
-	* time since last frame (in seconds)
-Example:
-{{{
-	def onUpdate(frame, time, dt):
-		print("frame number: " + frame)
-		
-	setUpdateFunction(onUpdate)
-}}}	
-
-=== `setEventFunction()` ===
-Sets a callback function to be called every time an event is received.
-Example:
-{{{
-	def onEvent():
-		e = getEvent()
-		# prints the event type
-		print(e.getType())
-		
-	setEventFunction(onUpdate)
-}}}	
-
-=== `getEvent()` ===
-Returns the event currenty being processed. Should be used only inside an event handler function.
-
-=== `querySceneRay(origin, dir, callback)` ===
-Performs a query on the scene using a ray defined by the `origin` and `dir` parameters. For each hit node, it invokes a callback function taking the node reference and distance to the origin as parameters.
-
-*NOTE:* only nodes tagged as selectable (see `Node.setSelectable`) will be considered for the query.
-
-Example:
-{{{
-	node = SceneNode.create('node')
-	getScene().addChild(node)
-	node.setSelectable(true)
-	
-	# attach some stuff to the node...
-	# [ ... ]
-	
-	def queryCallback(node distance):
-		print("Node " + node.getName() + " hit at " + distance)
-	
-	querySceneRay(Vector3f(0, 0, 0), Vector3f(0, 0, -1), queryCallback)
-}}}
-
-=== `addSelectionListener(node, cmd)` ===
-Attaches a command to be executed whenever the node selection state changes
-
-Example:
-{{{
-	node = SceneNode.create('node')
-	getScene().addChild(node)
-	
-	# Change the node size when the selection state changes
-	addSelectionListener(node, 'node.setScale(Vector3f(1.5, 1.5, 1.5))')
-	
-	# Force a selection state change. This will invoke the listener code
-	node.setSelected(True)
-}}}
-
-=== `addVisibilityListener(node, cmd)` ===
-Attaches a command to be executed whenever the node visibility changes
-
-Example:
-{{{
-	node = SceneNode.create('node')
-	getScene().addChild(node)
-	
-	# Print a message on visibility changes
-	addVisibilityListener(node, 'print("node " + node.getName() + " visible changed"')
-	
-	# Change node visibility.
-	node.setVisible(False)
-}}}
-
-=== `oexit()` ===
-Exits the application
-
-=== `ofindfile(name)` ===
-Searches for a file, returning the full path if found, or an empty string if the search fails. See [FileSystem the filesystem management page] for more information on file lookup in omegalib.
-
-=== `orun(script)` ===
-Runs an external script
-
-=== `printChildren(node, depth)` ===
-Prints the tree of children of `node` up to the specified depth
-
-=== `printObjCounts()` ===
-Prints a list and count of currently allocated refcounted objects
-
-=== `toggleStats(stats)` ===
-Enables or disables statistics output from a specific source in the statitics window. The statistics window must be enabled for the configuration. The `stats` parameter is a list of statistic or tile names separated by spaces.
-
-Example:
-{{{
-	# Starts displaying statistics for tile 0x0
-	toggleStats('0x0')
-	
-	# Stops displaying statistics for tile 0x0
-	toggleStats('0x0')
-	
-	# Starts displaying statistics for tile 1x0, 1x1, 0x1
-	toggleStats('1x0 1x1 0x1')
-	
-	# Displays statistics for all available sources
-	toggleStats('all')
-	
-	# Displays statistics in compact mode
-	toggleStats('compact')
-}}}
+===  Custom shaders ===
 
 -------------------------------------------------------------------------------
-==  `class SceneNode` ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_scene_node.html omega::SceneNode] C++ class. Base class for nodes in the scene graph
-=== Methods ===
-|| Method(s) || Description ||
-|| *Basic* || ||
-|| `create(name)` *static* || Creates a scene node with the specified name ||
-|| `getName()` || Gets the node name ||
-|| *Transformation* || ||
-|| `getPosition()` || Gets the node position ||
-|| `setPosition(pos)`, `getPosition()` || Gets and sets the node position ||
-|| `getScale()`, `setScale(pos)` || Gets and sets the node scale ||
-|| `getOrientation()`, `setOrientation(orientation)` || Gets and sets the node orientation ||
-|| `yaw(rads)`, `pitch(rads)`, `roll(rads)` || Applies a yaw, pitch or roll to the node (in radians) ||
-|| *Hierarchy* || ||
-|| `numChildren()` || Gets the number of children of this node ||
-|| `getChildByName(name)` || Finds a child by name ||
-|| `getChildByIndex(index)` || Gets a child by index ||
-|| `getParent()` || Gets the node parent ||
-|| *Visibility* || ||
-|| `isVisible()`, `setVisible(value)` || Gets or sets the node visibility status ||
-|| *Bounding box* ||
-|| `isBoundingBoxVisible()`, `setBoundingBoxVisible(value)` || ||
-|| *Selection control* ||
-|| `isBoundingBoxVisible()`, `setBoundingBoxVisible(value)` || ||
-|| `isSelected()`, `setSelected(value)`|| ||
-|| `isSelectable()`, `setSelectable(value)` || ||
-
-=== Examples ===
-==== Basic ====
-{{{
-	# gets the root scene node
-	root = getEngine().getScene()
-	# prints the node position
-	print(root.getPosition()
-	
-	root.setPosition(Vector3(0, 2, -2))
-	
-	# scale is returned as a Vector3
-	scale = root.getScale()
-	scale.x = 0.1
-	root.setScale(scale)
-	
-	# orientation is of Quaternion type
-	print(root.getOrientation())
-	
-	# yaw, pitch roll are in radians	
-	root.yaw(1)
-}}}
+==  Colored shading ==
 
 -------------------------------------------------------------------------------
-==  `class Event` ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomicron_1_1_event.html omicron::Event] C++ class. Encapsulates information about input events.
-Input events are explained in more detail [https://code.google.com/p/omicron-sdk/wiki/EventReference here].
-This class is used within the context of an event handler function, registered through the `setEventFunction` call. The `EventType`, `EventFlags`, `EventExtraDataType`, `ServiceType` are together with the event class. They encapsulate the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53 omicron::EventBase::Type] [ http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977 omicron::EventBase::Flags] [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomicron_1_1_event_base.html#a91f2e2308ea1cec00fe036789a040bb9 omicron::EventBase::ExtraDataType] [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomicron_1_1_event_base.html#ab1f3e0a5d901729bf93e3b5ff37a54be omicron::EventBase::ServiceType] C++ Enumerations.
-
-=== Methods ===
-|| Method(s) || Description ||
-|| `isKeyDown(key)`, `isKeyUp(key)` || ||
-|| `isButtonDown(button)`, `isButtonUp(button)` || ||
-|| `getSourceId()` || ||
-|| `getType()` || ||
-|| `getServiceType()` || ||
-|| `getPosition()`,	`getOrientation()` || ||
-
-=== Example ===
-{{{
-	def handleEvent():
-		e = getEvent()
-		print(e.getPosition())
-		if(e.isButtonDown(EventFlags.ButtonLeft)): 
-			print("Left button pressed")
-		if(e.isButtonDown(EventFlags.ButtonUp)): 
-			print("Up button pressed")
-			
-	setEventFunction(handleEvent)
-}}}
+==  Textured shading ==
 
 -------------------------------------------------------------------------------
-==  `class Camera` (extends `SceneNode`) ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_camera.html omega::Camera] class. Controls the applications camera (accessed through `getDefaultCamera()` or additional cameras in the application.
-
-=== Methods ===
-|| Method(s) || Description ||
-|| `setYawPitchRoll(value)` || Sets the camera orientation as yaw, pitch roll in radians ||
-|| `getHeadOffset()`, `setHeadOffset(value)` || ||
-|| `setHeadOrientation(value)`, `getHeadOrientation()` || ||
-|| `isTrackingEnabled()`, `setTrackingEnabled(value)` || ||
-|| `getTrackerSourceId()`, `setTrackerSourceId(value)` || ||
-|| `setControllerEnabled(value)`, `isControllerEnabled()` || ||
-|| `localToWorldPosition(position)` || ||
-|| `localToWorldOrientation(orientation)`|| ||
+==  Custom shading ==
 
 -------------------------------------------------------------------------------
-==  `class PortholeService` ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_camera.html omega::PortholeService] class. Manages the Porthole, a web-based interaction and display service for omegalib applications.
-
-=== Methods ===
-|| Method(s) || Description ||
-|| `createAndInitialize(port, xmlPath, cssPath)` *static* || Creates a new instance of the porthole service ||
-
-=== Examples ===
-==== Initialization ====
-{{{
-	# Starts up the porthole service. 
-	# The service will accept web requests on port 4480
-	# app/app.xml contains the web interface definition (gui elements, output windows etc)
-	# app/app.css defines the style of the interface. Can be left empty
-	svc = PortholeService.createAndInitialize(4480, 'app/app.xml', 'app/app.css')
-}}}
+==  Multipass shading ==
+|| *Effect Definition* || *Result* ||
+|| `multipass bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/BasicCyclops/cyhello.png" width="300"/> ||
