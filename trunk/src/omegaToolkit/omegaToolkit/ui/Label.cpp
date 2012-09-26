@@ -43,6 +43,8 @@ Label::Label(Engine* srv):
 {
 	// By default labels are set to not enabled, so they won't take part in navigation.
 	setEnabled(false);
+	// By default labels are autosize widgets - their size is determined by their content.
+	setAutosize(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

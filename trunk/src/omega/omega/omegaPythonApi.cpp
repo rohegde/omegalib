@@ -660,6 +660,7 @@ BOOST_PYTHON_MODULE(omega)
 
 		PYAPI_METHOD(Node, resetOrientation)
 		PYAPI_GETTER(Node, getName)
+		PYAPI_METHOD(Node, setName)
 		PYAPI_REF_GETTER(Node, getParent)
 		//.def("getChildren", &Node::getChildren, PYAPI_RETURN_REF)
 		;

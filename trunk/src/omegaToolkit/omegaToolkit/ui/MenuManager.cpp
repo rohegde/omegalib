@@ -181,7 +181,6 @@ Menu::Menu(const String& name, MenuManager* manager):
 	myContainer->setPosition(Vector2f(10, 10));
 
 	myLabelWidget = wf->createLabel("menuLabel", myContainer, "Menu");
-	//myLabelWidget->setAutosize(true);
 	myLabelWidget->setStyle("border-bottom: 2 white");
 
 	my3dSettings.enable3d = MenuManager::instance()->is3dMenuEnabled();

@@ -165,8 +165,8 @@ void ModuleServices::disposeNonCoreModules()
 	
 	foreach(EngineModule* module, mysNonCoreModules)
 	{
-		mysModules.remove(module);
 		module->doDispose();
+		mysModules.remove(module);
 	}
 	mysNonCoreModules.clear();
 }

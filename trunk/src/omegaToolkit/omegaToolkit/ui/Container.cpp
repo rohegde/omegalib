@@ -204,11 +204,14 @@ Widget* Container::getChildByIndex(int index)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::updateSize(Renderer* r)
 {
-	foreach(Widget* w, myChildren)
+	if(needLayoutRefresh())
 	{
-		w->updateSize(r);
+		foreach(Widget* w, myChildren)
+		{
+			w->updateSize(r);
+		}
+		Widget::updateSize(r);
 	}
-	Widget::updateSize(r);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -216,27 +219,31 @@ void Container::autosize(Renderer* r)
 {
 	int width = 0;
 	int height = 0;
+	int maxwidth = 0;
+	int maxheight = 0;
 	foreach(Widget* w, myChildren)
 	{
-		if(w->getWidth() > width) width = w->getWidth();
-		if(w->getHeight() > height) height = w->getHeight();
+		if(w->getWidth() > maxwidth) maxwidth = w->getWidth();
+		if(w->getHeight() > maxheight) maxheight = w->getHeight();
+		width += w->getWidth();
+		height += w->getHeight();
 	}
 	if(myLayout == LayoutHorizontal)
 	{
-		width += myPadding;
-		width *= getNumChildren();
+		width += myPadding * getNumChildren();
+		height = maxheight;
 		foreach(Widget* w, myChildren)
 		{
-			w->setActualSize(height, Vertical);
+			//w->setActualSize(maxheight, Vertical);
 		}
 	}
 	else if(myLayout == LayoutVertical)
 	{
-		height += myPadding;
-		height *= getNumChildren();
+		height += myPadding * getNumChildren();
+		width = maxwidth;
 		foreach(Widget* w, myChildren)
 		{
-			w->setActualSize(width, Horizontal);
+			//w->setActualSize(maxwidth, Horizontal);
 		}
 	}
 
@@ -332,7 +339,8 @@ void Container::updateChildrenLayoutPosition(Orientation orientation)
 void Container::updateChildrenFreeBounds(Orientation orientation)
 {
 	// Compute the maximum available size
-	int available = getSize()[orientation] - myPadding * 2;
+	//int available = getSize()[orientation] - myPadding * 2;
+	int available = getSize()[orientation]  - myMargin * 2;
 
 	foreach(Widget* w, myChildren)
 	{
@@ -352,12 +360,12 @@ void Container::updateChildrenFreeBounds(Orientation orientation)
 			float size = (orientation == Horizontal ? getWidth(): getHeight());
 			float csize = (orientation == Horizontal ? w->getWidth(): w->getHeight());
 
-			pos = size - csize - myPadding;
+			pos = size - csize - myMargin;
 		}
 		else
 		{
 			float csize = (orientation == Horizontal ? w->getWidth(): w->getHeight());
-			pos = (available - csize) / 2 + myPadding;
+			pos = (available - csize) / 2 + myMargin;
 		}
 
 		w->setPosition(pos, orientation);
