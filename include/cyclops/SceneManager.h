@@ -117,7 +117,6 @@ namespace cyclops {
 	//! PYAPI
 	struct ModelInfo: public ReferenceType
 	{
-		//! PYAPI
 		ModelInfo(): numFiles(1), size(0.0f), generateNormals(false), normalizeNormals(false), optimize(false), usePowerOfTwoTextures(true), buildKdTree(false)
 		{}
 
@@ -131,17 +130,11 @@ namespace cyclops {
 			this->normalizeNormals = normalizeNormals;
 		}
 
-		//! PYAPI
 		String name;
-		//! PYAPI
 		String path;
-		//! PYAPI
 		String description;
-		//! PYAPI
 		uint numFiles;
-		//! PYAPI
 		float size;
-		//! PYAPI
 		bool generateNormals;
 		bool optimize;
 
@@ -152,12 +145,9 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! PYAPI
 	struct ShadowSettings
 	{
-		//! PYAPI
 		bool shadowsEnabled;
-		//! PYAPI
 		float shadowResolutionRatio;
 	};
 
@@ -208,7 +198,6 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! PYAPI
 	class CY_API SceneManager: public EngineModule
 	{
 	friend class Entity;
