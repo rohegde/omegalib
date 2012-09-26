@@ -36,24 +36,26 @@ In general the effect string definition will look like `<effect-type> [-option [
 -------------------------------------------------------------------------------
 ==  Colored shading ==
 || *Effect Definition* || *Result* ||
-|| `colored bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/red.png" width="150"/> ||
-|| `colored bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/grey.png" width="150"/> ||
-|| `colored bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/bluePlastic.png" width="150"/> ||
-|| `colored bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/blues1.png" width="150"/> ||
-|| `colored bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/additive.png" width="150"/> ||
+|| `colored -d red` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/red.png" width="150"/> ||
+|| `colored -d #404040` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/grey.png" width="150"/> ||
+|| `colored -d blue -g 1.0 -s 30` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/bluePlastic.png" width="150"/> ||
+|| `colored -d blue -g 0.5 -s 1` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/blues1.png" width="150"/> ||
+|| `colored -d #202020 -g 1.0 -s 30 -t -a` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/additive.png" width="150"/> ||
 
 -------------------------------------------------------------------------------
 ==  Textured shading ==
 || *Effect Definition* || *Result* ||
-|| `textured bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/textured1.png" width="150"/> ||
-|| `textured bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/texturedgrad.png" width="150"/> ||
+|| `textured -d cyclops/test/checker.jpg` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/textured1.png" width="150"/> ||
+|| `textured -d cyclops/test/graduated.jpg -t -a` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/texturedgrad.png" width="150"/> ||
 
 -------------------------------------------------------------------------------
 ==  Custom shading ==
 || *Effect Definition* || *Result* ||
-|| `custom bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/custom2.png" width="150"/> ||
+|| `textured -v fxdemo/custom2 -d cyclops/test/checker.jpg -t` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/custom2.png" width="150"/> ||
+|| `colored -v fxdemo/wire -V -d yellow -g 1.0 -s 10 -t` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/wire.png" width="150"/> ||
+
 
 -------------------------------------------------------------------------------
 ==  Multipass shading ==
 || *Effect Definition* || *Result* ||
-|| `multipass bla bla` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/multipass.png" width="150"/> ||
+|| `textured -d cyclops/test/checker.jpg | colored -v fxdemo/wire -V -d yellow -g 1.0 -s 10 -t -D` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/multipass.png" width="150"/> ||
