@@ -715,6 +715,12 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_STATIC_REF_GETTER(PortholeService, createAndInitialize)
 		;
 
+	// PortholeService
+	PYAPI_REF_BASE_CLASS(PixelData)
+		PYAPI_METHOD(PixelData, getWidth)
+		PYAPI_METHOD(PixelData, getHeight)
+		;
+
 	// Free Functions
 	def("getEvent", getEvent, return_value_policy<reference_existing_object>());
 	def("getEngine", getEngine, PYAPI_RETURN_REF);

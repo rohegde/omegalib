@@ -34,6 +34,10 @@
 using namespace omega;
 using namespace omegaToolkit;
 
+#ifdef OMICRON_USE_OPENNI
+	#include "omicron/OpenNIService.h"
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Actor* ToolkitUtils::createInteractor(const Setting& s)
 {
@@ -95,4 +99,15 @@ Actor* ToolkitUtils::setupInteractor(const String& settingName)
 		}
 	}
 	return interactor;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PixelData* ToolkitUtils::getKinectDepthCameraImage(const String& kinectServiceName)
+{
+#ifdef OMICRON_USE_OPENNI
+	OpenNIService* svc = SystemManager::instance()->getServiceManager()->findService<OpenNIService>(kinectServiceName);
+	return new PixelData(PixelData::FormatRgb, svc->getImageDataWidth(), svc->getImageDataHeight(), (byte*)svc->getDepthImageData());
+#else
+	return NULL;
+#endif
 }

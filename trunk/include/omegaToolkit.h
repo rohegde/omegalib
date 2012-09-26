@@ -52,7 +52,6 @@
 #include "omegaToolkit/ui/Slider.h"
 #include "omegaToolkit/ui/Widget.h"
 #include "omegaToolkit/ui/WidgetFactory.h"
-#include "omegaToolkit/ui/UserManagerPanel.h"
 
 OTK_API void omegaToolkitPythonApiInit();
 

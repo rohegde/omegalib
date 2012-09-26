@@ -61,7 +61,6 @@ set( srcs
 		omegaToolkit/ui/DefaultSkin.cpp
 		omegaToolkit/ui/Slider.cpp
 		omegaToolkit/ui/Widget.cpp
-		omegaToolkit/ui/UserManagerPanel.cpp
         )
 		
 ###################################################################################################
@@ -99,7 +98,6 @@ set( headers
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Slider.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Widget.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/WidgetFactory.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/UserManagerPanel.h
         ) 
 
 ###################################################################################################

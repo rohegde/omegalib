@@ -93,6 +93,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 	PYAPI_BASE_CLASS(ToolkitUtils)
 		PYAPI_STATIC_REF_GETTER(ToolkitUtils, createInteractor)
 		PYAPI_STATIC_REF_GETTER(ToolkitUtils, setupInteractor)
+		PYAPI_STATIC_REF_GETTER(ToolkitUtils, getKinectDepthCameraImage)
 		;
 
 	// MenuManager
@@ -171,6 +172,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(Widget, setName)
 		PYAPI_GETTER(Widget, getName)
 		PYAPI_METHOD(Widget, setStyle)
+		PYAPI_METHOD(Widget, refresh)
 		;
 
 	// Container
@@ -185,6 +187,10 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 
 	// Image
 	PYAPI_REF_CLASS(Image, Widget)
+		PYAPI_REF_GETTER(Image, getData)
+		PYAPI_METHOD(Image, setData)
+		PYAPI_METHOD(Image, isAutoRefreshEnabled)
+		PYAPI_METHOD(Image, setAutoRefresh)
 		;
 
 	// Slider

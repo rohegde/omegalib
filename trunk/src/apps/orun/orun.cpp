@@ -291,7 +291,8 @@ OmegaViewer::OmegaViewer()
 	myUiModule = new UiModule();
 	ModuleServices::addModule(myUiModule);
 
-	myAppDrawer = new AppDrawer();
+	//myAppDrawer = new AppDrawer();
+	myAppDrawer = NULL;
 }
 
 
@@ -317,7 +318,7 @@ void OmegaViewer::initialize()
 		interp->queueCommand(ostr("orun(\"%1%\")", %sDefaultScript));
 	}
 
-	myAppDrawer->initialize();
+	if(myAppDrawer != NULL)	myAppDrawer->initialize();
 
 
 	//Setting& base = SystemManager::instance()->getAppConfig()->lookup("config");
@@ -330,7 +331,10 @@ void OmegaViewer::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OmegaViewer::update(const UpdateContext& context)
 {
-	myAppDrawer->update(context);
+	if(myAppDrawer != NULL) 
+	{
+		myAppDrawer->update(context);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -340,8 +344,11 @@ void OmegaViewer::handleEvent(const Event& evt)
 	if(evt.isKeyDown(KC_HOME) || 
 			evt.isButtonDown(myAppDrawerToggleButton))
 	{
-		if(myAppDrawer->isVisible()) myAppDrawer->hide();
-		else  myAppDrawer->show();
+		if(myAppDrawer != NULL) 
+		{
+			if(myAppDrawer->isVisible()) myAppDrawer->hide();
+			else  myAppDrawer->show();
+		}
 	}
 	//if(evt.getServiceType() == Service::UI) 
 	//{
