@@ -5,7 +5,7 @@
  * Authors:										
  *  Donghi Daniele			d.donghi@gmail.com
  *-------------------------------------------------------------------------------------------------
- * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted 
  * provided that the following conditions are met:

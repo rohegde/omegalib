@@ -66,7 +66,7 @@
  * successor clauses in the FAR or the DOD or NASA FAR
  * Supplement.  Unpublished-- rights reserved under the copyright
  * laws of the United States.  Contractor/manufacturer is Silicon
- * Graphics, Inc., 2011 N.  Shoreline Blvd., Mountain View, CA
+ * Graphics, Inc., 2012 N.  Shoreline Blvd., Mountain View, CA
  * 94039-7311.
  *
  * OpenGL(TM) is a trademark of Silicon Graphics, Inc.

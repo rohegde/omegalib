@@ -1,11 +1,11 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
- * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted 
  * provided that the following conditions are met:
@@ -37,7 +37,8 @@ using namespace omegaToolkit::ui;
 Image::Image(Engine* srv):
 	Widget(srv),
 	myAutoRefresh(false),
-	myData(NULL)
+	myData(NULL),
+	myFlipFlags(0)
 {
 	// By default labels are set to not enabled, so they won't take part in navigation.
 	setEnabled(false);
@@ -61,6 +62,20 @@ void Image::setData(PixelData* value)
 	myData = value; 
 	setSize(Vector2f(myData->getWidth(), myData->getHeight()));
 	refresh(); 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Image::flipX(bool value)
+{
+	if(value) myFlipFlags |= DrawInterface::FlipX;
+	else myFlipFlags &= ~DrawInterface::FlipX;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Image::flipY(bool value)
+{
+	if(value) myFlipFlags |= DrawInterface::FlipY;
+	else myFlipFlags &= ~DrawInterface::FlipY;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,7 +119,7 @@ void ImageRenderable::drawContent()
 		}
 		else
 		{
-			getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), DrawInterface::FlipY);
+			getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), myOwner->myFlipFlags);
 		}
 	}
 	else
