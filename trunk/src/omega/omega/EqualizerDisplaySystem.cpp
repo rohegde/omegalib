@@ -1,11 +1,11 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
- * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted 
  * provided that the following conditions are met:
@@ -86,6 +86,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 	result += 
 		L("EQ_CONFIG_FATTR_EYE_BASE 0.06") +
 		L("EQ_WINDOW_IATTR_PLANES_STENCIL ON");
+		//L("EQ WINDOW IATTR HINT SWAPSYNC OFF");
 
 	END_BLOCK(result);
 
@@ -575,6 +576,15 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 				Vector2i index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
 
 				DisplayTileConfig& tc = cfg.tiles[index[0]][index[1]];
+
+				String sm = Config::getStringValue("stereoMode", sTile, "default");
+				StringUtils::toLowerCase(sm);
+				if(sm == "default") tc.stereoMode = DisplayTileConfig::Default;
+				else if(sm == "mono") tc.stereoMode = DisplayTileConfig::Mono;
+				else if(sm == "interleaved") tc.stereoMode = DisplayTileConfig::Interleaved;
+				else if(sm == "sidebyside") tc.stereoMode = DisplayTileConfig::SideBySide;
+				
+
 				tc.drawFps = drawFps;
 				tc.index = index;
 				//tc.interleaved = Config::getBoolValue("interleaved", sTile);

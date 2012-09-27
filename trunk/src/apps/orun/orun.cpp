@@ -1,11 +1,11 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
- * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted 
  * provided that the following conditions are met:
@@ -43,7 +43,9 @@ using namespace omegaToolkit::ui;
 using namespace omegaVtk;
 #endif
 
+#ifdef OMEGA_BUILD_OSG_LIB
 using namespace cyclops;
+#endif
 
 // The name of the script to launch automatically at startup
 String sDefaultScript = "";
@@ -319,6 +321,17 @@ void OmegaViewer::initialize()
 	}
 
 	if(myAppDrawer != NULL)	myAppDrawer->initialize();
+
+	omsg("---------------------------------------------------------------------");
+	omsg("Welcome to orun!");
+	omsg("\tomegalib version " OMEGA_VERSION);
+	omsg("\tTo get a list of quick commands type :?");
+	omsg("\tType :? . to list all global symbols");
+	omsg("\tType :? C to list all members of class or variable `C`");
+	omsg("\t\texample :? SceneNode");
+	omsg("\tType :? ./C [prefix] to list global symbols or object members starting with `prefix`");
+	omsg("\t\texample :? . si");
+	omsg("\t\texample :? SceneNode set");
 
 
 	//Setting& base = SystemManager::instance()->getAppConfig()->lookup("config");
