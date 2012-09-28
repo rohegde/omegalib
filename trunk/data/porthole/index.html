@@ -33,14 +33,20 @@
  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
  <title>Porthole</title>
 
+ <!--JQuery + JQueryMobile-->
+ <script src="http://code.jquery.com/jquery-1.7.1.min.js" type="application/javascript"></script>
+ <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" type="text/css"/>
+ <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js" type="application/javascript"></script>
+
  <!--CSS Style-->
  <style type="text/css">
+    head { height: 100%; }
     html, body
     {
         width: 100%;
-        height: 100%;
+        min-height: 100%;
         margin: 0;
-        overflow: auto;
+        overflow: hidden;
     }
     .ui-autocomplete { overflow-y: auto; width:300px;}
     * html .ui-autocomplete { /* IE max- */height: expression( this.scrollHeight > 320 ? "320px" : "auto" ); }
@@ -52,10 +58,6 @@
 
 <body>
 
- <!--JQuery + JQueryMobile-->
- <script src="http://code.jquery.com/jquery-1.7.1.min.js" type="application/javascript"></script>
- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" type="text/css"/>
- <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js" type="application/javascript"></script>
  <link rel="stylesheet" type="text/css" href="./porthole.css" />
 
  <script type="application/javascript" src="./porthole_functions_binder.js" ></script>
@@ -70,7 +72,7 @@
  <script src="http://raw.github.com/EightMedia/hammer.js/master/hammer.js" type="application/javascript"></script>
  <script src="https://raw.github.com/EightMedia/hammer.js/master/jquery.specialevent.hammer.js" type="application/javascript"></script>
 
- <div id="porthole_content"  style=" width : 100%; height : 100%; " data-theme="b">
+ <div id="porthole_content"  style=" width : 100%; height : 99%; " data-theme="b">
    <div data-role="header">
 	<h1>Porthole Initialization</h1>
    </div>
@@ -98,13 +100,7 @@
     var firstTime = 1;
 
     // Mobile or desktop
-    var isMobile;
-    if (screen.width <= 699) {
-        isMobile = true;
-    }
-    else {
-        isMobile = false;
-    }
+    var isMobile = 'ontouchstart' in document.documentElement;
 
     // Disable global scrolling
     document.body.addEventListener('touchmove', function (event) {
@@ -125,17 +121,6 @@
     }
     document.body.ontouchend = function () {
         mouseDown = 0;
-    }
-
-    ///////////////// DEFINE METADATA AT RUNTIME ////////////////////////
-    function setOrCreateMetaTag(metaName, name, value) {
-        var t = 'meta['+metaName+'='+name+']';
-        var mt = $(t);
-        if (mt.length === 0) {
-            t = '<meta '+metaName+'="'+name+'" />';
-            mt = $(t).appendTo('head');
-        }
-        mt.attr('content', value);
     }
 
     ///////////////// ADD AN EVENT HANDLER ////////////////////////
@@ -187,7 +172,7 @@
 
         var orientation;
 
-        if (window.orientation & 2) {
+        if (viewportwidth > viewportheight) {
                 // landscape mode
                 orientation = "landscape";
             } else {
@@ -253,7 +238,7 @@
 
                 // Height fix
                 $("#porthole_content").height($(window).height());
-                
+
                 // Set jquery mobile interface
                 $("#porthole_content").trigger('create');
 
@@ -262,9 +247,11 @@
                 initializeCameraStreams();
 
                 // Add events listeners
-                addEvent(window, "resize", sendSpecTimeout);
-                addEvent(window, "orientationchange", sendSpecTimeout);
-
+                if (!isMobile) { 
+                    // avoid resize message when touchable keyboard appears on mobile devices
+                    addEvent(window, "resize", sendSpecTimeout);
+                }
+                $(window).bind('orientationchange', sendSpecTimeout);
             }
 
         }
@@ -291,13 +278,14 @@
 
     // Pinch vars
     var pinching = false;
-    var pinchScale, pinchRotation;
-    var pinchOldScale, pinchOldRotation;
+    var pinchOldRotation;
+    var scalingFactor, deltaRotation;
 
     ///////////////////////////////////////////////////////////
 
     // Drag functions
     function watchDrag() {
+        if (dragPosX - dragOldX == 0 && dragPosY - dragOldY == 0) return;
         var JSONEvent = {
             "event_type": "drag",
             "camera_id": parseInt(camera.getAttribute("data-camera_id")),
@@ -311,16 +299,16 @@
 
     // Pinch functions
     function watchPinch() {
-        if (pinchScale - pinchOldScale == 0 && pinchRotation - pinchOldRotation == 0) return;
+        if (scalingFactor == 1 && deltaRotation == 0) return;
         var JSONEvent = {
             "event_type": "pinch",
             "camera_id": parseInt(camera.getAttribute("data-camera_id")),
-            "scale": pinchScale,
-            "rotation": parseFloat(pinchRotation - pinchOldRotation)
+            "scale": Math.max(0.1, Math.min(10,scalingFactor)),
+            "rotation": deltaRotation
         };
         socket.send(JSON.stringify(JSONEvent));
-        pinchOldScale = pinchScale;
-        pinchOldRotation = pinchRotation;
+        scalingFactor = 1;
+        deltaRotation = 0;
     }
 
     ///////////////////////////////////////////////////////////
@@ -331,6 +319,7 @@
     var looping = false;
     var overFPS = false;
     var FPS_MIN = 40;
+    var FPS_TARGET = 50;
     var FPS_DELTA = 5000; // In Millis
     var overSTART = 0;
 
@@ -349,16 +338,18 @@
               window.mozRequestAnimationFrame ||
               window.oRequestAnimationFrame ||
               window.msRequestAnimationFrame ||
-              function (callback) {
-                  window.setTimeout(callback, 1000 / 60);
-            };
+		      function (/* function */callback, /* DOMElement */element) {
+		          // Since our requestAnimFrame is already in a loop in order to
+		          // control the preferred FPS, just call callback, not an interval
+		          callback();
+		      };
           })();
 
     /*
     * Main camera rendering loop 
     */
-    (function cameraLoop() {
-        requestAnimFrame(cameraLoop);
+    function cameraLoop() {
+//        requestAnimFrame(cameraLoop);
         if (looping && ctx != null){
 
             if (pinching) 
@@ -366,7 +357,8 @@
             else if (dragging && !pinching)
                 watchDrag(); // Update dragging
 
-            ctx.drawImage(img, 0, 0, camera.width, camera.height);
+//            ctx.drawImage(img, 0, 0, camera.width, camera.height);
+            ctx.drawImage(img, 0, 0); // FASTER
 
             // Button streaming value
             if (mouseDown==1 && sendContinuous == "true" && JSONToSend != undefined && JSONToSend != null){
@@ -377,7 +369,7 @@
 //            now = new Date().getTime();
 //            dt = now - lastT;
 //            lastT = now;
-//            debugDiv.textContent = "FPS: " + parseInt(1000 / dt);
+//            console.log("FPS: " + parseInt(1000 / dt));
 
 //            if ( ( 1000 / dt ) > FPS_MIN){
 //                overFPS = false;
@@ -392,7 +384,7 @@
 //            }
 
         }
-    })();
+    }
 
     function initializeCameraStreams() {
         camera = document.getElementById('camera-canvas');
@@ -408,16 +400,20 @@
         debugDiv = document.getElementById("DEBUG"); // DEBUG
         looping = true;
 
+        // Combine setInterval and requestAnimationFrame in order to get a desired fps
+        var loopInterval = setInterval("window.requestAnimFrame(cameraLoop)",
+                           1000 / FPS_TARGET);
+
         hammer = new Hammer(camera, {
             prevent_default: true,
 
             drag: true,
             drag_vertical: true,
             drag_horizontal: true,
-            drag_min_distance: 5,
+            drag_min_distance: 20,
 
             transform: true,
-            scale_treshold: 0.00001,
+            scale_treshold: 0,
             rotation_treshold: 1,
 
             tap: false,
@@ -436,6 +432,7 @@
             dragging = false;
         };
         hammer.ondrag = function (ev) {
+            if (ev.touches.length > 1) return;
             dragPosX = ev.position.x;
             dragPosY = parseInt(ev.position.y); // y is floating by default, so cast it
         };
@@ -449,19 +446,19 @@
             dragging = false;
             pinching = true;
             pinchOldRotation = 0;
-            pinchRotation = ev.rotation;
-            pinchOldScale = 1;
+            deltaRotation = 0;
+            scalingFactor = 1;
         };
         hammer.ontransformend = function (ev) {
             pinching = false;
+            scalingFactor = 1;
+            deltaRotation = 0;
         };
         hammer.ontransform = function (ev) {
             dragging = false; // Avoid overlapping of drag and pinch events
-
-            pinchScale = parseFloat(ev.scale);
-            pinchRotation = ev.rotation;
-
-            //document.getElementById("porthole_drawing").textContent = "Pinch: scale = " + pinchScale + " rotation = "+ pinchRotation + " deltaRotation = "+ deltaRotation;
+            scalingFactor *= parseFloat(ev.scale);
+            deltaRotation += ( parseFloat(ev.rotation) - pinchOldRotation );
+            pinchOldRotation = parseFloat(ev.rotation);
         };
 
         hammer.onrelease = function (ev) { };

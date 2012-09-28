@@ -5,7 +5,7 @@
  * Authors:										
  *  Donghi Daniele			d.donghi@gmail.com
  *-------------------------------------------------------------------------------------------------
- * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted 
  * provided that the following conditions are met:
@@ -230,8 +230,8 @@ namespace omega {
 		PortholeCamera* getSessionCamera() { return sessionCamera; } 
 
 		// Mod the camera with id cameraId 
-		// size: the ratio of camera: 1.0 is full size ( = device width )
-		void modCustomCamera(float size);
+		// size: the ratio of camera: 1.0 is full size
+		void modCustomCamera(float size, float widthPercent, float heightPercent);
 
 		static vector<string> findHtmlScripts();
 
@@ -253,7 +253,7 @@ namespace omega {
 		PortholeCamera* sessionCamera;
 
 		// Create a Porthole custom camera and a PixelData associated
-		void createCustomCamera(bool followDefaultCamera); 
+		void createCustomCamera(bool followDefaultCamera,  float widthPercent, float heightPercent); 
 
 		static void searchNode(TiXmlElement* node);
 

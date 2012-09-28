@@ -37,6 +37,11 @@ std::map<string, PortholeElement*> PortholeGUI::elementsMap;
 std::map<int, PortholeCamera*> PortholeGUI::CamerasMap;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+inline float percentToFloat(String percent){
+	return (float)(atoi(StringUtils::replaceAll(percent, "%", "").c_str()))/100;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 PortholeGUI::PortholeGUI()
 {
 	this->sessionCamera = NULL;
@@ -128,23 +133,19 @@ string PortholeGUI::create(bool firstTime){
 			// Default camera case
 			if (strcmp(element->cameraType.c_str(),"default")==0){
 				if (firstTime){
-					// Update camera id on html
-					createCustomCamera(true);
+					createCustomCamera(true, percentToFloat(width), percentToFloat(height));
 				}
 				else{
-					// TODO check
-					modCustomCamera(1.0);
+					modCustomCamera(1.0, percentToFloat(width), percentToFloat(height));
 				}
 			}
 			// Custom camera case
 			else {
 				if (firstTime){
-					// Update camera id on html
-					createCustomCamera(false);
+					createCustomCamera(false, percentToFloat(width), percentToFloat(height));
 				}
 				else{
-					// Update camera id on html
-					modCustomCamera(1.0);
+					modCustomCamera(1.0, percentToFloat(width), percentToFloat(height));
 				}
 			}
 
@@ -169,7 +170,7 @@ string PortholeGUI::create(bool firstTime){
 *	Camera creation function
 *	followDefaultCamera: true if camera shold reflect the default camera position and orientation
 */
-void PortholeGUI::createCustomCamera(bool followDefaultCamera){
+void PortholeGUI::createCustomCamera(bool followDefaultCamera, float widthPercent, float heightPercent){
 
 	// Get the global engine
 	Engine* myEngine = Engine::instance();
@@ -177,8 +178,8 @@ void PortholeGUI::createCustomCamera(bool followDefaultCamera){
 	// Initialize camera size
 	// Workaround. This avoid a canvas drawing bug
 	// Round down width to a multiple of 4.
-	int width = (int)( IMAGE_QUALITY * device->deviceWidth / 4 ) * 4;
-	int height = width*((float)device->deviceHeight/device->deviceWidth);
+	int width = (int)( widthPercent * IMAGE_QUALITY * device->deviceWidth / 4 ) * 4;
+	int height = (int)( heightPercent * IMAGE_QUALITY * device->deviceHeight / 4 ) * 4;
 	//cout << "Width -> initially " << device->deviceWidth  << " chosen: " << width << endl;
 
 	PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  width,  height);
@@ -212,7 +213,7 @@ void PortholeGUI::createCustomCamera(bool followDefaultCamera){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeGUI::modCustomCamera(float size){ 
+void PortholeGUI::modCustomCamera(float size, float widthPercent, float heightPercent){ 
 
 	// Retrieve the camera to be modified
 	PortholeCamera* portholeCamera = this->sessionCamera;
@@ -225,8 +226,8 @@ void PortholeGUI::modCustomCamera(float size){
 	// Initialize camera size
 	// Workaround. This avoid a canvas drawing bug
 	// Round down width to a multiple of 4.
-	int width = (int)((size * portholeCamera->size * device->deviceWidth) / 4) * 4;
-	int height = width*((float)device->deviceHeight/device->deviceWidth);
+	int width = (int)( widthPercent * size * device->deviceWidth / 4 ) * 4;
+	int height = (int)( heightPercent * size * device->deviceHeight / 4 ) * 4;
 
 	// Set new camera target
 	portholeCamera->canvas = new PixelData(PixelData::FormatRgb, width, height);
@@ -234,6 +235,8 @@ void PortholeGUI::modCustomCamera(float size){
 	sessionCamera->getOutput(0)->setEnabled(true);
 
 	portholeCamera->size = portholeCamera->size * size;
+	portholeCamera->canvasWidth = width;
+	portholeCamera->canvasHeight = height;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -250,7 +253,7 @@ void PortholeGUI::modCustomCamera(float size){
 
 		// Save id attribute if not defined by user as cpp function
 		if (HTML::isEvent(attribute) && !functionsBinder->isCppDefined(pAttrib->Value())){
-			cout << "Adding script " << pAttrib->Value() << endl; 
+			//cout << "Adding script " << pAttrib->Value() << endl; 
 			string key = "python_script"+boost::lexical_cast<string>(functionsBinder->scriptNumber)+"(event)";
 			functionsBinder->addPythonScript(pAttrib->Value(), key); // Insert the new script
 			pAttrib->SetValue(key.c_str());
@@ -334,7 +337,7 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 			for (TiXmlNode* pHtmlChild = pChild->FirstChildElement(); pHtmlChild != 0; pHtmlChild = pHtmlChild->NextSiblingElement()){
 				
 				TiXmlPrinter* xmlPrinter = new TiXmlPrinter();
-				// TODO FIXME not inside div -> fail
+				
 				pHtmlChild->Accept( xmlPrinter );
 				//cout << "Added: " << id << " -> " << xmlPrinter->CStr() << endl;
 				element->htmlValue.append(xmlPrinter->CStr());

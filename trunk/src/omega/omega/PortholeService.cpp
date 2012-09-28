@@ -435,7 +435,7 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
 inline void handle_message(per_session_data* data, recv_message* message, 
 		struct libwebsocket_context *context, struct libwebsocket *wsi){
 
-	// Handle DRAG event
+	// Handle DRAG event -> One finger or mouse
 	if (strcmp(message->event_type.c_str(),MSG_EVENT_DRAG)==0 &&
 		  data->guiManager->isCameraReadyToStream() ){
 
@@ -459,37 +459,33 @@ inline void handle_message(per_session_data* data, recv_message* message,
 		camera->setOrientation(curOrientation * orientation);
     }
 
-	// Handle PINCH event
+	// Handle PINCH event -> Two fingers
 	else if (strcmp(message->event_type.c_str(),MSG_EVENT_PINCH)==0 &&
-		data->guiManager->isCameraReadyToStream() > 0){
+		data->guiManager->isCameraReadyToStream()){
 
 		// ZOOM
-		Camera* camera;
-
 		// Get the corresponding camera to be modified
+		Camera* camera;
 		PortholeCamera* sessionCamera = data->guiManager->getSessionCamera();
 		if (sessionCamera->followDefault == true)
 			camera = Engine::instance()->getDefaultCamera();
 		else
 			camera = sessionCamera->camera;
-
 		Vector3f myPosition = camera->getPosition();
-		//cout << "Initial position: z = " << myPosition[2] << endl;
 		// Zoom in
-		if (message->scale > 1)
-			myPosition[2] -= message->scale/10; // TODO check scale factor
+		if (message->scale > 1){
+			myPosition[2] -= ZOOM_STEP*message->scale;
+		}
 		// Zoom out
 		else if (message->scale < 1)
-			myPosition[2] += 1.0 - message->scale;
-		//cout << "Final position: z = " << myPosition[2] << endl;
+			myPosition[2] += ZOOM_STEP/message->scale;
 		camera->setPosition(myPosition);
 
 
 		// ROTATION
-
 		Quaternion curOrientation = camera->getOrientation();
 		// Create the ROLL rotation quaternion
-		float rollAngle = message->deltaRotation / 5 * Math::DegToRad;
+		float rollAngle = message->deltaRotation * Math::DegToRad;
 		Quaternion orientation = AngleAxis(0, Vector3f::UnitY()) * AngleAxis(0, Vector3f::UnitX()) * AngleAxis(rollAngle, Vector3f::UnitZ());
 		// Apply rotation
 		camera->setOrientation(curOrientation * orientation);
@@ -510,9 +506,9 @@ inline void handle_message(per_session_data* data, recv_message* message,
 	}
 
 	// Modify the camera size if FPS in client is too low
-	else if (strcmp(message->event_type.c_str(),MSG_EVENT_CAMERA_MOD)==0){
-		data->guiManager->modCustomCamera(message->cameraSize);
-	}
+	//else if (strcmp(message->event_type.c_str(),MSG_EVENT_CAMERA_MOD)==0){
+	//	data->guiManager->modCustomCamera(message->cameraSize);
+	//}
 
 	// Javascript function bind
 	else if(strcmp(message->event_type.c_str(),MSG_EVENT_INPUT)==0){

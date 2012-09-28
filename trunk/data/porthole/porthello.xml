@@ -6,9 +6,9 @@
       <div class="div-aligned">
         <fieldset  data-type="horizontal" class="">
           <input type="button" value="UP" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[1] += 0.025; camera.setPosition(position);" data-inline="true" data-corner="false" data-continuous="true" class=""/>
-          <input type="button" value="DOWN" data-role="button" onmousedown="down(event)" data-inline="true" data-corner="false" data-continuous="true" class=""/>
-          <input type="button" value="LEFT" data-role="button" onmousedown="left(event)" data-inline="true" data-corner="false" data-continuous="true" class=""/>
-          <input type="button" value="RIGHT" data-role="button" onmousedown="right(event)" data-inline="true" data-corner="false" data-continuous="true" class=""/>
+          <input type="button" value="DOWN" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[1] -= 0.025; camera.setPosition(position);" data-inline="true" data-corner="false" data-continuous="true" class=""/>
+          <input type="button" value="LEFT" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[0] -= 0.025; camera.setPosition(position);" data-inline="true" data-corner="false" data-continuous="true" class=""/>
+          <input type="button" value="RIGHT" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[0] += 0.025; camera.setPosition(position);" data-inline="true" data-corner="false" data-continuous="true" class=""/>
         </fieldset>
       </div>
     </gui_element>
