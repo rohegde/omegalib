@@ -764,7 +764,7 @@ void EqualizerDisplaySystem::run()
 
 			uint32_t spin = 0;
 			bool exitRequestProcessed = false;
-			while( myConfig->isRunning( ))
+			while(!SystemManager::instance()->isExitRequested())
 			{
 				myConfig->startFrame( spin );
 				myConfig->finishFrame();
@@ -773,7 +773,11 @@ void EqualizerDisplaySystem::run()
 					&& !exitRequestProcessed)
 				{
 					exitRequestProcessed = true;
-					myConfig->exit();
+
+					// Run one additional frame, to give all omegalib objects
+					// a change to dispose correctly.
+					myConfig->startFrame( spin );
+					myConfig->finishAllFrames();
 				}
 			}
 		}
@@ -782,21 +786,24 @@ void EqualizerDisplaySystem::run()
 			oerror("Config initialization failed!");
 			error = true;
 		}
-
-		eq::releaseConfig( myConfig );
 	}
 	else
 	{
 		oerror("Cannot get config");
 		error = true;
 	}    
-
-	eq::exit();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::cleanup()
 {
+	if(myConfig != NULL)
+	{
+		myConfig->exit();
+		eq::releaseConfig( myConfig );
+		eq::exit();
+	}
+
 	delete myNodeFactory;
 	SharedDataServices::cleanup();
 }
