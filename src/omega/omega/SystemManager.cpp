@@ -322,13 +322,6 @@ void SystemManager::run()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SystemManager::cleanup()
 {
-	if(myDisplaySystem) 
-	{
-		myDisplaySystem->cleanup();
-		delete myDisplaySystem;
-		myDisplaySystem = NULL;
-	}
-
 	if(myServiceManager != NULL)
 	{
 		myServiceManager->stop();
@@ -341,6 +334,13 @@ void SystemManager::cleanup()
 		myInterpreter = NULL;
 	}
 	
+
+	if(myDisplaySystem) 
+	{
+		myDisplaySystem->cleanup();
+		delete myDisplaySystem;
+		myDisplaySystem = NULL;
+	}
 
 	delete mysInstance;
 	mysInstance = NULL;

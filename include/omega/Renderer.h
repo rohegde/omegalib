@@ -63,6 +63,8 @@ namespace omega {
 		void innerDraw(const DrawContext& context);
 
 	private:
+		Lock myLock;
+
 		Ref<Engine> myServer;
 		Ref<DrawInterface> myRenderer;
 		List< Ref<RenderPass> > myRenderPassList;

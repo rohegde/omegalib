@@ -38,8 +38,6 @@
 
 using namespace omega;
 
-Lock sLock;
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderer::Renderer(ServerBase* server):
 	RendererBase(server)
@@ -104,7 +102,9 @@ void Renderer::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::queueCommand(IRendererCommand* cmd)
 {
+	myLock.lock();
 	myRenderableCommands.push(cmd);
+	myLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,8 +136,6 @@ void Renderer::finishFrame(const FrameInfo& frame)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::draw(const DrawContext& context)
 {
-	//sLock.lock();
-
 #ifdef OMEGA_DEBUG_FLOW
 	String eyeName = "Cyclops";
 	if(context.eye == DrawContext::EyeLeft) eyeName = "EyeLeft";
@@ -154,11 +152,13 @@ void Renderer::draw(const DrawContext& context)
 	}
 
 	// Execute renderable commands.
+	myLock.lock();
 	while(!myRenderableCommands.empty())
 	{
 		myRenderableCommands.front()->execute(this);
 		myRenderableCommands.pop();
 	}
+	myLock.unlock();
 
 	foreach(Ref<Camera> cam, myServer->getCameras())
 	{
