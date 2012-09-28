@@ -38,6 +38,7 @@
 using namespace std;
 using namespace omicron;
 
+#define ZOOM_STEP 0.025
 #define PREFETCHING_FILES true
 
 namespace omega {

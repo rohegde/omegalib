@@ -1,4 +1,4 @@
-
+add_definitions(-DFASTEST)
 set(zlib_SOURCES
          ./gzlib.c
 		 ./adler32.c
