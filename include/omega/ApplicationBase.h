@@ -133,8 +133,8 @@ namespace omega
 		//! Offset of the first window in pixels (valid for multiwindow settings)
 		Vector2i windowOffset;
 
-		//! Enable interleaved stereo rendering.
-		bool interleaved;
+		//! Global stereo mode. Will be used by tiles that specify 'Default" as their stereo mode.
+		DisplayTileConfig::StereoMode stereoMode;
 		//! Enable stencl-based interleaved stereo. Faster but requires use of stencil buffer.
 		bool enableStencilInterleaver;
 
