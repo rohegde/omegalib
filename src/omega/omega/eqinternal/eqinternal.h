@@ -105,6 +105,8 @@ struct ObserverTileData
 
 	// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
 	float yaw;
+	
+	Vector3f tileCenter;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

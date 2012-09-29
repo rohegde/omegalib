@@ -300,7 +300,7 @@ uint32_t ConfigImpl::finishFrame()
 {
     EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
 
-	if(ds->getDisplayConfig().orientObserverToTile)
+	if(ds->getDisplayConfig().panopticStereoEnabled)
 	{
 		// if orientObserverToTile is enabled, we assume the observer orientation is always normal
 		// to the tile. Only the observer position is updated.
@@ -327,16 +327,47 @@ uint32_t ConfigImpl::finishFrame()
 
 				// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
 				otd.yaw = dtc.yaw;
+				
+				otd.tileCenter = dtc.center;
 			}
 
 			// Update the tile-observer head matrix, using the observer position and the per-tile orientation.
 			// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
 			const Vector3f& pos = cam->getHeadOffset();
-			eq::fabric::Matrix4f om = eq::fabric::Matrix4f::IDENTITY;
+			//eq::fabric::Matrix4f om = eq::fabric::Matrix4f::IDENTITY;
 			//om.rotate_z(Math::Pi);
-			om.rotate_y(-otd.yaw * Math::DegToRad);
-			om.set_translation(pos[0], pos[1], pos[2]);
-			eqo->setHeadMatrix(om);
+			//om.set_translation(pos[0], pos[1], pos[2]);
+			//om.rotate_y(-otd.yaw * Math::DegToRad);
+			
+			if(ds->getDisplayConfig().panopticStereoOverride)
+			{
+				Camera* cam = Engine::instance()->getDefaultCamera();
+				eq::fabric::Matrix4f om;
+				const AffineTransform3& ht = cam->getHeadTransform();
+				om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
+				eqo->setHeadMatrix(om);
+			}
+			else
+			{
+				// eq::fabric::Matrix4f om;
+				// AffineTransform3 ht = AffineTransform3::Identity();
+				// ht.translate(pos);
+				
+				// Vector3f dir = (pos - otd.tileCenter);
+				// dir.normalize();
+				
+				// Quaternion lookAt = Math::buildRotation(Vector3f::UnitZ(), dir, Vector3f::UnitY());
+				
+				// ht.rotate(lookAt);
+				// //ht.rotate(AngleAxis(otd.yaw * Math::DegToRad, Vector3f::UnitY()));
+				// om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
+				// eqo->setHeadMatrix(om);
+				
+				eq::fabric::Matrix4f om = eq::fabric::Matrix4f::IDENTITY;
+				om.set_translation(pos[0], pos[1], pos[2]);
+				om.rotate_y(-otd.yaw * Math::DegToRad);
+				eqo->setHeadMatrix(om);
+			}
 		}
 	}
 	else

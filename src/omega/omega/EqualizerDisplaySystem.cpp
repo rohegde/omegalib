@@ -155,14 +155,17 @@ void EqualizerDisplaySystem::generateEqConfig()
 			result += tileCfg;
 		}
 
-		if(curDevice != -1) END_BLOCK(result); // End last open pipe section
+		if(curDevice != -1)
+		{		
+			END_BLOCK(result); // End last open pipe section
+		}
 
 		// end of node
 		END_BLOCK(result);
 	}
 
 	// If orientObserverToTile is set, we need to create one observer per tile.
-	if(eqcfg.orientObserverToTile)
+	if(eqcfg.panopticStereoEnabled)
 	{
 		// observers
 		for(int x = 0; x < eqcfg.numTiles[0]; x++)
@@ -190,8 +193,8 @@ void EqualizerDisplaySystem::generateEqConfig()
 	float tileViewportX = 0.0f;
 	float tileViewportY = 0.0f;
 
-	// If orientObserverToTile is set, we need to create one view per tile, and link it to the relative observer.
-	if(eqcfg.orientObserverToTile)
+	// If panopticStereoEnabled is set, we need to create one view per tile, and link it to the relative observer.
+	if(eqcfg.panopticStereoEnabled)
 	{
 		for(int x = 0; x < eqcfg.numTiles[0]; x++)
 		{
@@ -368,7 +371,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 			String segmentName = ostr("%1%x%2%", %x %y);
 			String viewName = "main";
 
-			if(eqcfg.orientObserverToTile)
+			if(eqcfg.panopticStereoEnabled)
 			{
 				viewName = ostr("view%1%x%2%", %x %y);
 			}
@@ -555,7 +558,8 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 
 	cfg.enableStencilInterleaver = Config::getBoolValue("enableStencilInterleaver", scfg);
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
-	cfg.orientObserverToTile = Config::getBoolValue("orientObserverToTile", scfg);
+	cfg.panopticStereoEnabled = Config::getBoolValue("panopticStereoEnabled", scfg);
+	cfg.panopticStereoOverride = false;
 
 	cfg.disableConfigGenerator = Config::getBoolValue("disableConfigGenerator", scfg, false);
 	
@@ -622,7 +626,6 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 				else if(sm == "interleaved") tc.stereoMode = DisplayTileConfig::Interleaved;
 				else if(sm == "sidebyside") tc.stereoMode = DisplayTileConfig::SideBySide;
 				
-
 				tc.drawFps = drawFps;
 				tc.index = index;
 				//tc.interleaved = Config::getBoolValue("interleaved", sTile);
@@ -900,7 +903,6 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 
 	Vector3f p = vb + vba * py + vbc * px;
 	Vector3f direction = p - head;
-
 	
 	p = camera->getOrientation() * p;
 	p += camera->getPosition();
