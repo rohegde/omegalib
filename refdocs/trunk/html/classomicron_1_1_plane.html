@@ -31,6 +31,7 @@
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div id="navrow2" class="tabs2">
@@ -64,8 +65,6 @@
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classomicron_1_1_plane__coll__graph.png" border="0" usemap="#omicron_1_1_plane_coll__map" alt="Collaboration graph"/></div>
-<map name="omicron_1_1_plane_coll__map" id="omicron_1_1_plane_coll__map">
-</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
@@ -75,7 +74,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a192cfca25e339db68512a7429b6c4649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#a192cfca25e339db68512a7429b6c4649">Plane</a> (const <a class="el" href="classomicron_1_1_plane.html">Plane</a> &amp;rhs)</td></tr>
 <tr class="memitem:a99d9fd706c05de2a4af295d25216f549"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#a99d9fd706c05de2a4af295d25216f549">Plane</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkNormal, float fConstant)</td></tr>
 <tr class="memdesc:a99d9fd706c05de2a4af295d25216f549"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a plane through a normal, and a distance to move the plane along the normal.  <a href="#a99d9fd706c05de2a4af295d25216f549"></a><br/></td></tr>
-<tr class="memitem:a9eef56e24592f28e64a2d95bb796bb55"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#a9eef56e24592f28e64a2d95bb796bb55">Plane</a> (float a, float b, float c, float <a class="el" href="classomicron_1_1_plane.html#a9fa3a54cb5b176bed7e9ae89a2823efd">d</a>)</td></tr>
+<tr class="memitem:a9eef56e24592f28e64a2d95bb796bb55"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#a9eef56e24592f28e64a2d95bb796bb55">Plane</a> (float <a class="el" href="glew_8h.html#a307708feff65d5bcfe44f8a767030677">a</a>, float <a class="el" href="glew_8h.html#a7b01aaccb6b1691185992154f99088cb">b</a>, float <a class="el" href="glew_8h.html#ae0f40feefa74d9cb1721a009573cfce5">c</a>, float <a class="el" href="classomicron_1_1_plane.html#a9fa3a54cb5b176bed7e9ae89a2823efd">d</a>)</td></tr>
 <tr class="memdesc:a9eef56e24592f28e64a2d95bb796bb55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a plane using the 4 constants directly.  <a href="#a9eef56e24592f28e64a2d95bb796bb55"></a><br/></td></tr>
 <tr class="memitem:af5bccb8725cc08769286a75d31654c36"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#af5bccb8725cc08769286a75d31654c36">Plane</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkNormal, const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkPoint)</td></tr>
 <tr class="memitem:a48729b470677908a347deb67f266d385"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#a48729b470677908a347deb67f266d385">Plane</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkPoint0, const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkPoint1, const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkPoint2)</td></tr>
@@ -84,13 +83,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1d2fee8f0b2a3614cce95098928efd0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the side where the aligneBox is.  <a href="#a1d2fee8f0b2a3614cce95098928efd0d"></a><br/></td></tr>
 <tr class="memitem:ae2120815b09ea385381d186f88836bb0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#ae2120815b09ea385381d186f88836bb0">getDistance</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkPoint) const </td></tr>
 <tr class="memdesc:ae2120815b09ea385381d186f88836bb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a pseudodistance.  <a href="#ae2120815b09ea385381d186f88836bb0"></a><br/></td></tr>
-<tr class="memitem:ac7f69b15d7d24d2a52f1d910c4637dec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#ac7f69b15d7d24d2a52f1d910c4637dec">redefine</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkPoint0, const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkPoint1, const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkPoint2)</td></tr>
+<tr class="memitem:ac7f69b15d7d24d2a52f1d910c4637dec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#ac7f69b15d7d24d2a52f1d910c4637dec">redefine</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkPoint0, const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkPoint1, const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkPoint2)</td></tr>
 <tr class="memdesc:ac7f69b15d7d24d2a52f1d910c4637dec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Redefine this plane based on 3 points.  <a href="#ac7f69b15d7d24d2a52f1d910c4637dec"></a><br/></td></tr>
-<tr class="memitem:ae556497503e2632bf87047d95cea7180"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#ae556497503e2632bf87047d95cea7180">redefine</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkNormal, const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkPoint)</td></tr>
+<tr class="memitem:ae556497503e2632bf87047d95cea7180"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#ae556497503e2632bf87047d95cea7180">redefine</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkNormal, const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;rkPoint)</td></tr>
 <tr class="memdesc:ae556497503e2632bf87047d95cea7180"><td class="mdescLeft">&#160;</td><td class="mdescRight">Redefine this plane based on a normal and a point.  <a href="#ae556497503e2632bf87047d95cea7180"></a><br/></td></tr>
-<tr class="memitem:a0807891f2644797348f4801c16b19927"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#a0807891f2644797348f4801c16b19927">projectVector</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;v) const </td></tr>
+<tr class="memitem:a0807891f2644797348f4801c16b19927"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#a0807891f2644797348f4801c16b19927">projectVector</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;<a class="el" href="glew_8h.html#a6509431814422c215a65946289dd98b8">v</a>) const </td></tr>
 <tr class="memdesc:a0807891f2644797348f4801c16b19927"><td class="mdescLeft">&#160;</td><td class="mdescRight">Project a vector onto the plane.  <a href="#a0807891f2644797348f4801c16b19927"></a><br/></td></tr>
-<tr class="memitem:a6d46b207bb18301e7426cf881814e609"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#a6d46b207bb18301e7426cf881814e609">normalise</a> (void)</td></tr>
+<tr class="memitem:a6d46b207bb18301e7426cf881814e609"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#a6d46b207bb18301e7426cf881814e609">normalise</a> (<a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>)</td></tr>
 <tr class="memdesc:a6d46b207bb18301e7426cf881814e609"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalises the plane.  <a href="#a6d46b207bb18301e7426cf881814e609"></a><br/></td></tr>
 <tr class="memitem:ac084963fcdb504b10f6bd88eb7e40683"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_plane.html#ac084963fcdb504b10f6bd88eb7e40683">operator==</a> (const <a class="el" href="classomicron_1_1_plane.html">Plane</a> &amp;rhs) const </td></tr>
 <tr class="memdesc:ac084963fcdb504b10f6bd88eb7e40683"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison operator.  <a href="#ac084963fcdb504b10f6bd88eb7e40683"></a><br/></td></tr>
@@ -421,7 +420,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">float omicron::Plane::normalise </td>
           <td>(</td>
-          <td class="paramtype">void&#160;</td>
+          <td class="paramtype"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -531,7 +530,7 @@ Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void omicron::Plane::redefine </td>
+          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> omicron::Plane::redefine </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;&#160;</td>
           <td class="paramname"><em>rkPoint0</em>, </td>
@@ -573,7 +572,7 @@ Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void omicron::Plane::redefine </td>
+          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> omicron::Plane::redefine </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;&#160;</td>
           <td class="paramname"><em>rkNormal</em>, </td>
@@ -626,6 +625,9 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>D:/Workspace/omegalib/trunk/external/omicron/include/omicron/math/<a class="el" href="_plane_8h.html">Plane.h</a></li>
+</ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

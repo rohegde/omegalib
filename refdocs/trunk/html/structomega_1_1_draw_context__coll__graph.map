@@ -1,9 +1,9 @@
 <map id="omega::DrawContext" name="omega::DrawContext">
-<area shape="rect" id="node2" href="$classomega_1_1_render_target.html" title="omega::RenderTarget" alt="" coords="269,77,398,101"/>
-<area shape="rect" id="node4" href="$classomega_1_1_gpu_resource.html" title="omega::GpuResource" alt="" coords="6,5,133,29"/>
-<area shape="rect" id="node8" href="$structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="262,253,405,277"/>
-<area shape="rect" id="node26" href="$structomicron_1_1_rect.html" title="Stores a rectangular region in integer units." alt="" coords="289,333,378,357"/>
-<area shape="rect" id="node29" href="$structomega_1_1_channel_info.html" title="Contains information about a drawing channel." alt="" coords="273,381,394,405"/>
-<area shape="rect" id="node34" href="$classomega_1_1_renderer.html" title="omega::Renderer" alt="" coords="280,539,387,563"/>
-<area shape="rect" id="node36" href="$classomega_1_1_gpu_context.html" title="omega::GpuContext" alt="" coords="273,659,393,683"/>
+<area shape="rect" id="node2" href="$classomega_1_1_render_target.html" title="omega::RenderTarget" alt="" coords="487,11,617,35"/>
+<area shape="rect" id="node4" href="$classomega_1_1_gpu_resource.html" title="omega::GpuResource" alt="" coords="198,5,325,29"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,55,147,79"/>
+<area shape="rect" id="node31" href="$classomega_1_1_renderer.html" title="omega::Renderer" alt="" coords="349,59,456,83"/>
+<area shape="rect" id="node34" href="$classomega_1_1_gpu_context.html" title="omega::GpuContext" alt="" coords="492,133,612,157"/>
+<area shape="rect" id="node10" href="$structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="481,303,623,327"/>
+<area shape="rect" id="node28" href="$structomicron_1_1_rect.html" title="Stores a rectangular region in integer units." alt="" coords="507,351,597,375"/>
 </map>

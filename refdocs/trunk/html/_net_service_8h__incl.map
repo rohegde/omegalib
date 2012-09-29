@@ -1,0 +1,11 @@
+<map id="D:/Workspace/omegalib/trunk/external/omicron/include/omicron/NetService.h" name="D:/Workspace/omegalib/trunk/external/omicron/include/omicron/NetService.h">
+<area shape="rect" id="node3" href="$omicron_connector_client_8h.html" title="connector/omicronConnector\lClient.h" alt="" coords="475,246,636,282"/>
+<area shape="rect" id="node27" href="$external_2omicron_2include_2omicron_2osystem_8h.html" title="omicron/osystem.h" alt="" coords="805,252,917,276"/>
+<area shape="rect" id="node37" href="$_service_manager_8h.html" title="omicron/ServiceManager.h" alt="" coords="666,101,816,125"/>
+<area shape="rect" id="node11" href="$netdb_8h.html" title="netdb.h" alt="" coords="225,331,284,355"/>
+<area shape="rect" id="node23" href="$unistd_8h.html" title="unistd.h" alt="" coords="5,331,67,355"/>
+<area shape="rect" id="node33" href="$external_2omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="966,331,1031,355"/>
+<area shape="rect" id="node39" href="$_event_8h.html" title="Event.h" alt="" coords="626,173,685,197"/>
+<area shape="rect" id="node43" href="$_config_8h.html" title="Config.h" alt="" coords="710,173,772,197"/>
+<area shape="rect" id="node46" href="$_lock_8h.html" title="Lock.h" alt="" coords="797,173,851,197"/>
+</map>
