@@ -33,9 +33,9 @@ using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void BareboneButtonRenderable::drawContent()
+void BareboneButtonRenderable::drawContent(const DrawContext& context)
 {
-	WidgetRenderable::drawContent();
+	WidgetRenderable::drawContent(context);
 
 	DrawInterface* painter = getRenderer();
 
@@ -71,7 +71,7 @@ void BareboneButtonRenderable::drawContent()
 	LabelRenderable* lr = (LabelRenderable*)myOwner->getLabel()->getRenderable(getClient());
 	if(lr)
 	{
-		lr->drawContent();
+		lr->drawContent(context);
 	}
 
 	myAnim *= 0.8f;
@@ -84,9 +84,9 @@ void BareboneButtonRenderable::drawContent()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void BareboneSliderRenderable::drawContent()
+void BareboneSliderRenderable::drawContent(const DrawContext& context)
 {
-	WidgetRenderable::drawContent();
+	WidgetRenderable::drawContent(context);
 
 	DrawInterface* painter = getRenderer();
 

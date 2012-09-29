@@ -220,9 +220,9 @@ void MeshRenderable::refresh()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshRenderable::draw(RenderState* state)
+void MeshRenderable::draw(const DrawContext& context)
 {
-	if(state->isFlagSet(RenderPass::RenderOpaque))
+	if(context.task == DrawContext::SceneDrawTask)
 	{
 		pushNodeTransform();
 		if(myMesh->getData() != NULL)

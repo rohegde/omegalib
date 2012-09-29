@@ -39,11 +39,10 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Renderer::Renderer(ServerBase* server):
-	RendererBase(server)
+Renderer::Renderer(Engine* engine)
 {
 	myRenderer = new DrawInterface();
-	myServer = (Engine*)server;
+	myServer = engine;
 	myServer->addClient(this);
 }
 
@@ -182,20 +181,13 @@ void Renderer::innerDraw(const DrawContext& context)
 {
 	if(context.task == DrawContext::SceneDrawTask)
 	{
-		RenderState state;
-		state.pass = NULL;
-		state.flags = RenderPass::RenderOpaque;
-		state.client = this;
-		state.context = &context;
-
-
 		getRenderer()->beginDraw3D(context);
 
 		// Run the draw method on scene nodes (was previously in DefaultRenderPass)
 		// This will traverse the scene graph and invoke the draw method on all scene objects attached to nodes.
 		// When stereo rendering, the traversal will happen once per eye.
 		SceneNode* node = getEngine()->getScene();
-		node->draw(&state);
+		node->draw(context);
 
 		// Draw 3d pointers.
 		// We call drawPointers for scene draw tasks too because we may be drawing pointers in wand mode 
@@ -214,20 +206,14 @@ void Renderer::innerDraw(const DrawContext& context)
 	if(context.task == DrawContext::OverlayDrawTask && 
 		context.eye == DrawContext::EyeCyclop)
 	{
-		RenderState state;
-		state.pass = NULL;
-		state.flags = RenderPass::RenderOverlay;
-		state.client = this;
-		state.context = &context;
-
 		getRenderer()->beginDraw2D(context);
 
 		
 		if(myServer->isConsoleEnabled())
 		{
-			myServer->getConsole()->getRenderable(this)->draw(&state);
+			myServer->getConsole()->getRenderable(this)->draw(context);
 		}
-		myServer->drawPointers(this, &state);
+		myServer->drawPointers(this, context);
 	
 		getRenderer()->endDraw();
 	}

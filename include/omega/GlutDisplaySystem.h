@@ -52,8 +52,8 @@ namespace omega
 
 		DisplaySystemType getId() { return DisplaySystem::Glut; }
 
-		ServerBase* getApplicationServer() { return myAppServer; }
-		RendererBase* getApplicationClient() { return myAppClient; }
+		Engine* getApplicationServer() { return myAppServer; }
+		Renderer* getApplicationClient() { return myAppClient; }
 
 		virtual Vector2i getCanvasSize() { return myResolution; }
 		virtual Ray getViewRay(Vector2i position) { return Ray(); }
@@ -71,8 +71,8 @@ namespace omega
 		double myFarz;
 
 		SystemManager* mySys;
-		RendererBase* myAppClient;
-		ServerBase* myAppServer;
+		Renderer* myAppClient;
+		Engine* myAppServer;
 		RenderTarget* myFrameBuffer;
 
 		GpuManager* myGpu;

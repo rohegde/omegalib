@@ -96,7 +96,7 @@ namespace omegaToolkit { namespace ui {
 			myFont(NULL) {}
 
 		virtual void refresh();
-		virtual void drawContent();
+		virtual void drawContent(const DrawContext& context);
 
 	private:
 		Label* myOwner;

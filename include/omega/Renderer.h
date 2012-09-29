@@ -37,10 +37,12 @@ namespace omega {
 	class Engine;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Renderer: public RendererBase
+	class OMEGA_API Renderer: public ReferenceType
 	{
+	friend class DisplaySystem;
+	//friend class ServerBase;
 	public:
-		Renderer(ServerBase* server);
+		Renderer(Engine* server);
 
 		Engine* getEngine();
 
@@ -59,11 +61,20 @@ namespace omega {
 
 		DrawInterface* getRenderer();
 
+		GpuContext* getGpuContext() { return myGpuContext; } 
+		void setGpuContext(GpuContext* ctx) { myGpuContext = ctx; } 
+
+		//ServerBase* getEngine() { return myServer; }
+		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
+		ServiceManager*   getServiceManager()   { return SystemManager::instance()->getServiceManager(); }
+		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
 	private:
 		void innerDraw(const DrawContext& context);
 
 	private:
 		Lock myLock;
+
+		GpuContext* myGpuContext;
 
 		Ref<Engine> myServer;
 		Ref<DrawInterface> myRenderer;

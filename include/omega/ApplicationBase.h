@@ -41,6 +41,7 @@ namespace omega
 	class ApplicationBase;
 	class ChannelImpl;
 	class GpuContext;
+	class Renderer;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	struct DisplayTileConfig
@@ -224,64 +225,7 @@ namespace omega
 		const DisplayTileConfig* tile;
 		RenderTarget* drawBuffer;
 		GpuContext* gpuContext;
-	};
-
-	class ServerBase;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API RendererBase: public ReferenceType
-	{
-	friend class DisplaySystem;
-	friend class ServerBase;
-	public:
-		RendererBase(ServerBase* app);
-		virtual ~RendererBase(); 
-
-		GpuContext* getGpuContext() { return myGpuContext; } 
-		void setGpuContext(GpuContext* ctx) { myGpuContext = ctx; } 
-
-		virtual void initialize() {}
-		virtual void finalize() {}
-
-		virtual void draw(const DrawContext& context) {}
-		virtual void startFrame(const FrameInfo& context) {}
-		virtual void finishFrame(const FrameInfo& context) {}
-
-		ServerBase* getEngine() { return myServer; }
-		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
-		ServiceManager*   getServiceManager()   { return SystemManager::instance()->getServiceManager(); }
-		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
-
-	private:
-		ServerBase* myServer;
-		GpuContext* myGpuContext;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API ServerBase: public ReferenceType, public IEventListener
-	{
-	friend class RendererBase;
-	public:
-		ServerBase(ApplicationBase* app): myApplication(app) {}
-		virtual ~ServerBase() {}
-
-		virtual void initialize() {}
-		virtual void dispose() {}
-		virtual void update(const UpdateContext& context) {}
-		virtual void handleEvent(const Event& evt) { }
-
-		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
-		ApplicationBase* getApplication() { return myApplication; }
-		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
-		int getCanvasWidth(); 
-		int getCanvasHeight();
-
-	private:
-		void addClient(RendererBase* cli);
-
-	private:
-		ApplicationBase* myApplication;
-		List<RendererBase*> myClients;
+		Renderer* renderer;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

@@ -268,8 +268,8 @@ namespace omegaToolkit { namespace ui {
     {
     public:
         WidgetRenderable(Widget* owner): myOwner(owner) {}
-        virtual void draw(RenderState* state);
-        virtual void drawContent();
+        virtual void draw(const DrawContext& context);
+        virtual void drawContent(const DrawContext& context);
 
     protected:
         virtual void preDraw();

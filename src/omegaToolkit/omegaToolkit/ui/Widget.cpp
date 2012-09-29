@@ -439,32 +439,30 @@ void WidgetRenderable::postDraw()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void WidgetRenderable::draw(RenderState* state)
+void WidgetRenderable::draw(const DrawContext& context)
 {
-	myRenderState = state;
-
 	if(myOwner->isStereo())
 	{
-		if(state->context->eye != DrawContext::EyeCyclop) 
+		if(context.eye != DrawContext::EyeCyclop) 
 		{
 			preDraw();
-			drawContent();
+			drawContent(context);
 			postDraw();
 		}
 	}
 	else
 	{
-		if(state->context->eye == DrawContext::EyeCyclop) 
+		if(context.eye == DrawContext::EyeCyclop) 
 		{
 			preDraw();
-			drawContent();
+			drawContent(context);
 			postDraw();
 		}
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void WidgetRenderable::drawContent()
+void WidgetRenderable::drawContent(const DrawContext& context)
 {
 	DrawInterface* di = getRenderer();
 	if(myOwner->myFillEnabled)

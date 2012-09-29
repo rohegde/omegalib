@@ -91,9 +91,9 @@ void BoxRenderable::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void BoxRenderable::draw(RenderState* state)
+void BoxRenderable::draw(const DrawContext& context)
 {
-	if(state->isFlagSet(RenderPass::RenderOpaque))
+	if(context.task == DrawContext::SceneDrawTask)
 	{
 		pushNodeTransform();
 		for (int i = 0; i < 6; i++) 

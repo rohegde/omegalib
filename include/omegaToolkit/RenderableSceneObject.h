@@ -46,7 +46,7 @@ namespace omegaToolkit {
 
 		//! This method is called by engine client threads to traverse the scene hierarchy during
 		//! rendering.
-		void draw(SceneNode* node, RenderState* state);
+		void draw(SceneNode* node, const DrawContext& context);
 
 		virtual const AlignedBox3* getBoundingBox() { return NULL; }
 		virtual bool hasBoundingBox() { return false; }

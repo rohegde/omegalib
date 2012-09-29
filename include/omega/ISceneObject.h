@@ -32,6 +32,7 @@
 namespace omega {
 	class SceneNode;
 	class Engine;
+	struct DrawContext;
 	struct RenderState;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,7 +40,7 @@ namespace omega {
 	{
 	public:
 		virtual void update(SceneNode* owner) = 0;
-		virtual void draw(SceneNode* node, RenderState* state) {};
+		virtual void draw(SceneNode* node, const DrawContext& context) {};
 		virtual const AlignedBox3* getBoundingBox() = 0;
 		virtual bool hasBoundingBox() = 0;
 		virtual bool isInitialized() = 0;

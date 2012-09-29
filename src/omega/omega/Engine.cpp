@@ -40,7 +40,6 @@ Engine* Engine::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Engine::Engine(ApplicationBase* app):
-    ServerBase(app),
     //myActivePointerTimeout(2.0f),
     myDefaultCamera(NULL),
     myConsoleEnabled(false),
@@ -279,7 +278,7 @@ const SceneQueryResultList& Engine::querySceneRay(const Ray& ray, uint flags)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Engine::drawPointers(Renderer* client, RenderState* state)
+void Engine::drawPointers(Renderer* client, const DrawContext& context)
 {
 	if(myDrawPointers)
 	{
@@ -288,7 +287,7 @@ void Engine::drawPointers(Renderer* client, RenderState* state)
 			if(p->getVisible())
 			{
 				Renderable* r = p->getRenderable(client);
-				r->draw(state);
+				r->draw(context);
 			}
 		}
 	}
@@ -322,4 +321,16 @@ Engine::CameraCollection::Range Engine::getCameras()
 Engine::CameraCollection::ConstRange Engine::getCameras() const
 {
     return CameraCollection::ConstRange(myCameras.begin(), myCameras.end());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int Engine::getCanvasWidth() 
+{
+	return getDisplaySystem()->getCanvasSize().x(); 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int Engine::getCanvasHeight()
+{
+	return getDisplaySystem()->getCanvasSize().y(); 
 }

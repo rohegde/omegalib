@@ -114,7 +114,7 @@ void SceneNode::removeObject(ISceneObject* o)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::draw(RenderState* state)
+void SceneNode::draw(const DrawContext& context)
 {
 	if(myVisible)
 	{
@@ -125,14 +125,14 @@ void SceneNode::draw(RenderState* state)
 		// Draw drawables attached to this node.
 		foreach(ISceneObject* d, myObjects)
 		{
-			d->draw(this, state);
+			d->draw(this, context);
 		}
 
 		// Draw children nodes.
 		foreach(Node* child, getChildren())
 		{
 			SceneNode* n = dynamic_cast<SceneNode*>(child);
-			n->draw(state);
+			n->draw(context);
 		}
 	}
 }

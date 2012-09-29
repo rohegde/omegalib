@@ -60,7 +60,7 @@ namespace omega {
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
-	class OMEGA_API Engine: public ServerBase
+	class OMEGA_API Engine: public ReferenceType, public IEventListener
 	{
 	public:
 		typedef List< Ref<Camera> > CameraCollection;
@@ -77,6 +77,12 @@ namespace omega {
 		virtual ~Engine();
 
 		ServiceManager* getServiceManager();
+
+		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
+		ApplicationBase* getApplication() { return myApplication; }
+		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
+		int getCanvasWidth(); 
+		int getCanvasHeight();
 
 		//! Renderer management
 		//@{
@@ -137,17 +143,18 @@ namespace omega {
 		//! Pointer Management
 		//@{
 		//! Draw pointer objects inside a specific client context.
-		void drawPointers(Renderer* client, RenderState* state);
+		void drawPointers(Renderer* client, const DrawContext& context);
 		void refreshPointer(int pointerId, const Event& evt);
 		//@}
 
 	private:
 		static Engine* mysInstance;
 
+		ApplicationBase* myApplication;
+		List< Ref<Renderer> > myClients;
+
 		// Engine lock, used when client / server thread synchronization is needed.
 		Lock myLock;
-
-		List< Ref<Renderer> > myClients;
 
 		Ref<SceneNode> myScene;
 
