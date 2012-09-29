@@ -595,7 +595,7 @@ Renderable* Container::createRenderable()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ContainerRenderable::draw3d(RenderState* state)
+void ContainerRenderable::draw3d(const DrawContext& context)
 {
 	if(myTexture != NULL)
 	{
@@ -650,15 +650,15 @@ void ContainerRenderable::draw3d(RenderState* state)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ContainerRenderable::draw(RenderState* state)
+void ContainerRenderable::draw(const DrawContext& context)
 {
 	if(myOwner->isVisible())
 	{
-		if(state->context->task == DrawContext::SceneDrawTask)
+		if(context.task == DrawContext::SceneDrawTask)
 		{
 			if(myOwner->get3dSettings().enable3d)
 			{
-				draw3d(state);
+				draw3d(context);
 			}
 			else
 			{
@@ -668,7 +668,7 @@ void ContainerRenderable::draw(RenderState* state)
 					ContainerRenderable* childRenderable = dynamic_cast<ContainerRenderable*>(w->getRenderable(getClient())); 
 					if(childRenderable != NULL) 
 					{
-						childRenderable->draw(state);
+						childRenderable->draw(context);
 					}
 				}
 			}
@@ -681,9 +681,9 @@ void ContainerRenderable::draw(RenderState* state)
 					myTexture->getWidth() != myOwner->getWidth() ||
 					myTexture->getHeight() != myOwner->getHeight())
 				{
- 					myTexture = new Texture(state->context->gpuContext);
+ 					myTexture = new Texture(context.gpuContext);
 					myTexture->initialize(myOwner->getWidth(), myOwner->getHeight());
-					myRenderTarget = new RenderTarget(state->context->gpuContext, RenderTarget::RenderToTexture);
+					myRenderTarget = new RenderTarget(context.gpuContext, RenderTarget::RenderToTexture);
 					myRenderTarget->setTextureTarget(myTexture);
 				}
 
@@ -711,11 +711,11 @@ void ContainerRenderable::draw(RenderState* state)
 			// draw myself.
 			if(myOwner->isStereo())
 			{
-				if(state->context->eye != DrawContext::EyeCyclop) drawContent();
+				if(context.eye != DrawContext::EyeCyclop) drawContent(context);
 			}
 			else
 			{
-				if(state->context->eye == DrawContext::EyeCyclop) drawContent();
+				if(context.eye == DrawContext::EyeCyclop) drawContent(context);
 			}
 
 			// draw children.
@@ -724,7 +724,7 @@ void ContainerRenderable::draw(RenderState* state)
 				Renderable* childRenderable = w->getRenderable(getClient()); 
 				if(childRenderable != NULL) 
 				{
-					childRenderable->draw(state);
+					childRenderable->draw(context);
 				}
 			}
 

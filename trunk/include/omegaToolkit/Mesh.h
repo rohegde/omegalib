@@ -63,7 +63,7 @@ namespace omegaToolkit {
 		~MeshRenderable();
 		virtual void initialize();
 		virtual void dispose();
-		void draw(RenderState* state);
+		void draw(const DrawContext& context);
 		void refresh();
 
 	private:

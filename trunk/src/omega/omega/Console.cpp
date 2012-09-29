@@ -85,7 +85,7 @@ Renderable* Console::createRenderable()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ConsoleRenderable::draw(RenderState* state)
+void ConsoleRenderable::draw(const DrawContext& context)
 {
 	// We assume the transforms and viewport have already been set correctly.
 
@@ -100,7 +100,7 @@ void ConsoleRenderable::draw(RenderState* state)
 	float lineHeight = fi.size + 4;
 	float lineWidth = fi.size * 100; //SystemManager::instance()->getDisplaySystem()->getCanvasSize().x(); 
 
-	const DisplayTileConfig* tile = state->context->tile;
+	const DisplayTileConfig* tile = context.tile;
 	float cx = tile->offset.x();
 	float cy = tile->offset.y();
 	

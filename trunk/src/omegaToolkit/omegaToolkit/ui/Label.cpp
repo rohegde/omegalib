@@ -107,9 +107,9 @@ void LabelRenderable::refresh()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void LabelRenderable::drawContent()
+void LabelRenderable::drawContent(const DrawContext& context)
 {
-	WidgetRenderable::drawContent();
+	WidgetRenderable::drawContent(context);
 
 	// If not font has been set, use default ui font.
 	if(!myFont) myFont = getRenderer()->getDefaultFont();

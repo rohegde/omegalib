@@ -127,7 +127,7 @@ namespace omega {
 
 		virtual void update(bool updateChildren, bool parentHasChanged);
 
-		void draw(RenderState* state);
+		void draw(const DrawContext& context);
 
 	private:
 		void drawBoundingBox();

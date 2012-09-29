@@ -76,7 +76,7 @@ bool ChannelImpl::configInit(const eq::uint128_t& initID)
 void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128_t& spin)
 {
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-    RendererBase* client = pipe->getClient();
+    Renderer* client = pipe->getClient();
 
 	EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
 	const DisplayConfig& dcfg = ds->getDisplayConfig();
@@ -85,6 +85,7 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
     //eq::PixelViewport gpvp = getWindow()->getPixelViewport();
 
     context->gpuContext = pipe->getGpuContext();
+	context->renderer = (Renderer*)client;
 
     // setup the context viewport.
     // (spin is 128 bits, gets truncated to 64... do we really need 128 bits anyways!?)
@@ -170,7 +171,7 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 
     //ofmsg("frameDraw: channel %1% frame %2%", %this %frameID);
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-    RendererBase* client = pipe->getClient();
+    Renderer* client = pipe->getClient();
 
     setupDrawContext(&myDC, frameID);
 
@@ -261,7 +262,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-omega::RendererBase* ChannelImpl::getClient()
+omega::Renderer* ChannelImpl::getClient()
 {
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
     return pipe->getClient();

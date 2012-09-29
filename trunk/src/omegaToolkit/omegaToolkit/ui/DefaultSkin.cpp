@@ -35,9 +35,9 @@ using namespace omegaToolkit::ui;
 Color sBaseColor = Color(0.9, 0.9, 1.0, 1.0);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultButtonRenderable::drawContent()
+void DefaultButtonRenderable::drawContent(const DrawContext& context)
 {
-	WidgetRenderable::drawContent();
+	WidgetRenderable::drawContent(context);
 
 	DrawInterface* painter = getRenderer();
 
@@ -74,7 +74,7 @@ void DefaultButtonRenderable::drawContent()
 	LabelRenderable* lr = (LabelRenderable*)myOwner->getLabel()->getRenderable(getClient());
 	if(lr)
 	{
-		lr->drawContent();
+		lr->drawContent(context);
 	}
 
 	myAnim *= 0.8f;
@@ -87,9 +87,9 @@ void DefaultButtonRenderable::drawContent()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultSliderRenderable::drawContent()
+void DefaultSliderRenderable::drawContent(const DrawContext& context)
 {
-	WidgetRenderable::drawContent();
+	WidgetRenderable::drawContent(context);
 
 	DrawInterface* painter = getRenderer();
 
@@ -103,9 +103,9 @@ void DefaultSliderRenderable::drawContent()
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultPanelRenderable::drawContent()
+void DefaultPanelRenderable::drawContent(const DrawContext& context)
 {
-	ContainerRenderable::drawContent();
+	ContainerRenderable::drawContent(context);
 
 	DrawInterface* painter = getRenderer();
 

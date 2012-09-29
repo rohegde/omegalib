@@ -141,7 +141,7 @@ private:
 
 	ObserverTileData myObserverTileData[MaxTiles];
 
-    omicron::Ref<ServerBase> myServer;
+    omicron::Ref<Engine> myServer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -160,7 +160,7 @@ protected:
 
 private:
     //bool myInitialized;
-    omicron::Ref<ServerBase> myServer;
+    omicron::Ref<Engine> myServer;
     //FrameData myFrameData;
 };
 
@@ -172,7 +172,7 @@ public:
     //EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 public:
     PipeImpl(eq::Node* parent);
-    RendererBase* getClient();
+    Renderer* getClient();
     GpuContext* getGpuContext() { return myGpuContext.get(); }
 
 protected:
@@ -182,7 +182,7 @@ protected:
     virtual void frameFinish( const uint128_t& frameID, const uint32_t frameNumber );
 private:
 	NodeImpl* myNode;
-    omicron::Ref<RendererBase> myClient;
+    omicron::Ref<Renderer> myClient;
     omicron::Ref<GpuManager> myGpu;
     omicron::Ref<GpuContext> myGpuContext;
 };
@@ -230,7 +230,7 @@ protected:
     virtual void frameViewFinish(const uint128_t& spin);
 	//virtual void frameViewStart( const co::base::uint128_t& frameID );
 
-    omega::RendererBase* getClient();
+    omega::Renderer* getClient();
 
 	void setupStencil(int gliWindowWidth, int gliWindowHeight);
 

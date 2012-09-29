@@ -154,10 +154,10 @@ namespace omegaToolkit { namespace ui {
 	{
 	public:
 		ContainerRenderable(Container* owner): WidgetRenderable(owner), myOwner(owner), myRenderTarget(NULL), myTexture(NULL) {}
-		virtual void draw(RenderState* state);
+		virtual void draw(const DrawContext& context);
 
     protected:
-        void draw3d(RenderState* state);
+        void draw3d(const DrawContext& context);
 
 	private:
 		// We use a raw pointer here to avoid cyclic references.

@@ -50,8 +50,8 @@ void displayCallback(void)
 	static uint64 frame = 0;
 
 	GlutDisplaySystem* ds = (GlutDisplaySystem*)SystemManager::instance()->getDisplaySystem();
-	ServerBase* as = ds->getApplicationServer();
-	RendererBase* ac = ds->getApplicationClient();
+	Engine* as = ds->getApplicationServer();
+	Renderer* ac = ds->getApplicationClient();
 
 	// Compute dt.
 	float t = (float)((double)clock() / CLOCKS_PER_SEC);

@@ -39,11 +39,11 @@ Renderable* Pointer::createRenderable()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PointerRenderable::draw(RenderState* state)
+void PointerRenderable::draw(const DrawContext& context)
 {
 	if(myPointer->myVisible)
 	{
-		if(state->context->task == DrawContext::OverlayDrawTask && 
+		if(context.task == DrawContext::OverlayDrawTask && 
 			myPointer->getPointerMode() == Pointer::ModeMouse)
 		{
 			int size = 30;
@@ -70,7 +70,7 @@ void PointerRenderable::draw(RenderState* state)
 				getRenderer()->drawText(myPointer->myText, fnt, Vector2f(x + size, y + size), Font::HALeft | Font::VABottom);
 			}
 		}
-		if(state->context->task == DrawContext::SceneDrawTask && 
+		if(context.task == DrawContext::SceneDrawTask && 
 			myPointer->getPointerMode() == Pointer::ModeWand)
 		{
 			glDisable(GL_LIGHTING);

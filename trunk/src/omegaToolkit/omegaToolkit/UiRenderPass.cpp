@@ -46,12 +46,6 @@ void UiRenderPass::render(Renderer* client, const DrawContext& context)
 
 	if(context.task == DrawContext::SceneDrawTask)
 	{
-		RenderState state;
-		state.pass = this;
-		state.flags = RenderPass::RenderOpaque;
-		state.client = client;
-		state.context = &context;
-
 		client->getRenderer()->beginDraw3D(context);
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
 
@@ -64,7 +58,7 @@ void UiRenderPass::render(Renderer* client, const DrawContext& context)
 		Renderable* uiRenderable = ui->getRenderable(client);
 		if(uiRenderable != NULL)
 		{
-			uiRenderable->draw(&state);
+			uiRenderable->draw(context);
 		}
 
 		glPopAttrib();
@@ -72,12 +66,6 @@ void UiRenderPass::render(Renderer* client, const DrawContext& context)
 	}
 	else if(context.task == DrawContext::OverlayDrawTask)
 	{
-		RenderState state;
-		state.pass = this;
-		state.flags = RenderPass::RenderOverlay;
-		state.client = client;
-		state.context = &context;
-
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 		Vector2i displaySize = ds->getCanvasSize();
 
@@ -105,7 +93,7 @@ void UiRenderPass::render(Renderer* client, const DrawContext& context)
 		Renderable* uiRenderable = ui->getRenderable(client);
 		if(uiRenderable != NULL)
 		{
-			uiRenderable->draw(&state);
+			uiRenderable->draw(context);
 		}
 
 		client->getRenderer()->endDraw();

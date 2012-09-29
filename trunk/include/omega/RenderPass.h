@@ -69,18 +69,6 @@ namespace omega {
 		String myName;
 		Renderer* myClient;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct RenderState
-	{
-		// Is this field used?
-		uint flags;
-		RenderPass* pass;
-		Renderer* client;
-		const DrawContext* context;
-
-		bool isFlagSet(uint flag) const { return (flags & flag) == flag; }
-	};
 }; // namespace omega
 
 #endif

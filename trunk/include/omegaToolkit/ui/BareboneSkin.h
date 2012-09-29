@@ -37,7 +37,7 @@ namespace omegaToolkit { namespace ui {
 		BareboneButtonRenderable(Button* owner): WidgetRenderable(owner), myOwner(owner) {}
 		virtual ~BareboneButtonRenderable() {}
 	protected:
-		void drawContent();
+		void drawContent(const DrawContext& context);
 	private:
 		Button* myOwner;
 		float myAnim;
@@ -50,7 +50,7 @@ namespace omegaToolkit { namespace ui {
 		BareboneSliderRenderable(Slider* owner): WidgetRenderable(owner), myOwner(owner) {}
 		virtual ~BareboneSliderRenderable() {}
 	protected:
-		void drawContent();
+		void drawContent(const DrawContext& context);
 	private:
 		Slider* myOwner;
 		float myAnim;

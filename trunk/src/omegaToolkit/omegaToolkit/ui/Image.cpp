@@ -95,9 +95,9 @@ void ImageRenderable::refresh()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ImageRenderable::drawContent()
+void ImageRenderable::drawContent(const DrawContext& context)
 {
-	WidgetRenderable::drawContent();
+	WidgetRenderable::drawContent(context);
 
 	if(myTexture != NULL)
 	{
@@ -107,7 +107,7 @@ void ImageRenderable::drawContent()
 
 		if(myOwner->isStereo())
 		{
-			DrawContext::Eye eye = getRenderState()->context->eye;
+			DrawContext::Eye eye = context.eye;
 			if(eye == DrawContext::EyeLeft)
 			{
 				getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), DrawInterface::FlipY, Vector2f(0, 0), Vector2f(0.5f, 1.0f));

@@ -89,7 +89,7 @@ namespace omega {
 		PointerRenderable(Pointer* pointer): 
 		  myPointer(pointer)
 		{}
-		void draw(RenderState* state);
+		void draw(const DrawContext& context);
 
 	private:
 		Pointer* myPointer;

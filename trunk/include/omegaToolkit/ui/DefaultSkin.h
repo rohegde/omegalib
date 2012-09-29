@@ -37,7 +37,7 @@ namespace omegaToolkit { namespace ui {
 		DefaultButtonRenderable(Button* owner): WidgetRenderable(owner), myOwner(owner) {}
 		virtual ~DefaultButtonRenderable() {}
 	protected:
-		virtual void drawContent();
+		virtual void drawContent(const DrawContext& context);
 	private:
 		Button* myOwner;
 		float myAnim;
@@ -50,7 +50,7 @@ namespace omegaToolkit { namespace ui {
 		DefaultSliderRenderable(Slider* owner): WidgetRenderable(owner), myOwner(owner) {}
 		virtual ~DefaultSliderRenderable() {}
 	protected:
-		virtual void drawContent();
+		virtual void drawContent(const DrawContext& context);
 	private:
 		Slider* myOwner;
 		float myAnim;
@@ -63,7 +63,7 @@ namespace omegaToolkit { namespace ui {
 		DefaultPanelRenderable(Container* owner): ContainerRenderable(owner), myOwner(owner) {}
 		virtual ~DefaultPanelRenderable() {}
 	protected:
-		virtual void drawContent();
+		virtual void drawContent(const DrawContext& context);
 	private:
 		Container* myOwner;
 	};

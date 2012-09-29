@@ -64,7 +64,7 @@ namespace omega {
 		virtual void initialize() {}
 		virtual void dispose() {}
 		virtual void refresh() {}
-		virtual void draw(RenderState* state) = 0;
+		virtual void draw(const DrawContext& context) = 0;
 
 	private:
 		Renderer* myClient;

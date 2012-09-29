@@ -65,7 +65,7 @@ namespace omegaToolkit { namespace ui {
 		virtual void refresh();
 
 	protected:
-		virtual void drawContent();
+		virtual void drawContent(const DrawContext& context);
 
 	private:
 		Image* myOwner;

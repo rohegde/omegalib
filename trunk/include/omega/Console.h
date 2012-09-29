@@ -66,7 +66,7 @@ namespace omega {
 		ConsoleRenderable(Console* owner): 
 		  myOwner(owner), myFont(NULL)
 		{}
-		void draw(RenderState* state);
+		void draw(const DrawContext& context);
 
 	private:
 		Console* myOwner;

@@ -37,13 +37,13 @@ RenderableSceneObject::RenderableSceneObject()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void RenderableSceneObject::draw(SceneNode* node, RenderState* state)
+void RenderableSceneObject::draw(SceneNode* node, const DrawContext& context)
 { 
-	SceneRenderable* sr = (SceneRenderable*)getRenderable(state->client);
+	SceneRenderable* sr = (SceneRenderable*)getRenderable(context.renderer);
 	if(sr != NULL)
 	{
 		sr->setSceneNode(node);
-		sr->draw(state);
+		sr->draw(context);
 	}
 }
 

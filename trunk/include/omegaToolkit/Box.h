@@ -51,7 +51,7 @@ namespace omegaToolkit {
 		BoxRenderable(Box* box);
 		virtual ~BoxRenderable();
 		void initialize();
-		void draw(RenderState* state);
+		void draw(const DrawContext& context);
 
 	private:
 		Box* myBox;
