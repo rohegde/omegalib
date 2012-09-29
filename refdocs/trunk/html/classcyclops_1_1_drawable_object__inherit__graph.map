@@ -1,9 +1,0 @@
-<map id="cyclops::DrawableObject" name="cyclops::DrawableObject">
-<area shape="rect" id="node7" href="$classcyclops_1_1_entity.html" title="cyclops::Entity" alt="" coords="517,5,611,29"/>
-<area shape="rect" id="node9" href="$classcyclops_1_1_line_set.html" title="cyclops::LineSet" alt="" coords="514,53,614,77"/>
-<area shape="rect" id="node11" href="$classcyclops_1_1_plane_shape.html" title="PYAPI." alt="" coords="503,101,625,125"/>
-<area shape="rect" id="node13" href="$classcyclops_1_1_sphere_shape.html" title="PYAPI." alt="" coords="499,149,629,173"/>
-<area shape="rect" id="node15" href="$classcyclops_1_1_static_object.html" title="PYAPI." alt="" coords="502,197,626,221"/>
-<area shape="rect" id="node2" href="$classomega_1_1_scene_node.html" title="PYAPI Represents a node in the omegalib scene graph." alt="" coords="142,101,258,125"/>
-<area shape="rect" id="node4" href="$classomega_1_1_node.html" title="PYAPI Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="6,101,93,125"/>
-</map>

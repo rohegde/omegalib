@@ -1,6 +1,0 @@
-<map id="omega::PortholeTabletService" name="omega::PortholeTabletService">
-<area shape="rect" id="node2" href="$classomicron_1_1_service.html" title="omicron::Service" alt="" coords="5,128,107,152"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="19,5,160,29"/>
-<area shape="rect" id="node8" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="93,80,221,104"/>
-<area shape="rect" id="node6" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="93,176,221,200"/>
-</map>

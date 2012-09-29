@@ -1,4 +1,4 @@
 <map id="omega::SceneQueryResult" name="omega::SceneQueryResult">
-<area shape="rect" id="node4" href="$classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph." alt="" coords="82,80,197,104"/>
-<area shape="rect" id="node6" href="$classomega_1_1_node.html" title="PYAPI Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="97,5,183,29"/>
+<area shape="rect" id="node8" href="$classomega_1_1_node.html" title="PYAPI Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="133,125,219,149"/>
+<area shape="rect" id="node6" href="$classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph." alt="" coords="129,211,244,235"/>
 </map>

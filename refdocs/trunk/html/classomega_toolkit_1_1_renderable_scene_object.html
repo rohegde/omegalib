@@ -78,8 +78,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a69da47e3ea8920ca1f5b91959c1fb527"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_renderable_scene_object.html#a69da47e3ea8920ca1f5b91959c1fb527">RenderableSceneObject</a> ()</td></tr>
 <tr class="memitem:aef22a74e4cc4d2cf5068270ba63b507c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_renderable.html">Renderable</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_renderable_scene_object.html#aef22a74e4cc4d2cf5068270ba63b507c">createRenderable</a> ()</td></tr>
 <tr class="memitem:a91a82a21cfe69b14789b0bf2cc0572f9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_renderable_scene_object.html#a91a82a21cfe69b14789b0bf2cc0572f9">update</a> (<a class="el" href="classomega_1_1_scene_node.html">SceneNode</a> *owner)</td></tr>
-<tr class="memitem:adc3289884b4d932687ec3ecab2803089"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_renderable_scene_object.html#adc3289884b4d932687ec3ecab2803089">draw</a> (<a class="el" href="classomega_1_1_scene_node.html">SceneNode</a> *node, <a class="el" href="structomega_1_1_render_state.html">RenderState</a> *state)</td></tr>
-<tr class="memdesc:adc3289884b4d932687ec3ecab2803089"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is called by engine client threads to traverse the scene hierarchy during rendering.  <a href="#adc3289884b4d932687ec3ecab2803089"></a><br/></td></tr>
+<tr class="memitem:a7337a2d9a0ad234f75780ecbbbc66a73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_renderable_scene_object.html#a7337a2d9a0ad234f75780ecbbbc66a73">draw</a> (<a class="el" href="classomega_1_1_scene_node.html">SceneNode</a> *node, const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
+<tr class="memdesc:a7337a2d9a0ad234f75780ecbbbc66a73"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is called by engine client threads to traverse the scene hierarchy during rendering.  <a href="#a7337a2d9a0ad234f75780ecbbbc66a73"></a><br/></td></tr>
 <tr class="memitem:a4eafe39c502c7bcf2d7692f1650148a3"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classomicron_1_1_aligned_box3.html">AlignedBox3</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_renderable_scene_object.html#a4eafe39c502c7bcf2d7692f1650148a3">getBoundingBox</a> ()</td></tr>
 <tr class="memitem:ad04840f5b96e812dd7b71d7b13be1f90"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_renderable_scene_object.html#ad04840f5b96e812dd7b71d7b13be1f90">hasBoundingBox</a> ()</td></tr>
 <tr class="memitem:af9e2d9974f947dce0b1d0ccfb98262dc"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_renderable_scene_object.html#af9e2d9974f947dce0b1d0ccfb98262dc">isInitialized</a> ()</td></tr>
@@ -153,7 +153,7 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="adc3289884b4d932687ec3ecab2803089"></a>
+<a class="anchor" id="a7337a2d9a0ad234f75780ecbbbc66a73"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -169,8 +169,8 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structomega_1_1_render_state.html">RenderState</a> *&#160;</td>
-          <td class="paramname"><em>state</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -187,7 +187,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>This method is called by engine client threads to traverse the scene hierarchy during rendering. </p>
 
-<p>Reimplemented from <a class="el" href="classomega_1_1_i_scene_object.html#aaad34f1b60f359b1e48293e86313a838">omega::ISceneObject</a>.</p>
+<p>Reimplemented from <a class="el" href="classomega_1_1_i_scene_object.html#a58dc808c07d4d07cb419a284accafedf">omega::ISceneObject</a>.</p>
 
 </div>
 </div>
