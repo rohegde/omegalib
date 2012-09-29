@@ -26,7 +26,6 @@
  *************************************************************************************************/
 #include "omega/Renderer.h"
 #include "omega/Engine.h"
-#include "omega/PortholeTabletService.h"
 
 #include "omega/DisplaySystem.h"
 #include "omega/GpuManager.h"
