@@ -290,8 +290,11 @@ OmegaViewer::OmegaViewer()
 
 	gViewerInstance = this;
 
-	myUiModule = new UiModule();
-	ModuleServices::addModule(myUiModule);
+	myUiModule = NULL;
+	// If I create t here, UiModule will be registered as a core module and won't be 
+	// deallocated between application switches.
+	//myUiModule = new UiModule();
+	//ModuleServices::addModule(myUiModule);
 
 	//myAppDrawer = new AppDrawer();
 	myAppDrawer = NULL;
