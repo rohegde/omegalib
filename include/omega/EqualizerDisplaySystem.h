@@ -86,7 +86,7 @@ namespace omega
 		//! false otherwise (i.e. because the event is not a wand or pointer event)
 		virtual bool getViewRayFromEvent(const Event& evt, Ray& ray, bool normalizedPointerCoords = false);
 
-		const DisplayConfig& getDisplayConfig() { return myDisplayConfig; }
+		DisplayConfig& getDisplayConfig() { return myDisplayConfig; }
 
 		//! @internal Finish equalizer display system initialization.
 		//! This method is called from the node init function. Performs observer initialization.
