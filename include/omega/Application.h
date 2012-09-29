@@ -38,15 +38,7 @@ namespace omega {
 	class RenderPass;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//class ApplicationNode: public EngineModule
-	//{
-	//public:
-	//	bool isMaster() { return SystemManager::instance()->isMaster(); }
-	//};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! a convenience application class to create omegaToolkit applications
-	void OMEGA_API registerPortholeTabletService();
 	template<typename T> 
 	class Application: public ApplicationBase
 	{
@@ -59,7 +51,6 @@ namespace omega {
 
 		virtual void initialize() 
 		{ 
-			registerPortholeTabletService(); 
 			ModuleServices::addModule(new EventSharingModule());
 			ModuleServices::addModule(new T());
 			ModuleServices::setNonCoreMode();

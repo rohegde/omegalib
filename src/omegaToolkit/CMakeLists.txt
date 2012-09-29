@@ -75,7 +75,6 @@ set( headers
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/DefaultMouseInteractor.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/MouseManipulator.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/DefaultTwoHandsInteractor.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/glteapot.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Mesh.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/MeshData.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/RenderableSceneObject.h

@@ -36,7 +36,6 @@ add_definitions(-DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_ST
 ###################################################################################################
 # Source files
 SET( srcs 
-		omega/ApplicationBase.cpp
 		omega/Camera.cpp
 		omega/CameraController.cpp
 		omega/KeyboardMouseCameraController.cpp
@@ -63,7 +62,6 @@ SET( srcs
         omega/osystem.cpp
 		omega/PixelData.cpp
 		omega/Pointer.cpp
-		omega/PortholeTabletService.cpp
 		omega/PythonInterpreter.cpp
 		omega/omegaPythonApi.cpp
 		omega/Renderer.cpp
@@ -122,7 +120,6 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/otypes.h
 		${OmegaLib_SOURCE_DIR}/include/omega/PixelData.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Pointer.h
-		${OmegaLib_SOURCE_DIR}/include/omega/PortholeTabletService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/PythonInterpreter.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Renderable.h
 		${OmegaLib_SOURCE_DIR}/include/omega/RenderPass.h

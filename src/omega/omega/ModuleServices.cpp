@@ -28,6 +28,8 @@
 
 using namespace omega;
 
+NameGenerator EngineModule::mysNameGenerator("Module_");
+
 List< Ref<EngineModule> > ModuleServices::mysModules;
 List< EngineModule* > ModuleServices::mysNonCoreModules;
 bool ModuleServices::mysCoreMode = true;
