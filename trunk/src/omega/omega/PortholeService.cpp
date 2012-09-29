@@ -33,8 +33,8 @@
 #include "omega/ImageUtils.h"
 #include "vjson/json.h"
 
-#include "private-libwebsockets.h"
-#include "extension-deflate-stream.h"
+#include "websockets/private-libwebsockets.h"
+#include "websockets/extension-deflate-stream.h"
 
 #include <iostream>
 #include <iomanip>
@@ -127,6 +127,41 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 			break;
 		}
 
+		else if (in && strcmp((char*)in, "/farbtastic.js") == 0) {
+			if (libwebsockets_serve_http_file(wsi,
+			     (DATA_PATH+"/farbtastic.js").c_str(), "application/javascript"))
+				fprintf(stderr, "Failed to send farbtastic.js\n");
+			break;
+		}
+
+		else if (in && strcmp((char*)in, "/wheel.png") == 0) {
+			if (libwebsockets_serve_http_file(wsi,
+			     (DATA_PATH+"/wheel.png").c_str(), "image/png"))
+				fprintf(stderr, "Failed to send wheel.png\n");
+			break;
+		}
+
+		else if (in && strcmp((char*)in, "/marker.png") == 0) {
+			if (libwebsockets_serve_http_file(wsi,
+			     (DATA_PATH+"/marker.png").c_str(), "image/png"))
+				fprintf(stderr, "Failed to send marker.png\n");
+			break;
+		}
+
+		else if (in && strcmp((char*)in, "/mask.png") == 0) {
+			if (libwebsockets_serve_http_file(wsi,
+			     (DATA_PATH+"/mask.png").c_str(), "image/png"))
+				fprintf(stderr, "Failed to send mask.png\n");
+			break;
+		}
+
+		else if (in && strcmp((char*)in, "/farbtastic.css") == 0) {
+			if (libwebsockets_serve_http_file(wsi,
+				 (DATA_PATH+"/farbtastic.css").c_str(), "text/css"))
+				fprintf(stderr, "Failed to send farbtastic.css\n");
+			break;
+		}
+
 		/* Porthole CSS */
 		else if (in && strcmp((char*)in, "/porthole.css") == 0) {
 			if (libwebsockets_serve_http_file(wsi,
@@ -139,7 +174,7 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 		else if (in && strcmp((char*)in, "/porthole_functions_binder.js") == 0) {
 			
 			// Build Content. Socket var is used to hold the JS socket object
-			string content = "var socket; var JSONToSend; var sendContinuous;";
+			string content = "var socket; var JSONToSend = ''; var sendContinuous = false;";
 			
 			// Python scripts
 			PortholeFunctionsBinder* functionsBinder = PortholeGUI::getPortholeFunctionsBinder();
@@ -347,8 +382,9 @@ struct recv_message{
 	int cameraId;
 	bool firstTime;
 	float cameraSize; // New size: {0,1}
-	int button, value;
+	int button;
 	char key;
+	string value;
 };
 
 // This is the function that handle the event received by the client,
@@ -390,7 +426,7 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
 			message->key = value->string_value[0];
 
 		else if (strcmp(value->name, MSG_INPUT_VALUE) == 0)
-			message->value = atoi(value->string_value);
+			message->value = value->string_value;
 
         break;
     case JSON_INT:
