@@ -23,10 +23,6 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *-------------------------------------------------------------------------------------------------
- * Original code Copyright (c) Kitware, Inc.
- * All rights reserved.
- * See Copyright.txt or http://www.paraview.org/HTML/Copyright.html for details.
  *************************************************************************************************/
 #include "omega/PythonInterpreter.h"
 #include "omega/SystemManager.h"
@@ -529,7 +525,20 @@ SceneNode* getScene()
 void toggleStats(const String& stats)
 {
 	EqualizerDisplaySystem* eqds = dynamic_cast<EqualizerDisplaySystem*>(SystemManager::instance()->getDisplaySystem());
-	eqds->toggleStats(stats);
+	if(eqds != NULL)
+	{
+		eqds->toggleStats(stats);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void overridePanopticStereo(bool value)
+{
+	EqualizerDisplaySystem* eqds = dynamic_cast<EqualizerDisplaySystem*>(SystemManager::instance()->getDisplaySystem());
+	if(eqds != NULL)
+	{
+		eqds->getDisplayConfig().panopticStereoOverride = value;
+	}
 }
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeYawOverloads, yaw, 1, 2) 
@@ -734,6 +743,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("settingLookup", &settingLookup, PYAPI_RETURN_VALUE);
 	def("settingExists", &settingExists);
 	def("toggleStats", &toggleStats);
+	def("overridePanopticStereo", overridePanopticStereo);
 };
 
 // Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)
