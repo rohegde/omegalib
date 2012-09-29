@@ -124,6 +124,8 @@ void EqualizerDisplaySystem::generateEqConfig()
 		int winX = eqcfg.windowOffset[0];
 		int winY = eqcfg.windowOffset[1];
 
+		int curDevice = -1;
+
 		// Write pipes section
 		for(int i = 0; i < nc.numTiles; i++)
 		{
@@ -140,16 +142,20 @@ void EqualizerDisplaySystem::generateEqConfig()
 			}
 			
 			String tileName = ostr("%1%x%2%", %tc.index[0] %tc.index[1]);
-			String tileCfg = buildTileConfig(indent, tileName, winX, winY, eqcfg.tileResolution[0], eqcfg.tileResolution[1], tc.device, eqcfg.fullscreen);
+			String tileCfg = buildTileConfig(indent, tileName, winX, winY, eqcfg.tileResolution[0], eqcfg.tileResolution[1], tc.device, curDevice, eqcfg.fullscreen);
 			result += tileCfg;
+
+			curDevice = tc.device;
 		}
 
 		// If enabled, create stats window on master node.
 		if(eqcfg.displayStatsOnMaster && !nc.isRemote)
 		{
-			String tileCfg = buildTileConfig(indent, "stats", 20, 20, eqcfg.statsTile.resolution[0], eqcfg.statsTile.resolution[1], 0, false);
+			String tileCfg = buildTileConfig(indent, "stats", 20, 20, eqcfg.statsTile.resolution[0], eqcfg.statsTile.resolution[1], 0, curDevice, false);
 			result += tileCfg;
 		}
+
+		if(curDevice != -1) END_BLOCK(result); // End last open pipe section
 
 		// end of node
 		END_BLOCK(result);
@@ -367,8 +373,10 @@ void EqualizerDisplaySystem::generateEqConfig()
 				viewName = ostr("view%1%x%2%", %x %y);
 			}
 
-			if(eqcfg.interleaved)
+			if(tc.stereoMode == DisplayTileConfig::Interleaved || 
+				(tc.stereoMode == DisplayTileConfig::Default && eqcfg.stereoMode == DisplayTileConfig::Interleaved))
 			{
+				// Generate configuration for 
 				if(eqcfg.enableStencilInterleaver)
 				{
 					String tileCfg = "";
@@ -387,6 +395,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 				}
 				else
 				{
+					// Generate configuration for Equalizer PBO-based interleaver
 					String tileCfg = "";
 					START_BLOCK(tileCfg, "compound");
 					if(eqcfg.enableSwapSync)
@@ -420,6 +429,23 @@ void EqualizerDisplaySystem::generateEqConfig()
 
 					result += tileCfg;
 				}
+			}
+			else if(tc.stereoMode == DisplayTileConfig::SideBySide || 
+				(tc.stereoMode == DisplayTileConfig::Default && eqcfg.stereoMode == DisplayTileConfig::SideBySide))
+			{
+				String tileCfg = "";
+				START_BLOCK(tileCfg, "compound");
+				if(eqcfg.enableSwapSync)
+				{
+					tileCfg += L("swapbarrier { name \"defaultbarrier\" }");
+				}
+				tileCfg += 
+					L("channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )") +
+					L("eye [LEFT RIGHT]") +
+					L("task [DRAW]") +
+					L("attributes { stereo_mode PASSIVE }");
+				END_BLOCK(tileCfg);
+				result += tileCfg;
 			}
 			else
 			{
@@ -461,16 +487,22 @@ void EqualizerDisplaySystem::generateEqConfig()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-String EqualizerDisplaySystem::buildTileConfig(String indent, const String tileName, int x, int y, int width, int height, int device, bool fullscreen)
+String EqualizerDisplaySystem::buildTileConfig(String& indent, const String tileName, int x, int y, int width, int height, int device, int curdevice, bool fullscreen)
 {
 	String viewport = ostr("viewport [%1% %2% %3% %4%]", %x %y %width %height);
 
 	String tileCfg = "";
-	START_BLOCK(tileCfg, "pipe");
-		tileCfg +=
-			L(ostr("name = \"%1%-%2%\"", %tileName %device)) +
-			L("port = 0") +
-			L(ostr("device = %1%", %device));
+	if(device != curdevice)
+	{
+		if(curdevice != -1) { END_BLOCK(tileCfg); } // End previous pipe section
+		
+		// Start new pipe section
+		START_BLOCK(tileCfg, "pipe");
+			tileCfg +=
+				L(ostr("name = \"%1%-%2%\"", %tileName %device)) +
+				L("port = 0") +
+				L(ostr("device = %1%", %device));
+	}
 	START_BLOCK(tileCfg, "window");
 	tileCfg +=
 		L("name \"" + tileName + "\"") +
@@ -484,7 +516,6 @@ String EqualizerDisplaySystem::buildTileConfig(String indent, const String tileN
 			L("hint_decoration OFF");
 		END_BLOCK(tileCfg);
 	}
-	END_BLOCK(tileCfg)
 	END_BLOCK(tileCfg)
 	return tileCfg;
 }
@@ -514,7 +545,14 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	cfg.windowOffset = Config::getVector2iValue("windowOffset", scfg);
 
 	cfg.latency = Config::getIntValue("latency", scfg);
-	cfg.interleaved = Config::getBoolValue("interleaved", scfg);
+	
+	String sm = Config::getStringValue("stereoMode", scfg, "default");
+	StringUtils::toLowerCase(sm);
+	if(sm == "default") cfg.stereoMode = DisplayTileConfig::Default;
+	else if(sm == "mono") cfg.stereoMode = DisplayTileConfig::Mono;
+	else if(sm == "interleaved") cfg.stereoMode = DisplayTileConfig::Interleaved;
+	else if(sm == "sidebyside") cfg.stereoMode = DisplayTileConfig::SideBySide;
+
 	cfg.enableStencilInterleaver = Config::getBoolValue("enableStencilInterleaver", scfg);
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
 	cfg.orientObserverToTile = Config::getBoolValue("orientObserverToTile", scfg);

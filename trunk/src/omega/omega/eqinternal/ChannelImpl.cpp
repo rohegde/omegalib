@@ -77,10 +77,12 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 {
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
     RendererBase* client = pipe->getClient();
-    EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+
+	EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+	const DisplayConfig& dcfg = ds->getDisplayConfig();
 
     eq::PixelViewport pvp = getPixelViewport();
-    eq::PixelViewport gpvp = getWindow()->getPixelViewport();
+    //eq::PixelViewport gpvp = getWindow()->getPixelViewport();
 
     context->gpuContext = pipe->getGpuContext();
 
@@ -88,8 +90,6 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
     // (spin is 128 bits, gets truncated to 64... do we really need 128 bits anyways!?)
     context->frameNum = spin.low();
 
-    context->viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
-        
     switch( getEye() )
     {
         case eq::fabric::EYE_LEFT:
@@ -103,6 +103,28 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
             break;
     }
 
+	// Setup side-by-side stereo if needed.
+	if(myDC.tile->stereoMode == DisplayTileConfig::SideBySide ||
+		(myDC.tile->stereoMode == DisplayTileConfig::Default && dcfg.stereoMode == DisplayTileConfig::SideBySide))
+	{
+		if(context->eye == DrawContext::EyeLeft)
+		{
+			context->viewport = Rect(pvp.x, pvp.y, pvp.w / 2, pvp.h);
+		}
+		else if(context->eye == DrawContext::EyeRight)
+		{
+			context->viewport = Rect(pvp.x + pvp.w / 2, pvp.y, pvp.w / 2, pvp.h);
+		}
+		else
+		{
+			context->viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
+		}
+	}
+	else
+	{
+		context->viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
+	}
+        
     AffineTransform3 mw;
     memcpy(mw.data(), getPerspectiveTransform().begin(), 16 * sizeof(float));
     memcpy(context->projection.data(), getPerspective().compute_matrix().begin(), 16 * sizeof(float));
@@ -113,11 +135,14 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
     context->modelview = mw * cam->getViewTransform();
 
 	// Setup the stencil buffer if needed.
-	const DisplayConfig& dcfg = ds->getDisplayConfig();
-	if(dcfg.interleaved && dcfg.enableStencilInterleaver && !myStencilInitialized)
+	if(myDC.tile->stereoMode == DisplayTileConfig::Interleaved ||
+		(myDC.tile->stereoMode == DisplayTileConfig::Default && dcfg.stereoMode == DisplayTileConfig::Interleaved))
 	{
-		setupStencil(myDC.tile->resolution[0], myDC.tile->resolution[1]);
-		myStencilInitialized = true;
+		if(dcfg.enableStencilInterleaver && !myStencilInitialized)
+		{
+			setupStencil(myDC.tile->resolution[0], myDC.tile->resolution[1]);
+			myStencilInitialized = true;
+		}
 	}
 
     // Setup draw buffer
