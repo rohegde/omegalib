@@ -19,7 +19,7 @@
  *  MA  02110-1301  USA
  */
 
-#include "private-libwebsockets.h"
+#include "websockets/private-libwebsockets.h"
 
 #define LWS_CPYAPP(ptr, str) { strcpy(ptr, str); ptr += strlen(str); }
 #define LWS_CPYAPP_TOKEN(ptr, tok) { strcpy(p, wsi->utf8_token[tok].token); \
@@ -175,7 +175,7 @@ handshake_00(struct libwebsocket_context *context, struct libwebsocket *wsi)
 	/* it's complete: go ahead and send it */
 
 	debug("issuing response packet %d len\n", (int)(p - response));
-#ifdef DEBUG
+#ifdef VERBOSE
 	fwrite(response, 1,  p - response, stderr);
 #endif
 	n = libwebsocket_write(wsi, (unsigned char *)response,
@@ -470,7 +470,7 @@ handshake_0405(struct libwebsocket_context *context, struct libwebsocket *wsi)
 		/* okay send the handshake response accepting the connection */
 
 		debug("issuing response packet %d len\n", (int)(p - response));
-	#ifdef DEBUG
+	#ifdef VERBOSE
 		fwrite(response, 1,  p - response, stderr);
 	#endif
 		n = libwebsocket_write(wsi, (unsigned char *)response,
@@ -550,7 +550,7 @@ libwebsocket_read(struct libwebsocket_context *context,
 	case WSI_STATE_HTTP_HEADERS:
 
 		debug("issuing %d bytes to parser\n", (int)len);
-#ifdef DEBUG
+#ifdef VERBOSE
 		fwrite(buf, 1, len, stderr);
 #endif
 

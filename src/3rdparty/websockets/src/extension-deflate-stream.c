@@ -1,5 +1,5 @@
-#include "private-libwebsockets.h"
-#include "extension-deflate-stream.h"
+#include "websockets/private-libwebsockets.h"
+#include "websockets/extension-deflate-stream.h"
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>

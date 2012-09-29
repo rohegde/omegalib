@@ -5,10 +5,10 @@
     <gui_element id="element1" type="HTML">
       <div class="div-aligned">
         <fieldset  data-type="horizontal" class="">
-          <input type="button" value="UP" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[1] += 0.025; camera.setPosition(position);" data-inline="true" data-corner="false" data-continuous="true" class=""/>
-          <input type="button" value="DOWN" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[1] -= 0.025; camera.setPosition(position);" data-inline="true" data-corner="false" data-continuous="true" class=""/>
-          <input type="button" value="LEFT" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[0] -= 0.025; camera.setPosition(position);" data-inline="true" data-corner="false" data-continuous="true" class=""/>
-          <input type="button" value="RIGHT" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[0] += 0.025; camera.setPosition(position);" data-inline="true" data-corner="false" data-continuous="true" class=""/>
+          <input type="button" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[1] += 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-u" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+          <input type="button" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[1] -= 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-d" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+          <input type="button" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[0] -= 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-l" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+          <input type="button" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[0] += 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-r" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
         </fieldset>
       </div>
     </gui_element>
@@ -21,6 +21,22 @@
       <div>
           <input type="range" name="slider" id="slider" value="0" min="-800" max="800" data-highlight="true" onchange="camera=getCameraById(%id%); position=camera.getPosition(); position[2] = float(%value%)/100; camera.setPosition(position);"/>
       </div>
+    </gui_element>
+
+    <gui_element id="element5" type="HTML">
+      <div class="div-aligned">
+        <fieldset  data-type="horizontal" class="">
+          <input type="button" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[2] -= 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="plus" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+          <input type="button" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[2] += 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="minus" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+        </fieldset>
+      </div>
+    </gui_element>
+
+    <gui_element id="element6" type="HTML">
+      <fieldset class="div-aligned">
+        <input type="hidden" id="color_label" name="color_label" value="#000000" data-role="none" data-inline="true" onchange="print('%value%');"/>
+        <div id="color_picker" data-role="none" data-inline="true" ></div>
+      </fieldset>
     </gui_element>
     
   </gui_elements>
@@ -49,9 +65,9 @@
     
     <large minWidth="480" minHeight="640">
       <portrait>
-        <element1 width="100%" height="10%" />
-        <element4 width="100%" height="10%" />
-        <element3 width="100%" height="80%" />
+        <element1 width="100%" height="5%" />
+        <element5 width="100%" height="5%" />
+        <element3 width="100%" height="90%" />
       </portrait>
       <landscape>
         <element3 width="100%" height="100%" />
@@ -60,9 +76,9 @@
     
     <xlarge minWidth="720" minHeight="960">
       <portrait>
-        <element1 width="100%" height="10%" />
-        <element4 width="100%" height="10%" />
-        <element3 width="100%" height="80%" />
+        <element1 width="100%" height="5%" />
+        <element5 width="100%" height="5%" />
+        <element3 width="100%" height="90%" />
       </portrait>
       <landscape>
         <element3 width="100%" height="100%" />

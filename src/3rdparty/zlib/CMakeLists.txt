@@ -18,7 +18,5 @@ set(zlib_SOURCES
 		 ./zutil.c
 )
 
-include_directories(./)
-
 add_library(zlib STATIC ${zlib_SOURCES})
 SET_TARGET_PROPERTIES(zlib PROPERTIES FOLDER 3rdparty)

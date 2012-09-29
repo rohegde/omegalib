@@ -36,7 +36,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "getopt.h"
+#include "websockets/getopt.h"
 
 extern int	  opterr;	/* if error message should be printed */
 extern int	  optind;	/* index into parent argv vector */

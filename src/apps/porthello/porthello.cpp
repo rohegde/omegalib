@@ -36,7 +36,7 @@ using namespace omega;
 // Example function to be binded to a button clicked
 void zoomSlider(PortholeEvent &ev){
 	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
-	myPosition[2] = ev.value/100; // TODO check scale factor
+	myPosition[2] = atoi(ev.value.c_str())/100; // TODO check scale factor
 	ev.sessionCamera->camera->setPosition(myPosition);
 }
 

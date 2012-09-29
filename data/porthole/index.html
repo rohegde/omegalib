@@ -30,13 +30,16 @@
  <meta charset=utf-8 />
  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
  <meta name="apple-mobile-web-app-capable" content="yes"/>
- <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
  <title>Porthole</title>
 
  <!--JQuery + JQueryMobile-->
  <script src="http://code.jquery.com/jquery-1.7.1.min.js" type="application/javascript"></script>
  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" type="text/css"/>
  <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js" type="application/javascript"></script>
+
+   <!-- Color picker -->
+ <script src="./farbtastic.js" type="application/javascript"></script>
+ <link rel="stylesheet" href="./farbtastic.css" type="text/css"/>
 
  <!--CSS Style-->
  <style type="text/css">
@@ -47,6 +50,10 @@
         min-height: 100%;
         margin: 0;
         overflow: hidden;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -webkit-user-drag: none;
     }
     .ui-autocomplete { overflow-y: auto; width:300px;}
     * html .ui-autocomplete { /* IE max- */height: expression( this.scrollHeight > 320 ? "320px" : "auto" ); }
@@ -237,7 +244,10 @@
                 document.getElementById("porthole_content").innerHTML = message.innerHTML;
 
                 // Height fix
-                $("#porthole_content").height($(window).height());
+                var w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0],
+                        viewportwidth = w.innerWidth || e.clientWidth || g.clientWidth,
+                        viewportheight = w.innerHeight || e.clientHeight || g.clientHeight;
+                $("#porthole_content").height(viewportheight);
 
                 // Set jquery mobile interface
                 $("#porthole_content").trigger('create');
@@ -246,8 +256,13 @@
                 initializeGoogleMaps();
                 initializeCameraStreams();
 
+                // Color picker initialization
+                if ($('#color_picker').length > 0) {
+                    $('#color_picker').farbtastic('#color_label');
+                }
+
                 // Add events listeners
-                if (!isMobile) { 
+                if (!isMobile) {
                     // avoid resize message when touchable keyboard appears on mobile devices
                     addEvent(window, "resize", sendSpecTimeout);
                 }
@@ -361,8 +376,11 @@
             ctx.drawImage(img, 0, 0); // FASTER
 
             // Button streaming value
-            if (mouseDown==1 && sendContinuous == "true" && JSONToSend != undefined && JSONToSend != null){
+            if (mouseDown == 1 && sendContinuous == "true" && JSONToSend != undefined && JSONToSend != null) {
                 socket.send(JSON.stringify(JSONToSend));
+            }
+            else {
+                JSONToSend = undefined;
             }
 
             // Keep framerate of the camera
