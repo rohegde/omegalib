@@ -141,6 +141,9 @@ Example:
 	toggleStats('compact')
 }}}
 
+=== `overridePanopticStereo(value)` ===
+When set to true, switches from panoptic stereo tracking to standard tracking. This option is used only when panoptic stereo is enabled for the current display system.
+
 -------------------------------------------------------------------------------
 ==  `class SceneNode` ==
 Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_scene_node.html omega::SceneNode] C++ class. Base class for nodes in the scene graph
@@ -159,6 +162,10 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_
 || `numChildren()` || Gets the number of children of this node ||
 || `getChildByName(name)` || Finds a child by name ||
 || `getChildByIndex(index)` || Gets a child by index ||
+|| `addChild(node)` || Adds a child to this node ||
+|| `removeChildByRef(node)` || Removes a child by reference ||
+|| `removeChildByName(name)` || Removes a child by its name ||
+|| `removeChildByIndex(index)` || Removes a child by its index ||
 || `getParent()` || Gets the node parent ||
 || *Visibility* || ||
 || `isVisible()`, `setVisible(value)` || Gets or sets the node visibility status ||
