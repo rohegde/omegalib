@@ -165,20 +165,21 @@ void Renderer::draw(const DrawContext& context)
 		{
 			// Begin drawing with the camera: get the camera draw context.
 			const DrawContext& cameraContext = cam->beginDraw(context);
-			innerDraw(cameraContext);
+			innerDraw(cameraContext, cam);
 			cam->endDraw(context);
 		}
 	}
 
 	// Draw once for the default camera (using the passed main draw context).
-	innerDraw(context);
+	innerDraw(context, myServer->getDefaultCamera());
 	//sLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::innerDraw(const DrawContext& context)
+void Renderer::innerDraw(const DrawContext& context, Camera* cam)
 {
-	if(context.task == DrawContext::SceneDrawTask)
+	// NOTE: Scene.draw traversal only runs for cameras that do not have a mask specified
+	if(cam->getMask() == 0 && context.task == DrawContext::SceneDrawTask)
 	{
 		getRenderer()->beginDraw3D(context);
 
@@ -198,11 +199,18 @@ void Renderer::innerDraw(const DrawContext& context)
 	// Execute all render passes in order. 
 	foreach(RenderPass* pass, myRenderPassList)
 	{
-		pass->render(this, context);
+		// Run the pass if both its mask and the camera mask are 0 (left unspecified)
+		// Alternatively, run the pass if at least one of the mask bits is set on both the camera an the pass
+		if((cam->getMask() == 0 && pass->getCameraMask() == 0) ||
+			(cam->getMask() & pass->getCameraMask() != 0))
+		{
+			pass->render(this, context);
+		}
 	}
 
 	// Draw the pointers and console
-	if(context.task == DrawContext::OverlayDrawTask && 
+	// NOTE: Pointer and console drawing only runs for cameras that do not have a mask specified
+	if(cam->getMask() == 0 && context.task == DrawContext::OverlayDrawTask && 
 		context.eye == DrawContext::EyeCyclop)
 	{
 		getRenderer()->beginDraw2D(context);

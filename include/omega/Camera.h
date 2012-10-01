@@ -132,6 +132,9 @@ namespace omega {
 
 		int getCameraId();
 
+		void setMask(uint mask) { myMask = mask; }
+		uint getMask() { return myMask; }
+
 	private:
 		//! View transform
 		AffineTransform3 myViewTransform;
@@ -171,6 +174,8 @@ namespace omega {
 
 		// Camera Id
 		int myCameraId;
+
+		uint myMask;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
