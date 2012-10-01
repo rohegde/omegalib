@@ -174,7 +174,7 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 		else if (in && strcmp((char*)in, "/porthole_functions_binder.js") == 0) {
 			
 			// Build Content. Socket var is used to hold the JS socket object
-			string content = "var socket; var JSONToSend = ''; var sendContinuous = false;";
+			string content = "";
 			
 			// Python scripts
 			PortholeFunctionsBinder* functionsBinder = PortholeGUI::getPortholeFunctionsBinder();
@@ -183,7 +183,7 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 				content.append(" function ");
 				content.append(py_it->first);
 				content.append("{ "
-									"var JSONEvent = {"
+									"JSONToSend = {"
 									"\"event_type\": \"input\","
 									"\"button\": event.button,"
 									"\"char\": getChar(event),"
@@ -191,10 +191,10 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 									"\"function\": \"");
 				content.append(py_it->first);
 				content.append("\""
-									"}; JSONToSend = JSONEvent;"
+									"};"
 									"sendContinuous = event.target.getAttribute(\"data-continuous\");"
-									"socket.send(JSON.stringify(JSONEvent));"
-								"}");
+									"socket.send(JSON.stringify(JSONToSend));"
+								"};");
 			}
 
 			// Cpp functions
@@ -205,7 +205,7 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 				content.append(" function ");
 				content.append(cpp_it->first);
 				content.append("{ "
-									"var JSONEvent = {"
+									"JSONToSend = {"
 									"\"event_type\": \"input\","
 									"\"button\": event.button,"
 									"\"char\": getChar(event),"
@@ -213,10 +213,10 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 									"\"function\": \"");
 				content.append(cpp_it->first);
 				content.append("\""
-									"}; JSONToSend = JSONEvent;"
+									"};"
 									"sendContinuous = event.target.getAttribute(\"data-continuous\");"
-									"socket.send(JSON.stringify(JSONEvent));"
-								"}");
+									"socket.send(JSON.stringify(JSONToSend));"
+								"};");
 			}
 
 			// Build Message = Header + Content

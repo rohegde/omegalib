@@ -65,6 +65,10 @@
 
 <body>
 
+ <script type="application/javascript">
+     var socket; var JSONToSend = ''; var sendContinuous = false;
+ </script>
+
  <link rel="stylesheet" type="text/css" href="./porthole.css" />
 
  <script type="application/javascript" src="./porthole_functions_binder.js" ></script>
@@ -88,6 +92,18 @@
 
  <script type="application/javascript">
 
+     ///////////////// ADD AN EVENT HANDLER ////////////////////////
+     var addEvent = function (elem, type, eventHandle) {
+         if (elem == null || elem == undefined) return;
+         if (elem.addEventListener) {
+             elem.addEventListener(type, eventHandle, false);
+         } else if (elem.attachEvent) {
+             elem.attachEvent("on" + type, eventHandle);
+         } else {
+             elem["on" + type] = eventHandle;
+         }
+     };
+
      // event.type must be keypress
      function getChar(event) {
          if (event.which == null) {
@@ -107,7 +123,7 @@
     var firstTime = 1;
 
     // Mobile or desktop
-    var isMobile = 'ontouchstart' in document.documentElement;
+    var isTouchable = 'ontouchstart' in document.documentElement;
 
     // Disable global scrolling
     document.body.addEventListener('touchmove', function (event) {
@@ -116,31 +132,6 @@
 
     // Save if user is tapping
     var mouseDown = 0;
-    // Start tracking if user is tapping or not
-    document.body.onmousedown = function () {
-        mouseDown = 1;
-    }
-    document.body.onmouseup = function () {
-        mouseDown = 0;
-    }
-    document.body.ontouchstart = function () {
-        mouseDown = 1;
-    }
-    document.body.ontouchend = function () {
-        mouseDown = 0;
-    }
-
-    ///////////////// ADD AN EVENT HANDLER ////////////////////////
-    var addEvent = function (elem, type, eventHandle) {
-        if (elem == null || elem == undefined) return;
-        if (elem.addEventListener) {
-            elem.addEventListener(type, eventHandle, false);
-        } else if (elem.attachEvent) {
-            elem.attachEvent("on" + type, eventHandle);
-        } else {
-            elem["on" + type] = eventHandle;
-        }
-    };
 
     ////////////////// WEBSCOKET AND CANVAS ////////////////////////////
 
@@ -257,16 +248,55 @@
                 initializeCameraStreams();
 
                 // Color picker initialization
+                // TODO foreach
                 if ($('#color_picker').length > 0) {
                     $('#color_picker').farbtastic('#color_label');
                 }
 
                 // Add events listeners
-                if (!isMobile) {
+                if (!isTouchable) {
                     // avoid resize message when touchable keyboard appears on mobile devices
                     addEvent(window, "resize", sendSpecTimeout);
                 }
                 $(window).bind('orientationchange', sendSpecTimeout);
+
+                // Start tracking if user is tapping or not
+                if (isTouchable) {
+                    $('body').bind('touchstart', function (event) {
+                        mouseDown = 1;
+                        $(event.target).trigger('mousedown');
+                    });
+                    $('body').bind('touchend', function () {
+                        mouseDown = 0;
+                        sendContinuous = false;
+                    });
+
+                }
+                else {
+                    $('body').bind('mousedown', function (event) {
+                        mouseDown = 1;
+                    });
+                    $('body').bind('mouseup', function () {
+                        mouseDown = 0;
+                    });
+                    //                    $('*[data-continuous=true]').each(function () {
+                    //                        var $this = $(this);
+                    //                        //                        var events = $this.data('events');
+                    //                        //                        if (events && events['mousedown']) {
+
+                    //                        //                            $.each(events['mousedown'], function () {
+                    //                        //                                // this = the function
+                    //                        //                                $this.bind('touchstart', this);
+                    //                        //                            });
+
+                    //                        //                            $this.unbind('mousedown');
+
+                    //                        //                        }
+                    //                        var mousedownEvent = $(this).attr("onmousedown");
+                    //                        //$this.bind('touchstart', mousedownEvent);
+                    //                        $this.unbind('mousedown');
+                    //                    });
+                }
             }
 
         }
@@ -337,6 +367,7 @@
     var FPS_TARGET = 50;
     var FPS_DELTA = 5000; // In Millis
     var overSTART = 0;
+    var loopId = 0;
 
     function sendChangeResolution(change_type, size){
          var JSONEvent = {
@@ -367,20 +398,16 @@
 //        requestAnimFrame(cameraLoop);
         if (looping && ctx != null){
 
-            if (pinching) 
+            if (pinching)
                 watchPinch(); // Update pinching
             else if (dragging && !pinching)
                 watchDrag(); // Update dragging
 
-//            ctx.drawImage(img, 0, 0, camera.width, camera.height);
             ctx.drawImage(img, 0, 0); // FASTER
 
             // Button streaming value
-            if (mouseDown == 1 && sendContinuous == "true" && JSONToSend != undefined && JSONToSend != null) {
+            if (mouseDown == 1 && (sendContinuous == "true" || sendContinuous == true)) {
                 socket.send(JSON.stringify(JSONToSend));
-            }
-            else {
-                JSONToSend = undefined;
             }
 
             // Keep framerate of the camera
@@ -419,7 +446,8 @@
         looping = true;
 
         // Combine setInterval and requestAnimationFrame in order to get a desired fps
-        var loopInterval = setInterval("window.requestAnimFrame(cameraLoop)",
+        clearInterval(loopId);
+        loopId = setInterval("window.requestAnimFrame(cameraLoop)",
                            1000 / FPS_TARGET);
 
         hammer = new Hammer(camera, {
