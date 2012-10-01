@@ -111,6 +111,7 @@ if(OMEGA_BUILD_OSG_LIB)
 	add_subdirectory(apps/cyhello)
 	add_subdirectory(apps/cyhello2)
 	add_subdirectory(apps/osgviewer)
+	add_subdirectory(apps/portholeCustomDraw)
 endif()
 
 # vtk configuration, libraries and applications

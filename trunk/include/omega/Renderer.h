@@ -35,6 +35,7 @@
 namespace omega {
 	class RenderPass;
 	class Engine;
+	class Camera;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API Renderer: public ReferenceType
@@ -69,7 +70,7 @@ namespace omega {
 		ServiceManager*   getServiceManager()   { return SystemManager::instance()->getServiceManager(); }
 		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
 	private:
-		void innerDraw(const DrawContext& context);
+		void innerDraw(const DrawContext& context, Camera* camera);
 
 	private:
 		Lock myLock;

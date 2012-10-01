@@ -46,7 +46,7 @@ namespace omega {
 
 	public:
 		RenderPass(Renderer* client, const String& name): 
-		  myInitialized(false), myClient(client), myName(name) 
+		  myInitialized(false), myClient(client), myName(name), myCameraMask(0)
 		  {}
 		virtual ~RenderPass()
 		{ ofmsg("~RenderPass %1%", %myName); }
@@ -63,11 +63,15 @@ namespace omega {
 
 		Renderer* getClient() { return myClient; }
 
+		void setCameraMask(uint mask) { myCameraMask = mask; }
+		uint getCameraMask() { return myCameraMask; }
+
 	private: 
 		bool myInitialized;
 		void* myUserData;
 		String myName;
 		Renderer* myClient;
+		unsigned int myCameraMask;
 	};
 }; // namespace omega
 
