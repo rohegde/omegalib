@@ -133,6 +133,45 @@
     // Save if user is tapping
     var mouseDown = 0;
 
+    // Start tracking if user is tapping or not
+    if (isTouchable) {
+        $('body').bind('touchstart', function (event) {
+            mouseDown = 1;
+            $(event.target).trigger('mousedown');
+        });
+        $('body').bind('touchend', function () {
+            mouseDown = 0;
+            sendContinuous = false;
+        });
+
+    }
+    else {
+        $('body').bind('mousedown', function (event) {
+            mouseDown = 1;
+        });
+        $('body').bind('mouseup', function () {
+            mouseDown = 0;
+            sendContinuous = false;
+        });
+        //                    $('*[data-continuous=true]').each(function () {
+        //                        var $this = $(this);
+        //                        //                        var events = $this.data('events');
+        //                        //                        if (events && events['mousedown']) {
+
+        //                        //                            $.each(events['mousedown'], function () {
+        //                        //                                // this = the function
+        //                        //                                $this.bind('touchstart', this);
+        //                        //                            });
+
+        //                        //                            $this.unbind('mousedown');
+
+        //                        //                        }
+        //                        var mousedownEvent = $(this).attr("onmousedown");
+        //                        //$this.bind('touchstart', mousedownEvent);
+        //                        $this.unbind('mousedown');
+        //                    });
+    }
+
     ////////////////// WEBSCOKET AND CANVAS ////////////////////////////
 
     function get_appropriate_ws_url() {
@@ -259,44 +298,6 @@
                     addEvent(window, "resize", sendSpecTimeout);
                 }
                 $(window).bind('orientationchange', sendSpecTimeout);
-
-                // Start tracking if user is tapping or not
-                if (isTouchable) {
-                    $('body').bind('touchstart', function (event) {
-                        mouseDown = 1;
-                        $(event.target).trigger('mousedown');
-                    });
-                    $('body').bind('touchend', function () {
-                        mouseDown = 0;
-                        sendContinuous = false;
-                    });
-
-                }
-                else {
-                    $('body').bind('mousedown', function (event) {
-                        mouseDown = 1;
-                    });
-                    $('body').bind('mouseup', function () {
-                        mouseDown = 0;
-                    });
-                    //                    $('*[data-continuous=true]').each(function () {
-                    //                        var $this = $(this);
-                    //                        //                        var events = $this.data('events');
-                    //                        //                        if (events && events['mousedown']) {
-
-                    //                        //                            $.each(events['mousedown'], function () {
-                    //                        //                                // this = the function
-                    //                        //                                $this.bind('touchstart', this);
-                    //                        //                            });
-
-                    //                        //                            $this.unbind('mousedown');
-
-                    //                        //                        }
-                    //                        var mousedownEvent = $(this).attr("onmousedown");
-                    //                        //$this.bind('touchstart', mousedownEvent);
-                    //                        $this.unbind('mousedown');
-                    //                    });
-                }
             }
 
         }
