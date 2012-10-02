@@ -141,8 +141,20 @@ string PortholeGUI::create(bool firstTime){
 			}
 			// Custom camera case
 			else {
+				// Parse camera mask
+				uint camMask = 0;
+				Vector<String> args = StringUtils::split(element->cameraType, ", ");
+				// The first word is always treated as the 'camera name' and ignored here. The second word (if present) is
+				// used as the camera render pass mask. It is used to specify which render passes will draw content for this camera.
+				if(args.size() == 2)
+				{
+					camMask = boost::lexical_cast<uint>(args[1]);
+					// Use argument as bit number for the camera mask
+					camMask = 1 << camMask;
+				}
+
 				if (firstTime){
-					createCustomCamera(false, percentToFloat(width), percentToFloat(height));
+					createCustomCamera(false, percentToFloat(width), percentToFloat(height), camMask);
 				}
 				else{
 					modCustomCamera(1.0, percentToFloat(width), percentToFloat(height));
@@ -170,7 +182,8 @@ string PortholeGUI::create(bool firstTime){
 *	Camera creation function
 *	followDefaultCamera: true if camera shold reflect the default camera position and orientation
 */
-void PortholeGUI::createCustomCamera(bool followDefaultCamera, float widthPercent, float heightPercent){
+void PortholeGUI::createCustomCamera(bool followDefaultCamera, float widthPercent, float heightPercent, uint cameraMask)
+{
 
 	// Get the global engine
 	Engine* myEngine = Engine::instance();
@@ -187,6 +200,7 @@ void PortholeGUI::createCustomCamera(bool followDefaultCamera, float widthPercen
 	uint flags = Camera::ForceMono | Camera::DrawScene | Camera::Offscreen;
 
 	Camera* sessionCamera = myEngine->createCamera(flags);
+	sessionCamera->setMask(cameraMask);
 	sessionCamera->setProjection(60, 1, 0.1f, 100);
 	sessionCamera->setAutoAspect(true);
 

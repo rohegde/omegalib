@@ -42,6 +42,8 @@
 #include "omega/PythonInterpreter.h"
 #include "omega/Texture.h"
 #include "omega/ImageUtils.h"
-#include "omega/PortholeService.h"
+#ifdef OMEGA_USE_PORTHOLE
+	#include "omega/PortholeService.h"
+#endif
 
 #endif

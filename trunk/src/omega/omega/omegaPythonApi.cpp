@@ -30,7 +30,9 @@
 #include "omega/EqualizerDisplaySystem.h"
 #include "omega/Engine.h"
 #include "omega/Actor.h"
-#include "omega/PortholeService.h"
+#ifdef OMEGA_USE_PORTHOLE
+	#include "omega/PortholeService.h"
+#endif
 
 #ifdef OMEGA_USE_PYTHON
 
@@ -509,11 +511,13 @@ Camera* getDefaultCamera()
 	return Engine::instance()->getDefaultCamera();
 }
 
+#ifdef OMEGA_USE_PORTHOLE
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Camera* getCameraById(int id)
 {
 	return PortholeGUI::CamerasMap[id]->camera;
 }
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneNode* getScene()
@@ -719,10 +723,12 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_REF_GETTER(Actor, getSceneNode)
 		;
 
+#ifdef OMEGA_USE_PORTHOLE
 	// PortholeService
 	PYAPI_REF_BASE_CLASS(PortholeService)
 		PYAPI_STATIC_REF_GETTER(PortholeService, createAndInitialize)
 		;
+#endif
 
 	// PortholeService
 	PYAPI_REF_BASE_CLASS(PixelData)
@@ -734,7 +740,9 @@ BOOST_PYTHON_MODULE(omega)
 	def("getEvent", getEvent, return_value_policy<reference_existing_object>());
 	def("getEngine", getEngine, PYAPI_RETURN_REF);
 	def("getDefaultCamera", getDefaultCamera, PYAPI_RETURN_REF);
+#ifdef OMEGA_USE_PORTHOLE
 	def("getCameraById", getCameraById, PYAPI_RETURN_REF);
+#endif
 	def("getScene", getScene, PYAPI_RETURN_REF);
 	def("querySceneRay", querySceneRay);
 	def("getRayFromEvent", getRayFromEvent);

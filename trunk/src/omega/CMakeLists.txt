@@ -75,8 +75,6 @@ SET( srcs
 		omega/SystemManager.cpp
 		omega/Texture.cpp
 		omega/WandEmulationService.cpp
-		omega/PortholeService.cpp
-		omega/PortholeGUI.cpp
         )
 		
 ###################################################################################################
@@ -133,8 +131,6 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/StatsManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
 		${OmegaLib_SOURCE_DIR}/include/omega/WandEmulationService.h
-		${OmegaLib_SOURCE_DIR}/include/omega/PortholeService.h
-		${OmegaLib_SOURCE_DIR}/include/omega/PortholeGUI.h
 		)
         
 ###################################################################################################
@@ -191,16 +187,26 @@ if(OMEGA_USE_DISPLAY_EQUALIZER)
 		${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
-# A tiny JSON library
-set( srcs ${srcs}
+# Porthole Module
+if(OMEGA_USE_PORTHOLE)
+	SET( srcs ${srcs}
+			omega/PortholeService.cpp
+			omega/PortholeGUI.cpp
+			# A tiny JSON library
 			omega/vjson/block_allocator.cpp
 			omega/vjson/json.cpp
-	)
-set( headers ${headers} 
-            omega/vjson/block_allocator.h
-            omega/vjson/json.h
-    )
-	
+			)
+	SET( headers ${headers}
+			${OmegaLib_SOURCE_DIR}/include/omega/PortholeService.h
+			${OmegaLib_SOURCE_DIR}/include/omega/PortholeGUI.h
+			omega/vjson/block_allocator.h
+			omega/vjson/json.h
+			# A tiny JSON library
+			omega/vjson/block_allocator.cpp
+			omega/vjson/json.cpp
+			)
+endif()
+
 # Glut Display Module
 if( WIN32 )
 	set(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
@@ -294,14 +300,15 @@ endif()
 #
 # PORTHOLE
 #
-
-# Link against websockets library
-target_link_libraries(omega websockets)
-include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/websockets/include)
-if (OMEGA_OS_WIN)
-    include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/websockets/win32helpers)
-    target_link_libraries(omega zlib)
-    include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/zlib)
+if(OMEGA_USE_PORTHOLE)
+	# Link against websockets library
+	target_link_libraries(omega websockets)
+	include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/websockets/include)
+	if (OMEGA_OS_WIN)
+		include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/websockets/win32helpers)
+		target_link_libraries(omega zlib)
+		include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/zlib)
+	endif()
 endif()
 
 # Boost includes
