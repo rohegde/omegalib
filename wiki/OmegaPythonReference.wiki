@@ -27,7 +27,7 @@ Example:
 	root.setPosition(Vector3(0, 2, 0))
 }}}
 
-=== `setUpdateFunction()` ===
+=== `setUpdateFunction(func)` ===
 Sets a callback functionto to be called for each frame. The function will take three parameters: 
 	* frame number
 	* time since application start (in seconds)
@@ -40,7 +40,7 @@ Example:
 	setUpdateFunction(onUpdate)
 }}}	
 
-=== `setEventFunction()` ===
+=== `setEventFunction(func)` ===
 Sets a callback function to be called every time an event is received.
 Example:
 {{{
@@ -54,6 +54,36 @@ Example:
 
 === `getEvent()` ===
 Returns the event currenty being processed. Should be used only inside an event handler function.
+
+=== `setDrawFunction(func)` ===
+(*experimental*)
+Sets a callback functionto to be called for each frame during 2d drawing. The function will take four parameters: 
+	* the total display size (as a Vector2)
+	* the current tile size (as a Vector2)
+	* a `Camera` object
+	* a `DrawInterface` object that can be used to draw 2d elements
+Example:
+{{{
+	white = Color("white")
+	black = Color("black")
+
+	def onDraw(displaySize, tileSize, camera, painter):
+		global white
+		global black
+
+		# Get the default font
+		font = painter.getDefaultFont()
+
+		# Set some text and compute its width and height in pixels (given the font we cant to use)
+		text = "Hello World From Python!"
+		textSize = font.computeSize(text)
+
+		# Draw a white box and put the text inside it
+		painter.drawRect(Vector2(10, 10), textSize + Vector2(10, 10), white)
+		painter.drawText(text, font, Vector2(15, 15), TextAlign.HALeft | TextAlign.VATop, black)
+		
+	setDrawFunction(onDraw)
+}}}	
 
 === `querySceneRay(origin, dir, callback)` ===
 Performs a query on the scene using a ray defined by the `origin` and `dir` parameters. For each hit node, it invokes a callback function taking the node reference and distance to the origin as parameters.
@@ -241,6 +271,41 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_
 || `localToWorldPosition(position)` || ||
 || `localToWorldOrientation(orientation)`|| ||
 
+-------------------------------------------------------------------------------
+==  `class DrawInterface` ==
+(*experimental*)
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_draw_interface.html omega::DrawInterface] class. Exposes methods to simplify drawing on 2d surfaces.
+Used in conjunction with `setDrawFunction`
+
+=== Methods ===
+|| Method(s) || Description ||
+|| `drawRectGradient(position, size, orientation)` ||  ||
+|| `drawRect(position, size, color)` ||  ||
+|| `drawRectOutline(position, size, color)` ||  ||
+|| `drawText(text, font, position, alignFlags)` ||  ||
+|| `drawCircleOutline(position, radius, color, segments)` ||  ||
+|| `createFont(fontName, fileName, size)` ||  ||
+|| `getFont(name)` ||  ||
+|| `getDefaultFont()` ||  ||
+
+=== Remarks ===
+Valid align flags for `drawText`:
+  * `TextAlign.HALeft`
+  * `TextAlign.HARight`
+  * `TextAlign.HACenter`
+  * `TextAlign.VATop`
+  * `TextAlign.VABottom`
+  * `TextAlign.VAMidde`
+
+-------------------------------------------------------------------------------
+==  `class Font` ==
+(*experimental*)
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_font.html omega::Font] class. 
+=== Methods ===
+|| Method(s) || Description ||
+|| `computeSize(text)` || Returns the width and height in pixels of the specified string ||
+
+  
 -------------------------------------------------------------------------------
 ==  `class PortholeService` ==
 Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_camera.html omega::PortholeService] class. Manages the Porthole, a web-based interaction and display service for omegalib applications.
