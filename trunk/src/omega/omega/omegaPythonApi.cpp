@@ -155,6 +155,30 @@ static PyObject* omegaEventCallback(PyObject *dummy, PyObject *args)
     return result;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+static PyObject* omegaDrawCallback(PyObject *dummy, PyObject *args)
+{
+    PyObject *result = NULL;
+    PyObject *temp;
+
+    if (PyArg_ParseTuple(args, "O", &temp)) 
+	{
+        if (!PyCallable_Check(temp)) 
+		{
+            PyErr_SetString(PyExc_TypeError, "parameter must be callable");
+            return NULL;
+        }
+
+		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+		interp->registerCallback(temp, PythonInterpreter::CallbackDraw);
+
+        /* Boilerplate to return "None" */
+        Py_INCREF(Py_None);
+        result = Py_None;
+    }
+    return result;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class ScriptNodeListener: public SceneNodeListener
 {
@@ -244,11 +268,6 @@ static PyMethodDef omegaMethods[] =
 		"addVisibilityListener(node, cmd)\n"
 		"Attaches a command to be executed whenever the node visibility changes."},
 
-	//// Renderer API
- //   {"rendererQueueCommand", rendererQueueCommand, METH_VARARGS, 
-	//	"rendererQueueCommand(funcRef)\n"
-	//	"Queues a script fuction to be executed once on all running rendering threads"},
-
 	// Base omegalib API
 	{"oexit", omegaExit, METH_VARARGS, 
 		"oexit()\n"
@@ -269,6 +288,10 @@ static PyMethodDef omegaMethods[] =
     {"setEventFunction", omegaEventCallback, METH_VARARGS, 
 		"setEventFunction(funcRef)\n"
 		"Registers a script function to be called when events are received"},
+
+    {"setDrawFunction", omegaDrawCallback, METH_VARARGS, 
+		"setDrawFunction(funcRef)\n"
+		"Registers a script function to be called when drawing"},
 
     {NULL, NULL, 0, NULL}
 };
@@ -323,6 +346,7 @@ const Setting& settingLookup(const String& settingName)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+// @internal
 struct Vector3f_to_python
 {
 	static PyObject* convert(Vector3f const& value)
@@ -344,6 +368,7 @@ struct Vector3f_to_python
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+// @internal
 struct Vector3f_from_python
 {
 	Vector3f_from_python()
@@ -375,6 +400,7 @@ struct Vector3f_from_python
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+// @internal
 struct Vector2f_to_python
 {
 	static PyObject* convert(Vector2f const& value)
@@ -396,6 +422,7 @@ struct Vector2f_to_python
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+// @internal
 struct Vector2f_from_python
 {
 	Vector2f_from_python()
@@ -425,6 +452,7 @@ struct Vector2f_from_python
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+// @internal
 struct Quaternion_to_python
 {
 	static PyObject* convert(Quaternion const& value)
@@ -446,6 +474,7 @@ struct Quaternion_to_python
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+// @internal
 struct Quaternion_from_python
 {
 	Quaternion_from_python()
@@ -551,6 +580,16 @@ BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeRollOverloads, roll, 1, 2)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 BOOST_PYTHON_MODULE(omega)
 {
+	// Font alignment
+	PYAPI_ENUM(Font::Align, TextAlign)
+			PYAPI_ENUM_VALUE(Font, HALeft)
+			PYAPI_ENUM_VALUE(Font, HARight)
+			PYAPI_ENUM_VALUE(Font, HACenter)
+			PYAPI_ENUM_VALUE(Font, VATop)
+			PYAPI_ENUM_VALUE(Font, VABottom)
+			PYAPI_ENUM_VALUE(Font, VAMiddle)
+			;
+
 	// Event type
 	PYAPI_ENUM(Event::Type, EventType)
 			PYAPI_ENUM_VALUE(Event, Select)
@@ -729,6 +768,24 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_STATIC_REF_GETTER(PortholeService, createAndInitialize)
 		;
 #endif
+
+	// DrawInterface
+	PYAPI_REF_BASE_CLASS(DrawInterface)
+		PYAPI_METHOD(DrawInterface, drawRectGradient)
+		PYAPI_METHOD(DrawInterface, drawRect)
+		PYAPI_METHOD(DrawInterface, drawRectOutline)
+		PYAPI_METHOD(DrawInterface, drawText)
+		PYAPI_METHOD(DrawInterface, drawRectTexture)
+		PYAPI_METHOD(DrawInterface, drawCircleOutline)
+		PYAPI_REF_GETTER(DrawInterface, createFont)
+		PYAPI_REF_GETTER(DrawInterface, getFont)
+		PYAPI_REF_GETTER(DrawInterface, getDefaultFont)
+		;
+
+	// Font
+	PYAPI_REF_BASE_CLASS(Font)
+		PYAPI_METHOD(Font, computeSize)
+		;
 
 	// PortholeService
 	PYAPI_REF_BASE_CLASS(PixelData)

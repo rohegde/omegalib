@@ -634,8 +634,7 @@ void ChannelImpl::drawStats()
 
                 if( !text.str().empty( ))
                 {
-                    glColor3f( 1.f, 1.f, 1.f );
-					di->drawText(text.str(), fnt, omega::Vector2f(x1 + 1, y2), Font::HALeft);
+					di->drawText(text.str(), fnt, omega::Vector2f(x1 + 1, y2), Font::HALeft, Color::White);
                     //glRasterPos3f( x1+1, y2, 0.f );
                     //font->draw( text.str( ));
                 }
@@ -672,9 +671,8 @@ void ChannelImpl::drawStats()
 		{
 			const EntityData& data = i->second;
 
-			glColor3f( 1.f, 1.f, 1.f );
 			//glRasterPos3f( 60.f, data.yPos-SPACE-12.0f, 0.99f );
-			di->drawText(data.name, fnt, omega::Vector2f(60.f, data.yPos-SPACE-12.0f), Font::HALeft | Font::VATop);
+			di->drawText(data.name, fnt, omega::Vector2f(60.f, data.yPos-SPACE-12.0f), Font::HALeft | Font::VATop, Color::White);
 			//font->draw( data.name );
 
 			//std::stringstream downloaders;
@@ -719,7 +717,7 @@ void ChannelImpl::drawStats()
         text << "   " << data.name << ":" << data.idle / data.nIdle << "%";
     }
 
-	di->drawText(text.str(), fnt, omega::Vector2f(60.f, nextY), Font::HALeft | Font::VATop);
+	di->drawText(text.str(), fnt, omega::Vector2f(60.f, nextY), Font::HALeft | Font::VATop, Color::White);
     //font->draw( text.str( ));
     
     //----- Legend
@@ -727,8 +725,7 @@ void ChannelImpl::drawStats()
     float x = 0.f;
 
     //glRasterPos3f( x+1.f, nextY-12.f, 0.f );
-    glColor3f( 1.f, 1.f, 1.f );
-	di->drawText("channel", fnt, omega::Vector2f(x+1.f, nextY-12.f), Font::HALeft | Font::VATop);
+	di->drawText("channel", fnt, omega::Vector2f(x+1.f, nextY-12.f), Font::HALeft | Font::VATop, Color::White);
 
     for( size_t i = 1; i < Statistic::CONFIG_START_FRAME; ++i )
     {
@@ -753,18 +750,16 @@ void ChannelImpl::drawStats()
             x = 0.f;
             nextY -= (HEIGHT + SPACE);
 
-            glColor3f( 1.f, 1.f, 1.f );
             //glRasterPos3f( x+1.f, nextY-12.f, 0.f );
-			di->drawText("window", fnt, omega::Vector2f(x+1.f, nextY-12.f), Font::HALeft | Font::VATop);
+			di->drawText("window", fnt, omega::Vector2f(x+1.f, nextY-12.f), Font::HALeft | Font::VATop, Color::White);
             break;
 
           case Statistic::NODE_FRAME_DECOMPRESS:
             x = 0.f;
             nextY -= (HEIGHT + SPACE);
 
-            glColor3f( 1.f, 1.f, 1.f );
             //glRasterPos3f( x+1.f, nextY-12.f, 0.f );
-			di->drawText("node", fnt, omega::Vector2f(x+1.f, nextY-12.f), Font::HALeft | Font::VATop);
+			di->drawText("node", fnt, omega::Vector2f(x+1.f, nextY-12.f), Font::HALeft | Font::VATop, Color::White);
             //font->draw( "node" );
             break;
 
@@ -785,9 +780,8 @@ void ChannelImpl::drawStats()
             glVertex3f( x2, y2, 0.f );
         glEnd();
 
-        glColor3f( 0.f, 0.f, 0.f );
         //glRasterPos3f( x+1.f, nextY-12.f, 0.f );
-		di->drawText(StatisticGetName( type ), fnt, omega::Vector2f(x+1.f, nextY-10.f), Font::HALeft | Font::VATop);
+		di->drawText(StatisticGetName( type ), fnt, omega::Vector2f(x+1.f, nextY-10.f), Font::HALeft | Font::VATop, Color::Black);
         //font->draw( Statistic::getName( type ));
     }
     // nextY -= (HEIGHT + SPACE);

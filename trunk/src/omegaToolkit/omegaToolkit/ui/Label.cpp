@@ -125,8 +125,6 @@ void LabelRenderable::drawContent(const DrawContext& context)
 		if(alignFlags & Font::VABottom) textPos[1] += (float)myOwner->getHeight() - 1;
 		else if(alignFlags & Font::VAMiddle) textPos[1] += (float)myOwner->getHeight() / 2 - 1;
 
-		glColor4fv(myOwner->myColor.data());
-
-		getRenderer()->drawText(myOwner->myText, myFont, textPos, alignFlags);
+		getRenderer()->drawText(myOwner->myText, myFont, textPos, alignFlags, myOwner->myColor);
 	}
 }

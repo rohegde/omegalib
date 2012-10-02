@@ -46,7 +46,7 @@ namespace omega {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Font
+	class OMEGA_API Font: public ReferenceType
 	{
 	public:
 		static void lock();

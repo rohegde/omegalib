@@ -71,7 +71,7 @@ namespace omega {
 			Color startColor, Color endColor, float pc = 0.5f);
 		void drawRect(Vector2f pos, Vector2f size, Color color);
 		void drawRectOutline(Vector2f pos, Vector2f size, Color color);
-		void drawText(const String& text, Font* font, const Vector2f& position, unsigned int align);
+		void drawText(const String& text, Font* font, const Vector2f& position, unsigned int align, Color color);
 		void drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size, uint flipFlags = 0, const Vector2f& minUV = Vector2f::Zero(), const Vector2f& maxUV = Vector2f::Ones());
 		void drawCircleOutline(Vector2f position, float radius, const Color& color, int segments);
 		//@}
@@ -91,12 +91,12 @@ namespace omega {
 		//@}
 
 		// Hack
-		void setForceDiffuseColor(bool value) { myForceDiffuseColor = value; }
+		//void setForceDiffuseColor(bool value) { myForceDiffuseColor = value; }
 
 	private:
 		bool myDrawing;
 		Texture* myTargetTexture;
-		Dictionary<String, Font*> myFonts;
+		Dictionary<String, Ref<Font> > myFonts;
 		Font* myDefaultFont;
 		Lock myLock;
 

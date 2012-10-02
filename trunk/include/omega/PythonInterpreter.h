@@ -31,6 +31,7 @@
 #include "omega/ApplicationBase.h"
 #include "omega/IRendererCommand.h"
 #include "omega/SharedDataServices.h"
+#include "omega/Camera.h"
 
 struct PyMethodDef;
 class PythonInteractiveThread;
@@ -51,7 +52,7 @@ namespace omega
 	public:
 		enum CallbackType
 		{
-			CallbackUpdate, CallbackEvent
+			CallbackUpdate, CallbackEvent, CallbackDraw
 		};
 
 		//! @internal returns the last event received by the interpreter. Used for script interoperability
@@ -83,6 +84,7 @@ namespace omega
 		// invoke python callbacks.
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
+		void draw(const DrawContext& context, Camera* cam);
 
 		// Shared data
 		virtual void commitSharedData(SharedOStream& out);
@@ -112,9 +114,17 @@ namespace omega
 
 		List<void*> myUpdateCallbacks;
 		List<void*> myEventCallbacks;
+		List<void*> myDrawCallbacks;
+
 		//char* myExecutablePath;
 
 		//List<CommandHelpEntry*> myHelpData;
+
+		Lock myLock;
+
+	private:
+		void lockInterpreter();
+		void unlockInterpreter();
 
 	private:
 		static const Event* mysLastEvent;

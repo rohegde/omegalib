@@ -26,10 +26,10 @@
  *************************************************************************************************/
 #include "omega/Renderer.h"
 #include "omega/Engine.h"
-
 #include "omega/DisplaySystem.h"
 #include "omega/GpuManager.h"
 #include "omega/Texture.h"
+#include "omega/PythonInterpreter.h"
 #include "omega/glheaders.h"
 
 // Uncomment to print debug messages about client flow.
@@ -202,7 +202,7 @@ void Renderer::innerDraw(const DrawContext& context, Camera* cam)
 		// Run the pass if both its mask and the camera mask are 0 (left unspecified)
 		// Alternatively, run the pass if at least one of the mask bits is set on both the camera an the pass
 		if((cam->getMask() == 0 && pass->getCameraMask() == 0) ||
-			(cam->getMask() & pass->getCameraMask() != 0))
+			((cam->getMask() & pass->getCameraMask()) != 0))
 		{
 			pass->render(this, context);
 		}
@@ -215,6 +215,8 @@ void Renderer::innerDraw(const DrawContext& context, Camera* cam)
 	{
 		getRenderer()->beginDraw2D(context);
 
+		PythonInterpreter* pi = SystemManager::instance()->getScriptInterpreter();
+		pi->draw(context, cam);
 		
 		if(myServer->isConsoleEnabled())
 		{

@@ -67,7 +67,7 @@ void PointerRenderable::draw(const DrawContext& context)
 			Font* fnt = getRenderer()->getDefaultFont();
 			if(fnt != NULL)
 			{
-				getRenderer()->drawText(myPointer->myText, fnt, Vector2f(x + size, y + size), Font::HALeft | Font::VABottom);
+				getRenderer()->drawText(myPointer->myText, fnt, Vector2f(x + size, y + size), Font::HALeft | Font::VABottom, Color::White);
 			}
 		}
 		if(context.task == DrawContext::SceneDrawTask && 
