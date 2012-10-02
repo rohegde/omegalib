@@ -38,7 +38,7 @@ using namespace cyclops;
 // Example function to be binded to a button clicked
 void zoomSlider(PortholeEvent &ev){
 	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
-	myPosition[2] = ev.value/100; // TODO check scale factor
+	myPosition[2] = atof(ev.value.c_str())/100; // TODO check scale factor
 	ev.sessionCamera->camera->setPosition(myPosition);
 }
 
@@ -95,8 +95,14 @@ public:
 	virtual void initializeRenderer(Renderer* r);
 	virtual void handleEvent(const Event& evt);
 
+	void commitSharedData(SharedOStream& out);
+	void updateSharedData(SharedIStream& in);
+
 private:
 	SceneManager* mySceneManager;
+
+	float myYaw;
+	float myPitch;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

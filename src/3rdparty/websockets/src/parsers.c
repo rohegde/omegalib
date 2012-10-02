@@ -19,7 +19,7 @@
  *  MA  02110-1301  USA
  */
 
-#include "websockets/private-libwebsockets.h"
+#include "private-libwebsockets.h"
 
 const struct lws_tokens lws_tokens[WSI_TOKEN_COUNT] = {
 

@@ -1,7 +1,7 @@
-#include "websockets/private-libwebsockets.h"
+#include "private-libwebsockets.h"
 
-#include "websockets/extension-deflate-stream.h"
-#include "websockets/extension-x-google-mux.h"
+#include "extension-deflate-stream.h"
+#include "extension-x-google-mux.h"
 
 struct libwebsocket_extension libwebsocket_internal_extensions[] = {
 #ifdef LWS_EXT_GOOGLE_MUX
