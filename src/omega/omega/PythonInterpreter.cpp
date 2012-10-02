@@ -27,6 +27,8 @@
 #include "omega/PythonInterpreter.h"
 #include "omega/SystemManager.h"
 #include "omega/ModuleServices.h"
+#include "omega/SystemManager.h"
+#include "omega/DisplaySystem.h"
 
 using namespace omega;
 
@@ -91,6 +93,18 @@ public:
 		omsg("Ending console interactive thread");
 	}
 };
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::lockInterpreter()
+{
+	myLock.lock();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::unlockInterpreter()
+{
+	myLock.unlock();
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool PythonInterpreter::isEnabled()
@@ -250,6 +264,8 @@ void PythonInterpreter::addModule(const char* name, PyMethodDef* methods, const 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::eval(const String& script, const char* format, ...)
 {
+	lockInterpreter();
+
 	char* str = const_cast<char*>(script.c_str());
 	if(format == NULL)
 	{
@@ -285,6 +301,8 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 			va_end(args);
 		}
 	}
+
+	unlockInterpreter();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -319,6 +337,9 @@ void PythonInterpreter::registerCallback(void* callback, CallbackType type)
 			return;
 		case CallbackEvent:
 			myEventCallbacks.push_back(callback);
+			return;
+		case CallbackDraw:
+			myDrawCallbacks.push_back(callback);
 			return;
 		}
 	}
@@ -438,6 +459,38 @@ void PythonInterpreter::handleEvent(const Event& evt)
 	mysLastEvent = NULL;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::draw(const DrawContext& context, Camera* cam)
+{
+	if(myDrawCallbacks.size() > 0)
+	{
+		PyObject *arglist;
+		Vector2i displayRez = SystemManager::instance()->getDisplaySystem()->getCanvasSize();
+		int width = displayRez[0];
+		int height = displayRez[1];
+		int tileWidth = context.tile->resolution[0];
+		int tileHeight = context.tile->resolution[1];
+
+		DrawInterface* di = context.renderer->getRenderer();
+
+		lockInterpreter();
+
+		boost::python::object ocam(boost::python::ptr(cam));
+		boost::python::object odi(boost::python::ptr(di));
+
+		arglist = Py_BuildValue("((ii)(ii)OO)", width, height, tileWidth, tileHeight, ocam.ptr(), odi.ptr());
+		foreach(void* cb, myDrawCallbacks)
+		{
+			// BLAGH cast
+			PyObject* pyCallback =(PyObject*)cb;
+			PyObject_CallObject(pyCallback, arglist);
+
+		}
+		Py_DECREF(arglist);
+		unlockInterpreter();
+	}
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //String PythonInterpreter::getHelpString(const String& filter)
 //{
@@ -517,4 +570,6 @@ void PythonInterpreter::queueCommand(const String& command, bool local) {}
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::unregisterAllCallbacks() {}
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::draw(const DrawContext& context, Camera* cam) {}
 #endif

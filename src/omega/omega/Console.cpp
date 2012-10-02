@@ -109,21 +109,18 @@ void ConsoleRenderable::draw(const DrawContext& context)
 	if(myFont != NULL)
 	{
 		getRenderer()->drawRectOutline(Vector2f(cx - 1, cy), Vector2f(lineWidth + 2, lineHeight - 2), Color::Gray);
-		glColor4f(1.0f, 0.9f, 0.3f, 1);
-		getRenderer()->drawText(myOwner->myHeadline, myFont, Vector2f(cx + x + 2, cy + y + 2), Font::HALeft | Font::VATop);
+		getRenderer()->drawText(myOwner->myHeadline, myFont, Vector2f(cx + x + 2, cy + y + 2), Font::HALeft | Font::VATop, Color(1.0f, 0.9f, 1.0f, 1.0f));
 		y += lineHeight;
 
 		foreach(String& s, myOwner->myLineBuffer)
 		{
 			if(myOwner->myConsoleColors.find(s[0]) != myOwner->myConsoleColors.end())
 			{
-				glColor4fv(myOwner->myConsoleColors[s[0]].data());
-				getRenderer()->drawText(s.substr(1), myFont, Vector2f(cx + x + 2, cy + y + 2), Font::HALeft | Font::VATop);
+				getRenderer()->drawText(s.substr(1), myFont, Vector2f(cx + x + 2, cy + y + 2), Font::HALeft | Font::VATop, myOwner->myConsoleColors[s[0]]);
 			}
 			else
 			{
-				glColor4f(1, 1, 0, 1);
-				getRenderer()->drawText(s, myFont, Vector2f(cx + x + 2, cy + y + 2), Font::HALeft | Font::VATop);
+				getRenderer()->drawText(s, myFont, Vector2f(cx + x + 2, cy + y + 2), Font::HALeft | Font::VATop, Color(1, 1, 0, 1));
 			}
 			y += lineHeight;
 		}

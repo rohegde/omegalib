@@ -207,8 +207,10 @@ void DrawInterface::drawRectOutline(Vector2f pos, Vector2f size, Color color)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void DrawInterface::drawText(const String& text, Font* font, const Vector2f& position, unsigned int align) 
+void DrawInterface::drawText(const String& text, Font* font, const Vector2f& position, unsigned int align, Color color) 
 { 
+	glColor4fv(color.data());
+
 	Vector2f rect = font->computeSize(text);
 	float x, y;
 
