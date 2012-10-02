@@ -40,7 +40,6 @@ endif()
 ###################################################################################################
 # See if we can setup Python support for this build
 set(OMEGA_ENABLE_PYTHON true CACHE BOOL "Enables python support if available.")
-
 if(OMEGA_ENABLE_PYTHON)
 	find_package(PythonLibs)
 	if(PYTHONLIBS_FOUND)
@@ -52,6 +51,9 @@ if(OMEGA_ENABLE_PYTHON)
 else()
 	set(OMEGA_USE_PYTHON false)
 endif()
+
+# Enable / disable porthole support
+set(OMEGA_USE_PORTHOLE true CACHE BOOL "Enable Porthole support")
 
 ###################################################################################################
 # Options
@@ -82,16 +84,18 @@ include_directories(
   ${OmegaLib_BINARY_DIR}/FreeImage/Source/
 )
 
-# PORTHOLE Add websockets lib and zlib if on windows
-if(OMEGA_OS_WIN)
-    add_subdirectory(3rdparty/zlib)
-endif(OMEGA_OS_WIN)
-add_subdirectory(3rdparty/websockets)
+if(OMEGA_USE_PORTHOLE)
+	# PORTHOLE Add websockets lib and zlib if on windows
+	if(OMEGA_OS_WIN)
+		add_subdirectory(3rdparty/zlib)
+	endif(OMEGA_OS_WIN)
+	add_subdirectory(3rdparty/websockets)
+	add_subdirectory(apps/porthello)
+endif()
 
 add_subdirectory(3rdparty/glew)
 add_subdirectory(apps/ohello)
 add_subdirectory(apps/ohello2)
-add_subdirectory(apps/porthello)
 
 add_subdirectory(omegaToolkit)
 
@@ -111,7 +115,9 @@ if(OMEGA_BUILD_OSG_LIB)
 	add_subdirectory(apps/cyhello)
 	add_subdirectory(apps/cyhello2)
 	add_subdirectory(apps/osgviewer)
-	add_subdirectory(apps/portholeCustomDraw)
+	if(OMEGA_USE_PORTHOLE)
+		add_subdirectory(apps/portholeCustomDraw)
+	endif()
 endif()
 
 # vtk configuration, libraries and applications

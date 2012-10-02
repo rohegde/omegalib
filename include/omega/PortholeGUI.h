@@ -253,7 +253,7 @@ namespace omega {
 		PortholeCamera* sessionCamera;
 
 		// Create a Porthole custom camera and a PixelData associated
-		void createCustomCamera(bool followDefaultCamera,  float widthPercent, float heightPercent); 
+		void createCustomCamera(bool followDefaultCamera,  float widthPercent, float heightPercent, uint cameraMask = 0); 
 
 		static void searchNode(TiXmlElement* node);
 

@@ -203,7 +203,7 @@ namespace cyclops {
 	friend class Entity;
 	friend class Light;
 	public:
-		typedef AsyncTask< pair< Ref<ModelInfo>, bool > > LoadModelAsyncTask;
+		typedef AsyncTask< std::pair< Ref<ModelInfo>, bool > > LoadModelAsyncTask;
 		typedef Dictionary<String, String> ShaderMacroDictionary;
 		enum AssetType { ModelAssetType };
 

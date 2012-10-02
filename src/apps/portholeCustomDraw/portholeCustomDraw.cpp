@@ -31,6 +31,9 @@
 #include <iostream>
 
 using namespace omega;
+using namespace cyclops;
+
+#define PORTHOLE_CAMERA_MASK 0x01
 
 // Example function to be binded to a button clicked
 void zoomSlider(PortholeEvent &ev){
@@ -88,21 +91,12 @@ class PortholeCustomDrawApplication: public EngineModule
 public:
 	PortholeCustomDrawApplication() {}
 
-	virtual void initializeRenderer(Renderer* r) 
-	{ 
-		r->addRenderPass(new PortholeRenderPass(r, this), true);
-	}
-
-	float getYaw() { return myYaw; }
-	float getPitch() { return myPitch; }
-
+	virtual void initialize();
+	virtual void initializeRenderer(Renderer* r);
 	virtual void handleEvent(const Event& evt);
-	virtual void commitSharedData(SharedOStream& out);
-	virtual void updateSharedData(SharedIStream& in);
 
 private:
-	float myYaw;
-	float myPitch;
+	SceneManager* mySceneManager;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,81 +124,57 @@ void PortholeRenderPass::initialize()
 	DataManager::findFile("porthole/porthello.css", fullPath_css);
 
 	service->start(4080, (char*)fullPath_xml.c_str(), (char*)fullPath_css.c_str(), binder);
-
-	// Initialize cube normals.
-	myNormals[0] = Vector3f(-1, 0, 0);
-	myNormals[1] = Vector3f(0, 1, 0);
-	myNormals[2] = Vector3f(1, 0, 0);
-	myNormals[3] = Vector3f(0, -1, 0);
-	myNormals[4] = Vector3f(0, 0, 1);
-	myNormals[5] = Vector3f(0, 0, -1);
-
-	// Initialize cube face indices.
-	myFaces[0] = Vector4i(0, 1, 2, 3);
-	myFaces[1] = Vector4i(3, 2, 6, 7);
-	myFaces[2] = Vector4i(7, 6, 5, 4);
-	myFaces[3] = Vector4i(4, 5, 1, 0);
-	myFaces[4] = Vector4i(5, 6, 2, 1);
-	myFaces[5] = Vector4i(7, 4, 0, 3);
-
-	// Initialize cube face colors.
-	myFaceColors[0] = Color::Aqua;
-	myFaceColors[1] = Color::Orange;
-	myFaceColors[2] = Color::Olive;
-	myFaceColors[3] = Color::Navy;
-	myFaceColors[4] = Color::Red;
-	myFaceColors[5] = Color::Yellow;
-
-	// Setup cube vertex data
-	float size = 0.2f;
-	myVertices[0][0] = myVertices[1][0] = myVertices[2][0] = myVertices[3][0] = -size;
-	myVertices[4][0] = myVertices[5][0] = myVertices[6][0] = myVertices[7][0] = size;
-	myVertices[0][1] = myVertices[1][1] = myVertices[4][1] = myVertices[5][1] = -size;
-	myVertices[2][1] = myVertices[3][1] = myVertices[6][1] = myVertices[7][1] = size;
-	myVertices[0][2] = myVertices[3][2] = myVertices[4][2] = myVertices[7][2] = size;
-	myVertices[1][2] = myVertices[2][2] = myVertices[5][2] = myVertices[6][2] = -size;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PortholeRenderPass::render(Renderer* client, const DrawContext& context)
 {
-	if(context.task == DrawContext::SceneDrawTask)
+	if(context.task == DrawContext::OverlayDrawTask)
 	{
-		client->getRenderer()->beginDraw3D(context);
+		DrawInterface* di = client->getRenderer();
 
-		// Enable depth testing and lighting.
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_LIGHTING);
-	
-		// Setup light.
-		glEnable(GL_LIGHT0);
-		glEnable(GL_COLOR_MATERIAL);
-		glLightfv(GL_LIGHT0, GL_COLOR, Color(1.0, 1.0, 1.0).data());
-		glLightfv(GL_LIGHT0, GL_POSITION, Vector3f(0.0f, 0.0f, 1.0f).data());
-
-		// Draw a rotating teapot.
-		glTranslatef(0, 2, -2); 
-		glRotatef(10, 1, 0, 0);
-		glRotatef(myApplication->getYaw(), 0, 1, 0);
-		glRotatef(myApplication->getPitch(), 1, 0, 0);
-
-		// Draw a box
-		for (int i = 0; i < 6; i++) 
-		{
-			glBegin(GL_QUADS);
-			glColor3fv(myFaceColors[i].data());
-			glNormal3fv(myNormals[i].data());
-			glVertex3fv(myVertices[myFaces[i][0]].data());
-			glVertex3fv(myVertices[myFaces[i][1]].data());
-			glVertex3fv(myVertices[myFaces[i][2]].data());
-			glVertex3fv(myVertices[myFaces[i][3]].data());
-			glEnd();
-		}
-
-		client->getRenderer()->endDraw();
+		di->beginDraw2D(context);
+		di->drawRect(Vector2f(10, 10), Vector2f(100, 100), Color::Red);
+		di->endDraw();
 	}
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeCustomDrawApplication::initializeRenderer(Renderer* r) 
+{ 
+	RenderPass* rp = new PortholeRenderPass(r, this);
+	rp->setCameraMask(PORTHOLE_CAMERA_MASK);
+	r->addRenderPass(rp, true);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeCustomDrawApplication::initialize()
+{
+	// Initialize a scene using cyclops
+	// Create and initialize the cyclops scene manager.
+	mySceneManager = SceneManager::createAndInitialize();
+
+	SphereShape* sphere = new SphereShape(mySceneManager, 0.1f);
+	sphere->setEffect("colored -d red");
+	sphere->setPosition(0, 1.57, -3.24);
+
+	PlaneShape* plane = new PlaneShape(mySceneManager, 4, 4);
+	plane->setEffect("colored -d green");
+	plane->pitch(-90 * Math::DegToRad);
+	plane->setPosition(0, 0, -5);
+
+	// Setup a light for the scene.
+	Light* light = new Light(mySceneManager);
+	light->setEnabled(true);
+	light->setPosition(Vector3f(0, 50, 0));
+	light->setColor(Color(1.0f, 1.0f, 0.7f));
+	light->setAmbient(Color(0.1f, 0.1f, 0.1f));
+	mySceneManager->setMainLight(light);
+
+	ShadowSettings set;
+	set.shadowsEnabled = false;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PortholeCustomDrawApplication::handleEvent(const Event& evt)

@@ -43,8 +43,6 @@ public:
 
 private:
 	SceneManager* mySceneManager;
-
-	//SceneEditorModule* myEditor;
 };
 
 
