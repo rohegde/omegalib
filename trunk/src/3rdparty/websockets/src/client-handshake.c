@@ -1,4 +1,4 @@
-#include "websockets/private-libwebsockets.h"
+#include "private-libwebsockets.h"
 
 struct libwebsocket *__libwebsocket_client_connect_2(
 	struct libwebsocket_context *context,

@@ -16,7 +16,7 @@ if(OMEGA_OS_WIN)
 			 ./win32helpers/gettimeofday.c
 			 ./win32helpers/websock-w32.c
     )
-    include_directories(./win32helpers ../zlib)
+    include_directories(./include ./win32helpers ../zlib)
 else()
     set(websockets_SOURCES
 			 ./src/libwebsockets.c
@@ -29,6 +29,7 @@ else()
 			 ./src/md5.c
 			 ./src/sha-1.c
     )
+    include_directories(./include)
 endif()
 
 add_library(websockets STATIC ${websockets_SOURCES})

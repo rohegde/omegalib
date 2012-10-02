@@ -12,7 +12,7 @@
 
 #include <stdlib.h>
 #include <errno.h>
-#include "websockets/websock-w32.h"
+#include "websock-w32.h"
 
 PFNWSAPOLL poll = NULL;
 

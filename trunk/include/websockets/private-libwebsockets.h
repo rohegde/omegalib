@@ -19,11 +19,11 @@
  *  MA  02110-1301  USA
  */
 
-#include "unistd.h"
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "strings.h"
+#include <strings.h>
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -32,7 +32,7 @@
 #else
 #ifdef  __MINGW32__
 #else
-#include <websockets/netdb.h>
+#include <netdb.h>
 #endif
 #endif
 #include <stdarg.h>
@@ -86,13 +86,23 @@
 #endif
 
 #ifdef VERBOSE
-__inline void debug(const char *format, ...)
+#ifdef WIN32
+static
+#else
+static inline
+#endif
+void debug(const char *format, ...)
 {
 	va_list ap;
 	va_start(ap, format); vfprintf(stderr, format, ap); va_end(ap);
 }
 #else
-__inline void debug(const char *format, ...)
+#ifdef WIN32
+static
+#else
+static inline
+#endif
+void debug(const char *format, ...)
 {
 }
 #endif
