@@ -111,6 +111,7 @@ namespace omega {
 		int minHeight;
 		string id;
 		string orientation;
+		string layout;
 	} PortholeInterfaceType;
 
 	// A device specifications object

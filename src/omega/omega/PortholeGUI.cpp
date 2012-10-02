@@ -73,12 +73,17 @@ void PortholeGUI::setDeviceSpecifications(int width, int height, string orientat
 ///////////////////////////////////////////////////////////////////////////////////////////////
 string PortholeGUI::create(bool firstTime){
 
-	string result = "";
-
 	string interfaceKey = device->interfaceType->id + device->interfaceType->orientation;
 	TiXmlElement* root = interfacesMap[interfaceKey];
 
 	if (root == NULL) return "Interface not available for this device";
+
+	string result = "<table data-role=\"none\" border=\"0\" style=\" width : 100%; height : 100%; \">";
+	
+	if ( device->interfaceType->layout.compare("horizontal")==0 ||
+			device->interfaceType->layout.compare("hor") == 0 ){
+		result.append("<tr style=\" width : 100%; height : 100%; \">");
+	}
 
 	// Parse the GUI elemets disposition
 	for (TiXmlElement* pChild = root->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
@@ -169,9 +174,28 @@ string PortholeGUI::create(bool firstTime){
 
 		// Create the HTML result for this element. embedded into a (width,size) div element
 		// TODO Layouts Vertical/Horizontal/Grid/Relative
-		result.append("<div style=\" width : "+ width +"; height : "+ height +"; \" >"+ element->htmlValue +"</div>");
-
+		// HORIZONTAL
+		if ( device->interfaceType->layout.compare("horizontal")==0 ||
+			device->interfaceType->layout.compare("hor") == 0 ){
+				result.append("<td style=\" width : "+ width +"; height : "+ height +"; \">"+ element->htmlValue +"</td>");
+		}
+		// VERTICAL
+		else if ( device->interfaceType->layout.compare("vertical")==0 ||
+			device->interfaceType->layout.compare("ver") == 0 ){
+				result.append("<tr style=\" width : "+ width +"; height : "+ height +"; \"><td style=\" width : "+ width +"; height : "+ height +"; \">"+ element->htmlValue +"</td></tr>");
+		}
+		// Else ERROR
+		else {
+			std::cout << "!!>> ERROR: layout type not defined. Check application xml." << std::endl;
+		}
 	}
+
+	if ( device->interfaceType->layout.compare("horizontal")==0 ||
+			device->interfaceType->layout.compare("hor") == 0 ){
+		result.append("</tr>");
+	}
+
+	result.append("</table>");
 
 	return result;
 
@@ -408,6 +432,25 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 			string orientation = string(pOrientationChild->Value());
 			StringUtils::toLowerCase(orientation);
 
+			// Layout attribute
+			std::string layout;
+
+			// Parse attributes
+			TiXmlAttribute* pAttrib = pOrientationChild->FirstAttribute();
+			while(pAttrib){
+
+				string attribute = pAttrib->Name();
+				StringUtils::toLowerCase(attribute);
+
+				// Save layout attribute
+				if (strcmp(attribute.c_str(),"layout")==0){
+					layout = std::string(pAttrib->Value());
+				}
+
+				// Next attribute
+				pAttrib = pAttrib->Next();
+			}
+
 			// Check orientation and save node in the map
 			if (orientation.compare("portrait")==0 || orientation.compare("port")==0){
 				PortholeInterfaceType* interfaceType = new PortholeInterfaceType();
@@ -415,6 +458,7 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 				interfaceType->minHeight = minHeight;
 				interfaceType->id = interfaceId;
 				interfaceType->orientation = "portrait";
+				interfaceType->layout = layout;
 				interfaces.push_back(interfaceType);
 				cout << ">> Added interface:" << interfaceId << " " << orientation << " " << minWidth << " " << minHeight << endl;
 				interfacesMap[interfaceId + orientation] = pOrientationChild;
@@ -425,6 +469,7 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 				interfaceType->minHeight = minWidth;
 				interfaceType->id = interfaceId;
 				interfaceType->orientation = "landscape";
+				interfaceType->layout = layout;
 				interfaces.push_back(interfaceType);
 				cout << ">> Added interface:" << interfaceId << " " << orientation << " " << minHeight << " " << minWidth << endl;
 				interfacesMap[interfaceId + orientation] = pOrientationChild;

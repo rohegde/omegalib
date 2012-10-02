@@ -44,44 +44,48 @@
   <gui_disposition>
 
     <small minWidth="0" minHeight="0">
-      <portrait>
+      <portrait layout="vertical">
         <element1 width="100%" height="10%" />
         <element3 width="100%" height="90%" />
       </portrait>
-      <landscape>
+      <landscape layout="vertical">
         <element3 width="100%" height="100%" />
       </landscape>
     </small>
     
     <medium minWidth="320" minHeight="470">
-      <portrait>
+      <portrait layout="vertical">
         <element1 width="100%" height="10%" />
         <element3 width="100%" height="90%" />
       </portrait>
-      <landscape>
+      <landscape layout="vertical">
         <element3 width="100%" height="100%" />
       </landscape>
     </medium>
     
     <large minWidth="480" minHeight="640">
-      <portrait>
+      <portrait layout="vertical">
         <element1 width="100%" height="5%" />
         <element5 width="100%" height="5%" />
         <element3 width="100%" height="90%" />
       </portrait>
-      <landscape>
-        <element3 width="100%" height="100%" />
+      <landscape layout="horizontal">
+        <element3 width="70%" height="100%" />
+        <element1 width="10%" height="100%" />
+        <element6 width="20%" height="100%" />
       </landscape>   
     </large>
     
     <xlarge minWidth="720" minHeight="960">
-      <portrait>
+      <portrait layout="vertical">
         <element1 width="100%" height="5%" />
         <element5 width="100%" height="5%" />
         <element3 width="100%" height="90%" />
       </portrait>
-      <landscape>
-        <element3 width="100%" height="100%" />
+      <landscape layout="horizontal">
+        <element3 width="70%" height="100%" />
+        <element1 width="10%" height="100%" />
+        <element6 width="20%" height="100%" />
       </landscape>
     </xlarge>
     
