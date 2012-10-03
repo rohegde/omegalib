@@ -207,7 +207,9 @@ namespace omegaToolkit { namespace ui {
 		bool getNavigationSuspended() { return myNavigationSuspended; }
 
 		bool is3dMenuEnabled() { return my3dMenuEnabled; }
-
+		
+		Sound* getShowMenuSound() { return showMenuSound; }
+		Sound* getHideMenuSound() { return hideMenuSound; }
 	private:
 		MenuManager();
 		virtual ~MenuManager();
@@ -235,6 +237,12 @@ namespace omegaToolkit { namespace ui {
 		//bool myAutoPlaceEnabled;
 		//float myAutoPlaceDistance;
 		//float myMenu3dScale;
+
+		// Menu sounds
+		Sound* showMenuSound;
+		Sound* hideMenuSound;
+		Sound* selectMenuSound;
+		Sound* scrollMenuSound;
 	};
 }; };
 

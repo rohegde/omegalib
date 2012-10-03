@@ -118,12 +118,35 @@ void Engine::initialize()
 		myDefaultCamera->setup(s);
 	}
 
+	// Load sound config from system config file
+	if(syscfg->exists("config/sound"))
+	{
+		String soundServerIP = "localhost";
+		int soundServerPort = 57120;
+
+        Setting& s = syscfg->lookup("config/sound");
+		if(s.exists("soundServerIP"))
+		{
+			soundServerIP = Config::getStringValue("soundServerIP", s, "localhost");
+		}
+		if(s.exists("soundServerPort"))
+		{
+			soundServerPort = Config::getIntValue("soundServerPort", s, 57120);
+		}
+		soundManager = new SoundManager(soundServerIP,soundServerPort);
+		soundManager->startSoundServer();
+
+		soundEnv = soundManager->getSoundEnvironment();
+	}
+
+
 	// Load camera config form application config file
     if(cfg->exists("config/camera"))
     {
         Setting& s = cfg->lookup("config/camera");
 		myDefaultCamera->setup(s);
     }
+
 
 	Setting& scfg = cfg->lookup("config");
 	myEventSharingEnabled = Config::getBoolValue("enableEventSharing", scfg, true);
