@@ -36,6 +36,7 @@
 #include "Camera.h"
 #include "Font.h"
 #include "Console.h"
+#include "omicron/SoundManager.h"
 
 namespace omega {
 	typedef List< Ref<Renderer> > EngineClientList;
@@ -130,6 +131,12 @@ namespace omega {
 		void setConsoleEnabled(bool value);
 		//@}
 
+		//! Sound management
+		//@{
+		SoundManager* getSoundManager();
+		SoundEnvironment* getSoundEnvironment();
+		//@}
+
 		void setDebugWandEnabled(float value) { myDebugWand = value; }
 		bool isDebugWandEnabled() { return myDebugWand; }
 
@@ -181,6 +188,10 @@ namespace omega {
 		CameraCollection myCameras;
 
 		bool myDebugWand;
+
+		// Sound
+		SoundManager* soundManager;
+		SoundEnvironment* soundEnv;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -214,6 +225,14 @@ namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Engine::setConsoleEnabled(bool value)
 	{ myConsoleEnabled = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline SoundManager* Engine::getSoundManager()
+	{ return soundManager;	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline SoundEnvironment* Engine::getSoundEnvironment()
+	{ return soundEnv;	}
 }; // namespace omega
 
 #endif

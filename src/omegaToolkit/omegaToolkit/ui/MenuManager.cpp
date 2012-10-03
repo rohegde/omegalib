@@ -354,6 +354,21 @@ void Menu::show()
 
 	myContainer->get3dSettings().scale = myManager->getDefaultMenuScale() / 2;
 	my3dSettings.scale = myManager->getDefaultMenuScale();
+
+	if(SystemManager::settingExists("config/sound"))
+	{
+		// Set the listener position
+		Vector3f cameraPosition = myManager->getEngine()->getDefaultCamera()->getPosition();
+		myManager->getEngine()->getSoundManager()->setListenerPosition( cameraPosition );
+
+		// Set the sound position and play
+		SoundInstance* showSound = new SoundInstance(myManager->getShowMenuSound());
+		ofmsg("Menu::show() about to play sound %1%", %myManager->getHideMenuSound()->getFilePath() );
+		ofmsg("Menu pos: %1%", %myContainer->get3dSettings().position );
+		showSound->setPosition( myContainer->get3dSettings().position );
+		showSound->setVolume(1.0);
+		showSound->play();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -373,6 +388,19 @@ void Menu::hide()
 	{
 		myActiveSubMenu->hide();
 		myActiveSubMenu = NULL;
+	}
+
+	if(SystemManager::settingExists("config/sound"))
+	{
+		// Set the listener position
+		Vector3f cameraPosition = myManager->getEngine()->getDefaultCamera()->getPosition();
+		myManager->getEngine()->getSoundManager()->setListenerPosition( cameraPosition );
+
+		SoundInstance* hideSound = new SoundInstance(myManager->getHideMenuSound());
+		ofmsg("Menu::hide() about to play sound %1%", %myManager->getHideMenuSound()->getFilePath() );
+		ofmsg("Menu pos: %1%", %myContainer->get3dSettings().position );
+		ofmsg("Listener pos: %1%", %myManager->getEngine()->getSoundManager()->getListenerPosition() );
+		hideSound->play( myContainer->get3dSettings().position, 1.0f, 2.0f, 1.0f, 1.0f, false);
 	}
 }
 
@@ -494,6 +522,33 @@ void MenuManager::initialize()
 		myDefaultMenuScale *= 0.001f;
 	}
 
+	if(SystemManager::settingExists("config/sound"))
+	{
+		Setting& sUi = SystemManager::settingLookup("config/sound");
+
+		showMenuSound = getEngine()->getSoundEnvironment()->createSound("showMenuSound");
+		showMenuSound->loadFromFile( Config::getStringValue("showMenuSound", sUi, "showMenu.wav").c_str() );
+
+		hideMenuSound = getEngine()->getSoundEnvironment()->createSound("hideMenuSound");
+		hideMenuSound->loadFromFile( Config::getStringValue("hideMenuSound", sUi, "hideMenu.wav").c_str() );
+		
+		selectMenuSound = getEngine()->getSoundEnvironment()->createSound("selectMenuSound");
+		selectMenuSound->loadFromFile( Config::getStringValue("selectMenuSound", sUi, "selectMenu.wav").c_str() );
+		
+		scrollMenuSound = getEngine()->getSoundEnvironment()->createSound("scrollMenuSound");
+		scrollMenuSound->loadFromFile( Config::getStringValue("scrollMenuSound", sUi, "scrollMenu.wav").c_str() );
+		
+		float volume = Config::getFloatValue("menuSoundVolume", sUi, 1.0);
+		float width = Config::getFloatValue("menuSoundWidth", sUi, 1.0);
+		float mix = Config::getFloatValue("menuSoundMix", sUi, 1.0);
+		float reverb = Config::getFloatValue("menuSoundReverb", sUi, 1.0);
+		
+		showMenuSound->setDefaultParameters(volume, width, mix, reverb, false);
+		hideMenuSound->setDefaultParameters(volume, width, mix, reverb, false);
+		selectMenuSound->setDefaultParameters(volume, width, mix, reverb, false);
+		scrollMenuSound->setDefaultParameters(volume, width, mix, reverb, false);
+	}
+
 	// Read configuration parameters from system config
 	//Setting& sSysCfg = SystemManager::instance()->getSystemConfig()->lookup("config");
 	//myMenu3dEnabled = Config::getBoolValue("menu3dEnabled", sSysCfg, false);nMenu
@@ -538,8 +593,8 @@ void MenuManager::handleEvent(const Event& evt)
 
 				if(showMenuButtonPressed)
 				{
-					myMainMenu->show();
 					autoPlaceMenu(myMainMenu, evt);
+					myMainMenu->show();
 					if(myNavigationSuspended)
 					{
 						Camera* cam = getEngine()->getDefaultCamera();
@@ -616,7 +671,14 @@ Menu* MenuManager::createMenu(const String& name)
 {
 	Menu* menu = new Menu(name, this);
 	myMenuList.push_back(menu);
+	
+	// Mutes menu sound for default hide
+	hideMenuSound->setVolumeScale(0);
+	
 	// Set not visible by default.
 	menu->hide();
+	
+	// Reenables menu sound
+	hideMenuSound->setVolumeScale(1);
 	return menu;
 }
