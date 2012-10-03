@@ -4,6 +4,7 @@
  * Copyright 2010-2012							Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Daniele Donghi								d.donghi@gmail.com
+ *  Alessandro Febretti							febret@gmail.com
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
@@ -34,37 +35,6 @@ using namespace omega;
 using namespace cyclops;
 
 #define PORTHOLE_CAMERA_MASK 0x01
-
-// Example function to be binded to a button clicked
-void zoomSlider(PortholeEvent &ev){
-	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
-	myPosition[2] = atof(ev.value.c_str())/100; // TODO check scale factor
-	ev.sessionCamera->camera->setPosition(myPosition);
-}
-
-void up(PortholeEvent &ev){
-	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
-	myPosition[1] += 0.025f;
-	ev.sessionCamera->camera->setPosition(myPosition);
-}
-
-void down(PortholeEvent &ev){
-	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
-	myPosition[1] -= 0.025f;
-	ev.sessionCamera->camera->setPosition(myPosition);
-}
-
-void left(PortholeEvent &ev){
-	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
-	myPosition[0] -= 0.025f;
-	ev.sessionCamera->camera->setPosition(myPosition);
-}
-
-void right(PortholeEvent &ev){
-	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
-	myPosition[0] += 0.025f;
-	ev.sessionCamera->camera->setPosition(myPosition);
-}
 
 class PortholeCustomDrawApplication;
 
@@ -112,11 +82,6 @@ void PortholeRenderPass::initialize()
 
 	// Functions Bind
 	PortholeFunctionsBinder* binder = new PortholeFunctionsBinder();
-	binder->addFunction("up(event)", &up);
-	binder->addFunction("down(event)", &down);
-	binder->addFunction("left(event)", &left);
-	binder->addFunction("right(event)", &right);
-	binder->addFunction("zoomSlider(event)", &zoomSlider);
 
 	// Porthole initialize the porthole service
 	PortholeService* service = new PortholeService();
@@ -124,7 +89,7 @@ void PortholeRenderPass::initialize()
 	svcManager->addService(service);
 
 	string fullPath_xml;
-	DataManager::findFile("porthole/porthello.xml", fullPath_xml);
+	DataManager::findFile("porthole/portholeCUstomDraw.xml", fullPath_xml);
 
 	string fullPath_css;
 	DataManager::findFile("porthole/porthello.css", fullPath_css);

@@ -50,6 +50,13 @@ namespace omega {
 			Offscreen = 1 << 4,
 			DefaultFlags = DrawScene | DrawOverlay
 		};
+
+		enum RenderPassMasks
+		{
+			DefaultRenderPassMask = 0x00000000,
+			AllRenderPassMask = 0xffffffff
+		};
+
 	public:
 		Camera(Engine* engine, uint flags = DefaultFlags);
 
