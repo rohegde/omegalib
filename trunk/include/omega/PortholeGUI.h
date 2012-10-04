@@ -47,6 +47,8 @@ using namespace std;
 
 namespace omega {
 
+	// HTML namespace will contain all html events, 
+	// so that parser could know which attribute is a Javascript event
 	namespace HTML {
 
 		static const int eventsNumber = 19;
@@ -198,8 +200,6 @@ namespace omega {
 		int scriptNumber;
 	};
 
-
-
 	// Xml Document
 	static TiXmlDocument* xmlDoc;
 
@@ -212,10 +212,10 @@ namespace omega {
 		// Constructor
 		PortholeGUI();
 
-		// TODO deallocate new objects
+		// Destructor
 		~PortholeGUI();
 
-		// Create the device spicifc html interface
+		// Create the device specifc html interface
 		string create(bool firstTime);
 
 		// Set device specifications
@@ -224,18 +224,20 @@ namespace omega {
 		// Return an object that contains the device specifications
 		PortholeDevice* getDevice() { return device; }
 
-		// Number of cameras to stream over the network
+		// Is camera object set?
 		bool isCameraReadyToStream() { return (sessionCamera != NULL); } 
 
-		// Get session stream data
+		// Get Porthole camera object for this client connected
 		PortholeCamera* getSessionCamera() { return sessionCamera; } 
 
 		// Mod the camera with id cameraId 
 		// size: the ratio of camera: 1.0 is full size
 		void modCustomCamera(float size, float widthPercent, float heightPercent);
 
+		// Parse HTML gui_element and look for Javascript events 
 		static vector<string> findHtmlScripts();
 
+		// Start application XML parsing
 		static void parseXmlFile(char* xmlPath);
 
 		// Functions binder getter and setter
