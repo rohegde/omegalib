@@ -35,9 +35,6 @@ using namespace std;
 
 using namespace eq;
 
-//! Comment do disable running of overlay render tasks.
-//#define ENABLE_OVERLAY_TASK
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ChannelImpl::ChannelImpl( eq::Window* parent ) 
     :eq::Channel( parent ), myWindow(parent), myDrawBuffer(NULL), myStencilInitialized(false)
@@ -82,7 +79,6 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 	const DisplayConfig& dcfg = ds->getDisplayConfig();
 
     eq::PixelViewport pvp = getPixelViewport();
-    //eq::PixelViewport gpvp = getWindow()->getPixelViewport();
 
     context->gpuContext = pipe->getGpuContext();
 	context->renderer = (Renderer*)client;
@@ -274,16 +270,17 @@ void ChannelImpl::setupStencil(int gliWindowWidth, int gliWindowHeight)
 	GLint gliStencilBits;
 	glGetIntegerv(GL_STENCIL_BITS,&gliStencilBits);
 
-	GLint gliY;
+	float gliY;
 	// seting screen-corresponding geometry
 	glViewport(0,0,gliWindowWidth,gliWindowHeight);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0, gliWindowWidth, 0, gliWindowHeight);
+	gluOrtho2D(0.5,gliWindowWidth + 0.5,0.5,gliWindowHeight + 0.5);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+		
 		
 	// clearing and configuring stencil drawing
 	glDrawBuffer(GL_BACK);
@@ -296,7 +293,8 @@ void ChannelImpl::setupStencil(int gliWindowWidth, int gliWindowHeight)
 	
 	// drawing stencil pattern
 	glColor4f(1,1,1,0);	// alfa is 0 not to interfere with alpha tests
-	for (gliY=0; gliY<gliWindowHeight; gliY+=2)
+	
+	for (gliY=-2; gliY<=gliWindowHeight; gliY+=2)
 	{
 		glLineWidth(1);
 		glBegin(GL_LINES);
