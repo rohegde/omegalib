@@ -103,12 +103,12 @@ string PortholeGUI::create(bool firstTime){
 			StringUtils::toLowerCase(attribute);
 
 			// Save id attribute
-			if (strcmp(attribute.c_str(),"width")==0){
+			if (attribute.compare("width")==0){
 				width = pAttrib->Value();
 			}
 
 			// Save type attribute
-			else if (strcmp(attribute.c_str(),"height")==0){
+			else if (attribute.compare("height")==0){
 				height = pAttrib->Value();
 			}
 
@@ -172,8 +172,8 @@ string PortholeGUI::create(bool firstTime){
 
 		}
 
-		// Create the HTML result for this element. embedded into a (width,size) div element
-		// TODO Layouts Vertical/Horizontal/Grid/Relative
+		// Create the HTML result for this element. embedded into a table tr (for vertical) or td (for horizontal) element
+		// TODO Layouts Grid/Relative
 		// HORIZONTAL
 		if ( device->interfaceType->layout.compare("horizontal")==0 ||
 			device->interfaceType->layout.compare("hor") == 0 ){
@@ -347,17 +347,17 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 			StringUtils::toLowerCase(attribute);
 
 			// Save id attribute
-			if (strcmp(attribute.c_str(),"id")==0){
+			if (attribute.compare("id")==0){
 				element->id = pAttrib->Value();
 			}
 
 			// Save type attribute
-			else if (strcmp(attribute.c_str(),"type")==0){
+			else if (attribute.compare("type")==0){
 				element->type = pAttrib->Value();
 			}
 
 			// Save camera type attribute
-			else if (strcmp(attribute.c_str(),"camera")==0){
+			else if (attribute.compare("camera")==0){
 				element->cameraType = pAttrib->Value();
 			}
 
@@ -369,7 +369,7 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 		StringUtils::toLowerCase(element->cameraType);
 
 		// For HTML elements, just add all the content to the element
-		if  (strcmp(element->type.c_str(),"html")==0){
+		if  (element->type.compare("html")==0){
 
 			// Parse the GUI elements
 			for (TiXmlNode* pHtmlChild = pChild->FirstChildElement(); pHtmlChild != 0; pHtmlChild = pHtmlChild->NextSiblingElement()){
@@ -412,12 +412,12 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 				StringUtils::toLowerCase(attribute);
 
 				// Save id attribute
-				if (strcmp(attribute.c_str(),"minwidth")==0){
+				if (attribute.compare("minwidth")==0){
 					minWidth = pAttrib->IntValue();
 				}
 
 				// Save type attribute
-				else if (strcmp(attribute.c_str(),"minheight")==0){
+				else if (attribute.compare("minheight")==0){
 					minHeight = pAttrib->IntValue();
 				}
 
@@ -443,7 +443,7 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 				StringUtils::toLowerCase(attribute);
 
 				// Save layout attribute
-				if (strcmp(attribute.c_str(),"layout")==0){
+				if (attribute.compare("layout")==0){
 					layout = std::string(pAttrib->Value());
 				}
 

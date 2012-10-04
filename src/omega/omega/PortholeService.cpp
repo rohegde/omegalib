@@ -25,7 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 
-// Implementation of the HTML5 based interfaces service for handled devices
+// Implementation of the HTML5 based interfaces
 
 #include "omega/PortholeService.h"
 #include "omega/Camera.h"
@@ -42,10 +42,12 @@
 using namespace omega;
 using namespace omicron;
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 // Base64 encode/decode functions
 inline string base64_encode(unsigned char const* , unsigned int len);
 inline string base64_decode(string const& s);
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 enum demo_protocols {
 	/* always first */
 	PROTOCOL_HTTP = 0,
@@ -264,23 +266,14 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+
 /* websocket protocol */
 
-// Struct of data to be passed across the entire session
-struct across_sessions_data {
-	PortholeFunctionsBinder* functionsBinder;
-};
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
 // Struct of data to be passed across the entire session
 struct per_session_data {
 	PortholeGUI* guiManager;
 	unsigned long long oldus;
-};
-
-// Struct of a socket message: payload and its length
-struct a_message {
-	void *payload;
-	size_t len;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -293,8 +286,6 @@ void sendHtmlElements(bool firstTime, struct per_session_data* data, struct libw
 		toSend.append(omicron::StringUtils::replaceAll(deviceBasedHtml.c_str(),"\"","\\\""));
 		toSend.append("\"}");
 
-		//cout << toSend << endl;
-
 		// Send the html elements
 		int n;
 		unsigned char* buf;
@@ -303,11 +294,13 @@ void sendHtmlElements(bool firstTime, struct per_session_data* data, struct libw
 		n = sprintf((char *)p, "%s",toSend.c_str());
 		n = libwebsocket_write(wsi, p, n, LWS_WRITE_TEXT);
 
+		// Free buffer
 		delete[] buf;
 
 		return;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 // JSON simple print
 #define IDENT(n) for (int i = 0; i < n; ++i) printf("    ")
 inline void print(json_value *value, int ident = 0)
@@ -344,6 +337,8 @@ inline void print(json_value *value, int ident = 0)
 	}
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 #define MSG_EVENT_TYPE "event_type"
 
 #define MSG_EVENT_SPEC "device_spec"
@@ -371,6 +366,7 @@ inline void print(json_value *value, int ident = 0)
 #define MSG_EVENT_CAMERA_MOD "camera_mod"
 #define MSG_CAMERA_SIZE "size"
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 struct recv_message{
     string event_type;
     float deltaX,deltaY;
@@ -387,6 +383,7 @@ struct recv_message{
 	string value;
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 // This is the function that handle the event received by the client,
 // that has the per_session_data structure associated
 inline void parse_json_message(json_value *value, per_session_data* data, recv_message* message){
@@ -425,6 +422,7 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
 		else if (strcmp(value->name, MSG_INPUT_BUTTON) == 0)
 			message->key = value->string_value[0];
 
+		// HTML tag value (ex: the value of a slider, a text input, ecc)
 		else if (strcmp(value->name, MSG_INPUT_VALUE) == 0)
 			message->value = value->string_value;
 
@@ -436,8 +434,12 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
             message->width = value->int_value;
 		else if (strcmp(value->name, MSG_HEIGHT) == 0)
             message->height = value->int_value;
+
+		// Camera id
 		else if (strcmp(value->name, MSG_CAMERA_ID) == 0)
 			message->cameraId = value->int_value;
+
+		// Is the first time we receive the device specification?
 		else if (strcmp(value->name, MSG_FIRST_TIME) == 0)
             message->firstTime = (value->int_value == 1 )? true : false;
 
@@ -467,39 +469,16 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
 
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
 inline void handle_message(per_session_data* data, recv_message* message, 
 		struct libwebsocket_context *context, struct libwebsocket *wsi){
 
-	// Handle DRAG event -> One finger or mouse
+	/**
+	 * DRAG -> One finger or mouse action on camera canvas
+	**/
 	if (strcmp(message->event_type.c_str(),MSG_EVENT_DRAG)==0 &&
-		  data->guiManager->isCameraReadyToStream() ){
+		  data->guiManager->isCameraReadyToStream()){
 
-		Camera* camera;
-
-		// Get the corresponding camera to be modified
-		PortholeCamera* sessionCamera = data->guiManager->getSessionCamera();
-		if (sessionCamera->followDefault == true){
-			camera = Engine::instance()->getDefaultCamera();
-		}
-		else
-			camera = sessionCamera->camera;
-
-		// Change pitch and yaw
-		Quaternion curOrientation = camera->getOrientation();
-		// Create the YAW and PITCH rotation quaternion
-		float yawAngle = message->deltaX * Math::DegToRad;
-		float pitchAngle = message->deltaY * Math::DegToRad;
-		Quaternion orientation = AngleAxis(yawAngle, Vector3f::UnitY()) * AngleAxis(pitchAngle, Vector3f::UnitX()) * AngleAxis(0, Vector3f::UnitZ());
-		// Apply rotation
-		camera->setOrientation(curOrientation * orientation);
-    }
-
-	// Handle PINCH event -> Two fingers
-	else if (strcmp(message->event_type.c_str(),MSG_EVENT_PINCH)==0 &&
-		data->guiManager->isCameraReadyToStream()){
-
-		// ZOOM
 		// Get the corresponding camera to be modified
 		Camera* camera;
 		PortholeCamera* sessionCamera = data->guiManager->getSessionCamera();
@@ -507,7 +486,40 @@ inline void handle_message(per_session_data* data, recv_message* message,
 			camera = Engine::instance()->getDefaultCamera();
 		else
 			camera = sessionCamera->camera;
+
+		// Change pitch and yaw
+		Quaternion curOrientation = camera->getOrientation();
+
+		// Create the YAW and PITCH rotation quaternion
+		float yawAngle = message->deltaX * Math::DegToRad;
+		float pitchAngle = message->deltaY * Math::DegToRad;
+		Quaternion orientation = AngleAxis(yawAngle, Vector3f::UnitY()) * AngleAxis(pitchAngle, Vector3f::UnitX()) * AngleAxis(0, Vector3f::UnitZ());
+
+		// Apply rotation
+		camera->setOrientation(curOrientation * orientation);
+    }
+
+	/**
+	 * PINCH -> Two fingers on camera canvas
+	**/
+	else if (strcmp(message->event_type.c_str(),MSG_EVENT_PINCH)==0 &&
+		data->guiManager->isCameraReadyToStream()){
+
+		/** 
+		 * ZOOM
+		**/
+
+		// Get the corresponding camera to be modified
+		Camera* camera;
+		PortholeCamera* sessionCamera = data->guiManager->getSessionCamera();
+		if (sessionCamera->followDefault == true)
+			camera = Engine::instance()->getDefaultCamera();
+		else
+			camera = sessionCamera->camera;
+
+		// Current position
 		Vector3f myPosition = camera->getPosition();
+
 		// Zoom in
 		if (message->scale > 1){
 			myPosition[2] -= ZOOM_STEP*message->scale;
@@ -515,26 +527,33 @@ inline void handle_message(per_session_data* data, recv_message* message,
 		// Zoom out
 		else if (message->scale < 1)
 			myPosition[2] += ZOOM_STEP/message->scale;
+
+		// Apply zoom
 		camera->setPosition(myPosition);
 
+		/** 
+		 * ROTATION
+		**/
 
-		// ROTATION
+		// Current orientation
 		Quaternion curOrientation = camera->getOrientation();
+
 		// Create the ROLL rotation quaternion
 		float rollAngle = message->deltaRotation * Math::DegToRad;
 		Quaternion orientation = AngleAxis(0, Vector3f::UnitY()) * AngleAxis(0, Vector3f::UnitX()) * AngleAxis(rollAngle, Vector3f::UnitZ());
+
 		// Apply rotation
 		camera->setOrientation(curOrientation * orientation);
 
     }
 
 	// First message received is a device spec message
-	// Create the GUI manager
 	else if (strcmp(message->event_type.c_str(),MSG_EVENT_SPEC)==0){
 
+		// Save device specification
 		data->guiManager->setDeviceSpecifications(message->width,message->height,message->orientation);
 
-		// Send the Html elements to the browser based on device specifications
+		// Send the Html elements to the browser based on device specification
 		sendHtmlElements(message->firstTime,data,context,wsi);
 
 		// Ask for the first available slot on this channel
@@ -546,7 +565,7 @@ inline void handle_message(per_session_data* data, recv_message* message,
 	//	data->guiManager->modCustomCamera(message->cameraSize);
 	//}
 
-	// Javascript function bind
+	// Javascript functions bind
 	else if(strcmp(message->event_type.c_str(),MSG_EVENT_INPUT)==0){
 		// Create event
 		PortholeEvent ev = {message->jsFunction, message->button, message->key, message->value, data->guiManager->getSessionCamera()};
@@ -556,6 +575,7 @@ inline void handle_message(per_session_data* data, recv_message* message,
 
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			struct libwebsocket *wsi,
 			enum libwebsocket_callback_reasons reason,
@@ -569,7 +589,6 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 	/* On connection estabilished */
 	case LWS_CALLBACK_ESTABLISHED:
 	{
-		fprintf(stderr, "callback_websocket: LWS_CALLBACK_ESTABLISHED\n");
 
 		// Allocate gui manager
 		data->guiManager = new PortholeGUI();
@@ -599,10 +618,8 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			return 0;
 		}
 
-
-		PortholeCamera* sessionCamera = data->guiManager->getSessionCamera();
-
 		// Get the corresponding camera to be modified
+		PortholeCamera* sessionCamera = data->guiManager->getSessionCamera();
 		Camera* camera = sessionCamera->camera;
 		PixelData* canvas = sessionCamera->canvas;
 
@@ -617,7 +634,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		ByteArray* png = ImageUtils::encode(canvas, ImageUtils::FormatJpeg);
 		std::string base64image = base64_encode(png->getData(),png->getSize());
 
-		// TODO update width height ( not used now anyway )
+		// String to be send: base64 image and camera id
 		string toSend = "{\"event_type\" : \"stream\", \"base64image\" : \"";
 		toSend.append(base64image.c_str());
 		toSend.append("\", \"camera_id\" : " + boost::lexical_cast<string>(sessionCamera->id) + "}");
@@ -639,6 +656,7 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		// Save new timestamp
 		data->oldus = millisecondsSinceEpoch;
 
+		// Pass the token
 		libwebsocket_callback_on_writable(context, wsi);
 
 		break;
@@ -653,11 +671,16 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		int errorLine = 0;
 		block_allocator allocator(1 << 10); // 1 KB per block
         
+		// Parse json message received
 		json_value *root = json_parse((char*)in, &errorPos, &errorDesc, &errorLine, &allocator);
 		if (root)
 		{
             //print(root);
+
+			// Fill message object
             parse_json_message(root, data, &message);
+
+			// Handle message received
             handle_message(data, &message, context, wsi);
 		}
 
@@ -716,8 +739,6 @@ use_ssl(0), opts(0), n(0)
 
 	DATA_PATH = fullPath.substr(0,fullPath.find_last_of("/\\"));
 
-	// cout << "Path is: " << DATA_PATH << endl; 
-
 	minterface="";
 
 	//setPollPriority(Service::PollLast);
@@ -766,7 +787,7 @@ void ServerThread::threadProc(){
 	unsigned char buf[LWS_SEND_BUFFER_PRE_PADDING + 1024 +
 						  LWS_SEND_BUFFER_POST_PADDING];
 
-	cout << ">> !! Porthole initialization" << endl;
+	cout << ">> Porthole initialization" << endl;
 	
 	// Initialize the websockets context
 	context = libwebsocket_create_context(port, minterface, protocols,
@@ -774,7 +795,7 @@ void ServerThread::threadProc(){
 				cert_path, key_path, -1, -1, opts);
 
 	if (context == NULL) {
-		fprintf(stderr, "libwebsocket init failed\n");
+		fprintf(stderr, ">> !! libwebsocket init failed\n");
 		// TODO Delete service from global service manager
 		return;
 	}
