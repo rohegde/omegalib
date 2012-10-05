@@ -69,6 +69,7 @@ namespace omega
 		bool drawFps;
 		bool disableScene;
 		bool disableOverlay;
+		String cameraName;
 
 		Vector3f topLeft;
 		Vector3f bottomLeft;

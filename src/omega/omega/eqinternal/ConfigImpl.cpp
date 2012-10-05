@@ -302,10 +302,10 @@ uint32_t ConfigImpl::finishFrame()
 
 	if(ds->getDisplayConfig().panopticStereoEnabled)
 	{
+		Engine* engine = Engine::instance();
 		// if orientObserverToTile is enabled, we assume the observer orientation is always normal
 		// to the tile. Only the observer position is updated.
 		// This works only for ONE actual, tracked observer. So we just get observer 0 from the observer list.
-		Camera* cam = Engine::instance()->getDefaultCamera();
 
 		int numObservers = getObservers().size();
 		for(int i = 0; i < numObservers; i++)
@@ -329,8 +329,25 @@ uint32_t ConfigImpl::finishFrame()
 				otd.yaw = dtc.yaw;
 				
 				otd.tileCenter = dtc.center;
+
+				if(dtc.cameraName == "")
+				{
+					// Use dafault camera for this tile
+					otd.camera = engine->getDefaultCamera();
+				}
+				else
+				{
+					// Use a custom camera for this tile (create it here if necessary)
+					Camera* customCamera = engine->getCamera(dtc.cameraName);
+					if(customCamera == NULL)
+					{
+						customCamera = engine->createCamera(dtc.cameraName);
+						otd.camera = customCamera;
+					}
+				}
 			}
 
+			Camera* cam = otd.camera;
 			// Update the tile-observer head matrix, using the observer position and the per-tile orientation.
 			// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
 			const Vector3f& pos = cam->getHeadOffset();
