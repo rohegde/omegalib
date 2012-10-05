@@ -19,3 +19,19 @@ If you want your application to expose an interface to all the HTML5-capable bro
 
  * A _.xml_ file, that specifies the elements and their disposition for the different types of devices
  * A _.css_ file, that may contain any CSS style you want to apply to the final interface; it is used to tweak the style of the elements, but it may be empty if you are satisfied with the basic style provided
+
+Finally, you need to add the Porthole Service in your C++ or python application.
+
+= Hello Porthole =
+
+In the following sections we go deeper into:
+ * Create the xml file
+ * Create the css file
+ * Start the Porthole Service
+
+== Interfaces description: .xml file ==
+
+Starting the service is 
+
+== Interfaces style: .css file ==
+== Start the service ==
