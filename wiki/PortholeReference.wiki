@@ -5,4 +5,4 @@
 <p>*Last revision:* 5 Octoboer 2012
 <font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>
 
-OmegaLib offers support for HTML5-capable browsers interactions. Specifically, the interface is multi-touchable, in order to support most of the hand helded devices, such as iPad, iPhone, Android tablets, and Android smartphones.
+omegalib offers support for HTML5-capable browsers interactions. Specifically, the interface is multi-touchable, in order to support most of the hand helded devices, such as iPad, iPhone, Android tablets, and Android smartphones.
