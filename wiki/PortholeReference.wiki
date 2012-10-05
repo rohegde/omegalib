@@ -53,7 +53,7 @@ A camera could be of two types:
  * Custom, that is a camera that can freely move inside the world, based on interface interactions
  * Default, that is the default 3D camera inside the CAVE; thus, any interactions in the Virtual Environment is reflected in the interface canvas, and viceversa.
 
-====  Javascript events handlers binding and injection ==== 
+====  Javascript events handlers binding ==== 
 In the HTML elements, events handlers could be binded to application functionalities using either:
 
  * C++ functions binding: developer could bind an event handler to a C++ function in his application
@@ -65,8 +65,10 @@ This functionalities is achieved using a dynamic creation of Javascript function
 onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[1] -= 0.025; camera.setPosition(position);"  
 }}}
 
-Finally, the gui disposition part can be composed by any number of elements, with two required attributes each: minWidth and minHeight. This means that the interface type is mapped to the closest matching case.
-Moreover, each element must define two type of interfaces, a Portrait and a Landscape interface (which could be the same though).
+Finally, the gui disposition part can be composed by any number of elements, with two required attributes each: __minWidth__ and __minHeight__. This means that the interface type is mapped to the closest matching case.
+
+Moreover, each element must define two type of interfaces, a __Portrait__ and a __Landscape__ interface (which could be the same though). These elements have a required attribute that is __layout__, which could be __vertical__ or __horizontal__: the former, disposes the elements from top to bottom, the latter, disposes the elements from left to right.
+
 Inside each one of these two elements, any gui_element previously declared could be inserted.
 
 == Interfaces style: .css file ==
