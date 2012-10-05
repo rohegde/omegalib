@@ -38,7 +38,7 @@ The main idea of how to compose the XML file is given in the following figure.
 the XML is divided into two main branches. The first one specifies the number and type of GUI elements, that represent the main “blocks” of the GUI. The second branch is responsible for mapping the main blocks to the different types of devices that may want to connect to the application.
 In particular, the gui_elements part contains how many global interface blocks as needed, that are divided into two type (a third, a GoogleMaps canvas is in testing).
 
-===HTML element===
+==== HTML element ==== 
 This type of element can include any html piece of code, such as a group of control buttons, sliders, and so on. JQuery Mobile support is available, thus one could for example specify Buttons, Sliders, Radio Buttons, and so on, simply using JQuery Mobile classes.
 These elements represent an interface building block.
 
@@ -46,14 +46,14 @@ Notice that JQuery Mobile style will apply to all your elements, thus, if you do
 
 {{{data-role:"none"}}}
 
-===CAMERA element===
+==== CAMERA element ==== 
 This type of element represents a camera stream element, that is a rectangular space, with touch gestures enabled, that visualizes a camera inside the 3D world.
 A camera could be of two types:
 
  * Custom, that is a camera that can freely move inside the world, based on interface interactions
  * Default, that is the default 3D camera inside the CAVE; thus, any interactions in the Virtual Environment is reflected in the interface canvas, and viceversa.
 
-===Javascript events handlers binding and injection===
+====  Javascript events handlers binding and injection ==== 
 In the HTML elements, events handlers could be binded to application functionalities using either:
 
  * C++ functions binding: developer could bind an event handler to a C++ function in his application
