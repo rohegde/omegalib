@@ -24,8 +24,6 @@ If you want your application to expose an interface to all the HTML5-capable bro
 
 Finally, you need to add the Porthole Service in your C++ or python application.
 
-= Hello Porthole =
-
 In the following sections we go deeper into:
  * Create the xml file
  * Create the css file
@@ -33,7 +31,43 @@ In the following sections we go deeper into:
 
 == Interfaces description: .xml file ==
 
-Starting the service is 
+The main idea of how to compose the XML file is given in the following figure.
+
+-- TODO figure2 --
+
+the XML is divided into two main branches. The first one specifies the number and type of GUI elements, that represent the main “blocks” of the GUI. The second branch is responsible for mapping the main blocks to the different types of devices that may want to connect to the application.
+In particular, the gui_elements part contains how many global interface blocks as needed, that are divided into two type (a third, a GoogleMaps canvas is in testing).
+
+===HTML element===
+This type of element can include any html piece of code, such as a group of control buttons, sliders, and so on. JQuery Mobile support is available, thus one could for example specify Buttons, Sliders, Radio Buttons, and so on, simply using JQuery Mobile classes.
+These elements represent an interface building block.
+
+Notice that JQuery Mobile style will apply to all your elements, thus, if you do NOT want any style on a particular html tag (and all its children), add the following attribute:
+
+{{{data-role:"none"}}}
+
+===CAMERA element===
+This type of element represents a camera stream element, that is a rectangular space, with touch gestures enabled, that visualizes a camera inside the 3D world.
+A camera could be of two types:
+
+ * Custom, that is a camera that can freely move inside the world, based on interface interactions
+ * Default, that is the default 3D camera inside the CAVE; thus, any interactions in the Virtual Environment is reflected in the interface canvas, and viceversa.
+
+===Javascript events handlers binding and injection===
+In the HTML elements, events handlers could be binded to application functionalities using either:
+
+ * C++ functions binding: developer could bind an event handler to a C++ function in his application
+ * Python code injection: developer could insert into the event handler code a complete piece of code in Python language
+
+This functionalities is achieved using a dynamic creation of Javascript functions that uses WebSockets to send which event has been triggered and which C++ function or Python code to execute. In the following XML Description example, Python code has been injected directly into a button Javascript events handlers in order to move the camera (downward in this case).
+
+{{{
+onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[1] -= 0.025; camera.setPosition(position);"  
+}}}
+
+Finally, the gui disposition part can be composed by any number of elements, with two required attributes each: minWidth and minHeight. This means that the interface type is mapped to the closest matching case.
+Moreover, each element must define two type of interfaces, a Portrait and a Landscape interface (which could be the same though).
+Inside each one of these two elements, any gui_element previously declared could be inserted.
 
 == Interfaces style: .css file ==
 == Start the service ==
