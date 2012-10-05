@@ -1,4 +1,4 @@
-#summary Porthole refernce
+#summary Porthole reference
 #sidebar Sidebar
 
 = Porthole development=
