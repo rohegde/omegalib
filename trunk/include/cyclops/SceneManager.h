@@ -114,19 +114,19 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! PYAPI
 	struct ModelInfo: public ReferenceType
 	{
-		ModelInfo(): numFiles(1), size(0.0f), generateNormals(false), normalizeNormals(false), optimize(false), usePowerOfTwoTextures(true), buildKdTree(false)
+		ModelInfo(): numFiles(1), size(0.0f), generateNormals(false), normalizeNormals(false), optimize(false), usePowerOfTwoTextures(true), buildKdTree(false), generateTangents(false)
 		{}
 
-		ModelInfo(const String name, const String path, float size = 0.0f, int numFiles = 1, bool generateNormals = false, bool normalizeNormals = false)
+		ModelInfo(const String name, const String path, float size = 0.0f, int numFiles = 1, bool generateNormals = false, bool normalizeNormals = false, bool generateTangents = false)
 		{
 			this->name = name;
 			this->path = path;
 			this->size = size;
 			this->numFiles = numFiles;
 			this->generateNormals = generateNormals;
+			this->generateTangents = generateTangents;
 			this->normalizeNormals = normalizeNormals;
 		}
 
@@ -136,6 +136,7 @@ namespace cyclops {
 		uint numFiles;
 		float size;
 		bool generateNormals;
+		bool generateTangents;
 		bool optimize;
 
 		bool usePowerOfTwoTextures;
