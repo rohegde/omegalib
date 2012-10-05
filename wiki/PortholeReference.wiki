@@ -1,9 +1,9 @@
 #summary Porthole refernce
+#sidebar Sidebar
 
-= Introduction =
-
-Add your content here.
-
+= Porthole development=
+<p>*Last revision:* 5 Octoboer 2012
+<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>
 
 = Details =
 
