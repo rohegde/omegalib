@@ -335,6 +335,24 @@ void Engine::destroyCamera(Camera* cam)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Camera* Engine::createCamera(const String& name, uint flags)
+{
+	Camera* cam = createCamera(flags);
+	cam->setName(name);
+	return cam;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Camera* Engine::getCamera(const String& name)
+{
+	foreach(Camera* cam, myCameras)
+	{
+		if(cam->getName() == name) return cam;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Engine::CameraCollection::Range Engine::getCameras()
 {
     return CameraCollection::Range(myCameras.begin(), myCameras.end());

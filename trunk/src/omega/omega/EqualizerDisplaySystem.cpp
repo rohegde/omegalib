@@ -656,6 +656,9 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 					tc.offset = tc.index.cwiseProduct(tc.resolution);
 				}
 
+				// Custom camera
+				tc.cameraName = Config::getStringValue("cameraName", sTile, "");
+
 				ncfg.tiles[ncfg.numTiles] = &tc;
 				ncfg.numTiles++;
 			}
