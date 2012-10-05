@@ -72,4 +72,82 @@ Moreover, each element must define two type of interfaces, a __Portrait__ and a 
 Inside each one of these two elements, any gui_element previously declared could be inserted.
 
 == Interfaces style: .css file ==
+
+The usage of the .css file is straightforward: it is attached to the final html file that is run on the device, in order to be able to apply custom fine-grained style to the interface. An example is given in the Hello Porthole section.
+
 == Start the service ==
+
+This part differes either if the application is written in C++ or in Python.
+
+==== C++ ====
+
+If the application is written in C++, you must have a free port number, the xml file path, the css file path and a PortholeFunctionsBinder binder object.
+
+The function binder is used if you want to map any Javascript event handler to a C++ function (remember that C++ language has no Reflection, so the map must be explicit). In the following example, 5 functions are added.
+
+{{{
+	// Functions Bind
+	PortholeFunctionsBinder* binder = new PortholeFunctionsBinder();
+	binder->addFunction("up(event)", &up);
+	binder->addFunction("down(event)", &down);
+	binder->addFunction("left(event)", &left);
+	binder->addFunction("right(event)", &right);
+	binder->addFunction("zoomSlider(event)", &zoomSlider);
+
+	// Porthole initialize the porthole service
+	PortholeService* service = new PortholeService();
+	ServiceManager* svcManager = SystemManager::instance()->getServiceManager();
+	svcManager->addService(service);
+
+	string fullPath_xml;
+	DataManager::findFile("porthole/porthello.xml", fullPath_xml);
+
+	string fullPath_css;
+	DataManager::findFile("porthole/porthello.css", fullPath_css);
+
+	service->start(4080, (char*)fullPath_xml.c_str(), (char*)fullPath_css.c_str(), binder);
+
+}}}
+
+The functions definition is:
+
+{{{
+void up(PortholeEvent &ev){
+	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
+	myPosition[1] += 0.025f;
+	ev.sessionCamera->camera->setPosition(myPosition);
+}
+
+void down(PortholeEvent &ev){
+	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
+	myPosition[1] -= 0.025f;
+	ev.sessionCamera->camera->setPosition(myPosition);
+}
+
+void left(PortholeEvent &ev){
+	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
+	myPosition[0] -= 0.025f;
+	ev.sessionCamera->camera->setPosition(myPosition);
+}
+
+void right(PortholeEvent &ev){
+	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
+	myPosition[0] += 0.025f;
+	ev.sessionCamera->camera->setPosition(myPosition);
+}
+void zoomSlider(PortholeEvent &ev){
+	Vector3f myPosition = ev.sessionCamera->camera->getPosition();
+	myPosition[2] = atoi(ev.value.c_str())/100;
+	ev.sessionCamera->camera->setPosition(myPosition);
+}
+}}}
+
+Now, if we have a button that states, for example:
+
+{{{
+onmousedown="up(event)"  
+}}}
+
+each time a button is clicked in the browser, the C++ up(PortholeEvent &ev) function is called.
+
+==== Python ====
