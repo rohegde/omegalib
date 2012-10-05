@@ -30,6 +30,7 @@
 #include <osg/PositionAttitudeTransform>
 #include <osgAnimation/Animation>
 #include <osgUtil/SmoothingVisitor>
+#include <osgUtil/TangentSpaceGenerator>
 
 #include "cyclops/AnimatedObject.h"
 #include "cyclops/SceneManager.h"
@@ -50,6 +51,9 @@ SceneManager* SceneManager::mysInstance = NULL;
 Lock sModelQueueLock;
 Queue< Ref<SceneManager::LoadModelAsyncTask> > sModelQueue;
 bool sShutdownLoaderThread = false;
+
+// Default attribute binding for tangent array.
+int DefaultTangentAttribBinding = 6;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class ModelLoaderThread: public Thread
@@ -180,6 +184,36 @@ public:
 		{
 			stateset = node.getDrawable(i)->getStateSet();
 			if(stateset) setHint(stateset);
+		}
+	}
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class TangentSpaceGeneratorVisitor: public osg::NodeVisitor
+{
+protected:
+	int tangentAttribBinding;
+
+public:
+	TangentSpaceGeneratorVisitor(int tangentAttribBinding = DefaultTangentAttribBinding): osg::NodeVisitor(TRAVERSE_ALL_CHILDREN)
+	{ this->tangentAttribBinding = tangentAttribBinding; }
+
+    ~TangentSpaceGeneratorVisitor()
+	{}
+
+    virtual void apply(osg::Geode& node)
+	{
+		for(int i = 0; i < node.getNumDrawables(); i++)
+		{
+			osg::Geometry* geom = node.getDrawable(i)->asGeometry();
+			if(geom != NULL)
+			{
+				Ref<osgUtil::TangentSpaceGenerator> tsg = new osgUtil::TangentSpaceGenerator();
+				tsg->generate(geom, 0);
+				osg::Vec4Array* a_tangent = tsg->getTangentArray();
+				geom->setVertexAttribArray (tangentAttribBinding, a_tangent);
+				geom->setVertexAttribBinding (tangentAttribBinding, osg::Geometry::BIND_PER_VERTEX);
+			}
 		}
 	}
 };
@@ -796,6 +830,13 @@ bool SceneManager::loadModel(ModelInfo* info)
 					omsg("Generating normals...");
 					osgUtil::SmoothingVisitor sv;
 					node->accept(sv);
+				}
+
+				if(info->generateTangents)
+				{
+					omsg("Generating tangents...");
+					TangentSpaceGeneratorVisitor tsgv;
+					node->accept(tsgv);
 				}
 
 				if(info->normalizeNormals)
