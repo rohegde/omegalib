@@ -6,3 +6,16 @@
 <font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>
 
 omegalib offers support for HTML5-capable browsers interactions. Specifically, the interface is multi-touchable, in order to support most of the hand helded devices, such as iPads, iPhones, Android tablets, and Android smartphones.
+
+An overview of the system implementation is given in the following figure.
+
+-- TODO figure1 --
+
+Basically, the Porthole Service creates a Server in a separate thread, that handles all the incoming connections.
+
+= Instruction =
+
+If you want your application to expose an interface to all the HTML5-capable browsers, and, in particular, to most of the hand helded devices, you need to provide the following files:
+
+ * A _.xml_ file, that specifies the elements and their disposition for the different types of devices
+ * A _.css_ file, that may contain any CSS style you want to apply to the final interface; it is used to tweak the style of the elements, but it may be empty if you are satisfied with the basic style provided
