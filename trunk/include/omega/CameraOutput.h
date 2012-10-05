@@ -56,6 +56,9 @@ namespace omega {
 
 		RenderTarget* getRenderTarget() { return myRenderTarget; }
 
+		void lock() { myLock.lock();}
+		void unlock() { myLock.unlock();}
+
 	private:
 		bool myEnabled;
 		bool myOffscreen;
@@ -64,6 +67,8 @@ namespace omega {
 		PixelData* myReadbackColorTarget;
 		PixelData* myReadbackDepthTarget;
 		Rect myReadbackViewport;
+
+		Lock myLock;
 	};
 }; // namespace omega
 

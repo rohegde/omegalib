@@ -84,6 +84,7 @@ void CameraOutput::startFrame(const FrameInfo& frame)
 {
 	if(myRenderTarget != NULL)
 	{
+		lock();
 		myRenderTarget->clear();
 	}
 }
@@ -93,6 +94,7 @@ void CameraOutput::finishFrame(const FrameInfo& frame)
 {
 	if(myRenderTarget != NULL)
 	{
+		unlock();
 		// HACK
 		//myRenderTarget->readback();
 	}

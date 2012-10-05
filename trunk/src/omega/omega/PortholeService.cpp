@@ -631,7 +631,12 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		}
 
 		// Get camera image as PNG and base64 encode it, because only simple strings could be sent via websockets  
+		// Multithreading stuff: Lock the camera output, to make sure the pixel data we are getting 
+		// is not coming from an unfinished frame.
+		camera->getOutput(0)->lock();
 		ByteArray* png = ImageUtils::encode(canvas, ImageUtils::FormatJpeg);
+		camera->getOutput(0)->unlock();
+
 		std::string base64image = base64_encode(png->getData(),png->getSize());
 
 		// String to be send: base64 image and camera id
