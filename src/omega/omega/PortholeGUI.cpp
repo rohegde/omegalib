@@ -221,7 +221,7 @@ void PortholeGUI::createCustomCamera(bool followDefaultCamera, float widthPercen
 
 	PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  width,  height);
 
-	uint flags = Camera::ForceMono | Camera::DrawScene | Camera::Offscreen;
+	uint flags = Camera::ForceMono | Camera::DrawScene | Camera::Offscreen | Camera::DrawOverlay;
 
 	Camera* sessionCamera = myEngine->createCamera(flags);
 	sessionCamera->setMask(cameraMask);
