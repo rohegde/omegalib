@@ -5,9 +5,4 @@
 <p>*Last revision:* 5 Octoboer 2012
 <font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>
 
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+OmegaLib offers support for HTML5-capable browsers interactions. Specifically, the interface is multi-touchable, in order to support most of the hand helded devices, such as iPad, iPhone, Android tablets, and Android smartphones.
