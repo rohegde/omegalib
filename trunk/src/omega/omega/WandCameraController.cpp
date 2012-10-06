@@ -38,7 +38,9 @@ WandCameraController::WandCameraController():
 	mySpeed(0, 0, 0),
 	myFreeFly(false),
 	myFreeFlyEnabled(false),
-	myTorque(Quaternion::Identity())
+	myTorque(Quaternion::Identity()),
+	myStartPYR(Vector3f::Zero()),
+	myCurPYR(Vector3f::Zero())
 {
 	myAxisCorrection = Quaternion::Identity(); //AngleAxis(-Math::Pi / 2, Vector3f::UnitY());
 }
@@ -78,7 +80,7 @@ void WandCameraController::handleEvent(const Event& evt)
 
 		mySpeed = evt.getOrientation() * Vector3f(0, 0, y);
 		
-		myAxisCorrection = getCamera()->getOrientation();
+		//myAxisCorrection = getCamera()->getOrientation();
 		
 		// Button6 = Left Analog pressed.
 		if(evt.isFlagSet(Event::Button6)) 
@@ -86,17 +88,28 @@ void WandCameraController::handleEvent(const Event& evt)
 			if(myFreeFly == false)
 			{
 				myLastPointerPosition = evt.getPosition();
-				Quaternion o = evt.getOrientation() * myAxisCorrection;
-				myLastPointerOrientation = o.inverse();
+				
+				myAxisCorrection = getCamera()->getOrientation();
+				
+				
+				
+				Quaternion o = myAxisCorrection * evt.getOrientation();
+				
+				
+				myLastPointerOrientation = o.inverse() * getCamera()->getOrientation();
+				
+				
 				myLastPointerDirection = evt.getOrientation() * -Vector3f::UnitZ();
+				//myStartPYR = Math::quaternionToEuler(evt.getOrientation());
 			}
 			myFreeFly = true;
 		}
 		else
 		{
 			myFreeFly = false;
-			myTorque = Quaternion::Identity();
+			//myTorque = Quaternion::Identity();
 		}
+		
 		
 		
 		if(myFreeFly)
@@ -105,11 +118,13 @@ void WandCameraController::handleEvent(const Event& evt)
 			//float speedMul = 1 + dv.norm();
 			//ofmsg("Speedmul %1%", %speedMul);
 			mySpeed += dv;
-			Quaternion o = evt.getOrientation() * myAxisCorrection;
+			//Quaternion o = myAxisCorrection * evt.getOrientation();
+			//myCurPYR = Math::quaternionToEuler(evt.getOrientation());
 
 			if(myFreeFlyEnabled)
 			{
-				myTorque = myLastPointerOrientation * o;
+				Quaternion o = myAxisCorrection * evt.getOrientation();
+				myTorque = o * myLastPointerOrientation;
 			}
 			// myYaw = newO.yaw();
 			// myPitch = newO.pitch();
@@ -125,20 +140,21 @@ void WandCameraController::handleEvent(const Event& evt)
 void WandCameraController::update(const UpdateContext& context)
 {
 	if(!isEnabled()) return;
-	myTorque = Quaternion::Identity().slerp(context.dt * 0.2f, myTorque) * AngleAxis(myYaw, Vector3f::UnitY());
-	
 	Camera* c = getCamera();
+	myTorque = c->getOrientation().slerp(context.dt * 0.2f, myTorque);// * AngleAxis(myYaw, Vector3f::UnitY());
+	
 	if(c != NULL)
 	{
 		c->translate(mySpeed * context.dt, Node::TransformLocal);
-		c->rotate(myTorque, Node::TransformLocal);
+		//c->rotate(myTorque, Node::TransformWorld);
+		c->setOrientation(myTorque);
+		
 	}
 	
 	//Quaternion o = getCamera()->getOrientation();
 	
 	//getCamera()->translate(mySpeed * context.dt, Node::TransformLocal);
 	//getCamera()->rotate(myTorque.slerp(context.dt, Quaternion::Identity()), Node::TransformLocal);
-	
 	
 	mySpeed = mySpeed * 0.8f;
 	//myTorque = myTorque.slerp(0.5f, Quaternion::Identity());
