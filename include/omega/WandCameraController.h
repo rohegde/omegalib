@@ -59,6 +59,9 @@ namespace omega {
 		float myYaw;
 		float myRoll;	
 		
+		Vector3f myStartPYR;
+		Vector3f myCurPYR;
+		
 		Vector3f myLastPointerPosition;
 		Vector3f myLastPointerDirection;
 		Quaternion myLastPointerOrientation;
