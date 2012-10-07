@@ -39,7 +39,7 @@
 #include "omicron/SoundManager.h"
 
 namespace omega {
-	typedef List< Ref<Renderer> > EngineClientList;
+	typedef List< Ref<Renderer> > RendererList;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	template<typename T> class RendererObject
@@ -87,8 +87,9 @@ namespace omega {
 
 		//! Renderer management
 		//@{
-		void addClient(Renderer* client);
-		EngineClientList& getClients();
+		void addRenderer(Renderer* client);
+		Renderer* getRendererByContextId(int id);
+		RendererList& getRendererList();
 		void removeRenderPass(const String& renderPassName);
 		//@}
 
@@ -205,7 +206,7 @@ namespace omega {
 	{ return SystemManager::instance()->getServiceManager(); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineClientList& Engine::getClients()
+	inline RendererList& Engine::getRendererList()
 	{ return myClients; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

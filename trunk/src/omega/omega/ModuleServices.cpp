@@ -47,7 +47,7 @@ void EngineModule::doInitialize(Engine* server)
 	if(!myInitialized) 
 	{
 		initialize(); 
-		foreach(Renderer* r, server->getClients())
+		foreach(Renderer* r, server->getRendererList())
 		{
 			initializeRenderer(r);
 		}

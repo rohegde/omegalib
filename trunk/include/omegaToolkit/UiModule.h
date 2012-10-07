@@ -71,15 +71,15 @@ namespace omegaToolkit
 
 		void activateWidget(ui::Widget* w);
 
-		template<typename W> W* getSource(const Event& evt)
-		{
-			if(evt.getServiceType() == Service::Ui)
-			{
-				W* w = dynamic_cast<W*>(myWidgets[evt.getSourceId()]);
-				return w;
-			}
-			return NULL;
-		}
+		template<typename W> W* getSource(const Event& evt);
+
+		//! Extended ui
+		//@{
+		ui::Container* createExtendedUi(const String& name, uint mask, int rendererId);
+		ui::Container* getExtendedUi(const String& name);
+		void destroyExtendedUi(const String& name);
+		//@}
+
 
 	private:
 		void initImages(const Setting& images);
@@ -100,11 +100,31 @@ namespace omegaToolkit
 		Ref<ui::Widget> myActiveWidget;
 		Ref<ui::Container> myUi;
 		Ref<ui::WidgetFactory> myWidgetFactory;
+
+		struct ExtendedUiData: public ReferenceType
+		{
+			Ref<ui::Container> container;
+			Ref<Renderer> renderer;
+			Ref<UiRenderPass> renderPass;
+		};
+
+		List< Ref<ExtendedUiData> > myExtendedUiList;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline ui::WidgetFactory* UiModule::getWidgetFactory()
 	{ return myWidgetFactory; }
 		
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	template<typename W> 
+	inline W* UiModule::getSource(const Event& evt)
+	{
+		if(evt.getServiceType() == Service::Ui)
+		{
+			W* w = dynamic_cast<W*>(myWidgets[evt.getSourceId()]);
+			return w;
+		}
+		return NULL;
+	}
 };
 #endif

@@ -42,12 +42,13 @@ Renderer::Renderer(Engine* engine)
 {
 	myRenderer = new DrawInterface();
 	myServer = engine;
-	myServer->addClient(this);
+	myServer->addRenderer(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::addRenderPass(RenderPass* pass, bool addToFront)
 {
+	myLock.lock();
 	ofmsg("Renderer(%1%): adding render pass %2%", %getGpuContext()->getId() %pass->getName());
 	if(addToFront)
 	{
@@ -57,18 +58,23 @@ void Renderer::addRenderPass(RenderPass* pass, bool addToFront)
 	{
 		myRenderPassList.push_back(pass);
 	}
+	myLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::removeRenderPass(RenderPass* pass)
 {
+	myLock.lock();
 	myRenderPassList.remove(pass);
+	myLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::removeAllRenderPasses()
 {
+	myLock.lock();
 	myRenderPassList.clear();
+	myLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -196,6 +202,7 @@ void Renderer::innerDraw(const DrawContext& context, Camera* cam)
 		getRenderer()->endDraw();
 	}
 
+	myLock.lock();
 	// Execute all render passes in order. 
 	foreach(RenderPass* pass, myRenderPassList)
 	{
@@ -207,6 +214,7 @@ void Renderer::innerDraw(const DrawContext& context, Camera* cam)
 			pass->render(this, context);
 		}
 	}
+	myLock.unlock();
 
 	// Draw the pointers and console
 	// NOTE: Pointer and console drawing only runs for cameras that do not have a mask specified

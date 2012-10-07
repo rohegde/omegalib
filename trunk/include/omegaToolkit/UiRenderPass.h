@@ -29,14 +29,23 @@
 
 #include "omegaToolkitConfig.h"
 #include "omega/RenderPass.h"
+#include "omegaToolkit/ui/Container.h"
 
 namespace omegaToolkit {
 	class OTK_API UiRenderPass: public RenderPass
 	{
 	public:
-		UiRenderPass(Renderer* client, const String& name): RenderPass(client, name) {}
-		static RenderPass* createInstance(Renderer* client) { return new UiRenderPass(client, "UiRenderPass"); }
+		static RenderPass* createInstance(Renderer* client);
+
+	public:
+		UiRenderPass(Renderer* client, const String& name);
 		virtual void render(Renderer* client, const DrawContext& context);
+
+		void setUiRoot(ui::Container* value) { myUiRoot = value; }
+		ui::Container* getUiRoot() { return myUiRoot; }
+
+	private:
+		Ref<ui::Container> myUiRoot;
 	};
 }; // namespace omegaToolkit
 

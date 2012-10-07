@@ -111,6 +111,7 @@ void UiModule::initializeRenderer(Renderer* r)
 {
 	UiRenderPass* uirp = new UiRenderPass(r, "UiRenderPass");
 	r->addRenderPass(uirp, false);
+	uirp->setUiRoot(myUi);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,5 +183,57 @@ void UiModule::activateWidget(ui::Widget* w)
 	{
 		//ofmsg("Activating widget %1% (%2%)", %w->getId() %w->getName());
 		myActiveWidget->setActive(true);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+ui::Container* UiModule::createExtendedUi(const String& name, uint mask, int rendererId)
+{
+	Ref<ExtendedUiData> euid = new ExtendedUiData();
+
+	euid->container = new ui::Container(getEngine());
+	euid->container->setName(name);
+
+	euid->renderer = getEngine()->getRendererByContextId(rendererId);
+	if(euid->renderer == NULL)
+	{
+		ofwarn("UiModule::createExtendedUi: could not find renderer context id %1%", %rendererId);
+		return NULL;
+	}
+
+	euid->renderPass = new UiRenderPass(euid->renderer, name);
+	euid->renderer->addRenderPass(euid->renderPass, false);
+	euid->renderPass->setUiRoot(euid->container);
+
+	myExtendedUiList.push_back(euid);
+
+	return euid->container;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+ui::Container* UiModule::getExtendedUi(const String& name)
+{
+	foreach(ExtendedUiData* euid, myExtendedUiList)
+	{
+		if(euid->container->getName() == name) return euid->container;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void UiModule::destroyExtendedUi(const String& name)
+{
+	ExtendedUiData* todelete = NULL;
+
+	foreach(ExtendedUiData* euid, myExtendedUiList)
+	{
+		if(euid->container->getName() == name) todelete = euid;
+	}
+
+	// Found extended ui. delete it.
+	if(todelete != NULL)
+	{
+		todelete->renderer->removeRenderPass(todelete->renderPass);
+		myExtendedUiList.remove(todelete);
 	}
 }

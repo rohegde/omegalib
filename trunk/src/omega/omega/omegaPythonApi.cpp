@@ -99,7 +99,7 @@ static PyObject* omegaRun(PyObject* self, PyObject* args)
 //	}
 //	sScriptRendererCommand->setStatement(statement);
 //	Engine* engine = Engine::instance();
-//	foreach(Renderer* r, engine->getClients())
+//	foreach(Renderer* r, engine->getRendererList())
 //	{
 //		r->queueCommand(sScriptRendererCommand);
 //	}
