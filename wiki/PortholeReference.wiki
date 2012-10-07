@@ -329,7 +329,15 @@ Here, you can define your style for any content of the final html file.
 
 ==== Result ====
 
--- TODO Figure --
+The result of the defined interface in Porthello xlarge landscape and in Brain2 xlarge portrait is given.
+
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/Porthole/porthello_porthole.jpg" width="500"/></p><p align="middle">
+_^The porthello interface.^_
+</p>
+
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/Porthole/brain2_porthole.jpg" width="300"/></p><p align="middle">
+_^The Brain2 interface.^_
+</p>
 
 == Conclusion ==
 
