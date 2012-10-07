@@ -188,7 +188,7 @@ void Engine::dispose()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Engine::addClient(Renderer* client)
+void Engine::addRenderer(Renderer* client)
 {
     oassert(client != NULL);
     myClients.push_back(client);
@@ -374,4 +374,14 @@ int Engine::getCanvasWidth()
 int Engine::getCanvasHeight()
 {
 	return getDisplaySystem()->getCanvasSize().y(); 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Renderer* Engine::getRendererByContextId(int id)
+{
+	foreach(Renderer* r, myClients)
+	{
+		if(r->getGpuContext()->getId() == id) return r;
+	}
+	return NULL;
 }

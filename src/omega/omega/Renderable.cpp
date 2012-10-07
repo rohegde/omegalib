@@ -106,7 +106,7 @@ void RenderableFactory::initialize(Engine* srv)
 	{
 		//ofmsg("Initializing renderable factory: %1%", %toString());
 		myServer = srv;
-		foreach(Renderer* client, srv->getClients())
+		foreach(Renderer* client, srv->getRendererList())
 		{
 			addRenderable(client);
 		}

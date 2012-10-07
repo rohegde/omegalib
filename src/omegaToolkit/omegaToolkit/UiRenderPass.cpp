@@ -40,6 +40,18 @@ using namespace omegaToolkit;
 Lock sLock;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+RenderPass* UiRenderPass::createInstance(Renderer* client) 
+{ 
+	return new UiRenderPass(client, "UiRenderPass"); 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+UiRenderPass::UiRenderPass(Renderer* client, const String& name): 
+	RenderPass(client, name), 
+	myUiRoot(NULL) 
+{}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void UiRenderPass::render(Renderer* client, const DrawContext& context)
 {
 	sLock.lock();
@@ -71,7 +83,7 @@ void UiRenderPass::render(Renderer* client, const DrawContext& context)
 
 		client->getRenderer()->beginDraw2D(context);
 
-		ui::Container* ui = UiModule::instance()->getUi();
+		ui::Container* ui = myUiRoot;
 		const Rect& vp = Rect(0, 0, displaySize[0], displaySize[1]);
 
 		// Update the root container size if necessary.
