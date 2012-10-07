@@ -11,7 +11,9 @@ Moreover, the interfaces are tailored on application needs and on devices specif
 
 An overview of the system implementation is given in the following figure.
 
--- TODO figure1 --
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/Porthole/porthole_overview.jpg" width="500"/></p><p align="middle">
+_^The system overview.^_
+</p>
 
 Basically, the Porthole Service creates a Server in a separate thread, that handles all the incoming connections. But all the steps between the XML description and the actual management of the different devices, including camera streaming and manipulations, are transparent to the application developer.
 
@@ -33,7 +35,9 @@ In the following sections we go deeper into:
 
 The main idea of how to compose the XML file is given in the following figure.
 
--- TODO figure2 --
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/Porthole/xml_schema.jpg" width="500"/></p><p align="middle">
+_^The xml file composition.^_
+</p>
 
 the XML is divided into two main branches. The first one specifies the number and type of GUI elements, that represent the main “blocks” of the GUI. The second branch is responsible for mapping the main blocks to the different types of devices that may want to connect to the application.
 In particular, the gui_elements part contains how many global interface blocks as needed, that are divided into two type (a third, a GoogleMaps canvas is in testing).
