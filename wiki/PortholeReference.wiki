@@ -17,7 +17,7 @@ _^The system overview.^_
 
 Basically, the Porthole Service creates a Server in a separate thread, that handles all the incoming connections. But all the steps between the XML description and the actual management of the different devices, including camera streaming and manipulations, are transparent to the application developer.
 
-= Instruction =
+== Introduction ==
 
 If you want your application to expose an interface to all the HTML5-capable browsers, and, in particular, to most of the hand helded devices, you need to provide the following files:
 
