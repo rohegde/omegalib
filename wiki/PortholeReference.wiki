@@ -151,3 +151,29 @@ onmousedown="up(event)"
 each time a button is clicked in the browser, the C++ up(PortholeEvent &ev) function is called.
 
 ==== Python ====
+
+If you want to add Porthole Service for your Python application, you just need to call the following Python function.
+
+{{{
+PortholeService.createAndInitialize(port_number,path_to_xml,path_to_css)
+}}}
+
+The arguments are:
+ * port_number: a TCP port available and open
+ * path_to_xml: a string that contains the path to you .xml file
+ * path_to_css: a string that contains the path to your .css file
+
+Now, if we have a button that states, for example:
+
+{{{
+onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[2] -= 0.025; camera.setPosition(position);"  
+}}}
+
+When the botton is clicked, the Python code is passed to the Python interpreter and executed. In this case, the camera will move along the Z axis.
+
+The Javascript variables exposed are:
+ * %id%, the camera id associated with the user session
+ * %value%, the value of the field that the event is targeting
+ * %key*, the keyboard key pressed in case of keyboard events
+ * %btn%, the mouse button number in case of mouse events
+ * %event%, a string containing the name of the event triggered
