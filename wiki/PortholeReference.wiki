@@ -24,7 +24,7 @@ If you want your application to expose an interface to all the HTML5-capable bro
  * A _.xml_ file, that specifies the elements and their disposition for the different types of devices
  * A _.css_ file, that may contain any CSS style you want to apply to the final interface; it is used to tweak the style of the elements, but it may be empty if you are satisfied with the basic style provided
 
-Finally, you need to add the Porthole Service in your C++ or python application.
+Finally, you need to add the Porthole Service in your C++ or Python application.
 
 In the following sections we go deeper into:
  * Create the xml file
@@ -163,7 +163,7 @@ PortholeService.createAndInitialize(port_number,path_to_xml,path_to_css)
 }}}
 
 The arguments are:
- * port_number: a TCP port available and open
+ * port_number: a free TCP port
  * path_to_xml: a string that contains the path to you .xml file
  * path_to_css: a string that contains the path to your .css file
 
@@ -175,14 +175,14 @@ onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position
 
 When the botton is clicked, the Python code is passed to the Python interpreter and executed. In this case, the camera will move along the Z axis.
 
-The Javascript variables exposed are:
+The Javascript variables exposed through tokens are:
  * %id%, the camera id associated with the user session
  * %value%, the value of the field that the event is targeting
  * %key%, the keyboard key pressed in case of keyboard events
  * %btn%, the mouse button number in case of mouse events
  * %event%, a string containing the name of the event triggered
 
-Basically, those token are replaced with Javascript event variables before passing the Python code to the interpreter.
+Basically, those tokens are replaced with Javascript event variables before passing the Python code to the interpreter.
 
 == Hello Porthole! ==
 
@@ -191,8 +191,8 @@ In particular, this example is taken from Porthello, a project that you should h
 
 ==== Porthello.xml ====
 
-In this example, various HTML interface blocks, and a CAMERA block are created inside the gui_elements portion.
-Then, in the gui_disposition, 4 types of interfaces as been created:
+In this example, various HTML interface blocks and a CAMERA block are created inside the gui_elements portion.
+Then, in the gui_disposition, 4 types of interfaces has been created:
  * small
  * medium
  * large
@@ -301,7 +301,7 @@ You can play with number, names and sizes of the elements in each interface and 
 
 ==== Porthello.css ====
 
-In this example, the .css file is quite simple. We just want to have a style for inline and centered content, hide the input field of the color picker and set the width of our slider.
+In this example, the .css file is quite simple. We just want to have a style for inline and centered contents, hide the input field of the color picker and set the width of our zooming slider.
 
 {{{
 .div-aligned {
