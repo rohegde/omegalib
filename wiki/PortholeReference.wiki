@@ -185,6 +185,19 @@ Basically, those token are replaced with Javascript event variables before passi
 In this section, a complete example is given. 
 In particular, this example is taken from Porthello, a project that you should have checked out with omegalib.
 
+==== Porthello.xml ====
+
+In this example, various HTML interface blocks, and a CAMERA block are created inside the gui_elements portion.
+Then, in the gui_disposition, 4 types of interfaces as been created:
+ * small
+ * medium
+ * large
+ * xlarge
+
+For each one of them, both a portrait and landscape layout has been created.
+
+The Javascript events handlers has been implemented using Python code injection. 
+
 {{{
 <gui>
   
@@ -279,3 +292,40 @@ In particular, this example is taken from Porthello, a project that you should h
   
 </gui>
 }}}
+
+You can play number, names and sizes of the elements in each interface and see the difference in the browser, just by resizing your browser windows accordingly with the interface size and type (portrait vs landscape: i.e. width > height ?) 
+
+==== Porthello.css ====
+
+In this example, the .css file is quite simple. We just want to have a style for inline and centered content, hide the input field of the color picker and set the width of our slider.
+
+{{{
+.div-aligned {
+    margin: 0 auto;
+    text-align: center;
+    position:relative;
+}
+.div-aligned fieldset {
+    display: inline;
+}
+
+#color_picker 
+{
+    margin: 0 auto;
+    text-align: center;
+    position:relative;
+}
+
+input.ui-slider-input {
+        display : none !important;
+}
+
+div.ui-slider{width:95%;}
+}}}
+
+Here, you can define your style for any content of the final html file.
+
+== Conclusion ==
+
+As you can see from the previous example, now it's quite straightforward to have you HTML5 dynamic interface, simply using an xml and, optionally, a .css file.
+You don't have to bother on handling connections nor implementing the message passing protocol between client and server: just define your beautiful dynamic interface!
