@@ -2,7 +2,7 @@
 #sidebar Sidebar
 
 = Porthole development=
-<p>*Last revision:* 8 Octoboer 2012
+<p>*Last revision:* 8 October 2012
 <font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>
 
 omegalib offers support for HTML5-capable browsers interactions. Specifically, the interface is multi-touchable, in order to support most of the hand helded devices, such as iPads, iPhones, Android tablets, and Android smartphones.
@@ -194,7 +194,7 @@ Then, in the gui_disposition, 4 types of interfaces as been created:
  * large
  * xlarge
 
-For each one of them, both a portrait and landscape layout has been created.
+For each one of them, both a portrait and a landscape layout has been created.
 
 The Javascript events handlers has been implemented using Python code injection. 
 
@@ -293,7 +293,7 @@ The Javascript events handlers has been implemented using Python code injection.
 </gui>
 }}}
 
-You can play number, names and sizes of the elements in each interface and see the difference in the browser, just by resizing your browser windows accordingly with the interface size and type (portrait vs landscape: i.e. width > height ?) 
+You can play with number, names and sizes of the elements in each interface and see the difference in the browser, just by resizing your browser windows accordingly with the interface size and type (portrait vs landscape: i.e. (width > height)? ) 
 
 ==== Porthello.css ====
 
@@ -317,13 +317,19 @@ In this example, the .css file is quite simple. We just want to have a style for
 }
 
 input.ui-slider-input {
-        display : none !important;
+    display : none !important;
 }
 
-div.ui-slider{width:95%;}
+div.ui-slider{
+    width:95%;
+}
 }}}
 
 Here, you can define your style for any content of the final html file.
+
+==== Result ====
+
+-- TODO Figure --
 
 == Conclusion ==
 
