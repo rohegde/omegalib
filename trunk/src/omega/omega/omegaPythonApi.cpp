@@ -346,6 +346,13 @@ const Setting& settingLookup(const String& settingName)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void queueCommand(const String& command)
+{
+	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+	interp->queueCommand(command);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 // @internal
 struct Vector3f_to_python
 {
@@ -809,6 +816,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("settingExists", &settingExists);
 	def("toggleStats", &toggleStats);
 	def("overridePanopticStereo", overridePanopticStereo);
+	def("queueCommand", queueCommand);
 };
 
 // Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)
