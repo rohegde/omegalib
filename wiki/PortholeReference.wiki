@@ -341,5 +341,5 @@ _^The Brain2 interface.^_
 
 == Conclusion ==
 
-As you can see from the previous example, now it's quite straightforward to have you HTML5 dynamic interface, simply using an xml and, optionally, a .css file.
+As you can see from the previous example, now it's quite straightforward to have your HTML5 dynamic interface, simply using an xml file and, optionally, a css file.
 You don't have to bother on handling connections nor implementing the message passing protocol between client and server: just define your beautiful dynamic interface!
