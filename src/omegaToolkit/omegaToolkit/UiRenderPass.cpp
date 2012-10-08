@@ -66,7 +66,7 @@ void UiRenderPass::render(Renderer* client, const DrawContext& context)
 		// menus to always be visible and unoccluded by geometry.
 		glDisable(GL_DEPTH_TEST);
 
-		ui::Container* ui = UiModule::instance()->getUi();
+		ui::Container* ui = myUiRoot;
 		Renderable* uiRenderable = ui->getRenderable(client);
 		if(uiRenderable != NULL)
 		{
