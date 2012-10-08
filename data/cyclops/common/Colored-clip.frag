@@ -8,6 +8,8 @@ uniform bool unif_Trans;
 
 varying float var_CurrentX;
 
+varying vec3 var_Normal;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SurfaceData getSurfaceData(void)
 {
@@ -23,6 +25,8 @@ SurfaceData getSurfaceData(void)
 
 	sd.shininess = unif_Shininess;
 	sd.gloss = unif_Gloss;
+
+	sd.normal = var_Normal;
 	
 	return sd;
 }
