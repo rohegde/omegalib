@@ -119,6 +119,7 @@ void Engine::initialize()
 	}
 
 	// Load sound config from system config file
+	// On distributed systems, this is executed only on the master node
 	if(syscfg->exists("config/sound"))
 	{
 		String soundServerIP = "localhost";
