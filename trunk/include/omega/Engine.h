@@ -193,8 +193,8 @@ namespace omega {
 		bool myDebugWand;
 
 		// Sound
-		SoundManager* soundManager;
-		SoundEnvironment* soundEnv;
+		Ref<SoundManager> soundManager;
+		Ref<SoundEnvironment> soundEnv;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
