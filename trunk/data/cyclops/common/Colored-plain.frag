@@ -8,6 +8,7 @@ SurfaceData getSurfaceData(void)
 	sd.emissive = gl_Color;
 	sd.shininess = 0;
 	sd.gloss = 0;
+	sd.normal = var_Normal;
 	
 	return sd;
 }

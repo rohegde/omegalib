@@ -13,6 +13,8 @@ uniform float unif_ClipX;
 
 varying float var_CurrentX;
 
+varying vec3 var_Normal;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SurfaceData getSurfaceData(void)
 {
@@ -32,6 +34,7 @@ SurfaceData getSurfaceData(void)
 
 	sd.shininess = 0.0;
 	sd.gloss = unif_Gloss;
+	sd.normal = var_Normal;
 	
 	return sd;
 }

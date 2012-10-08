@@ -7,6 +7,8 @@
 
 varying float power;
 
+varying vec3 var_Normal;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SurfaceData getSurfaceData(void)
 {
@@ -23,6 +25,7 @@ SurfaceData getSurfaceData(void)
 	sd.emissive.a = power;
 	sd.shininess = 0;
 	sd.gloss = 0;
+	sd.normal = var_Normal;
 	
 	return sd;
 }
