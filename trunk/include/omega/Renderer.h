@@ -73,7 +73,8 @@ namespace omega {
 		void innerDraw(const DrawContext& context, Camera* camera);
 
 	private:
-		Lock myLock;
+		Lock myRenderCommandLock;
+		Lock myRenderPassLock;
 
 		GpuContext* myGpuContext;
 
