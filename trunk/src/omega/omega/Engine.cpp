@@ -137,6 +137,7 @@ void Engine::initialize()
 		soundManager->startSoundServer();
 
 		soundEnv = soundManager->getSoundEnvironment();
+		soundManager->setListenerPosition(Vector3f(0, 2, 0));
 	}
 
 
