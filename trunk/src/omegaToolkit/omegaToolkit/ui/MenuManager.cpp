@@ -396,7 +396,7 @@ void Menu::hide()
 		Vector3f cameraPosition = myManager->getEngine()->getDefaultCamera()->getPosition();
 		myManager->getEngine()->getSoundManager()->setListenerPosition( cameraPosition );
 
-		SoundInstance* hideSound = new SoundInstance(myManager->getHideMenuSound());
+		Ref<SoundInstance> hideSound = new SoundInstance(myManager->getHideMenuSound());
 		ofmsg("Menu::hide() about to play sound %1%", %myManager->getHideMenuSound()->getFilePath() );
 		ofmsg("Menu pos: %1%", %myContainer->get3dSettings().position );
 		ofmsg("Listener pos: %1%", %myManager->getEngine()->getSoundManager()->getListenerPosition() );
@@ -475,7 +475,9 @@ MenuManager::MenuManager():
 	myNavigationSuspended(true),
 	myRayPlaceEnabled(true),
 	myMenuToggleButton(Event::User),
-	myUseMenuToggleButton(false)
+	myUseMenuToggleButton(false),
+	myHideSoundMenu(NULL),
+	myShowMenuSound(NULL)
 {
 	mysInstance = this;
 }
@@ -522,31 +524,37 @@ void MenuManager::initialize()
 		myDefaultMenuScale *= 0.001f;
 	}
 
-	if(SystemManager::settingExists("config/sound"))
+	// See if we have a sound environment available.
+	// If we don't it means sounds are disabled OR we are not the master node.
+	SoundEnvironment* se = getEngine()->getSoundEnvironment();
+	if(se != NULL)
 	{
-		Setting& sUi = SystemManager::settingLookup("config/sound");
+		if(SystemManager::settingExists("config/sound"))
+		{
+			Setting& sUi = SystemManager::settingLookup("config/sound");
 
-		showMenuSound = getEngine()->getSoundEnvironment()->createSound("showMenuSound");
-		showMenuSound->loadFromFile( Config::getStringValue("showMenuSound", sUi, "showMenu.wav").c_str() );
+			myShowMenuSound = se->createSound("myShowMenuSound");
+			myShowMenuSound->loadFromFile( Config::getStringValue("myShowMenuSound", sUi, "showMenu.wav").c_str() );
 
-		hideMenuSound = getEngine()->getSoundEnvironment()->createSound("hideMenuSound");
-		hideMenuSound->loadFromFile( Config::getStringValue("hideMenuSound", sUi, "hideMenu.wav").c_str() );
+			myHideSoundMenu = se->createSound("myHideSoundMenu");
+			myHideSoundMenu->loadFromFile( Config::getStringValue("myHideSoundMenu", sUi, "hideMenu.wav").c_str() );
 		
-		selectMenuSound = getEngine()->getSoundEnvironment()->createSound("selectMenuSound");
-		selectMenuSound->loadFromFile( Config::getStringValue("selectMenuSound", sUi, "selectMenu.wav").c_str() );
+			selectMenuSound = se->createSound("selectMenuSound");
+			selectMenuSound->loadFromFile( Config::getStringValue("selectMenuSound", sUi, "selectMenu.wav").c_str() );
 		
-		scrollMenuSound = getEngine()->getSoundEnvironment()->createSound("scrollMenuSound");
-		scrollMenuSound->loadFromFile( Config::getStringValue("scrollMenuSound", sUi, "scrollMenu.wav").c_str() );
+			scrollMenuSound = se->createSound("scrollMenuSound");
+			scrollMenuSound->loadFromFile( Config::getStringValue("scrollMenuSound", sUi, "scrollMenu.wav").c_str() );
 		
-		float volume = Config::getFloatValue("menuSoundVolume", sUi, 1.0);
-		float width = Config::getFloatValue("menuSoundWidth", sUi, 1.0);
-		float mix = Config::getFloatValue("menuSoundMix", sUi, 1.0);
-		float reverb = Config::getFloatValue("menuSoundReverb", sUi, 1.0);
+			float volume = Config::getFloatValue("menuSoundVolume", sUi, 1.0);
+			float width = Config::getFloatValue("menuSoundWidth", sUi, 1.0);
+			float mix = Config::getFloatValue("menuSoundMix", sUi, 1.0);
+			float reverb = Config::getFloatValue("menuSoundReverb", sUi, 1.0);
 		
-		showMenuSound->setDefaultParameters(volume, width, mix, reverb, false);
-		hideMenuSound->setDefaultParameters(volume, width, mix, reverb, false);
-		selectMenuSound->setDefaultParameters(volume, width, mix, reverb, false);
-		scrollMenuSound->setDefaultParameters(volume, width, mix, reverb, false);
+			myShowMenuSound->setDefaultParameters(volume, width, mix, reverb, false);
+			myHideSoundMenu->setDefaultParameters(volume, width, mix, reverb, false);
+			selectMenuSound->setDefaultParameters(volume, width, mix, reverb, false);
+			scrollMenuSound->setDefaultParameters(volume, width, mix, reverb, false);
+		}
 	}
 
 	// Read configuration parameters from system config
@@ -672,19 +680,19 @@ Menu* MenuManager::createMenu(const String& name)
 	Menu* menu = new Menu(name, this);
 	myMenuList.push_back(menu);
 	
-	if(hideMenuSound != NULL)
+	if(myHideSoundMenu != NULL)
 	{
 		// Mutes menu sound for default hide
-		hideMenuSound->setVolumeScale(0);
+		myHideSoundMenu->setVolumeScale(0);
 	}
 	
 	// Set not visible by default.
 	menu->hide();
 	
-	if(hideMenuSound != NULL)
+	if(myHideSoundMenu != NULL)
 	{
 		// Reenables menu sound
-		hideMenuSound->setVolumeScale(1);
+		myHideSoundMenu->setVolumeScale(1);
 	}
 	
 	return menu;

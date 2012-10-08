@@ -349,7 +349,9 @@ const Setting& settingLookup(const String& settingName)
 void queueCommand(const String& command)
 {
 	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-	interp->queueCommand(command);
+	// Mark the command as queued locally, since we expect queueCommand to be executed on all nodes
+	// when running in a distributed environment
+	interp->queueCommand(command, true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
