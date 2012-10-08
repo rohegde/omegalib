@@ -264,7 +264,6 @@ void PythonInterpreter::addModule(const char* name, PyMethodDef* methods, const 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::eval(const String& script, const char* format, ...)
 {
-	lockInterpreter();
 
 	char* str = const_cast<char*>(script.c_str());
 	if(format == NULL)
@@ -278,11 +277,14 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 		}
 		else
 		{
+			lockInterpreter();
 			PyRun_SimpleString(str);
+			unlockInterpreter();
 		}
 	}
 	else
 	{
+		lockInterpreter();
 		PyObject * module = PyImport_AddModule("__main__");
 		PyObject* dict = PyModule_GetDict(module);
 		PyObject* result = PyRun_String(str, Py_eval_input, dict, dict);
@@ -300,9 +302,8 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 
 			va_end(args);
 		}
+		unlockInterpreter();
 	}
-
-	unlockInterpreter();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

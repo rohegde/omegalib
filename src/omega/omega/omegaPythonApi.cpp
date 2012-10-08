@@ -562,6 +562,18 @@ SceneNode* getScene()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+SoundEnvironment* getSoundEnvironment()
+{
+	return Engine::instance()->getSoundEnvironment();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool isSoundEnabled()
+{
+	return Engine::instance()->getSoundManager()->isSoundServerRunning();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void toggleStats(const String& stats)
 {
 	EqualizerDisplaySystem* eqds = dynamic_cast<EqualizerDisplaySystem*>(SystemManager::instance()->getDisplaySystem());
@@ -794,10 +806,45 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(Font, computeSize)
 		;
 
-	// PortholeService
+	// PixelData
 	PYAPI_REF_BASE_CLASS(PixelData)
 		PYAPI_METHOD(PixelData, getWidth)
 		PYAPI_METHOD(PixelData, getHeight)
+		;
+
+	// SoundEnvironment
+	PYAPI_REF_BASE_CLASS(SoundEnvironment)
+		PYAPI_REF_GETTER(SoundEnvironment, loadSoundFromFile)
+		;
+
+	// Sound
+	PYAPI_REF_BASE_CLASS(Sound)
+		PYAPI_METHOD(Sound, getDuration)
+		PYAPI_METHOD(Sound, getVolumeScale)
+		PYAPI_METHOD(Sound, setVolumeScale)
+		;
+
+	// SoundInstance
+	void (SoundInstance::*playSimple)() = &SoundInstance::play;
+	class_<SoundInstance, boost::noncopyable, Ref<SoundInstance> >("SoundInstance", init<Sound*>())
+		.def("play", playSimple)
+		PYAPI_METHOD(SoundInstance, pause)
+		PYAPI_METHOD(SoundInstance, stop)
+		PYAPI_METHOD(SoundInstance, isPlaying)
+		PYAPI_METHOD(SoundInstance, setLoop)
+		PYAPI_METHOD(SoundInstance, getLoop)
+		PYAPI_METHOD(SoundInstance, setPosition)
+		PYAPI_GETTER(SoundInstance, getPosition)
+		PYAPI_METHOD(SoundInstance, isEnvironmentSound)
+		PYAPI_METHOD(SoundInstance, setEnvironmentSound)
+		PYAPI_METHOD(SoundInstance, setVolume)
+		PYAPI_METHOD(SoundInstance, getVolume)
+		PYAPI_METHOD(SoundInstance, setWidth)
+		PYAPI_METHOD(SoundInstance, getWidth)
+		PYAPI_METHOD(SoundInstance, setMix)
+		PYAPI_METHOD(SoundInstance, getMix)
+		PYAPI_METHOD(SoundInstance, setReverb)
+		PYAPI_METHOD(SoundInstance, getReverb)
 		;
 
 	// Free Functions
@@ -808,6 +855,8 @@ BOOST_PYTHON_MODULE(omega)
 	def("getCameraById", getCameraById, PYAPI_RETURN_REF);
 #endif
 	def("getScene", getScene, PYAPI_RETURN_REF);
+	def("getSoundEnvironment", getSoundEnvironment, PYAPI_RETURN_REF);
+	def("isSoundEnabled", isSoundEnabled);
 	def("querySceneRay", querySceneRay);
 	def("getRayFromEvent", getRayFromEvent);
 	def("printChildren", &printChildren);
