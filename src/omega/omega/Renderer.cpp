@@ -48,7 +48,7 @@ Renderer::Renderer(Engine* engine)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::addRenderPass(RenderPass* pass, bool addToFront)
 {
-	myLock.lock();
+	myRenderPassLock.lock();
 	ofmsg("Renderer(%1%): adding render pass %2%", %getGpuContext()->getId() %pass->getName());
 	if(addToFront)
 	{
@@ -58,23 +58,23 @@ void Renderer::addRenderPass(RenderPass* pass, bool addToFront)
 	{
 		myRenderPassList.push_back(pass);
 	}
-	myLock.unlock();
+	myRenderPassLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::removeRenderPass(RenderPass* pass)
 {
-	myLock.lock();
+	myRenderPassLock.lock();
 	myRenderPassList.remove(pass);
-	myLock.unlock();
+	myRenderPassLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::removeAllRenderPasses()
 {
-	myLock.lock();
+	myRenderPassLock.lock();
 	myRenderPassList.clear();
-	myLock.unlock();
+	myRenderPassLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,9 +106,9 @@ void Renderer::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::queueCommand(IRendererCommand* cmd)
 {
-	myLock.lock();
+	myRenderCommandLock.lock();
 	myRenderableCommands.push(cmd);
-	myLock.unlock();
+	myRenderCommandLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,13 +156,13 @@ void Renderer::draw(const DrawContext& context)
 	}
 
 	// Execute renderable commands.
-	myLock.lock();
+	myRenderCommandLock.lock();
 	while(!myRenderableCommands.empty())
 	{
 		myRenderableCommands.front()->execute(this);
 		myRenderableCommands.pop();
 	}
-	myLock.unlock();
+	myRenderCommandLock.unlock();
 
 	foreach(Ref<Camera> cam, myServer->getCameras())
 	{
@@ -178,7 +178,6 @@ void Renderer::draw(const DrawContext& context)
 
 	// Draw once for the default camera (using the passed main draw context).
 	innerDraw(context, myServer->getDefaultCamera());
-	//sLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -202,7 +201,7 @@ void Renderer::innerDraw(const DrawContext& context, Camera* cam)
 		getRenderer()->endDraw();
 	}
 
-	myLock.lock();
+	myRenderPassLock.lock();
 	// Execute all render passes in order. 
 	foreach(RenderPass* pass, myRenderPassList)
 	{
@@ -214,7 +213,7 @@ void Renderer::innerDraw(const DrawContext& context, Camera* cam)
 			pass->render(this, context);
 		}
 	}
-	myLock.unlock();
+	myRenderPassLock.unlock();
 
 	// Draw the pointers and console
 	// NOTE: Pointer and console drawing only runs for cameras that do not have a mask specified
