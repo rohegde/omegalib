@@ -49,7 +49,7 @@ OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node), myInitialized(fal
 
 	Vector3f radius(fradius, fradius, fradius);
 
-	ofmsg("&OsgRenderable center: %1%, size: %2%", %center %bs.radius());
+	//ofmsg("&OsgRenderable center: %1%, size: %2%", %center %bs.radius());
 
 	myBBox.setExtents(center - radius, center + radius);
 }
