@@ -112,10 +112,33 @@ void Engine::initialize()
 	myScene->addChild(myDefaultCamera);
 
 	// Load camera config form system config file
+	// camera section = default camera only
 	if(syscfg->exists("config/camera"))
 	{
         Setting& s = syscfg->lookup("config/camera");
 		myDefaultCamera->setup(s);
+	}
+
+	// Load camera config form system config file
+	// cameras section = multiple camera specifications
+	if(syscfg->exists("config/cameras"))
+	{
+        Setting& s = syscfg->lookup("config/cameras");
+		for(int i = 0; i < s.getLength(); i++)
+		{
+			Setting& sc = s[i];
+			String camName = sc.getName();
+			if(camName == "default") 
+			{
+				myDefaultCamera->setup(sc);
+			}
+			else
+			{
+				Camera* cam = getCamera(camName);
+				if(cam == NULL) cam = createCamera(camName);
+				cam->setup(sc);
+			}
+		}
 	}
 
 	// Load sound config from system config file
