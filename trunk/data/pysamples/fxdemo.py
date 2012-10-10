@@ -37,6 +37,7 @@ fxmnu = mm.createMenu("fxmenu")
 cmnu = fxmnu.addSubMenu("colored")
 tmnu = fxmnu.addSubMenu("textured")
 xmnu = fxmnu.addSubMenu("custom")
+bmnu = fxmnu.addSubMenu("bump")
 kmnu = fxmnu.addSubMenu("multipass")
 
 #--------------------------------------------------------------------------------------------------
@@ -52,6 +53,11 @@ fx = "colored -d #202020 -g 1.0 -s 30 -t -a -C"; cmnu.addButton(fx, "selected.se
 fx = "textured -d cyclops/test/checker.jpg"; tmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 fx = "textured -d cyclops/test/checker.jpg -g 1.0 -s 50"; tmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 fx = "textured -d cyclops/test/graduated.jpg -t -a"; tmnu.addButton(fx, "selected.setEffect('" + fx + "')")
+
+#--------------------------------------------------------------------------------------------------
+# bump effects definitions
+fx = "bump -d cyclops/test/wall002.jpg -n cyclops/test/wall002DOT3.jpg -g 1.0 -s 50"; bmnu.addButton(fx, "selected.setEffect('" + fx + "')")
+fx = "bump -d cyclops/test/wall002.jpg -n cyclops/test/wall002DOT3.jpg"; bmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 
 #--------------------------------------------------------------------------------------------------
 # custom shader effect definitions
