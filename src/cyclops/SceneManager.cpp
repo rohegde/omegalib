@@ -319,9 +319,15 @@ void SceneManager::initialize()
 
 	loadConfiguration();
 
-		
+
+	// Standard shaders
 	setShaderMacroToFile("surfaceShader", "cyclops/common/forward/default.frag");
 	setShaderMacroToFile("vertexShader", "cyclops/common/forward/default.vert");
+
+	// Standard shaders
+	setShaderMacroToFile("tangentSpaceSurfaceShader", "cyclops/common/forward/tangentSpace.frag");
+	setShaderMacroToFile("tangentSpaceVertexShader", "cyclops/common/forward/tangentSpace.vert");
+	setShaderMacroToFile("tangentSpaceFragmentLightSection", "cyclops/common/forward/tangentSpaceLight.frag");
 
 	setShaderMacroToFile("vsinclude envMap", "cyclops/common/envMap/noEnvMap.vert");
 	setShaderMacroToFile("fsinclude envMap", "cyclops/common/envMap/noEnvMap.frag");
@@ -643,19 +649,40 @@ void SceneManager::loadShader(osg::Shader* shader, const String& name)
 		std::stringstream buffer;
 		buffer << t.rdbuf();
 
+		String shaderSrc = buffer.str();
+
+		String lightSectionMacroName = "tangentSpaceFragmentLightSection";
+
 		// Replace shader macros.
 		// Do a multiple replacement passes to process macros-within macros.
-		String shaderSrc = buffer.str();
 		int replacementPasses = 3;
 		for(int i = 0; i < replacementPasses; i++)
 		{
 			foreach(ShaderMacroDictionary::Item macro, myShaderMacros)
 			{
-				String macroName = ostr("@%1%", %macro.getKey());
-				shaderSrc = StringUtils::replaceAll(shaderSrc, macroName, macro.getValue());
+				if(macro.getKey() != lightSectionMacroName)
+				{
+					String macroName = ostr("@%1%", %macro.getKey());
+					shaderSrc = StringUtils::replaceAll(shaderSrc, macroName, macro.getValue());
+				}
 			}
 		}
 
+		// Special section: replicate lighting code as many times as the active lights
+		String fragmentShaderLightCode = myShaderMacros[lightSectionMacroName];
+		String fragmentShaderLightSection = "";
+		for(int i = 0; i < myNumActiveLights; i++)
+		{
+			// Add the light index to the section
+			String fragmentShaderLightCodeIndexed = StringUtils::replaceAll(
+				fragmentShaderLightCode, 
+				"@lightIndex", 
+				boost::lexical_cast<String>(i));
+			fragmentShaderLightSection += fragmentShaderLightCodeIndexed;
+		}
+		shaderSrc = StringUtils::replaceAll(shaderSrc, 
+			"@" + lightSectionMacroName, 
+			fragmentShaderLightSection);
 
 		//ofmsg("Loading shader file %1%", %name);
 		shader->setShaderSource(shaderSrc);

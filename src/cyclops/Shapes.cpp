@@ -53,11 +53,11 @@ CylinderShape::CylinderShape(SceneManager* scene, float length, float radius1, f
 	sphere->setColorArray(NULL);
 	sphere->setColorBinding(osg::Geometry::BIND_OFF);
 
-	//osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
-	//tsg->generate(sphere, 0);
-	//osg::Vec4Array* a_tangent = tsg->getTangentArray();
-	//sphere->setVertexAttribArray (6, a_tangent);
-	//sphere->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
+	osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
+	tsg->generate(sphere, 0);
+	osg::Vec4Array* a_tangent = tsg->getTangentArray();
+	sphere->setVertexAttribArray (6, a_tangent);
+	sphere->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
 
 	osg::StateSet* fx = node->getOrCreateStateSet();
 	fx->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(tiling[0], tiling[1])));
