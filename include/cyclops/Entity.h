@@ -57,9 +57,6 @@ namespace cyclops {
 		osg::Node* getOsgNode() { return myEffect; }
 		//SceneNode* getSceneNode() { return mySceneNode; }
 
-		void setTag(const String& value) { myTag = value; }
-		const String& getTag() { return myTag; } 
-
 		bool hasEffect();
 		void setEffect(const String& effectDefinition);
 
@@ -75,8 +72,6 @@ namespace cyclops {
 
 	private:
 		SceneManager* mySceneManager;
-
-		String myTag;
 
 		osg::StateSet* myStateSet;
 		osg::Uniform* myAlphaUniform;

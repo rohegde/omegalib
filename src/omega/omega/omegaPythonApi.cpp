@@ -752,6 +752,8 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(SceneNode, setSelectable)
 		PYAPI_METHOD(SceneNode, isBoundingBoxVisible)
 		PYAPI_METHOD(SceneNode, setBoundingBoxVisible)
+		PYAPI_METHOD(SceneNode, setTag)
+		PYAPI_GETTER(SceneNode, getTag)
 	;
 
 	// Camera
