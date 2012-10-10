@@ -64,6 +64,10 @@ void DrawInterface::beginDraw3D(const DrawContext& context)
 	glDepthMask(GL_TRUE);
 
 	myDrawing = true;
+
+	//int maxVaryingFloats = 0;
+	//glGetIntegerv(GL_MAX_VARYING_FLOATS, &maxVaryingFloats);
+	//ofmsg("OpenGL capabilities: max varying floats = %1%", %maxVaryingFloats);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

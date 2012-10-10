@@ -137,6 +137,7 @@ protected:
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
 		ProgramAsset* asset = getProgram("Colored", variation, vertexShaderVariant);
+
 		if(asset != NULL)
 		{
 			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
@@ -270,6 +271,93 @@ protected:
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	void define_passes_bump(const String& def)
 	{
+		String effectName;
+		String diffuse;
+		String normal;
+		String variant;
+		double shininess = 10;
+		double gloss = 0;
+		bool transparent = false;
+		bool additive = false;
+		bool vertexShaderVariant = false;
+		bool disableDepth = false;
+		bool disableCull = false;
+		libconfig::ArgumentHelper ah;
+		
+		ah.newString("effectName", "the effect name", effectName);
+		ah.newNamedString('d', "diffuse", "diffuse texture", "diffuse texture file name", diffuse);
+		ah.newNamedString('n', "normal", "normal texture", "normal texture file name", normal);
+		ah.newNamedString('v', "variant", "shader variant", "fragment shader variant", variant);
+		ah.newFlag('V', "Vertex", "enable vertex shader variant", vertexShaderVariant);
+		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
+		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
+		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
+		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
+		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
+		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
+		ah.process(def.c_str());
+		
+		SceneManager* sm = SceneManager::instance();
+		osg::StateSet* ss = new osg::StateSet();
+		osg::Program* prog = NULL;
+		ProgramAsset* asset = getProgram("Bump", variant, vertexShaderVariant);
+		if(asset != NULL)
+		{
+			// Set the bind location for the tangent attribute array
+			asset->program->addBindAttribLocation("attrib_Tangent", 6);
+
+			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
+			ss->addUniform( new osg::Uniform("unif_DiffuseMap", 0) );
+			ss->addUniform( new osg::Uniform("unif_NormalMap", 1) );
+			ss->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
+			ss->addUniform( new osg::Uniform("unif_Shininess", (float)shininess) );
+			ss->addUniform( new osg::Uniform("unif_Gloss", (float)gloss) );
+
+			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
+
+			if(disableDepth)
+			{
+				ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
+			}
+			if(transparent)
+			{
+				ss->setMode(GL_BLEND, osg::StateAttribute::ON);
+				if(additive)
+				{
+					osg::BlendFunc* bf = new osg::BlendFunc();
+					bf->setFunction(GL_SRC_ALPHA, GL_ONE);
+					ss->setAttribute(bf);
+				}
+			}
+		}
+
+		if(disableCull)
+		{
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF|osg::StateAttribute::OVERRIDE );
+		}
+		else
+		{
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON|osg::StateAttribute::OVERRIDE );
+		}
+
+		if(diffuse != "")
+		{
+			osg::Texture2D* tex = sm->getTexture(diffuse);
+			if(tex != NULL)
+			{
+				ss->setTextureAttribute(0, tex);
+			}
+		}
+
+		if(normal != "")
+		{
+			osg::Texture2D* tex = sm->getTexture(normal);
+			if(tex != NULL)
+			{
+				ss->setTextureAttribute(1, tex);
+			}
+		}
+		addPass(ss);
 	}
 
 private:
