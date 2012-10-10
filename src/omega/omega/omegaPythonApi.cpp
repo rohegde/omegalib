@@ -88,26 +88,6 @@ static PyObject* omegaRun(PyObject* self, PyObject* args)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-//static PyObject* rendererQueueCommand(PyObject* self, PyObject* args)
-//{
-//	const char* statement;
-//	if(!PyArg_ParseTuple(args, "s", &statement)) return NULL;
-//
-//	if(sScriptRendererCommand == NULL) 
-//	{
-//		sScriptRendererCommand = new ScriptRendererCommand();
-//	}
-//	sScriptRendererCommand->setStatement(statement);
-//	Engine* engine = Engine::instance();
-//	foreach(Renderer* r, engine->getRendererList())
-//	{
-//		r->queueCommand(sScriptRendererCommand);
-//	}
-//	Py_INCREF(Py_None);
-//	return Py_None;
-//}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
 static PyObject* omegaUpdateCallback(PyObject *dummy, PyObject *args)
 {
     PyObject *result = NULL;
@@ -549,6 +529,23 @@ Camera* getDefaultCamera()
 	return Engine::instance()->getDefaultCamera();
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Camera* getCamera(const String& name)
+{
+	return Engine::instance()->getCamera(name);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Camera* getOrCreateCamera(const String& name)
+{
+	Camera* cam = Engine::instance()->getCamera(name);
+	if(cam == NULL)
+	{
+		cam = Engine::instance()->createCamera(name);
+	}
+	return cam;
+}
+
 #ifdef OMEGA_USE_PORTHOLE
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Camera* getCameraById(int id)
@@ -855,6 +852,8 @@ BOOST_PYTHON_MODULE(omega)
 	def("getEvent", getEvent, return_value_policy<reference_existing_object>());
 	def("getEngine", getEngine, PYAPI_RETURN_REF);
 	def("getDefaultCamera", getDefaultCamera, PYAPI_RETURN_REF);
+	def("getCamera", getCamera, PYAPI_RETURN_REF);
+	def("getOrCreateCamera", getOrCreateCamera, PYAPI_RETURN_REF);
 #ifdef OMEGA_USE_PORTHOLE
 	def("getCameraById", getCameraById, PYAPI_RETURN_REF);
 #endif

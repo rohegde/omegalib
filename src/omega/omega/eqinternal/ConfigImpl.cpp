@@ -342,8 +342,10 @@ uint32_t ConfigImpl::finishFrame()
 					if(customCamera == NULL)
 					{
 						customCamera = engine->createCamera(dtc.cameraName);
-						otd.camera = customCamera;
 					}
+					otd.camera = customCamera;
+					// Make sure the camera is enabled for the specified tile.
+					//otd.camera->getOutput(dtc.device)->setEnabled(true);
 				}
 			}
 
