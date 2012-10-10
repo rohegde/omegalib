@@ -129,6 +129,9 @@ namespace omega {
 
 		void draw(const DrawContext& context);
 
+		void setTag(const String& value) { myTag = value; }
+		const String& getTag() { return myTag; } 
+
 	private:
 		void drawBoundingBox();
 		void updateBoundingBox();
@@ -147,6 +150,8 @@ namespace omega {
 		bool myChanged;
 		AlignedBox3 myBBox;
 		Sphere myBSphere;
+
+		String myTag;
 
 		// Bounding box stuff.
 		bool myBoundingBoxVisible;
