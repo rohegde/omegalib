@@ -550,10 +550,10 @@ void MenuManager::initialize()
 			float mix = Config::getFloatValue("menuSoundMix", sUi, 1.0);
 			float reverb = Config::getFloatValue("menuSoundReverb", sUi, 1.0);
 		
-			myShowMenuSound->setDefaultParameters(volume, width, mix, reverb, false);
-			myHideSoundMenu->setDefaultParameters(volume, width, mix, reverb, false);
-			selectMenuSound->setDefaultParameters(volume, width, mix, reverb, false);
-			scrollMenuSound->setDefaultParameters(volume, width, mix, reverb, false);
+			myShowMenuSound->setDefaultParameters(volume, width, mix, reverb, false, false);
+			myHideSoundMenu->setDefaultParameters(volume, width, mix, reverb, false, false);
+			selectMenuSound->setDefaultParameters(volume, width, mix, reverb, false, false);
+			scrollMenuSound->setDefaultParameters(volume, width, mix, reverb, false, false);
 		}
 	}
 
