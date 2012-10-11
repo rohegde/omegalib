@@ -70,7 +70,8 @@ AnimatedObject::AnimatedObject(SceneManager* scene, const String& modelName):
 		myCurrentModelIndex(0),
 		myAnimationManager(NULL),
 		myAnimations(NULL),
-		myCurAnimation(NULL)
+		myCurAnimation(NULL),
+		myNeedStartAnimation(false)
 {
 	myModel = scene->getModel(modelName);
 
@@ -116,14 +117,21 @@ AnimatedObject::AnimatedObject(SceneManager* scene, const String& modelName):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void AnimatedObject::update(const UpdateContext& context)
 {
+	myCurTime = context.time;
 	if(myCurAnimation != NULL)
 	{
+		if(myNeedStartAnimation)
+		{
+			myNeedStartAnimation = false;
+			myAnimationManager->playAnimation(myCurAnimation);
+		}
 		// See if the current animation has finished playing.
 		if(!myAnimationManager->isPlaying(myCurAnimation))
 		{
 			ofmsg("AnimatedObject %1%: animation ended", %getName());
 
 			myCurAnimation = NULL;
+			myCurAnimationId = -1;
 			if(myOnAnimationEnded.length() > 0)
 			{
 				SystemManager::instance()->getScriptInterpreter()->eval(myOnAnimationEnded);
@@ -178,7 +186,8 @@ void AnimatedObject::playAnimation(int id)
 			myCurAnimationId = id;
 			myCurAnimation = myAnimations->at(id);
 			myCurAnimation->setPlayMode(osgAnimation::Animation::ONCE);
-			myAnimationManager->playAnimation(myCurAnimation);
+			myCurAnimation->setStartTime(myCurTime);
+			myNeedStartAnimation = true;
 		}
 	}
 }
@@ -193,7 +202,7 @@ void AnimatedObject::loopAnimation(int id)
 			myCurAnimationId = id;
 			myCurAnimation = myAnimations->at(id);
 			myCurAnimation->setPlayMode(osgAnimation::Animation::LOOP);
-			myAnimationManager->playAnimation(myCurAnimation);
+			myNeedStartAnimation = true;
 		}
 	}
 }
@@ -214,6 +223,7 @@ void AnimatedObject::stopAllAnimations()
 	{
 		myAnimationManager->stopAll();
 		myCurAnimation = NULL;
+		myCurAnimationId = -1;
 	}
 }
 
