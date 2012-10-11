@@ -23,6 +23,7 @@ light = Light.create()
 light.setColor(Color("white"))
 light.setAmbient(Color("#202020"))
 light.setEnabled(True)
+lightDistance = 0.5
 
 scene = getSceneManager()
 scene.setMainLight(light)
@@ -56,7 +57,7 @@ fx = "textured -d cyclops/test/graduated.jpg -t -a"; tmnu.addButton(fx, "selecte
 
 #--------------------------------------------------------------------------------------------------
 # bump effects definitions
-fx = "bump -d cyclops/test/wall002.jpg -n cyclops/test/wall002DOT3.jpg -g 1.0 -s 50"; bmnu.addButton(fx, "selected.setEffect('" + fx + "')")
+fx = "bump -d cyclops/test/wall002.jpg -n cyclops/test/wall002DOT3.jpg -g 1.0 -s 20"; bmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 fx = "bump -d cyclops/test/wall002.jpg -n cyclops/test/wall002DOT3.jpg"; bmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 
 #--------------------------------------------------------------------------------------------------
@@ -77,6 +78,7 @@ def onUpdate(frame, t, dt):
 def onObjectSelected(node, distance):
 	global fxmnu
 	global selected
+	global light
 	# If no object has ben selected and the context menu is open, close it.
 	if(node == None):
 		if(fxmnu.isVisible()): fxmnu.hide()
@@ -96,13 +98,17 @@ def onEvent():
 		confirmButton = EventFlags.Button3
 		if(e.getServiceType() == ServiceType.Wand): confirmButton = EventFlags.Button5
 		
+		r = getRayFromEvent(e)
+		if(r[0]):
+			newPos = r[1] + r[2] * lightDistance
+			light.setPosition(newPos)
+		
 		# When the confirm button is pressed:
 		if(e.isButtonDown(confirmButton)):
 			# If the effect menu is is open, close it
 			if(fxmnu.isVisible()): fxmnu.hide()
 			# ...otherwise, shoot a ray in the scene to perform selection
 			else:
-				r = getRayFromEvent(e)
 				if(r[0]): querySceneRay(r[1], r[2], onObjectSelected)
 
 #--------------------------------------------------------------------------------------------------
