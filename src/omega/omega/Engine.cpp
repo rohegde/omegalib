@@ -309,9 +309,9 @@ void Engine::update(const UpdateContext& context)
 		c->update(context);
 	}
 
-    ModuleServices::update(this, context);
-
 	getSystemManager()->getScriptInterpreter()->update(context);
+
+    ModuleServices::update(this, context);
 
     myScene->update(false, false);
 }

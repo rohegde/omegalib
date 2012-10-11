@@ -74,25 +74,15 @@ namespace cyclops {
 
 		//! Animation support
 		//@{
-		//! #PYAPI
 		bool hasAnimations();
-		//! #PYAPI
 		int getNumAnimations();
-		//! #PYAPI
 		void playAnimation(int id);
-		//! #PYAPI
 		void loopAnimation(int id);
-		//! #PYAPI
 		void pauseAnimation();
-		//! #PYAPI
 		void stopAllAnimations();
-		//! #PYAPI
 		int getCurAnimation();
-		//! #PYAPI
 		float getAnimationLength(int id);
-		//! #PYAPI
 		float getAnimationStart(int id);
-		//! #PYAPI
 		void setAnimationStart(int id, float time);
 		//@}
 
@@ -111,6 +101,9 @@ namespace cyclops {
 		const osgAnimation::AnimationList* myAnimations;
 		int myCurAnimationId;
 		osgAnimation::Animation* myCurAnimation;
+		bool myNeedStartAnimation;
+
+		float myCurTime;
 
 		// Event handler scripts
 		String myOnAnimationEnded;
