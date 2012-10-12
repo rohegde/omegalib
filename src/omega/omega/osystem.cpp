@@ -95,7 +95,11 @@ namespace omega
 			bool remote = false;
 			String masterHostname;
 			String configFilename = ostr("%1%.cfg", %app.getName());
-			String dataPath = OMEGA_DATA_PATH;
+#ifdef OMEGA_APPROOT_DIRECTORY
+			String dataPath = OMEGA_APPROOT_DIRECTORY;
+#else
+			String dataPath = "";
+#endif
 			String logFilename = ostr("%1%.log", %app.getName());
 
 			bool kill = false;
@@ -130,7 +134,7 @@ namespace omega
 			sArgs.newNamedString(
 				'D',
 				"data",
-				"Data path for this application (default: " OMEGA_DATA_PATH ")", "",
+				"Data path for this application", "",
 				dataPath);
 		
 			sArgs.newNamedString(
@@ -195,13 +199,10 @@ namespace omega
 			// - the default omegalib data path
 			dm->addSource(new FilesystemDataSource("./"));
 			dm->addSource(new FilesystemDataSource(""));
-#ifdef OMEGA_APPROOT_DIRECTORY
-			String appRootPath = StringUtils::standardisePath(OMEGA_APPROOT_DIRECTORY);
-			dm->addSource(new FilesystemDataSource(appRootPath));
-			ofmsg("::: %1%", %appRootPath);
-#endif
 			dm->addSource(new FilesystemDataSource(dataPath));
 			ofmsg("::: %1%", %dataPath);
+			dm->addSource(new FilesystemDataSource(OMEGA_DATA_PATH));
+			ofmsg("::: %1%", %OMEGA_DATA_PATH);
 
 
 			omsg("omegalib application config lookup:");
