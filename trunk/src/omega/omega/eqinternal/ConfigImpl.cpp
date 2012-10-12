@@ -316,7 +316,7 @@ uint32_t ConfigImpl::finishFrame()
 				otd.observer = eqo;
 				// Get the tile index from the observer name.
 				sscanf(eqo->getName().c_str(), "observer%dx%d", &otd.x, &otd.y);
-				const DisplayTileConfig& dtc = ds->getDisplayConfig().tiles[otd.x][otd.y];
+				DisplayTileConfig& dtc = ds->getDisplayConfig().tiles[otd.x][otd.y];
 
 				// Compute the tile normal, and compute the orientation that would bring the observer from the default
 				// look-at vector (0, 0, -1) to the tile normal.
