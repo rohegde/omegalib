@@ -42,6 +42,7 @@ namespace omega
 	class ChannelImpl;
 	class GpuContext;
 	class Renderer;
+	class Camera;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	struct DisplayTileConfig
@@ -69,7 +70,11 @@ namespace omega
 		bool drawFps;
 		bool disableScene;
 		bool disableOverlay;
+
+		//! Name of camera attached to this tile. Can be empty or 'default' for default camera
 		String cameraName;
+		//! Reference to camera attached to this tile. Set during display system initialization
+		Camera* camera;
 
 		Vector3f topLeft;
 		Vector3f bottomLeft;
