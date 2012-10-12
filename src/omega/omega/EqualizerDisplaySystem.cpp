@@ -890,7 +890,9 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 
 	DisplayTileConfig& dtc = myDisplayConfig.tiles[channelX][channelY];
 
-	Camera* camera = Engine::instance()->getDefaultCamera();
+	// Try to use the camera attached to the tile first. If the camera is not set, switch to the default camera.
+	Camera* camera = dtc.camera;
+	camera = Engine::instance()->getDefaultCamera();
 
 	Vector3f head = camera->getHeadOffset();
 

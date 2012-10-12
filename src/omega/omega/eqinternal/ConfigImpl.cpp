@@ -305,8 +305,6 @@ uint32_t ConfigImpl::finishFrame()
 		Engine* engine = Engine::instance();
 		// if orientObserverToTile is enabled, we assume the observer orientation is always normal
 		// to the tile. Only the observer position is updated.
-		// This works only for ONE actual, tracked observer. So we just get observer 0 from the observer list.
-
 		int numObservers = getObservers().size();
 		for(int i = 0; i < numObservers; i++)
 		{
@@ -347,6 +345,7 @@ uint32_t ConfigImpl::finishFrame()
 					// Make sure the camera is enabled for the specified tile.
 					//otd.camera->getOutput(dtc.device)->setEnabled(true);
 				}
+				dtc.camera = otd.camera;
 			}
 
 			Camera* cam = otd.camera;
