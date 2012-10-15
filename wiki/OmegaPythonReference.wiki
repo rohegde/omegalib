@@ -1,7 +1,7 @@
 #summary Python reference: module omega
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.0 - 27 June 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+<p>*Last revision:* ver. 3.1 - 15 October 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
 <wiki:toc max_depth="4" />
 
@@ -13,6 +13,12 @@ The omega module contains all the core functionality of omegalib like scene grap
 
 === `getDefaultCamera()` ===
 Returns the main omegalib camera instance
+
+=== `getCamera(name)` ===
+Finds a camera by name
+
+=== `getOrCreateCamera(name)` ===
+Finds a camera by name or creates a new one if a camera with the specified name has not been found
 
 === `getCameraById(id)` ===
 Retrieves a camera based on its id (*currently supported by Porthole service only*)
@@ -84,6 +90,8 @@ Example:
 		
 	setDrawFunction(onDraw)
 }}}	
+
+=== `getRayFromEvent(evt)` ===
 
 === `querySceneRay(origin, dir, callback)` ===
 Performs a query on the scene using a ray defined by the `origin` and `dir` parameters. For each hit node, it invokes a callback function taking the node reference and distance to the origin as parameters.
@@ -173,6 +181,11 @@ Example:
 
 === `overridePanopticStereo(value)` ===
 When set to true, switches from panoptic stereo tracking to standard tracking. This option is used only when panoptic stereo is enabled for the current display system.
+
+=== `getSoundEnvironment()` ===
+=== `isSoundEnabled()` ===
+
+=== `toggleStereo()` ===
 
 -------------------------------------------------------------------------------
 ==  `class SceneNode` ==
