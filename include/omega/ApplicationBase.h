@@ -100,7 +100,7 @@ namespace omega
 		static const int MaxTiles = 64;
 		static const int MaxNodes = 64;
 		
-		DisplayConfig(): disableConfigGenerator(false), latency(1), enableStencilInterleaver(false), enableSwapSync(true) {}		
+		DisplayConfig(): disableConfigGenerator(false), latency(1), enableStencilInterleaver(false), enableSwapSync(true), forceMono(false) {}		
 		bool disableConfigGenerator;
 
 		// ! Configuration type enum
@@ -159,9 +159,15 @@ namespace omega
 
 		//! When set to true, observer orientation will be kept aligned to each tile normal.
 		bool panopticStereoEnabled;
+
+		//! Runtime setings
+		//@{
 		//! Runtime flag: when set to true, observer orientation will still use camera orientation even
 		//! when panopticStereoEnabled is enabled.
 		bool panopticStereoOverride;
+		//! Runtime flag:When set to true, all tiles will be forced to render in mono mode
+		bool forceMono;
+		//@}
 		
 		
 		//! Tile configurations.
