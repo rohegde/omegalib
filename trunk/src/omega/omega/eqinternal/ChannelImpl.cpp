@@ -104,17 +104,25 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 	if(myDC.tile->stereoMode == DisplayTileConfig::SideBySide ||
 		(myDC.tile->stereoMode == DisplayTileConfig::Default && dcfg.stereoMode == DisplayTileConfig::SideBySide))
 	{
-		if(context->eye == DrawContext::EyeLeft)
+		if(ds->getDisplayConfig().forceMono)
 		{
-			context->viewport = Rect(pvp.x, pvp.y, pvp.w / 2, pvp.h);
-		}
-		else if(context->eye == DrawContext::EyeRight)
-		{
-			context->viewport = Rect(pvp.x + pvp.w / 2, pvp.y, pvp.w / 2, pvp.h);
+			// Runtime stereo disable switch
+			context->viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
 		}
 		else
 		{
-			context->viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
+			if(context->eye == DrawContext::EyeLeft)
+			{
+				context->viewport = Rect(pvp.x, pvp.y, pvp.w / 2, pvp.h);
+			}
+			else if(context->eye == DrawContext::EyeRight)
+			{
+				context->viewport = Rect(pvp.x + pvp.w / 2, pvp.y, pvp.w / 2, pvp.h);
+			}
+			else
+			{
+				context->viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
+			}
 		}
 	}
 	else
@@ -155,15 +163,16 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 {
     eq::Channel::frameDraw( frameID );
 
+	EqualizerDisplaySystem* ds = dynamic_cast<EqualizerDisplaySystem*>(SystemManager::instance()->getDisplaySystem());
 	if(getEye() == eq::fabric::EYE_LEFT || getEye() == eq::fabric::EYE_CYCLOP) 
 	{
 		// This is the first eye being drawn: clear the depth and color buffers.
-		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 		const Color& b = ds->getBackgroundColor();
 		glClearColor(b[0], b[1], b[2], b[3]);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
-	
+
+	if(ds->getDisplayConfig().forceMono && getEye() != eq::fabric::EYE_LAST) return;
 
     //ofmsg("frameDraw: channel %1% frame %2%", %this %frameID);
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
@@ -174,14 +183,22 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 	// Configure stencil test when rendering interleaved with stencil is enabled.
 	if(myStencilInitialized)
 	{
-		if(myDC.eye == DrawContext::EyeLeft)
+		if(ds->getDisplayConfig().forceMono)
 		{
-			glStencilFunc(GL_NOTEQUAL,1,1); // draws if stencil <> 1
+			// Disable stencil
+			glStencilFunc(GL_ALWAYS,1,1); // to avoid interaction with stencil content
 		}
-		else if(myDC.eye == DrawContext::EyeRight)
+		else
 		{
-			glStencilFunc(GL_EQUAL,1,1); // draws if stencil <> 0
- 		}
+			if(myDC.eye == DrawContext::EyeLeft)
+			{
+				glStencilFunc(GL_NOTEQUAL,1,1); // draws if stencil <> 1
+			}
+			else if(myDC.eye == DrawContext::EyeRight)
+			{
+				glStencilFunc(GL_EQUAL,1,1); // draws if stencil <> 0
+ 			}
+		}
 	}
 
 	// Draw scene

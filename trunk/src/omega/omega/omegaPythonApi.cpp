@@ -592,6 +592,16 @@ void overridePanopticStereo(bool value)
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void toggleStereo()
+{
+	EqualizerDisplaySystem* eqds = dynamic_cast<EqualizerDisplaySystem*>(SystemManager::instance()->getDisplaySystem());
+	if(eqds != NULL)
+	{
+		eqds->getDisplayConfig().forceMono = !eqds->getDisplayConfig().forceMono;
+	}
+}
+
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeYawOverloads, yaw, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodePitchOverloads, pitch, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeRollOverloads, roll, 1, 2) 
@@ -870,6 +880,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("settingExists", &settingExists);
 	def("toggleStats", &toggleStats);
 	def("overridePanopticStereo", overridePanopticStereo);
+	def("toggleStereo", toggleStereo);
 	def("queueCommand", queueCommand);
 };
 
