@@ -96,7 +96,7 @@ endif()
 add_subdirectory(3rdparty/glew)
 add_subdirectory(apps/ohello)
 add_subdirectory(apps/ohello2)
-
+add_subdirectory(apps/omegaSound)
 add_subdirectory(omegaToolkit)
 
 # OSX uses its own glut, do not compile it internally (Should we do the same under linux?)
