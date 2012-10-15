@@ -83,6 +83,8 @@
  <script src="http://raw.github.com/EightMedia/hammer.js/master/hammer.js" type="application/javascript"></script>
  <script src="https://raw.github.com/EightMedia/hammer.js/master/jquery.specialevent.hammer.js" type="application/javascript"></script>
 
+ <script src="./recorder.js" type="application/javascript"></script>
+
  <div id="porthole_content"  style=" width : 100%; height : 99%; " data-theme="b">
    <div data-role="header">
 	<h1>Porthole Initialization</h1>
@@ -283,7 +285,8 @@
                 $("#porthole_content").trigger('create');
 
                 // TEST googlemap initialization
-                initializeGoogleMaps();
+                //initializeGoogleMaps();
+
                 initializeCameraStreams();
 
                 // Color picker initialization
@@ -295,7 +298,7 @@
                 // Add events listeners
                 if (!isTouchable) {
                     // avoid resize message when touchable keyboard appears on mobile devices
-                    addEvent(window, "resize", sendSpecTimeout);
+                    //addEvent(window, "resize", sendSpecTimeout);
                 }
                 $(window).bind('orientationchange', sendSpecTimeout);
             }
@@ -307,6 +310,8 @@
             if (looping) {
                 looping = false;
             }
+            // TEST AUDIO
+            //clearInterval(intervalKey);
         }
     } catch (exception) {
         alert('<p>Error' + exception);
@@ -404,7 +409,7 @@
             else if (dragging && !pinching)
                 watchDrag(); // Update dragging
 
-            ctx.drawImage(img, 0, 0); // FASTER
+            ctx.drawImage(img, 0, 0, camera.width, camera.height);
 
             // Button streaming value
             if (mouseDown == 1 && (sendContinuous == "true" || sendContinuous == true)) {
@@ -412,20 +417,20 @@
             }
 
             // Keep framerate of the camera
-//            now = new Date().getTime();
-//            dt = now - lastT;
-//            lastT = now;
-//            console.log("FPS: " + parseInt(1000 / dt));
+//            now = new date().gettime();
+//            dt = now - lastt;
+//            lastt = now;
+//            console.log("fps: " + parseint(1000 / dt));
 
-//            if ( ( 1000 / dt ) > FPS_MIN){
-//                overFPS = false;
+//            if ( ( 1000 / dt ) > fps_min){
+//                overfps = false;
 //            }
 //            else{
-//                // If first time we are over FPS, save Now
-//                if ( !overFPS ) overSTART = now;
-//                overFPS = true;
-//                if ( ( now - overSTART ) > FPS_DELTA ){
-//                    sendChangeResolution("ratio", 0.9);
+//                // if first time we are over fps, save now
+//                if ( !overfps ) overstart = now;
+//                overfps = true;
+//                if ( ( now - overstart ) > fps_delta ){
+//                    sendchangeresolution("ratio", 0.9);
 //                }
 //            }
 
@@ -511,90 +516,124 @@
         hammer.onrelease = function (ev) { };
         hammer.onhold = function (ev) { };
 
+
+        // TEST
+//        if (navigator.getUserMedia) {
+//            navigator.getUserMedia({ audio: true }, audioCallback);
+//        }
+//        else if (navigator.webkitGetUserMedia) {
+//            navigator.webkitGetUserMedia({ audio: true }, audioCallback);
+//        }
+//        else {
+//            alert("No audio");
+//        }
+
     }
+
+//    var rec;
+//    var intervalKey;
+
+//    function audioCallback(stream) {
+//        var context = new webkitAudioContext();
+//        var mediaStreamSource = context.createMediaStreamSource(stream);
+//        rec = new Recorder(mediaStreamSource);
+//        rec.record();
+
+//        // export a wav every second, so we can send it using websockets
+//        intervalKey = setInterval(function() {
+//            rec.exportWAV(function(blob) {
+//                rec.clear();
+////                var JSONEvent = {
+////                    "event_type": "audio",
+////                    "audio_blob": window.btoa(blob)
+//                //                };
+//                socket.send(window.btoa(blob));
+//            });
+//        }, 1000);
+//    }
 
     ///////////////////////////////////////////////////////////
     //////////////////// Google Maps  /////////////////////////
-    var map;
-    var service;
+//    var map;
+//    var service;
 
-    var events = {
-        'bounds_changed': 'fired when the viewport bounds have changed.',
-        'center_changed': 'fired when the map center property changes.',
-        'click': 'fired when the user clicks on the map (but not when they click on a marker or infowindow).',
-        'dblclick': 'fired when the user double-clicks on the map. Note that the click event will also fire, right before this one.',
-        'drag': 'repeatedly fired while the user drags the map.',
-        'dragend': 'fired when the user stops dragging the map.',
-        'dragstart': 'fired when the user starts dragging the map.',
-        'heading_changed': 'fired when the map heading property changes.',
-        'idle': 'fired when the map becomes idle after panning or zooming.',
-        'maptypeid_changed': 'fired when the mapTypeId property changes.',
-        'mousemove': 'fired whenever the user\'s mouse moves over the map container.',
-        'mouseout': 'fired when the user\'s mouse exits the map container.',
-        'mouseover': 'fired when the user\'s mouse enters the map container.',
-        'projection_changed': 'fired when the projection has changed.',
-        'resize': 'Developers should trigger this event on the map when the div changes size: google.maps.event.trigger(map, \'resize\') .',
-        'rightclick': 'fired when the DOM contextmenu event is fired on the map container.',
-        'tilesloaded': 'fired when the visible tiles have finished loading.',
-        'tilt_changed': 'fired when the map tilt property changes.',
-        'zoom_changed': 'fired when the map zoom property changes.'
-    };
+//    var events = {
+//        'bounds_changed': 'fired when the viewport bounds have changed.',
+//        'center_changed': 'fired when the map center property changes.',
+//        'click': 'fired when the user clicks on the map (but not when they click on a marker or infowindow).',
+//        'dblclick': 'fired when the user double-clicks on the map. Note that the click event will also fire, right before this one.',
+//        'drag': 'repeatedly fired while the user drags the map.',
+//        'dragend': 'fired when the user stops dragging the map.',
+//        'dragstart': 'fired when the user starts dragging the map.',
+//        'heading_changed': 'fired when the map heading property changes.',
+//        'idle': 'fired when the map becomes idle after panning or zooming.',
+//        'maptypeid_changed': 'fired when the mapTypeId property changes.',
+//        'mousemove': 'fired whenever the user\'s mouse moves over the map container.',
+//        'mouseout': 'fired when the user\'s mouse exits the map container.',
+//        'mouseover': 'fired when the user\'s mouse enters the map container.',
+//        'projection_changed': 'fired when the projection has changed.',
+//        'resize': 'Developers should trigger this event on the map when the div changes size: google.maps.event.trigger(map, \'resize\') .',
+//        'rightclick': 'fired when the DOM contextmenu event is fired on the map container.',
+//        'tilesloaded': 'fired when the visible tiles have finished loading.',
+//        'tilt_changed': 'fired when the map tilt property changes.',
+//        'zoom_changed': 'fired when the map zoom property changes.'
+//    };
 
-    function initializeGoogleMaps() {
+//    function initializeGoogleMaps() {
 
-        var mapDiv = document.getElementById('map-canvas');
-        if (mapDiv == null) return;
+//        var mapDiv = document.getElementById('map-canvas');
+//        if (mapDiv == null) return;
 
-        // Create a StreetViewService to be able to check
-        // if a given LatLng has a corresponding panorama.
-        service = new google.maps.StreetViewService();
+//        // Create a StreetViewService to be able to check
+//        // if a given LatLng has a corresponding panorama.
+//        service = new google.maps.StreetViewService();
 
-        map = new google.maps.Map(mapDiv, {
-            center: new google.maps.LatLng(37.4419, -122.1419),
-            zoom: 13,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            streetViewControl: false // Orange man visible or not
-        });
+//        map = new google.maps.Map(mapDiv, {
+//            center: new google.maps.LatLng(37.4419, -122.1419),
+//            zoom: 13,
+//            mapTypeId: google.maps.MapTypeId.ROADMAP,
+//            streetViewControl: false // Orange man visible or not
+//        });
 
-        // getPanoramaByLocation will return the nearest pano when the
-        // given radius is 50 meters or less.
-        google.maps.event.addListener(map, 'click', function (event) {
-            service.getPanoramaByLocation(event.latLng, 100, processSVData);
-        });
+//        // getPanoramaByLocation will return the nearest pano when the
+//        // given radius is 50 meters or less.
+//        google.maps.event.addListener(map, 'click', function (event) {
+//            service.getPanoramaByLocation(event.latLng, 100, processSVData);
+//        });
 
-        var marker = new google.maps.Marker({
-            map: map
-        });
+//        var marker = new google.maps.Marker({
+//            map: map
+//        });
 
-        // Set autocomplete on text input
-        var input = document.getElementById('searchTextField');
+//        // Set autocomplete on text input
+//        var input = document.getElementById('searchTextField');
 
-        // Add autocomplete
-        $('#searchTextField').geo_autocomplete({
-            select: function (_event, _ui) {
-                if (_ui.item.viewport) {
-                    map.fitBounds(_ui.item.viewport);
-                    marker.setPosition(_ui.item.location);
-                }
-            }
-        });
+//        // Add autocomplete
+//        $('#searchTextField').geo_autocomplete({
+//            select: function (_event, _ui) {
+//                if (_ui.item.viewport) {
+//                    map.fitBounds(_ui.item.viewport);
+//                    marker.setPosition(_ui.item.location);
+//                }
+//            }
+//        });
 
-    }
+//    }
 
-    function processSVData(data, status) {
-        if (status == google.maps.StreetViewStatus.OK) {
+//    function processSVData(data, status) {
+//        if (status == google.maps.StreetViewStatus.OK) {
 
-            var JSONEvent = {
-                "event_type": "gmap_selection",
-                "latlng": data.location.latLng,
-                "panoId": data.location.pano // String containing a PanoId
-            };
-            socket.send(JSON.stringify(JSONEvent));
+//            var JSONEvent = {
+//                "event_type": "gmap_selection",
+//                "latlng": data.location.latLng,
+//                "panoId": data.location.pano // String containing a PanoId
+//            };
+//            socket.send(JSON.stringify(JSONEvent));
 
-        } else {
-            alert('Street View data not found for this location.');
-        }
-    }
+//        } else {
+//            alert('Street View data not found for this location.');
+//        }
+//    }
 
 </script>
 

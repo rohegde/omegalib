@@ -163,7 +163,18 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 				fprintf(stderr, "Failed to send farbtastic.css\n");
 			break;
 		}
-
+		else if (in && strcmp((char*)in, "/recorder.js") == 0) {
+			if (libwebsockets_serve_http_file(wsi,
+				 (DATA_PATH+"/recorder.js").c_str(), "application/javascript"))
+				fprintf(stderr, "Failed to send recorder.js\n");
+			break;
+		}
+		else if (in && strcmp((char*)in, "/recorderWorker.js") == 0) {
+			if (libwebsockets_serve_http_file(wsi,
+				 (DATA_PATH+"/recorderWorker.js").c_str(), "application/javascript"))
+				fprintf(stderr, "Failed to send recorderWorker.js\n");
+			break;
+		}
 		/* Porthole CSS */
 		else if (in && strcmp((char*)in, "/porthole.css") == 0) {
 			if (libwebsockets_serve_http_file(wsi,
