@@ -827,8 +827,10 @@ BOOST_PYTHON_MODULE(omega)
 
 	// SoundInstance
 	void (SoundInstance::*playSimple)() = &SoundInstance::play;
+	void (SoundInstance::*playSimpleStereo)() = &SoundInstance::playStereo;
 	class_<SoundInstance, boost::noncopyable, Ref<SoundInstance> >("SoundInstance", init<Sound*>())
 		.def("play", playSimple)
+		.def("playStereo", playSimpleStereo)
 		PYAPI_METHOD(SoundInstance, pause)
 		PYAPI_METHOD(SoundInstance, stop)
 		PYAPI_METHOD(SoundInstance, isPlaying)
