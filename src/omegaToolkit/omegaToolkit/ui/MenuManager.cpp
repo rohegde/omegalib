@@ -359,14 +359,13 @@ void Menu::show()
 	{
 		// Set the listener position
 		Vector3f cameraPosition = myManager->getEngine()->getDefaultCamera()->getPosition();
-		myManager->getEngine()->getSoundManager()->setListenerPosition( cameraPosition );
+		myManager->getEngine()->getSoundEnvironment()->setListenerPosition( cameraPosition );
 
 		// Set the sound position and play
 		SoundInstance* showSound = new SoundInstance(myManager->getShowMenuSound());
 		ofmsg("Menu::show() about to play sound %1%", %myManager->getHideMenuSound()->getFilePath() );
 		ofmsg("Menu pos: %1%", %myContainer->get3dSettings().position );
 		showSound->setPosition( myContainer->get3dSettings().position );
-		showSound->setVolume(1.0);
 		showSound->play();
 	}
 }
@@ -394,13 +393,13 @@ void Menu::hide()
 	{
 		// Set the listener position
 		Vector3f cameraPosition = myManager->getEngine()->getDefaultCamera()->getPosition();
-		myManager->getEngine()->getSoundManager()->setListenerPosition( cameraPosition );
+		myManager->getEngine()->getSoundEnvironment()->setListenerPosition( cameraPosition );
 
 		Ref<SoundInstance> hideSound = new SoundInstance(myManager->getHideMenuSound());
 		ofmsg("Menu::hide() about to play sound %1%", %myManager->getHideMenuSound()->getFilePath() );
 		ofmsg("Menu pos: %1%", %myContainer->get3dSettings().position );
-		ofmsg("Listener pos: %1%", %myManager->getEngine()->getSoundManager()->getListenerPosition() );
-		hideSound->play( myContainer->get3dSettings().position, 1.0f, 2.0f, 1.0f, 1.0f, false);
+		ofmsg("Listener pos: %1%", %myManager->getEngine()->getSoundEnvironment()->getListenerPosition() );
+		hideSound->play();
 	}
 }
 
