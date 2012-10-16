@@ -177,8 +177,8 @@ void EqualizerDisplaySystem::generateEqConfig()
 	}
 
 	// Always create the default observer
-	result += 
-		L("observer { name \"observer0\" }");
+	//result += 
+	//	L("observer { name \"observer0\" }");
 
 	// layout
 	START_BLOCK(result, "layout");
@@ -219,7 +219,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 
 	result += 
 		L("name \"main\"") +
-		L("observer \"observer0\"") +
+		//L("observer \"observer0\"") +
 		L("viewport [0 0 1 1]");
 	
 	END_BLOCK(result)
