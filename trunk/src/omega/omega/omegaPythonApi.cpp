@@ -588,7 +588,7 @@ void overridePanopticStereo(bool value)
 	EqualizerDisplaySystem* eqds = dynamic_cast<EqualizerDisplaySystem*>(SystemManager::instance()->getDisplaySystem());
 	if(eqds != NULL)
 	{
-		eqds->getDisplayConfig().panopticStereoOverride = value;
+		eqds->getDisplayConfig().panopticStereoEnabled = value;
 	}
 }
 

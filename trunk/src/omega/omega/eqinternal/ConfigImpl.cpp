@@ -300,104 +300,88 @@ uint32_t ConfigImpl::finishFrame()
 {
     EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
 
-	if(ds->getDisplayConfig().panopticStereoEnabled)
+	Engine* engine = Engine::instance();
+	// Update observers
+	int numObservers = getObservers().size();
+	for(int i = 0; i < numObservers; i++)
 	{
-		Engine* engine = Engine::instance();
-		// if orientObserverToTile is enabled, we assume the observer orientation is always normal
-		// to the tile. Only the observer position is updated.
-		int numObservers = getObservers().size();
-		for(int i = 0; i < numObservers; i++)
+		eq::Observer* eqo = getObservers().at(i);
+		ObserverTileData& otd = myObserverTileData[i];
+		// If the observer data has not been initialized yet, do it now.
+		if(otd.observer == NULL)
 		{
-			eq::Observer* eqo = getObservers().at(i);
-			ObserverTileData& otd = myObserverTileData[i];
-			// If the observer data has not been initialized yet, do it now.
-			if(otd.observer == NULL)
-			{
-				otd.observer = eqo;
-				// Get the tile index from the observer name.
-				sscanf(eqo->getName().c_str(), "observer%dx%d", &otd.x, &otd.y);
-				DisplayTileConfig& dtc = ds->getDisplayConfig().tiles[otd.x][otd.y];
+			otd.observer = eqo;
+			// Get the tile index from the observer name.
+			sscanf(eqo->getName().c_str(), "observer%dx%d", &otd.x, &otd.y);
+			DisplayTileConfig& dtc = ds->getDisplayConfig().tiles[otd.x][otd.y];
 
-				// Compute the tile normal, and compute the orientation that would bring the observer from the default
-				// look-at vector (0, 0, -1) to the tile normal.
-				//Vector3f tileNormal = Math::calculateBasicFaceNormal(dtc.bottomLeft, dtc.topLeft, dtc.bottomRight);
-				//otd.orientation = Math::buildRotation(-Vector3f::UnitZ(), tileNormal, Vector3f::UnitY());
+			// Compute the tile normal, and compute the orientation that would bring the observer from the default
+			// look-at vector (0, 0, -1) to the tile normal.
+			//Vector3f tileNormal = Math::calculateBasicFaceNormal(dtc.bottomLeft, dtc.topLeft, dtc.bottomRight);
+			//otd.orientation = Math::buildRotation(-Vector3f::UnitZ(), tileNormal, Vector3f::UnitY());
 
-				// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
-				otd.yaw = dtc.yaw;
-				
-				otd.tileCenter = dtc.center;
-
-				if(dtc.cameraName == "")
-				{
-					// Use dafault camera for this tile
-					otd.camera = engine->getDefaultCamera();
-				}
-				else
-				{
-					// Use a custom camera for this tile (create it here if necessary)
-					Camera* customCamera = engine->getCamera(dtc.cameraName);
-					if(customCamera == NULL)
-					{
-						customCamera = engine->createCamera(dtc.cameraName);
-					}
-					otd.camera = customCamera;
-					// Make sure the camera is enabled for the specified tile.
-					//otd.camera->getOutput(dtc.device)->setEnabled(true);
-				}
-				dtc.camera = otd.camera;
-			}
-
-			Camera* cam = otd.camera;
-			// Update the tile-observer head matrix, using the observer position and the per-tile orientation.
 			// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
-			const Vector3f& pos = cam->getHeadOffset();
-			//eq::fabric::Matrix4f om = eq::fabric::Matrix4f::IDENTITY;
-			//om.rotate_z(Math::Pi);
-			//om.set_translation(pos[0], pos[1], pos[2]);
-			//om.rotate_y(-otd.yaw * Math::DegToRad);
-			
-			if(ds->getDisplayConfig().panopticStereoOverride)
+			otd.yaw = dtc.yaw;
+				
+			otd.tileCenter = dtc.center;
+
+			if(dtc.cameraName == "")
 			{
-				Camera* cam = Engine::instance()->getDefaultCamera();
-				eq::fabric::Matrix4f om;
-				const AffineTransform3& ht = cam->getHeadTransform();
-				om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
-				eqo->setHeadMatrix(om);
+				// Use dafault camera for this tile
+				otd.camera = engine->getDefaultCamera();
 			}
 			else
 			{
-				// eq::fabric::Matrix4f om;
-				// AffineTransform3 ht = AffineTransform3::Identity();
-				// ht.translate(pos);
-				
-				// Vector3f dir = (pos - otd.tileCenter);
-				// dir.normalize();
-				
-				// Quaternion lookAt = Math::buildRotation(Vector3f::UnitZ(), dir, Vector3f::UnitY());
-				
-				// ht.rotate(lookAt);
-				// //ht.rotate(AngleAxis(otd.yaw * Math::DegToRad, Vector3f::UnitY()));
-				// om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
-				// eqo->setHeadMatrix(om);
-				
-				eq::fabric::Matrix4f om = eq::fabric::Matrix4f::IDENTITY;
-				om.set_translation(pos[0], pos[1], pos[2]);
-				om.rotate_y(-otd.yaw * Math::DegToRad);
-				eqo->setHeadMatrix(om);
+				// Use a custom camera for this tile (create it here if necessary)
+				Camera* customCamera = engine->getCamera(dtc.cameraName);
+				if(customCamera == NULL)
+				{
+					customCamera = engine->createCamera(dtc.cameraName);
+				}
+				otd.camera = customCamera;
+				// Make sure the camera is enabled for the specified tile.
+				//otd.camera->getOutput(dtc.device)->setEnabled(true);
 			}
+			dtc.camera = otd.camera;
 		}
-	}
-	else
-	{
-		// update observer head matrices the normal way
-		for( unsigned int i = 0; i < getObservers().size(); i++) 
+
+		Camera* cam = otd.camera;
+		// Update the tile-observer head matrix, using the observer position and the per-tile orientation.
+		// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
+		const Vector3f& pos = cam->getHeadOffset();
+		//eq::fabric::Matrix4f om = eq::fabric::Matrix4f::IDENTITY;
+		//om.rotate_z(Math::Pi);
+		//om.set_translation(pos[0], pos[1], pos[2]);
+		//om.rotate_y(-otd.yaw * Math::DegToRad);
+			
+		if(ds->getDisplayConfig().panopticStereoEnabled)
 		{
 			Camera* cam = Engine::instance()->getDefaultCamera();
 			eq::fabric::Matrix4f om;
 			const AffineTransform3& ht = cam->getHeadTransform();
 			om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
-			getObservers().at(i)->setHeadMatrix(om);
+			eqo->setHeadMatrix(om);
+		}
+		else
+		{
+			// eq::fabric::Matrix4f om;
+			// AffineTransform3 ht = AffineTransform3::Identity();
+			// ht.translate(pos);
+				
+			// Vector3f dir = (pos - otd.tileCenter);
+			// dir.normalize();
+				
+			// Quaternion lookAt = Math::buildRotation(Vector3f::UnitZ(), dir, Vector3f::UnitY());
+				
+			// ht.rotate(lookAt);
+			// //ht.rotate(AngleAxis(otd.yaw * Math::DegToRad, Vector3f::UnitY()));
+			// om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
+			// eqo->setHeadMatrix(om);
+				
+			eq::fabric::Matrix4f om = eq::fabric::Matrix4f::IDENTITY;
+			om.set_translation(pos[0], pos[1], pos[2]);
+			om.rotate_y(-otd.yaw * Math::DegToRad);
+			eqo->setHeadMatrix(om);
 		}
 	}
     return eq::Config::finishFrame();
