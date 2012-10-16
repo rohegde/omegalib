@@ -158,13 +158,12 @@ namespace omega
 		bool drawFps;
 
 		//! When set to true, observer orientation will be kept aligned to each tile normal.
-		bool panopticStereoEnabled;
+		//bool panopticStereoEnabled;
 
 		//! Runtime setings
 		//@{
 		//! Runtime flag: when set to true, observer orientation will still use camera orientation even
-		//! when panopticStereoEnabled is enabled.
-		bool panopticStereoOverride;
+		bool panopticStereoEnabled;
 		//! Runtime flag:When set to true, all tiles will be forced to render in mono mode
 		bool forceMono;
 		//@}

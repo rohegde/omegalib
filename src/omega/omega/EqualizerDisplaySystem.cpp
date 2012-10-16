@@ -164,18 +164,15 @@ void EqualizerDisplaySystem::generateEqConfig()
 		END_BLOCK(result);
 	}
 
-	// If orientObserverToTile is set, we need to create one observer per tile.
-	if(eqcfg.panopticStereoEnabled)
+	// Create observers (one per tile)
+	// observers
+	for(int x = 0; x < eqcfg.numTiles[0]; x++)
 	{
-		// observers
-		for(int x = 0; x < eqcfg.numTiles[0]; x++)
+		for(int y = 0; y < eqcfg.numTiles[1]; y++)
 		{
-			for(int y = 0; y < eqcfg.numTiles[1]; y++)
-			{
-				// observer
-				result += 
-					L(ostr("observer { name \"observer%1%x%2%\" }", %x %y));
-			}
+			// observer
+			result += 
+				L(ostr("observer { name \"observer%1%x%2%\" }", %x %y));
 		}
 	}
 
@@ -193,36 +190,22 @@ void EqualizerDisplaySystem::generateEqConfig()
 	float tileViewportX = 0.0f;
 	float tileViewportY = 0.0f;
 
-	// If panopticStereoEnabled is set, we need to create one view per tile, and link it to the relative observer.
-	if(eqcfg.panopticStereoEnabled)
+	// Create one view per tile, and link it to the relative observer.
+	for(int x = 0; x < eqcfg.numTiles[0]; x++)
 	{
-		for(int x = 0; x < eqcfg.numTiles[0]; x++)
+		for(int y = 0; y < eqcfg.numTiles[1]; y++)
 		{
-			for(int y = 0; y < eqcfg.numTiles[1]; y++)
-			{
-				START_BLOCK(result, "view");
-				// observer
-				result += 
-					L(ostr("name \"view%1%x%2%\"", %x %y)) +
-					L(ostr("observer \"observer%1%x%2%\"", %x %y)) +
-					L(ostr("viewport [%1% %2% %3% %4%]", %tileViewportX %tileViewportY %tileViewportWidth %tileViewportHeight) );
-				END_BLOCK(result);
-				tileViewportY += tileViewportHeight;
-			}
-			tileViewportY = 0.0f;
-			tileViewportX += tileViewportWidth;
+			START_BLOCK(result, "view");
+			// observer
+			result += 
+				L(ostr("name \"view%1%x%2%\"", %x %y)) +
+				L(ostr("observer \"observer%1%x%2%\"", %x %y)) +
+				L(ostr("viewport [%1% %2% %3% %4%]", %tileViewportX %tileViewportY %tileViewportWidth %tileViewportHeight) );
+			END_BLOCK(result);
+			tileViewportY += tileViewportHeight;
 		}
-	}
-	else
-	{
-		START_BLOCK(result, "view");
-
-		result += 
-			L("name \"main\"") +
-			L("observer \"observer0\"") +
-			L("viewport [0 0 1 1]");
-	
-		END_BLOCK(result)
+		tileViewportY = 0.0f;
+		tileViewportX += tileViewportWidth;
 	}
 	END_BLOCK(result)
 	// ------------------------------------------ END layout
@@ -371,10 +354,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 			String segmentName = ostr("%1%x%2%", %x %y);
 			String viewName = "main";
 
-			if(eqcfg.panopticStereoEnabled)
-			{
-				viewName = ostr("view%1%x%2%", %x %y);
-			}
+			viewName = ostr("view%1%x%2%", %x %y);
 
 			if(tc.stereoMode == DisplayTileConfig::Interleaved || 
 				(tc.stereoMode == DisplayTileConfig::Default && eqcfg.stereoMode == DisplayTileConfig::Interleaved))
@@ -558,8 +538,8 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 
 	cfg.enableStencilInterleaver = Config::getBoolValue("enableStencilInterleaver", scfg);
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
+
 	cfg.panopticStereoEnabled = Config::getBoolValue("panopticStereoEnabled", scfg);
-	cfg.panopticStereoOverride = false;
 
 	cfg.disableConfigGenerator = Config::getBoolValue("disableConfigGenerator", scfg, false);
 	
