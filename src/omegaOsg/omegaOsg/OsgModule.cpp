@@ -111,7 +111,7 @@ OsgModule::OsgModule():
 
     osgDB::Registry::instance()->addReaderWriter(new ReaderFreeImage());
 	osgDB::Registry::instance()->addReaderWriter(new ReaderWriterFBX());
-	osgDB::Registry::instance()->addReaderWriter(new ReaderWriterIV());
+	//osgDB::Registry::instance()->addReaderWriter(new ReaderWriterIV());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
