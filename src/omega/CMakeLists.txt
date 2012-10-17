@@ -36,6 +36,7 @@ add_definitions(-DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_ST
 ###################################################################################################
 # Source files
 SET( srcs 
+		omega/DisplayConfig.cpp
 		omega/Camera.cpp
 		omega/CameraController.cpp
 		omega/KeyboardMouseCameraController.cpp
@@ -87,6 +88,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/AsyncTask.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Camera.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CameraController.h
+		${OmegaLib_SOURCE_DIR}/include/omega/DisplayConfig.h
 		${OmegaLib_SOURCE_DIR}/include/omega/KeyboardMouseCameraController.h
 		${OmegaLib_SOURCE_DIR}/include/omega/GamepadCameraController.h
 		${OmegaLib_SOURCE_DIR}/include/omega/MouseCameraController.h
