@@ -69,6 +69,31 @@ SET( headers
         ) 
         
 ###################################################################################################
+set(OMEGAOSG_USE_INVENTOR false CACHE BOOL "Enables Inventor (.vrml, .iv) support for omegaOsg. Needs the Coin3d library installed")
+if(OMEGAOSG_USE_INVENTOR)
+    find_package(Inventor)
+	add_definitions(-DCOIN_NOT_DLL)
+    if(INVENTOR_FOUND)
+		set( srcs  ${srcs}
+				omegaOsg/Inventor/ConvertToInventor.cpp
+				omegaOsg/Inventor/ConvertFromInventor.cpp
+				omegaOsg/Inventor/PendulumCallback.cpp
+				omegaOsg/Inventor/ReaderWriterIV.cpp
+				omegaOsg/Inventor/ShuttleCallback.cpp
+			)
+		set( headers  ${headers}
+				omegaOsg/Inventor/ConvertToInventor.h
+				omegaOsg/Inventor/ConvertFromInventor.h
+				omegaOsg/Inventor/PendulumCallback.h
+				omegaOsg/Inventor/ReaderWriterIV.h
+				omegaOsg/Inventor/ShuttleCallback.h
+			)
+		#ADD_DEFINITIONS(-DCOIN_DLL)
+		include_directories(${INVENTOR_INCLUDE_DIR})
+	endif()
+endif()
+
+###################################################################################################
 source_group(omegaOsg REGULAR_EXPRESSION omegaOsg/)		
 source_group(fbx REGULAR_EXPRESSION omegaOsg/fbx/)		
 
@@ -94,3 +119,9 @@ endif(OMEGA_BUILD_STATIC)
 # Setup link info.
 target_link_libraries(omegaOsg 
 	omega ${OSG_LIBS} ${FBX_LIBNAME} ${TARGET_EXTERNAL_LIBRARIES})
+
+if(OMEGAOSG_USE_INVENTOR)
+    if(INVENTOR_FOUND)
+		target_link_libraries(omegaOsg ${INVENTOR_LIBRARY})
+	endif()
+endif()
