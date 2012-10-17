@@ -882,6 +882,8 @@ BOOST_PYTHON_MODULE(omega)
 	def("overridePanopticStereo", overridePanopticStereo);
 	def("toggleStereo", toggleStereo);
 	def("queueCommand", queueCommand);
+	def("ogetdataprefix", ogetdataprefix);
+	def("osetdataprefix", osetdataprefix);
 };
 
 // Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)

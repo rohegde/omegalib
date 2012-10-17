@@ -37,6 +37,7 @@
 
 #include "omegaOsg/ReaderFreeImage.h"
 #include "fbx/ReaderWriterFBX.h"
+#include "Inventor/ReaderWriterIV.h"
 
 using namespace omegaOsg;
 
@@ -110,6 +111,7 @@ OsgModule::OsgModule():
 
     osgDB::Registry::instance()->addReaderWriter(new ReaderFreeImage());
 	osgDB::Registry::instance()->addReaderWriter(new ReaderWriterFBX());
+	osgDB::Registry::instance()->addReaderWriter(new ReaderWriterIV());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
