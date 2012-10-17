@@ -161,15 +161,16 @@ Ref<PixelData> ImageUtils::loadImage(const String& filename, bool hasFullPath)
 	String path;
 	if(!hasFullPath)
 	{
-		DataManager* dm = SystemManager::instance()->getDataManager();
-		DataInfo info = dm->getInfo(filename);
-
-		if(info.isNull())
+		if(!DataManager::findFile(filename, path))
 		{
-			ofwarn("ImageUtils::loadImage: could not load %1%: file not found.", %filename);
-			return NULL;
+			//ofmsg("LOOKUP: %1%%2%", %ogetdataprefix() %filename);
+			if(!DataManager::findFile(ogetdataprefix() + filename, path))
+			{
+				// Try adding the 
+				ofwarn("ImageUtils::loadImage: could not load %1%: file not found.", %filename);
+				return NULL;
+			}
 		}
-		path = info.path;
 	}
 	else
 	{

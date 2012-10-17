@@ -380,4 +380,18 @@ namespace omega
 		GetCurrentDir(cCurrentPath, sizeof(cCurrentPath));
 		return cCurrentPath;
 	}
+
+	String _dataPrefix;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	void osetdataprefix(const String& data)
+	{
+		_dataPrefix = data;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	String ogetdataprefix()
+	{
+		return _dataPrefix;
+	}
 }

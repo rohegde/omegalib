@@ -91,6 +91,9 @@ namespace omega
 
 	//! Returns the current working directory.
 	OMEGA_API String ogetcwd();
+
+	OMEGA_API void osetdataprefix(const String& data);
+	OMEGA_API String ogetdataprefix();
 };
 
 #endif

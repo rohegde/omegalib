@@ -43,7 +43,9 @@ ReaderWriter::ReadResult ReaderFreeImage::readImage(std::istream& fin,const Opti
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ReaderWriter::ReadResult ReaderFreeImage::readImage(const std::string& file, const osgDB::ReaderWriter::Options* options) const
 {
-    std::string ext = osgDB::getLowerCaseFileExtension(file);
+	String filePath = file;
+
+	std::string ext = osgDB::getLowerCaseFileExtension(filePath);
     if (!acceptsExtension(ext)) return ReadResult::FILE_NOT_HANDLED;
 
     //std::string fileName = osgDB::findDataFile( file, options );
@@ -51,13 +53,13 @@ ReaderWriter::ReadResult ReaderFreeImage::readImage(const std::string& file, con
 
 	bool leaveMemoryAlone = false;
 
-	omega::Ref<omega::PixelData> img = omega::ImageUtils::loadImage(file, false);
+	omega::Ref<omega::PixelData> img = omega::ImageUtils::loadImage(filePath, false);
 	if(img == NULL) return ReadResult::FILE_NOT_FOUND;
 
 	osg::Image* pOsgImage = omegaOsg::OsgModule::pixelDataToOsg(img);
 	
     ReadResult rr(pOsgImage);
-    if(rr.validImage()) rr.getImage()->setFileName(file);
+    if(rr.validImage()) rr.getImage()->setFileName(filePath);
     return rr;
 }
        
