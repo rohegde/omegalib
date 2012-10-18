@@ -248,10 +248,15 @@ set(EXT_INCLUDE_DIR ${OmegaLib_SOURCE_DIR}/external/include)
 
 include_directories(${EXT_INCLUDE_DIR})
 
-target_link_libraries( omega ${OPENGL_LIBRARY} glew)
+IF(APPLE)
+	target_link_libraries( omega ${OPENGL_LIBRARY})
+ELSE(APPLE)
+	target_link_libraries( omega ${OPENGL_LIBRARY} glew)
+ENDIF(APPLE)
 
 if(OMEGA_USE_DISPLAY_EQUALIZER)
 	target_link_libraries( omega ${EQUALIZER_LIBS})
+	add_dependencies( omega equalizer )
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
 if(OMEGA_USE_DISPLAY_GLUT)
@@ -273,8 +278,12 @@ endif(OMEGA_USE_OPENCL)
 ###################################################################################################
 # See if we can setup Python support for this build
 if(OMEGA_USE_PYTHON)
+	if(APPLE)
+		add_dependencies( omega Python )
+		include_directories(${PYTHON_INCLUDE_DIRS})
+	endif(APPLE)
 	target_link_libraries(omega ${PYTHON_LIBRARIES})
-	
+
 	# On linux the python thread uses readline to read user input: look for the readline library.
 	if(OMEGA_OS_LINUX)
 		find_path(READLINE_INCLUDE_DIR readline/readline.h)
