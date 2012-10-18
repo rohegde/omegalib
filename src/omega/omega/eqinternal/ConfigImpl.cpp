@@ -354,7 +354,7 @@ uint32_t ConfigImpl::finishFrame()
 		//om.set_translation(pos[0], pos[1], pos[2]);
 		//om.rotate_y(-otd.yaw * Math::DegToRad);
 			
-		if(ds->getDisplayConfig().panopticStereoEnabled)
+		if(!ds->getDisplayConfig().panopticStereoEnabled)
 		{
 			Camera* cam = Engine::instance()->getDefaultCamera();
 			eq::fabric::Matrix4f om;
