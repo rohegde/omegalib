@@ -18,7 +18,12 @@ elseif(OMEGA_OS_LINUX)
 		set(EXTLIB_NAME OpenSceneGraph-3.0.1-linux-x64)
 	endif(OMEGA_ARCH_32)
 else(OMEGA_OS_WIN)
-	set(EXTLIB_NAME OpenSceneGraph-3.0.1-osx-x86-release-12741)
+	if(CMAKE_BUILD_TYPE MATCHES RELEASE)
+		set(EXTLIB_NAME OpenSceneGraph-3.0.1-osx-x86-release-12741)
+	else(CMAKE_BUILD_TYPE MATCHES RELEASE)
+		set(EXTLIB_NAME OpenSceneGraph-3.0.1-osx-x86-debug-12741)
+	endif(CMAKE_BUILD_TYPE MATCHES RELEASE)
+
 endif(OMEGA_OS_WIN)
 
 set(EXTLIB_TGZ ${CMAKE_BINARY_DIR}/${EXTLIB_NAME}.tar.gz)
