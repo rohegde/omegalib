@@ -5,10 +5,10 @@
     <gui_element id="move_ctrl" type="HTML">
       <div class="div-aligned">
         <fieldset  data-type="horizontal" class="">
-          <input type="button" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[1] += 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-u" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
-          <input type="button" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[1] -= 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-d" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
-          <input type="button" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[0] -= 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-l" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
-          <input type="button" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[0] += 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-r" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+          <input type="button" data-role="button" onmousedown="if(isMaster()): camera=getCameraById(%id%); position = camera.getPosition(); position[1] += 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-u" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+          <input type="button" data-role="button" onmousedown="if(isMaster()): camera=getCameraById(%id%); position=camera.getPosition(); position[1] -= 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-d" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+          <input type="button" data-role="button" onmousedown="if(isMaster()): camera=getCameraById(%id%); position=camera.getPosition(); position[0] -= 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-l" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+          <input type="button" data-role="button" onmousedown="if(isMaster()): camera=getCameraById(%id%); position=camera.getPosition(); position[0] += 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-r" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
         </fieldset>
       </div>
     </gui_element>
