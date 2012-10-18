@@ -200,6 +200,10 @@ void PythonInterpreter::initialize(const char* programName)
 
 	addPythonPath("./");
 
+#ifdef OMEGA_APPROOT_DIRECTORY
+	addPythonPath(OMEGA_APPROOT_DIRECTORY);
+#endif
+
 	if(myShellEnabled && SystemManager::instance()->isMaster())
 	{
 		omsg("PythonInterpreter: starting interactive shell thread.");

@@ -550,9 +550,19 @@ Camera* getOrCreateCamera(const String& name)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Camera* getCameraById(int id)
 {
-	return PortholeGUI::CamerasMap[id]->camera;
+	if(SystemManager::instance()->isMaster())
+	{
+		return PortholeGUI::CamerasMap[id]->camera;
+	}
+	return NULL;
 }
 #endif
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool isMaster()
+{
+	return SystemManager::instance()->isMaster();
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneNode* getScene()
@@ -884,6 +894,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("queueCommand", queueCommand);
 	def("ogetdataprefix", ogetdataprefix);
 	def("osetdataprefix", osetdataprefix);
+	def("isMaster", isMaster);
 };
 
 // Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)

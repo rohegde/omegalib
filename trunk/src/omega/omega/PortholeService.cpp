@@ -848,20 +848,24 @@ void ServerThread::threadProc(){
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PortholeService* PortholeService::createAndInitialize(int port, const String& xmlPath, const String& cssPath)
 {
-	PortholeService* service = new PortholeService();
-	ServiceManager* svcManager = SystemManager::instance()->getServiceManager();
-	svcManager->addService(service);
+	// The service gets created only on the master node.
+	if(SystemManager::instance()->isMaster())
+	{
+		PortholeService* service = new PortholeService();
+		ServiceManager* svcManager = SystemManager::instance()->getServiceManager();
+		svcManager->addService(service);
 
-	string fullPath_xml;
-	DataManager::findFile(xmlPath, fullPath_xml);
+		string fullPath_xml;
+		DataManager::findFile(xmlPath, fullPath_xml);
 
-	string fullPath_css;
-	DataManager::findFile(cssPath, fullPath_css);
+		string fullPath_css;
+		DataManager::findFile(cssPath, fullPath_css);
 
-	PortholeFunctionsBinder* binder = new PortholeFunctionsBinder();
-	service->start(port, (char*)fullPath_xml.c_str(), (char*)fullPath_css.c_str(), binder);
+		service->start(port, (char*)fullPath_xml.c_str(), (char*)fullPath_css.c_str());
 
-	return service;
+		return service;
+	}
+	return NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -876,11 +880,12 @@ PortholeService::~PortholeService(){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeService::start(int port, char* xmlPath, char* cssPath, PortholeFunctionsBinder* binder)
+void PortholeService::start(int port, char* xmlPath, char* cssPath)
 {
+	myBinder = new PortholeFunctionsBinder();
 	portholeServer = new ServerThread();
 	portholeServer->setPort(port);
-	portholeServer->setFunctionsBinder(binder);
+	portholeServer->setFunctionsBinder(myBinder);
 	portholeServer->setXMLfile(xmlPath);
 	portholeServer->setCSSPath(cssPath);
 	portholeServer->start();
