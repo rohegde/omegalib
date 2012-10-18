@@ -28,7 +28,11 @@
 #include "omega/KeyboardService.h"
 
 #ifdef OMEGA_USE_DISPLAY_GLUT
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include "GL/freeglut.h"
+#endif
 #endif
 
 using namespace omega;

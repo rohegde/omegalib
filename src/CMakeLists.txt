@@ -41,13 +41,19 @@ endif()
 # See if we can setup Python support for this build
 set(OMEGA_ENABLE_PYTHON true CACHE BOOL "Enables python support if available.")
 if(OMEGA_ENABLE_PYTHON)
-	find_package(PythonLibs)
-	if(PYTHONLIBS_FOUND)
+	if(APPLE)
 		set(OMEGA_USE_PYTHON true)
+		include(${CMAKE_SOURCE_DIR}/external/CompilePython.cmake)
 		include_directories(${PYTHON_INCLUDE_DIRS})
-	else()
-		message("Python libraries not found on this system. Omegalib Python support will be disabled")
-	endif()
+	else(APPLE)
+		find_package(PythonLibs)
+		if(PYTHONLIBS_FOUND)
+			set(OMEGA_USE_PYTHON true)
+			include_directories(${PYTHON_INCLUDE_DIRS})
+		else()
+			message("Python libraries not found on this system. Omegalib Python support will be disabled")
+		endif()
+	endif(APPLE)
 else()
 	set(OMEGA_USE_PYTHON false)
 endif()
@@ -62,13 +68,22 @@ set(OMEGA_BUILD_VTK_LIB false CACHE BOOL "Enable build of vtk integration librar
 
 ###################################################################################################
 # Set include paths
-include_directories(
-  ${CMAKE_BINARY_DIR}/include/
-  ${CMAKE_SOURCE_DIR}/include/
-  ${CMAKE_SOURCE_DIR}/src/3rdparty/glew  
-  ${CMAKE_SOURCE_DIR}/external/include
-  ${OMICRON_INCLUDE_DIRS}
-  )
+if(APPLE)
+	include_directories(
+	  ${CMAKE_BINARY_DIR}/include/
+	  ${CMAKE_SOURCE_DIR}/include/
+	  ${CMAKE_SOURCE_DIR}/external/include
+	  ${OMICRON_INCLUDE_DIRS}
+	  )
+else(APPLE)
+	include_directories(
+	  ${CMAKE_BINARY_DIR}/include/
+	  ${CMAKE_SOURCE_DIR}/include/
+  	  ${CMAKE_SOURCE_DIR}/src/3rdparty/glew  
+	  ${CMAKE_SOURCE_DIR}/external/include
+	  ${OMICRON_INCLUDE_DIRS}
+	  )
+endif(APPLE)
 
 ###################################################################################################
 # Add libraries and applications to the project.
@@ -93,14 +108,19 @@ if(OMEGA_USE_PORTHOLE)
 	add_subdirectory(apps/porthello)
 endif()
 
-add_subdirectory(3rdparty/glew)
+if(NOT APPLE)
+	add_subdirectory(3rdparty/glew)
+endif(NOT APPLE)
 add_subdirectory(apps/ohello)
 add_subdirectory(apps/ohello2)
 add_subdirectory(apps/omegaSound)
 add_subdirectory(omegaToolkit)
 
 # OSX uses its own glut, do not compile it internally (Should we do the same under linux?)
-if(OMEGA_USE_DISPLAY_GLUT) 
+if(OMEGA_USE_DISPLAY_GLUT)
+	if(APPLE)
+		find_package(GLUT)
+	endif(APPLE)
     if(NOT APPLE) 
 	    add_subdirectory(3rdparty/freeglut)
     endif()
@@ -145,7 +165,7 @@ endif()
 # Add the core omega project
 add_subdirectory(omega)
 
-if(PYTHONLIBS_FOUND)
+if(OMEGA_USE_PYTHON)
 	# We need to add orun here because its config file uses build options defined above
 	add_subdirectory(apps/orun)
 	add_subdirectory(apps/mcsend)

@@ -27,7 +27,11 @@
 #include "eqinternal.h"
 #include "omega/DisplaySystem.h"
 
+#ifdef __APPLE__
+#include <OpenGL/glu.h>
+#else
 #include <GL/glu.h>
+#endif
 
 using namespace omega;
 using namespace co::base;

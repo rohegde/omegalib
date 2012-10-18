@@ -194,7 +194,9 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 	glewSetContext(&sGLEWContext);
 
 	// Init glew
+#ifndef __APPLE__
 	glewInit();
+#endif
 
 	glutDisplayFunc(displayCallback); 
 

@@ -27,7 +27,11 @@
 #include "omega/MouseService.h"
 
 #ifdef OMEGA_USE_DISPLAY_GLUT
+#ifdef __APPLE__
+#include  <GLUT/glut.h>
+#else
 #include "GL/freeglut.h"
+#endif
 #endif
 
 using namespace omega;
@@ -66,7 +70,6 @@ void MouseService::mouseWheelCallback(int btn, int wheel, int x, int y)
 		mysInstance->unlockEvents();
 	}
 }
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MouseService::mouseMotionCallback(int x, int y)
 {
@@ -212,7 +215,10 @@ void MouseService::initialize()
 		glutPassiveMotionFunc(mouseMotionCallback);
 		glutMotionFunc(mouseMotionCallback);
 		glutMouseFunc(mouseButtonCallback);
-		glutMouseWheelFunc(mouseWheelCallback);
+		/** Apple's GLUT does not support the mouse wheel **/
+#ifndef __APPLE__
+	glutMouseWheelFunc(mouseWheelCallback);
+#endif
 	}
 #endif
 }
