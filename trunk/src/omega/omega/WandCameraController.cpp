@@ -66,7 +66,8 @@ void WandCameraController::handleCommand(const String& cmd)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void WandCameraController::handleEvent(const Event& evt)
 {
-	if(!isEnabled() || evt.isProcessed()) return;
+	//if(!isEnabled() || evt.isProcessed()) return;
+	if(!isEnabled()) return;
 	if(evt.getServiceType() == Service::Wand)
 	{
 		float x = evt.getExtraDataFloat(0);
@@ -78,7 +79,7 @@ void WandCameraController::handleEvent(const Event& evt)
 		
 		myYaw = -x * myRotateSpeed;
 
-		mySpeed = evt.getOrientation() * Vector3f(0, 0, y);
+		mySpeed = evt.getOrientation() * Vector3f(0, 0, y / 2);
 		
 		//myAxisCorrection = getCamera()->getOrientation();
 		
@@ -141,7 +142,7 @@ void WandCameraController::update(const UpdateContext& context)
 {
 	if(!isEnabled()) return;
 	Camera* c = getCamera();
-	myTorque = c->getOrientation().slerp(context.dt * 0.2f, myTorque);// * AngleAxis(myYaw, Vector3f::UnitY());
+	myTorque = c->getOrientation().slerp(context.dt * 0.2f, myTorque) * AngleAxis(myYaw, Vector3f::UnitY());
 	
 	if(c != NULL)
 	{
@@ -156,7 +157,7 @@ void WandCameraController::update(const UpdateContext& context)
 	//getCamera()->translate(mySpeed * context.dt, Node::TransformLocal);
 	//getCamera()->rotate(myTorque.slerp(context.dt, Quaternion::Identity()), Node::TransformLocal);
 	
-	mySpeed = mySpeed * 0.8f;
+	mySpeed -= mySpeed * context.dt * 10;
 	//myTorque = myTorque.slerp(0.5f, Quaternion::Identity());
 }
 
