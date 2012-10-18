@@ -111,26 +111,18 @@ void HelloRenderPass::initialize()
 {
 	RenderPass::initialize();
 
-	// Functions Bind
-	PortholeFunctionsBinder* binder = new PortholeFunctionsBinder();
-	binder->addFunction("up(event)", &up);
-	binder->addFunction("down(event)", &down);
-	binder->addFunction("left(event)", &left);
-	binder->addFunction("right(event)", &right);
-	binder->addFunction("zoomSlider(event)", &zoomSlider);
-
 	// Porthole initialize the porthole service
-	PortholeService* service = new PortholeService();
-	ServiceManager* svcManager = SystemManager::instance()->getServiceManager();
-	svcManager->addService(service);
-
-	string fullPath_xml;
-	DataManager::findFile("porthole/porthello.xml", fullPath_xml);
-
-	string fullPath_css;
-	DataManager::findFile("porthole/porthello.css", fullPath_css);
-
-	service->start(4080, (char*)fullPath_xml.c_str(), (char*)fullPath_css.c_str(), binder);
+	PortholeService* service = PortholeService::createAndInitialize(4080,"porthole/porthello.xml","porthole/porthello.css");
+	if(service != NULL)
+	{
+		// Functions Bind
+		PortholeFunctionsBinder* binder = service->getFunctionsBinder();
+		binder->addFunction("up(event)", &up);
+		binder->addFunction("down(event)", &down);
+		binder->addFunction("left(event)", &left);
+		binder->addFunction("right(event)", &right);
+		binder->addFunction("zoomSlider(event)", &zoomSlider);
+	}
 
 	// Initialize cube normals.
 	myNormals[0] = Vector3f(-1, 0, 0);

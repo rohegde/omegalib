@@ -80,21 +80,7 @@ void PortholeRenderPass::initialize()
 {
 	RenderPass::initialize();
 
-	// Functions Bind
-	PortholeFunctionsBinder* binder = new PortholeFunctionsBinder();
-
-	// Porthole initialize the porthole service
-	PortholeService* service = new PortholeService();
-	ServiceManager* svcManager = SystemManager::instance()->getServiceManager();
-	svcManager->addService(service);
-
-	string fullPath_xml;
-	DataManager::findFile("porthole/portholeCUstomDraw.xml", fullPath_xml);
-
-	string fullPath_css;
-	DataManager::findFile("porthole/porthello.css", fullPath_css);
-
-	service->start(4080, (char*)fullPath_xml.c_str(), (char*)fullPath_css.c_str(), binder);
+	PortholeService::createAndInitialize(4080, "porthole/portholeCustomDraw.xml", "porthole/porthello.css");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

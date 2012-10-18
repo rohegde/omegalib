@@ -108,30 +108,31 @@ namespace omega {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements an interface to handled device applications
-	class OMEGA_API PortholeService: public Service{
-
+	class OMEGA_API PortholeService: public Service
+	{
 	public:
-
 		// Wrapper for creation and start of the service
-		//! PYAPI
 		static PortholeService* createAndInitialize(int port, const String& xmlPath, const String& cssPath);
 
 		//! Allocator function (will be used to register the service inside SystemManager)
-		static PortholeService* New() { return new PortholeService(); }
+		//static PortholeService* New() { return new PortholeService(); }
 
-		// Default constructor and destructor
-		PortholeService();
 		~PortholeService();
 
 		// Setup and poll
 		virtual void setup(omicron::Setting& settings);
-		void start(int port, char* xmlPath, char* cssPath, PortholeFunctionsBinder* binder); // Start the server and listen to port
+		void start(int port, char* xmlPath, char* cssPath); // Start the server and listen to port
 		virtual void poll();
+		PortholeFunctionsBinder* getFunctionsBinder() { return myBinder; }
 
 		// Server instance. It will manage the incoming connections
 		//thread server_thread;
 		ServerThread* portholeServer;
 
+	private:
+		// Default constructor and destructor
+		PortholeService();
+		PortholeFunctionsBinder* myBinder;
 	};
 
 };
