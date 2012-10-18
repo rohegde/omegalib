@@ -1,0 +1,44 @@
+omegalib data search paths:
+::: /Users/mvictoras/src/omegalib-clang32/build/bin
+::: 
+::: /Users/mvictoras/src/omegalib-clang32/data
+omegalib application config lookup:
+::: trying porthello/porthello.cfg
+::: not found, trying porthello.cfg
+::: not found, trying default.cfg
+::: found config: default.cfg
+SystemManager::setup
+Opened config file: default.cfg
+Opened config file: system/desktop.cfg
+Service added: MouseService
+Service added: KeyboardService
+Service added: ViewRayService
+!!! Service not found: ObserverUpdateService
+SystemManager::setupDisplaySystem: type = Equalizer
+Bezel size: 0 0
+Total display resolution: 854 480
+ServiceManager::initialize
+Event buffer allocated. Max events: 1024
+SharedDataServices::registerObject: queuing interp for registration
+PythonInterpreter::addPythonPath: ./
+PythonInterpreter: starting interactive shell thread.
+omegaPythonApiInit()
+Python Interpreter initialized.
+Initializing mission control server...
+MissionControlServer: adding log listener
+[EQ] ConfigImpl::ConfigImpl
+SharedData::registerObject: registering interp
+:: Equalizer display system startup ::
+[EQ] ConfigImpl::init
+:: Equalizer initialization DONE ::
+Console: adding log listener
+[EQ] NodeImpl::NodeImpl
+[EQ] NodeImpl::configInit 7d0e74e668d596c:cd77e245ff57f628
+@Renderer::Initialize: id = 0
+WindowImpl::configInit: tile 0 0
+:: Equalizer display system startup DONE ::
+SharedData::registerObject: registering EventSharingModule
+Renderer(0): adding render pass HelloRenderPass
+SharedData::registerObject: registering Module_1
+~EngineModule Module_1
+~EngineModule EventSharingModule

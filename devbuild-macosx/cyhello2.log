@@ -1,0 +1,50 @@
+omegalib data search paths:
+::: /Users/mvictoras/src/omegalib-clang32/build/bin
+::: 
+::: /Users/mvictoras/src/omegalib-clang32/data
+omegalib application config lookup:
+::: trying cyhello2/cyhello2.cfg
+::: not found, trying cyhello2.cfg
+::: not found, trying default.cfg
+::: found config: default.cfg
+SystemManager::setup
+Opened config file: default.cfg
+Opened config file: system/desktop.cfg
+Service added: MouseService
+Service added: KeyboardService
+Service added: ViewRayService
+!!! Service not found: ObserverUpdateService
+SystemManager::setupDisplaySystem: type = Equalizer
+Bezel size: 0 0
+Total display resolution: 854 480
+ServiceManager::initialize
+Event buffer allocated. Max events: 1024
+SharedDataServices::registerObject: queuing interp for registration
+PythonInterpreter::addPythonPath: ./
+PythonInterpreter: starting interactive shell thread.
+omegaPythonApiInit()
+Python Interpreter initialized.
+Initializing mission control server...
+MissionControlServer: adding log listener
+[EQ] ConfigImpl::ConfigImpl
+SharedData::registerObject: registering interp
+:: Equalizer display system startup ::
+[EQ] ConfigImpl::init
+:: Equalizer initialization DONE ::
+Console: adding log listener
+[EQ] NodeImpl::NodeImpl
+[EQ] NodeImpl::configInit 37147031abb37c38:961f5619da728200
+@Renderer::Initialize: id = 0
+WindowImpl::configInit: tile 0 0
+:: Equalizer display system startup DONE ::
+SharedData::registerObject: registering EventSharingModule
+cyclopsPythonApiInit()
+SceneManager configuration loaded
+::    Shadows enabled: 0
+:: Shadow resolution ratio: 1
+Image loaded: /Users/mvictoras/src/omegalib-clang32/data/cyclops/common/defaultTexture.png. Size: 32x32
+Recompiling shaders (variation: .0)
+SharedData::registerObject: registering SceneManager
+ModelLoaderThread: start
+Loading model cyclops/test/torus.fbx
+Optimizing model

@@ -1,0 +1,59 @@
+omegalib data search paths:
+::: /Users/mvictoras/src/omegalib-clang32/build/bin
+::: 
+::: /Users/mvictoras/src/omegalib-clang32/data
+omegalib application config lookup:
+::: trying cyhello/cyhello.cfg
+::: not found, trying cyhello.cfg
+::: not found, trying default.cfg
+::: found config: default.cfg
+SystemManager::setup
+Opened config file: default.cfg
+Opened config file: system/desktop.cfg
+Service added: MouseService
+Service added: KeyboardService
+Service added: ViewRayService
+!!! Service not found: ObserverUpdateService
+SystemManager::setupDisplaySystem: type = Equalizer
+Bezel size: 0 0
+Total display resolution: 854 480
+ServiceManager::initialize
+Event buffer allocated. Max events: 1024
+SharedDataServices::registerObject: queuing interp for registration
+PythonInterpreter::addPythonPath: ./
+PythonInterpreter: starting interactive shell thread.
+omegaPythonApiInit()
+Python Interpreter initialized.
+Initializing mission control server...
+MissionControlServer: adding log listener
+[EQ] ConfigImpl::ConfigImpl
+SharedData::registerObject: registering interp
+:: Equalizer display system startup ::
+[EQ] ConfigImpl::init
+:: Equalizer initialization DONE ::
+Console: adding log listener
+[EQ] NodeImpl::NodeImpl
+[EQ] NodeImpl::configInit b8bf2aa4d0b3c996:f6d218b006d677e0
+@Renderer::Initialize: id = 0
+WindowImpl::configInit: tile 0 0
+:: Equalizer display system startup DONE ::
+SharedData::registerObject: registering EventSharingModule
+cyclopsPythonApiInit()
+SceneManager configuration loaded
+::    Shadows enabled: 0
+:: Shadow resolution ratio: 1
+Image loaded: /Users/mvictoras/src/omegalib-clang32/data/cyclops/common/defaultTexture.png. Size: 32x32
+Recompiling shaders (variation: .0)
+ModelLoaderThread: start
+SharedData::registerObject: registering SceneManager
+SharedData::registerObject: registering Module_1
+Renderer(0): adding render pass OsgRenderPass
+SharedData::registerObject: registering OsgModule
+Active lights changed (was 0, is 1)
+Recompiling shaders (variation: .1)
+Creating vertex shader cyclops/common/Colored.vert.1
+Loading shader: cyclops/common/Colored.vert
+Creating fragment shader cyclops/common/Colored.frag.1
+Loading shader: cyclops/common/Colored.frag
+~EngineModule Module_1
+~EngineModule EventSharingModule

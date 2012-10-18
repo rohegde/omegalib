@@ -1,0 +1,94 @@
+#Equalizer 1.0 ascii
+global
+{
+	EQ_CONFIG_FATTR_EYE_BASE 0.06
+	EQ_WINDOW_IATTR_PLANES_STENCIL ON
+}
+server
+{
+	config
+	{
+		latency 0
+		appNode
+		{
+			attributes { thread_model DRAW_SYNC }
+			pipe
+			{
+				name = "0x0-0"
+				port = 0
+				device = 0
+				window
+				{
+					name "0x0"
+					viewport [0 0 854 480]
+					channel { name "0x0"}
+				}
+				window
+				{
+					name "stats"
+					viewport [20 20 480 860]
+					channel { name "stats"}
+				}
+			}
+		}
+		observer { name "observer0x0" }
+		layout
+		{
+			name "layout"
+			view
+			{
+				name "view0x0"
+				observer "observer0x0"
+				viewport [0 0 1 1]
+			}
+		}
+		layout
+		{
+			name "simpleLayout"
+			view
+			{
+				name "main"
+				viewport [0 0 1 1]
+			}
+		}
+		canvas
+		{
+			name "mainCanvas"
+			layout "layout"
+			segment
+			{
+				name "0x0"
+				channel "0x0"
+				viewport [0 0 1 1]
+				wall
+				{
+					bottom_left [ -1 1.44 -2 ]
+					bottom_right [ 1 1.44 -2 ]
+					top_left [ -1 2.56 -2 ]
+				}
+			}
+		}
+		canvas
+		{
+			name "statsCanvas"
+			layout "simpleLayout"
+			segment
+			{
+				name "stats"
+				channel "stats"
+				viewport [0 0 1 1]
+				wall
+				{
+					bottom_left [ -1 -0.5 0 ]
+					bottom_right [ 1 -0.5 0 ]
+					top_left [ -1 0.5 0 ]
+				}
+			}
+		}
+		compound
+		{
+		compound { swapbarrier { name "defaultbarrier" } channel ( canvas "mainCanvas" segment "0x0" layout "layout" view "view0x0" ) }
+		compound { channel ( canvas "statsCanvas" segment "stats" layout "simpleLayout" view "main" ) }
+		}
+	}
+}
