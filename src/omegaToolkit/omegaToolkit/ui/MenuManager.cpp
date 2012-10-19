@@ -355,16 +355,14 @@ void Menu::show()
 	myContainer->get3dSettings().scale = myManager->getDefaultMenuScale() / 2;
 	my3dSettings.scale = myManager->getDefaultMenuScale();
 
-	if(SystemManager::settingExists("config/sound"))
+	if(SystemManager::settingExists("config/sound") && myManager->getShowMenuSound() != NULL )
 	{
 		// Set the listener position
 		Vector3f cameraPosition = myManager->getEngine()->getDefaultCamera()->getPosition();
 		myManager->getEngine()->getSoundEnvironment()->setListenerPosition( cameraPosition );
 
 		// Set the sound position and play
-		SoundInstance* showSound = new SoundInstance(myManager->getShowMenuSound());
-		ofmsg("Menu::show() about to play sound %1%", %myManager->getHideMenuSound()->getFilePath() );
-		ofmsg("Menu pos: %1%", %myContainer->get3dSettings().position );
+		Ref<SoundInstance> showSound = new SoundInstance(myManager->getShowMenuSound());
 		showSound->setPosition( myContainer->get3dSettings().position );
 		showSound->play();
 	}
@@ -389,16 +387,14 @@ void Menu::hide()
 		myActiveSubMenu = NULL;
 	}
 
-	if(SystemManager::settingExists("config/sound"))
+	if( SystemManager::settingExists("config/sound") && myManager->getHideMenuSound() != NULL )
 	{
 		// Set the listener position
 		Vector3f cameraPosition = myManager->getEngine()->getDefaultCamera()->getPosition();
 		myManager->getEngine()->getSoundEnvironment()->setListenerPosition( cameraPosition );
 
 		Ref<SoundInstance> hideSound = new SoundInstance(myManager->getHideMenuSound());
-		ofmsg("Menu::hide() about to play sound %1%", %myManager->getHideMenuSound()->getFilePath() );
-		ofmsg("Menu pos: %1%", %myContainer->get3dSettings().position );
-		ofmsg("Listener pos: %1%", %myManager->getEngine()->getSoundEnvironment()->getListenerPosition() );
+		hideSound->setPosition( myContainer->get3dSettings().position );
 		hideSound->play();
 	}
 }
@@ -532,27 +528,35 @@ void MenuManager::initialize()
 		{
 			Setting& sUi = SystemManager::settingLookup("config/sound");
 
-			myShowMenuSound = se->createSound("myShowMenuSound");
-			myShowMenuSound->loadFromFile( Config::getStringValue("myShowMenuSound", sUi, "showMenu.wav").c_str() );
-
-			myHideSoundMenu = se->createSound("myHideSoundMenu");
-			myHideSoundMenu->loadFromFile( Config::getStringValue("myHideSoundMenu", sUi, "hideMenu.wav").c_str() );
-		
-			selectMenuSound = se->createSound("selectMenuSound");
-			selectMenuSound->loadFromFile( Config::getStringValue("selectMenuSound", sUi, "selectMenu.wav").c_str() );
-		
-			scrollMenuSound = se->createSound("scrollMenuSound");
-			scrollMenuSound->loadFromFile( Config::getStringValue("scrollMenuSound", sUi, "scrollMenu.wav").c_str() );
-		
 			float volume = Config::getFloatValue("menuSoundVolume", sUi, 1.0);
 			float width = Config::getFloatValue("menuSoundWidth", sUi, 1.0);
 			float mix = Config::getFloatValue("menuSoundMix", sUi, 1.0);
 			float reverb = Config::getFloatValue("menuSoundReverb", sUi, 1.0);
-		
-			myShowMenuSound->setDefaultParameters(volume, width, mix, reverb, false, false);
-			myHideSoundMenu->setDefaultParameters(volume, width, mix, reverb, false, false);
-			selectMenuSound->setDefaultParameters(volume, width, mix, reverb, false, false);
-			scrollMenuSound->setDefaultParameters(volume, width, mix, reverb, false, false);
+
+			if( sUi.exists("showMenuSound") ){
+				myShowMenuSound = se->createSound("showMenuSound");
+				myShowMenuSound->loadFromFile( Config::getStringValue("showMenuSound", sUi ) );
+				myShowMenuSound->setDefaultParameters(volume, width, mix, reverb, false, false);
+			}
+
+			if( sUi.exists("hideMenuSound") ){
+				myHideSoundMenu = se->createSound("hideMenuSound");
+				myHideSoundMenu->loadFromFile( Config::getStringValue("hideMenuSound", sUi ) );
+				myHideSoundMenu->setDefaultParameters(volume, width, mix, reverb, false, false);
+			}
+
+			if( sUi.exists("selectMenuSound") ){
+				selectMenuSound = se->createSound("selectMenuSound");
+				selectMenuSound->loadFromFile( Config::getStringValue("selectMenuSound", sUi ) );
+				selectMenuSound->setDefaultParameters(volume, width, mix, reverb, false, false);
+			}
+
+			if( sUi.exists("scrollMenuSound") ){
+				scrollMenuSound = se->createSound("scrollMenuSound");
+				scrollMenuSound->loadFromFile( Config::getStringValue("scrollMenuSound", sUi ) );
+				scrollMenuSound->setDefaultParameters(volume, width, mix, reverb, false, false);
+			}
+			
 		}
 	}
 

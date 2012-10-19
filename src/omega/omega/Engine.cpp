@@ -145,18 +145,11 @@ void Engine::initialize()
 	// On distributed systems, this is executed only on the master node
 	if(syscfg->exists("config/sound"))
 	{
-		String soundServerIP = "localhost";
-		int soundServerPort = 57120;
-
         Setting& s = syscfg->lookup("config/sound");
-		if(s.exists("soundServerIP"))
-		{
-			soundServerIP = Config::getStringValue("soundServerIP", s, "localhost");
-		}
-		if(s.exists("soundServerPort"))
-		{
-			soundServerPort = Config::getIntValue("soundServerPort", s, 57120);
-		}
+
+		String soundServerIP = Config::getStringValue("soundServerIP", s, "localhost");
+		int soundServerPort = Config::getIntValue("soundServerPort", s, 57120);
+
 		soundManager = new SoundManager(soundServerIP,soundServerPort);
 		soundManager->startSoundServer();
 

@@ -55,12 +55,18 @@ private:
 class HelloApplication: public EngineModule
 {
 public:
-	HelloApplication()
+	HelloApplication() {}
+
+	~HelloApplication()
 	{
-		soundManager = new SoundManager("xenakis.evl.uic.edu", 57120);
-		soundManager->startSoundServer();
-		
-		env = soundManager->getSoundEnvironment();
+		delete sound;
+		delete sound1;
+		delete music;
+	}
+
+	virtual void initialize()
+	{
+		env = getEngine()->getSoundEnvironment();
 		env->setAssetDirectory("/Users/evldemo/sounds/");
 		
 		// All sound files should be in .wav format
@@ -69,16 +75,20 @@ public:
 		sound = env->loadSoundFromFile("beep", "/menu_sounds/menu_select.wav");
 		music = env->loadSoundFromFile("music", "/music/filmic.wav");
 		sound1 = env->loadSoundFromFile("tricorder", "/arthur/TOS-tricorder.wav");
-		soundColor = false;
-		soundLoopPlaying = false;
+
+		// playStereo() is for ambient music.
+		// Currently available functions:
+		//	 setVolume(float) - amplitude from (0.0 - 1.0)
+		//	 setLoop(bool)
+		//	 stop() - this means this instance is finished and a new
+		//			  sound instance will need to be created to play
+		SoundInstance* musicInst = new SoundInstance(music);
+		musicInst->setVolume(0.2);
+		musicInst->playStereo();
+
+		changeCubeColor = false;
 	}
 
-	~HelloApplication()
-	{
-		delete soundManager;
-		delete sound;
-		delete music;
-	}
 
 	virtual void initializeRenderer(Renderer* r) 
 	{ 
@@ -89,8 +99,8 @@ public:
 	float getYPos() { return yPos; }
 	float getZPos() { return zPos; }
 	
-	bool isSoundColor() { return soundColor; }
-	void resetSoundColor() { soundColor = false; }
+	bool isCubeColoredBySound() { return changeCubeColor; }
+	void resetCubeColor() { changeCubeColor = false; }
 
 	virtual void handleEvent(const Event& evt);
 	virtual void commitSharedData(SharedOStream& out);
@@ -102,10 +112,8 @@ private:
 	float zPos;
 	float dist;
 	
-	bool soundColor;
-	bool soundLoopPlaying;
-	
-	SoundManager* soundManager;
+	bool changeCubeColor;
+
 	SoundEnvironment* env;
 	Sound* sound;
 	Sound* sound1;
@@ -179,7 +187,7 @@ void HelloRenderPass::render(Renderer* client, const DrawContext& context)
 		for (int i = 0; i < 6; i++) 
 		{
 			glBegin(GL_QUADS);
-			if( myApplication->isSoundColor() )
+			if( myApplication->isCubeColoredBySound() )
 			{
 				glColor3fv(myFaceColors[5].data());
 			}
@@ -208,13 +216,19 @@ void HelloApplication::handleEvent(const Event& evt)
 		yPos = evt.getPosition().y();
 		zPos = evt.getPosition().z();
 		
-		if( soundLoopPlaying )
+		if( soundLoopInst != NULL )
 			soundLoopInst->setPosition( evt.getPosition() );
 	
 		if( evt.getType() == Event::Down )
 		{
 			if( evt.getFlags() == Event::Button3 ) // Wand cross button
 			{
+				// playStereo() is for ambient music.
+				// Currently available functions:
+				//	 setVolume(float) - amplitude from (0.0 - 1.0)
+				//	 setLoop(bool)
+				//	 stop() - this means this instance is finished and a new
+				//			  sound instance will need to be created to play
 				SoundInstance* musicInst = new SoundInstance(music);
 				musicInst->setVolume(0.2);
 				musicInst->playStereo();
@@ -228,26 +242,36 @@ void HelloApplication::handleEvent(const Event& evt)
 				SoundInstance* soundInst = new SoundInstance(sound);
 				soundInst->setPosition( evt.getPosition() );
 				soundInst->play();
-				soundColor = true;
+				changeCubeColor = true;
 			}
 			else if( evt.getFlags() == Event::ButtonRight ) // DPad
 			{
-				if( !soundLoopPlaying )
+				if( soundLoopInst != NULL || !soundLoopInst->isPlaying() )
 				{
+					// Positional sounds use play()
+					// Currently available functions:
+					//	 stop() - this means this instance is finished and a new
+					//			  sound instance will need to be created to play
+					//	 setPosition(Vector3f) 
+					//	 setVolume(float) - amplitude from (0.0 - 1.0)
+					//	 setLoop(bool)
+					//	 setMix(float) - wetness of sound (0.0 - 1.0)
+					//	 setReverb(float) - room size / reverb amount (0.0 - 1.0)
+					//	 setWidth(int) - number of speakers to spread sound across (1-20)
+					//			This will eventually be replaced with a sound radius
 					soundLoopInst = new SoundInstance(sound1);
 					soundLoopInst->setPosition( evt.getPosition() );
 					soundLoopInst->setLoop(true);
 					soundLoopInst->setVolume(0.2);
+					soundLoopInst->setWidth(3);
 					soundLoopInst->play();
-					soundLoopPlaying = true;
 				}
-				else
+				else if( soundLoopInst != NULL )
 				{
 					soundLoopInst->stop();
-					soundLoopPlaying = false;
 				}
 				
-				soundColor = true;
+				changeCubeColor = true;
 			}
 			else
 			{
@@ -257,14 +281,14 @@ void HelloApplication::handleEvent(const Event& evt)
 				soundInst->setMix(1.0);
 				//soundInst->setVolume(0.5);
 				soundInst->play();
-				soundColor = true;
+				changeCubeColor = true;
 			}
 			
 			
 		}
 		else if( evt.getType() == Event::Up )
 		{
-			soundColor = false;
+			changeCubeColor = false;
 		}
 	}
 }
@@ -272,13 +296,13 @@ void HelloApplication::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void HelloApplication::commitSharedData(SharedOStream& out)
 {
-	out << xPos << yPos << zPos << soundColor;
+	out << xPos << yPos << zPos << changeCubeColor;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void HelloApplication::updateSharedData(SharedIStream& in)
 {
- 	in >> xPos >> yPos >> zPos >> soundColor;
+ 	in >> xPos >> yPos >> zPos >> changeCubeColor;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
