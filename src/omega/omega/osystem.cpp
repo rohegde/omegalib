@@ -49,6 +49,7 @@
     #define GetCurrentDir getcwd
  #endif
 
+
 namespace omega
 {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,10 +82,18 @@ namespace omega
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
+	extern "C" void sigproc(int signal_number)
+	{ 		 
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+		ds->killCluster();
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
 	int omain(omega::ApplicationBase& app, int argc, char** argv)
 	{
 		// register the abort handler.
 		signal(SIGABRT, &abortHandler);
+		signal(SIGINT, sigproc);
 
 #ifdef OMEGA_ENABLE_VLD
 		// Mark everything before this point as already reported to avoid reporting static global objects as leaks.
