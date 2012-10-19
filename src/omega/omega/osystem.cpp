@@ -28,6 +28,7 @@
 #include "omega/ApplicationBase.h"
 #include "omega/SystemManager.h"
 #include "omega/DisplaySystem.h"
+#include "omega/Engine.h"
 #include "omicron/StringUtils.h"
 
 #include <iostream>
@@ -85,6 +86,15 @@ namespace omega
 	extern "C" void sigproc(int signal_number)
 	{ 		 
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+
+		// Explicitly kill sound server
+		SoundEnvironment* se = Engine::instance()->getSoundEnvironment();
+		if(se != NULL)
+		{
+			se->stopAllSounds();
+			se->cleanupAllSounds();
+		}
+
 		ds->killCluster();
 	}
 
