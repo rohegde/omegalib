@@ -1,10 +1,10 @@
 @vertexShader
 
-varying float var_CurrentX;
+attribute float deformation;
+varying float deform;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void setupSurfaceData(vec4 eyeSpacePosition)
 {
-	var_CurrentX = gl_Vertex.x;
-	// Nothing to do.
+deform=deformation;
 }
