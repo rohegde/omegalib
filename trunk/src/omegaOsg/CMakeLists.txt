@@ -96,6 +96,7 @@ endif()
 ###################################################################################################
 source_group(omegaOsg REGULAR_EXPRESSION omegaOsg/)		
 source_group(fbx REGULAR_EXPRESSION omegaOsg/fbx/)		
+source_group(Inventor REGULAR_EXPRESSION omegaOsg/Inventor/)		
 
 IF(WIN32)
     SET(TARGET_EXTERNAL_LIBRARIES wininet)

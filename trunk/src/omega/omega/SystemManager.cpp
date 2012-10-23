@@ -353,3 +353,16 @@ void SystemManager::postExitRequest(const String& reason)
 	myExitReason = reason;
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SystemManager::loadAppConfig(const String& filename)
+{
+	String cfgPath;
+	if(DataManager::findFile(filename, cfgPath))
+	{
+		// Load and set the new app config.
+		Config* cfg = new Config(filename);
+		cfg->load();
+		myAppConfig = cfg;
+	}
+}

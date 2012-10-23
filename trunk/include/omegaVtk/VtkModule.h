@@ -60,8 +60,6 @@ namespace omegaVtk
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt) {}
 
-		Engine* getEngine() { return myEngine; }
-
 		void attachProp(vtkProp3D* actor, SceneNode* node);
 		void detachProp(vtkProp3D* actor, SceneNode* node);
 
@@ -70,7 +68,6 @@ namespace omegaVtk
 
 		Dictionary<SceneNode*, VtkAttachPoint*> myAttachPoints;
 
-		Engine* myEngine;
 		Lock myClientLock;
 		List<VtkRenderPass*> myRenderPasses;
 		Renderer* myActiveClient;

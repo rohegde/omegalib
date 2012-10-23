@@ -111,3 +111,21 @@ PixelData* ToolkitUtils::getKinectDepthCameraImage(const String& kinectServiceNa
 	return NULL;
 #endif
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ToolkitUtils::centerChildren(SceneNode* node)
+{
+	AlignedBox3 bbox;
+	foreach(Node* c, node->getChildren())
+	{
+		SceneNode* child = dynamic_cast<SceneNode*>(c);
+		if(child != NULL)
+		{
+			bbox.merge(child->getBoundingBox());
+		}
+	}
+
+	Vector3f offset = bbox.getCenter();
+	node->translate(-offset);
+}
+

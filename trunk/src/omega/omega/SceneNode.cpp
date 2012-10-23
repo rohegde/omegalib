@@ -154,8 +154,40 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+bool SceneNode::needsBoundingBoxUpdate() 
+{ 
+	bool needbbupdate = false;
+	foreach(ISceneObject* d, myObjects) needbbupdate |= d->needsBoundingBoxUpdate();
+	if(needbbupdate) return true;
+
+	foreach(Node* n, getChildren())
+	{
+		SceneNode* child = dynamic_cast<SceneNode*>(n);
+		needbbupdate |= child->needsBoundingBoxUpdate();
+	}
+	return needbbupdate;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const AlignedBox3& SceneNode::getBoundingBox() 
+{ 
+	updateBoundingBox();
+	return myBBox; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+const Sphere& SceneNode::getBoundingSphere() 
+{ 
+	updateBoundingBox();
+	return myBSphere; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::updateBoundingBox()
 {
+	// Exit now if bouning box does not need an update.
+	if(!needsBoundingBoxUpdate()) return;
+
 	// Reset bounding box.
 	myBBox.setNull();
 
@@ -164,6 +196,7 @@ void SceneNode::updateBoundingBox()
 		d->update(this);
 		if(d->hasBoundingBox())
 		{
+			if(d->needsBoundingBoxUpdate()) d->updateBoundingBox();
 			const AlignedBox3& bbox = *(d->getBoundingBox());
 			myBBox.merge(bbox);
 		}

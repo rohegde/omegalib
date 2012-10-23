@@ -72,6 +72,7 @@ namespace omegaVtk {
 
 	private:
 		vtkMatrix4x4* myMatrix;
+		vtkMatrix4x4* myIdentityMatrix;
 		AlignedBox3 myBBox;
 		float myRepresentationSize;
 		bool myInitialized;
