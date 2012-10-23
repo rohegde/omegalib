@@ -52,6 +52,7 @@ namespace omegaToolkit { namespace ui {
 
 		virtual void autosize(Renderer* r);
 
+		void playPressedSound();
 	protected:
 		Label myLabel;
 		Color myColor;

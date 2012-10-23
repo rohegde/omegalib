@@ -90,6 +90,7 @@ void Button::handleEvent(const Event& evt)
 				myPressed = true;
 				myPressedStateChanged = true;
 				evt.setProcessed();
+				playPressedSound();
 			}
 			else if(evt.getType() == Event::Up)
 			{
@@ -107,9 +108,24 @@ void Button::handleEvent(const Event& evt)
 			{
 				myPressed = false;
 				myPressedStateChanged = true;
+				playPressedSound();
 			}
 		}
 	}
 	AbstractButton::handleEvent(evt);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Button::playPressedSound()
+{
+	if(SystemManager::settingExists("config/sound"))
+	{
+		Sound* sound = getEngine()->getSoundEnvironment()->getSound("selectMenuSound");
+		if( sound != NULL )
+		{
+			SoundInstance* inst = new SoundInstance(sound);
+			inst->setPosition( getContainer()->get3dSettings().position );
+			inst->play();
+		}
+	}
+}
