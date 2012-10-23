@@ -82,6 +82,10 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 	EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
 	const DisplayConfig& dcfg = ds->getDisplayConfig();
 
+	float nearz = ds->getNearZ();
+	float farz = ds->getFarZ();
+	if(nearz != 0 && farz != 0) setNearFar(nearz, farz);
+
     eq::PixelViewport pvp = getPixelViewport();
 
     context->gpuContext = pipe->getGpuContext();

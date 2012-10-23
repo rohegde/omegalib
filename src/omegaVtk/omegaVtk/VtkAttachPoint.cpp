@@ -38,6 +38,8 @@ VtkAttachPoint::VtkAttachPoint():
 	myDirty(false)
 {
 	myMatrix = vtkMatrix4x4::New();
+	myIdentityMatrix = vtkMatrix4x4::New();
+	myIdentityMatrix->Identity();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,7 +77,7 @@ void VtkAttachPoint::update(SceneNode* owner)
 	{
 		if(vtkProp != NULL)
 		{
-			omsg("VtkAttachPoint::update matrix");
+			//omsg("VtkAttachPoint::update matrix");
 			//const Vector3f& pos = owner->getPosition();
 			//const Vector3f& scale = owner->getScale();
 			//vtkProp->SetScale(scale[0], scale[1], scale[2]);
@@ -107,8 +109,7 @@ const AlignedBox3* VtkAttachPoint::getBoundingBox()
 	{
 		// We have to make sure no transformation is applied to the actor, to get back the
 		// original bounding box.
-		//myMatrix->Identity();
-		//prop->SetUserMatrix(myMatrix);
+		prop->SetUserMatrix(myIdentityMatrix);
 
 		double* bounds = prop->GetBounds();
 		float fbounds[6];
@@ -119,7 +120,10 @@ const AlignedBox3* VtkAttachPoint::getBoundingBox()
 		fbounds[4] = bounds[4];
 		fbounds[5] = bounds[5];
 		myBBox.setExtents(fbounds[0], fbounds[2], fbounds[4], fbounds[1], fbounds[3], fbounds[5]);
-		ofmsg("bbox: %1%  -- %2%", %myBBox.getMinimum() %myBBox.getMaximum());
+		//ofmsg("bbox: %1%  -- %2%", %myBBox.getMinimum() %myBBox.getMaximum());
+
+		prop->SetUserMatrix(myMatrix);
+
 		return &myBBox;
 	}
 	return NULL;

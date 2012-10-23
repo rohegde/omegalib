@@ -72,11 +72,17 @@ public:
 	const Color& getBackgroundColor() { return myBackgroundColor; }
 	void setBackgroundColor(const Color& value) { myBackgroundColor = value; }
 
+	void setNearFarZ(float nearz, float farz) { myNearZ = nearz; myFarZ = farz; }
+	float getNearZ() { return myNearZ; }
+	float getFarZ() { return myFarZ; }
+
 protected:
-	DisplaySystem(): myBackgroundColor(0.2f, 0.2f, 0.2f) {}
+	DisplaySystem(): myBackgroundColor(0.2f, 0.2f, 0.2f), myNearZ(0), myFarZ(0) {}
 
 private:
 	Color myBackgroundColor;
+	float myNearZ;
+	float myFarZ;
 };
 
 }; // namespace omega

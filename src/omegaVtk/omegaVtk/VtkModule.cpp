@@ -113,7 +113,7 @@ void VtkModule::attachProp(vtkProp3D* actor, SceneNode* node)
 		node->addObject(vtkap);
 	}
 	vtkap->attachProp(actor);
-
+	vtkap->requestBoundingBoxUpdate();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

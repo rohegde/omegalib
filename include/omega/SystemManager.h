@@ -79,6 +79,9 @@ namespace omega
 		//! Sets the application configuration.
 		//! @remarks Changing the application configuration will not influence already loaded modules and services.
 		void setAppConfig(Config* cfg);
+		//! Loads an application configuration file
+		//! @remarks Changing the application configuration will not influence already loaded modules and services.
+		void loadAppConfig(const String& filename);
 
 		//! Gets the system configuration.
 		Config* getSystemConfig();

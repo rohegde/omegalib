@@ -135,6 +135,7 @@ namespace omega {
 	private:
 		void drawBoundingBox();
 		void updateBoundingBox();
+		bool needsBoundingBoxUpdate();
 
 	private:
 		Engine* myServer;
@@ -157,14 +158,6 @@ namespace omega {
 		bool myBoundingBoxVisible;
 		Color myBoundingBoxColor;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const AlignedBox3& SceneNode::getBoundingBox() 
-	{ return myBBox; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const Sphere& SceneNode::getBoundingSphere() 
-	{ return myBSphere; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool SceneNode::isBoundingBoxVisible() 

@@ -39,6 +39,7 @@ namespace omega {
 	class OMEGA_API ISceneObject: public ReferenceType
 	{
 	public:
+		ISceneObject(): myNeedBoundingBoxUpdate(false) {}
 		virtual void update(SceneNode* owner) = 0;
 		virtual void draw(SceneNode* node, const DrawContext& context) {};
 		virtual const AlignedBox3* getBoundingBox() = 0;
@@ -47,6 +48,14 @@ namespace omega {
 		virtual bool hasCustomRayIntersector() { return false; }
 		virtual bool intersectRay(const Ray& ray, Vector3f* hitPoint) { return false; }
 		virtual void initialize(Engine* server) = 0;
+		virtual void updateBoundingBox() { myNeedBoundingBoxUpdate = false; }
+		
+		void requestBoundingBoxUpdate() { myNeedBoundingBoxUpdate = true; }
+		bool needsBoundingBoxUpdate() { return myNeedBoundingBoxUpdate; }
+
+
+	private:
+		bool myNeedBoundingBoxUpdate;
 	};
 }; // namespace omega
 
