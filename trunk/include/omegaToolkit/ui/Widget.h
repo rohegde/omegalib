@@ -192,7 +192,8 @@ namespace omegaToolkit { namespace ui {
         Vector2f transformPoint(const omega::Vector2f& point);
         void dispatchUIEvent(const Event& evt);
 
-
+		// Menu Widget Sounds
+		void playMenuScrollSound();
 
     protected:
         omega::Vector2f myPosition;

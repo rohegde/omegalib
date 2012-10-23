@@ -363,7 +363,7 @@ void Menu::show()
 
 		// Set the sound position and play
 		Ref<SoundInstance> showSound = new SoundInstance(myManager->getShowMenuSound());
-		showSound->setPosition( myContainer->get3dSettings().position );
+		showSound->setPosition( my3dSettings.position );
 		showSound->play();
 	}
 }
@@ -394,7 +394,7 @@ void Menu::hide()
 		myManager->getEngine()->getSoundEnvironment()->setListenerPosition( cameraPosition );
 
 		Ref<SoundInstance> hideSound = new SoundInstance(myManager->getHideMenuSound());
-		hideSound->setPosition( myContainer->get3dSettings().position );
+		hideSound->setPosition( my3dSettings.position );
 		hideSound->play();
 	}
 }

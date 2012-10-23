@@ -119,26 +119,38 @@ void Widget::handleEvent(const Event& evt)
 			if(evt.isButtonDown(Event::ButtonDown))
 			{
 				evt.setProcessed();
-				if(myVerticalNextWidget != NULL) 
+				if(myVerticalNextWidget != NULL)
+				{
 					ui->activateWidget(myVerticalNextWidget);
+					playMenuScrollSound();
+				}
 			}
 			else if(evt.isButtonDown(Event::ButtonUp))
 			{
 				evt.setProcessed();
-				if(myVerticalPrevWidget != NULL) 
+				if(myVerticalPrevWidget != NULL)
+				{
 					ui->activateWidget(myVerticalPrevWidget);
+					playMenuScrollSound();
+				}
 			}
 			else if(evt.isButtonDown(Event::ButtonLeft))
 			{
 				evt.setProcessed();
-				if(myHorizontalPrevWidget != NULL) 
+				if(myHorizontalPrevWidget != NULL)
+				{
 					ui->activateWidget(myHorizontalPrevWidget);
+					playMenuScrollSound();
+				}
 			}
 			else if(evt.isButtonDown(Event::ButtonRight))
 			{
 				evt.setProcessed();
-				if(myHorizontalNextWidget != NULL) 
+				if(myHorizontalNextWidget != NULL)
+				{
 					ui->activateWidget(myHorizontalNextWidget);
+					playMenuScrollSound();
+				}
 			}
 		}
 	}
@@ -287,6 +299,21 @@ void Widget::dispatchUIEvent(const Event& evt)
 	else if(myContainer != NULL) 
 	{
 			myContainer->dispatchUIEvent(evt);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::playMenuScrollSound()
+{
+	if(SystemManager::settingExists("config/sound"))
+	{
+		Sound* sound = getEngine()->getSoundEnvironment()->getSound("scrollMenuSound");
+		if( sound != NULL )
+		{
+			SoundInstance* inst = new SoundInstance(sound);
+			inst->setPosition( getContainer()->get3dSettings().position );
+			inst->play();
+		}
 	}
 }
 
