@@ -16,7 +16,7 @@ SurfaceData getSurfaceData(void)
 	sd.emissive = vec4(0, 0, 0, 0);
 	sd.shininess = unif_Shininess;
 	sd.gloss = unif_Gloss;
-	sd.normal = texture2D(unif_NormalMap, var_TexCoord);
+	sd.normal = normalize(2.0 * texture2D(unif_NormalMap, var_TexCoord) - 1.0);
 	
 	return sd;
 }
