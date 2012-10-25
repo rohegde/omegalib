@@ -48,11 +48,6 @@ public:
 
 private:
 	PortholeCustomDrawApplication* myApplication;
-
-	Vector3f myNormals[6];
-	Vector4i myFaces[6]; 
-	Vector3f myVertices[8];
-	Color myFaceColors[6];
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
