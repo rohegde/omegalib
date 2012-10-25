@@ -209,6 +209,17 @@ if(OMEGA_USE_PORTHOLE)
 			)
 endif()
 
+# SAGE Module
+set(OMEGA_USE_SAGE false CACHE BOOL "Enable SAGE output support")
+if(OMEGA_USE_SAGE)
+	SET( srcs ${srcs}
+			omega/SageManager.cpp
+			)
+	SET( headers ${headers}
+			${OmegaLib_SOURCE_DIR}/include/omega/SageManager.h
+			)
+endif()
+
 # Glut Display Module
 if( WIN32 )
 	set(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
@@ -248,6 +259,7 @@ set(EXT_INCLUDE_DIR ${OmegaLib_SOURCE_DIR}/external/include)
 
 include_directories(${EXT_INCLUDE_DIR})
 
+# Link the right openGL libraries depending on the platform
 IF(APPLE)
 	target_link_libraries( omega ${OPENGL_LIBRARY})
 ELSE(APPLE)

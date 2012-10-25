@@ -49,6 +49,7 @@ set( srcs
 		omegaToolkit/UiModule.cpp
 		omegaToolkit/UiRenderPass.cpp
 		omegaToolkit/UiScriptCommand.cpp
+		omegaToolkit/ViewManager.cpp
 		
 		# omega::ui
 		omegaToolkit/ui/AbstractButton.cpp
@@ -84,6 +85,7 @@ set( headers
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiModule.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiRenderPass.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiScriptCommand.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ViewManager.h
 		
 		# omega::ui
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/AbstractButton.h
