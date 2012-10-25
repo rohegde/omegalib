@@ -45,6 +45,7 @@
 #cmakedefine OMEGA_USE_OPENCL
 #cmakedefine OMEGA_USE_PYTHON
 #cmakedefine OMEGA_USE_PORTHOLE
+#cmakedefine OMEGA_USE_SAGE
 #cmakedefine OMEGA_BUILD_VTK_LIB
 #cmakedefine OMEGA_BUILD_OSG_LIB
 
