@@ -1,7 +1,7 @@
 @vsinclude shadowMap
 @vsinclude envMap
 
-attribute vec4 attrib_Tangent;
+attribute vec3 attrib_Tangent;
 
 varying vec3 var_EyeVector;
 varying vec3 var_LightVector[@numLights]; 
@@ -17,7 +17,7 @@ void main(void)
 	
 	// Building the matrix Eye Space -> Tangent Space
 	vec3 n = normalize (gl_NormalMatrix * gl_Normal);
-	vec3 t = normalize (gl_NormalMatrix * attrib_Tangent.xyz);
+	vec3 t = normalize (gl_NormalMatrix * attrib_Tangent);
 	vec3 b = cross (n, t);
 	
 	vec3 eyeDirection = normalize(eyeSpacePosition.xyz);
@@ -26,7 +26,7 @@ void main(void)
 	for (i=0; i< @numLights; ++i) 
 	{ 
 		// transform light and half angle vectors by tangent basis
-		vec3 lightDir = vec3(gl_LightSource[i].position.xyz - eyeSpacePosition);
+		vec3 lightDir = normalize(vec3(gl_LightSource[i].position.xyz - eyeSpacePosition.xyz));
 		vec3 v;
 		v.x = dot (lightDir, t);
 		v.y = dot (lightDir, b);
@@ -45,7 +45,7 @@ void main(void)
 	v.x = dot (eyeSpacePosition, t);
 	v.y = dot (eyeSpacePosition, b);
 	v.z = dot (eyeSpacePosition, n);
-	var_EyeVector = -normalize (v);
+	var_EyeVector = normalize (v);
 
 	setupShadowMap(eyeSpacePosition);
 	setupEnvMap(eyeSpacePosition.xyz);
