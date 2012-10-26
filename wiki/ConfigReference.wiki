@@ -1,12 +1,14 @@
 #summary Omegalib configuration file reference
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 2.1<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+<p>*Last revision:* ver. 3.1 - 25 October 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
-Omeglib applications use configuration files to learn about the the hardware they run on. Configuration files describe the capabilities and geometry of the display system, supported input devices, and network configurations for clustered systems. The omegalib distribution contains several configration files to test applications out of the box (i.e. to run them windowed on a standard PC). Programmers and system administrators can learn about configuration files to customize omegalib applications for other display and input systems.
+<wiki:toc max_depth="4" />
 
+= Omegalib configuration file reference =
+Omegalib applications use configuration files to learn about the the hardware they run on. Configuration files describe the capabilities and geometry of the display system, supported input devices, and network configurations for clustered systems. The omegalib distribution contains several configration files to test applications out of the box (i.e. to run them windowed on a standard PC). Programmers and system administrators can learn about configuration files to customize omegalib applications for other display and input systems.
 
-= Configuration file types =
+== Configuration file types ==
 Omegalib applications are usually based on two distints configuation files: the *system configuration file* and the *application configuration file*.
 
 The system configuration file determines the properties of the system the application will run on such as:
@@ -24,8 +26,60 @@ The application configuration file contains application-specific options, as det
 </code>
 This application configuration specifies no option other than which system configuration file to use (in this case, `system/desktop.cfg`)
 
-= Configuration file syntax =
-Configuration files follow the syntax of libconfig. Here is an example of a complete system configuration file for reference.
+== Loading configuration files ==
+By default, applications try to open an application configuration file with the application name and a `cfg` extension. If not found, the library will search for `default.cfg`. The default configuration file can be changed by passing a different file as the first argument to an omegalib application.
+
+== System configuration syntax ==
+Configuration files follow the syntax of libconfig. Each section has a name and is delimited by curly braces. Section contain name-value pairs. Values can be of different types:
+ * Boolean
+ * String
+ * Integer
+ * Floating point
+ * Vector of integers or floating points.
+A system configuration file contains several sections. A few of them (like the `display` section) are mandatory, while other are optional. The following paragraphs describe the structure of each supported section.
+
+=== Display configuration ===
+The display configuration section describes the display system geometry, resources and rendering modes used by omegalib. The `display` section contains the following entries:
+ * `type` (string, required): The type of the display system manager running the display system. Can be one of the following values
+  * `"Equalizer"`: Uses Equalizer to manage the display system.
+ * `geometry` (string, required):
+ * `numTiles`
+ * `referenceTile`
+ * `referenceOffset`
+ * `tileSize`
+ * `bezelSize`
+ * `autoOffsetWindows`
+ * `tileResolution`
+ * `windowOffset`
+ * `latency`
+ * `stereoMode`
+ * `fullscreen`
+ * `disableConfigGenerator`
+ * `nodeLauncher`
+ * `nodeKiller`
+ * `basePort`
+ * `launcherInterval`
+ * `displayStatsOnMaster`
+ * `enableVSync`
+ * `enableSwapSync`
+ * `tiles`
+ 
+==== Node Configuration ====
+ * `hostname`
+ * `port`
+
+==== Tile Configuration ====
+ * `stereoMode`
+ * `device`
+ * `center`
+ * `yaw`
+ * `pitch`
+ * `position`
+ * `resolution`
+ * `offset`
+ * `cameraName`
+
+Here is an example of a complete system configuration file for reference.
 <code language="c">
 	config:
 	{
@@ -86,6 +140,4 @@ Configuration files follow the syntax of libconfig. Here is an example of a comp
 	};
 </code>
 
-= Loading configuration files =
-By default, applications try to open an application configuration file with the application name and a `cfg` extension. If not found, the library will search for `default.cfg`. The default configuration file can be changed by passing a different file as the first argument to an omegalib application.
 
