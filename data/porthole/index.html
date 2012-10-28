@@ -244,6 +244,12 @@
     var ctx;
     var camera;
 
+    ////////////////// TESTING VARS ////////////////////////////
+    var TESTING = true
+    // Round Trip Time
+    var RTT_start;
+    var RTT_end;
+
     ///////////////////// WEBSOKET FUNCTIONS //////////////////////////
 
     try {
@@ -271,6 +277,12 @@
             if (message.event_type == "stream") {
                 image = "data:image/jpeg;base64," + message.base64image;
                 img.src = image;
+
+                // TEST
+                if (TESTING == true && message.test_flag == true && RTT_start != undefined) {
+                    console.log((new Date()).getTime() - RTT_start);
+                    RTT_start = undefined;
+                }
             }
             else if (message.event_type == "html_elements") {
                 document.getElementById("porthole_content").innerHTML = message.innerHTML;
@@ -298,7 +310,7 @@
                 // Add events listeners
                 if (!isTouchable) {
                     // avoid resize message when touchable keyboard appears on mobile devices
-                    //addEvent(window, "resize", sendSpecTimeout);
+                    addEvent(window, "resize", sendSpecTimeout);
                 }
                 $(window).bind('orientationchange', sendSpecTimeout);
             }
