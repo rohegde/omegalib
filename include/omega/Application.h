@@ -51,9 +51,9 @@ namespace omega {
 
 		virtual void initialize() 
 		{ 
-			ModuleServices::addModule(new EventSharingModule());
-			ModuleServices::addModule(new T());
-			ModuleServices::setNonCoreMode();
+				ModuleServices::addModule(new EventSharingModule());
+ModuleServices::addModule(new T());
+	ModuleServices::setNonCoreMode();
 		}
 
 	private:

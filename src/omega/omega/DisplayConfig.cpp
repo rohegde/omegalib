@@ -60,9 +60,12 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 	else if(sm == "interleaved") cfg.stereoMode = DisplayTileConfig::Interleaved;
 	else if(sm == "sidebyside") cfg.stereoMode = DisplayTileConfig::SideBySide;
 
+	// deprecated
 	cfg.enableStencilInterleaver = Config::getBoolValue("enableStencilInterleaver", scfg);
+
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
 
+	// deprecated
 	cfg.panopticStereoEnabled = Config::getBoolValue("panopticStereoEnabled", scfg);
 
 	cfg.disableConfigGenerator = Config::getBoolValue("disableConfigGenerator", scfg, false);
