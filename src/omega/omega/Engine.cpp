@@ -62,6 +62,9 @@ void Engine::initialize()
     myLock.lock();
     ImageUtils::internalInitialize();
 
+	ModuleServices::addModule(new EventSharingModule());
+	ModuleServices::setNonCoreMode();
+
     myScene = new SceneNode(this, "root");
 
     // Create console.
