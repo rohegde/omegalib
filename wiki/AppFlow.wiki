@@ -1,0 +1,10 @@
+#summary Application Flow
+#sidebar Sidebar
+
+<p>*Last revision:* ver. 3.1 - 29 October 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>
+
+= Application Flow =
+
+<p align="right"><img src="http://omegalib.googlecode.com/svn/wiki/appFlow/appFlow.PNG" width="500"/></p><p align="middle">
+_^An overview of the omegalib application flow.^_
+</p>

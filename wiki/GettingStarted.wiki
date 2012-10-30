@@ -18,6 +18,7 @@ This page offers extended information on how to develop applications for omegali
  * [Filesystem File management in omegalib]
  * [CommandLine Using the command line]
  * [ExtendingOmegalib Extending omegalib]
+ * [AppFlow Application and Initialization Flow]
 
 == Configuring hardware systems ==
 Omegalib uses configuration files to describe system display and input capabilities.
