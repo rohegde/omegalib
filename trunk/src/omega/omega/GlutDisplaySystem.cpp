@@ -69,7 +69,7 @@ void displayCallback(void)
 	DrawContext dc;
 	DisplayTileConfig dtc;
 	dtc.device = 0;
-	dtc.index = Vector2i::Zero();
+	//dtc.index = Vector2i::Zero();
 	dtc.offset = Vector2i::Zero();
 	dtc.resolution = ds->getCanvasSize();
 

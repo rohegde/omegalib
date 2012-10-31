@@ -31,7 +31,12 @@ using namespace omega;
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool CylindricalDisplayConfig::buildConfig(DisplayConfig& cfg, Setting& scfg)
 {
-	int numSides = cfg.numTiles.x();
+	Vector2i numTiles = Config::getVector2iValue("numTiles", scfg);
+
+	cfg.canvasPixelSize = numTiles.cwiseProduct(cfg.tileResolution);
+	ofmsg("canvas pixel size: %1%", %cfg.canvasPixelSize);
+
+	int numSides = numTiles.x();
 	
 	// Angle increment for each side (column)
 	float sideAngleIncrement = Config::getFloatValue("sideAngleIncrement", scfg, 90);
@@ -43,31 +48,55 @@ bool CylindricalDisplayConfig::buildConfig(DisplayConfig& cfg, Setting& scfg)
 	float radius = Config::getFloatValue("radius", scfg, 5);
 
 	// Number of vertical tiles in each side
-	int numSideTiles = cfg.numTiles.y();
+	int numSideTiles = numTiles.y();
 
 	// Offset of center of bottom tile.
 	float yOffset = cfg.referenceOffset.y();
 
+	float tileViewportWidth = 1.0f / numTiles[0];
+	float tileViewportHeight = 1.0f / numTiles[1];
+	float tileViewportX = 0.0f;
+	float tileViewportY = 0.0f;
+
 	// Fill up the tile position / orientation data.
 	// Compute the edge coordinates for all sides
 	float curAngle = sideAngleStart;
-	for(int horizIndex = 0; horizIndex < numSides; horizIndex ++)
+	for(int x = 0; x < numSides; x ++)
 	{
 		float yPos = yOffset;
-		for(int vertIndex = 0; vertIndex < numSideTiles; vertIndex ++)
+		for(int y = 0; y < numSideTiles; y ++)
 		{
-			DisplayTileConfig& tc = cfg.tiles[horizIndex][vertIndex];
+			// Use the indices to create a tile name in the form t<X>x<Y> (i.e. t1x0).
+			// This is kind of hacking, because it forces tile names to be in that form for cylindrical configurations, 
+			// but it works well enough.
+			String tileName = ostr("t%1%x%2%", %x %y);
+			if(cfg.tiles.find(tileName) == cfg.tiles.end())
+			{
+				ofwarn("CylindricalDisplayConfig::buildConfig: could not find tile '%1%'", %tileName);
+			}
+			else
+			{
+				DisplayTileConfig* tc = cfg.tiles[tileName];
+				cfg.tileGrid[x][y] = tc;
 
-			tc.yaw = curAngle;
-			tc.pitch = 0;
-			tc.center = Vector3f(
-				sin(curAngle * Math::DegToRad) * radius,
-				yPos,
-				-1 * cos(curAngle * Math::DegToRad) * radius);
+				tc->yaw = curAngle;
+				tc->pitch = 0;
+				tc->center = Vector3f(
+					sin(curAngle * Math::DegToRad) * radius,
+					yPos,
+					-1 * cos(curAngle * Math::DegToRad) * radius);
 
+				// Save the tile viewport
+				tc->viewport = Vector4f(tileViewportX, tileViewportY, tileViewportWidth, tileViewportHeight);
+
+				cfg.computeTileCorners(tc);
+			}
 			yPos += cfg.tileSize.y();
+			tileViewportY += tileViewportHeight;
 		}
 		curAngle += sideAngleIncrement;
+		tileViewportY = 0.0f;
+		tileViewportX += tileViewportWidth;
 	}
 
 	return true;

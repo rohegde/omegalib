@@ -24,38 +24,18 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __ENGINE_APPLICATION_H__
-#define __ENGINE_APPLICATION_H__
+#ifndef __PLANAR_DISPLAY_CONFIG__
+#define __PLANAR_DISPLAY_CONFIG__
 
-#include "osystem.h"
-#include "Renderer.h"
-#include "omega/ApplicationBase.h"
-#include "omega/SystemManager.h"
-#include "omega/SharedDataServices.h"
-#include "omega/EventSharingModule.h"
+#include "ApplicationBase.h"
 
-namespace omega {
-	class RenderPass;
-	
+namespace omega
+{
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! a convenience application class to create omegaToolkit applications
-	template<typename T> 
-	class Application: public ApplicationBase
+	class PlanarDisplayConfig: public IDisplayConfigBuilder
 	{
 	public:
-		Application(const String& name): myAppName(name) 
-		{ }
-
-		virtual const char* getName() 
-		{ return myAppName.c_str(); }
-
-		virtual void initialize() 
-		{ 
-ModuleServices::addModule(new T());
-		}
-
-	private:
-		String myAppName;
+		virtual bool buildConfig(DisplayConfig& cfg, Setting& scfg);
 	};
 }; // namespace omega
 

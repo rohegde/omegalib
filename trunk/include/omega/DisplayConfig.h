@@ -47,13 +47,16 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	struct DisplayTileConfig
 	{
+	public:
 		enum StereoMode { Mono, Interleaved, SideBySide, Default };
 
 		DisplayTileConfig(): drawStats(false), drawFps(false), disableScene(false), disableOverlay(false), stereoMode(Mono) {}
 
 		StereoMode stereoMode;
 
-		Vector2i index;
+		String name;
+
+		//Vector2i index;
 		Vector2i resolution;
 
 		//! 2d offset of window content
@@ -61,6 +64,10 @@ namespace omega
 
 		//! Window position (when autooffset is not used)
 		Vector2i position;
+
+		//! 2d position of this tile (normalized) with respect to the global canvas. Used for mapping 2d interaction and for mapping physical tiles to
+		//! logical views.
+		Vector4f viewport;
 
 		int device;
 		Vector3f center;
@@ -84,12 +91,12 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	struct DisplayNodeConfig
 	{
-		static const int MaxTiles = 64;
+		static const int MaxNodeTiles = 64;
 		int numTiles;
 		String hostname;
 		int port;
 		bool isRemote;
-		DisplayTileConfig* tiles[MaxTiles];
+		DisplayTileConfig* tiles[MaxNodeTiles];
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,31 +106,31 @@ namespace omega
 	public:
 		static void LoadConfig(Setting& s, DisplayConfig& cfg);
 
+		// Computes the corner positions for the specified tile using information stored in the tile and configuration
+		// like center, yaw and pitch, lcd size and so on.
+		void computeTileCorners(DisplayTileConfig* tile);
+
 	public:
 		// UGLY CONSTANTS.
-		static const int MaxTiles = 64;
 		static const int MaxNodes = 64;
 		
-		DisplayConfig(): disableConfigGenerator(false), latency(1), enableStencilInterleaver(false), enableSwapSync(true), forceMono(false) {}		
+		DisplayConfig(): disableConfigGenerator(false), latency(1), enableSwapSync(true), forceMono(false) 
+		{
+			memset(tileGrid, 0, sizeof(tileGrid));
+		}		
 		bool disableConfigGenerator;
 
-		// ! Configuration type enum
-		enum ConfigType {
-			//! Planar configuration: the display tiles are on the same plane. The user won't have to
-			//! Specify position and rotation for each tile.
-			ConfigPlanar, 
-			//! Custom configuration. The user will have to manually specify position and rotation for each tile,
-			//! or they will be provided by a custom DisplayConfigBuilder.
-			ConfigCustom};
+		Vector2i canvasPixelSize;
+
 		//! Display configuration type.
-		ConfigType type;
+		//String configType;
 
 		//! Open a statistics window on the master node.
 		bool displayStatsOnMaster;
 		DisplayTileConfig statsTile;
 
 		//! Number of horizontal / vertical tiles in the display system
-		Vector2i numTiles;
+		//Vector2i numTiles;
 		int latency;
 
 		//! (Used only for planar configurtions) Index of the tile whose center will be used as the origin of the display system geometry.
@@ -140,14 +147,12 @@ namespace omega
 		Vector2i tileResolution;
 
 		//! When set to true, window positions will be computed automatically in a multiwindow setting.
-		bool autoOffsetWindows;
+		//bool autoOffsetWindows;
 		//! Offset of the first window in pixels (valid for multiwindow settings)
 		Vector2i windowOffset;
 
 		//! Global stereo mode. Will be used by tiles that specify 'Default" as their stereo mode.
 		DisplayTileConfig::StereoMode stereoMode;
-		//! Enable stencl-based interleaved stereo. Faster but requires use of stencil buffer.
-		bool enableStencilInterleaver;
 
 		//! Enable vsync on all tiles
 		bool enableVSync;
@@ -163,9 +168,6 @@ namespace omega
 
 		bool renderOnMaster;
 
-		//! When set to true, observer orientation will be kept aligned to each tile normal.
-		//bool panopticStereoEnabled;
-
 		//! Runtime setings
 		//@{
 		//! Runtime flag: when set to true, observer orientation will still use camera orientation even
@@ -176,11 +178,11 @@ namespace omega
 		
 		
 		//! Tile configurations.
-		DisplayTileConfig tiles[MaxTiles][MaxTiles];
-		DisplayTileConfig specialTiles[MaxTiles];
+		Dictionary<String, DisplayTileConfig*> tiles;
 
 		//! Total display resolution. Will be computed automatically during the setup process, users should leave this blank.
-		Vector2i displayResolution;
+		//Vector2i displayResolution;
+		int numTiles;
 
 		//! Number of nodes for a multimachine display system.
 		int numNodes;
@@ -194,6 +196,9 @@ namespace omega
 		String nodeKiller;
 		//! Default port used to connect to nodes
 		int basePort;
+
+		//! The tile grid is needed for 2d interaction with tiles. Configuration generators fill this up.
+		DisplayTileConfig* tileGrid[128][128];
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
