@@ -35,7 +35,8 @@ using namespace omegaVtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 VtkAttachPoint::VtkAttachPoint():
-	myDirty(false)
+	myDirty(false),
+	myVisible(true)
 {
 	myMatrix = vtkMatrix4x4::New();
 	myIdentityMatrix = vtkMatrix4x4::New();
@@ -84,6 +85,11 @@ void VtkAttachPoint::update(SceneNode* owner)
 			//vtkProp->SetPosition(pos[0], pos[1], pos[2]);
 			vtkProp->SetUserMatrix(myMatrix);
 		}
+	}
+	if(owner->isVisible() != myVisible)
+	{
+		myDirty = true;
+		myVisible = owner->isVisible();
 	}
 }
 
@@ -134,13 +140,15 @@ void VtkAttachPoint::queueProps(VtkRenderPass* rp)
 {
 	foreach(vtkProp3D* prop, myProps)
 	{
-		if(prop->HasTranslucentPolygonalGeometry())
-		{
-			rp->queueProp(prop, VtkRenderPass::QueueTransparent);
-		}
-		else
-		{
-			rp->queueProp(prop, VtkRenderPass::QueueOpaque);
+		if(prop->GetVisibility() && myVisible){
+			if(prop->HasTranslucentPolygonalGeometry())
+			{
+				rp->queueProp(prop, VtkRenderPass::QueueTransparent);
+			}
+			else
+			{
+				rp->queueProp(prop, VtkRenderPass::QueueOpaque);
+			}
 		}
 	}
 }
