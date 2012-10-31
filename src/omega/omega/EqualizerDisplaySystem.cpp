@@ -76,8 +76,6 @@ void EqualizerDisplaySystem::generateEqConfig()
 	DisplayConfig& eqcfg = myDisplayConfig;
 	String indent = "";
 
-	Vector2f lcdSize = eqcfg.tileSize - eqcfg.bezelSize;
-
 	String result = L("#Equalizer 1.0 ascii");
 
 	START_BLOCK(result, "global");
@@ -129,18 +127,18 @@ void EqualizerDisplaySystem::generateEqConfig()
 		for(int i = 0; i < nc.numTiles; i++)
 		{
 			DisplayTileConfig& tc = *nc.tiles[i];
-			if(eqcfg.autoOffsetWindows)
-			{
-				winX = tc.index[0] * eqcfg.tileResolution[0] + eqcfg.windowOffset[0];
-				winY = tc.index[1] * eqcfg.tileResolution[1] + eqcfg.windowOffset[1];
-			}
-			else
-			{
-				winX = tc.position[0];
-				winY = tc.position[1];
-			}
+			//if(eqcfg.autoOffsetWindows)
+			//{
+			//	winX = tc.index[0] * eqcfg.tileResolution[0] + eqcfg.windowOffset[0];
+			//	winY = tc.index[1] * eqcfg.tileResolution[1] + eqcfg.windowOffset[1];
+			//}
+			//else
+			//{
+				winX = tc.position[0] + eqcfg.windowOffset[0];
+				winY = tc.position[1] + eqcfg.windowOffset[0];
+			//}
 			
-			String tileName = ostr("%1%x%2%", %tc.index[0] %tc.index[1]);
+			String tileName = tc.name;
 			String tileCfg = buildTileConfig(indent, tileName, winX, winY, eqcfg.tileResolution[0], eqcfg.tileResolution[1], tc.device, curDevice, eqcfg.fullscreen);
 			result += tileCfg;
 
@@ -163,16 +161,16 @@ void EqualizerDisplaySystem::generateEqConfig()
 		END_BLOCK(result);
 	}
 
+	typedef pair<String, DisplayTileConfig*> TileIterator;
+
 	// Create observers (one per tile)
 	// observers
-	for(int x = 0; x < eqcfg.numTiles[0]; x++)
+	foreach(TileIterator p, eqcfg.tiles)
 	{
-		for(int y = 0; y < eqcfg.numTiles[1]; y++)
-		{
-			// observer
-			result += 
-				L(ostr("observer { name \"observer%1%x%2%\" }", %x %y));
-		}
+		DisplayTileConfig* t = p.second;
+		// observer
+		result += 
+			L(ostr("observer { name \"%1%\" }", %t->name));
 	}
 
 	// Always create the default observer
@@ -184,27 +182,17 @@ void EqualizerDisplaySystem::generateEqConfig()
 	result += 
 		L("name \"layout\"");
 
-	float tileViewportWidth = 1.0f / eqcfg.numTiles[0];
-	float tileViewportHeight = 1.0f / eqcfg.numTiles[1];
-	float tileViewportX = 0.0f;
-	float tileViewportY = 0.0f;
-
 	// Create one view per tile, and link it to the relative observer.
-	for(int x = 0; x < eqcfg.numTiles[0]; x++)
+	foreach(TileIterator p, eqcfg.tiles)
 	{
-		for(int y = 0; y < eqcfg.numTiles[1]; y++)
-		{
-			START_BLOCK(result, "view");
-			// observer
-			result += 
-				L(ostr("name \"view%1%x%2%\"", %x %y)) +
-				L(ostr("observer \"observer%1%x%2%\"", %x %y)) +
-				L(ostr("viewport [%1% %2% %3% %4%]", %tileViewportX %tileViewportY %tileViewportWidth %tileViewportHeight) );
-			END_BLOCK(result);
-			tileViewportY += tileViewportHeight;
-		}
-		tileViewportY = 0.0f;
-		tileViewportX += tileViewportWidth;
+		DisplayTileConfig* t = p.second;
+		START_BLOCK(result, "view");
+		// observer
+		result += 
+			L(ostr("name \"view-%1%\"", %t->name)) +
+			L(ostr("observer \"%1%\"", %t->name)) +
+			L(ostr("viewport [%1% %2% %3% %4%]", %t->viewport[0] %t->viewport[1] %t->viewport[2] %t->viewport[3]) );
+		END_BLOCK(result);
 	}
 	END_BLOCK(result)
 	// ------------------------------------------ END layout
@@ -231,88 +219,27 @@ void EqualizerDisplaySystem::generateEqConfig()
 		L("name \"mainCanvas\"") +
 		L("layout \"layout\"");
 
-	Vector3f canvasTopLeft = Vector3f(
-		-eqcfg.referenceTile[0] * eqcfg.tileSize[0] - eqcfg.tileSize[0] / 2,
-		eqcfg.referenceTile[1] * eqcfg.tileSize[1] + eqcfg.tileSize[1] / 2,
-		0) + eqcfg.referenceOffset;
-
-	tileViewportX = 0.0f;
-	tileViewportY = 0.0f;
-	for(int x = 0; x < eqcfg.numTiles[0]; x++)
+	foreach(TileIterator p, eqcfg.tiles)
 	{
-		for(int y = 0; y < eqcfg.numTiles[1]; y++)
-		{
-			DisplayTileConfig& tc = eqcfg.tiles[x][y];
-			String segmentName = ostr("%1%x%2%", %x %y);
-			String viewport = ostr("viewport [%1% %2% %3% %4%]", %tileViewportX %tileViewportY %tileViewportWidth %tileViewportHeight);
+		DisplayTileConfig* t = p.second;
 
-			//float tw = eqcfg.tileSize[0];
-			//float th = eqcfg.tileSize[1];
+		String segmentName = ostr("segment-%1%", %t->name);
+		String viewport = ostr("viewport [%1% %2% %3% %4%]", %t->viewport[0] %t->viewport[1] %t->viewport[2] %t->viewport[3]);
 
-			// Use with and height of lcd panel size without bezels.
-			float tw = lcdSize[0];
-			float th = lcdSize[1];
-
-			Vector3f topLeft;
-			Vector3f bottomLeft;
-			Vector3f bottomRight;
-			Vector3f center;
-
-			if(eqcfg.type == DisplayConfig::ConfigPlanar)
-			{
-				// Compute the display corners for a planar display configuration
-				topLeft = canvasTopLeft + Vector3f(x * tw, -(y * th), 0);
-				bottomLeft = topLeft + Vector3f(0, -th, 0);
-				bottomRight = topLeft + Vector3f(tw, -th, 0);
-
-				center = (topLeft + bottomRight) / 2;
-			}
-			else
-			{
-				// Compute the display corners for custom display geometries
-				center = tc.center;
-				Quaternion orientation = AngleAxis(tc.yaw * Math::DegToRad, Vector3f::UnitY()) * AngleAxis(tc.pitch * Math::DegToRad, Vector3f::UnitX());
-				// Define the default display up and right vectors
-				Vector3f up = Vector3f::UnitY();
-				Vector3f right = Vector3f::UnitX();
-
-				// Compute the tile corners using the display center and oriented normal.
-				up = orientation * up;
-				right = orientation * right;
-
-				// Reorient Z.
-				right.z() = - right.z();
-
-				topLeft = center + (up * th / 2) - (right * tw / 2);
-				bottomLeft = center - (up * th / 2) - (right * tw / 2);
-				bottomRight = center - (up * th / 2) + (right * tw / 2);
-			}
-
-			// Save the corners back to the tile display config structure.
-			tc.bottomLeft = bottomLeft;
-			tc.topLeft = topLeft;
-			tc.bottomRight = bottomRight;
-			tc.center = center;
-
-			String tileCfg = "";
-			START_BLOCK(tileCfg, "segment");
-			tileCfg +=
-					L("name \"" + segmentName + "\"") +
-					L("channel \"" + segmentName + "\"") +
-					L(viewport);
-			START_BLOCK(tileCfg, "wall");
-			tileCfg +=
-				L("bottom_left " + ostr("[ %1% %2% %3% ]", %bottomLeft[0] %bottomLeft[1] %bottomLeft[2])) +
-				L("bottom_right " + ostr("[ %1% %2% %3% ]", %bottomRight[0] %bottomRight[1] %bottomRight[2])) +
-				L("top_left " + ostr("[ %1% %2% %3% ]", %topLeft[0] %topLeft[1] %topLeft[2]));
-			END_BLOCK(tileCfg)
-			END_BLOCK(tileCfg)
-			result += tileCfg;
-
-			tileViewportY += tileViewportHeight;
-		}
-		tileViewportY = 0.0f;
-		tileViewportX += tileViewportWidth;
+		String tileCfg = "";
+		START_BLOCK(tileCfg, "segment");
+		tileCfg +=
+				L("name \"" + segmentName + "\"") +
+				L("channel \"" + t->name + "\"") +
+				L(viewport);
+		START_BLOCK(tileCfg, "wall");
+		tileCfg +=
+			L("bottom_left " + ostr("[ %1% %2% %3% ]", %t->bottomLeft[0] %t->bottomLeft[1] %t->bottomLeft[2])) +
+			L("bottom_right " + ostr("[ %1% %2% %3% ]", %t->bottomRight[0] %t->bottomRight[1] %t->bottomRight[2])) +
+			L("top_left " + ostr("[ %1% %2% %3% ]", %t->topLeft[0] %t->topLeft[1] %t->topLeft[2]));
+		END_BLOCK(tileCfg)
+		END_BLOCK(tileCfg)
+		result += tileCfg;
 	}
 	END_BLOCK(result);
 	// ------------------------------------------ END main canvas
@@ -345,102 +272,44 @@ void EqualizerDisplaySystem::generateEqConfig()
 
 	// compounds
 	START_BLOCK(result, "compound")
-	for(int x = 0; x < eqcfg.numTiles[0]; x++)
+	foreach(TileIterator p, eqcfg.tiles)
 	{
-		for(int y = 0; y < eqcfg.numTiles[1]; y++)
+		DisplayTileConfig* tc = p.second;
+		String segmentName = ostr("segment-%1%", %tc->name);
+		String viewName = "main";
+
+		viewName = ostr("view-%1%", %tc->name);
+
+		if(tc->stereoMode == DisplayTileConfig::Interleaved || 
+			tc->stereoMode == DisplayTileConfig::SideBySide ||
+			(tc->stereoMode == DisplayTileConfig::Default && eqcfg.stereoMode == DisplayTileConfig::Interleaved) ||
+			(tc->stereoMode == DisplayTileConfig::Default && eqcfg.stereoMode == DisplayTileConfig::SideBySide))
 		{
-			DisplayTileConfig& tc = eqcfg.tiles[x][y];
-			String segmentName = ostr("%1%x%2%", %x %y);
-			String viewName = "main";
-
-			viewName = ostr("view%1%x%2%", %x %y);
-
-			if(tc.stereoMode == DisplayTileConfig::Interleaved || 
-				(tc.stereoMode == DisplayTileConfig::Default && eqcfg.stereoMode == DisplayTileConfig::Interleaved))
+			String tileCfg = "";
+			START_BLOCK(tileCfg, "compound");
+			if(eqcfg.enableSwapSync)
 			{
-				// Generate configuration for 
-				if(eqcfg.enableStencilInterleaver)
-				{
-					String tileCfg = "";
-					START_BLOCK(tileCfg, "compound");
-					if(eqcfg.enableSwapSync)
-					{
-						tileCfg += L("swapbarrier { name \"defaultbarrier\" }");
-					}
-					tileCfg += 
-						L("channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )") +
-						L("eye [LEFT RIGHT]") +
-						L("task [DRAW]") +
-						L("attributes { stereo_mode PASSIVE }");
-					END_BLOCK(tileCfg);
-					result += tileCfg;
-				}
-				else
-				{
-					// Generate configuration for Equalizer PBO-based interleaver
-					String tileCfg = "";
-					START_BLOCK(tileCfg, "compound");
-					if(eqcfg.enableSwapSync)
-					{
-						tileCfg += L("swapbarrier { name \"defaultbarrier\" }");
-					}
-					tileCfg += 
-						L("channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )") +
-						L("eye [LEFT RIGHT]") +
-						L("attributes { stereo_mode PASSIVE }");
-					START_BLOCK(tileCfg, "compound");
-					tileCfg += 
-						L("eye [RIGHT]") +
-						//L("attributes { stereo_mode PASSIVE }") +
-						L("channel \"" + segmentName + "\"") +
-						L("pixel [ 0 0 1 2 ]") +
-						L("outputframe { name \"" + segmentName + "r\" type texture }");
-					END_BLOCK(tileCfg);
-					START_BLOCK(tileCfg, "compound");
-					tileCfg += 
-						L("eye [LEFT]") +
-						//L("attributes { stereo_mode PASSIVE }") +
-						L("channel \"" + segmentName + "\"") +
-						L("pixel [ 0 1 1 2 ]") +
-						L("outputframe { name \"" + segmentName + "l\" type texture }");
-					END_BLOCK(tileCfg);
-					tileCfg +=
-						L("inputframe { name \"" + segmentName + "r\" }") +
-						L("inputframe { name \"" + segmentName + "l\" }");
-					END_BLOCK(tileCfg);
-
-					result += tileCfg;
-				}
+				tileCfg += L("swapbarrier { name \"defaultbarrier\" }");
 			}
-			else if(tc.stereoMode == DisplayTileConfig::SideBySide || 
-				(tc.stereoMode == DisplayTileConfig::Default && eqcfg.stereoMode == DisplayTileConfig::SideBySide))
+			tileCfg += 
+				L("channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )") +
+				L("eye [LEFT RIGHT]") +
+				L("task [DRAW]") +
+				L("attributes { stereo_mode PASSIVE }");
+			END_BLOCK(tileCfg);
+			result += tileCfg;
+		}
+		else
+		{
+			if(eqcfg.enableSwapSync)
 			{
-				String tileCfg = "";
-				START_BLOCK(tileCfg, "compound");
-				if(eqcfg.enableSwapSync)
-				{
-					tileCfg += L("swapbarrier { name \"defaultbarrier\" }");
-				}
-				tileCfg += 
-					L("channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )") +
-					L("eye [LEFT RIGHT]") +
-					L("task [DRAW]") +
-					L("attributes { stereo_mode PASSIVE }");
-				END_BLOCK(tileCfg);
+				String tileCfg = "\t\tcompound { swapbarrier { name \"defaultbarrier\" } channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" ) }\n";
 				result += tileCfg;
 			}
 			else
 			{
-				if(eqcfg.enableSwapSync)
-				{
-					String tileCfg = "\t\tcompound { swapbarrier { name \"defaultbarrier\" } channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" ) }\n";
-					result += tileCfg;
-				}
-				else
-				{
-					String tileCfg = "\t\tchannel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )\n";
-					result += tileCfg;
-				}
+				String tileCfg = "\t\tchannel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )\n";
+				result += tileCfg;
 			}
 		}
 	}
@@ -692,7 +561,7 @@ void EqualizerDisplaySystem::cleanup()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Vector2i EqualizerDisplaySystem::getCanvasSize()
 {
-	return myDisplayConfig.displayResolution;
+	return myDisplayConfig.canvasPixelSize;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -700,8 +569,8 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position)
 {
 	int channelWidth = myDisplayConfig.tileResolution[0];
 	int channelHeight = myDisplayConfig.tileResolution[1];
-	int displayWidth = myDisplayConfig.displayResolution[0];
-	int displayHeight = myDisplayConfig.displayResolution[1];
+	int displayWidth = myDisplayConfig.canvasPixelSize[0];
+	int displayHeight = myDisplayConfig.canvasPixelSize[1];
 
 	if(position[0] < 0 || position[0] > displayWidth || 
 		position[1] < 0 || position[1] > displayHeight)
@@ -725,20 +594,20 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	int x = position[0];
 	int y = position[1];
 
-	DisplayTileConfig& dtc = myDisplayConfig.tiles[channelX][channelY];
+	DisplayTileConfig* dtc = myDisplayConfig.tileGrid[channelX][channelY];
 
 	// Try to use the camera attached to the tile first. If the camera is not set, switch to the default camera.
-	Camera* camera = dtc.camera;
+	Camera* camera = dtc->camera;
 	camera = Engine::instance()->getDefaultCamera();
 
 	Vector3f head = camera->getHeadOffset();
 
-	float px = (float)x / dtc.resolution[0];
-	float py = 1 - (float)y / dtc.resolution[1];
+	float px = (float)x / dtc->resolution[0];
+	float py = 1 - (float)y / dtc->resolution[1];
 
-	Vector3f& vb = dtc.bottomLeft;
-	Vector3f& va = dtc.topLeft;
-	Vector3f& vc = dtc.bottomRight;
+	Vector3f& vb = dtc->bottomLeft;
+	Vector3f& va = dtc->topLeft;
+	Vector3f& vc = dtc->bottomRight;
 
 	Vector3f vba = va - vb;
 	Vector3f vbc = vc - vb;
@@ -783,8 +652,8 @@ bool EqualizerDisplaySystem::getViewRayFromEvent(const Event& evt, Ray& ray, boo
 			// The pointer did not contain ray information: generate a ray now.
 			if(normalizedPointerCoords)
 			{
-				pos[0] = pos[0] *  myDisplayConfig.displayResolution[0];
-				pos[1] = pos[1] *  myDisplayConfig.displayResolution[1];
+				pos[0] = pos[0] *  myDisplayConfig.canvasPixelSize[0];
+				pos[1] = pos[1] *  myDisplayConfig.canvasPixelSize[1];
 			}
 
 			ray = getViewRay(Vector2i(pos[0], pos[1]));

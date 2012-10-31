@@ -311,38 +311,42 @@ uint32_t ConfigImpl::finishFrame()
 		if(otd.observer == NULL)
 		{
 			otd.observer = eqo;
-			// Get the tile index from the observer name.
-			sscanf(eqo->getName().c_str(), "observer%dx%d", &otd.x, &otd.y);
-			DisplayTileConfig& dtc = ds->getDisplayConfig().tiles[otd.x][otd.y];
-
-			// Compute the tile normal, and compute the orientation that would bring the observer from the default
-			// look-at vector (0, 0, -1) to the tile normal.
-			//Vector3f tileNormal = Math::calculateBasicFaceNormal(dtc.bottomLeft, dtc.topLeft, dtc.bottomRight);
-			//otd.orientation = Math::buildRotation(-Vector3f::UnitZ(), tileNormal, Vector3f::UnitY());
-
-			// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
-			otd.yaw = dtc.yaw;
-				
-			otd.tileCenter = dtc.center;
-
-			if(dtc.cameraName == "")
+			// Get the tile name from the observer name.
+			String tileName = eqo->getName();
+			//sscanf(eqo->getName().c_str(), "observer-%dx%d", &otd.x, &otd.y);
+			DisplayConfig dc = ds->getDisplayConfig();
+			if(dc.tiles.find(tileName) == dc.tiles.end())
 			{
-				// Use dafault camera for this tile
-				otd.camera = engine->getDefaultCamera();
+				oferror("ConfigImpl::finishFrame: could not find tile %1%", %tileName);
 			}
 			else
 			{
-				// Use a custom camera for this tile (create it here if necessary)
-				Camera* customCamera = engine->getCamera(dtc.cameraName);
-				if(customCamera == NULL)
+				DisplayTileConfig* dtc = dc.tiles[tileName];
+
+				// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
+				otd.yaw = dtc->yaw;
+				
+				otd.tileCenter = dtc->center;
+
+				if(dtc->cameraName == "")
 				{
-					customCamera = engine->createCamera(dtc.cameraName);
+					// Use dafault camera for this tile
+					otd.camera = engine->getDefaultCamera();
 				}
-				otd.camera = customCamera;
-				// Make sure the camera is enabled for the specified tile.
-				//otd.camera->getOutput(dtc.device)->setEnabled(true);
+				else
+				{
+					// Use a custom camera for this tile (create it here if necessary)
+					Camera* customCamera = engine->getCamera(dtc->cameraName);
+					if(customCamera == NULL)
+					{
+						customCamera = engine->createCamera(dtc->cameraName);
+					}
+					otd.camera = customCamera;
+					// Make sure the camera is enabled for the specified tile.
+					//otd.camera->getOutput(dtc.device)->setEnabled(true);
+				}
+				dtc->camera = otd.camera;
 			}
-			dtc.camera = otd.camera;
 		}
 
 		Camera* cam = otd.camera;

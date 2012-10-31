@@ -63,11 +63,14 @@ bool ChannelImpl::configInit(const eq::uint128_t& initID)
 	}
 	else
 	{
-		vector<String> args = StringUtils::split(name, "x,");
-		int ix = atoi(args[0].c_str());
-		int iy = atoi(args[1].c_str());
-
-		myDC.tile = &ds->getDisplayConfig().tiles[ix][iy];
+		if(ds->getDisplayConfig().tiles.find(name) == ds->getDisplayConfig().tiles.end())
+		{
+			oferror("ChannelImpl::configInit: could not find tile %1%", %name);
+		}
+		else
+		{
+			myDC.tile = ds->getDisplayConfig().tiles[name];
+		}
 	}
 
     return true;
@@ -151,7 +154,7 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 	if(myDC.tile->stereoMode == DisplayTileConfig::Interleaved ||
 		(myDC.tile->stereoMode == DisplayTileConfig::Default && dcfg.stereoMode == DisplayTileConfig::Interleaved))
 	{
-		if(dcfg.enableStencilInterleaver && !myStencilInitialized)
+		if(!myStencilInitialized)
 		{
 			setupStencil(myDC.tile->resolution[0], myDC.tile->resolution[1]);
 			myStencilInitialized = true;

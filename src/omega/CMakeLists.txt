@@ -64,6 +64,7 @@ SET( srcs
 		omega/PixelData.cpp
 		omega/Pointer.cpp
 		omega/PythonInterpreter.cpp
+		omega/PlanarDisplayConfig.cpp
 		omega/omegaPythonApi.cpp
 		omega/Renderer.cpp
 		omega/Renderable.cpp
@@ -119,6 +120,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/osystem.h
         ${OmegaLib_SOURCE_DIR}/include/omega/otypes.h
 		${OmegaLib_SOURCE_DIR}/include/omega/PixelData.h
+		${OmegaLib_SOURCE_DIR}/include/omega/PlanarDisplayConfig.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Pointer.h
 		${OmegaLib_SOURCE_DIR}/include/omega/PythonInterpreter.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Renderable.h
