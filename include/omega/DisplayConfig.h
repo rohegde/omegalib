@@ -57,7 +57,8 @@ namespace omega
 		String name;
 
 		//Vector2i index;
-		Vector2i resolution;
+		//Vector2i resolution;
+		Vector2i pixelSize;
 
 		//! 2d offset of window content
 		Vector2i offset;
@@ -71,12 +72,16 @@ namespace omega
 
 		int device;
 		Vector3f center;
+		Vector2f size;
 		float yaw;
 		float pitch;
 		bool drawStats;
 		bool drawFps;
 		bool disableScene;
 		bool disableOverlay;
+
+		//! When set to true render this tile offscreen.
+		bool offscreen;
 
 		//! Name of camera attached to this tile. Can be empty or 'default' for default camera
 		String cameraName;
@@ -168,7 +173,7 @@ namespace omega
 
 		bool renderOnMaster;
 
-		//! Runtime setings
+		//! Runtime settings
 		//@{
 		//! Runtime flag: when set to true, observer orientation will still use camera orientation even
 		bool panopticStereoEnabled;
@@ -202,7 +207,7 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Provides custom display configurations
+	//! Interface for display configuration generators
 	class IDisplayConfigBuilder
 	{
 	public:

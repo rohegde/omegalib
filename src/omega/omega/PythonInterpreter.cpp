@@ -473,8 +473,8 @@ void PythonInterpreter::draw(const DrawContext& context, Camera* cam)
 		Vector2i displayRez = SystemManager::instance()->getDisplaySystem()->getCanvasSize();
 		int width = displayRez[0];
 		int height = displayRez[1];
-		int tileWidth = context.tile->resolution[0];
-		int tileHeight = context.tile->resolution[1];
+		int tileWidth = context.tile->pixelSize[0];
+		int tileHeight = context.tile->pixelSize[1];
 
 		DrawInterface* di = context.renderer->getRenderer();
 

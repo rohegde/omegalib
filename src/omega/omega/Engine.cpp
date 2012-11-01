@@ -33,6 +33,7 @@
 #include "omega/SystemManager.h"
 #include "omega/PythonInterpreter.h"
 #include "omega/CameraController.h"
+#include "omega/SageManager.h"
 
 using namespace omega;
 
@@ -45,7 +46,8 @@ Engine::Engine(ApplicationBase* app):
     myConsoleEnabled(false),
 	//myPointerMode(PointerModeWand)
 	myDrawPointers(false),
-	myDebugWand(false)
+	myDebugWand(false),
+	mySageManager(NULL)
 {
     mysInstance = this;
 }
@@ -64,6 +66,11 @@ void Engine::initialize()
 
 	ModuleServices::addModule(new EventSharingModule());
 	ModuleServices::setNonCoreMode();
+
+#ifdef OMEGA_USE_SAGE
+	mySageManager = new SageManager();
+	ModuleServices::addModule(mySageManager);
+#endif
 
     myScene = new SceneNode(this, "root");
 
