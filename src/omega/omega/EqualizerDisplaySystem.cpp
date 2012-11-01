@@ -178,23 +178,30 @@ void EqualizerDisplaySystem::generateEqConfig()
 	//	L("observer { name \"observer0\" }");
 
 	// layout
-	START_BLOCK(result, "layout");
-	result += 
-		L("name \"layout\"");
+	//START_BLOCK(result, "layout");
+	//result += 
+	//	L("name \"layout\"");
 
 	// Create one view per tile, and link it to the relative observer.
 	foreach(TileIterator p, eqcfg.tiles)
 	{
 		DisplayTileConfig* t = p.second;
+		
+		START_BLOCK(result, "layout");
+		result += 
+			L(ostr("name \"layout-%1%\"", %t->name));
+		
 		START_BLOCK(result, "view");
 		// observer
 		result += 
 			L(ostr("name \"view-%1%\"", %t->name)) +
 			L(ostr("observer \"%1%\"", %t->name)) +
-			L(ostr("viewport [%1% %2% %3% %4%]", %t->viewport[0] %t->viewport[1] %t->viewport[2] %t->viewport[3]) );
+			//L(ostr("viewport [%1% %2% %3% %4%]", %t->viewport[0] %t->viewport[1] %t->viewport[2] %t->viewport[3]) );
+			L("viewport [0 0 1 1]");
 		END_BLOCK(result);
+		END_BLOCK(result)
 	}
-	END_BLOCK(result)
+	//END_BLOCK(result)
 	// ------------------------------------------ END layout
 
 	// Simple layout for extra tiles
@@ -214,17 +221,23 @@ void EqualizerDisplaySystem::generateEqConfig()
 	// ------------------------------------------ END simple layout
 
 	// Main canvas
-	START_BLOCK(result, "canvas");
-	result += 
-		L("name \"mainCanvas\"") +
-		L("layout \"layout\"");
+	//START_BLOCK(result, "canvas");
+	//result += 
+	//	L("name \"mainCanvas\"") +
+	//	L("layout \"layout\"");
 
 	foreach(TileIterator p, eqcfg.tiles)
 	{
 		DisplayTileConfig* t = p.second;
 
+		START_BLOCK(result, "canvas");
+		result += 
+			L(ostr("name \"canvas-%1%\"", %t->name)) +
+			L(ostr("layout \"layout-%1%\"", %t->name));
+			
 		String segmentName = ostr("segment-%1%", %t->name);
-		String viewport = ostr("viewport [%1% %2% %3% %4%]", %t->viewport[0] %t->viewport[1] %t->viewport[2] %t->viewport[3]);
+		//String viewport = ostr("viewport [%1% %2% %3% %4%]", %t->viewport[0] %t->viewport[1] %t->viewport[2] %t->viewport[3]);
+		String viewport = "viewport [0 0 1 1]";
 
 		String tileCfg = "";
 		START_BLOCK(tileCfg, "segment");
@@ -240,8 +253,9 @@ void EqualizerDisplaySystem::generateEqConfig()
 		END_BLOCK(tileCfg)
 		END_BLOCK(tileCfg)
 		result += tileCfg;
+		
+		END_BLOCK(result);
 	}
-	END_BLOCK(result);
 	// ------------------------------------------ END main canvas
 
 	// stats canvas
@@ -275,10 +289,10 @@ void EqualizerDisplaySystem::generateEqConfig()
 	foreach(TileIterator p, eqcfg.tiles)
 	{
 		DisplayTileConfig* tc = p.second;
-		String segmentName = ostr("segment-%1%", %tc->name);
-		String viewName = "main";
+		//String segmentName = ostr("segment-%1%", %tc->name);
+		//String viewName = "main";
 
-		viewName = ostr("view-%1%", %tc->name);
+		//viewName = ostr("view-%1%", %tc->name);
 
 		if(tc->stereoMode == DisplayTileConfig::Interleaved || 
 			tc->stereoMode == DisplayTileConfig::SideBySide ||
@@ -292,7 +306,8 @@ void EqualizerDisplaySystem::generateEqConfig()
 				tileCfg += L("swapbarrier { name \"defaultbarrier\" }");
 			}
 			tileCfg += 
-				L("channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )") +
+				L(ostr("channel ( canvas \"canvas-%1%\" segment \"segment-%2%\" layout \"layout-%3%\" view \"view-%4%\" )",
+					%tc->name %tc->name %tc->name %tc->name)) +
 				L("eye [LEFT RIGHT]") +
 				L("task [DRAW]") +
 				L("attributes { stereo_mode PASSIVE }");
@@ -303,12 +318,14 @@ void EqualizerDisplaySystem::generateEqConfig()
 		{
 			if(eqcfg.enableSwapSync)
 			{
-				String tileCfg = "\t\tcompound { swapbarrier { name \"defaultbarrier\" } channel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" ) }\n";
+				String tileCfg = ostr("\t\tcompound { swapbarrier { name \"defaultbarrier\" } channel ( canvas \"canvas-%1%\" segment \"segment-%2%\" layout \"layout-%3%\" view \"view-%4%\" ) }\n",
+					%tc->name %tc->name %tc->name %tc->name);
 				result += tileCfg;
 			}
 			else
 			{
-				String tileCfg = "\t\tchannel ( canvas \"mainCanvas\" segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )\n";
+				String tileCfg = ostr("\t\tchannel ( canvas \"canvas-%1%\" segment \"segment-%2%\" layout \"layout-%3%\" view \"view-%4%\" )\n",
+					%tc->name %tc->name %tc->name %tc->name);
 				result += tileCfg;
 			}
 		}
