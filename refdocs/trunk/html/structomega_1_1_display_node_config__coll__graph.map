@@ -1,5 +1,5 @@
 <map id="omega::DisplayNodeConfig" name="omega::DisplayNodeConfig">
-<area shape="rect" id="node2" href="$structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="246,256,389,280"/>
-<area shape="rect" id="node4" href="$classomega_1_1_camera.html" title="omega::Camera" alt="" coords="16,117,115,141"/>
-<area shape="rect" id="node20" title="STL class." alt="" coords="29,333,101,357"/>
+<area shape="rect" id="node2" href="$structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="246,252,389,276"/>
+<area shape="rect" id="node4" href="$classomega_1_1_camera.html" title="omega::Camera" alt="" coords="16,68,115,92"/>
+<area shape="rect" id="node18" title="STL class." alt="" coords="29,409,101,433"/>
 </map>

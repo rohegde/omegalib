@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.0</span>
+   &#160;<span id="projectnumber">3.1</span>
    </div>
   </td>
  </tr>
@@ -64,7 +64,7 @@
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="structomega_1_1_display_tile_config__coll__graph.png" border="0" usemap="#omega_1_1_display_tile_config_coll__map" alt="Collaboration graph"/></div>
 <map name="omega_1_1_display_tile_config_coll__map" id="omega_1_1_display_tile_config_coll__map">
-<area shape="rect" id="node2" href="classomega_1_1_camera.html" title="omega::Camera" alt="" coords="184,5,283,29"/><area shape="rect" id="node4" href="classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph." alt="" coords="6,5,122,29"/><area shape="rect" id="node20" title="STL class." alt="" coords="197,457,269,481"/></map>
+<area shape="rect" id="node2" href="classomega_1_1_camera.html" title="omega::Camera" alt="" coords="184,5,283,29"/><area shape="rect" id="node4" href="classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph." alt="" coords="6,5,122,29"/><area shape="rect" id="node18" title="STL class." alt="" coords="197,415,269,439"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
@@ -88,9 +88,8 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:ae6089a318e1e11b5b95a219751dc9b15"><td class="mdescLeft">&#160;</td><td class="mdescRight">2d offset of window content  <a href="#ae6089a318e1e11b5b95a219751dc9b15"></a><br/></td></tr>
 <tr class="memitem:ae0ea6418767b8fd6dba41e07300cde71"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_tile_config.html#ae0ea6418767b8fd6dba41e07300cde71">position</a></td></tr>
 <tr class="memdesc:ae0ea6418767b8fd6dba41e07300cde71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Window position (when autooffset is not used)  <a href="#ae0ea6418767b8fd6dba41e07300cde71"></a><br/></td></tr>
-<tr class="memitem:a7e5424740fa337cf7dbde40bff8b2c0a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#a62dbc12e9d4cb3f4c817259828cc75a7">Vector4f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_tile_config.html#a7e5424740fa337cf7dbde40bff8b2c0a">viewport</a></td></tr>
-<tr class="memdesc:a7e5424740fa337cf7dbde40bff8b2c0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">2d position of this tile (normalized) with respect to the global canvas.  <a href="#a7e5424740fa337cf7dbde40bff8b2c0a"></a><br/></td></tr>
 <tr class="memitem:a23ee96575633f315024f9ac0cccd2062"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_tile_config.html#a23ee96575633f315024f9ac0cccd2062">device</a></td></tr>
+<tr class="memdesc:a23ee96575633f315024f9ac0cccd2062"><td class="mdescLeft">&#160;</td><td class="mdescRight">2d position of this tile (normalized) with respect to the global canvas.  <a href="#a23ee96575633f315024f9ac0cccd2062"></a><br/></td></tr>
 <tr class="memitem:a6f07dd7c6b4fa72b5e33b47da515f71d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_tile_config.html#a6f07dd7c6b4fa72b5e33b47da515f71d">center</a></td></tr>
 <tr class="memitem:a4b95b898fad44319df9f79459fd99107"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_tile_config.html#a4b95b898fad44319df9f79459fd99107">size</a></td></tr>
 <tr class="memitem:a9d7bec0fac620a1f2996f81e2276221c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_tile_config.html#a9d7bec0fac620a1f2996f81e2276221c">yaw</a></td></tr>
@@ -232,6 +231,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>2d position of this tile (normalized) with respect to the global canvas. </p>
+<p>Used for mapping 2d interaction and for mapping physical tiles to logical views. </p>
 
 </div>
 </div>
@@ -394,21 +396,6 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a7e5424740fa337cf7dbde40bff8b2c0a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceomicron.html#a62dbc12e9d4cb3f4c817259828cc75a7">Vector4f</a> omega::DisplayTileConfig::viewport</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>2d position of this tile (normalized) with respect to the global canvas. </p>
-<p>Used for mapping 2d interaction and for mapping physical tiles to logical views. </p>
 
 </div>
 </div>
