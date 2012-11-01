@@ -55,8 +55,8 @@ namespace omega
 			drawFps(false), 
 			disableScene(false), 
 			disableOverlay(false), 
-			stereoMode(Mono),
-			viewport(0, 0, 1, 1) {}
+			stereoMode(Mono)
+			 {}
 
 		StereoMode stereoMode;
 
@@ -74,7 +74,7 @@ namespace omega
 
 		//! 2d position of this tile (normalized) with respect to the global canvas. Used for mapping 2d interaction and for mapping physical tiles to
 		//! logical views.
-		Vector4f viewport;
+		//Vector4f viewport;
 
 		int device;
 		Vector3f center;
