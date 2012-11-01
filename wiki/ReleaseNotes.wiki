@@ -1,8 +1,59 @@
 #summary This page contains release notes for omegalib starting from version 0.8
 #sidebar Sidebar
 
-= omegalib v3.0 (*current developer version*) =
+= omegalib v3.1 (*current developer version*) =
+*Initial Revision*: 2235
+
+------------------------------------------------------------------------
+= omegalib v3.0 =
 *Initial Revision*: 1839
+*Branch-out Revision*: 2233
+== Summary ==
+	Omegalib 3.0 is a major improvement over the 2.0 distribution. It is the version used on the first public demos of the [http://www.evl.uic.edu/core.php?mod=4&type=1&indi=424 CAVE2] virtual reality system. It greatly improves performance and stability on cluster display systems, and integrates an extended python API for application developement.
+	C++ and Python omegalib applications can now be accessed in the [https://code.google.com/p/omegalib-apps/ omegalib applications repository].
+	omegalib 3.0 also integrates a new version of [PortholeReference Porthole].
+== Major Changes ==
+	* omega
+		* new Sound Server API from omicron (C++ and Python)
+		* script commands can be queued for later execution from within a python script using the `queueCommand` function
+		* improved wand navigation
+		* Per-tile camera support
+		* 2d drawing support in python (draw callback)
+		* refactoring: removed `RenderState` `RendererBase` `ServerBase`
+		* panoptic stereo can be toggled at runtime
+		* per-tile stereo mode
+		* Kinect depth texture accessible from python API
+		* Interleaved stereo now implemented using a stencil buffer technique
+		* Scene objects can expose custom ray intersection techniques  
+		* orun `:?` now supports listing of object menbers
+		* `Camera` and `Light` are now full scene nodes. They use the standard node transform API and can have children
+		* Added a custom statistics display derived from the one in Equalizer. Specific statistics can be enabled or disabled at runtime through the `toggleStats` python function.
+		* Improved logging on custer systems
+		* Improved garbage collection, initialization and shutdown code
+		* The mouse curor is hidden in fullscreen linux windows
+		* Added an option to disable the equalizer configuration generator (to use custom equalizer configs)
+		* Added image asynchronous loading support
+		* Added the `mcsend` command line tool to send python commands to remote omegalib instances through the Mission Control protocol
+		* Scene query API exposed to python
+		* Merged `Camera` and `Observer` classes. Camera supports head tracking directly (for simple unfiltered tracking there is no need to use a separate observer update service anymore)
+		* Application config can be redirected using `SystemManager::setAppConfig`
+		* Added `EngineModule::handleCommand`
+		* Improved and standardized config for desktop systems
+	* omegaToolkit
+		* Added support for multiple independent user interfaces
+		* Extended python API 
+		* Basic support for widget style descriptors (similar to CSS)
+	* cyclops
+		* extended python API 
+		* forward pipeline supports backface illumination
+		* Re-added bump mapping shaders, integrated with effect system
+		* Improved tracked object and wand support
+		* Improved support for transparent objects
+		* Refactoring: `Entity` >> `AnimatedObject`, `DrawableObject` >> `Entity`.
+		* Added `BoxShape`
+		* Effects can specify cull mode
+		* Shadows can be toggled at runtime
+		* Improved animation support
 
 ------------------------------------------------------------------------
 = omegalib v2.1 =
