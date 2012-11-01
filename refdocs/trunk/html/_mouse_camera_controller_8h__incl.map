@@ -1,8 +1,9 @@
 <map id="D:/Workspace/omegalib/trunk/include/omega/MouseCameraController.h" name="D:/Workspace/omegalib/trunk/include/omega/MouseCameraController.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="65,317,137,341"/>
-<area shape="rect" id="node10" href="$_application_base_8h.html" title="ApplicationBase.h" alt="" coords="37,173,144,197"/>
-<area shape="rect" id="node16" href="$_camera_controller_8h.html" title="omega/CameraController.h" alt="" coords="117,101,269,125"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="105,389,169,413"/>
-<area shape="rect" id="node13" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="47,245,156,269"/>
-<area shape="rect" id="node20" href="$_module_services_8h.html" title="ModuleServices.h" alt="" coords="231,245,337,269"/>
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="157,389,229,413"/>
+<area shape="rect" id="node10" href="$_application_base_8h.html" title="ApplicationBase.h" alt="" coords="93,173,200,197"/>
+<area shape="rect" id="node20" href="$_camera_controller_8h.html" title="omega/CameraController.h" alt="" coords="199,101,351,125"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="197,461,261,485"/>
+<area shape="rect" id="node13" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="93,317,203,341"/>
+<area shape="rect" id="node16" href="$_display_config_8h.html" title="DisplayConfig.h" alt="" coords="155,245,252,269"/>
+<area shape="rect" id="node24" href="$_module_services_8h.html" title="ModuleServices.h" alt="" coords="328,245,435,269"/>
 </map>

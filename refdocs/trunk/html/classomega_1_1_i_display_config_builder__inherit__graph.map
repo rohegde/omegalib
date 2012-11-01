@@ -1,3 +1,4 @@
 <map id="omega::IDisplayConfigBuilder" name="omega::IDisplayConfigBuilder">
-<area shape="rect" id="node3" href="$classomega_1_1_cylindrical_display_config.html" title="omega::CylindricalDisplay\lConfig" alt="" coords="15,78,159,114"/>
+<area shape="rect" id="node3" href="$classomega_1_1_cylindrical_display_config.html" title="omega::CylindricalDisplay\lConfig" alt="" coords="5,78,149,114"/>
+<area shape="rect" id="node5" href="$classomega_1_1_planar_display_config.html" title="omega::PlanarDisplayConfig" alt="" coords="173,84,331,108"/>
 </map>

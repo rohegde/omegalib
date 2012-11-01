@@ -1,8 +1,7 @@
 <map id="D:/Workspace/omegalib/trunk/src/cyclops/SceneManager.cpp" name="D:/Workspace/omegalib/trunk/src/cyclops/SceneManager.cpp">
-<area shape="rect" id="node15" href="$_animated_object_8h.html" title="cyclops/AnimatedObject.h" alt="" coords="759,163,907,187"/>
-<area shape="rect" id="node35" href="$_scene_manager_8h.html" title="SceneManager.h" alt="" coords="869,235,971,259"/>
-<area shape="rect" id="node37" href="$_shapes_8h.html" title="Shapes.h" alt="" coords="1323,313,1389,337"/>
-<area shape="rect" id="node49" href="$_scene_loader_8h.html" title="cyclops/SceneLoader.h" alt="" coords="993,91,1127,115"/>
-<area shape="rect" id="node31" href="$omega_8h.html" title="omega.h" alt="" coords="1032,313,1096,337"/>
-<area shape="rect" id="node33" href="$omega_osg_8h.html" title="omegaOsg.h" alt="" coords="1120,313,1203,337"/>
+<area shape="rect" id="node17" href="$_animated_object_8h.html" title="cyclops/AnimatedObject.h" alt="" coords="947,163,1095,187"/>
+<area shape="rect" id="node35" href="$_scene_manager_8h.html" title="SceneManager.h" alt="" coords="1059,235,1161,259"/>
+<area shape="rect" id="node37" href="$_shapes_8h.html" title="Shapes.h" alt="" coords="1420,313,1487,337"/>
+<area shape="rect" id="node48" href="$_scene_loader_8h.html" title="cyclops/SceneLoader.h" alt="" coords="1219,91,1352,115"/>
+<area shape="rect" id="node33" href="$omega_8h.html" title="omega.h" alt="" coords="1236,313,1300,337"/>
 </map>

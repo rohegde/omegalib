@@ -82,10 +82,10 @@
 Public Types</h2></td></tr>
 <tr class="memitem:a3e3f213ce88c8b8ec522eec61e8b00af"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a3e3f213ce88c8b8ec522eec61e8b00af">AssetType</a> { <a class="el" href="classcyclops_1_1_scene_manager.html#a3e3f213ce88c8b8ec522eec61e8b00afac3aa2f084f008d0ff5a9c9297b2344e2">ModelAssetType</a>
  }</td></tr>
-<tr class="memitem:a290456b241e64c77695ca0b3c97d755f"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classomega_1_1_async_task.html">AsyncTask</a>&lt; <a class="el" href="classstd_1_1pair.html">pair</a>&lt; <a class="el" href="classomicron_1_1_ref.html">Ref</a><br class="typebreak"/>
-&lt; <a class="el" href="structcyclops_1_1_model_info.html">ModelInfo</a> &gt;, bool &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a290456b241e64c77695ca0b3c97d755f">LoadModelAsyncTask</a></td></tr>
-<tr class="memitem:a053241ecf49754905b76f18c9f2189bf"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classomicron_1_1_dictionary.html">Dictionary</a>&lt; <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>, <br class="typebreak"/>
-<a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a053241ecf49754905b76f18c9f2189bf">ShaderMacroDictionary</a></td></tr>
+<tr class="memitem:a0ba1828e00532886ab335c01e0a4573e"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classomega_1_1_async_task.html">AsyncTask</a>&lt; std::pair<br class="typebreak"/>
+&lt; <a class="el" href="classomicron_1_1_ref.html">Ref</a>&lt; <a class="el" href="structcyclops_1_1_model_info.html">ModelInfo</a> &gt;, bool &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a0ba1828e00532886ab335c01e0a4573e">LoadModelAsyncTask</a></td></tr>
+<tr class="memitem:a053241ecf49754905b76f18c9f2189bf"><td class="memItemLeft" align="right" valign="top">typedef Dictionary&lt; String, <br class="typebreak"/>
+String &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a053241ecf49754905b76f18c9f2189bf">ShaderMacroDictionary</a></td></tr>
 <tr class="inherit_header pub_types_classomega_1_1_engine_module"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classomega_1_1_engine_module')"><img src="closed.png" alt="-"/>&nbsp;Public Types inherited from <a class="el" href="classomega_1_1_engine_module.html">omega::EngineModule</a></td></tr>
 <tr class="memitem:a8327c4b2189615448644faafac37b0ef inherit pub_types_classomega_1_1_engine_module"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0ef">Priority</a> { <a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0efa55f6c4f5d9807e73062f31c7183e14da">PriorityLow</a> =  0, 
 <a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0efac82f8703775bfa121c7a3c83ac9b4aa5">PriorityNormal</a> =  1, 
@@ -101,32 +101,32 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adbce1645b569940b70a252504593403c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#adbce1645b569940b70a252504593403c">initialize</a> ()</td></tr>
 <tr class="memitem:a3e6567cebcd891c380e926f958f84b03"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a3e6567cebcd891c380e926f958f84b03">dispose</a> ()</td></tr>
 <tr class="memitem:a79a2af07c478aecda3d63f92bc14117c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a79a2af07c478aecda3d63f92bc14117c">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
-<tr class="memitem:a388db3d97cac8dd660b834dd87688265"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a388db3d97cac8dd660b834dd87688265">handleEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt)</td></tr>
-<tr class="memitem:a40d3254f55ff66da65ab58743420775e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a40d3254f55ff66da65ab58743420775e">setBackgroundColor</a> (const <a class="el" href="classomicron_1_1_color.html">Color</a> &amp;<a class="el" href="glew_8h.html#a3ea846f998d64f079b86052b6c4193a8">color</a>)</td></tr>
+<tr class="memitem:a388db3d97cac8dd660b834dd87688265"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a388db3d97cac8dd660b834dd87688265">handleEvent</a> (const Event &amp;evt)</td></tr>
+<tr class="memitem:a40d3254f55ff66da65ab58743420775e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a40d3254f55ff66da65ab58743420775e">setBackgroundColor</a> (const Color &amp;<a class="el" href="glew_8h.html#a3ea846f998d64f079b86052b6c4193a8">color</a>)</td></tr>
 <tr class="memdesc:a40d3254f55ff66da65ab58743420775e"><td class="mdescLeft">&#160;</td><td class="mdescRight">#PYAPI sets the background color  <a href="#a40d3254f55ff66da65ab58743420775e"></a><br/></td></tr>
 <tr class="memitem:a97e7d35937ef1ea1c0a700cffa759277"><td class="memItemLeft" align="right" valign="top">osg::Group *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a97e7d35937ef1ea1c0a700cffa759277">getOsgRoot</a> ()</td></tr>
-<tr class="memitem:ac4a7ba7a9ba6bdc1830e0f5c41239644"><td class="memItemLeft" align="right" valign="top">osg::Texture2D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#ac4a7ba7a9ba6bdc1830e0f5c41239644">getTexture</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
-<tr class="memitem:a20daed149f2bbd94991aee77411d3959"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcyclops_1_1_program_asset.html">ProgramAsset</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a20daed149f2bbd94991aee77411d3959">getProgram</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;vertexShaderName, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;fragmentShaderName)</td></tr>
+<tr class="memitem:ac4a7ba7a9ba6bdc1830e0f5c41239644"><td class="memItemLeft" align="right" valign="top">osg::Texture2D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#ac4a7ba7a9ba6bdc1830e0f5c41239644">getTexture</a> (const String &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
+<tr class="memitem:a20daed149f2bbd94991aee77411d3959"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcyclops_1_1_program_asset.html">ProgramAsset</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a20daed149f2bbd94991aee77411d3959">getProgram</a> (const String &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>, const String &amp;vertexShaderName, const String &amp;fragmentShaderName)</td></tr>
 <tr class="memitem:a20634e16bc87d10625d4e5d4c57c6348"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a20634e16bc87d10625d4e5d4c57c6348">initShading</a> ()</td></tr>
-<tr class="memitem:acfe618e043dce5171e91ce4d05c71132"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#acfe618e043dce5171e91ce4d05c71132">setShaderMacroToString</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;macroName, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;macroString)</td></tr>
-<tr class="memitem:ad550e161aa970f6c33aa5f28a0d5f00f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#ad550e161aa970f6c33aa5f28a0d5f00f">setShaderMacroToFile</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;macroName, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;<a class="el" href="glew_8h.html#ae517c090b864e6b2846c380c4125f4c5">path</a>)</td></tr>
+<tr class="memitem:acfe618e043dce5171e91ce4d05c71132"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#acfe618e043dce5171e91ce4d05c71132">setShaderMacroToString</a> (const String &amp;macroName, const String &amp;macroString)</td></tr>
+<tr class="memitem:ad550e161aa970f6c33aa5f28a0d5f00f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#ad550e161aa970f6c33aa5f28a0d5f00f">setShaderMacroToFile</a> (const String &amp;macroName, const String &amp;<a class="el" href="glew_8h.html#ae517c090b864e6b2846c380c4125f4c5">path</a>)</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a1c1603d1944d2a425ee3604dea34d4e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a1c1603d1944d2a425ee3604dea34d4e4">loadModel</a> (<a class="el" href="structcyclops_1_1_model_info.html">ModelInfo</a> *info)</td></tr>
 <tr class="memdesc:a1c1603d1944d2a425ee3604dea34d4e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Model Management.  <a href="#a1c1603d1944d2a425ee3604dea34d4e4"></a><br/></td></tr>
-<tr class="memitem:a94fc144b8d633d83533be00d2967b615"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcyclops_1_1_scene_manager.html#a290456b241e64c77695ca0b3c97d755f">LoadModelAsyncTask</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a94fc144b8d633d83533be00d2967b615">loadModelAsync</a> (<a class="el" href="structcyclops_1_1_model_info.html">ModelInfo</a> *info)</td></tr>
-<tr class="memitem:a46cc71b0e5aee36b45d9c5bc902060e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a46cc71b0e5aee36b45d9c5bc902060e8">loadModelAsync</a> (<a class="el" href="structcyclops_1_1_model_info.html">ModelInfo</a> *info, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;<a class="el" href="libwebsockets_8h.html#afd0b58d039ffb936dee7a16865525db7">callback</a>)</td></tr>
-<tr class="memitem:a41aa2946957d4416225b6998ab744831"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcyclops_1_1_model_asset.html">ModelAsset</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a41aa2946957d4416225b6998ab744831">getModel</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
+<tr class="memitem:a94fc144b8d633d83533be00d2967b615"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcyclops_1_1_scene_manager.html#a0ba1828e00532886ab335c01e0a4573e">LoadModelAsyncTask</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a94fc144b8d633d83533be00d2967b615">loadModelAsync</a> (<a class="el" href="structcyclops_1_1_model_info.html">ModelInfo</a> *info)</td></tr>
+<tr class="memitem:a46cc71b0e5aee36b45d9c5bc902060e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a46cc71b0e5aee36b45d9c5bc902060e8">loadModelAsync</a> (<a class="el" href="structcyclops_1_1_model_info.html">ModelInfo</a> *info, const String &amp;<a class="el" href="libwebsockets_8h.html#afd0b58d039ffb936dee7a16865525db7">callback</a>)</td></tr>
+<tr class="memitem:a41aa2946957d4416225b6998ab744831"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcyclops_1_1_model_asset.html">ModelAsset</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a41aa2946957d4416225b6998ab744831">getModel</a> (const String &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
 <tr class="memitem:a84d26162abaa728721fa12b25cba3904"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="classomicron_1_1_ref.html">Ref</a>&lt; <a class="el" href="classcyclops_1_1_model_asset.html">ModelAsset</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a84d26162abaa728721fa12b25cba3904">getModels</a> ()</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ac9e99e90073b5a47857bea55002b2a68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#ac9e99e90073b5a47857bea55002b2a68">displayWand</a> (uint wandId, uint trackableId)</td></tr>
 <tr class="memdesc:ac9e99e90073b5a47857bea55002b2a68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wand Management.  <a href="#ac9e99e90073b5a47857bea55002b2a68"></a><br/></td></tr>
 <tr class="memitem:a334f58674728ec6873c3c91f9db6ad51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a334f58674728ec6873c3c91f9db6ad51">hideWand</a> (uint wandId)</td></tr>
-<tr class="memitem:a6d95049dbc974e2cb2f248aa88090d11"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a6d95049dbc974e2cb2f248aa88090d11">setWandEffect</a> (uint wandId, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;effect)</td></tr>
+<tr class="memitem:a6d95049dbc974e2cb2f248aa88090d11"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a6d95049dbc974e2cb2f248aa88090d11">setWandEffect</a> (uint wandId, const String &amp;effect)</td></tr>
 <tr class="memitem:a31863aa5a868f4c92e7299e9656ee0e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a31863aa5a868f4c92e7299e9656ee0e3">setWandSize</a> (float <a class="el" href="glew_8h.html#aa105b18f96e6bc2485cb7f576a7fb9ba">width</a>, float <a class="el" href="glew_8h.html#a921fa83f7755f0139c84ba1831417a2e">length</a>)</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:af9a71a8957a2f255f33183f3d1a71273"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#af9a71a8957a2f255f33183f3d1a71273">load</a> (<a class="el" href="classcyclops_1_1_scene_loader.html">SceneLoader</a> *loader)</td></tr>
 <tr class="memdesc:af9a71a8957a2f255f33183f3d1a71273"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scene creation methods.  <a href="#af9a71a8957a2f255f33183f3d1a71273"></a><br/></td></tr>
-<tr class="memitem:af64f2c8c3241751c3fdb474146e70a12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#af64f2c8c3241751c3fdb474146e70a12">loadScene</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;file)</td></tr>
+<tr class="memitem:af64f2c8c3241751c3fdb474146e70a12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#af64f2c8c3241751c3fdb474146e70a12">loadScene</a> (const String &amp;file)</td></tr>
 <tr class="memdesc:af64f2c8c3241751c3fdb474146e70a12"><td class="mdescLeft">&#160;</td><td class="mdescRight">#PYAPI Utility method: loads a scene file using the standard cyclops scene loader.  <a href="#af64f2c8c3241751c3fdb474146e70a12"></a><br/></td></tr>
 <tr class="memitem:a2a1bf08a202c7306c20a1d39ced520d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a2a1bf08a202c7306c20a1d39ced520d0">setSkyBox</a> (<a class="el" href="classcyclops_1_1_skybox.html">Skybox</a> *skyBox)</td></tr>
 <tr class="memitem:a41b8e9cb5d1dc3747ecf1d460031e1e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a41b8e9cb5d1dc3747ecf1d460031e1e8">unload</a> ()</td></tr>
@@ -138,7 +138,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af04fa59505d4e680b0c1f890afd3182c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#af04fa59505d4e680b0c1f890afd3182c">resetShadowSettings</a> (const <a class="el" href="structcyclops_1_1_shadow_settings.html">ShadowSettings</a> &amp;settings)</td></tr>
 <tr class="memitem:a7ba6de44f99d047c18a8ee052acad91d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a7ba6de44f99d047c18a8ee052acad91d">getNumActiveLights</a> ()</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:a873a3559cad171c8ac81598136e8c5e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcyclops_1_1_entity.html">Entity</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a873a3559cad171c8ac81598136e8c5e3">getEntityByName</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
+<tr class="memitem:a873a3559cad171c8ac81598136e8c5e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcyclops_1_1_entity.html">Entity</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a873a3559cad171c8ac81598136e8c5e3">getEntityByName</a> (const String &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
 <tr class="memdesc:a873a3559cad171c8ac81598136e8c5e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Object management.  <a href="#a873a3559cad171c8ac81598136e8c5e3"></a><br/></td></tr>
 <tr class="memitem:ab4f1f25b4f78b6dca5016ae0bcb2e0bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcyclops_1_1_entity.html">Entity</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#ab4f1f25b4f78b6dca5016ae0bcb2e0bb">getEntityByIndex</a> (int <a class="el" href="glew_8h.html#a57f14e05b1900f16a2da82ade47d0c6d">index</a>)</td></tr>
 <tr class="memitem:adc577effa754865010ffc637ad865d44"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#adc577effa754865010ffc637ad865d44">getNumEntities</a> ()</td></tr>
@@ -146,6 +146,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3c9b0b7e0e97e19e1d542ff6f67579e9 inherit pub_methods_classomega_1_1_engine_module"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a3c9b0b7e0e97e19e1d542ff6f67579e9">EngineModule</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
 <tr class="memitem:a9cc0f51c8b842a1480d8c430963fc2e6 inherit pub_methods_classomega_1_1_engine_module"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a9cc0f51c8b842a1480d8c430963fc2e6">EngineModule</a> ()</td></tr>
 <tr class="memitem:aff686c62a74030f2a40b2ed2e265b3c4 inherit pub_methods_classomega_1_1_engine_module"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#aff686c62a74030f2a40b2ed2e265b3c4">~EngineModule</a> ()</td></tr>
+<tr class="memitem:aaa37722672c81e782e202d07534f3b14 inherit pub_methods_classomega_1_1_engine_module"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#aaa37722672c81e782e202d07534f3b14">handleEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt)</td></tr>
 <tr class="memitem:a6a44bda7e9079e42c17f44824d6f89f6 inherit pub_methods_classomega_1_1_engine_module"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a6a44bda7e9079e42c17f44824d6f89f6">handleCommand</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;cmd)</td></tr>
 <tr class="memitem:a060c2b22fc751d4002a85d9c58cca98d inherit pub_methods_classomega_1_1_engine_module"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a060c2b22fc751d4002a85d9c58cca98d">commitSharedData</a> (<a class="el" href="classomega_1_1_shared_o_stream.html">SharedOStream</a> &amp;out)</td></tr>
 <tr class="memitem:a02a53825388a2bce137bd53c46b81882 inherit pub_methods_classomega_1_1_engine_module"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a02a53825388a2bce137bd53c46b81882">updateSharedData</a> (<a class="el" href="classomega_1_1_shared_i_stream.html">SharedIStream</a> &amp;<a class="el" href="glew_8h.html#a83ad0ee7f1e06b59c90271716e689080">in</a>)</td></tr>
@@ -182,12 +183,12 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a436dafe8b6a5c62b5f111b644c6ed4b0 inherit pro_static_attribs_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="classomicron_1_1_reference_type.html">ReferenceType</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a436dafe8b6a5c62b5f111b644c6ed4b0">mysObjList</a></td></tr>
 </table>
 <h2>Member Typedef Documentation</h2>
-<a class="anchor" id="a290456b241e64c77695ca0b3c97d755f"></a>
+<a class="anchor" id="a0ba1828e00532886ab335c01e0a4573e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="classomega_1_1_async_task.html">AsyncTask</a>&lt; <a class="el" href="classstd_1_1pair.html">pair</a>&lt; <a class="el" href="classomicron_1_1_ref.html">Ref</a>&lt;<a class="el" href="structcyclops_1_1_model_info.html">ModelInfo</a>&gt;, bool &gt; &gt; <a class="el" href="classcyclops_1_1_scene_manager.html#a290456b241e64c77695ca0b3c97d755f">cyclops::SceneManager::LoadModelAsyncTask</a></td>
+          <td class="memname">typedef <a class="el" href="classomega_1_1_async_task.html">AsyncTask</a>&lt; std::pair&lt; <a class="el" href="classomicron_1_1_ref.html">Ref</a>&lt;<a class="el" href="structcyclops_1_1_model_info.html">ModelInfo</a>&gt;, bool &gt; &gt; <a class="el" href="classcyclops_1_1_scene_manager.html#a0ba1828e00532886ab335c01e0a4573e">cyclops::SceneManager::LoadModelAsyncTask</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -199,7 +200,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="classomicron_1_1_dictionary.html">Dictionary</a>&lt;<a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>, <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>&gt; <a class="el" href="classcyclops_1_1_scene_manager.html#a053241ecf49754905b76f18c9f2189bf">cyclops::SceneManager::ShaderMacroDictionary</a></td>
+          <td class="memname">typedef Dictionary&lt;String, String&gt; <a class="el" href="classcyclops_1_1_scene_manager.html#a053241ecf49754905b76f18c9f2189bf">cyclops::SceneManager::ShaderMacroDictionary</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -351,7 +352,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classcyclops_1_1_entity.html">Entity</a> * SceneManager::getEntityByName </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramtype">const String &amp;&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
@@ -419,7 +420,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classcyclops_1_1_model_asset.html">ModelAsset</a> * SceneManager::getModel </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramtype">const String &amp;&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
@@ -519,19 +520,19 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classcyclops_1_1_program_asset.html">ProgramAsset</a> * SceneManager::getProgram </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramtype">const String &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramtype">const String &amp;&#160;</td>
           <td class="paramname"><em>vertexShaderName</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramtype">const String &amp;&#160;</td>
           <td class="paramname"><em>fragmentShaderName</em>&#160;</td>
         </tr>
         <tr>
@@ -551,7 +552,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">osg::Texture2D * SceneManager::getTexture </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramtype">const String &amp;&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
@@ -570,7 +571,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> SceneManager::handleEvent </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;&#160;</td>
+          <td class="paramtype">const Event &amp;&#160;</td>
           <td class="paramname"><em>evt</em></td><td>)</td>
           <td></td>
         </tr>
@@ -581,8 +582,6 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classomega_1_1_engine_module.html#aaa37722672c81e782e202d07534f3b14">omega::EngineModule</a>.</p>
 
 </div>
 </div>
@@ -709,7 +708,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classcyclops_1_1_scene_manager.html#a290456b241e64c77695ca0b3c97d755f">SceneManager::LoadModelAsyncTask</a> * SceneManager::loadModelAsync </td>
+          <td class="memname"><a class="el" href="classcyclops_1_1_scene_manager.html#a0ba1828e00532886ab335c01e0a4573e">SceneManager::LoadModelAsyncTask</a> * SceneManager::loadModelAsync </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structcyclops_1_1_model_info.html">ModelInfo</a> *&#160;</td>
           <td class="paramname"><em>info</em></td><td>)</td>
@@ -733,7 +732,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramtype">const String &amp;&#160;</td>
           <td class="paramname"><em>callback</em>&#160;</td>
         </tr>
         <tr>
@@ -753,7 +752,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> SceneManager::loadScene </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramtype">const String &amp;&#160;</td>
           <td class="paramname"><em>file</em></td><td>)</td>
           <td></td>
         </tr>
@@ -787,7 +786,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> SceneManager::setBackgroundColor </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classomicron_1_1_color.html">Color</a> &amp;&#160;</td>
+          <td class="paramtype">const Color &amp;&#160;</td>
           <td class="paramname"><em>color</em></td><td>)</td>
           <td></td>
         </tr>
@@ -855,13 +854,13 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> SceneManager::setShaderMacroToFile </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramtype">const String &amp;&#160;</td>
           <td class="paramname"><em>macroName</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramtype">const String &amp;&#160;</td>
           <td class="paramname"><em>path</em>&#160;</td>
         </tr>
         <tr>
@@ -881,13 +880,13 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> SceneManager::setShaderMacroToString </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramtype">const String &amp;&#160;</td>
           <td class="paramname"><em>macroName</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramtype">const String &amp;&#160;</td>
           <td class="paramname"><em>macroString</em>&#160;</td>
         </tr>
         <tr>
@@ -929,7 +928,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramtype">const String &amp;&#160;</td>
           <td class="paramname"><em>effect</em>&#160;</td>
         </tr>
         <tr>

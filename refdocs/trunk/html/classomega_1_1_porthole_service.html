@@ -81,11 +81,12 @@
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a57b529ed1d931c33d5fbdbaee60e6048"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_porthole_service.html#a57b529ed1d931c33d5fbdbaee60e6048">PortholeService</a> ()</td></tr>
 <tr class="memitem:acd32d15278a365156f81903b8a204535"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_porthole_service.html#acd32d15278a365156f81903b8a204535">~PortholeService</a> ()</td></tr>
+<tr class="memdesc:acd32d15278a365156f81903b8a204535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocator function (will be used to register the service inside <a class="el" href="classomega_1_1_system_manager.html">SystemManager</a>)  <a href="#acd32d15278a365156f81903b8a204535"></a><br/></td></tr>
 <tr class="memitem:a317b272eea5278a5430069a3c2dec815"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_porthole_service.html#a317b272eea5278a5430069a3c2dec815">setup</a> (<a class="el" href="namespaceomicron.html#afb87024a570b82fb906138146d2e812d">omicron::Setting</a> &amp;settings)</td></tr>
-<tr class="memitem:a2e05d61b428384c7e38529594c60adc2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_porthole_service.html#a2e05d61b428384c7e38529594c60adc2">start</a> (int port, char *xmlPath, char *cssPath, <a class="el" href="structomega_1_1_porthole_functions_binder.html">PortholeFunctionsBinder</a> *binder)</td></tr>
+<tr class="memitem:a1a8dfcc652d6b82164668c9039470a4b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_porthole_service.html#a1a8dfcc652d6b82164668c9039470a4b">start</a> (int port, char *xmlPath, char *cssPath)</td></tr>
 <tr class="memitem:ab808a08d5321364c668d87fa116f7d0b"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_porthole_service.html#ab808a08d5321364c668d87fa116f7d0b">poll</a> ()</td></tr>
+<tr class="memitem:a918a5222e5868df0235132c5f3fa10c8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1_porthole_functions_binder.html">PortholeFunctionsBinder</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_porthole_service.html#a918a5222e5868df0235132c5f3fa10c8">getFunctionsBinder</a> ()</td></tr>
 <tr class="inherit_header pub_methods_classomicron_1_1_service"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomicron_1_1_service')"><img src="closed.png" alt="-"/>&nbsp;Public Member Functions inherited from <a class="el" href="classomicron_1_1_service.html">omicron::Service</a></td></tr>
 <tr class="memitem:a3336eded3ff92dc311a8778ae918c793 inherit pub_methods_classomicron_1_1_service"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_service.html#a3336eded3ff92dc311a8778ae918c793">Service</a> ()</td></tr>
 <tr class="memitem:a34cf97f472e48d5fdac6f8e3085184f0 inherit pub_methods_classomicron_1_1_service"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_service.html#a34cf97f472e48d5fdac6f8e3085184f0">getServiceId</a> ()</td></tr>
@@ -118,9 +119,6 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ac45ccbe1a9830465b8971ff0e68bcbb1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1_porthole_service.html">PortholeService</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_porthole_service.html#ac45ccbe1a9830465b8971ff0e68bcbb1">createAndInitialize</a> (int port, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;xmlPath, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;cssPath)</td></tr>
-<tr class="memdesc:ac45ccbe1a9830465b8971ff0e68bcbb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI.  <a href="#ac45ccbe1a9830465b8971ff0e68bcbb1"></a><br/></td></tr>
-<tr class="memitem:a287a72455900274f14c1ca21c124c7a8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1_porthole_service.html">PortholeService</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_porthole_service.html#a287a72455900274f14c1ca21c124c7a8">New</a> ()</td></tr>
-<tr class="memdesc:a287a72455900274f14c1ca21c124c7a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocator function (will be used to register the service inside <a class="el" href="classomega_1_1_system_manager.html">SystemManager</a>)  <a href="#a287a72455900274f14c1ca21c124c7a8"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -154,21 +152,6 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Implements an interface to handled device applications. </p>
 </div><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a57b529ed1d931c33d5fbdbaee60e6048"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">PortholeService::PortholeService </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="acd32d15278a365156f81903b8a204535"></a>
 <div class="memitem">
 <div class="memproto">
@@ -181,6 +164,8 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Allocator function (will be used to register the service inside <a class="el" href="classomega_1_1_system_manager.html">SystemManager</a>) </p>
 
 </div>
 </div>
@@ -223,11 +208,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>PYAPI. </p>
-
 </div>
 </div>
-<a class="anchor" id="a287a72455900274f14c1ca21c124c7a8"></a>
+<a class="anchor" id="a918a5222e5868df0235132c5f3fa10c8"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -235,7 +218,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="classomega_1_1_porthole_service.html">PortholeService</a>* omega::PortholeService::New </td>
+          <td class="memname"><a class="el" href="structomega_1_1_porthole_functions_binder.html">PortholeFunctionsBinder</a>* omega::PortholeService::getFunctionsBinder </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -243,12 +226,10 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Allocator function (will be used to register the service inside <a class="el" href="classomega_1_1_system_manager.html">SystemManager</a>) </p>
 
 </div>
 </div>
@@ -303,7 +284,7 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a2e05d61b428384c7e38529594c60adc2"></a>
+<a class="anchor" id="a1a8dfcc652d6b82164668c9039470a4b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -323,13 +304,7 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>cssPath</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structomega_1_1_porthole_functions_binder.html">PortholeFunctionsBinder</a> *&#160;</td>
-          <td class="paramname"><em>binder</em>&#160;</td>
+          <td class="paramname"><em>cssPath</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

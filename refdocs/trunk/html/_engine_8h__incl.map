@@ -1,19 +1,20 @@
 <map id="D:/Workspace/omegalib/trunk/include/omega/Engine.h" name="D:/Workspace/omegalib/trunk/include/omega/Engine.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="495,389,567,413"/>
-<area shape="rect" id="node10" href="$_renderer_8h.html" title="Renderer.h" alt="" coords="332,101,410,125"/>
-<area shape="rect" id="node13" href="$_renderable_8h.html" title="Renderable.h" alt="" coords="44,173,130,197"/>
-<area shape="rect" id="node23" href="$_scene_node_8h.html" title="SceneNode.h" alt="" coords="681,245,767,269"/>
-<area shape="rect" id="node32" href="$_pointer_8h.html" title="Pointer.h" alt="" coords="44,101,111,125"/>
-<area shape="rect" id="node36" href="$_scene_query_8h.html" title="SceneQuery.h" alt="" coords="566,173,656,197"/>
-<area shape="rect" id="node40" href="$_camera_8h.html" title="Camera.h" alt="" coords="774,101,843,125"/>
-<area shape="rect" id="node54" href="$_font_8h.html" title="omega/Font.h" alt="" coords="218,245,308,269"/>
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="493,389,565,413"/>
+<area shape="rect" id="node10" href="$_renderer_8h.html" title="Renderer.h" alt="" coords="332,101,409,125"/>
+<area shape="rect" id="node13" href="$_renderable_8h.html" title="Renderable.h" alt="" coords="43,173,129,197"/>
+<area shape="rect" id="node23" href="$_scene_node_8h.html" title="SceneNode.h" alt="" coords="679,245,765,269"/>
+<area shape="rect" id="node32" href="$_pointer_8h.html" title="Pointer.h" alt="" coords="95,101,161,125"/>
+<area shape="rect" id="node36" href="$_scene_query_8h.html" title="SceneQuery.h" alt="" coords="544,173,635,197"/>
+<area shape="rect" id="node40" href="$_camera_8h.html" title="Camera.h" alt="" coords="709,101,779,125"/>
+<area shape="rect" id="node54" href="$_font_8h.html" title="omega/Font.h" alt="" coords="217,245,308,269"/>
 <area shape="rect" id="node57" href="$_console_8h.html" title="Console.h" alt="" coords="186,101,256,125"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="534,461,599,485"/>
+<area shape="rect" id="node65" href="$_sound_manager_8h.html" title="omicron/SoundManager.h" alt="" coords="803,101,948,125"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="533,461,597,485"/>
 <area shape="rect" id="node16" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="434,245,576,269"/>
-<area shape="rect" id="node19" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="359,317,468,341"/>
-<area shape="rect" id="node26" href="$_i_scene_object_8h.html" title="omega/ISceneObject.h" alt="" coords="762,317,895,341"/>
-<area shape="rect" id="node29" href="$_node_8h.html" title="omega/Node.h" alt="" coords="594,317,687,341"/>
-<area shape="rect" id="node45" href="$_render_target_8h.html" title="omega/RenderTarget.h" alt="" coords="906,245,1040,269"/>
-<area shape="rect" id="node48" href="$_camera_output_8h.html" title="omega/CameraOutput.h" alt="" coords="782,173,920,197"/>
+<area shape="rect" id="node19" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="357,317,467,341"/>
+<area shape="rect" id="node26" href="$_i_scene_object_8h.html" title="omega/ISceneObject.h" alt="" coords="760,317,893,341"/>
+<area shape="rect" id="node29" href="$_node_8h.html" title="omega/Node.h" alt="" coords="592,317,685,341"/>
+<area shape="rect" id="node45" href="$_render_target_8h.html" title="omega/RenderTarget.h" alt="" coords="902,245,1036,269"/>
+<area shape="rect" id="node48" href="$_camera_output_8h.html" title="omega/CameraOutput.h" alt="" coords="760,173,899,197"/>
 <area shape="rect" id="node60" href="$_draw_interface_8h.html" title="DrawInterface.h" alt="" coords="154,173,256,197"/>
 </map>

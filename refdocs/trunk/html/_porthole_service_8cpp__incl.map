@@ -1,18 +1,17 @@
 <map id="D:/Workspace/omegalib/trunk/src/omega/omega/PortholeService.cpp" name="D:/Workspace/omegalib/trunk/src/omega/omega/PortholeService.cpp">
-<area shape="rect" id="node3" href="$_porthole_service_8h.html" title="omega/PortholeService.h" alt="" coords="661,101,803,125"/>
-<area shape="rect" id="node14" href="$_camera_8h.html" title="Camera.h" alt="" coords="480,245,549,269"/>
-<area shape="rect" id="node23" href="$_application_8h.html" title="omega/Application.h" alt="" coords="336,245,456,269"/>
-<area shape="rect" id="node29" href="$_image_utils_8h.html" title="omega/ImageUtils.h" alt="" coords="162,173,280,197"/>
-<area shape="rect" id="node38" href="$json_8h.html" title="vjson/json.h" alt="" coords="989,101,1072,125"/>
-<area shape="rect" id="node42" href="$private-libwebsockets_8h.html" title="private&#45;libwebsockets.h" alt="" coords="829,101,965,125"/>
-<area shape="rect" id="node48" href="$extension-deflate-stream_8h.html" title="extension&#45;deflate&#45;stream.h" alt="" coords="1096,101,1251,125"/>
-<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="360,317,432,341"/>
-<area shape="rect" id="node9" href="$libwebsockets_8h.html" title="websockets/libwebsockets.h" alt="" coords="821,173,979,197"/>
-<area shape="rect" id="node11" href="$_engine_8h.html" title="omega/Engine.h" alt="" coords="543,173,643,197"/>
-<area shape="rect" id="node17" href="$tinyxml_8h.html" title="omicron/xml/tinyxml.h" alt="" coords="675,245,801,269"/>
-<area shape="rect" id="node20" href="$_porthole_g_u_i_8h.html" title="PortholeGUI.h" alt="" coords="428,173,519,197"/>
-<area shape="rect" id="node32" href="$include_2omega_2_pixel_data_8h.html" title="omega/PixelData.h" alt="" coords="5,245,117,269"/>
-<area shape="rect" id="node35" href="$_async_task_8h.html" title="omega/AsyncTask.h" alt="" coords="142,245,260,269"/>
-<area shape="rect" id="node40" href="$block__allocator_8h.html" title="block_allocator.h" alt="" coords="1141,173,1243,197"/>
-<area shape="rect" id="node44" href="$unistd_8h.html" title="unistd.h" alt="" coords="1055,173,1116,197"/>
+<area shape="rect" id="node3" href="$_porthole_service_8h.html" title="omega/PortholeService.h" alt="" coords="606,108,748,132"/>
+<area shape="rect" id="node14" href="$_camera_8h.html" title="Camera.h" alt="" coords="451,259,520,283"/>
+<area shape="rect" id="node23" href="$_application_8h.html" title="omega/Application.h" alt="" coords="307,259,427,283"/>
+<area shape="rect" id="node29" href="$_image_utils_8h.html" title="omega/ImageUtils.h" alt="" coords="93,187,211,211"/>
+<area shape="rect" id="node38" href="$json_8h.html" title="vjson/json.h" alt="" coords="913,108,996,132"/>
+<area shape="rect" id="node42" href="$private-libwebsockets_8h.html" title="websockets/private\l&#45;libwebsockets.h" alt="" coords="773,102,888,138"/>
+<area shape="rect" id="node46" href="$extension-deflate-stream_8h.html" title="websockets/extension\l&#45;deflate&#45;stream.h" alt="" coords="1021,102,1149,138"/>
+<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="331,331,403,355"/>
+<area shape="rect" id="node9" href="$libwebsockets_8h.html" title="websockets/libwebsockets.h" alt="" coords="791,187,949,211"/>
+<area shape="rect" id="node11" href="$_engine_8h.html" title="omega/Engine.h" alt="" coords="514,187,613,211"/>
+<area shape="rect" id="node17" href="$tinyxml_8h.html" title="omicron/xml/tinyxml.h" alt="" coords="646,259,772,283"/>
+<area shape="rect" id="node20" href="$_porthole_g_u_i_8h.html" title="PortholeGUI.h" alt="" coords="399,187,489,211"/>
+<area shape="rect" id="node32" href="$include_2omega_2_pixel_data_8h.html" title="omega/PixelData.h" alt="" coords="26,259,139,283"/>
+<area shape="rect" id="node35" href="$_async_task_8h.html" title="omega/AsyncTask.h" alt="" coords="163,259,281,283"/>
+<area shape="rect" id="node40" href="$block__allocator_8h.html" title="block_allocator.h" alt="" coords="1026,187,1128,211"/>
 </map>

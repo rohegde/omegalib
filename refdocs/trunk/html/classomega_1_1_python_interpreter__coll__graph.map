@@ -3,7 +3,7 @@
 <area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="23,5,164,29"/>
 <area shape="rect" id="node10" href="$classomicron_1_1_list.html" title="omicron::List\&lt; QueuedCommand * \&gt;" alt="" coords="233,155,431,179"/>
 <area shape="rect" id="node12" title="STL class." alt="" coords="6,155,181,179"/>
-<area shape="rect" id="node14" href="$classomicron_1_1_list.html" title="omicron::List\&lt; void * \&gt;" alt="" coords="265,203,399,227"/>
-<area shape="rect" id="node16" title="STL class." alt="" coords="39,203,148,227"/>
-<area shape="rect" id="node18" href="$classomicron_1_1_lock.html" title="omicron::Lock" alt="" coords="288,251,376,275"/>
+<area shape="rect" id="node14" href="$classomicron_1_1_list.html" title="omicron::List\&lt; void * \&gt;" alt="" coords="265,216,399,240"/>
+<area shape="rect" id="node16" title="STL class." alt="" coords="39,216,148,240"/>
+<area shape="rect" id="node18" href="$classomicron_1_1_lock.html" title="omicron::Lock" alt="" coords="288,283,376,307"/>
 </map>

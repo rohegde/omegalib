@@ -76,7 +76,7 @@
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classomega_1_1_python_interpreter__coll__graph.png" border="0" usemap="#omega_1_1_python_interpreter_coll__map" alt="Collaboration graph"/></div>
 <map name="omega_1_1_python_interpreter_coll__map" id="omega_1_1_python_interpreter_coll__map">
-<area shape="rect" id="node2" href="classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="268,5,396,29"/><area shape="rect" id="node4" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="23,5,164,29"/><area shape="rect" id="node10" href="classomicron_1_1_list.html" title="omicron::List\&lt; QueuedCommand * \&gt;" alt="" coords="233,155,431,179"/><area shape="rect" id="node12" title="STL class." alt="" coords="6,155,181,179"/><area shape="rect" id="node14" href="classomicron_1_1_list.html" title="omicron::List\&lt; void * \&gt;" alt="" coords="265,203,399,227"/><area shape="rect" id="node16" title="STL class." alt="" coords="39,203,148,227"/><area shape="rect" id="node18" href="classomicron_1_1_lock.html" title="omicron::Lock" alt="" coords="288,251,376,275"/></map>
+<area shape="rect" id="node2" href="classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="268,5,396,29"/><area shape="rect" id="node4" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="23,5,164,29"/><area shape="rect" id="node10" href="classomicron_1_1_list.html" title="omicron::List\&lt; QueuedCommand * \&gt;" alt="" coords="233,155,431,179"/><area shape="rect" id="node12" title="STL class." alt="" coords="6,155,181,179"/><area shape="rect" id="node14" href="classomicron_1_1_list.html" title="omicron::List\&lt; void * \&gt;" alt="" coords="265,216,399,240"/><area shape="rect" id="node16" title="STL class." alt="" coords="39,216,148,240"/><area shape="rect" id="node18" href="classomicron_1_1_lock.html" title="omicron::Lock" alt="" coords="288,283,376,307"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
@@ -86,7 +86,8 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a92dedd3bd1ab9ac69f29ce66e0efafb7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a92dedd3bd1ab9ac69f29ce66e0efafb7">CallbackType</a> { <a class="el" href="classomega_1_1_python_interpreter.html#a92dedd3bd1ab9ac69f29ce66e0efafb7a265018537789583a80bab9669491f72a">CallbackUpdate</a>, 
-<a class="el" href="classomega_1_1_python_interpreter.html#a92dedd3bd1ab9ac69f29ce66e0efafb7a3c3721de97393d6381e6bbdfc808ace9">CallbackEvent</a>
+<a class="el" href="classomega_1_1_python_interpreter.html#a92dedd3bd1ab9ac69f29ce66e0efafb7a3c3721de97393d6381e6bbdfc808ace9">CallbackEvent</a>, 
+<a class="el" href="classomega_1_1_python_interpreter.html#a92dedd3bd1ab9ac69f29ce66e0efafb7a8f061eda10d9c6c21ebe7f757ac8857d">CallbackDraw</a>
  }</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
@@ -108,6 +109,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af2c229ad5716d788aebba2656e09dda2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#af2c229ad5716d788aebba2656e09dda2">isShellEnabled</a> ()</td></tr>
 <tr class="memitem:a666ca93764266426f94764b06d473157"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a666ca93764266426f94764b06d473157">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
 <tr class="memitem:afdd6814295e9189271ca2a947e20b4fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#afdd6814295e9189271ca2a947e20b4fb">handleEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt)</td></tr>
+<tr class="memitem:a7a996de51a97ed624dd14c4517c63650"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a7a996de51a97ed624dd14c4517c63650">draw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context, <a class="el" href="classomega_1_1_camera.html">Camera</a> *cam)</td></tr>
 <tr class="memitem:aa5c2074644ca757eb57d080ad3dbb7be"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aa5c2074644ca757eb57d080ad3dbb7be">commitSharedData</a> (<a class="el" href="classomega_1_1_shared_o_stream.html">SharedOStream</a> &amp;out)</td></tr>
 <tr class="memitem:aa3ee596e25f0a318cd1c4e99aef111ce"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aa3ee596e25f0a318cd1c4e99aef111ce">updateSharedData</a> (<a class="el" href="classomega_1_1_shared_i_stream.html">SharedIStream</a> &amp;<a class="el" href="glew_8h.html#a83ad0ee7f1e06b59c90271716e689080">in</a>)</td></tr>
 </table><table class="memberdecls">
@@ -125,6 +127,8 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:ac27b14d5adf60d7b79750e5282621c01"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="structomega_1_1_python_interpreter_1_1_queued_command.html">QueuedCommand</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ac27b14d5adf60d7b79750e5282621c01">myCommandQueue</a></td></tr>
 <tr class="memitem:ac3eebb0980e552d354d2502de485d4b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ac3eebb0980e552d354d2502de485d4b9">myUpdateCallbacks</a></td></tr>
 <tr class="memitem:abc5ca5481454e4f5e4df02bb5a5fc280"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#abc5ca5481454e4f5e4df02bb5a5fc280">myEventCallbacks</a></td></tr>
+<tr class="memitem:a32b00c808f35616408cfedb6bb29b010"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a32b00c808f35616408cfedb6bb29b010">myDrawCallbacks</a></td></tr>
+<tr class="memitem:ad29bfdf17d301e6bd1054b26116ba9a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_lock.html">Lock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ad29bfdf17d301e6bd1054b26116ba9a9">myLock</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
@@ -149,6 +153,8 @@ Additional Inherited Members</h2></td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a92dedd3bd1ab9ac69f29ce66e0efafb7a265018537789583a80bab9669491f72a"></a>CallbackUpdate</em>&nbsp;</td><td>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a92dedd3bd1ab9ac69f29ce66e0efafb7a3c3721de97393d6381e6bbdfc808ace9"></a>CallbackEvent</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a92dedd3bd1ab9ac69f29ce66e0efafb7a8f061eda10d9c6c21ebe7f757ac8857d"></a>CallbackDraw</em>&nbsp;</td><td>
 </td></tr>
 </table>
 </dd>
@@ -299,6 +305,32 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="classomega_1_1_shared_object.html#a2dcc033e497ebda6852191ca3fea09d8">omega::SharedObject</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7a996de51a97ed624dd14c4517c63650"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::draw </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_camera.html">Camera</a> *&#160;</td>
+          <td class="paramname"><em>cam</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -634,6 +666,26 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a32b00c808f35616408cfedb6bb29b010"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomicron_1_1_list.html">List</a>&lt;<a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>*&gt; omega::PythonInterpreter::myDrawCallbacks</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="aa0a152fc77b2afeb682d37a27e24ec35"></a>
 <div class="memitem">
 <div class="memproto">
@@ -703,6 +755,26 @@ Additional Inherited Members</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">PythonInteractiveThread* omega::PythonInterpreter::myInteractiveThread</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad29bfdf17d301e6bd1054b26116ba9a9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomicron_1_1_lock.html">Lock</a> omega::PythonInterpreter::myLock</td>
         </tr>
       </table>
   </td>

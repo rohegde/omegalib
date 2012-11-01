@@ -161,6 +161,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a94a28cf1f152612004b371b02e078e91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a bounding radius value from a bounding box.  <a href="#a94a28cf1f152612004b371b02e078e91"></a><br/></td></tr>
 <tr class="memitem:adb99c5997cad93b488ad3cc7d2f4d196"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceomicron.html#abe495230fb99452e2ea1b9d237a98885">Quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_math.html#adb99c5997cad93b488ad3cc7d2f4d196">buildRotation</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;<a class="el" href="glew_8h.html#a307708feff65d5bcfe44f8a767030677">a</a>, const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;<a class="el" href="glew_8h.html#a7b01aaccb6b1691185992154f99088cb">b</a>, const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;fallbackAxis)</td></tr>
 <tr class="memdesc:adb99c5997cad93b488ad3cc7d2f4d196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a quaternion rotation transforming vector a to vector b.  <a href="#adb99c5997cad93b488ad3cc7d2f4d196"></a><br/></td></tr>
+<tr class="memitem:a97f28d9ba289188901f0d63a6858233b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_math.html#a97f28d9ba289188901f0d63a6858233b">quaternionToEuler</a> (const <a class="el" href="namespaceomicron.html#abe495230fb99452e2ea1b9d237a98885">Quaternion</a> &amp;quat)</td></tr>
+<tr class="memdesc:a97f28d9ba289188901f0d63a6858233b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a quaternion to euler angles (pitch, yaw, roll)  <a href="#a97f28d9ba289188901f0d63a6858233b"></a><br/></td></tr>
 <tr class="memitem:a51cc9d5422279725ffb6ec2d2f5b14ad"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_ray.html">Ray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_math.html#a51cc9d5422279725ffb6ec2d2f5b14ad">unproject</a> (const <a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a> &amp;point, const <a class="el" href="namespaceomicron.html#a0513fe6a52c8d302529daca2ce376757">AffineTransform3</a> &amp;modelview, const <a class="el" href="namespaceomicron.html#ae54777cf4d205671e9b17e8a06f68f75">Transform3</a> &amp;projection, const <a class="el" href="structomicron_1_1_rect.html">Rect</a> &amp;viewport)</td></tr>
 <tr class="memitem:a3cacb817f9633c3e67c16f5299416a85"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_ray.html">Ray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_math.html#a3cacb817f9633c3e67c16f5299416a85">unprojectNormalized</a> (const <a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a> &amp;point, const <a class="el" href="namespaceomicron.html#a0513fe6a52c8d302529daca2ce376757">AffineTransform3</a> &amp;modelview, const <a class="el" href="namespaceomicron.html#ae54777cf4d205671e9b17e8a06f68f75">Transform3</a> &amp;projection)</td></tr>
 <tr class="memitem:a1f4ad68f4947349a1b24db51fc68f0f2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_math.html#a1f4ad68f4947349a1b24db51fc68f0f2">project</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;point, const <a class="el" href="namespaceomicron.html#a0513fe6a52c8d302529daca2ce376757">AffineTransform3</a> &amp;modelview, const <a class="el" href="namespaceomicron.html#ae54777cf4d205671e9b17e8a06f68f75">Transform3</a> &amp;projection, const <a class="el" href="structomicron_1_1_rect.html">Rect</a> &amp;viewport)</td></tr>
@@ -2102,6 +2104,32 @@ This is based on MgcMath.h from <a href="http://www.geometrictools.com/">Wild Ma
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a97f28d9ba289188901f0d63a6858233b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> omicron::Math::quaternionToEuler </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#abe495230fb99452e2ea1b9d237a98885">Quaternion</a> &amp;&#160;</td>
+          <td class="paramname"><em>quat</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts a quaternion to euler angles (pitch, yaw, roll) </p>
 
 </div>
 </div>

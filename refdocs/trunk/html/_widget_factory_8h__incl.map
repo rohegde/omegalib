@@ -1,12 +1,12 @@
 <map id="D:/Workspace/omegalib/trunk/include/omegaToolkit/ui/WidgetFactory.h" name="D:/Workspace/omegalib/trunk/include/omegaToolkit/ui/WidgetFactory.h">
-<area shape="rect" id="node3" href="$_button_8h.html" title="omegaToolkit/ui/Button.h" alt="" coords="186,101,328,125"/>
-<area shape="rect" id="node7" href="$_widget_8h.html" title="omegaToolkit/ui/Widget.h" alt="" coords="350,259,495,283"/>
-<area shape="rect" id="node14" href="$_container_8h.html" title="omegaToolkit/ui/Container.h" alt="" coords="5,180,163,204"/>
-<area shape="rect" id="node20" href="$_slider_8h.html" title="omegaToolkit/ui/Slider.h" alt="" coords="353,101,489,125"/>
-<area shape="rect" id="node25" href="$_image_8h.html" title="omegaToolkit/ui/Image.h" alt="" coords="565,180,707,204"/>
-<area shape="rect" id="node5" href="$_abstract_button_8h.html" title="omegaToolkit/ui/Abstract\lButton.h" alt="" coords="187,174,329,210"/>
-<area shape="rect" id="node11" href="$_label_8h.html" title="omegaToolkit/ui/Label.h" alt="" coords="355,180,491,204"/>
-<area shape="rect" id="node9" href="$omega_toolkit_config_8h.html" title="omegaToolkit/omegaToolkit\lConfig.h" alt="" coords="347,331,499,367"/>
-<area shape="rect" id="node17" href="$_ui_render_pass_8h.html" title="omegaToolkit/UiRenderPass.h" alt="" coords="81,259,247,283"/>
-<area shape="rect" id="node28" href="$_image_utils_8h.html" title="omega/ImageUtils.h" alt="" coords="577,259,695,283"/>
+<area shape="rect" id="node3" href="$_button_8h.html" title="omegaToolkit/ui/Button.h" alt="" coords="190,101,332,125"/>
+<area shape="rect" id="node7" href="$_widget_8h.html" title="omegaToolkit/ui/Widget.h" alt="" coords="354,259,499,283"/>
+<area shape="rect" id="node14" href="$_container_8h.html" title="omegaToolkit/ui/Container.h" alt="" coords="9,180,167,204"/>
+<area shape="rect" id="node21" href="$_slider_8h.html" title="omegaToolkit/ui/Slider.h" alt="" coords="357,101,493,125"/>
+<area shape="rect" id="node26" href="$_image_8h.html" title="omegaToolkit/ui/Image.h" alt="" coords="569,180,711,204"/>
+<area shape="rect" id="node5" href="$_abstract_button_8h.html" title="omegaToolkit/ui/Abstract\lButton.h" alt="" coords="191,174,333,210"/>
+<area shape="rect" id="node11" href="$_label_8h.html" title="omegaToolkit/ui/Label.h" alt="" coords="359,180,495,204"/>
+<area shape="rect" id="node9" href="$omega_toolkit_config_8h.html" title="omegaToolkit/omegaToolkit\lConfig.h" alt="" coords="351,331,503,367"/>
+<area shape="rect" id="node17" href="$_ui_render_pass_8h.html" title="omegaToolkit/UiRenderPass.h" alt="" coords="5,259,171,283"/>
+<area shape="rect" id="node29" href="$_image_utils_8h.html" title="omega/ImageUtils.h" alt="" coords="581,259,699,283"/>
 </map>

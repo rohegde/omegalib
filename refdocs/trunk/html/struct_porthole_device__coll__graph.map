@@ -1,5 +1,5 @@
 <map id="PortholeDevice" name="PortholeDevice">
-<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="182,104,323,128"/>
-<area shape="rect" id="node8" href="$struct_porthole_interface_type.html" title="PortholeInterfaceType" alt="" coords="119,231,250,255"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_list.html" title="omicron::List\&lt; Reference\lType * \&gt;" alt="" coords="180,6,324,42"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="183,104,325,128"/>
+<area shape="rect" id="node8" href="$struct_porthole_interface_type.html" title="PortholeInterfaceType" alt="" coords="121,244,251,268"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_list.html" title="omicron::List\&lt; Reference\lType * \&gt;" alt="" coords="182,6,326,42"/>
 </map>

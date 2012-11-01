@@ -1,18 +1,18 @@
 <map id="D:/Workspace/omegalib/trunk/include/omega/PortholeService.h" name="D:/Workspace/omegalib/trunk/include/omega/PortholeService.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="428,389,500,413"/>
-<area shape="rect" id="node12" href="$libwebsockets_8h.html" title="websockets/libwebsockets.h" alt="" coords="1046,101,1204,125"/>
-<area shape="rect" id="node16" href="$_engine_8h.html" title="omega/Engine.h" alt="" coords="323,173,423,197"/>
-<area shape="rect" id="node46" href="$tinyxml_8h.html" title="omicron/xml/tinyxml.h" alt="" coords="843,173,969,197"/>
-<area shape="rect" id="node49" href="$_porthole_g_u_i_8h.html" title="PortholeGUI.h" alt="" coords="760,101,851,125"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="467,461,532,485"/>
-<area shape="rect" id="node19" href="$_renderer_8h.html" title="Renderer.h" alt="" coords="547,245,624,269"/>
-<area shape="rect" id="node22" href="$_renderable_8h.html" title="Renderable.h" alt="" coords="278,317,364,341"/>
-<area shape="rect" id="node25" href="$_scene_node_8h.html" title="SceneNode.h" alt="" coords="462,317,548,341"/>
-<area shape="rect" id="node28" href="$_pointer_8h.html" title="Pointer.h" alt="" coords="195,245,261,269"/>
-<area shape="rect" id="node32" href="$_scene_query_8h.html" title="SceneQuery.h" alt="" coords="381,245,472,269"/>
-<area shape="rect" id="node36" href="$_camera_8h.html" title="Camera.h" alt="" coords="648,245,717,269"/>
-<area shape="rect" id="node40" href="$_font_8h.html" title="omega/Font.h" alt="" coords="128,317,219,341"/>
-<area shape="rect" id="node43" href="$_console_8h.html" title="Console.h" alt="" coords="286,245,356,269"/>
-<area shape="rect" id="node52" href="$_application_8h.html" title="omega/Application.h" alt="" coords="597,173,717,197"/>
-<area shape="rect" id="node56" href="$_python_interpreter_8h.html" title="omega/PythonInterpreter.h" alt="" coords="793,317,948,341"/>
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="279,389,351,413"/>
+<area shape="rect" id="node12" href="$libwebsockets_8h.html" title="websockets/libwebsockets.h" alt="" coords="1013,101,1171,125"/>
+<area shape="rect" id="node16" href="$_engine_8h.html" title="omega/Engine.h" alt="" coords="486,173,585,197"/>
+<area shape="rect" id="node48" href="$tinyxml_8h.html" title="omicron/xml/tinyxml.h" alt="" coords="929,173,1055,197"/>
+<area shape="rect" id="node51" href="$_porthole_g_u_i_8h.html" title="PortholeGUI.h" alt="" coords="755,101,845,125"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="318,461,383,485"/>
+<area shape="rect" id="node19" href="$_renderer_8h.html" title="Renderer.h" alt="" coords="811,245,888,269"/>
+<area shape="rect" id="node22" href="$_renderable_8h.html" title="Renderable.h" alt="" coords="657,317,743,341"/>
+<area shape="rect" id="node25" href="$_scene_node_8h.html" title="SceneNode.h" alt="" coords="89,317,175,341"/>
+<area shape="rect" id="node28" href="$_pointer_8h.html" title="Pointer.h" alt="" coords="573,245,640,269"/>
+<area shape="rect" id="node32" href="$_scene_query_8h.html" title="SceneQuery.h" alt="" coords="93,245,184,269"/>
+<area shape="rect" id="node36" href="$_camera_8h.html" title="Camera.h" alt="" coords="208,245,277,269"/>
+<area shape="rect" id="node40" href="$_font_8h.html" title="omega/Font.h" alt="" coords="421,317,512,341"/>
+<area shape="rect" id="node43" href="$_console_8h.html" title="Console.h" alt="" coords="665,245,735,269"/>
+<area shape="rect" id="node46" href="$_sound_manager_8h.html" title="omicron/SoundManager.h" alt="" coords="353,245,497,269"/>
+<area shape="rect" id="node54" href="$_application_8h.html" title="omega/Application.h" alt="" coords="733,173,853,197"/>
 </map>
