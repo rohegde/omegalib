@@ -155,7 +155,7 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 
 				if(sTile.exists("resolution"))
 				{
-					tc->offset = Config::getVector2iValue("resolution", sTile);
+					tc->pixelSize = Config::getVector2iValue("resolution", sTile);
 				}
 				else
 				{

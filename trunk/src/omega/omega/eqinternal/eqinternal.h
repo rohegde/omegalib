@@ -209,7 +209,7 @@ protected:
 	bool processEvent(const eq::Event& event);
 
 private:
-    Vector2i myIndex;
+    DisplayTileConfig* myTile;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

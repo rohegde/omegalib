@@ -36,8 +36,8 @@ using namespace std;
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 WindowImpl::WindowImpl(eq::Pipe* parent): 
-    eq::Window(parent),
-	myIndex(Vector2i::Zero())
+    eq::Window(parent)
+	//myIndex(Vector2i::Zero())
 {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,12 +50,17 @@ bool WindowImpl::configInit(const uint128_t& initID)
 {
     // Get the tile index from the window name.
     String name = getName();
-	if(name != "stats")
+	
+    EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+	if(ds->getDisplayConfig().tiles.find(name) == ds->getDisplayConfig().tiles.end())
 	{
-		vector<String> args = StringUtils::split(name, "x,");
-		myIndex = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
-		ofmsg("WindowImpl::configInit: tile %1%", %myIndex);
+		oferror("WindowImpl::configInit: could not find tile %1%", %name);
 	}
+	else
+	{
+		myTile = ds->getDisplayConfig().tiles[name];
+	}
+
 	// Serialize window init execution since we are tinkering with x cursors on linux inside there.
 	sInitLock.lock();
 	bool res = Window::configInit(initID);
@@ -75,8 +80,8 @@ bool WindowImpl::processEvent(const eq::Event& event)
     {
         const Vector2i& ts = getDisplaySystem()->getDisplayConfig().tileResolution;
         eq::Event newEvt = event;
-        newEvt.pointer.x = event.pointer.x + myIndex[0] * ts[0];
-        newEvt.pointer.y = event.pointer.y + myIndex[1] * ts[1];
+        newEvt.pointer.x = event.pointer.x + myTile->offset[0] * ts[0];
+        newEvt.pointer.y = event.pointer.y + myTile->offset[1] * ts[1];
         return eq::Window::processEvent(newEvt);
     }
 

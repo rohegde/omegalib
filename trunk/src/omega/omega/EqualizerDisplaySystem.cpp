@@ -139,7 +139,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 			//}
 			
 			String tileName = tc.name;
-			String tileCfg = buildTileConfig(indent, tileName, winX, winY, eqcfg.tileResolution[0], eqcfg.tileResolution[1], tc.device, curDevice, eqcfg.fullscreen);
+			String tileCfg = buildTileConfig(indent, tileName, winX, winY, tc.pixelSize[0], tc.pixelSize[1], tc.device, curDevice, eqcfg.fullscreen);
 			result += tileCfg;
 
 			curDevice = tc.device;
