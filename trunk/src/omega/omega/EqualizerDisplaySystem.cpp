@@ -148,7 +148,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 		// If enabled, create stats window on master node.
 		if(eqcfg.displayStatsOnMaster && !nc.isRemote)
 		{
-			String tileCfg = buildTileConfig(indent, "stats", 20, 20, eqcfg.statsTile.resolution[0], eqcfg.statsTile.resolution[1], 0, curDevice, false);
+			String tileCfg = buildTileConfig(indent, "stats", 20, 20, eqcfg.statsTile.pixelSize[0], eqcfg.statsTile.pixelSize[1], 0, curDevice, false);
 			result += tileCfg;
 		}
 
@@ -602,8 +602,8 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 
 	Vector3f head = camera->getHeadOffset();
 
-	float px = (float)x / dtc->resolution[0];
-	float py = 1 - (float)y / dtc->resolution[1];
+	float px = (float)x / dtc->pixelSize[0];
+	float py = 1 - (float)y / dtc->pixelSize[1];
 
 	Vector3f& vb = dtc->bottomLeft;
 	Vector3f& va = dtc->topLeft;

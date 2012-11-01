@@ -25,8 +25,10 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/DisplayConfig.h"
+#include "omega/Engine.h"
 #include "omega/CylindricalDisplayConfig.h"
 #include "omega/PlanarDisplayConfig.h"
+#include "omega/SageManager.h"
 
 using namespace omega;
 using namespace std;
@@ -81,7 +83,7 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 	if(cfg.displayStatsOnMaster)
 	{
 		cfg.statsTile.offset = Vector2i(0, 0);
-		cfg.statsTile.resolution = Vector2i(480, 860);
+		cfg.statsTile.pixelSize = Vector2i(480, 860);
 		cfg.statsTile.drawStats = true;
 	}
 
@@ -137,13 +139,25 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 				tc->position = Config::getVector2iValue("position", sTile);
 				tc->disableScene = Config::getBoolValue("disableScene", sTile);
 
+				tc->offscreen = Config::getBoolValue("offscreen", sTile, false);
+
+				// If the tile config contains a size entry use it, oterwise use the default tile and bezel size data
+				if(sTile.exists("size"))
+				{
+					tc->size = Config::getVector2fValue("size", sTile);
+				}
+				else
+				{
+					tc->size = cfg.tileSize - cfg.bezelSize;
+				}
+
 				if(sTile.exists("resolution"))
 				{
 					tc->offset = Config::getVector2iValue("resolution", sTile);
 				}
 				else
 				{
-					tc->resolution = cfg.tileResolution;
+					tc->pixelSize = cfg.tileResolution;
 				}
 
 				if(sTile.exists("offset"))
@@ -154,11 +168,14 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 				{
 					std::vector<std::string> args = StringUtils::split(String(sTile.getName()), "xt");
 					Vector2i index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
-					tc->offset = index.cwiseProduct(tc->resolution);
+					tc->offset = index.cwiseProduct(tc->pixelSize);
 				}
 
 				// Custom camera
 				tc->cameraName = Config::getStringValue("cameraName", sTile, "");
+
+				// Compute default values for this tile corners. These values may be overwritted by display config generators applied later on.
+				cfg.computeTileCorners(tc);
 
 				ncfg.tiles[ncfg.numTiles] = tc;
 				ncfg.numTiles++;
@@ -179,14 +196,21 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 		PlanarDisplayConfig cdc;
 		cdc.buildConfig(cfg, scfg);
 	}
+
+	// If SAGE support is available and we have a sage configuration section, pass it to the SAGE manager.
+#ifdef OMEGA_USE_SAGE
+	if(scfg.exists("sage"))
+	{
+		Engine::instance()->getSageManager()->setup(scfg["sage"]);
+	}
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void DisplayConfig::computeTileCorners(DisplayTileConfig* tc)
 {
-	Vector2f lcdSize = tileSize - bezelSize;
-	float tw = lcdSize[0];
-	float th = lcdSize[1];
+	float tw = tc->size[0];
+	float th = tc->size[1];
 
 	// Compute the display corners for custom display geometries
 	Quaternion orientation = AngleAxis(tc->yaw * Math::DegToRad, Vector3f::UnitY()) * AngleAxis(tc->pitch * Math::DegToRad, Vector3f::UnitX());

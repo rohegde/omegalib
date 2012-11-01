@@ -36,22 +36,28 @@ namespace omega
 	class OMEGA_API SageManager: public EngineModule
 	{
 	public:
-		static SageManager* createAndInitialize();
+		enum SageMode { Disabled, SingleNode };
+
+	public:
+		SageManager();
 		virtual ~SageManager();
 
+		void setup(const Setting& s);
+		void finishFrame(ChannelImpl* channel);
+
+		SageMode getMode() { return myMode; }
+
 	private:
-		SageManager();
+		SageMode myMode;
+
+		// Configuration of the local tile that performs SAGE rendering
+		DisplayTileConfig mySageTile;
 	};
 #else
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API SageManager: public EngineModule
 	{
 	public:
-		static SageManager* createAndInitialize()
-		{
-			owarn("SageManager::createAndInitialize: omegalib has been built without SAGE support. This call will always return NULL.");
-			return NULL;
-		}
 	};
 #endif
 

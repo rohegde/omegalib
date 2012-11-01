@@ -156,7 +156,7 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 	{
 		if(!myStencilInitialized)
 		{
-			setupStencil(myDC.tile->resolution[0], myDC.tile->resolution[1]);
+			setupStencil(myDC.tile->pixelSize[0], myDC.tile->pixelSize[1]);
 			myStencilInitialized = true;
 		}
 	}
@@ -250,7 +250,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 			if(myStatsBuffer == NULL)
 			{
 				myStatsTexture = new Texture(myDC.gpuContext);
-				myStatsTexture->initialize(myDC.tile->resolution[0], myDC.tile->resolution[1]);
+				myStatsTexture->initialize(myDC.tile->pixelSize[0], myDC.tile->pixelSize[1]);
 				myStatsBuffer = new RenderTarget(myDC.gpuContext, RenderTarget::RenderToTexture);
 				myStatsBuffer->setTextureTarget(myStatsTexture);
 			}
@@ -265,7 +265,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 				Renderer* r = (Renderer*)getClient();
 				DrawInterface* di = r->getRenderer();
 				di->beginDraw2D(myDC);
-				di->drawRectTexture(myStatsTexture, omicron::Vector2f::Zero(), omicron::Vector2f(myDC.tile->resolution[0], myDC.tile->resolution[1]), DrawInterface::FlipY);
+				di->drawRectTexture(myStatsTexture, omicron::Vector2f::Zero(), omicron::Vector2f(myDC.tile->pixelSize[0], myDC.tile->pixelSize[1]), DrawInterface::FlipY);
 				di->endDraw();
 			}
 		}

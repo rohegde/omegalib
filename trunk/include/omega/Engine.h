@@ -41,6 +41,9 @@
 namespace omega {
 	typedef List< Ref<Renderer> > RendererList;
 
+	// Forward declaration of SageManager to break header circular dependency
+	class SageManager;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	template<typename T> class RendererObject
 	{
@@ -149,6 +152,8 @@ namespace omega {
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
 
+		SageManager* getSageManager() { return mySageManager; }
+
 	private:
 		//! Pointer Management
 		//@{
@@ -191,6 +196,9 @@ namespace omega {
 		CameraCollection myCameras;
 
 		bool myDebugWand;
+
+		// SAGE
+		Ref<SageManager> mySageManager;
 
 		// Sound
 		Ref<SoundManager> soundManager;

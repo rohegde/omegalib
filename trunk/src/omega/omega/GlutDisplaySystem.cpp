@@ -71,7 +71,7 @@ void displayCallback(void)
 	dtc.device = 0;
 	//dtc.index = Vector2i::Zero();
 	dtc.offset = Vector2i::Zero();
-	dtc.resolution = ds->getCanvasSize();
+	dtc.pixelSize = ds->getCanvasSize();
 
 	dc.frameNum = frame++;
 	dc.tile = &dtc;
