@@ -50,7 +50,13 @@ namespace omega
 	public:
 		enum StereoMode { Mono, Interleaved, SideBySide, Default };
 
-		DisplayTileConfig(): drawStats(false), drawFps(false), disableScene(false), disableOverlay(false), stereoMode(Mono) {}
+		DisplayTileConfig(): 
+			drawStats(false), 
+			drawFps(false), 
+			disableScene(false), 
+			disableOverlay(false), 
+			stereoMode(Mono),
+			viewport(0, 0, 1, 1) {}
 
 		StereoMode stereoMode;
 
