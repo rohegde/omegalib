@@ -85,6 +85,9 @@ bool PlanarDisplayConfig::buildConfig(DisplayConfig& cfg, Setting& scfg)
 					tc->position = Vector2i(winX, winY);
 				}
 
+				tc->offset.x() = x * cfg.tileResolution[0];
+				tc->offset.y() = y * cfg.tileResolution[1];
+
 				// Save the tile viewport
 				tc->viewport = Vector4f(tileViewportX, tileViewportY, tileViewportWidth, tileViewportHeight);
 
