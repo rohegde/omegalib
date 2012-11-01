@@ -47,11 +47,6 @@ bool PlanarDisplayConfig::buildConfig(DisplayConfig& cfg, Setting& scfg)
 		cfg.referenceTile[1] * cfg.tileSize[1] + cfg.tileSize[1] / 2,
 		0) + cfg.referenceOffset;
 
-	float tileViewportWidth = 1.0f / numTiles[0];
-	float tileViewportHeight = 1.0f / numTiles[1];
-	float tileViewportX = 0.0f;
-	float tileViewportY = 0.0f;
-
 	// Fill up the tile position / orientation data.
 	// Compute the edge coordinates for all sides
 	for(int x = 0; x < numTiles[0]; x ++)
@@ -89,13 +84,13 @@ bool PlanarDisplayConfig::buildConfig(DisplayConfig& cfg, Setting& scfg)
 				tc->offset.y() = y * cfg.tileResolution[1];
 
 				// Save the tile viewport
-				tc->viewport = Vector4f(tileViewportX, tileViewportY, tileViewportWidth, tileViewportHeight);
+				//tc->viewport = Vector4f(tileViewportX, tileViewportY, tileViewportWidth, tileViewportHeight);
 
-				tileViewportY += tileViewportHeight;
+				//tileViewportY += tileViewportHeight;
 			}
 		}
-		tileViewportY = 0.0f;
-		tileViewportX += tileViewportWidth;
+		//tileViewportY = 0.0f;
+		//tileViewportX += tileViewportWidth;
 	}
 
 	return true;

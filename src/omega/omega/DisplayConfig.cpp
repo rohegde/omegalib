@@ -141,7 +141,7 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 
 				tc->offscreen = Config::getBoolValue("offscreen", sTile, false);
 
-				tc->viewport = Config::getVector4fValue("viewport", sTile, tc->viewport);
+				//tc->viewport = Config::getVector4fValue("viewport", sTile, tc->viewport);
 
 				// If the tile config contains a size entry use it, oterwise use the default tile and bezel size data
 				if(sTile.exists("size"))
