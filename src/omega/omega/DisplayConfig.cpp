@@ -106,7 +106,6 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 		}
 		else
 		{
-			cfg.renderOnMaster = true;
 			ncfg.isRemote = false;
 		}
 		ncfg.port = Config::getIntValue("port", sTileHost);

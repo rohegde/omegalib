@@ -394,8 +394,6 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	mySetting = &scfg;
 	DisplayConfig::LoadConfig(scfg, myDisplayConfig);
 
-	SystemManager::instance()->setRenderOnMaster(myDisplayConfig.renderOnMaster);
-
 	if(SystemManager::instance()->isMaster())
 	{
 		generateEqConfig();
