@@ -204,6 +204,8 @@ public:
 
 	EqualizerDisplaySystem* getDisplaySystem() { return (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem(); }
 
+	DisplayTileConfig* getTileConfig() { return myTile; }
+
 protected:
     virtual bool configInit(const uint128_t& initID);
 	bool processEvent(const eq::Event& event);
@@ -223,6 +225,8 @@ public:
     virtual ~ChannelImpl();
 
     ViewImpl* getViewImpl();
+	
+	DrawContext& getDrawContext() { return myDC; }
 
 protected:
     void setupDrawContext(DrawContext* context, const uint128_t& spin);
