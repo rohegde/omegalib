@@ -177,8 +177,6 @@ namespace omega
 		// Display fps on each tile.
 		bool drawFps;
 
-		bool renderOnMaster;
-
 		//! Runtime settings
 		//@{
 		//! Runtime flag: when set to true, observer orientation will still use camera orientation even

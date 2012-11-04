@@ -117,16 +117,13 @@ bool ConfigImpl::init()
 
 	SystemManager* sys = SystemManager::instance();
 	
-	//if(!sys->renderOnMaster())
-	{
-		ApplicationBase* app = sys->getApplication();
-		myServer = new Engine(app);
+	ApplicationBase* app = sys->getApplication();
+	myServer = new Engine(app);
 	
-		EqualizerDisplaySystem* eqds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
-		eqds->finishInitialize(this);
+	EqualizerDisplaySystem* eqds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+	eqds->finishInitialize(this);
 
-		myServer->initialize();
-	}
+	myServer->initialize();
 
 	StatsManager* sm = SystemManager::instance()->getStatsManager();
 	myFpsStat = sm->createStat("fps");
