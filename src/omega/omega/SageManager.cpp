@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/SageManager.h"
+#include "eqinternal/eqinternal.h"
 
 using namespace omega;
 
@@ -39,13 +40,49 @@ SageManager::~SageManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SageManager::setup(const Setting& s)
+void SageManager::initialize()
 {
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SageManager::setup(const Setting& s, DisplayConfig& dc)
+{
+	omsg("SageManager::setup");
+
+	String mode = Config::getStringValue("mode", s, "disabled");
+	StringUtils::toLowerCase(mode);
+	if(mode == "disabled") myMode = Disabled;
+	else if(mode == "singlenode") myMode = SingleNode;
+
+	myFsManagerAddress = Config::getStringValue("fsManagerAddress", s, "localhost");
+	ofmsg("\tfsManagerAddress = %1%", %myFsManagerAddress);
+
+	// Setup single node mode
+	if(myMode == SingleNode)
+	{
+		omsg("\tmode = SingleNode");
+		String tileName = Config::getStringValue("tile", s);
+		if(dc.tiles.find(tileName) == dc.tiles.end())
+		{
+			oferror("\tCould not find tile %1%", %tileName);
+		}
+		else
+		{
+			oferror("\ttile: %1%", %tileName);
+			mySageTile = dc.tiles[tileName];
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SageManager::finishFrame(ChannelImpl* channel)
 {
+	if(myMode == SingleNode)
+	{
+		if(channel->getDrawContext().tile == mySageTile)
+		{
+		}
+	}
 }
 
 

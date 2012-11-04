@@ -203,7 +203,7 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 #ifdef OMEGA_USE_SAGE
 	if(scfg.exists("sage"))
 	{
-		Engine::instance()->getSageManager()->setup(scfg["sage"]);
+		Engine::instance()->getSageManager()->setup(scfg["sage"], cfg);
 	}
 #endif
 }

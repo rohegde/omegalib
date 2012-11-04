@@ -32,6 +32,8 @@
 namespace omega
 {
 #ifdef OMEGA_USE_SAGE
+	struct DisplayConfig;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API SageManager: public EngineModule
 	{
@@ -42,16 +44,20 @@ namespace omega
 		SageManager();
 		virtual ~SageManager();
 
-		void setup(const Setting& s);
+		virtual void initialize();
+
+		void setup(const Setting& s, DisplayConfig& dc);
 		void finishFrame(ChannelImpl* channel);
 
 		SageMode getMode() { return myMode; }
+		String getFsManagerAddress() { return myFsManagerAddress; }
 
 	private:
 		SageMode myMode;
+		String myFsManagerAddress;
 
 		// Configuration of the local tile that performs SAGE rendering
-		DisplayTileConfig mySageTile;
+		DisplayTileConfig* mySageTile;
 	};
 #else
 	///////////////////////////////////////////////////////////////////////////////////////////////
