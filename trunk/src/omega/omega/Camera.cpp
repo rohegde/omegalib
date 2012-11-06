@@ -255,6 +255,13 @@ Quaternion Camera::localToWorldOrientation(const Quaternion& orientation)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Vector3f Camera::worldToLocalPosition(const Vector3f& position)
+{
+	Vector3f res = mOrientation.inverse() * (position - mPosition);
+	return res;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Camera::setController(CameraController* value) 
 { 
 	if(myController != NULL)
