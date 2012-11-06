@@ -131,6 +131,8 @@ namespace omega {
 		//! converts an orientation to the world reference frame using the camera orientation
 		Quaternion localToWorldOrientation(const Quaternion& orientation);
 
+		//! Converts a point from world to local coordinates using the camera position and orientation
+		Vector3f worldToLocalPosition(const Vector3f& position);
 
 		void endDraw(const DrawContext& context);
 		const DrawContext& beginDraw(const DrawContext& context);
