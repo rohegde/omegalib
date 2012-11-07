@@ -214,6 +214,19 @@ endif()
 # SAGE Module
 set(OMEGA_USE_SAGE false CACHE BOOL "Enable SAGE output support")
 if(OMEGA_USE_SAGE)
+	set(SAGE_DIR true CACHE PATH "the SAGE base path")
+	
+	set(SAGE_INCLUDE_DIR ${SAGE_DIR}/include)
+	if(WIN32)
+		set(SAGE_LIBS 
+			${SAGE_DIR}/lib/sail.lib 
+			${SAGE_DIR}/win32/lib/pthread.lib 
+			${SAGE_DIR}/win32/lib/quanta.lib
+			Userenv.lib # needed for GetUserProfileDirectory
+			)
+	else()
+	endif()
+	
 	SET( srcs ${srcs}
 			omega/SageManager.cpp
 			)
@@ -283,11 +296,16 @@ endif(OMEGA_USE_DISPLAY_GLUT)
 if(OMEGA_USE_OPENCL)
 	if(WIN32)
 		target_link_libraries( omega ${EXT_LIB_DIR}/OpenCL.lib)
-	else(WIN32)
+	else()
 		include_directories(${OPENCL_INCLUDE_DIR})
 		target_link_libraries( omega ${OPENCL_LIBRARIES})
-	endif(WIN32)
-endif(OMEGA_USE_OPENCL)
+	endif()
+endif()
+
+if(OMEGA_USE_SAGE)
+	include_directories(${SAGE_INCLUDE_DIR})
+	target_link_libraries( omega ${SAGE_LIBS})
+endif()
 
 ###################################################################################################
 # See if we can setup Python support for this build

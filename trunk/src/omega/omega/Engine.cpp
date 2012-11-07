@@ -46,8 +46,7 @@ Engine::Engine(ApplicationBase* app):
     myConsoleEnabled(false),
 	//myPointerMode(PointerModeWand)
 	myDrawPointers(false),
-	myDebugWand(false),
-	mySageManager(NULL)
+	myDebugWand(false)
 {
     mysInstance = this;
 }
@@ -66,11 +65,6 @@ void Engine::initialize()
 
 	ModuleServices::addModule(new EventSharingModule());
 	ModuleServices::setNonCoreMode();
-
-#ifdef OMEGA_USE_SAGE
-	mySageManager = new SageManager();
-	ModuleServices::addModule(mySageManager);
-#endif
 
     myScene = new SceneNode(this, "root");
 

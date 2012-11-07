@@ -539,7 +539,7 @@ void SceneManager::loadScene(const String& relativePath)
 	if(DataManager::findFile( relativePath , fullPath))
 	{
 		//Stores the XML file to be parsed
-		TiXmlDocument doc(fullPath.c_str());
+		omega::xml::TiXmlDocument doc(fullPath.c_str());
 
 		//Loads the XML file
 		if(doc.LoadFile())

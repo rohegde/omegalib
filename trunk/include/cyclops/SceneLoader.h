@@ -44,24 +44,25 @@
 namespace cyclops {
 	using namespace omega;
 	using namespace omegaOsg;
+	using namespace omega::xml;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! #PYAPI Performs parsing of an xml .scene file and loads a scene.
+	//! Performs parsing of an xml .scene file and loads a scene.
 	class CY_API SceneLoader
 	{
 	public:
-		static Vector4f readVector4f(TiXmlElement* elem, const String& attributeName);
-		static Vector3f readVector3f(TiXmlElement* elem, const String& attributeName);
-		static Vector2f readVector2f(TiXmlElement* elem, const String& attributeName);
-		static float readFloat(TiXmlElement* elem, const String& attributeName, float defaultValue = 0.0f);
-		static int readInt(TiXmlElement* elem, const String& attributeName, int defaultValue = 0);
-		static bool readBool(TiXmlElement* elem, const String& attributeName, bool defaultValue = false);
+		static Vector4f readVector4f(omega::xml::TiXmlElement* elem, const String& attributeName);
+		static Vector3f readVector3f(omega::xml::TiXmlElement* elem, const String& attributeName);
+		static Vector2f readVector2f(omega::xml::TiXmlElement* elem, const String& attributeName);
+		static float readFloat(omega::xml::TiXmlElement* elem, const String& attributeName, float defaultValue = 0.0f);
+		static int readInt(omega::xml::TiXmlElement* elem, const String& attributeName, int defaultValue = 0);
+		static bool readBool(omega::xml::TiXmlElement* elem, const String& attributeName, bool defaultValue = false);
 
 		//! #PYAPI @internal returns a pointer to the last entity loaded. Used for scripting support.
 		static Entity* getLastLoadedEntity();
 
 	public:
-		SceneLoader(TiXmlDocument& doc, const String& path);
+		SceneLoader(omega::xml::TiXmlDocument& doc, const String& path);
 
 		//! Loader interface
 		//@{
@@ -71,10 +72,10 @@ namespace cyclops {
 		void loadStep();
 		//@}
 
-		void loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::AssetType type);
+		void loadAssets(omega::xml::TiXmlElement* xStaticObjectFiles, SceneManager::AssetType type);
 
-		void createObjects(osg::Group* root, TiXmlElement* xStaticObjectFiles);
-		void createPrimitives(osg::Group* root, TiXmlElement* xStaticObjectFiles);
+		void createObjects(osg::Group* root, omega::xml::TiXmlElement* xStaticObjectFiles);
+		void createPrimitives(osg::Group* root, omega::xml::TiXmlElement* xStaticObjectFiles);
 
 		void initShading();
 
@@ -82,14 +83,14 @@ namespace cyclops {
 		static Entity* sLastLoadedEntity;
 
 		String myPath;
-		TiXmlDocument& myDoc;
+		omega::xml::TiXmlDocument& myDoc;
 		SceneManager* mySceneManager;
 
 	private:
-		PlaneShape* createPlane(TiXmlElement* xPlane);
-		SphereShape* createSphere(TiXmlElement* xchild);
-		StaticObject* createStaticObject(TiXmlElement* xchild);
-		AnimatedObject* createEntity(TiXmlElement* xchild);
+		PlaneShape* createPlane(omega::xml::TiXmlElement* xPlane);
+		SphereShape* createSphere(omega::xml::TiXmlElement* xchild);
+		StaticObject* createStaticObject(omega::xml::TiXmlElement* xchild);
+		AnimatedObject* createEntity(omega::xml::TiXmlElement* xchild);
 	};
 };
 

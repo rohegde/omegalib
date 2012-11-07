@@ -26,22 +26,68 @@
  *************************************************************************************************/
 #include "omega/SageManager.h"
 #include "eqinternal/eqinternal.h"
+#include "libsage.h"
 
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-SageManager::SageManager(): EngineModule("SageManager")
+SageManager::SageManager(): EngineModule("SageManager"),
+	mySageTile(NULL),
+	mySail(NULL)
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SageManager::~SageManager()
 {
+	// Make sure al resources have been deallocated.
+	dispose();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SageManager::initialize()
 {
+	if(mySageTile == NULL)
+	{
+		owarn("SageManager::initialize: cannot initialize, tile not set");
+	}
+	else
+	{
+		sagePixFmt pixFmt;
+		if(mySageTile->stereoMode == DisplayTileConfig::Mono || mySageTile->stereoMode == DisplayTileConfig::Default)
+		{
+			pixFmt = PIXFMT_8888;
+		}
+		else if(mySageTile->stereoMode == DisplayTileConfig::PixelInterleaved)
+		{
+			pixFmt = PIXFMT_888;
+		}
+		else
+		{
+			owarn("SageManager::initialize: unsupported tile stereo format, defaulting to mono");
+			pixFmt = PIXFMT_888;
+		}
+
+		// Connect to free space manager and create a sail frame buffer
+		mySail = createSAIL(
+			SystemManager::instance()->getApplication()->getName(),
+			mySageTile->pixelSize[0], mySageTile->pixelSize[1],
+			pixFmt,
+			myFsManagerAddress.c_str(),
+			1, 60, 
+			NULL);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SageManager::dispose()
+{
+	if(mySail != NULL)
+	{
+		omsg("SageManager::dispose: deleting SAIL buffer");
+		deleteSAIL(mySail);
+		mySail = NULL;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,19 +114,28 @@ void SageManager::setup(const Setting& s, DisplayConfig& dc)
 		}
 		else
 		{
-			oferror("\ttile: %1%", %tileName);
+			ofmsg("\ttile: %1%", %tileName);
 			mySageTile = dc.tiles[tileName];
 		}
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SageManager::finishFrame(ChannelImpl* channel)
+void SageManager::finishFrame(const DrawContext& context)
 {
 	if(myMode == SingleNode)
 	{
-		if(channel->getDrawContext().tile == mySageTile)
+		if(context.tile == mySageTile)
 		{
+			// We should be getting in here only through a single thread, but let's be safe.
+			myLock.lock();
+
+			// Grab data from the frame buffer and copy it to the SAGE frame buffer
+			GLubyte *rgbBuffer = nextBuffer(mySail);
+			glReadPixels(0, 0, mySageTile->pixelSize[0], mySageTile->pixelSize[1], GL_RGBA, GL_UNSIGNED_BYTE, rgbBuffer);	
+			swapBuffer(mySail);
+
+			myLock.unlock();
 		}
 	}
 }

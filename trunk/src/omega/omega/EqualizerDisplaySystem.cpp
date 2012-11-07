@@ -294,9 +294,9 @@ void EqualizerDisplaySystem::generateEqConfig()
 
 		//viewName = ostr("view-%1%", %tc->name);
 
-		if(tc->stereoMode == DisplayTileConfig::Interleaved || 
+		if(tc->stereoMode == DisplayTileConfig::LineInterleaved || 
 			tc->stereoMode == DisplayTileConfig::SideBySide ||
-			(tc->stereoMode == DisplayTileConfig::Default && eqcfg.stereoMode == DisplayTileConfig::Interleaved) ||
+			(tc->stereoMode == DisplayTileConfig::Default && eqcfg.stereoMode == DisplayTileConfig::LineInterleaved) ||
 			(tc->stereoMode == DisplayTileConfig::Default && eqcfg.stereoMode == DisplayTileConfig::SideBySide))
 		{
 			String tileCfg = "";

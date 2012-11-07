@@ -29,6 +29,8 @@
 
 #include "ModuleServices.h"
 
+class sail;
+
 namespace omega
 {
 #ifdef OMEGA_USE_SAGE
@@ -45,9 +47,10 @@ namespace omega
 		virtual ~SageManager();
 
 		virtual void initialize();
+		virtual void dispose();
 
 		void setup(const Setting& s, DisplayConfig& dc);
-		void finishFrame(ChannelImpl* channel);
+		void finishFrame(const DrawContext& context);
 
 		SageMode getMode() { return myMode; }
 		String getFsManagerAddress() { return myFsManagerAddress; }
@@ -58,6 +61,9 @@ namespace omega
 
 		// Configuration of the local tile that performs SAGE rendering
 		DisplayTileConfig* mySageTile;
+
+		omicron::Lock myLock;
+		sail* mySail;
 	};
 #else
 	///////////////////////////////////////////////////////////////////////////////////////////////

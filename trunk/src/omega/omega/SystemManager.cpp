@@ -44,6 +44,8 @@
 // Input services
 #include "omega/KeyboardService.h"
 #include "omega/MouseService.h"
+#include "omega/SageManager.h"
+#include "omega/ModuleServices.h"
 
 using namespace omega;
 
@@ -100,7 +102,8 @@ SystemManager::SystemManager():
 	myIsMaster(true),
 	myMissionControlServer(NULL),
 	myMissionControlEnabled(false),
-	myMissionControlPort(MissionControlServer::DefaultPort)
+	myMissionControlPort(MissionControlServer::DefaultPort),
+	mySageManager(NULL)
 {
 	myDataManager = DataManager::getInstance();
 	myInterpreter = new PythonInterpreter();
@@ -135,6 +138,11 @@ void SystemManager::setup(Config* appcfg)
 
 	setupConfig(appcfg);
 	
+#ifdef OMEGA_USE_SAGE
+	mySageManager = new SageManager();
+	ModuleServices::addModule(mySageManager);
+#endif
+
 	try
 	{
 		setupServiceManager();

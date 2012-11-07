@@ -38,6 +38,8 @@ namespace omega
 	class DisplaySystem;
 	class PythonInterpreter;
 	class MissionControlServer;
+	// Forward declaration of SageManager to break header circular dependency
+	class SageManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// The SystemManager class is the root object of the omegalib architecture.
@@ -118,6 +120,8 @@ namespace omega
 
 		MissionControlServer* getMissionControlServer() { return myMissionControlServer; }
 
+		SageManager* getSageManager() { return mySageManager; }
+
 		void setupServiceManager();
 		void setupDisplaySystem();
 	private:
@@ -153,6 +157,9 @@ namespace omega
 
 		// Stats manager.
 		StatsManager* myStatsManager;
+
+		// SAGE
+		SageManager* mySageManager;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
