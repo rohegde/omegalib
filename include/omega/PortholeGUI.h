@@ -201,7 +201,7 @@ namespace omega {
 	};
 
 	// Xml Document
-	static TiXmlDocument* xmlDoc;
+	static omega::xml::TiXmlDocument* xmlDoc;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements the HTML GUI Manager for Porthole Service
@@ -258,7 +258,7 @@ namespace omega {
 		// Create a Porthole custom camera and a PixelData associated
 		void createCustomCamera(bool followDefaultCamera,  float widthPercent, float heightPercent, uint cameraMask = 0); 
 
-		static void searchNode(TiXmlElement* node);
+		static void searchNode(omega::xml::TiXmlElement* node);
 
 		// Functions binder object
 		static PortholeFunctionsBinder* functionsBinder;
@@ -267,7 +267,7 @@ namespace omega {
 		static vector<PortholeInterfaceType*> interfaces; 
 
 		// A map between a device type and its GUI elements
-		static std::map<string, TiXmlElement* > interfacesMap;
+		static std::map<string, omega::xml::TiXmlElement* > interfacesMap;
 
 		// A map between an element id and the element data
 		static std::map<string, PortholeElement*> elementsMap;

@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "eqinternal.h"
 #include "omega/DisplaySystem.h"
+#include "omega/SageManager.h"
 
 #ifdef __APPLE__
 #include <OpenGL/glu.h>
@@ -151,8 +152,8 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
     context->modelview = mw * cam->getViewTransform();
 
 	// Setup the stencil buffer if needed.
-	if(myDC.tile->stereoMode == DisplayTileConfig::Interleaved ||
-		(myDC.tile->stereoMode == DisplayTileConfig::Default && dcfg.stereoMode == DisplayTileConfig::Interleaved))
+	if(myDC.tile->stereoMode == DisplayTileConfig::LineInterleaved ||
+		(myDC.tile->stereoMode == DisplayTileConfig::Default && dcfg.stereoMode == DisplayTileConfig::LineInterleaved))
 	{
 		if(!myStencilInitialized)
 		{
@@ -281,6 +282,15 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 
         getWindow()->drawFPS();
     }
+
+	// If SAGE support is enabled, notify frame finish
+#ifdef OMEGA_USE_SAGE
+	SageManager* sage = getClient()->getSystemManager()->getSageManager();
+	if(sage != NULL)
+	{
+		sage->finishFrame(myDC);
+	}
+#endif
 
     EQ_GL_CALL( resetAssemblyState( ));
 }

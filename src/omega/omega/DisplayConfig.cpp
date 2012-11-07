@@ -57,7 +57,7 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 	StringUtils::toLowerCase(sm);
 	if(sm == "default") cfg.stereoMode = DisplayTileConfig::Default;
 	else if(sm == "mono") cfg.stereoMode = DisplayTileConfig::Mono;
-	else if(sm == "interleaved") cfg.stereoMode = DisplayTileConfig::Interleaved;
+	else if(sm == "interleaved") cfg.stereoMode = DisplayTileConfig::LineInterleaved;
 	else if(sm == "sidebyside") cfg.stereoMode = DisplayTileConfig::SideBySide;
 
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
@@ -123,7 +123,7 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 				StringUtils::toLowerCase(sm);
 				if(sm == "default") tc->stereoMode = DisplayTileConfig::Default;
 				else if(sm == "mono") tc->stereoMode = DisplayTileConfig::Mono;
-				else if(sm == "interleaved") tc->stereoMode = DisplayTileConfig::Interleaved;
+				else if(sm == "interleaved") tc->stereoMode = DisplayTileConfig::LineInterleaved;
 				else if(sm == "sidebyside") tc->stereoMode = DisplayTileConfig::SideBySide;
 				
 				tc->drawFps = drawFps;
@@ -202,7 +202,7 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 #ifdef OMEGA_USE_SAGE
 	if(scfg.exists("sage"))
 	{
-		Engine::instance()->getSageManager()->setup(scfg["sage"], cfg);
+		SystemManager::instance()->getSageManager()->setup(scfg["sage"], cfg);
 	}
 #endif
 }

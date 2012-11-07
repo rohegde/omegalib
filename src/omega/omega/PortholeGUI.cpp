@@ -32,7 +32,7 @@ using namespace std;
 
 PortholeFunctionsBinder* PortholeGUI::functionsBinder;
 vector<PortholeInterfaceType*> PortholeGUI::interfaces;
-std::map<string, TiXmlElement* > PortholeGUI::interfacesMap;
+std::map<string, omega::xml::TiXmlElement* > PortholeGUI::interfacesMap;
 std::map<string, PortholeElement*> PortholeGUI::elementsMap;
 std::map<int, PortholeCamera*> PortholeGUI::CamerasMap;
 
@@ -74,7 +74,7 @@ void PortholeGUI::setDeviceSpecifications(int width, int height, string orientat
 string PortholeGUI::create(bool firstTime){
 
 	string interfaceKey = device->interfaceType->id + device->interfaceType->orientation;
-	TiXmlElement* root = interfacesMap[interfaceKey];
+	omega::xml::TiXmlElement* root = interfacesMap[interfaceKey];
 
 	if (root == NULL) return "Interface not available for this device";
 
@@ -86,7 +86,7 @@ string PortholeGUI::create(bool firstTime){
 	}
 
 	// Parse the GUI elemets disposition
-	for (TiXmlElement* pChild = root->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
+	for (omega::xml::TiXmlElement* pChild = root->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
 		
 		// Get element name: should correspond to id TODO check
 		const char* id = pChild->Value();
@@ -96,7 +96,7 @@ string PortholeGUI::create(bool firstTime){
 		string width="", height="";
 
 		// Parse attributes
-		TiXmlAttribute* pAttrib = pChild->ToElement()->FirstAttribute();
+		omega::xml::TiXmlAttribute* pAttrib = pChild->ToElement()->FirstAttribute();
 		while(pAttrib){
 
 			string attribute = pAttrib->Name();
@@ -278,12 +278,12 @@ void PortholeGUI::modCustomCamera(float size, float widthPercent, float heightPe
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-/*Recursive*/void PortholeGUI::searchNode(TiXmlElement* node){
+/*Recursive*/void PortholeGUI::searchNode(omega::xml::TiXmlElement* node){
 
 	if ( !node ) return;
 
 	// Parse attributes
-	TiXmlAttribute* pAttrib = node->FirstAttribute();
+	omega::xml::TiXmlAttribute* pAttrib = node->FirstAttribute();
 	while(pAttrib){
 
 		string attribute = pAttrib->Name();
@@ -302,7 +302,7 @@ void PortholeGUI::modCustomCamera(float size, float widthPercent, float heightPe
 	}
 
 	// Check recursively
-	for (TiXmlElement* pChild = node->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
+	for (omega::xml::TiXmlElement* pChild = node->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
 		searchNode(pChild);
 	}
 
@@ -313,7 +313,7 @@ vector<string> PortholeGUI::findHtmlScripts(){
 
 	vector<string> result;
 
-	TiXmlNode* guiElements = xmlDoc->FirstChildElement()->FirstChildElement();
+	omega::xml::TiXmlNode* guiElements = xmlDoc->FirstChildElement()->FirstChildElement();
 
 	searchNode(guiElements->ToElement());
 
@@ -322,7 +322,7 @@ vector<string> PortholeGUI::findHtmlScripts(){
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void PortholeGUI::parseXmlFile(char* xmlPath){
-	omega::xmlDoc = new TiXmlDocument(xmlPath);
+	omega::xmlDoc = new omega::xml::TiXmlDocument(xmlPath);
 	bool loadOkay = xmlDoc->LoadFile();
 	if (!loadOkay){
 		printf("!!! Porthole: Failed to load XML file");
@@ -332,15 +332,15 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 	// Recursive search for Python Scripts inside events handlers
 	findHtmlScripts();
 
-	TiXmlNode* guiElements = xmlDoc->FirstChildElement()->FirstChildElement();
+	omega::xml::TiXmlNode* guiElements = xmlDoc->FirstChildElement()->FirstChildElement();
 
 	// Parse the GUI elements
-	for (TiXmlNode* pChild = guiElements->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
+	for (omega::xml::TiXmlNode* pChild = guiElements->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
 
 		PortholeElement* element = new PortholeElement();
 
 		// Parse attributes
-		TiXmlAttribute* pAttrib = pChild->ToElement()->FirstAttribute();
+		omega::xml::TiXmlAttribute* pAttrib = pChild->ToElement()->FirstAttribute();
 		while(pAttrib){
 
 			string attribute = pAttrib->Name();
@@ -372,9 +372,9 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 		if  (element->type.compare("html")==0){
 
 			// Parse the GUI elements
-			for (TiXmlNode* pHtmlChild = pChild->FirstChildElement(); pHtmlChild != 0; pHtmlChild = pHtmlChild->NextSiblingElement()){
+			for (omega::xml::TiXmlNode* pHtmlChild = pChild->FirstChildElement(); pHtmlChild != 0; pHtmlChild = pHtmlChild->NextSiblingElement()){
 				
-				TiXmlPrinter* xmlPrinter = new TiXmlPrinter();
+				omega::xml::TiXmlPrinter* xmlPrinter = new omega::xml::TiXmlPrinter();
 				
 				pHtmlChild->Accept( xmlPrinter );
 				//cout << "Added: " << id << " -> " << xmlPrinter->CStr() << endl;
@@ -393,11 +393,11 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 
 	}
 
-	TiXmlNode* guiDisposition = guiElements->NextSiblingElement();
+	omega::xml::TiXmlNode* guiDisposition = guiElements->NextSiblingElement();
 
 	// Parse the GUI elemets disposition
 	// For each specified interface size
-	for (TiXmlElement* pInterfaceChild = guiDisposition->FirstChildElement(); pInterfaceChild != 0; pInterfaceChild = pInterfaceChild->NextSiblingElement()){
+	for (omega::xml::TiXmlElement* pInterfaceChild = guiDisposition->FirstChildElement(); pInterfaceChild != 0; pInterfaceChild = pInterfaceChild->NextSiblingElement()){
 
 			// Get element name
 			string interfaceId = string(pInterfaceChild->Value());
@@ -405,7 +405,7 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 			int minWidth=0, minHeight=0;
 
 			// Parse attributes
-			TiXmlAttribute* pAttrib = pInterfaceChild->FirstAttribute();
+			omega::xml::TiXmlAttribute* pAttrib = pInterfaceChild->FirstAttribute();
 			while(pAttrib){
 
 				string attribute = pAttrib->Name();
@@ -426,7 +426,7 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 			}
 
 		// For each orientation
-		for (TiXmlElement* pOrientationChild = pInterfaceChild->FirstChildElement(); pOrientationChild != 0; pOrientationChild = pOrientationChild->NextSiblingElement()){
+		for (omega::xml::TiXmlElement* pOrientationChild = pInterfaceChild->FirstChildElement(); pOrientationChild != 0; pOrientationChild = pOrientationChild->NextSiblingElement()){
 				
 			// Get element name
 			string orientation = string(pOrientationChild->Value());
@@ -436,7 +436,7 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 			std::string layout;
 
 			// Parse attributes
-			TiXmlAttribute* pAttrib = pOrientationChild->FirstAttribute();
+			omega::xml::TiXmlAttribute* pAttrib = pOrientationChild->FirstAttribute();
 			while(pAttrib){
 
 				string attribute = pAttrib->Name();

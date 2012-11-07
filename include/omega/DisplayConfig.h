@@ -48,7 +48,7 @@ namespace omega
 	struct DisplayTileConfig
 	{
 	public:
-		enum StereoMode { Mono, Interleaved, SideBySide, Default };
+		enum StereoMode { Mono, LineInterleaved, PixelInterleaved, SideBySide, Default };
 
 		DisplayTileConfig(): 
 			drawStats(false), 
