@@ -56,7 +56,7 @@ void SageManager::initialize()
 		sagePixFmt pixFmt;
 		if(mySageTile->stereoMode == DisplayTileConfig::Mono || mySageTile->stereoMode == DisplayTileConfig::Default)
 		{
-			pixFmt = PIXFMT_8888;
+			pixFmt = PIXFMT_888;
 		}
 		else if(mySageTile->stereoMode == DisplayTileConfig::PixelInterleaved)
 		{
@@ -132,7 +132,11 @@ void SageManager::finishFrame(const DrawContext& context)
 
 			// Grab data from the frame buffer and copy it to the SAGE frame buffer
 			GLubyte *rgbBuffer = nextBuffer(mySail);
-			glReadPixels(0, 0, mySageTile->pixelSize[0], mySageTile->pixelSize[1], GL_RGBA, GL_UNSIGNED_BYTE, rgbBuffer);	
+
+			// Disable alignment for readback operations.
+			glPixelStorei(GL_PACK_ALIGNMENT, 1);
+
+			glReadPixels(0, 0, mySageTile->pixelSize[0], mySageTile->pixelSize[1], GL_RGB, GL_UNSIGNED_BYTE, rgbBuffer);	
 			swapBuffer(mySail);
 
 			myLock.unlock();
