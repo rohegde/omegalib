@@ -123,8 +123,10 @@ void Button::playPressedSound()
 		Sound* sound = getEngine()->getSoundEnvironment()->getSound("selectMenuSound");
 		if( sound != NULL )
 		{
+			Camera* cam = getEngine()->getDefaultCamera();
+			Vector3f soundLocalPosition = cam->worldToLocalPosition( getContainer()->get3dSettings().position );
 			SoundInstance* inst = new SoundInstance(sound);
-			inst->setPosition( getContainer()->get3dSettings().position );
+			inst->setPosition( soundLocalPosition );
 			inst->play();
 		}
 	}

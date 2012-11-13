@@ -158,7 +158,8 @@ void Engine::initialize()
 		soundManager->startSoundServer();
 
 		soundEnv = soundManager->getSoundEnvironment();
-		soundEnv->setListenerPosition(Vector3f(0, 2, 0));
+		soundEnv->setListenerPosition( getDefaultCamera()->getPosition() );
+		soundEnv->setListenerOrientation( getDefaultCamera()->getOrientation() );
 	}
 
 

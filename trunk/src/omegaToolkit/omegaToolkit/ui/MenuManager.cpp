@@ -358,12 +358,14 @@ void Menu::show()
 	if(SystemManager::settingExists("config/sound") && myManager->getShowMenuSound() != NULL )
 	{
 		// Set the listener position
-		Vector3f cameraPosition = myManager->getEngine()->getDefaultCamera()->getPosition();
-		myManager->getEngine()->getSoundEnvironment()->setListenerPosition( cameraPosition );
+		Camera* cam = myManager->getEngine()->getDefaultCamera();
+		Vector3f cameraPosition = cam->getPosition();
+		//myManager->getEngine()->getSoundEnvironment()->setListenerPosition( cameraPosition );
 
 		// Set the sound position and play
+		Vector3f soundLocalPosition = cam->worldToLocalPosition( my3dSettings.position );
 		Ref<SoundInstance> showSound = new SoundInstance(myManager->getShowMenuSound());
-		showSound->setPosition( my3dSettings.position );
+		showSound->setPosition( soundLocalPosition );
 		showSound->play();
 	}
 }
@@ -390,11 +392,14 @@ void Menu::hide()
 	if( SystemManager::settingExists("config/sound") && myManager->getHideMenuSound() != NULL )
 	{
 		// Set the listener position
-		Vector3f cameraPosition = myManager->getEngine()->getDefaultCamera()->getPosition();
-		myManager->getEngine()->getSoundEnvironment()->setListenerPosition( cameraPosition );
+		Camera* cam = myManager->getEngine()->getDefaultCamera();
+		Vector3f cameraPosition = cam->getPosition();
+		Vector3f soundLocalPosition = cam->worldToLocalPosition( my3dSettings.position );
+
+		//myManager->getEngine()->getSoundEnvironment()->setListenerPosition( cam->get );
 
 		Ref<SoundInstance> hideSound = new SoundInstance(myManager->getHideMenuSound());
-		hideSound->setPosition( my3dSettings.position );
+		hideSound->setPosition( soundLocalPosition );
 		hideSound->play();
 	}
 }
