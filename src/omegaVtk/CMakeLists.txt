@@ -32,16 +32,16 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DOVTK_EXPORTING -DVTK_LIBRARY_DIR="$
 ###################################################################################################
 # Source files
 SET( srcs 
-		omegaVtk/vtkGenericOpenGLRenderWindow.cpp
-		omegaVtk/VtkModule.cpp
-		omegaVtk/VtkRenderPass.cpp
-		omegaVtk/VtkAttachPoint.cpp
+		vtkGenericOpenGLRenderWindow.cpp
+		VtkModule.cpp
+		VtkRenderPass.cpp
+		VtkAttachPoint.cpp
         )
 		
 if(OMEGA_USE_PYTHON)
 SET( srcs ${srcs}
-		omegaVtk/PyVtk.cpp
-		omegaVtk/omegaVtkPythonApi.cpp
+		PyVtk.cpp
+		omegaVtkPythonApi.cpp
         )
 endif()
 		
