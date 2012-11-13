@@ -61,11 +61,11 @@ SET( headers
 		${CMAKE_SOURCE_DIR}/include/omegaOsg/SceneView.h
 		${CMAKE_SOURCE_DIR}/include/omegaOsg/ReaderFreeImage.h
 		
-		omegaOsg/fbx/fbxMaterialToOsgStateSet.h
-		omegaOsg/fbx/fbxReader.h
-		omegaOsg/fbx/ReaderWriterFBX.h
-		omegaOsg/fbx/WriterCompareTriangle.h
-		omegaOsg/fbx/WriterNodeVisitor.h
+		fbx/fbxMaterialToOsgStateSet.h
+		fbx/fbxReader.h
+		fbx/ReaderWriterFBX.h
+		fbx/WriterCompareTriangle.h
+		fbx/WriterNodeVisitor.h
         ) 
         
 ###################################################################################################
@@ -82,11 +82,11 @@ if(OMEGAOSG_USE_INVENTOR)
 				Inventor/ShuttleCallback.cpp
 			)
 		set( headers  ${headers}
-				omegaOsg/Inventor/ConvertToInventor.h
-				omegaOsg/Inventor/ConvertFromInventor.h
-				omegaOsg/Inventor/PendulumCallback.h
-				omegaOsg/Inventor/ReaderWriterIV.h
-				omegaOsg/Inventor/ShuttleCallback.h
+				Inventor/ConvertToInventor.h
+				Inventor/ConvertFromInventor.h
+				Inventor/PendulumCallback.h
+				Inventor/ReaderWriterIV.h
+				Inventor/ShuttleCallback.h
 			)
 		#ADD_DEFINITIONS(-DCOIN_DLL)
 		include_directories(${INVENTOR_INCLUDE_DIR})
