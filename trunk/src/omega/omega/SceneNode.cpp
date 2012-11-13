@@ -150,6 +150,11 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 
 	Node::update(updateChildren, parentHasChanged);
 
+	// UPdate attached scene objects
+	foreach(ISceneObject* d, myObjects)
+	{
+		d->update(this);
+	}
 	updateBoundingBox();
 }
 
@@ -193,7 +198,6 @@ void SceneNode::updateBoundingBox()
 
 	foreach(ISceneObject* d, myObjects)
 	{
-		d->update(this);
 		if(d->hasBoundingBox())
 		{
 			if(d->needsBoundingBoxUpdate()) d->updateBoundingBox();

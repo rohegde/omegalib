@@ -68,6 +68,8 @@ namespace omegaOsg
 		Ref<osg::MatrixTransform> myTransform;
 		AlignedBox3 myBBox;
 		bool myInitialized;
+		
+		Ref<SceneNode> mySceneNode;
 	};
 };
 #endif

@@ -63,7 +63,12 @@ OsgSceneObject::~OsgSceneObject()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgSceneObject::update(SceneNode* node)
 {
-	node->addListener(this);
+	if(node != mySceneNode)
+	{
+		if(mySceneNode != NULL) mySceneNode->removeListener(this);
+		mySceneNode = node;
+		node->addListener(this);
+	}
 	const AffineTransform3& xform =  node->getFullTransform();
 	const Matrix4f& m = xform.matrix();
 	osg::Matrix oxform;
