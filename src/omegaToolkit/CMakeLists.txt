@@ -32,36 +32,36 @@ add_definitions( -D_CRT_SECURE_NO_WARNINGS -DOTK_EXPORTING -DEQ_FABRIC_STATIC -D
 ###################################################################################################
 # Source files
 set( srcs 
-		omegaToolkit/ToolkitUtils.cpp
-		omegaToolkit/Box.cpp
-		omegaToolkit/ControllerManipulator.cpp
-		omegaToolkit/WandManipulator.cpp
-		omegaToolkit/MouseManipulator.cpp
-		omegaToolkit/DefaultMouseInteractor.cpp
-		omegaToolkit/DefaultTwoHandsInteractor.cpp
-		omegaToolkit/Mesh.cpp
-		omegaToolkit/MeshData.cpp
-		omegaToolkit/omegaToolkitPythonApi.cpp
-		omegaToolkit/RenderableSceneObject.cpp
-		omegaToolkit/SceneEditorModule.cpp
-		omegaToolkit/SceneRenderable.cpp
-		omegaToolkit/TrackedObject.cpp
-		omegaToolkit/UiModule.cpp
-		omegaToolkit/UiRenderPass.cpp
-		omegaToolkit/UiScriptCommand.cpp
-		omegaToolkit/ViewManager.cpp
+		ToolkitUtils.cpp
+		Box.cpp
+		ControllerManipulator.cpp
+		WandManipulator.cpp
+		MouseManipulator.cpp
+		DefaultMouseInteractor.cpp
+		DefaultTwoHandsInteractor.cpp
+		Mesh.cpp
+		MeshData.cpp
+		omegaToolkitPythonApi.cpp
+		RenderableSceneObject.cpp
+		SceneEditorModule.cpp
+		SceneRenderable.cpp
+		TrackedObject.cpp
+		UiModule.cpp
+		UiRenderPass.cpp
+		UiScriptCommand.cpp
+		ViewManager.cpp
 		
 		# omega::ui
-		omegaToolkit/ui/AbstractButton.cpp
-		omegaToolkit/ui/BareboneSkin.cpp
-		omegaToolkit/ui/Button.cpp
-		omegaToolkit/ui/Container.cpp
-		omegaToolkit/ui/Image.cpp
-		omegaToolkit/ui/Label.cpp
-		omegaToolkit/ui/MenuManager.cpp
-		omegaToolkit/ui/DefaultSkin.cpp
-		omegaToolkit/ui/Slider.cpp
-		omegaToolkit/ui/Widget.cpp
+		ui/AbstractButton.cpp
+		ui/BareboneSkin.cpp
+		ui/Button.cpp
+		ui/Container.cpp
+		ui/Image.cpp
+		ui/Label.cpp
+		ui/MenuManager.cpp
+		ui/DefaultSkin.cpp
+		ui/Slider.cpp
+		ui/Widget.cpp
         )
 		
 ###################################################################################################
