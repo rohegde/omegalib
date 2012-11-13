@@ -1,1 +1,0 @@
-The common folder contains a set of classes that are used by multiple omegalib applications but are not generic enough to be part of omegaToolkit
