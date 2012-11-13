@@ -187,7 +187,7 @@ if(OMEGA_USE_DISPLAY_EQUALIZER)
 		eqinternal/PipeImpl.cpp
 		)
 	set( headers ${headers} 
-		omega/eqinternal/eqinternal.h
+		eqinternal/eqinternal.h
 		${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
@@ -203,8 +203,8 @@ if(OMEGA_USE_PORTHOLE)
 	SET( headers ${headers}
 			${OmegaLib_SOURCE_DIR}/include/omega/PortholeService.h
 			${OmegaLib_SOURCE_DIR}/include/omega/PortholeGUI.h
-			omega/vjson/block_allocator.h
-			omega/vjson/json.h
+			vjson/block_allocator.h
+			vjson/json.h
 			)
 endif()
 
