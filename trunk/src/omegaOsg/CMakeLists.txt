@@ -33,21 +33,21 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DOOSG_EXPORTING)
 ###################################################################################################
 # Source files
 SET( srcs 
-		omegaOsg/OsgModule.cpp
-		omegaOsg/OsgRenderPass.cpp
-		omegaOsg/OsgSceneObject.cpp
-		omegaOsg/SceneView.cpp
-		omegaOsg/ReaderFreeImage.cpp
+		OsgModule.cpp
+		OsgRenderPass.cpp
+		OsgSceneObject.cpp
+		SceneView.cpp
+		ReaderFreeImage.cpp
 		
-		omegaOsg/fbx/fbxRAnimation.cpp
-		omegaOsg/fbx/fbxRCamera.cpp
-		omegaOsg/fbx/fbxRLight.cpp
-		omegaOsg/fbx/fbxRMesh.cpp
-		omegaOsg/fbx/fbxRNode.cpp
-		omegaOsg/fbx/ReaderWriterFBX.cpp
-		omegaOsg/fbx/WriterCompareTriangle.cpp
-		omegaOsg/fbx/WriterNodeVisitor.cpp
-		omegaOsg/fbx/fbxMaterialToOsgStateSet.cpp
+		fbx/fbxRAnimation.cpp
+		fbx/fbxRCamera.cpp
+		fbx/fbxRLight.cpp
+		fbx/fbxRMesh.cpp
+		fbx/fbxRNode.cpp
+		fbx/ReaderWriterFBX.cpp
+		fbx/WriterCompareTriangle.cpp
+		fbx/WriterNodeVisitor.cpp
+		fbx/fbxMaterialToOsgStateSet.cpp
 		)
 		
 ###################################################################################################
@@ -75,11 +75,11 @@ if(OMEGAOSG_USE_INVENTOR)
 	add_definitions(-DCOIN_NOT_DLL)
     if(INVENTOR_FOUND)
 		set( srcs  ${srcs}
-				omegaOsg/Inventor/ConvertToInventor.cpp
-				omegaOsg/Inventor/ConvertFromInventor.cpp
-				omegaOsg/Inventor/PendulumCallback.cpp
-				omegaOsg/Inventor/ReaderWriterIV.cpp
-				omegaOsg/Inventor/ShuttleCallback.cpp
+				Inventor/ConvertToInventor.cpp
+				Inventor/ConvertFromInventor.cpp
+				Inventor/PendulumCallback.cpp
+				Inventor/ReaderWriterIV.cpp
+				Inventor/ShuttleCallback.cpp
 			)
 		set( headers  ${headers}
 				omegaOsg/Inventor/ConvertToInventor.h

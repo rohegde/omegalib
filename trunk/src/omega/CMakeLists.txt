@@ -36,47 +36,47 @@ add_definitions(-DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_ST
 ###################################################################################################
 # Source files
 SET( srcs 
-		omega/DisplayConfig.cpp
-		omega/Camera.cpp
-		omega/CameraController.cpp
-		omega/KeyboardMouseCameraController.cpp
-		omega/GamepadCameraController.cpp
-		omega/MouseCameraController.cpp
-		omega/WandCameraController.cpp
-		omega/CameraOutput.cpp
-		omega/CylindricalDisplayConfig.cpp
-		omega/Console.cpp
-		omega/DrawInterface.cpp
-		omega/EventSharingModule.cpp
-		omega/Engine.cpp
-		omega/Font.cpp
-		omega/GpuBuffer.cpp
-		omega/GpuManager.cpp
-		omega/GpuProgram.cpp
-		omega/ImageUtils.cpp
-		omega/KeyboardService.cpp
-		omega/ModuleServices.cpp
-		omega/MouseService.cpp
-		omega/MissionControl.cpp
-		omega/Node.cpp
-		omega/ObserverUpdateServiceExt.cpp
-        omega/osystem.cpp
-		omega/PixelData.cpp
-		omega/Pointer.cpp
-		omega/PythonInterpreter.cpp
-		omega/PlanarDisplayConfig.cpp
-		omega/omegaPythonApi.cpp
-		omega/Renderer.cpp
-		omega/Renderable.cpp
-		omega/RenderTarget.cpp
-		omega/ViewRayService.cpp
-		omega/SceneNode.cpp
-		omega/SceneQuery.cpp
-		omega/SharedDataServices.cpp
-		omega/StatsManager.cpp
-		omega/SystemManager.cpp
-		omega/Texture.cpp
-		omega/WandEmulationService.cpp
+		DisplayConfig.cpp
+		Camera.cpp
+		CameraController.cpp
+		KeyboardMouseCameraController.cpp
+		GamepadCameraController.cpp
+		MouseCameraController.cpp
+		WandCameraController.cpp
+		CameraOutput.cpp
+		CylindricalDisplayConfig.cpp
+		Console.cpp
+		DrawInterface.cpp
+		EventSharingModule.cpp
+		Engine.cpp
+		Font.cpp
+		GpuBuffer.cpp
+		GpuManager.cpp
+		GpuProgram.cpp
+		ImageUtils.cpp
+		KeyboardService.cpp
+		ModuleServices.cpp
+		MouseService.cpp
+		MissionControl.cpp
+		Node.cpp
+		ObserverUpdateServiceExt.cpp
+        osystem.cpp
+		PixelData.cpp
+		Pointer.cpp
+		PythonInterpreter.cpp
+		PlanarDisplayConfig.cpp
+		omegaPythonApi.cpp
+		Renderer.cpp
+		Renderable.cpp
+		RenderTarget.cpp
+		ViewRayService.cpp
+		SceneNode.cpp
+		SceneQuery.cpp
+		SharedDataServices.cpp
+		StatsManager.cpp
+		SystemManager.cpp
+		Texture.cpp
+		WandEmulationService.cpp
         )
 		
 ###################################################################################################
@@ -142,34 +142,34 @@ SET( headers
 if(OMEGA_USE_PYTHON)
 	add_definitions(-DBOOST_PYTHON_SOURCE)
 	set( srcs ${srcs}
-			omega/boostPython/dict.cpp
-			omega/boostPython/errors.cpp
-			omega/boostPython/exec.cpp
-			omega/boostPython/import.cpp
-			omega/boostPython/list.cpp
-			omega/boostPython/long.cpp
-			omega/boostPython/module.cpp
-			omega/boostPython/numeric.cpp
-			omega/boostPython/object_operators.cpp
-			omega/boostPython/object_protocol.cpp
-			omega/boostPython/slice.cpp
-			omega/boostPython/str.cpp
-			omega/boostPython/tuple.cpp
-			omega/boostPython/wrapper.cpp
-			omega/boostPython/converter/arg_to_python_base.cpp
-			omega/boostPython/converter/builtin_converters.cpp
-			omega/boostPython/converter/from_python.cpp
-			omega/boostPython/converter/registry.cpp
-			omega/boostPython/converter/type_id.cpp
-			omega/boostPython/object/class.cpp
-			omega/boostPython/object/enum.cpp
-			omega/boostPython/object/function.cpp
-			omega/boostPython/object/function_doc_signature.cpp
-			omega/boostPython/object/inheritance.cpp
-			omega/boostPython/object/iterator.cpp
-			omega/boostPython/object/life_support.cpp
-			omega/boostPython/object/pickle_support.cpp
-			omega/boostPython/object/stl_iterator.cpp
+			boostPython/dict.cpp
+			boostPython/errors.cpp
+			boostPython/exec.cpp
+			boostPython/import.cpp
+			boostPython/list.cpp
+			boostPython/long.cpp
+			boostPython/module.cpp
+			boostPython/numeric.cpp
+			boostPython/object_operators.cpp
+			boostPython/object_protocol.cpp
+			boostPython/slice.cpp
+			boostPython/str.cpp
+			boostPython/tuple.cpp
+			boostPython/wrapper.cpp
+			boostPython/converter/arg_to_python_base.cpp
+			boostPython/converter/builtin_converters.cpp
+			boostPython/converter/from_python.cpp
+			boostPython/converter/registry.cpp
+			boostPython/converter/type_id.cpp
+			boostPython/object/class.cpp
+			boostPython/object/enum.cpp
+			boostPython/object/function.cpp
+			boostPython/object/function_doc_signature.cpp
+			boostPython/object/inheritance.cpp
+			boostPython/object/iterator.cpp
+			boostPython/object/life_support.cpp
+			boostPython/object/pickle_support.cpp
+			boostPython/object/stl_iterator.cpp
 	)
 endif()
 
@@ -179,12 +179,12 @@ if(OMEGA_USE_DISPLAY_EQUALIZER)
 	include(${CMAKE_SOURCE_DIR}/external/UseEqualizer.cmake)
 	include_directories(${EQUALIZER_INCLUDES})
 	set( srcs ${srcs} 
-		omega/EqualizerDisplaySystem.cpp
-		omega/eqinternal/ChannelImpl.cpp
-		omega/eqinternal/ConfigImpl.cpp
-		omega/eqinternal/WindowImpl.cpp
-		omega/eqinternal/NodeImpl.cpp
-		omega/eqinternal/PipeImpl.cpp
+		EqualizerDisplaySystem.cpp
+		eqinternal/ChannelImpl.cpp
+		eqinternal/ConfigImpl.cpp
+		eqinternal/WindowImpl.cpp
+		eqinternal/NodeImpl.cpp
+		eqinternal/PipeImpl.cpp
 		)
 	set( headers ${headers} 
 		omega/eqinternal/eqinternal.h
@@ -194,20 +194,17 @@ endif(OMEGA_USE_DISPLAY_EQUALIZER)
 # Porthole Module
 if(OMEGA_USE_PORTHOLE)
 	SET( srcs ${srcs}
-			omega/PortholeService.cpp
-			omega/PortholeGUI.cpp
+			PortholeService.cpp
+			PortholeGUI.cpp
 			# A tiny JSON library
-			omega/vjson/block_allocator.cpp
-			omega/vjson/json.cpp
+			vjson/block_allocator.cpp
+			vjson/json.cpp
 			)
 	SET( headers ${headers}
 			${OmegaLib_SOURCE_DIR}/include/omega/PortholeService.h
 			${OmegaLib_SOURCE_DIR}/include/omega/PortholeGUI.h
 			omega/vjson/block_allocator.h
 			omega/vjson/json.h
-			# A tiny JSON library
-			omega/vjson/block_allocator.cpp
-			omega/vjson/json.cpp
 			)
 endif()
 
@@ -228,7 +225,7 @@ if(OMEGA_USE_SAGE)
 	endif()
 	
 	SET( srcs ${srcs}
-			omega/SageManager.cpp
+			SageManager.cpp
 			)
 	SET( headers ${headers}
 			${OmegaLib_SOURCE_DIR}/include/omega/SageManager.h
@@ -239,7 +236,7 @@ endif()
 if( WIN32 )
 	set(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
 	if(OMEGA_USE_DISPLAY_GLUT)
-		set( srcs ${srcs} omega/GlutDisplaySystem.cpp)
+		set( srcs ${srcs} GlutDisplaySystem.cpp)
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/GlutDisplaySystem.h) 
 	endif(OMEGA_USE_DISPLAY_GLUT)
 	set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
