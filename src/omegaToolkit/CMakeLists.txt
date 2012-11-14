@@ -107,7 +107,7 @@ source_group(omegaToolkit::ui REGULAR_EXPRESSION omegaToolkit/ui/)
 
 ###################################################################################################
 # Setup compile info
-enable_precompiled_headers(omegaToolkit/precompiled.h srcs)
+enable_precompiled_headers(precompiled.h srcs)
 add_library( omegaToolkit SHARED ${srcs} ${headers})
 
 ###################################################################################################

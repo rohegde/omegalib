@@ -260,7 +260,7 @@ source_group(vjson REGULAR_EXPRESSION vjson/)
 
 ###################################################################################################
 # Create the library with the provided sources and headers
-enable_precompiled_headers(omega/precompiled.h srcs)
+enable_precompiled_headers(precompiled.h srcs)
 add_library( omega SHARED ${srcs} ${headers})
 target_link_libraries(omega ${OMICRON_LIB} freetype ftgl FreeImage)
 
