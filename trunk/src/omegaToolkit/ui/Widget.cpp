@@ -310,10 +310,8 @@ void Widget::playMenuScrollSound()
 		Sound* sound = getEngine()->getSoundEnvironment()->getSound("scrollMenuSound");
 		if( sound != NULL )
 		{
-			Camera* cam = getEngine()->getDefaultCamera();
-			Vector3f soundLocalPosition = cam->worldToLocalPosition( getContainer()->get3dSettings().position );
 			SoundInstance* inst = new SoundInstance(sound);
-			inst->setPosition( soundLocalPosition );
+			inst->setPosition( getContainer()->get3dSettings().position );
 			inst->play();
 		}
 	}
