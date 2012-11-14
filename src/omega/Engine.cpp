@@ -160,6 +160,8 @@ void Engine::initialize()
 		soundEnv = soundManager->getSoundEnvironment();
 		soundEnv->setListenerPosition( getDefaultCamera()->getPosition() );
 		soundEnv->setListenerOrientation( getDefaultCamera()->getOrientation() );
+
+		soundEnv->setUserPosition( Vector3f(0.0,1.8f,0.0) );
 	}
 
 
@@ -312,6 +314,17 @@ void Engine::update(const UpdateContext& context)
     ModuleServices::update(this, context);
 
     myScene->update(false, false);
+
+	
+	if( soundEnv != NULL )
+	{
+		// Update the listener position with the camera's 'navigative' position
+		soundEnv->setListenerPosition( getDefaultCamera()->getPosition() );
+		soundEnv->setListenerOrientation( getDefaultCamera()->getOrientation() );
+
+		// Update the user position with the head tracker's position
+		soundEnv->setUserPosition( getDefaultCamera()->getHeadOffset() );
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
