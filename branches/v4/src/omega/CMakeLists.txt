@@ -209,11 +209,15 @@ if(OMEGA_USE_PORTHOLE)
 endif()
 
 # SAGE Module
-set(OMEGA_USE_SAGE false CACHE BOOL "Enable SAGE output support")
-if(OMEGA_USE_SAGE)
-	set(SAGE_DIR true CACHE PATH "the SAGE base path")
-	
+#set(OMEGA_USE_SAGE false CACHE BOOL "Enable SAGE output support")
+# if the SAGE_DIRECTORY evn variable exists, enable SAGE support by default
+if("$ENV{SAGE_DIRECTORY}" STREQUAL "")
+	message("SAGE_DIRECTORY not found: SAGE support DISABLED")
+else()
+	message("SAGE_DIRECTORY found: SAGE support ENABLED")
+	set(SAGE_DIR $ENV{SAGE_DIRECTORY})
 	set(SAGE_INCLUDE_DIR ${SAGE_DIR}/include)
+	set(OMEGA_USE_SAGE true CACHE BOOL "Enable SAGE support")
 	if(WIN32)
 		set(SAGE_LIBS 
 			${SAGE_DIR}/lib/sail.lib 
@@ -224,12 +228,14 @@ if(OMEGA_USE_SAGE)
 	else()
 	endif()
 	
-	SET( srcs ${srcs}
-			SageManager.cpp
-			)
-	SET( headers ${headers}
-			${OmegaLib_SOURCE_DIR}/include/omega/SageManager.h
-			)
+	if(OMEGA_USE_SAGE)
+		SET( srcs ${srcs}
+				SageManager.cpp
+				)
+		SET( headers ${headers}
+				${OmegaLib_SOURCE_DIR}/include/omega/SageManager.h
+				)
+	endif()
 endif()
 
 # Glut Display Module
