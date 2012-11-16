@@ -587,12 +587,12 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position)
 	int displayWidth = myDisplayConfig.canvasPixelSize[0];
 	int displayHeight = myDisplayConfig.canvasPixelSize[1];
 
-	if(position[0] < 0 || position[0] > displayWidth || 
-		position[1] < 0 || position[1] > displayHeight)
-	{
-		ofwarn("EqualizerDisplaySystem::getViewRay: position out of bounds (%1%)", %position);
-		return Ray();
-	}
+	//if(position[0] < 0 || position[0] > displayWidth || 
+	//	position[1] < 0 || position[1] > displayHeight)
+	//{
+	//	ofwarn("EqualizerDisplaySystem::getViewRay: position out of bounds (%1%)", %position);
+	//	return Ray();
+	//}
 
 	int channelX = position[0] / channelWidth;
 	int channelY = position[1] / channelHeight;
@@ -610,6 +610,11 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	int y = position[1];
 
 	DisplayTileConfig* dtc = myDisplayConfig.tileGrid[channelX][channelY];
+	if(dtc == NULL)
+	{
+		ofwarn("EqualizerDisplaySystem:getViewRay: could not find channel %1% %2%", %channelX %channelY);
+		return Ray();
+	}
 
 	// Try to use the camera attached to the tile first. If the camera is not set, switch to the default camera.
 	Camera* camera = dtc->camera;
