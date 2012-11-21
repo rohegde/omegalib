@@ -375,6 +375,7 @@ struct StatisticData
     const Color color;
 };
 
+
 static StatisticData _statisticData[] =
 {{ Statistic::NONE,
    "NO EVENT",     Color( 0.f, 0.f, 0.f ) }, 

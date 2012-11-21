@@ -126,6 +126,8 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 				else if(sm == "interleaved") tc->stereoMode = DisplayTileConfig::LineInterleaved;
 				else if(sm == "sidebyside") tc->stereoMode = DisplayTileConfig::SideBySide;
 				
+				tc->enabled = Config::getBoolValue("enabled", sTile);
+				
 				tc->drawFps = drawFps;
 				//tc.index = index;
 				//tc.interleaved = Config::getBoolValue("interleaved", sTile);
@@ -202,7 +204,8 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 #ifdef OMEGA_USE_SAGE
 	if(scfg.exists("sage"))
 	{
-		SystemManager::instance()->getSageManager()->setup(scfg["sage"], cfg);
+		SageManager* mng = SystemManager::instance()->getSageManager();
+		if(mng != NULL) mng->setup(scfg["sage"], cfg);
 	}
 #endif
 }

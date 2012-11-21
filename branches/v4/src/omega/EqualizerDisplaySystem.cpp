@@ -186,20 +186,22 @@ void EqualizerDisplaySystem::generateEqConfig()
 	foreach(TileIterator p, eqcfg.tiles)
 	{
 		DisplayTileConfig* t = p.second;
-		
-		START_BLOCK(result, "layout");
-		result += 
-			L(ostr("name \"layout-%1%\"", %t->name));
-		
-		START_BLOCK(result, "view");
-		// observer
-		result += 
-			L(ostr("name \"view-%1%\"", %t->name)) +
-			L(ostr("observer \"%1%\"", %t->name)) +
-			//L(ostr("viewport [%1% %2% %3% %4%]", %t->viewport[0] %t->viewport[1] %t->viewport[2] %t->viewport[3]) );
-			L("viewport [0 0 1 1]");
-		END_BLOCK(result);
-		END_BLOCK(result)
+		if(t->enabled)
+		{
+			START_BLOCK(result, "layout");
+			result += 
+				L(ostr("name \"layout-%1%\"", %t->name));
+			
+			START_BLOCK(result, "view");
+			// observer
+			result += 
+				L(ostr("name \"view-%1%\"", %t->name)) +
+				L(ostr("observer \"%1%\"", %t->name)) +
+				//L(ostr("viewport [%1% %2% %3% %4%]", %t->viewport[0] %t->viewport[1] %t->viewport[2] %t->viewport[3]) );
+				L("viewport [0 0 1 1]");
+			END_BLOCK(result);
+			END_BLOCK(result)
+		}
 	}
 	//END_BLOCK(result)
 	// ------------------------------------------ END layout
@@ -229,32 +231,34 @@ void EqualizerDisplaySystem::generateEqConfig()
 	foreach(TileIterator p, eqcfg.tiles)
 	{
 		DisplayTileConfig* t = p.second;
+		if(t->enabled)
+		{
+			START_BLOCK(result, "canvas");
+			result += 
+				L(ostr("name \"canvas-%1%\"", %t->name)) +
+				L(ostr("layout \"layout-%1%\"", %t->name));
+				
+			String segmentName = ostr("segment-%1%", %t->name);
+			//String viewport = ostr("viewport [%1% %2% %3% %4%]", %t->viewport[0] %t->viewport[1] %t->viewport[2] %t->viewport[3]);
+			String viewport = "viewport [0 0 1 1]";
 
-		START_BLOCK(result, "canvas");
-		result += 
-			L(ostr("name \"canvas-%1%\"", %t->name)) +
-			L(ostr("layout \"layout-%1%\"", %t->name));
+			String tileCfg = "";
+			START_BLOCK(tileCfg, "segment");
+			tileCfg +=
+					L("name \"" + segmentName + "\"") +
+					L("channel \"" + t->name + "\"") +
+					L(viewport);
+			START_BLOCK(tileCfg, "wall");
+			tileCfg +=
+				L("bottom_left " + ostr("[ %1% %2% %3% ]", %t->bottomLeft[0] %t->bottomLeft[1] %t->bottomLeft[2])) +
+				L("bottom_right " + ostr("[ %1% %2% %3% ]", %t->bottomRight[0] %t->bottomRight[1] %t->bottomRight[2])) +
+				L("top_left " + ostr("[ %1% %2% %3% ]", %t->topLeft[0] %t->topLeft[1] %t->topLeft[2]));
+			END_BLOCK(tileCfg)
+			END_BLOCK(tileCfg)
+			result += tileCfg;
 			
-		String segmentName = ostr("segment-%1%", %t->name);
-		//String viewport = ostr("viewport [%1% %2% %3% %4%]", %t->viewport[0] %t->viewport[1] %t->viewport[2] %t->viewport[3]);
-		String viewport = "viewport [0 0 1 1]";
-
-		String tileCfg = "";
-		START_BLOCK(tileCfg, "segment");
-		tileCfg +=
-				L("name \"" + segmentName + "\"") +
-				L("channel \"" + t->name + "\"") +
-				L(viewport);
-		START_BLOCK(tileCfg, "wall");
-		tileCfg +=
-			L("bottom_left " + ostr("[ %1% %2% %3% ]", %t->bottomLeft[0] %t->bottomLeft[1] %t->bottomLeft[2])) +
-			L("bottom_right " + ostr("[ %1% %2% %3% ]", %t->bottomRight[0] %t->bottomRight[1] %t->bottomRight[2])) +
-			L("top_left " + ostr("[ %1% %2% %3% ]", %t->topLeft[0] %t->topLeft[1] %t->topLeft[2]));
-		END_BLOCK(tileCfg)
-		END_BLOCK(tileCfg)
-		result += tileCfg;
-		
-		END_BLOCK(result);
+			END_BLOCK(result);
+		}
 	}
 	// ------------------------------------------ END main canvas
 
@@ -289,44 +293,47 @@ void EqualizerDisplaySystem::generateEqConfig()
 	foreach(TileIterator p, eqcfg.tiles)
 	{
 		DisplayTileConfig* tc = p.second;
-		//String segmentName = ostr("segment-%1%", %tc->name);
-		//String viewName = "main";
-
-		//viewName = ostr("view-%1%", %tc->name);
-
-		if(tc->stereoMode == DisplayTileConfig::LineInterleaved || 
-			tc->stereoMode == DisplayTileConfig::SideBySide ||
-			(tc->stereoMode == DisplayTileConfig::Default && eqcfg.stereoMode == DisplayTileConfig::LineInterleaved) ||
-			(tc->stereoMode == DisplayTileConfig::Default && eqcfg.stereoMode == DisplayTileConfig::SideBySide))
+		if(tc->enabled)
 		{
-			String tileCfg = "";
-			START_BLOCK(tileCfg, "compound");
-			if(eqcfg.enableSwapSync)
+			//String segmentName = ostr("segment-%1%", %tc->name);
+			//String viewName = "main";
+
+			//viewName = ostr("view-%1%", %tc->name);
+
+			if(tc->stereoMode == DisplayTileConfig::LineInterleaved || 
+				tc->stereoMode == DisplayTileConfig::SideBySide ||
+				(tc->stereoMode == DisplayTileConfig::Default && eqcfg.stereoMode == DisplayTileConfig::LineInterleaved) ||
+				(tc->stereoMode == DisplayTileConfig::Default && eqcfg.stereoMode == DisplayTileConfig::SideBySide))
 			{
-				tileCfg += L("swapbarrier { name \"defaultbarrier\" }");
-			}
-			tileCfg += 
-				L(ostr("channel ( canvas \"canvas-%1%\" segment \"segment-%2%\" layout \"layout-%3%\" view \"view-%4%\" )",
-					%tc->name %tc->name %tc->name %tc->name)) +
-				L("eye [LEFT RIGHT]") +
-				L("task [DRAW]") +
-				L("attributes { stereo_mode PASSIVE }");
-			END_BLOCK(tileCfg);
-			result += tileCfg;
-		}
-		else
-		{
-			if(eqcfg.enableSwapSync)
-			{
-				String tileCfg = ostr("\t\tcompound { swapbarrier { name \"defaultbarrier\" } channel ( canvas \"canvas-%1%\" segment \"segment-%2%\" layout \"layout-%3%\" view \"view-%4%\" ) }\n",
-					%tc->name %tc->name %tc->name %tc->name);
+				String tileCfg = "";
+				START_BLOCK(tileCfg, "compound");
+				if(eqcfg.enableSwapSync)
+				{
+					tileCfg += L("swapbarrier { name \"defaultbarrier\" }");
+				}
+				tileCfg += 
+					L(ostr("channel ( canvas \"canvas-%1%\" segment \"segment-%2%\" layout \"layout-%3%\" view \"view-%4%\" )",
+						%tc->name %tc->name %tc->name %tc->name)) +
+					L("eye [LEFT RIGHT]") +
+					L("task [DRAW]") +
+					L("attributes { stereo_mode PASSIVE }");
+				END_BLOCK(tileCfg);
 				result += tileCfg;
 			}
 			else
 			{
-				String tileCfg = ostr("\t\tchannel ( canvas \"canvas-%1%\" segment \"segment-%2%\" layout \"layout-%3%\" view \"view-%4%\" )\n",
-					%tc->name %tc->name %tc->name %tc->name);
-				result += tileCfg;
+				if(eqcfg.enableSwapSync)
+				{
+					String tileCfg = ostr("\t\tcompound { swapbarrier { name \"defaultbarrier\" } channel ( canvas \"canvas-%1%\" segment \"segment-%2%\" layout \"layout-%3%\" view \"view-%4%\" ) }\n",
+						%tc->name %tc->name %tc->name %tc->name);
+					result += tileCfg;
+				}
+				else
+				{
+					String tileCfg = ostr("\t\tchannel ( canvas \"canvas-%1%\" segment \"segment-%2%\" layout \"layout-%3%\" view \"view-%4%\" )\n",
+						%tc->name %tc->name %tc->name %tc->name);
+					result += tileCfg;
+				}
 			}
 		}
 	}
@@ -442,16 +449,23 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 
 			if(nc.hostname != "local")
 			{
-				String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
-				executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
+				// Launch the node if at least one of the tiles on the node is enabled.
+				bool enabled = false;
+				for(int i = 0; i < nc.numTiles; i++) enabled |= nc.tiles[i]->enabled;
 				
-				// Substitute %d with current working directory
-				String cCurrentPath = ogetcwd();
-				executable = StringUtils::replaceAll(executable, "%d", cCurrentPath);
-				
-				int port = myDisplayConfig.basePort + nc.port;
-				String cmd = ostr("%1% -c %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
-				olaunch(cmd);
+				if(enabled)
+				{
+					String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
+					executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
+					
+					// Substitute %d with current working directory
+					String cCurrentPath = ogetcwd();
+					executable = StringUtils::replaceAll(executable, "%d", cCurrentPath);
+					
+					int port = myDisplayConfig.basePort + nc.port;
+					String cmd = ostr("%1% -c %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
+					olaunch(cmd);
+				}
 			}
 		}
 		osleep(myDisplayConfig.launcherInterval);

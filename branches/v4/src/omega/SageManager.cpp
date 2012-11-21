@@ -73,9 +73,7 @@ void SageManager::initialize()
 			SystemManager::instance()->getApplication()->getName(),
 			mySageTile->pixelSize[0], mySageTile->pixelSize[1],
 			pixFmt,
-			myFsManagerAddress.c_str(),
-			1, 60, 
-			NULL);
+			myFsManagerAddress.c_str());
 	}
 }
 
@@ -125,6 +123,7 @@ void SageManager::finishFrame(const DrawContext& context)
 {
 	if(myMode == SingleNode)
 	{
+	
 		if(context.tile == mySageTile)
 		{
 			// We should be getting in here only through a single thread, but let's be safe.

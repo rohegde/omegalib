@@ -226,6 +226,10 @@ else()
 			Userenv.lib # needed for GetUserProfileDirectory
 			)
 	else()
+		set(SAGE_LIBS 
+			${SAGE_DIR}/lib64/libsail.so
+			${SAGE_DIR}/lib64/libquanta.so
+			)
 	endif()
 	
 	if(OMEGA_USE_SAGE)

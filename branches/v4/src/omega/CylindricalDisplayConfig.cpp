@@ -78,7 +78,10 @@ bool CylindricalDisplayConfig::buildConfig(DisplayConfig& cfg, Setting& scfg)
 			{
 				DisplayTileConfig* tc = cfg.tiles[tileName];
 				cfg.tileGrid[x][y] = tc;
+				
+				tc->enabled = true;
 
+				
 				tc->yaw = curAngle;
 				tc->pitch = 0;
 				tc->center = Vector3f(

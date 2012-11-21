@@ -139,8 +139,13 @@ void SystemManager::setup(Config* appcfg)
 	setupConfig(appcfg);
 	
 #ifdef OMEGA_USE_SAGE
-	mySageManager = new SageManager();
-	ModuleServices::addModule(mySageManager);
+	// DEMO HACK (SageManager should start on all nodes, but launch createSAIL only on nodes that do have
+	// output tiles to SAGE)
+	if(isMaster())
+	{
+		mySageManager = new SageManager();
+		ModuleServices::addModule(mySageManager);
+	}
 #endif
 
 	try
