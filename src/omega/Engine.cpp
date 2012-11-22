@@ -389,15 +389,15 @@ Camera* Engine::getCamera(const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Engine::CameraCollection::Range Engine::getCameras()
+Engine::CameraCollection Engine::getCameras()
 {
-    return CameraCollection::Range(myCameras.begin(), myCameras.end());
+    return myCameras;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Engine::CameraCollection::ConstRange Engine::getCameras() const
+Engine::CameraCollection Engine::getCameras() const
 {
-    return CameraCollection::ConstRange(myCameras.begin(), myCameras.end());
+    return myCameras;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
