@@ -30,6 +30,7 @@
 //#include "omegaToolkit/ui/DefaultSkin.h"
 #include "omega/DrawInterface.h"
 #include "omega/EventSharingModule.h"
+#include "omegaToolkit/UiScriptCommand.h"
 
 #include "omega/glheaders.h"
 
@@ -83,6 +84,14 @@ Widget::~Widget()
 		dispose();
 	}
 	UiModule::instance()->myWidgets[myId] = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::setUIEventCommand(const String& command)
+{
+	if(myUiEventCommand == NULL) myUiEventCommand = new UiScriptCommand();
+	myUiEventCommand->setCommand(command);
+	myEventHandler = myUiEventCommand;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -152,6 +161,14 @@ void Widget::handleEvent(const Event& evt)
 					playMenuScrollSound();
 				}
 			}
+			// If gamepad interaction is enabled and event is a down or up event, (and not one of the navigation buttons, dispatch it to possible listeners)
+			// NOTE: we do not dispatch Move or Update events here to avoid clogging the listeners with events they do not care about
+			// In the future, we may add an option to selectively enable dispatch of those events.
+			else if(evt.getType() == Event::Down || evt.getType() == Event::Up)
+			{
+				dispatchUIEvent(evt);
+			}
+
 		}
 	}
 
@@ -176,7 +193,7 @@ void Widget::handleEvent(const Event& evt)
 			//	}
 			//}
 		}
-		if(hitTest(transformPoint(pos2d)))
+		if(simpleHitTest(transformPoint(pos2d)))
 		{
 			if(!evt.isProcessed())
 			{
@@ -186,35 +203,43 @@ void Widget::handleEvent(const Event& evt)
 					ui->activateWidget(this);
 				}
 
-				if(myUserMoveEnabled)
+				// If pointer interaction is enabled and event is a down or up event, dispatch it to possible listeners.
+				// NOTE: we do not dispatch Move or Update events here to avoid clogging the listeners with events they do not care about
+				// In the future, we may add an option to selectively enable dispatch of those events.
+				if(evt.getType() == Event::Down || evt.getType() == Event::Up)
 				{
-					if(evt.getType() == Event::Down)
-					{
-						myUserMovePosition = pos2d;
-						evt.setProcessed();
-						myMoving = true;
-						myActive = true;
-					}
-					else if(evt.getType() == Event::Move && myMoving)
-					{
-						Vector2f delta = pos2d - myUserMovePosition;
-						myUserMovePosition = pos2d;
-
-						myPosition += delta;
-						evt.setProcessed();
-					}
-					else if(myMoving && evt.getType() == Event::Up)
-					{
-						myMoving = false;
-						myActive = false;
-						evt.setProcessed();
-					}
+					dispatchUIEvent(evt);
 				}
+
+				//if(myUserMoveEnabled)
+				//{
+				//	if(evt.getType() == Event::Down)
+				//	{
+				//		myUserMovePosition = pos2d;
+				//		evt.setProcessed();
+				//		myMoving = true;
+				//		myActive = true;
+				//	}
+				//	else if(evt.getType() == Event::Move && myMoving)
+				//	{
+				//		Vector2f delta = pos2d - myUserMovePosition;
+				//		myUserMovePosition = pos2d;
+
+				//		myPosition += delta;
+				//		evt.setProcessed();
+				//	}
+				//	else if(myMoving && evt.getType() == Event::Up)
+				//	{
+				//		myMoving = false;
+				//		myActive = false;
+				//		evt.setProcessed();
+				//	}
+				//}
 			}
 		}
 		else
 		{
-			myMoving = false;
+			//myMoving = false;
 			//myActive = false;
 		}
 	}
@@ -237,6 +262,12 @@ void Widget::setContainer(Container* value)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool Widget::hitTest(const Vector2f& point)
 {
+	return simpleHitTest(transformPoint(point));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool Widget::simpleHitTest(const Vector2f& point)
+{
 	float x1 = 0; //myPosition[0];
 	float y1 = 0; //myPosition[1];
 	float x2 = mySize[0]; // myPosition[0] + mySize[0];
@@ -247,7 +278,7 @@ bool Widget::hitTest(const Vector2f& point)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool Widget::hitTest(const Vector2f& point, const Vector2f& pos, const Vector2f& size)
+bool Widget::simpleHitTest(const Vector2f& point, const Vector2f& pos, const Vector2f& size)
 {
 	float x1 = pos[0];
 	float y1 = pos[1];

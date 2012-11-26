@@ -38,7 +38,7 @@ Image::Image(Engine* srv):
 	Widget(srv),
 	myAutoRefresh(false),
 	myData(NULL),
-	myFlipFlags(0)
+	myFlipFlags(DrawInterface::FlipY)
 {
 	// By default labels are set to not enabled, so they won't take part in navigation.
 	setEnabled(false);

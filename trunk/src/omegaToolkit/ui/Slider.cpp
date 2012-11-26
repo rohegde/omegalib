@@ -68,7 +68,7 @@ void Slider::handleEvent(const Event& evt)
 		}
 	}
 
-	if(hitTest(point, sliderPos, sliderSize))
+	if(simpleHitTest(point, sliderPos, sliderSize))
 	{
 		if(evt.getType() == Event::Down)
 		{
@@ -77,7 +77,7 @@ void Slider::handleEvent(const Event& evt)
 		}
 		evt.setProcessed();
 	}
-	if(hitTest(point))
+	if(simpleHitTest(point))
 	{
 		if(myPressed && evt.getType() == Event::Move)
 		{

@@ -144,6 +144,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 	// UiModule
 	PYAPI_REF_BASE_CLASS(UiModule)
 		PYAPI_STATIC_REF_GETTER(UiModule, instance)
+		PYAPI_STATIC_REF_GETTER(UiModule, createAndInitialize)
 		PYAPI_REF_GETTER(UiModule, getWidgetFactory)
 		PYAPI_REF_GETTER(UiModule, getUi)
 		;
@@ -167,12 +168,14 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(Widget, isVisible)
 		.def("setPosition", setPosition1)
 		PYAPI_GETTER(Widget, getPosition)
-		.def("setScale", setSize1)
+		.def("setSize", setSize1)
 		PYAPI_GETTER(Widget, getSize)
 		PYAPI_METHOD(Widget, setName)
 		PYAPI_GETTER(Widget, getName)
 		PYAPI_METHOD(Widget, setStyle)
 		PYAPI_METHOD(Widget, refresh)
+		PYAPI_METHOD(Widget, hitTest)
+		PYAPI_METHOD(Widget, setUIEventCommand)
 		;
 
 	// Container

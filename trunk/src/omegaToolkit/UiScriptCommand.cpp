@@ -33,6 +33,13 @@ using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
+UiScriptCommand::UiScriptCommand()
+{
+	myUI = UiModule::instance();
+	myInterpreter = SystemManager::instance()->getScriptInterpreter();
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
 UiScriptCommand::UiScriptCommand(const String& command):
 	myCommand(command)
 {
@@ -45,17 +52,13 @@ void UiScriptCommand::handleEvent(const Event& evt)
 {
 	if(myInterpreter != NULL)
 	{
-		if(evt.getType() == Event::Click)
-		{
-			myInterpreter->eval(myCommand);
-		}
-		else if(evt.getType() == Event::Toggle)
+		if(evt.getType() == Event::Toggle)
 		{
 			AbstractButton* btn = myUI->getSource<AbstractButton>(evt);
 			if(btn != NULL)
 			{
 				String expr = StringUtils::replaceAll(myCommand, "%value%", ostr("%1%", %btn->isChecked()));
-				myInterpreter->eval(expr);
+				myInterpreter->evalEventCommand(expr, evt);
 			}
 		}
 		else if(evt.getType() == Event::ChangeValue)
@@ -65,8 +68,12 @@ void UiScriptCommand::handleEvent(const Event& evt)
 			{
 				int value = sld->getValue();
 				String expr = StringUtils::replaceAll(myCommand, "%value%", ostr("%1%", %value));
-				myInterpreter->eval(expr);
+				myInterpreter->evalEventCommand(expr, evt);
 			}
+		}
+		else
+		{
+			myInterpreter->evalEventCommand(myCommand, evt);
 		}
 	}
 }

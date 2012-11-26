@@ -31,7 +31,9 @@
 #include "omega/DrawInterface.h"
 #include "omega/Renderable.h"
 
-namespace omegaToolkit { namespace ui {
+namespace omegaToolkit { 
+	class UiScriptCommand;
+	namespace ui {
     class Container;
     ///////////////////////////////////////////////////////////////////////////////////////////////
     class OTK_API Widget: public RenderableFactory, IEventListener
@@ -53,6 +55,8 @@ namespace omegaToolkit { namespace ui {
         void setUIEventHandler(IEventListener* value);
         //! @see setWidgetEventHandler
         IEventListener* getUIEventHandler();
+
+		void setUIEventCommand(const String& command);
 
         //! Gets the color used when widget debug mode is enabled.
         Color getDebugColor() { return myDebugModeColor; }
@@ -140,9 +144,6 @@ namespace omegaToolkit { namespace ui {
         bool isUserMoveEnabled() { return myUserMoveEnabled; }
         void setUserMoveEnabled(bool value) { myUserMoveEnabled = value; }
         
-        bool hitTest(const omega::Vector2f& point);
-        static bool hitTest(const omega::Vector2f& point, const omega::Vector2f& pos, const omega::Vector2f& size);
-
         //! Returns the unique Widget id.
         int getId();
         virtual void layout();
@@ -175,7 +176,13 @@ namespace omegaToolkit { namespace ui {
 		void setStyleValue(const String& key, const String& value);
 		//@}
 
+		//! Returns true if the point is within this widget's bounding box.
+		bool hitTest(const Vector2f& point);
+
     protected:
+        bool simpleHitTest(const omega::Vector2f& point);
+        static bool simpleHitTest(const omega::Vector2f& point, const omega::Vector2f& pos, const omega::Vector2f& size);
+
 		virtual void activate() {}
 		virtual void deactivate() {}
 		virtual void updateStyle();
@@ -222,6 +229,7 @@ namespace omegaToolkit { namespace ui {
         Container* myContainer;
 
         IEventListener* myEventHandler;
+        Ref<UiScriptCommand> myUiEventCommand;
 
         bool myNeedLayoutRefresh;
 
