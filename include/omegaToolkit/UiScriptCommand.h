@@ -35,6 +35,7 @@ namespace omegaToolkit
 	class OTK_API UiScriptCommand: public ReferenceType, public IEventListener
 	{
 	public:
+		UiScriptCommand();
 		UiScriptCommand(const String& command);
 
 		virtual void handleEvent(const Event& evt);

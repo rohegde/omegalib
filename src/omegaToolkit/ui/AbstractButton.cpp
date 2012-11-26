@@ -66,7 +66,7 @@ void AbstractButton::update(const omega::UpdateContext& context)
 			else
 			{
 				Event evt;
-				evt.reset(Event::Click, Service::Ui, getId());
+				evt.reset(Event::Confirm, Service::Ui, getId());
 				dispatchUIEvent(evt);
 			}
 		}

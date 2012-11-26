@@ -66,8 +66,16 @@ namespace omega
 		void initialize(const char* programName);
 		void addModule(const char* name, PyMethodDef* methods);
 		void addModule(const char* name, PyMethodDef* methods, const Dictionary<String, int> intConstants, const Dictionary<String, String> stringConstants);
+
+		//! Immediately executes a script statement on the local node.
 		void eval(const String& script, const char* format = NULL, ...);
 		void runFile(const String& filename);
+
+		//! Executes an event command statement.
+		//! @remarks Event command statements are commonly used as event handlers. 
+		//! The event passed to this call can be accessed from the script side using the
+		//! getEvent() global function
+		void evalEventCommand(const String& command, const Event& evt);
 
 		//! Queues a command for execution. If the local flag is set, the command will be executed only on
 		//! the local node.
