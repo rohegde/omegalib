@@ -21,6 +21,30 @@ struct LitSurfaceData
 	vec4 luminance;
 };
 
+$@fragmentLightSection
+{ 
+	// Compute light direction
+	vec3 lightDir = vec3(gl_LightSource[@lightIndex].position.xyz + var_EyeVector);
+	
+	// Compute lambert term
+	vec3 L = normalize(lightDir);
+	float lambertTerm = dot(N,L); 
+	
+	if(@lightIndex == 0) lambertTerm *= shadow;
+	if (lambertTerm > 0.0) 
+	{ 
+		ld.luminance += surf.albedo * gl_LightSource[@lightIndex].diffuse * lambertTerm; 
+		
+		// Compute specular factor
+		vec3 E = normalize(var_EyeVector); 
+		vec3 R = reflect(-L, N);
+		float specular = pow( max(dot(R, E), 0.0), surf.shininess ); 
+		
+		ld.luminance += gl_LightSource[@lightIndex].specular * specular * surf.gloss; 
+	} 
+} 	
+$
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 LitSurfaceData computeLighting(SurfaceData surf)
 {
@@ -34,29 +58,7 @@ LitSurfaceData computeLighting(SurfaceData surf)
 
 	ld.luminance = vec4(0, 0, 0, 0);
 
-	int i; 
-	for (i=0; i< @numLights; ++i) 
-	{ 
-		// Compute light direction
-		vec3 lightDir = vec3(gl_LightSource[i].position.xyz + var_EyeVector);
-		
-		// Compute lambert term
-		vec3 L = normalize(lightDir);
-		float lambertTerm = dot(N,L); 
-		
-		if(i == 0) lambertTerm *= shadow;
-		if (lambertTerm > 0.0) 
-		{ 
-			ld.luminance += surf.albedo * gl_LightSource[i].diffuse * lambertTerm; 
-			
-			// Compute specular factor
-			vec3 E = normalize(var_EyeVector); 
-			vec3 R = reflect(-L, N);
-			float specular = pow( max(dot(R, E), 0.0), surf.shininess ); 
-			
-			ld.luminance += gl_LightSource[i].specular * specular * surf.gloss; 
-		} 
-	} 	
+	@fragmentLightSection
 
 	// Add ambient component from main light.
 	ld.luminance += surf.albedo * unif_Ambient;
