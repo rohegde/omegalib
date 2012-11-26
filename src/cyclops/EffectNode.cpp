@@ -259,6 +259,9 @@ protected:
 		if(diffuse != "")
 		{
 			osg::Texture2D* tex = sm->getTexture(diffuse);
+
+			// By default keep original texture size
+			tex->setResizeNonPowerOfTwoHint(false);
 			if(tex != NULL)
 			{
 				ss->setTextureAttribute(0, tex);

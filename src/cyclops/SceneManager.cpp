@@ -649,9 +649,8 @@ void SceneManager::loadShader(osg::Shader* shader, const String& name)
 		std::stringstream buffer;
 		buffer << t.rdbuf();
 
-		String shaderSrc = buffer.str();
-
-		String lightSectionMacroName = "tangentSpaceFragmentLightSection";
+		String shaderPreSrc = buffer.str();
+		String lightSectionMacroName = "fragmentLightSection";
 
 		// Replace shader macros.
 		// Do a multiple replacement passes to process macros-within macros.
@@ -663,8 +662,27 @@ void SceneManager::loadShader(osg::Shader* shader, const String& name)
 				if(macro.getKey() != lightSectionMacroName)
 				{
 					String macroName = ostr("@%1%", %macro.getKey());
-					shaderSrc = StringUtils::replaceAll(shaderSrc, macroName, macro.getValue());
+					shaderPreSrc = StringUtils::replaceAll(shaderPreSrc, macroName, macro.getValue());
 				}
+			}
+		}
+
+		// Read local macro definitions (only supported one now is fragmentLightSection)
+		String shaderSrc = "";
+		Vector<String> segments = StringUtils::split(shaderPreSrc, "$");
+		foreach(String segment, segments)
+		{
+			if(StringUtils::startsWith(segment, "@"))
+			{
+				Vector<String> macroNames = StringUtils::split(segment, "\n\t ", 1);
+				String macroContent = StringUtils::replaceAll(segment, macroNames[0], "");
+
+				String macroName = macroNames[0].substr(1);
+				myShaderMacros[macroName] = macroContent;
+			}
+			else
+			{
+				shaderSrc.append(segment);
 			}
 		}
 
