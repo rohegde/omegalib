@@ -6,7 +6,7 @@
 *Initial Revision*: 2345
 
 ------------------------------------------------------------------------
-= omegalib v3.1 (*current developer version*) =
+= omegalib v3.1  =
 *Initial Revision*: 2235
 *Branch-out Revision*: 2344
 == Summary ==
