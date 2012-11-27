@@ -24,7 +24,6 @@
  *---------------------------------------------------------------------------------------------------------------------
  *	mcsend
  *		Sends a single command to a running omegalib application, using the Mission Control protocol
- *		opengl drawing on one or multiple nodes. 
  *********************************************************************************************************************/
 #include <omega.h>
 #include "omicron/Tcp.h"
