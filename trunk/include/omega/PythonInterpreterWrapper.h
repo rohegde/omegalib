@@ -57,6 +57,7 @@ using namespace boost::python;
 #define PYAPI_RETURN_VALUE return_value_policy<return_by_value>()
 #define PYAPI_RETURN_REF return_value_policy<return_by_smart_ptr>()
 #define PYAPI_RETURN_NEW_INSTANCE return_value_policy<manage_new_object>()
+#define PYAPI_RETURN_INTERNAL_REF return_internal_reference<>()
 //#define PYAPI_RETURN_REFERENCE return_value_policy<copy_const_reference>()
 #define PYAPI_POINTER_LIST(itemName, className) class_< List<itemName*> > (className, no_init).def("__iter__", iterator< List<itemName*>, return_internal_reference<> >());
 

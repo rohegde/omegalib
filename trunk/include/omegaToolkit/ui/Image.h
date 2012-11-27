@@ -62,6 +62,7 @@ namespace omegaToolkit { namespace ui {
 	{
 	public:
 		ImageRenderable(Image* owner): WidgetRenderable(owner), myOwner(owner), myTexture(NULL) {}
+		virtual ~ImageRenderable();
 		virtual void refresh();
 
 	protected:
