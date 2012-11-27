@@ -1,1 +1,0 @@
-bin\cyhello.exe 

@@ -1,9 +1,20 @@
-@use computeShadow
-@use computeStandardShading
+@surfaceShader
+
+uniform float unif_Shininess;
+uniform float unif_Gloss;
+
+varying vec3 var_Normal;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void main (void)
+SurfaceData getSurfaceData(void)
 {
-	float shadow = computeShadow();
-    gl_FragColor =  gl_Color * (lightAmbientContribution() + lightDiffuseContribution() * shadow); 
+	SurfaceData sd;
+    sd.albedo.rgb = gl_Color.rgb; 
+	sd.albedo.a = 1.0;
+	sd.emissive = vec4(0, 0, 0, 0);
+	sd.shininess = unif_Shininess;
+	sd.gloss = unif_Gloss;
+	sd.normal = normalize(var_Normal);
+	
+	return sd;
 }
