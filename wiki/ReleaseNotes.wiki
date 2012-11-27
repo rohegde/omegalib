@@ -1,8 +1,35 @@
 #summary This page contains release notes for omegalib starting from version 0.8
 #sidebar Sidebar
 
+------------------------------------------------------------------------
+= omegalib v3.2 (*current developer version*) =
+*Initial Revision*: 2345
+
+------------------------------------------------------------------------
 = omegalib v3.1 (*current developer version*) =
 *Initial Revision*: 2235
+*Branch-out Revision*: 2344
+== Summary ==
+	Omegalib 3.1 improves on version 3.0 introducing a few new features and improvements (sound, python API, porthole, configurability), and is the first version since the dark ages of the project that offers a prepackaged binary version for windows.
+== Major Changes ==
+	* omega
+		* big improvements on sound support
+		* improved configuration, tile configuration is now much more flexible and allows eterogeneous geometries and stereo modes
+		* (linux) control-C kills application even on cluster systems
+		* omegalib builds on OSX
+		* runtime stereo switch
+		* `orun -D` option lets user switch application data directory instead of system data directory
+	* omegaToolkit
+		* 3d ui control supported in python, plus additional ui interaction improvements
+	* cyclops
+		* simplified shader system
+		* added emissive texture support
+		* added bump effect shader
+		* improved animation support
+	* omegaVtk
+		* support for per-actor visibility
+	* omegaOsg
+		* optional support for Inventor / VRML files
 
 ------------------------------------------------------------------------
 = omegalib v3.0 =
