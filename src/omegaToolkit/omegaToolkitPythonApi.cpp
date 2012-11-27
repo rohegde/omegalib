@@ -90,6 +90,14 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_ENUM_VALUE(MenuItem, SubMenu)
 		;
 
+	// Widget Layer
+	PYAPI_ENUM(Widget::Layer, WidgetLayer)
+		PYAPI_ENUM_VALUE(Widget, Front)
+		PYAPI_ENUM_VALUE(Widget, Middle)
+		PYAPI_ENUM_VALUE(Widget, Back)
+		//PYAPI_ENUM_VALUE(Container, LayoutGrid)
+		;
+
 	PYAPI_BASE_CLASS(ToolkitUtils)
 		PYAPI_STATIC_REF_GETTER(ToolkitUtils, createInteractor)
 		PYAPI_STATIC_REF_GETTER(ToolkitUtils, setupInteractor)
@@ -176,16 +184,23 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(Widget, refresh)
 		PYAPI_METHOD(Widget, hitTest)
 		PYAPI_METHOD(Widget, setUIEventCommand)
+		PYAPI_METHOD(Widget, setLayer)
+		PYAPI_METHOD(Widget, getLayer)
 		;
 
 	// Container
 	PYAPI_REF_CLASS(Container, Widget)
+		.def("get3dSettings", &Container::get3dSettings, PYAPI_RETURN_INTERNAL_REF)
 		;
 
 	// Button
 	PYAPI_REF_CLASS(Button, Widget)
 		PYAPI_METHOD(Button, getText)
 		PYAPI_METHOD(Button, setText)
+		PYAPI_METHOD(Button, isCheckable)
+		PYAPI_METHOD(Button, setCheckable)
+		PYAPI_METHOD(Button, setChecked)
+		PYAPI_METHOD(Button, isChecked)
 		;
 
 	// Image
@@ -202,6 +217,8 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 
 	// Label
 	PYAPI_REF_CLASS(Label, Widget)
+		PYAPI_METHOD(Label, getText)
+		PYAPI_METHOD(Label, setText)
 		;
 }
 

@@ -43,6 +43,8 @@ namespace omegaToolkit {
     friend class Container;
     friend class WidgetRenderable;
     public:
+		enum Layer { Back, Middle, Front, NumLayers };
+    public:
         Widget(Engine* server);
         virtual ~Widget();
 
@@ -176,6 +178,12 @@ namespace omegaToolkit {
 		void setStyleValue(const String& key, const String& value);
 		//@}
 
+        //! layer
+		//@{
+		Layer getLayer() { return myLayer; }
+		void setLayer(Layer layer) { myLayer = layer; }
+		//@}
+
 		//! Returns true if the point is within this widget's bounding box.
 		bool hitTest(const Vector2f& point);
 
@@ -209,6 +217,8 @@ namespace omegaToolkit {
         //float myScale;
 
     private:
+		Layer myLayer;
+
         bool myStereo;
         bool myInitialized;
 

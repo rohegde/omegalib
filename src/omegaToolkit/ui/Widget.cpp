@@ -44,6 +44,7 @@ NameGenerator Widget::mysNameGenerator("Widget_");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Widget::Widget(Engine* server):
+	myLayer(Middle),
 	myStereo(false),
 	myInitialized(false),
 	myServer(server),
@@ -326,6 +327,7 @@ void Widget::dispatchUIEvent(const Event& evt)
 			EventSharingModule::markLocal(evt);
 		}
 		myEventHandler->handleEvent(evt);
+		evt.setProcessed();
 	}
 	else if(myContainer != NULL) 
 	{
