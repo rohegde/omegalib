@@ -142,9 +142,13 @@ void Camera::update(const UpdateContext& context)
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 void Camera::focusOn(SceneNode* node)
 {
+	// Compute direction vector
+	Vector3f dir = mPosition - node->getPosition();
+	dir.normalize();
+
 	const Sphere& bs = node->getBoundingSphere();
-	mOrientation = Quaternion::Identity();
-	mPosition = bs.getCenter() + Vector3f(0, 0, bs.getRadius());
+	mOrientation = Math::buildRotation(Vector3f::UnitZ(), dir, Vector3f::UnitY());
+	//mPosition = bs.getCenter() + Vector3f(0, 0, bs.getRadius());
     needUpdate();
 }
 
