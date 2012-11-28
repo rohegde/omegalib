@@ -748,6 +748,8 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(Event, getSourceId)
 		PYAPI_METHOD(Event, getType)
 		PYAPI_METHOD(Event, getServiceType)
+		PYAPI_METHOD(Event, isProcessed)
+		PYAPI_METHOD(Event, setProcessed)
 		PYAPI_GETTER(Event, getPosition)
 		PYAPI_GETTER(Event, getOrientation)
 		;
