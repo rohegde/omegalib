@@ -62,8 +62,8 @@ fx = "bump -d cyclops/test/wall002.jpg -n cyclops/test/wall002DOT3.jpg"; bmnu.ad
 
 #--------------------------------------------------------------------------------------------------
 # custom shader effect definitions
-fx = "colored -v pysamples/wire -V -d yellow -g 1.0 -s 10 -t"; xmnu.addButton(fx, "selected.setEffect('" + fx + "')")
-fx = "textured -v pysamples/custom2 -d cyclops/test/checker.jpg -t"; xmnu.addButton(fx, "selected.setEffect('" + fx + "')")
+fx = "colored -v examples/wire -V -d yellow -g 1.0 -s 10 -t"; xmnu.addButton(fx, "selected.setEffect('" + fx + "')")
+fx = "textured -v examples/custom2 -d cyclops/test/checker.jpg -t"; xmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 
 #--------------------------------------------------------------------------------------------------
 # multipass effect definitions
