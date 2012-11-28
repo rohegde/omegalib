@@ -11,7 +11,7 @@ sphere.setEffect("colored -d green")
 plane = PlaneShape.create(10, 10)
 plane.setPosition(Vector3(0, 0, -5))
 plane.pitch(radians(-90))
-plane.setEffect("textured -v emissive -d pysamples/data/GradientBackground.jpg")
+plane.setEffect("textured -v emissive -d examples/data/GradientBackground.jpg")
 
 scene = getSceneManager()
 

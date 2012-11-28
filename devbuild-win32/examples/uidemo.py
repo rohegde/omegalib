@@ -7,7 +7,7 @@ from omegaToolkit import *
 # create a background plane
 background = PlaneShape.create(4.6, 2.8)
 background.setPosition(Vector3(0, 2, -3))
-background.setEffect('textured -v emissive -d pysamples/data/GradientBackground.jpg')
+background.setEffect('textured -v emissive -d examples/data/GradientBackground.jpg')
 
 ui = UiModule.createAndInitialize()
 wf = ui.getWidgetFactory()
@@ -19,12 +19,12 @@ windowContainer.setPosition(Vector2(400, 5))
 
 # create the window content image
 windowBackground = wf.createImage('windowBackground', windowContainer)
-windowBackground.setData(loadImage('pysamples/data/RBC-details.png'))
+windowBackground.setData(loadImage('examples/data/RBC-details.png'))
 windowBackground.setLayer(WidgetLayer.Back)
 
 # load button images
-HemoBtnUp = loadImage('pysamples/data/btns/Hemo-btn.png')
-HemoBtnDown = loadImage('pysamples/data/btns/Hemo-btn-active.png')
+HemoBtnUp = loadImage('examples/data/btns/Hemo-btn.png')
+HemoBtnDown = loadImage('examples/data/btns/Hemo-btn-active.png')
 
 # Create a button
 button = wf.createImage('button', windowContainer)
