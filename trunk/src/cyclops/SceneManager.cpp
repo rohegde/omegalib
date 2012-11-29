@@ -327,7 +327,7 @@ void SceneManager::initialize()
 	// Standard shaders
 	setShaderMacroToFile("tangentSpaceSurfaceShader", "cyclops/common/forward/tangentSpace.frag");
 	setShaderMacroToFile("tangentSpaceVertexShader", "cyclops/common/forward/tangentSpace.vert");
-	setShaderMacroToFile("tangentSpaceFragmentLightSection", "cyclops/common/forward/tangentSpaceLight.frag");
+	//setShaderMacroToFile("tangentSpaceFragmentLightSection", "cyclops/common/forward/tangentSpaceLight.frag");
 
 	setShaderMacroToFile("vsinclude envMap", "cyclops/common/envMap/noEnvMap.vert");
 	setShaderMacroToFile("fsinclude envMap", "cyclops/common/envMap/noEnvMap.frag");
