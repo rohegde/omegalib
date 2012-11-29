@@ -186,6 +186,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(Widget, setUIEventCommand)
 		PYAPI_METHOD(Widget, setLayer)
 		PYAPI_METHOD(Widget, getLayer)
+		PYAPI_GETTER(Widget, transformPoint)
 		;
 
 	// Container
