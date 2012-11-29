@@ -186,6 +186,7 @@ namespace omegaToolkit {
 
 		//! Returns true if the point is within this widget's bounding box.
 		bool hitTest(const Vector2f& point);
+        Vector2f transformPoint(const omega::Vector2f& point);
 
     protected:
         bool simpleHitTest(const omega::Vector2f& point);
@@ -204,7 +205,6 @@ namespace omegaToolkit {
 
         void setContainer(Container* value);
 		Container* getContainer() { return myContainer; }
-        Vector2f transformPoint(const omega::Vector2f& point);
         void dispatchUIEvent(const Event& evt);
 
 		// Menu Widget Sounds
