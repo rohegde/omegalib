@@ -670,14 +670,17 @@ void SceneManager::loadShader(osg::Shader* shader, const String& name)
 		// Read local macro definitions (only supported one now is fragmentLightSection)
 		String shaderSrc = "";
 		Vector<String> segments = StringUtils::split(shaderPreSrc, "$");
+		//ofmsg("segments %1%", %segments.size());
 		foreach(String segment, segments)
 		{
 			if(StringUtils::startsWith(segment, "@"))
 			{
-				Vector<String> macroNames = StringUtils::split(segment, "\n\t ", 1);
+				Vector<String> macroNames = StringUtils::split(segment, "\r\n\t ", 1);
+				
 				String macroContent = StringUtils::replaceAll(segment, macroNames[0], "");
-
+				
 				String macroName = macroNames[0].substr(1);
+				//ofmsg("SEGMENT IDENTIFIED: %1%", %macroName);
 				myShaderMacros[macroName] = macroContent;
 			}
 			else
@@ -703,6 +706,9 @@ void SceneManager::loadShader(osg::Shader* shader, const String& name)
 			fragmentShaderLightSection);
 
 		//ofmsg("Loading shader file %1%", %name);
+		// omsg("#############################################################");
+		// omsg(shaderSrc);
+		// omsg("#############################################################");
 		shader->setShaderSource(shaderSrc);
 	}
 	else
