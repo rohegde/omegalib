@@ -41,7 +41,8 @@ UiScriptCommand::UiScriptCommand()
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 UiScriptCommand::UiScriptCommand(const String& command):
-	myCommand(command)
+	myCommand(command),
+	myUiEventsOnly(false)
 {
 	myUI = UiModule::instance();
 	myInterpreter = SystemManager::instance()->getScriptInterpreter();
@@ -50,6 +51,8 @@ UiScriptCommand::UiScriptCommand(const String& command):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void UiScriptCommand::handleEvent(const Event& evt)
 {
+	if(myUiEventsOnly && evt.getServiceType() != Event::ServiceTypeUi) return;
+	
 	if(myInterpreter != NULL)
 	{
 		if(evt.getType() == Event::Toggle)
@@ -75,6 +78,7 @@ void UiScriptCommand::handleEvent(const Event& evt)
 		{
 			myInterpreter->evalEventCommand(myCommand, evt);
 		}
+		evt.setProcessed();
 	}
 }
 
