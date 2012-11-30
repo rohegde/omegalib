@@ -167,6 +167,7 @@ void Widget::handleEvent(const Event& evt)
 			// In the future, we may add an option to selectively enable dispatch of those events.
 			else if(evt.getType() == Event::Down || evt.getType() == Event::Up)
 			{
+				// omsg("here 2");
 				dispatchUIEvent(evt);
 			}
 
@@ -209,6 +210,7 @@ void Widget::handleEvent(const Event& evt)
 				// In the future, we may add an option to selectively enable dispatch of those events.
 				if(evt.getType() == Event::Down || evt.getType() == Event::Up)
 				{
+					// omsg("here");
 					dispatchUIEvent(evt);
 				}
 
@@ -327,7 +329,6 @@ void Widget::dispatchUIEvent(const Event& evt)
 			EventSharingModule::markLocal(evt);
 		}
 		myEventHandler->handleEvent(evt);
-		evt.setProcessed();
 	}
 	else if(myContainer != NULL) 
 	{

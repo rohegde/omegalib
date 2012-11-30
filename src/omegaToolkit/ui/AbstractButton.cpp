@@ -70,6 +70,7 @@ void AbstractButton::update(const omega::UpdateContext& context)
 				dispatchUIEvent(evt);
 			}
 		}
+		
 		myPressedStateChanged = false;
 	}
 };
