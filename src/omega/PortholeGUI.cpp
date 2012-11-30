@@ -149,7 +149,7 @@ string PortholeGUI::create(bool firstTime){
 
 			// Default camera case
 			if (strcmp(element->cameraType.c_str(),"default")==0){
-				if (firstTime){
+				if (firstTime || this->sessionCamera == NULL){
 					createCustomCamera(true, percentToFloat(width), percentToFloat(height));
 				}
 				else{
@@ -170,7 +170,7 @@ string PortholeGUI::create(bool firstTime){
 					camMask = 1 << camMask;
 				}
 
-				if (firstTime){
+				if (firstTime || this->sessionCamera == NULL){
 					createCustomCamera(false, percentToFloat(width), percentToFloat(height), camMask);
 				}
 				else{
