@@ -42,13 +42,18 @@ namespace omegaToolkit
 
 		void setCommand(const String& value);
 		const String& getCommand();
+		
+		void setUiEventsOnly(bool value) { myUiEventsOnly = value; }
+		bool isUiEventsOnly() { return myUiEventsOnly; }
+		
 	private:
 		String myCommand;
 		UiModule* myUI;
 		PythonInterpreter* myInterpreter;
-		float mySliderMaxValue;
-		float mySliderMinValue;
-		float mySliderStep;
+		bool myUiEventsOnly;
+		//float mySliderMaxValue;
+		//float mySliderMinValue;
+		//float mySliderStep;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
