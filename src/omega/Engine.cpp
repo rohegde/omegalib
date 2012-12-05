@@ -165,8 +165,8 @@ void Engine::initialize()
 	}
 
 
-	// Load camera config form application config file
-    if(cfg->exists("config/camera"))
+	// Load camera config form application config file (if it is different from system configuration)
+    if(cfg != syscfg && cfg->exists("config/camera"))
     {
         Setting& s = cfg->lookup("config/camera");
 		myDefaultCamera->setup(s);
