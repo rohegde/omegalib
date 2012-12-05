@@ -1,9 +1,9 @@
 #summary Python reference: module omega
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.1 - 15 October 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+<p>*Last revision:* ver. 3.2 - 5 December 2012</p>*
 
-<wiki:toc max_depth="4" />
+<wiki:toc max_depth="3" />
 
 = Module omega =
 The omega module contains all the core functionality of omegalib like scene graph management and event handling. It also offers a few utility functions to manage verious aspects of an omegalib application.
