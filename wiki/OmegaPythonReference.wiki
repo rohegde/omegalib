@@ -20,7 +20,7 @@ Finds a camera by name
 === `getOrCreateCamera(name)` ===
 Finds a camera by name or creates a new one if a camera with the specified name has not been found
 
-== `getCameraById(id)` ==
+=== `getCameraById(id)` ===
 Retrieves a camera based on its id (*currently supported by Porthole service only*)
 
 -------------------------------------------------------------------------------
