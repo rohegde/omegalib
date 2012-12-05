@@ -1,7 +1,7 @@
 #summary Python reference: module cyclops
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.0 - 22 September 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+<p>*Last revision:* ver. 3.2 - 4 December 2012</p>*
 
 <wiki:toc max_depth="4" />
 
@@ -78,6 +78,14 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 === Methods ===
 || Method(s) || Description ||
 || `create(width, height)` *static* || Creates a plane with the specified width and height, on the X-Y plane ||
+
+-------------------------------------------------------------------------------
+==  `class BoxShape` (extends `Entity`) ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_box_shape.html cyclops::BoxShape]. Defines a box that can be added to the scene
+
+=== Methods ===
+|| Method(s) || Description ||
+|| `create(width, height, depth)` *static* || Creates a box with the specified width, height and depth ||
 
 -------------------------------------------------------------------------------
 ==  `class StaticObject` (extends `Entity`) ==
@@ -170,6 +178,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 || `name` || The unique name for this model ||
 || `description` || A description for this model. Can be used in user interfaces ||
 || `generateNormals` || when set to `True`, cyclops will generate normals for the loaded model ||
+|| `generateTangents` || when set to `True`, cyclops will generate tangents for the loaded model. Tangents are used for tangent space computations in bump shaders and effects ||
 || `numFiles` || If set to a value other than 1, cyclops will attempt to load multiple models the string `%1` in the model path will be substituded by a model index ||
 || `path` || The relative path to the model. File lookup follows the rules defined in [https://code.google.com/p/omegalib/wiki/Filesystem the filesystem page] ||
 || `size` || The size of the loaded model in meters. If left to 0, the original model size will be preserved ||
