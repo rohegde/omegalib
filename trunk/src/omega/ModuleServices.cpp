@@ -84,8 +84,8 @@ void ModuleServices::removeModule(EngineModule* module)
 	
 	if(module != NULL)
 	{
-		mysModules.remove(module);
 		module->doDispose();
+		mysModules.remove(module);
 	}
 }
 
