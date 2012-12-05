@@ -149,8 +149,17 @@ Exits the application
 === `ofindfile(name)` ===
 Searches for a file, returning the full path if found, or an empty string if the search fails. See [FileSystem the filesystem management page] for more information on file lookup in omegalib.
 
+=== `osetdataprefix(prefix)` ===
+Sets a path prefix for data loading operations. Currently used only for image loading commands.
+
+=== `ogetdataprefix()` ===
+Gets the path prefix used for data loading operations. Currently used only for image loading commands.
+
 === `orun(script)` ===
-Runs an external script
+Runs an external script. The script is executed immediately.
+
+=== `queueCommand(script)` ===
+Queues a script command for execution. The command will be executed during the next update cycle.
 
 === `printChildren(node, depth)` ===
 Prints the tree of children of `node` up to the specified depth
@@ -183,9 +192,19 @@ Example:
 When set to true, switches from panoptic stereo tracking to standard tracking. This option is used only when panoptic stereo is enabled for the current display system.
 
 === `getSoundEnvironment()` ===
+Returns an instance of the `SoundEnvironment` class if sound support is available on the system. Return `None` otherwise.
+
 === `isSoundEnabled()` ===
+Returns `True` if sound is enabled and available on the system
 
 === `toggleStereo()` ===
+Switches between mono and stereo rendering mode on systems with stereo rendering support.
+
+=== `loadImage(filename)` ===
+Loads an image given a file path. If loading is succesfull, returns an instance of `PixelData`. If loading fails, return `None`
+
+=== `isMaster()` ===
+Returns `True` if the script is executing on the *master node* of a cluster display system.
 
 -------------------------------------------------------------------------------
 ==  `class SceneNode` ==
@@ -255,6 +274,23 @@ This class is used within the context of an event handler function, registered t
 || `getType()` || ||
 || `getServiceType()` || ||
 || `getPosition()`,	`getOrientation()` || ||
+|| `isProcessed()` || Returns `True` if this event has already been handled somewhere else ||
+|| `setProcessed()` || Marks this event as processed ||
+
+=== Event types ===
+The method `getType()` returns a value from the `EventType` enumeration. The `EventType` enumeration contains the following values: `Select`, `Toggle`, `ChangeValue`, `Update`, `Move`, `Down`, `Up`, `Trace`, `Connect`, `Untrace`, `Disconnect`, `Click`, `Zoom`, `Split`, `Rotate`, `Null`
+
+For more information about event types read the [https://code.google.com/p/omicron-sdk/wiki/EventReference Event reference page] of the omicron SDK
+
+=== Event flags ===
+The methods `isKeyDown()`, `isKeyUp()`, `isButtonDown()`, `isButtonUp()` return a value from the `EventFlags` enumeration. The `EventFlags` enumeration contains the following values: `Left`, `Middle`, `Right`, `Button1`, `Button2`, `Button3`, `Button4`, `Button5`, `Button6`, `Button7`, `SpecialButton1`, `SpecialButton2`, `SpecialButton3`, `Ctrl`, `Alt`, `Shift`, `ButtonDown`, `ButtonUp`, `ButtonLeft`, `ButtonRight`, `Processed`, `User`
+
+For more information about event flags read the [https://code.google.com/p/omicron-sdk/wiki/EventReference Event reference page] of the omicron SDK
+
+=== Event service types ===
+The method `getServiceType()` returns a value from the `ServiceType` enumeration. The `ServiceType` enumeration contains the following values: `Pointer`, `Mocap`, `Keyboard`, `Controller`, `Ui`, `Generic`, `Brain`, `Wand`, `Audio`
+
+For more information about event service types read the [https://code.google.com/p/omicron-sdk/wiki/EventReference Event reference page] of the omicron SDK
 
 === Example ===
 {{{
@@ -318,6 +354,12 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_
 || Method(s) || Description ||
 || `computeSize(text)` || Returns the width and height in pixels of the specified string ||
 
+-------------------------------------------------------------------------------
+==  `class PixelData` ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/structomega_1_1_pixel_data.html omega::PixelData] class. 
+=== Methods ===
+|| Method(s) || Description ||
+|| `getWidth()`, `getHeight()` || Returns the width and height in pixels of the specified image ||
   
 -------------------------------------------------------------------------------
 ==  `class PortholeService` ==
