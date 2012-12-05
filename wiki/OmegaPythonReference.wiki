@@ -9,21 +9,20 @@
 The omega module contains all the core functionality of omegalib like scene graph management and event handling. It also offers a few utility functions to manage verious aspects of an omegalib application.
 
 -------------------------------------------------------------------------------
-==  Free Functions ==
 
-=== `getDefaultCamera()` ===
+== `getDefaultCamera()` ==
 Returns the main omegalib camera instance
 
-=== `getCamera(name)` ===
+== `getCamera(name)` ==
 Finds a camera by name
 
-=== `getOrCreateCamera(name)` ===
+== `getOrCreateCamera(name)` ==
 Finds a camera by name or creates a new one if a camera with the specified name has not been found
 
-=== `getCameraById(id)` ===
+== `getCameraById(id)` ==
 Retrieves a camera based on its id (*currently supported by Porthole service only*)
 
-=== `getScene()` ===
+== `getScene()` ==
 Returns the root node of the scene.
 
 Example:
@@ -33,7 +32,7 @@ Example:
 	root.setPosition(Vector3(0, 2, 0))
 }}}
 
-=== `setUpdateFunction(func)` ===
+== `setUpdateFunction(func)` ==
 Sets a callback functionto to be called for each frame. The function will take three parameters: 
 	* frame number
 	* time since application start (in seconds)
@@ -46,7 +45,7 @@ Example:
 	setUpdateFunction(onUpdate)
 }}}	
 
-=== `setEventFunction(func)` ===
+== `setEventFunction(func)` ==
 Sets a callback function to be called every time an event is received.
 Example:
 {{{
@@ -58,10 +57,10 @@ Example:
 	setEventFunction(onUpdate)
 }}}	
 
-=== `getEvent()` ===
+== `getEvent()` ==
 Returns the event currenty being processed. Should be used only inside an event handler function.
 
-=== `setDrawFunction(func)` ===
+== `setDrawFunction(func)` ==
 (*experimental*)
 Sets a callback functionto to be called for each frame during 2d drawing. The function will take four parameters: 
 	* the total display size (as a Vector2)
@@ -91,9 +90,9 @@ Example:
 	setDrawFunction(onDraw)
 }}}	
 
-=== `getRayFromEvent(evt)` ===
+== `getRayFromEvent(evt)` ==
 
-=== `querySceneRay(origin, dir, callback)` ===
+== `querySceneRay(origin, dir, callback)` ==
 Performs a query on the scene using a ray defined by the `origin` and `dir` parameters. For each hit node, it invokes a callback function taking the node reference and distance to the origin as parameters.
 
 *NOTE:* only nodes tagged as selectable (see `Node.setSelectable`) will be considered for the query.
@@ -113,7 +112,7 @@ Example:
 	querySceneRay(Vector3f(0, 0, 0), Vector3f(0, 0, -1), queryCallback)
 }}}
 
-=== `addSelectionListener(node, cmd)` ===
+== `addSelectionListener(node, cmd)` ==
 Attaches a command to be executed whenever the node selection state changes
 
 Example:
@@ -128,7 +127,7 @@ Example:
 	node.setSelected(True)
 }}}
 
-=== `addVisibilityListener(node, cmd)` ===
+== `addVisibilityListener(node, cmd)` ==
 Attaches a command to be executed whenever the node visibility changes
 
 Example:
@@ -143,31 +142,31 @@ Example:
 	node.setVisible(False)
 }}}
 
-=== `oexit()` ===
+== `oexit()` ==
 Exits the application
 
-=== `ofindfile(name)` ===
+== `ofindfile(name)` ==
 Searches for a file, returning the full path if found, or an empty string if the search fails. See [FileSystem the filesystem management page] for more information on file lookup in omegalib.
 
-=== `osetdataprefix(prefix)` ===
+== `osetdataprefix(prefix)` ==
 Sets a path prefix for data loading operations. Currently used only for image loading commands.
 
-=== `ogetdataprefix()` ===
+== `ogetdataprefix()` ==
 Gets the path prefix used for data loading operations. Currently used only for image loading commands.
 
-=== `orun(script)` ===
+== `orun(script)` ==
 Runs an external script. The script is executed immediately.
 
-=== `queueCommand(script)` ===
+== `queueCommand(script)` ==
 Queues a script command for execution. The command will be executed during the next update cycle.
 
-=== `printChildren(node, depth)` ===
+== `printChildren(node, depth)` ==
 Prints the tree of children of `node` up to the specified depth
 
-=== `printObjCounts()` ===
+== `printObjCounts()` ==
 Prints a list and count of currently allocated refcounted objects
 
-=== `toggleStats(stats)` ===
+== `toggleStats(stats)` ==
 Enables or disables statistics output from a specific source in the statitics window. The statistics window must be enabled for the configuration. The `stats` parameter is a list of statistic or tile names separated by spaces.
 
 Example:
@@ -188,22 +187,22 @@ Example:
 	toggleStats('compact')
 }}}
 
-=== `overridePanopticStereo(value)` ===
+== `overridePanopticStereo(value)` ==
 When set to true, switches from panoptic stereo tracking to standard tracking. This option is used only when panoptic stereo is enabled for the current display system.
 
-=== `getSoundEnvironment()` ===
+== `getSoundEnvironment()` ==
 Returns an instance of the `SoundEnvironment` class if sound support is available on the system. Return `None` otherwise.
 
-=== `isSoundEnabled()` ===
+== `isSoundEnabled()` ==
 Returns `True` if sound is enabled and available on the system
 
-=== `toggleStereo()` ===
+== `toggleStereo()` ==
 Switches between mono and stereo rendering mode on systems with stereo rendering support.
 
-=== `loadImage(filename)` ===
+== `loadImage(filename)` ==
 Loads an image given a file path. If loading is succesfull, returns an instance of `PixelData`. If loading fails, return `None`
 
-=== `isMaster()` ===
+== `isMaster()` ==
 Returns `True` if the script is executing on the *master node* of a cluster display system.
 
 -------------------------------------------------------------------------------
