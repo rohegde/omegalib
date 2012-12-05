@@ -10,7 +10,7 @@ The omega module contains all the core functionality of omegalib like scene grap
 
 -------------------------------------------------------------------------------
 
-== `getDefaultCamera()` ==
+== *getDefaultCamera()* ==
 Returns the main omegalib camera instance
 
 == `getCamera(name)` ==
