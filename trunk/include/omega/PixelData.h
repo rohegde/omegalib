@@ -58,6 +58,9 @@ namespace omega {
 		void setDeleteDisabled(bool value) { myDeleteDisabled = value; }
 		bool isDeleteDisabled() { return myDeleteDisabled; }
 
+		bool isDirty() { return myDirty; }
+		void setDirty(bool value) { myDirty = value; }
+
 	private:
 		Lock myLock;
 		Format myFormat;
@@ -66,6 +69,7 @@ namespace omega {
 		int myHeight;
 		size_t mySize;
 		bool myDeleteDisabled;
+		bool myDirty;
 	};
 }; // namespace omega
 

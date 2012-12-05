@@ -66,17 +66,13 @@ namespace cyclops {
 		Light(SceneManager* scene);
 		virtual ~Light();
 
-		//! PYAPI
 		void setColor(const Color& value) { myColor = value; }
 		const Color& getColor() { return myColor; }
 
-		//! PYAPI
 		void setAmbient(const Color& value) { myAmbient = value; }
 		const Color& getAmbient() { return myAmbient; }
 
-		//!PYAPI
 		void setEnabled(bool value) { myEnabled = value; }
-		//! PYAPI
 		bool isEnabled() { return myEnabled; }
 
 		void setAttenuation(const Vector3f value) { myAttenuation = value; }
@@ -88,14 +84,10 @@ namespace cyclops {
 		}
 		const Vector3f& getAttenuation() { return myAttenuation; }
 
-		//! PYAPI
 		void setSoftShadowWidth(float value) { mySoftShadowWidth = value; }
-		//! PYAPI
 		float getSoftShadowWidth() { return mySoftShadowWidth; }
 
-		//! PYAPI
 		void setSoftShadowJitter(int value) { mySoftShadowJitter = value; }
-		//! PYAPI
 		float getSoftShadowJitter() { return mySoftShadowJitter; }
 
 	private:
@@ -280,6 +272,7 @@ namespace cyclops {
 
 		osg::Group* getOsgRoot() { return myScene; }
 		osg::Texture2D* getTexture(const String& name);
+		osg::Texture2D* createTexture(const String& name, PixelData* pixels);
 		ProgramAsset* getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);
 		void initShading();
 
@@ -317,6 +310,7 @@ namespace cyclops {
 		ModelLoaderThread* myModelLoaderThread;
 
 		Dictionary<String, Ref<osg::Texture2D> > myTextures;
+		Dictionary<String, Ref<PixelData> > myTexturePixels;
 		Dictionary<String, Ref<ProgramAsset> > myPrograms;
 		Dictionary<String, Ref<osg::Shader> > myShaders;
 

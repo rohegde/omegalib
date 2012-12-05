@@ -414,6 +414,21 @@ void SceneManager::update(const UpdateContext& context)
 	{
 		e->update(context);
 	}
+
+	// Loop through pixel buffers associated to textures. If a texture pixel buffer is dirty, 
+	// update the relative texture.
+	typedef pair<String, PixelData*> TexturePixelsItem;
+	foreach(TexturePixelsItem item, myTexturePixels)
+	{
+		if(item.second->isDirty())
+		{
+			osg::Texture2D* texture = myTextures[item.first];
+			osg::Image* img = OsgModule::pixelDataToOsg(item.second);
+			texture->setImage(img);
+
+			item.second->setDirty(false);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -612,6 +627,20 @@ osg::Texture2D* SceneManager::getTexture(const String& name)
 		ofwarn("Could not find texture file %1%", %name);
 	}
 	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+osg::Texture2D* SceneManager::createTexture(const String& name, PixelData* pixels)
+{
+	osg::Texture2D* texture = new osg::Texture2D();
+	osg::Image* img = OsgModule::pixelDataToOsg(pixels);
+	texture->setImage(img);
+
+	pixels->setDirty(false);
+	myTexturePixels[name] = pixels;
+	myTextures[name] = texture;
+
+	return texture;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

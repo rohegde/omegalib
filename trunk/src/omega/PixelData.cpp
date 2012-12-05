@@ -35,7 +35,8 @@ PixelData::PixelData(Format fmt, int width, int height, byte* data):
 	myHeight(height),
 	myFormat(fmt),
 	mySize(0),
-	myDeleteDisabled(false)
+	myDeleteDisabled(false),
+	myDirty(true)
 {
 	if(myData == NULL)
 	{
