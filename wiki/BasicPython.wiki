@@ -1,8 +1,8 @@
 #summary Python omegalib developement
 #sidebar Sidebar
 = Python omegalib developement =
-<p>*Last revision:* ver. 3.0 - 24 August 2012
-<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>
+<p>*Last revision:* ver. 3.2 - 4 December 2012
+</p>
 
 omegalib offers a python interface for many of its core functionalities, and it covers the cyclops and omegaToolkit APIs as well. You can find an example of a python omegalib/cyclops program in the [BasicCyclops cyclops programming page]
 
@@ -21,7 +21,27 @@ After starting orun, typing:
 }}}
 
 === Stopping orun ===
-To stop an orun program, press esc, type `oexit()` or `:q` at the orun console, or run `orun -K` on another terminal.
+To stop an orun program, press esc, type `oexit()` or `:q` or press control-C (on linux) at the orun console, or run `orun -K` on another terminal.
+
+=== orun quick commands ===
+If the interactive console as been enabled in the loaded configuration file (using `pythonShellEnabled = true;`) it will be possible to type in commands while the script runs. orun offers a full python interpreter, and preloads all the default omegalib modules (euclid, omega, omegaToolkit, cyclops).
+
+In addition to python, the orun console supports *quick commands* that perform some utility functions at runtime. All quick commands start with a colon symbol, like `:q` or `:r`. The default commands supported by orun are:
+  * `:? [topic] [prefix]`: prints help reference for objects and classes. Use this to quickly look up the methods offered by a specific class or object. The command also accepts a `prefix` argument, to limit results that start with a specified string. The command `:? . [prefix]` returns the name of all global variables currently used by the script. A fex examples of the command are `:? .`, `:? SceneNode`, `:? Entity get`.
+  * `:r [script]` Runs a script
+  * `:r! [script]` Runs a script, after unloading the current one
+  * `:lo` Lists all live, reference counted objects
+  * `:ln` Prints the scene node tree
+
+==== Using quick commands from a script ====
+It is possible to use quick commands from within a script file, using the `queueCommand` omegalib function. For example, the following is a valid script:
+{{{
+	from omega import *
+	queueCommand(':? SceneNode set') # print all SceneNode methods beginning with 'set'
+}}}
+
+==== Extending quick commands ====
+If you are implementing your own omegalib module, you can expose additional quick commands. Quick commands are useful to allow runtime control for your modules, without the need to expose full python commands. To add quick commands to your module or application in C++, you have to implement the `EngineModule::handleCommand` method. When the user types a command starting with a colon, all modules implementing `handleCommand` will receive a copy of the command. See `src/apps/orun/orun.cpp` for an example of how quick commands are implemented.
 
 === omegalib Python Reference ===
 omegalib exposes 4 main python modules:

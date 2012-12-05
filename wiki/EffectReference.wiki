@@ -1,7 +1,7 @@
 #summary Cyclops Effects and Shaders
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.0 - 26 September 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+<p>*Last revision:* ver. 3.2 - 4 December 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
 <wiki:toc max_depth="4" />
 
@@ -47,6 +47,9 @@ In general the effect string definition will look like `<effect-type> [-option [
 || *Effect Definition* || *Result* ||
 || `textured -d cyclops/test/checker.jpg` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/textured1.png" width="150"/> ||
 || `textured -d cyclops/test/graduated.jpg -t -a` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/texturedgrad.png" width="150"/> ||
+
+-------------------------------------------------------------------------------
+==  Bump shading ==
 
 -------------------------------------------------------------------------------
 ==  Custom shading ==

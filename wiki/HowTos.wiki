@@ -1,17 +1,17 @@
 #summary omegalib How-tos, tips and tricks
 #sidebar Sidebar
 
-This page contains suggestions, code snippets and tips that are not elaborate enough (yet) to become a full tutorial.
+This page contains suggestions, code snippets and tips that are not elaborate enough to require their own page
 
+---------------------------------------------------------------------------------------------------
 = General =
 == FAQ ==
 === "I set the camera position to (x, y, z) but the output is not what I expected" ===
 Cameras in omegalib (and in other VR toolkits) work a little differently than what yo could expect in classic graphic engines. There are two things that influence the final camera view:
  * The camera position and orientation, which infuence the view transform. They determine the conversion between the physical space in your system , and the space used your virtual world.
  * The *head position and orientation*, which influence both the view and the projection transforms. They represent the position of the observer in the phisical space. head transform, camera transform and display geometry all contribute in determining what will appear on the screens.
-== Code Snippets ==
-=== 
 
+---------------------------------------------------------------------------------------------------
 = Visual Studio 2010 =
 omegalib supports builds in visual studio 2008 and 2010. Both 32 and 64 bit builds should work, but currently only
 Visual studio 2010 32 bit builds are tested regularly.
@@ -35,6 +35,11 @@ _^How to build equalizer separately to solve this error.^_
 === "In Debug mode the build succeeds but the program will fail running with a 0xc0150002 error" ===
 Some of the libraries used internally by omegalib need the Visual Studio 2008 Debug CRT to run.
 To solve this issue install Visual C++ Express 2008 (post link)
+
+=== "The build fails because svn complains: the equalizer build directory is not a working copy" ===
+The cause of this error is unclear, and so far it happened on only one virtual machine install. Equalizer and omegalib actually build fine with this error, but Visual Studio will keep complaining about it.
+
+A workaround is to *exclude* the equalizer project from the build after building the entire project the fist time (see the *Speeding up builds* tip in the general tips & tricks section)
 
 == General Tips & Tricks ==
 === Speeding up builds ===
