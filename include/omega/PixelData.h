@@ -42,6 +42,8 @@ namespace omega {
 		byte* lockData();
 		void unlockData();
 
+		void resize(int width, int height);
+
 		int getWidth() { return myWidth; }
 		int getHeight() { return myHeight; }
 		Format getFormat() { return myFormat; }

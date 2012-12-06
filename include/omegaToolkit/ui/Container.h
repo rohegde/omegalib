@@ -123,6 +123,13 @@ namespace omegaToolkit { namespace ui {
 		virtual void updateSize(Renderer* r);
         virtual void autosize(Renderer* r);
 
+		//! Pixel output
+		//@{
+		bool isPixelOutputEnabled();
+		void setPixelOutputEnabled(bool value);
+		PixelData* getPixels();
+		//@}
+
 	protected:
 		virtual void activate();
 
@@ -147,6 +154,9 @@ namespace omegaToolkit { namespace ui {
 		VerticalAlign myVerticalAlign;
 
 		Container3dSettings my3dSettings;
+
+		Ref<PixelData> myPixels;
+		bool myPixelOutputEnabled;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
