@@ -93,8 +93,8 @@ static
 #endif
 __inline void debug(const char *format, ...)
 {
-	va_list ap;
-	va_start(ap, format); vfprintf(stderr, format, ap); va_end(ap);
+	//va_list ap;
+	//va_start(ap, format); vfprintf(stderr, format, ap); va_end(ap);
 }
 #else
 #ifdef WIN32
