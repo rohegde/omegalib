@@ -186,12 +186,17 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(Widget, setUIEventCommand)
 		PYAPI_METHOD(Widget, setLayer)
 		PYAPI_METHOD(Widget, getLayer)
+		PYAPI_METHOD(Widget, getAutosize)
+		PYAPI_METHOD(Widget, setAutosize)
 		PYAPI_GETTER(Widget, transformPoint)
 		;
 
 	// Container
 	PYAPI_REF_CLASS(Container, Widget)
 		.def("get3dSettings", &Container::get3dSettings, PYAPI_RETURN_INTERNAL_REF)
+		PYAPI_METHOD(Container, isPixelOutputEnabled)
+		PYAPI_METHOD(Container, setPixelOutputEnabled)
+		PYAPI_REF_GETTER(Container, getPixels)
 		;
 
 	// Button

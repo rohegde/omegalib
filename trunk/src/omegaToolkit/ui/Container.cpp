@@ -44,7 +44,8 @@ Container::Container(Engine* server):
 		myHorizontalAlign(AlignCenter),
 		myVerticalAlign(AlignMiddle),
 		myGridRows(1),
-		myGridColumns(1)
+		myGridColumns(1),
+		myPixelOutputEnabled(false)
 {
 	// Containers have autosize enabled by default.
 	setAutosize(true);
@@ -589,6 +590,28 @@ void Container::activate()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+bool Container::isPixelOutputEnabled() 
+{ 
+	return myPixelOutputEnabled; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Container::setPixelOutputEnabled(bool value)
+{
+	myPixelOutputEnabled = value;
+	if(myPixelOutputEnabled && myPixels == NULL)
+	{
+		myPixels = new PixelData(PixelData::FormatRgba, 100, 100);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PixelData* Container::getPixels()
+{
+	return myPixels;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderable* Container::createRenderable()
 {
 	return new ContainerRenderable(this);
@@ -674,16 +697,33 @@ void ContainerRenderable::draw3d(const DrawContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ContainerRenderable::beginDraw(const DrawContext& context)
 {
-	if(myOwner->get3dSettings().enable3d)
+	if(myOwner->get3dSettings().enable3d || myOwner->isPixelOutputEnabled())
 	{
-		if(myRenderTarget == NULL || 
-			myTexture->getWidth() != myOwner->getWidth() ||
-			myTexture->getHeight() != myOwner->getHeight())
+		if(myOwner->get3dSettings().enable3d)
 		{
- 			myTexture = new Texture(context.gpuContext);
-			myTexture->initialize(myOwner->getWidth(), myOwner->getHeight());
-			myRenderTarget = new RenderTarget(context.gpuContext, RenderTarget::RenderToTexture);
-			myRenderTarget->setTextureTarget(myTexture);
+			if(myRenderTarget == NULL || 
+				myTexture->getWidth() != myOwner->getWidth() ||
+				myTexture->getHeight() != myOwner->getHeight())
+			{
+ 				myTexture = new Texture(context.gpuContext);
+				myTexture->initialize(myOwner->getWidth(), myOwner->getHeight());
+				myRenderTarget = new RenderTarget(context.gpuContext, RenderTarget::RenderToTexture);
+				myRenderTarget->setTextureTarget(myTexture);
+			}
+		}
+		else if(myOwner->isPixelOutputEnabled())
+		{
+			PixelData* pixels = myOwner->getPixels();
+			if(myRenderTarget == NULL || 
+				pixels->getWidth() != myOwner->getWidth() ||
+				pixels->getHeight() != myOwner->getHeight())
+			{
+				// Resize the pixel buffer.
+				pixels->resize(myOwner->getWidth(), myOwner->getHeight());
+				myRenderTarget = new RenderTarget(context.gpuContext, RenderTarget::RenderOffscreen);
+				myRenderTarget->setReadbackTarget(pixels);
+			}
+			pixels->setDirty(true);
 		}
 
 		glPushAttrib(GL_VIEWPORT_BIT);
@@ -692,15 +732,20 @@ void ContainerRenderable::beginDraw(const DrawContext& context)
 		glMatrixMode(GL_PROJECTION);
 		glPushMatrix();
 		glLoadIdentity();
-		glOrtho(0, myOwner->getWidth(), 0, myOwner->getHeight(), 0, 1);
+		// Kindof hackish... when saving data to a pixel buffer we have to render inverted y (glReadPixels reands from the bottom line up)
+		if(myOwner->isPixelOutputEnabled()) glOrtho(0, myOwner->getWidth(), myOwner->getHeight(), 0, 0, 1);
+		else glOrtho(0, myOwner->getWidth(), 0, myOwner->getHeight(), 0, 1);
 
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
 		glLoadIdentity();
+		
 		//glScalef(0.05f, 0.05f, 1);
 		//glTranslatef(0, -SystemManager::instance()->getDisplaySystem()->getCanvasSize().y(), 0);
 
 		myRenderTarget->bind();
+
+		if(myOwner->isPixelOutputEnabled()) glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 	else
 	{
@@ -711,13 +756,16 @@ void ContainerRenderable::beginDraw(const DrawContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ContainerRenderable::endDraw(const DrawContext& context)
 {
-	if(myOwner->get3dSettings().enable3d)
+	if(myOwner->get3dSettings().enable3d || myOwner->isPixelOutputEnabled())
 	{
 		glMatrixMode(GL_PROJECTION);
 		glPopMatrix();
 		glMatrixMode(GL_MODELVIEW);
 		glPopMatrix();
 		glPopAttrib();
+
+		if(myOwner->isPixelOutputEnabled()) myRenderTarget->readback();
+
 		myRenderTarget->unbind();
 	}
 	else

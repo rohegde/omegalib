@@ -71,6 +71,36 @@ PixelData::~PixelData()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void PixelData::resize(int width, int height)
+{
+	if(width != myWidth || height != myHeight)
+	{
+		myLock.lock();
+
+		myWidth = width;
+		myHeight = height;
+
+		if(!myDeleteDisabled) free(myData);
+		switch(myFormat)
+		{
+		case FormatRgb:
+			mySize = width * height * 3;
+			break;
+		case FormatRgba:
+			mySize = width * height * 4;
+			break;
+		case FormatMonochrome:
+			mySize = width * height;
+			break;
+		}
+		myData = (byte*)malloc(mySize);
+
+		myDirty = true;
+		myLock.unlock();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 int PixelData::getPitch()
 {
 	switch(myFormat)
