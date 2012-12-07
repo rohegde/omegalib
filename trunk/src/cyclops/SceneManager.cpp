@@ -784,7 +784,7 @@ void SceneManager::recompileShaders(ProgramAsset* program, const String& variati
 	// If the shader does not exist in the shader registry, we need to create it now.
 	if(vertexShader == NULL)
 	{
-		ofmsg("Creating vertex shader %1%", %fullVertexShaderName);
+		//ofmsg("Creating vertex shader %1%", %fullVertexShaderName);
 		vertexShader = new osg::Shader( osg::Shader::VERTEX );
 		// increase reference count to avoid being deallocated by osg program when deattached.
 		vertexShader->ref();
@@ -799,7 +799,7 @@ void SceneManager::recompileShaders(ProgramAsset* program, const String& variati
 	// If the shader does not exist in the shader registry, we need to create it now.
 	if(fragmentShader == NULL)
 	{
-		ofmsg("Creating fragment shader %1%", %fullFragmentShaderName);
+		//ofmsg("Creating fragment shader %1%", %fullFragmentShaderName);
 		fragmentShader = new osg::Shader( osg::Shader::FRAGMENT );
 		// increase reference count to avoid being deallocated by osg program when deattached.
 		fragmentShader->ref();
@@ -837,6 +837,9 @@ void SceneManager::loadModelAsync(ModelInfo* info, const String& callback)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool SceneManager::loadModel(ModelInfo* info)
 {
+	omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SceneManager::loadModel");
+
+
 	ModelAsset* asset = new ModelAsset();
 	asset->filename = info->path; /// changed filepath to filename (confirm from alassandro).
 	asset->numNodes = info->numFiles;
@@ -940,6 +943,7 @@ bool SceneManager::loadModel(ModelInfo* info)
 		}
 	}
 
+	omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< SceneManager::loadModel\n");
 	return true;
 }
 
@@ -1042,6 +1046,7 @@ void SceneManager::recompileShaders()
 	// Update the shader variation name
 	myShaderVariationName = ostr(myShadowSettings.shadowsEnabled ? ".sm%1%" : ".%1%", %myNumActiveLights);
 
+	//omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SceneManager::recompileShaders");
 	ofmsg("Recompiling shaders (variation: %1%)", %myShaderVariationName);
 
 	typedef Dictionary<String, Ref<ProgramAsset> >::Item ProgramAssetItem;
@@ -1049,6 +1054,7 @@ void SceneManager::recompileShaders()
 	{
 		recompileShaders(item.getValue(), myShaderVariationName);
 	}
+	//omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< SceneManager::recompileShaders\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
