@@ -100,6 +100,10 @@ protected:
 			if(StringUtils::startsWith(*iter, "colored")) define_passes_colored(*iter);
 			else if(StringUtils::startsWith(*iter, "textured")) define_passes_textured(*iter);
 			else if(StringUtils::startsWith(*iter, "bump")) define_passes_bump(*iter);
+			else if(*iter == "")
+			{
+				define_passes_colored("colored");
+			}
 			else
 			{
 				ofwarn("EffectNode: could not create effect with definition '%1%'", %myDefinition);
@@ -259,6 +263,9 @@ protected:
 		if(diffuse != "")
 		{
 			osg::Texture2D* tex = sm->getTexture(diffuse);
+
+			// By default keep original texture size
+			tex->setResizeNonPowerOfTwoHint(false);
 			if(tex != NULL)
 			{
 				ss->setTextureAttribute(0, tex);

@@ -64,6 +64,11 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_METHOD(SceneManager, setWandSize)
 		PYAPI_GETTER(SceneManager, getCurrentShadowSettings)
 		PYAPI_METHOD(SceneManager, resetShadowSettings)
+		PYAPI_REF_GETTER(SceneManager, createTexture)
+		;
+
+	// osg Texture2D
+	class_<osg::Texture2D, boost::noncopyable, Ref<osg::Texture2D> >("Texture2D", no_init)
 		;
 
 	// Entity

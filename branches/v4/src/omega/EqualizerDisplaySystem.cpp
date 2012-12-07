@@ -515,7 +515,8 @@ void EqualizerDisplaySystem::finishInitialize(ConfigImpl* config)
 		}
 	}
 	*/
-	omsg(":: Equalizer initialization DONE ::");
+	//omsg("Equalizer initialization DONE");
+	//omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< DISPLAY STARTUP\n\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -526,6 +527,7 @@ void EqualizerDisplaySystem::run()
 	int numArgs = 0;
 	setupEqInitArgs(numArgs, (const char**)argv);
 	myNodeFactory = new EqualizerNodeFactory();
+	omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DISPLAY INITIALIZATION");
 	if( !eq::init( numArgs, (char**)argv, myNodeFactory ))
 	{
 		oerror("Equalizer init failed");
@@ -536,10 +538,11 @@ void EqualizerDisplaySystem::run()
 	// If this is the master node, run the master loop.
 	if(myConfig && mySys->isMaster())
 	{
-		omsg(":: Equalizer display system startup ::");
+		//omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DISPLAY INITIALIZATION");
 		if( myConfig->init())
 		{
-			omsg(":: Equalizer display system startup DONE ::");
+			omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< DISPLAY INITIALIZATION\n\n");
+			omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> APPLICATION LOOP");
 
 			uint32_t spin = 0;
 			bool exitRequestProcessed = false;
@@ -559,6 +562,7 @@ void EqualizerDisplaySystem::run()
 					myConfig->finishAllFrames();
 				}
 			}
+			omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< APPLICATION LOOP\n\n");
 		}
 		else
 		{
@@ -601,12 +605,12 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position)
 	int displayWidth = myDisplayConfig.canvasPixelSize[0];
 	int displayHeight = myDisplayConfig.canvasPixelSize[1];
 
-	if(position[0] < 0 || position[0] > displayWidth || 
-		position[1] < 0 || position[1] > displayHeight)
-	{
-		ofwarn("EqualizerDisplaySystem::getViewRay: position out of bounds (%1%)", %position);
-		return Ray();
-	}
+	//if(position[0] < 0 || position[0] > displayWidth || 
+	//	position[1] < 0 || position[1] > displayHeight)
+	//{
+	//	ofwarn("EqualizerDisplaySystem::getViewRay: position out of bounds (%1%)", %position);
+	//	return Ray();
+	//}
 
 	int channelX = position[0] / channelWidth;
 	int channelY = position[1] / channelHeight;
@@ -624,6 +628,11 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	int y = position[1];
 
 	DisplayTileConfig* dtc = myDisplayConfig.tileGrid[channelX][channelY];
+	if(dtc == NULL)
+	{
+		ofwarn("EqualizerDisplaySystem:getViewRay: could not find channel %1% %2%", %channelX %channelY);
+		return Ray();
+	}
 
 	// Try to use the camera attached to the tile first. If the camera is not set, switch to the default camera.
 	Camera* camera = dtc->camera;

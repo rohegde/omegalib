@@ -177,11 +177,15 @@ namespace omega {
 			py_it = pythonFunMap.find(funcName);
 			if (py_it != pythonFunMap.end()){
 				PythonInterpreter* pi = SystemManager::instance()->getScriptInterpreter();
-				String pythonScript = omicron::StringUtils::replaceAll(py_it->second, PORTHOLE_EVENT_TOKEN_CAMERA_ID, boost::lexical_cast<std::string>(ev.sessionCamera->id));
-				pythonScript = omicron::StringUtils::replaceAll(pythonScript, PORTHOLE_EVENT_TOKEN_VALUE, ev.value);
+
+				String pythonScript = omicron::StringUtils::replaceAll(py_it->second, PORTHOLE_EVENT_TOKEN_VALUE, ev.value);
 				pythonScript = omicron::StringUtils::replaceAll(pythonScript, PORTHOLE_EVENT_TOKEN_KEY, boost::lexical_cast<std::string>(ev.key));
 				pythonScript = omicron::StringUtils::replaceAll(pythonScript, PORTHOLE_EVENT_TOKEN_MOUSE_BTN, boost::lexical_cast<std::string>(ev.mouseButton));
-				pythonScript = omicron::StringUtils::replaceAll(pythonScript, PORTHOLE_EVENT_TOKEN_EVENT, boost::lexical_cast<std::string>(ev.sessionCamera->id));
+				pythonScript = omicron::StringUtils::replaceAll(pythonScript, PORTHOLE_EVENT_TOKEN_EVENT, boost::lexical_cast<std::string>(ev.htmlEvent));
+
+				if (ev.sessionCamera != NULL)
+					pythonScript = omicron::StringUtils::replaceAll(pythonScript, PORTHOLE_EVENT_TOKEN_CAMERA_ID, boost::lexical_cast<std::string>(ev.sessionCamera->id));
+
 				pi->queueCommand(pythonScript); 
 			}
 			return;

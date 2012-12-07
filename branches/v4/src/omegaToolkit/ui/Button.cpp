@@ -83,7 +83,7 @@ void Button::handleEvent(const Event& evt)
 	{
 		Vector2f point  = Vector2f(evt.getPosition().x(), evt.getPosition().y());
 		point = transformPoint(point);
-		if(hitTest(point))
+		if(simpleHitTest(point))
 		{
 			if(evt.getType() == Event::Down)		
 			{

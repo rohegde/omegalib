@@ -31,7 +31,9 @@
 #include "omega/DrawInterface.h"
 #include "omega/Renderable.h"
 
-namespace omegaToolkit { namespace ui {
+namespace omegaToolkit { 
+	class UiScriptCommand;
+	namespace ui {
     class Container;
     ///////////////////////////////////////////////////////////////////////////////////////////////
     class OTK_API Widget: public RenderableFactory, IEventListener
@@ -40,6 +42,8 @@ namespace omegaToolkit { namespace ui {
     friend class UiRenderPass;
     friend class Container;
     friend class WidgetRenderable;
+    public:
+		enum Layer { Back, Middle, Front, NumLayers };
     public:
         Widget(Engine* server);
         virtual ~Widget();
@@ -53,6 +57,8 @@ namespace omegaToolkit { namespace ui {
         void setUIEventHandler(IEventListener* value);
         //! @see setWidgetEventHandler
         IEventListener* getUIEventHandler();
+
+		void setUIEventCommand(const String& command);
 
         //! Gets the color used when widget debug mode is enabled.
         Color getDebugColor() { return myDebugModeColor; }
@@ -140,9 +146,6 @@ namespace omegaToolkit { namespace ui {
         bool isUserMoveEnabled() { return myUserMoveEnabled; }
         void setUserMoveEnabled(bool value) { myUserMoveEnabled = value; }
         
-        bool hitTest(const omega::Vector2f& point);
-        static bool hitTest(const omega::Vector2f& point, const omega::Vector2f& pos, const omega::Vector2f& size);
-
         //! Returns the unique Widget id.
         int getId();
         virtual void layout();
@@ -175,7 +178,20 @@ namespace omegaToolkit { namespace ui {
 		void setStyleValue(const String& key, const String& value);
 		//@}
 
+        //! layer
+		//@{
+		Layer getLayer() { return myLayer; }
+		void setLayer(Layer layer) { myLayer = layer; }
+		//@}
+
+		//! Returns true if the point is within this widget's bounding box.
+		bool hitTest(const Vector2f& point);
+        Vector2f transformPoint(const omega::Vector2f& point);
+
     protected:
+        bool simpleHitTest(const omega::Vector2f& point);
+        static bool simpleHitTest(const omega::Vector2f& point, const omega::Vector2f& pos, const omega::Vector2f& size);
+
 		virtual void activate() {}
 		virtual void deactivate() {}
 		virtual void updateStyle();
@@ -189,7 +205,6 @@ namespace omegaToolkit { namespace ui {
 
         void setContainer(Container* value);
 		Container* getContainer() { return myContainer; }
-        Vector2f transformPoint(const omega::Vector2f& point);
         void dispatchUIEvent(const Event& evt);
 
 		// Menu Widget Sounds
@@ -202,6 +217,8 @@ namespace omegaToolkit { namespace ui {
         //float myScale;
 
     private:
+		Layer myLayer;
+
         bool myStereo;
         bool myInitialized;
 
@@ -222,6 +239,7 @@ namespace omegaToolkit { namespace ui {
         Container* myContainer;
 
         IEventListener* myEventHandler;
+        Ref<UiScriptCommand> myUiEventCommand;
 
         bool myNeedLayoutRefresh;
 

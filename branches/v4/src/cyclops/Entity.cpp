@@ -74,7 +74,7 @@ void Entity::initialize(osg::Node* node)
 	myOsgSceneObject = new OsgSceneObject(myOsgNode);
 	myEffect->addChild(myOsgSceneObject->getTransformedNode());
 
-	myStateSet = myOsgNode->getOrCreateStateSet();
+	myStateSet = myEffect->getOrCreateStateSet();
 	myAlphaUniform = new osg::Uniform("unif_Alpha", myAlpha);
 	myStateSet->addUniform(myAlphaUniform);
 

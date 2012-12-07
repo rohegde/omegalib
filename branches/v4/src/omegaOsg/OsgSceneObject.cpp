@@ -68,6 +68,10 @@ void OsgSceneObject::update(SceneNode* node)
 		if(mySceneNode != NULL) mySceneNode->removeListener(this);
 		mySceneNode = node;
 		node->addListener(this);
+
+		// Force and update of the visible and selected states for this object.
+		onVisibleChanged(node, node->isVisible());
+		onSelectedChanged(node, node->isSelected());
 	}
 	const AffineTransform3& xform =  node->getFullTransform();
 	const Matrix4f& m = xform.matrix();

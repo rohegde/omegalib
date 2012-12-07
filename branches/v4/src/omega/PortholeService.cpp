@@ -427,7 +427,7 @@ inline void parse_json_message(json_value *value, per_session_data* data, recv_m
     switch(value->type)
     {
     case JSON_NULL:
-        printf("null\n");
+        //printf("null\n");
         break;
     case JSON_OBJECT:
     case JSON_ARRAY:

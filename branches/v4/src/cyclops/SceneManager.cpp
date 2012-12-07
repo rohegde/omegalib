@@ -327,7 +327,7 @@ void SceneManager::initialize()
 	// Standard shaders
 	setShaderMacroToFile("tangentSpaceSurfaceShader", "cyclops/common/forward/tangentSpace.frag");
 	setShaderMacroToFile("tangentSpaceVertexShader", "cyclops/common/forward/tangentSpace.vert");
-	setShaderMacroToFile("tangentSpaceFragmentLightSection", "cyclops/common/forward/tangentSpaceLight.frag");
+	//setShaderMacroToFile("tangentSpaceFragmentLightSection", "cyclops/common/forward/tangentSpaceLight.frag");
 
 	setShaderMacroToFile("vsinclude envMap", "cyclops/common/envMap/noEnvMap.vert");
 	setShaderMacroToFile("fsinclude envMap", "cyclops/common/envMap/noEnvMap.frag");
@@ -413,6 +413,21 @@ void SceneManager::update(const UpdateContext& context)
 	foreach(Entity* e, myObjectVector)
 	{
 		e->update(context);
+	}
+
+	// Loop through pixel buffers associated to textures. If a texture pixel buffer is dirty, 
+	// update the relative texture.
+	typedef pair<String, PixelData*> TexturePixelsItem;
+	foreach(TexturePixelsItem item, myTexturePixels)
+	{
+		if(item.second->isDirty())
+		{
+			osg::Texture2D* texture = myTextures[item.first];
+			osg::Image* img = OsgModule::pixelDataToOsg(item.second);
+			texture->setImage(img);
+
+			item.second->setDirty(false);
+		}
 	}
 }
 
@@ -615,6 +630,20 @@ osg::Texture2D* SceneManager::getTexture(const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+osg::Texture2D* SceneManager::createTexture(const String& name, PixelData* pixels)
+{
+	osg::Texture2D* texture = new osg::Texture2D();
+	osg::Image* img = OsgModule::pixelDataToOsg(pixels);
+	texture->setImage(img);
+
+	pixels->setDirty(false);
+	myTexturePixels[name] = pixels;
+	myTextures[name] = texture;
+
+	return texture;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::setShaderMacroToString(const String& macroName, const String& macroString)
 {
 	myShaderMacros[macroName] = macroString;
@@ -649,9 +678,8 @@ void SceneManager::loadShader(osg::Shader* shader, const String& name)
 		std::stringstream buffer;
 		buffer << t.rdbuf();
 
-		String shaderSrc = buffer.str();
-
-		String lightSectionMacroName = "tangentSpaceFragmentLightSection";
+		String shaderPreSrc = buffer.str();
+		String lightSectionMacroName = "fragmentLightSection";
 
 		// Replace shader macros.
 		// Do a multiple replacement passes to process macros-within macros.
@@ -663,8 +691,30 @@ void SceneManager::loadShader(osg::Shader* shader, const String& name)
 				if(macro.getKey() != lightSectionMacroName)
 				{
 					String macroName = ostr("@%1%", %macro.getKey());
-					shaderSrc = StringUtils::replaceAll(shaderSrc, macroName, macro.getValue());
+					shaderPreSrc = StringUtils::replaceAll(shaderPreSrc, macroName, macro.getValue());
 				}
+			}
+		}
+
+		// Read local macro definitions (only supported one now is fragmentLightSection)
+		String shaderSrc = "";
+		Vector<String> segments = StringUtils::split(shaderPreSrc, "$");
+		//ofmsg("segments %1%", %segments.size());
+		foreach(String segment, segments)
+		{
+			if(StringUtils::startsWith(segment, "@"))
+			{
+				Vector<String> macroNames = StringUtils::split(segment, "\r\n\t ", 1);
+				
+				String macroContent = StringUtils::replaceAll(segment, macroNames[0], "");
+				
+				String macroName = macroNames[0].substr(1);
+				//ofmsg("SEGMENT IDENTIFIED: %1%", %macroName);
+				myShaderMacros[macroName] = macroContent;
+			}
+			else
+			{
+				shaderSrc.append(segment);
 			}
 		}
 
@@ -685,6 +735,9 @@ void SceneManager::loadShader(osg::Shader* shader, const String& name)
 			fragmentShaderLightSection);
 
 		//ofmsg("Loading shader file %1%", %name);
+		// omsg("#############################################################");
+		// omsg(shaderSrc);
+		// omsg("#############################################################");
 		shader->setShaderSource(shaderSrc);
 	}
 	else
@@ -731,7 +784,7 @@ void SceneManager::recompileShaders(ProgramAsset* program, const String& variati
 	// If the shader does not exist in the shader registry, we need to create it now.
 	if(vertexShader == NULL)
 	{
-		ofmsg("Creating vertex shader %1%", %fullVertexShaderName);
+		//ofmsg("Creating vertex shader %1%", %fullVertexShaderName);
 		vertexShader = new osg::Shader( osg::Shader::VERTEX );
 		// increase reference count to avoid being deallocated by osg program when deattached.
 		vertexShader->ref();
@@ -746,7 +799,7 @@ void SceneManager::recompileShaders(ProgramAsset* program, const String& variati
 	// If the shader does not exist in the shader registry, we need to create it now.
 	if(fragmentShader == NULL)
 	{
-		ofmsg("Creating fragment shader %1%", %fullFragmentShaderName);
+		//ofmsg("Creating fragment shader %1%", %fullFragmentShaderName);
 		fragmentShader = new osg::Shader( osg::Shader::FRAGMENT );
 		// increase reference count to avoid being deallocated by osg program when deattached.
 		fragmentShader->ref();
@@ -784,6 +837,9 @@ void SceneManager::loadModelAsync(ModelInfo* info, const String& callback)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool SceneManager::loadModel(ModelInfo* info)
 {
+	omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SceneManager::loadModel");
+
+
 	ModelAsset* asset = new ModelAsset();
 	asset->filename = info->path; /// changed filepath to filename (confirm from alassandro).
 	asset->numNodes = info->numFiles;
@@ -887,6 +943,7 @@ bool SceneManager::loadModel(ModelInfo* info)
 		}
 	}
 
+	omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< SceneManager::loadModel\n");
 	return true;
 }
 
@@ -989,6 +1046,7 @@ void SceneManager::recompileShaders()
 	// Update the shader variation name
 	myShaderVariationName = ostr(myShadowSettings.shadowsEnabled ? ".sm%1%" : ".%1%", %myNumActiveLights);
 
+	//omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SceneManager::recompileShaders");
 	ofmsg("Recompiling shaders (variation: %1%)", %myShaderVariationName);
 
 	typedef Dictionary<String, Ref<ProgramAsset> >::Item ProgramAssetItem;
@@ -996,6 +1054,7 @@ void SceneManager::recompileShaders()
 	{
 		recompileShaders(item.getValue(), myShaderVariationName);
 	}
+	//omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< SceneManager::recompileShaders\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

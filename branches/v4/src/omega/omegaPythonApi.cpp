@@ -30,6 +30,7 @@
 #include "omega/EqualizerDisplaySystem.h"
 #include "omega/Engine.h"
 #include "omega/Actor.h"
+#include "omega/ImageUtils.h"
 #ifdef OMEGA_USE_PORTHOLE
 	#include "omega/PortholeService.h"
 #endif
@@ -48,6 +49,12 @@ using namespace omega;
 //ScriptRendererCommand* sScriptRendererCommand = NULL;
 
 PyObject* sEuclidModule = NULL;
+
+bool sRefPtrForwardingEnabled = false;
+void enableRefPtrForwarding() { sRefPtrForwardingEnabled = true; }
+void disableRefPtrForwarding() { sRefPtrForwardingEnabled = false; }
+bool isRefPtrForwardingEnabled() { return sRefPtrForwardingEnabled; }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PyObject* omegaExit(PyObject* self, PyObject* args)
@@ -612,6 +619,42 @@ void toggleStereo()
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//! Class wrapping a PixelData object and a filename, used by the python wrapper
+//class ImageFile
+//{
+//public:
+//	ImageFile(const ImageFile& rhs):
+//	  myFilename(rhs.myFilename), myPixels(rhs.myPixels)
+//	  {}
+//
+//	ImageFile(const String filename, PixelData* pixels):
+//	  myFilename(filename), myPixels(pixels)
+//	  {}
+//
+//	const String& getFilename() { return myFilename; }
+//	PixelData* getPixels() { return myPixels; }
+//	bool isLoaded() { return myPixels != NULL; }
+//
+//private:
+//	String myFilename;
+//	Ref<PixelData> myPixels;
+//};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PixelData* loadImage(const String& filename)
+{
+	Ref<PixelData> data = ImageUtils::loadImage(filename);
+	if(data != NULL)
+	{
+		enableRefPtrForwarding();
+		data->ref();
+		return data;
+	}
+	return NULL;
+	//return ImageFile(filename, data);
+}
+
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeYawOverloads, yaw, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodePitchOverloads, pitch, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeRollOverloads, roll, 1, 2) 
@@ -642,17 +685,8 @@ BOOST_PYTHON_MODULE(omega)
 			PYAPI_ENUM_VALUE(Event,Untrace)
 			PYAPI_ENUM_VALUE(Event,Disconnect)
 			PYAPI_ENUM_VALUE(Event,Click)
-			PYAPI_ENUM_VALUE(Event,DoubleClick)
-			PYAPI_ENUM_VALUE(Event,MoveLeft)
-			PYAPI_ENUM_VALUE(Event,MoveRight)
-			PYAPI_ENUM_VALUE(Event,MoveUp)
-			PYAPI_ENUM_VALUE(Event,MoveDown)
 			PYAPI_ENUM_VALUE(Event,Zoom)
-			PYAPI_ENUM_VALUE(Event,SplitStart)
-			PYAPI_ENUM_VALUE(Event,SplitEnd)
 			PYAPI_ENUM_VALUE(Event,Split)
-			PYAPI_ENUM_VALUE(Event,RotateStart)
-			PYAPI_ENUM_VALUE(Event,RotateEnd)
 			PYAPI_ENUM_VALUE(Event,Rotate)
 			PYAPI_ENUM_VALUE(Event,Null)
 		;
@@ -714,6 +748,8 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(Event, getSourceId)
 		PYAPI_METHOD(Event, getType)
 		PYAPI_METHOD(Event, getServiceType)
+		PYAPI_METHOD(Event, isProcessed)
+		PYAPI_METHOD(Event, setProcessed)
 		PYAPI_GETTER(Event, getPosition)
 		PYAPI_GETTER(Event, getOrientation)
 		;
@@ -833,6 +869,13 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(PixelData, getHeight)
 		;
 
+	// ImageFile
+	//PYAPI_BASE_CLASS(ImageFile)
+	//	PYAPI_METHOD(ImageFile, isLoaded)
+	//	PYAPI_GETTER(ImageFile, getFilename)
+	//	PYAPI_REF_GETTER(ImageFile, getPixels)
+	//	;
+
 	// SoundEnvironment
 	PYAPI_REF_BASE_CLASS(SoundEnvironment)
 		PYAPI_REF_GETTER(SoundEnvironment, loadSoundFromFile)
@@ -895,6 +938,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("ogetdataprefix", ogetdataprefix);
 	def("osetdataprefix", osetdataprefix);
 	def("isMaster", isMaster);
+	def("loadImage", loadImage, PYAPI_RETURN_REF);
 };
 
 // Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)

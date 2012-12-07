@@ -30,7 +30,6 @@
 #include "osystem.h"
 #include "SystemManager.h"
 #include "DisplayConfig.h"
-//#include "IEventListener.h"
 
 namespace omega
 {

@@ -37,6 +37,18 @@ Event::Flags UiModule::mysConfirmButton = Event::Button3;
 Event::Flags UiModule::mysCancelButton = Event::Button4;
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+UiModule* UiModule::createAndInitialize()
+{
+	if(mysInstance == NULL)
+	{
+		mysInstance = new UiModule();
+		ModuleServices::addModule(mysInstance);
+		mysInstance->doInitialize(Engine::instance());
+	}
+	return mysInstance;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 UiModule::UiModule():
 	EngineModule("UiModule"),
 	myWidgetFactory(NULL),
@@ -46,8 +58,6 @@ UiModule::UiModule():
 {
 	// This module has high priority. It will receive events before modules with lower priority.
 	setPriority(EngineModule::PriorityHigh);
-
-	mysInstance = this;
 
 	// Clean the widget table
 	memset(myWidgets, 0, MaxWidgets * sizeof(void*));
@@ -62,7 +72,10 @@ void UiModule::initialize()
 	myUi = new ui::Container(getEngine());
 	myUi->setAutosize(false);
 	myUi->setLayout(ui::Container::LayoutFree);
-	myUi->setUIEventHandler(getEngine());
+	
+	// If we let the engine act as the default event handler we end up having infinite loops.
+	// The engine shouldn't really be acting as a default handler. Only user code should.
+	//myUi->setUIEventHandler(getEngine());
 
     Config* cfg = getEngine()->getSystemManager()->getAppConfig();
 

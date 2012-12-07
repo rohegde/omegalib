@@ -165,8 +165,8 @@ void Engine::initialize()
 	}
 
 
-	// Load camera config form application config file
-    if(cfg->exists("config/camera"))
+	// Load camera config form application config file (if it is different from system configuration)
+    if(cfg != syscfg && cfg->exists("config/camera"))
     {
         Setting& s = cfg->lookup("config/camera");
 		myDefaultCamera->setup(s);
@@ -389,15 +389,15 @@ Camera* Engine::getCamera(const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Engine::CameraCollection::Range Engine::getCameras()
+Engine::CameraCollection Engine::getCameras()
 {
-    return CameraCollection::Range(myCameras.begin(), myCameras.end());
+    return myCameras;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Engine::CameraCollection::ConstRange Engine::getCameras() const
+Engine::CameraCollection Engine::getCameras() const
 {
-    return CameraCollection::ConstRange(myCameras.begin(), myCameras.end());
+    return myCameras;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

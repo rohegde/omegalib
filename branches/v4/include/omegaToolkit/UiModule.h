@@ -43,6 +43,7 @@ namespace omegaToolkit
 		static const int MaxWidgets = 16384;
 	public:
 		static UiModule* instance() { return mysInstance; }
+		static UiModule* createAndInitialize();
 		static void setConfirmButton(Event::Flags button) { mysConfirmButton = button; }
 		static void setCancelButton(Event::Flags button) { mysCancelButton = button; }
 		static Event::Flags getConfirmButton() { return mysConfirmButton; }

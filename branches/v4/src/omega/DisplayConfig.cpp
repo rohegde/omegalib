@@ -172,6 +172,7 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 					std::vector<std::string> args = StringUtils::split(String(sTile.getName()), "xt");
 					Vector2i index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
 					tc->offset = index.cwiseProduct(tc->pixelSize);
+					cfg.tileGrid[index[0]][index[1]] = tc;
 				}
 
 				// Custom camera

@@ -90,6 +90,14 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_ENUM_VALUE(MenuItem, SubMenu)
 		;
 
+	// Widget Layer
+	PYAPI_ENUM(Widget::Layer, WidgetLayer)
+		PYAPI_ENUM_VALUE(Widget, Front)
+		PYAPI_ENUM_VALUE(Widget, Middle)
+		PYAPI_ENUM_VALUE(Widget, Back)
+		//PYAPI_ENUM_VALUE(Container, LayoutGrid)
+		;
+
 	PYAPI_BASE_CLASS(ToolkitUtils)
 		PYAPI_STATIC_REF_GETTER(ToolkitUtils, createInteractor)
 		PYAPI_STATIC_REF_GETTER(ToolkitUtils, setupInteractor)
@@ -144,6 +152,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 	// UiModule
 	PYAPI_REF_BASE_CLASS(UiModule)
 		PYAPI_STATIC_REF_GETTER(UiModule, instance)
+		PYAPI_STATIC_REF_GETTER(UiModule, createAndInitialize)
 		PYAPI_REF_GETTER(UiModule, getWidgetFactory)
 		PYAPI_REF_GETTER(UiModule, getUi)
 		;
@@ -167,22 +176,37 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(Widget, isVisible)
 		.def("setPosition", setPosition1)
 		PYAPI_GETTER(Widget, getPosition)
-		.def("setScale", setSize1)
+		.def("setSize", setSize1)
 		PYAPI_GETTER(Widget, getSize)
 		PYAPI_METHOD(Widget, setName)
 		PYAPI_GETTER(Widget, getName)
 		PYAPI_METHOD(Widget, setStyle)
 		PYAPI_METHOD(Widget, refresh)
+		PYAPI_METHOD(Widget, hitTest)
+		PYAPI_METHOD(Widget, setUIEventCommand)
+		PYAPI_METHOD(Widget, setLayer)
+		PYAPI_METHOD(Widget, getLayer)
+		PYAPI_METHOD(Widget, getAutosize)
+		PYAPI_METHOD(Widget, setAutosize)
+		PYAPI_GETTER(Widget, transformPoint)
 		;
 
 	// Container
 	PYAPI_REF_CLASS(Container, Widget)
+		.def("get3dSettings", &Container::get3dSettings, PYAPI_RETURN_INTERNAL_REF)
+		PYAPI_METHOD(Container, isPixelOutputEnabled)
+		PYAPI_METHOD(Container, setPixelOutputEnabled)
+		PYAPI_REF_GETTER(Container, getPixels)
 		;
 
 	// Button
 	PYAPI_REF_CLASS(Button, Widget)
 		PYAPI_METHOD(Button, getText)
 		PYAPI_METHOD(Button, setText)
+		PYAPI_METHOD(Button, isCheckable)
+		PYAPI_METHOD(Button, setCheckable)
+		PYAPI_METHOD(Button, setChecked)
+		PYAPI_METHOD(Button, isChecked)
 		;
 
 	// Image
@@ -199,6 +223,8 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 
 	// Label
 	PYAPI_REF_CLASS(Label, Widget)
+		PYAPI_METHOD(Label, getText)
+		PYAPI_METHOD(Label, setText)
 		;
 }
 

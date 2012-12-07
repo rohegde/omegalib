@@ -125,6 +125,7 @@ void MenuItem::setCommand(const String& command)
 	if(myCommand == NULL)
 	{
 		myCommand = new UiScriptCommand(command);
+		myCommand->setUiEventsOnly(true);
 		myWidget->setUIEventHandler(myCommand.get());
 	}
 	else
@@ -481,17 +482,7 @@ MenuManager::~MenuManager()
 void MenuManager::initialize()
 {
 	// Create the ui module if one is not available already
-	if(UiModule::instance() != NULL)
-	{
-		myUiModule = UiModule::instance();
-	}
-	else
-	{
-		myUiModule = new UiModule();
-		ModuleServices::addModule(myUiModule);
-		// Force uimodule init.
-		myUiModule->doInitialize(getEngine());
-	}
+	myUiModule = UiModule::createAndInitialize();
 
 	if(SystemManager::settingExists("config/ui"))
 	{

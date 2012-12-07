@@ -54,9 +54,10 @@
 #include <boost/utility.hpp>
 using namespace boost::python;
 
-#define PYAPI_RETURN_VALUE return_value_policy<copy_const_reference>()
+#define PYAPI_RETURN_VALUE return_value_policy<return_by_value>()
 #define PYAPI_RETURN_REF return_value_policy<return_by_smart_ptr>()
 #define PYAPI_RETURN_NEW_INSTANCE return_value_policy<manage_new_object>()
+#define PYAPI_RETURN_INTERNAL_REF return_internal_reference<>()
 //#define PYAPI_RETURN_REFERENCE return_value_policy<copy_const_reference>()
 #define PYAPI_POINTER_LIST(itemName, className) class_< List<itemName*> > (className, no_init).def("__iter__", iterator< List<itemName*>, return_internal_reference<> >());
 
@@ -64,7 +65,7 @@ using namespace boost::python;
 #define PYAPI_ENUM_VALUE(enumName, valueName) .value(#valueName, enumName::valueName)
 
 #define PYAPI_METHOD(className, methodName) .def(#methodName, &className::methodName)
-#define PYAPI_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<copy_const_reference>())
+#define PYAPI_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_value>())
 #define PYAPI_REF_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_smart_ptr>())
 #define PYAPI_STATIC_REF_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_smart_ptr>()).staticmethod(#methodName)
 #define PYAPI_PROPERTY(className, propName) .def_readwrite(#propName, &className::propName)
@@ -75,6 +76,9 @@ using namespace boost::python;
 #define PYAPI_REF_CLASS(className, baseName) class_<className, bases<baseName>, boost::noncopyable, Ref<className> >(#className, no_init)
 #define PYAPI_REF_BASE_CLASS(className) class_<className, boost::noncopyable, Ref<className> >(#className, no_init)
 #define PYAPI_REF_BASE_CLASS_WITH_CTOR(className) class_<className, boost::noncopyable, Ref<className> >(#className)
+
+bool OMEGA_API isRefPtrForwardingEnabled();
+void OMEGA_API disableRefPtrForwarding();
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // SMART POINTER WRAPPING CODE FROM http://isolation-nation.blogspot.com/2008/09/returnbysmartptr-policy-for-boost.html
@@ -102,6 +106,15 @@ namespace detail {
 			typedef objects::pointer_holder<smart_pointer, T> holder_t;
 
 			smart_pointer ptr(const_cast<T*>(p));
+
+			// If reference pointer forwarding is enabled, the reference count for the object has been incremented
+			// by 1, to avoid object deletion during pointer forwarding to python. Not that the object is safe inside a 
+			// new smart pointer, decrease the refcount.
+			if(isRefPtrForwardingEnabled()) 
+			{
+				ptr->unref();
+				disableRefPtrForwarding();
+			}
 			return objects::make_ptr_instance<T, holder_t>::execute(ptr);
 		}
 	};

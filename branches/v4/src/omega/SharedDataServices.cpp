@@ -79,14 +79,14 @@ SharedIStream& SharedIStream::operator>> ( String& str )
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SharedData::registerObject(SharedObject* module, const String& sharedId)
 {
-	ofmsg("SharedData::registerObject: registering %1%", %sharedId);
+	//ofmsg("SharedData::registerObject: registering %1%", %sharedId);
 	myObjects[sharedId] = module;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SharedData::unregisterObject(const String& sharedId)
 {
-	ofmsg("SharedData::unregisterObject: unregistering %1%", %sharedId);
+	//ofmsg("SharedData::unregisterObject: unregistering %1%", %sharedId);
 	myObjects.erase(sharedId);
 }
 

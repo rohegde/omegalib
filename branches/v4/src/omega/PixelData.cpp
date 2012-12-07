@@ -35,7 +35,8 @@ PixelData::PixelData(Format fmt, int width, int height, byte* data):
 	myHeight(height),
 	myFormat(fmt),
 	mySize(0),
-	myDeleteDisabled(false)
+	myDeleteDisabled(false),
+	myDirty(true)
 {
 	if(myData == NULL)
 	{
@@ -66,6 +67,36 @@ PixelData::~PixelData()
 	{
 		ofmsg("PixelData::~PixelData: deleting %1%x%2% image", %myWidth %myHeight);
 		free(myData);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PixelData::resize(int width, int height)
+{
+	if(width != myWidth || height != myHeight)
+	{
+		myLock.lock();
+
+		myWidth = width;
+		myHeight = height;
+
+		if(!myDeleteDisabled) free(myData);
+		switch(myFormat)
+		{
+		case FormatRgb:
+			mySize = width * height * 3;
+			break;
+		case FormatRgba:
+			mySize = width * height * 4;
+			break;
+		case FormatMonochrome:
+			mySize = width * height;
+			break;
+		}
+		myData = (byte*)malloc(mySize);
+
+		myDirty = true;
+		myLock.unlock();
 	}
 }
 

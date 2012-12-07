@@ -83,7 +83,7 @@
  <script src="http://raw.github.com/EightMedia/hammer.js/master/hammer.js" type="application/javascript"></script>
  <script src="https://raw.github.com/EightMedia/hammer.js/master/jquery.specialevent.hammer.js" type="application/javascript"></script>
 
- <script src="./recorder.js" type="application/javascript"></script>
+ <!-- <script src="./recorder.js" type="application/javascript"></script> -->
 
  <div id="porthole_content"  style=" width : 100%; height : 99%; " data-theme="b">
    <div data-role="header">
@@ -245,7 +245,7 @@
     var camera;
 
     ////////////////// TESTING VARS ////////////////////////////
-    var TESTING = true
+    var TESTING = true;
     // Round Trip Time
     var RTT_start;
     var RTT_end;
@@ -279,10 +279,10 @@
                 img.src = image;
 
                 // TEST
-                if (TESTING == true && message.test_flag == true && RTT_start != undefined) {
-                    console.log((new Date()).getTime() - RTT_start);
-                    RTT_start = undefined;
-                }
+                //                if (TESTING == true && message.test_flag == true && RTT_start != undefined) {
+                //                    console.log((new Date()).getTime() - RTT_start);
+                //                    RTT_start = undefined;
+                //                }
             }
             else if (message.event_type == "html_elements") {
                 document.getElementById("porthole_content").innerHTML = message.innerHTML;
@@ -418,13 +418,13 @@
 
             if (pinching)
                 watchPinch(); // Update pinching
-            else if (dragging && !pinching)
+            if (dragging)
                 watchDrag(); // Update dragging
 
             ctx.drawImage(img, 0, 0, camera.width, camera.height);
 
             // Button streaming value
-            if (mouseDown == 1 && (sendContinuous == "true" || sendContinuous == true)) {
+            if (mouseDown == 1 && (sendContinuous == "true" || sendContinuous == true) && JSONToSend != "null" && JSONToSend != undefined) {
                 socket.send(JSON.stringify(JSONToSend));
             }
 

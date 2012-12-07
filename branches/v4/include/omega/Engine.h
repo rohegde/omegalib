@@ -101,8 +101,8 @@ namespace omega {
 		Camera* createCamera(const String& name, uint flags = Camera::DefaultFlags);
 		void destroyCamera(Camera* cam);
 		Camera* getCamera(const String& name);
-		CameraCollection::Range getCameras();
-		CameraCollection::ConstRange getCameras() const;
+		CameraCollection getCameras();
+		CameraCollection getCameras() const;
 		//@}
 
 		//! Font management

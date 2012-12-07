@@ -528,7 +528,21 @@ void OmegaViewer::handleCommand(const String& cmd)
 // Application entry point
 int main(int argc, char** argv)
 {
-	Application<OmegaViewer> app("orun");
+	String applicationName = "orun";
+
 	oargs().newNamedString('s', "script", "script", "script to launch at startup", sDefaultScript);
+	oargs().process(argc, argv);
+
+	// If a start script is specified, use it to change the application name. This in turn allows for
+	// loading of per-application config files
+	// (i.e. orun -s apps/test.py will name the application apps/test and look for apps/test.cfg as the 
+	// default configuration file)
+	if(sDefaultScript != "")
+	{
+		String extension;
+		StringUtils::splitBaseFilename(sDefaultScript, applicationName, extension);
+	}
+
+	Application<OmegaViewer> app(applicationName);
 	return omain(app, argc, argv);
 }

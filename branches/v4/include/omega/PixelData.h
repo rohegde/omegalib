@@ -42,6 +42,8 @@ namespace omega {
 		byte* lockData();
 		void unlockData();
 
+		void resize(int width, int height);
+
 		int getWidth() { return myWidth; }
 		int getHeight() { return myHeight; }
 		Format getFormat() { return myFormat; }
@@ -58,6 +60,9 @@ namespace omega {
 		void setDeleteDisabled(bool value) { myDeleteDisabled = value; }
 		bool isDeleteDisabled() { return myDeleteDisabled; }
 
+		bool isDirty() { return myDirty; }
+		void setDirty(bool value) { myDirty = value; }
+
 	private:
 		Lock myLock;
 		Format myFormat;
@@ -66,6 +71,7 @@ namespace omega {
 		int myHeight;
 		size_t mySize;
 		bool myDeleteDisabled;
+		bool myDirty;
 	};
 }; // namespace omega
 

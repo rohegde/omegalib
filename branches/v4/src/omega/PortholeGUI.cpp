@@ -50,6 +50,7 @@ PortholeGUI::PortholeGUI()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 PortholeGUI::~PortholeGUI(){
 	delete device;
+	Engine::instance()->destroyCamera(this->sessionCamera->camera);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,10 +89,8 @@ string PortholeGUI::create(bool firstTime){
 	// Parse the GUI elemets disposition
 	for (omega::xml::TiXmlElement* pChild = root->FirstChildElement(); pChild != 0; pChild = pChild->NextSiblingElement()){
 		
-		// Get element name: should correspond to id TODO check
-		const char* id = pChild->Value();
-
-		PortholeElement* element = elementsMap[id];
+		// Get element name: should correspond to id
+		String id;
 
 		string width="", height="";
 
@@ -103,17 +102,30 @@ string PortholeGUI::create(bool firstTime){
 			StringUtils::toLowerCase(attribute);
 
 			// Save id attribute
+			if (attribute.compare("id")==0){
+				id = pAttrib->Value();
+			}
+
+			// Save width attribute
 			if (attribute.compare("width")==0){
 				width = pAttrib->Value();
 			}
 
-			// Save type attribute
+			// Save height attribute
 			else if (attribute.compare("height")==0){
 				height = pAttrib->Value();
 			}
 
 			// Next attribute
 			pAttrib = pAttrib->Next();
+		}
+
+		PortholeElement* element = elementsMap[id];
+
+		if (element == NULL){
+			std::cout << "!! >> XID Error: No element found. Check <element> ids inside <interface> elements."
+				"Check if that element has been defined inside <elements>" << std::endl;
+			abort();
 		}
 
 		/*
@@ -137,7 +149,7 @@ string PortholeGUI::create(bool firstTime){
 
 			// Default camera case
 			if (strcmp(element->cameraType.c_str(),"default")==0){
-				if (firstTime){
+				if (firstTime || this->sessionCamera == NULL){
 					createCustomCamera(true, percentToFloat(width), percentToFloat(height));
 				}
 				else{
@@ -158,7 +170,7 @@ string PortholeGUI::create(bool firstTime){
 					camMask = 1 << camMask;
 				}
 
-				if (firstTime){
+				if (firstTime || this->sessionCamera == NULL){
 					createCustomCamera(false, percentToFloat(width), percentToFloat(height), camMask);
 				}
 				else{
@@ -217,7 +229,7 @@ void PortholeGUI::createCustomCamera(bool followDefaultCamera, float widthPercen
 	// Round down width to a multiple of 4.
 	int width = (int)( widthPercent * IMAGE_QUALITY * device->deviceWidth / 4 ) * 4;
 	int height = (int)( heightPercent * IMAGE_QUALITY * device->deviceHeight / 4 ) * 4;
-	//cout << "Width -> initially " << device->deviceWidth  << " chosen: " << width << endl;
+	// cout << "Width: " << width  << " - height: " << height << endl;
 
 	PixelData* sessionCanvas = new PixelData(PixelData::FormatRgb,  width,  height);
 
@@ -266,6 +278,8 @@ void PortholeGUI::modCustomCamera(float size, float widthPercent, float heightPe
 	// Round down width to a multiple of 4.
 	int width = (int)( widthPercent * size * device->deviceWidth / 4 ) * 4;
 	int height = (int)( heightPercent * size * device->deviceHeight / 4 ) * 4;
+
+	// cout << "Width: " << width  << " - height: " << height << endl;
 
 	// Set new camera target
 	portholeCamera->canvas = new PixelData(PixelData::FormatRgb, width, height);
@@ -400,7 +414,7 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 	for (omega::xml::TiXmlElement* pInterfaceChild = guiDisposition->FirstChildElement(); pInterfaceChild != 0; pInterfaceChild = pInterfaceChild->NextSiblingElement()){
 
 			// Get element name
-			string interfaceId = string(pInterfaceChild->Value());
+			String interfaceId = "";
 
 			int minWidth=0, minHeight=0;
 
@@ -412,11 +426,17 @@ void PortholeGUI::parseXmlFile(char* xmlPath){
 				StringUtils::toLowerCase(attribute);
 
 				// Save id attribute
+				if (attribute.compare("id")==0){
+					interfaceId = pAttrib->Value();
+				}
+
+				// Save min width attribute
 				if (attribute.compare("minwidth")==0){
 					minWidth = pAttrib->IntValue();
 				}
 
-				// Save type attribute
+
+				// Save min height attribute
 				else if (attribute.compare("minheight")==0){
 					minHeight = pAttrib->IntValue();
 				}

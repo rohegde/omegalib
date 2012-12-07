@@ -44,7 +44,8 @@ Container::Container(Engine* server):
 		myHorizontalAlign(AlignCenter),
 		myVerticalAlign(AlignMiddle),
 		myGridRows(1),
-		myGridColumns(1)
+		myGridColumns(1),
+		myPixelOutputEnabled(false)
 {
 	// Containers have autosize enabled by default.
 	setAutosize(true);
@@ -530,7 +531,7 @@ bool Container::rayToPointerEvent(const Event& inEvt, Event& outEvt)
 		float x = intersection.dot(widthVector);
 		float y = intersection.dot(heightVector);
 
-		Vector3f pointerPosition(x / my3dSettings.scale, getHeight() - (y / my3dSettings.scale), 0);
+		Vector3f pointerPosition(x / my3dSettings.scale + myPosition[0], getHeight() - (y / my3dSettings.scale) + myPosition[1], 0);
 		outEvt.reset(inEvt.getType(), Service::Pointer);
 		outEvt.setPosition(pointerPosition);
 
@@ -589,9 +590,53 @@ void Container::activate()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+bool Container::isPixelOutputEnabled() 
+{ 
+	return myPixelOutputEnabled; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Container::setPixelOutputEnabled(bool value)
+{
+	myPixelOutputEnabled = value;
+	if(myPixelOutputEnabled && myPixels == NULL)
+	{
+		myPixels = new PixelData(PixelData::FormatRgba, 100, 100);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PixelData* Container::getPixels()
+{
+	return myPixels;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderable* Container::createRenderable()
 {
 	return new ContainerRenderable(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ContainerRenderable::drawChildren(const DrawContext& context, bool containerOnly)
+{
+	// draw children.
+	for(int layer = Widget::Back; layer < Widget::NumLayers; layer++)
+	{
+		foreach(Widget* w, myOwner->myChildren)
+		{
+			if(w->getLayer() == layer)
+			{
+				Renderable* childRenderable;
+				if(containerOnly) childRenderable = dynamic_cast<ContainerRenderable*>(w->getRenderable(getClient())); 
+				else childRenderable = w->getRenderable(getClient()); 
+				if(childRenderable != NULL) 
+				{
+					childRenderable->draw(context);
+				}
+			}
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -650,6 +695,86 @@ void ContainerRenderable::draw3d(const DrawContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void ContainerRenderable::beginDraw(const DrawContext& context)
+{
+	if(myOwner->get3dSettings().enable3d || myOwner->isPixelOutputEnabled())
+	{
+		if(myOwner->get3dSettings().enable3d)
+		{
+			if(myRenderTarget == NULL || 
+				myTexture->getWidth() != myOwner->getWidth() ||
+				myTexture->getHeight() != myOwner->getHeight())
+			{
+ 				myTexture = new Texture(context.gpuContext);
+				myTexture->initialize(myOwner->getWidth(), myOwner->getHeight());
+				myRenderTarget = new RenderTarget(context.gpuContext, RenderTarget::RenderToTexture);
+				myRenderTarget->setTextureTarget(myTexture);
+			}
+		}
+		else if(myOwner->isPixelOutputEnabled())
+		{
+			PixelData* pixels = myOwner->getPixels();
+			if(myRenderTarget == NULL || 
+				pixels->getWidth() != myOwner->getWidth() ||
+				pixels->getHeight() != myOwner->getHeight())
+			{
+				// Resize the pixel buffer.
+				pixels->resize(myOwner->getWidth(), myOwner->getHeight());
+				myRenderTarget = new RenderTarget(context.gpuContext, RenderTarget::RenderOffscreen);
+				myRenderTarget->setReadbackTarget(pixels);
+			}
+			pixels->setDirty(true);
+		}
+
+		glPushAttrib(GL_VIEWPORT_BIT);
+		glViewport(0, 0, myOwner->getWidth(), myOwner->getHeight());
+				
+		glMatrixMode(GL_PROJECTION);
+		glPushMatrix();
+		glLoadIdentity();
+		// Kindof hackish... when saving data to a pixel buffer we have to render inverted y (glReadPixels reands from the bottom line up)
+		if(myOwner->isPixelOutputEnabled()) glOrtho(0, myOwner->getWidth(), myOwner->getHeight(), 0, 0, 1);
+		else glOrtho(0, myOwner->getWidth(), 0, myOwner->getHeight(), 0, 1);
+
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		glLoadIdentity();
+		
+		//glScalef(0.05f, 0.05f, 1);
+		//glTranslatef(0, -SystemManager::instance()->getDisplaySystem()->getCanvasSize().y(), 0);
+
+		myRenderTarget->bind();
+
+		if(myOwner->isPixelOutputEnabled()) glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+	else
+	{
+		preDraw();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ContainerRenderable::endDraw(const DrawContext& context)
+{
+	if(myOwner->get3dSettings().enable3d || myOwner->isPixelOutputEnabled())
+	{
+		glMatrixMode(GL_PROJECTION);
+		glPopMatrix();
+		glMatrixMode(GL_MODELVIEW);
+		glPopMatrix();
+		glPopAttrib();
+
+		if(myOwner->isPixelOutputEnabled()) myRenderTarget->readback();
+
+		myRenderTarget->unbind();
+	}
+	else
+	{
+		postDraw();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void ContainerRenderable::draw(const DrawContext& context)
 {
 	if(myOwner->isVisible())
@@ -662,51 +787,12 @@ void ContainerRenderable::draw(const DrawContext& context)
 			}
 			else
 			{
-				// draw children.
-				foreach(Widget* w, myOwner->myChildren)
-				{
-					ContainerRenderable* childRenderable = dynamic_cast<ContainerRenderable*>(w->getRenderable(getClient())); 
-					if(childRenderable != NULL) 
-					{
-						childRenderable->draw(context);
-					}
-				}
+				drawChildren(context, true);
 			}
 		}
 		else
 		{
-			if(myOwner->get3dSettings().enable3d)
-			{
-				if(myRenderTarget == NULL || 
-					myTexture->getWidth() != myOwner->getWidth() ||
-					myTexture->getHeight() != myOwner->getHeight())
-				{
- 					myTexture = new Texture(context.gpuContext);
-					myTexture->initialize(myOwner->getWidth(), myOwner->getHeight());
-					myRenderTarget = new RenderTarget(context.gpuContext, RenderTarget::RenderToTexture);
-					myRenderTarget->setTextureTarget(myTexture);
-				}
-
-				glPushAttrib(GL_VIEWPORT_BIT);
-				glViewport(0, 0, myOwner->getWidth(), myOwner->getHeight());
-				
-				glMatrixMode(GL_PROJECTION);
-				glPushMatrix();
-				glLoadIdentity();
-				glOrtho(0, myOwner->getWidth(), 0, myOwner->getHeight(), 0, 1);
-
-				glMatrixMode(GL_MODELVIEW);
-				glPushMatrix();
-				glLoadIdentity();
-				//glScalef(0.05f, 0.05f, 1);
-				//glTranslatef(0, -SystemManager::instance()->getDisplaySystem()->getCanvasSize().y(), 0);
-
-				myRenderTarget->bind();
-			}
-			else
-			{
-				preDraw();
-			}
+			beginDraw(context);
 
 			// draw myself.
 			if(myOwner->isStereo())
@@ -718,30 +804,11 @@ void ContainerRenderable::draw(const DrawContext& context)
 				if(context.eye == DrawContext::EyeCyclop) drawContent(context);
 			}
 
-			// draw children.
-			foreach(Widget* w, myOwner->myChildren)
-			{
-				Renderable* childRenderable = w->getRenderable(getClient()); 
-				if(childRenderable != NULL) 
-				{
-					childRenderable->draw(context);
-				}
-			}
+			drawChildren(context, false);
 
-			if(myOwner->get3dSettings().enable3d)
-			{
-				glMatrixMode(GL_PROJECTION);
-				glPopMatrix();
-				glMatrixMode(GL_MODELVIEW);
-				glPopMatrix();
-				glPopAttrib();
-				myRenderTarget->unbind();
-			}
-			else
-			{
-				postDraw();
-			}
+			endDraw(context);
 		}
 	}
 }
+
 

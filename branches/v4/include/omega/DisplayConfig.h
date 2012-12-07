@@ -29,7 +29,6 @@
 
 #include "osystem.h"
 #include "SystemManager.h"
-//#include "IEventListener.h"
 
 namespace omega
 {

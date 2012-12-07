@@ -311,6 +311,19 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::evalEventCommand(const String& command, const Event& evt) 
+{
+	//! Save the last 'current' event to a local variable
+	const Event* tempEvt = mysLastEvent;
+	mysLastEvent = &evt;
+
+	eval(command);
+
+	//! Reset the current event to the saved one.
+	mysLastEvent = tempEvt;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::runFile(const String& filename)
 {
 	DataManager* dm = SystemManager::instance()->getDataManager();
