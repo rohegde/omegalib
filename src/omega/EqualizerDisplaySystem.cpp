@@ -501,7 +501,8 @@ void EqualizerDisplaySystem::finishInitialize(ConfigImpl* config)
 		}
 	}
 	*/
-	omsg(":: Equalizer initialization DONE ::");
+	//omsg("Equalizer initialization DONE");
+	//omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< DISPLAY STARTUP\n\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -512,6 +513,7 @@ void EqualizerDisplaySystem::run()
 	int numArgs = 0;
 	setupEqInitArgs(numArgs, (const char**)argv);
 	myNodeFactory = new EqualizerNodeFactory();
+	omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DISPLAY INITIALIZATION");
 	if( !eq::init( numArgs, (char**)argv, myNodeFactory ))
 	{
 		oerror("Equalizer init failed");
@@ -522,10 +524,11 @@ void EqualizerDisplaySystem::run()
 	// If this is the master node, run the master loop.
 	if(myConfig && mySys->isMaster())
 	{
-		omsg(":: Equalizer display system startup ::");
+		//omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DISPLAY INITIALIZATION");
 		if( myConfig->init())
 		{
-			omsg(":: Equalizer display system startup DONE ::");
+			omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< DISPLAY INITIALIZATION\n\n");
+			omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> APPLICATION LOOP");
 
 			uint32_t spin = 0;
 			bool exitRequestProcessed = false;
@@ -545,6 +548,7 @@ void EqualizerDisplaySystem::run()
 					myConfig->finishAllFrames();
 				}
 			}
+			omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< APPLICATION LOOP\n\n");
 		}
 		else
 		{

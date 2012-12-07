@@ -223,7 +223,6 @@ namespace omega
 			dm->addSource(new FilesystemDataSource(OMEGA_DATA_PATH));
 			ofmsg("::: %1%", %OMEGA_DATA_PATH);
 
-
 			omsg("omegalib application config lookup:");
 			String curCfgFilename = ostr("%1%/%2%", %app.getName() %configFilename);
 			ofmsg("::: trying %1%", %curCfgFilename);
@@ -259,6 +258,7 @@ namespace omega
 			}
 			else
 			{
+				omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OMEGALIB BOOT");
 				sys->setApplication(&app);
 				if(remote)
 				{
@@ -269,8 +269,13 @@ namespace omega
 					sys->setup(cfg);
 				}
 				sys->initialize();
+				omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< OMEGALIB BOOT\n\n");
+
 				sys->run();
+
+				omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OMEGALIB SHUTDOWN");
 				sys->cleanup();
+				omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< OMEGALIB SHUTDOWN\n\n");
 
 				omsg("===================== ReferenceType object leaks follow:");
 				ReferenceType::printObjCounts();
