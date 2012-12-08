@@ -47,8 +47,8 @@ namespace omega {
 
 		//! DrawInterface options
 		//@{
-		void setTargetTexture(Texture* texture);
-		Texture* getTargetTexture();
+		//void setTargetTexture(Texture* texture);
+		//Texture* getTargetTexture();
 		//@}
 
 		//! Drawing control
@@ -57,29 +57,8 @@ namespace omega {
 		void beginDraw2D(const DrawContext& context);
 		void endDraw();
 		bool isDrawing();
-		//@}
-
-		//! Drawing control
-		//@{
 		void pushTransform(const AffineTransform3& transform);
 		void popTransform();
-		//@}
-
-		//! 2D Drawing methods
-		//@{
-		void drawRectGradient(Vector2f pos, Vector2f size, Orientation orientation, 
-			Color startColor, Color endColor, float pc = 0.5f);
-		void drawRect(Vector2f pos, Vector2f size, Color color);
-		void drawRectOutline(Vector2f pos, Vector2f size, Color color);
-		void drawText(const String& text, Font* font, const Vector2f& position, unsigned int align, Color color);
-		void drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size, uint flipFlags = 0, const Vector2f& minUV = Vector2f::Zero(), const Vector2f& maxUV = Vector2f::Ones());
-		void drawCircleOutline(Vector2f position, float radius, const Color& color, int segments);
-		//@}
-
-		//! 3D Drawing methods
-		//@{
-		void drawWireSphere(const Color& color, int segments, int slices);
-		void drawPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type);
 		//@}
 
 		//! Font management
@@ -90,17 +69,39 @@ namespace omega {
 		void setDefaultFont(Font* value);
 		//@}
 
-		// Hack
-		//void setForceDiffuseColor(bool value) { myForceDiffuseColor = value; }
+		//! New drawing API
+		//@{
+		void setColor(const Color& col) { myColor = col; }
+		//@}
+
+		//! Old drawing API
+		//@{
+		void drawRectGradient(Vector2f pos, Vector2f size, Orientation orientation, 
+			Color startColor, Color endColor, float pc = 0.5f);
+		void drawRect(Vector2f pos, Vector2f size, Color color);
+		void drawRectOutline(Vector2f pos, Vector2f size, Color color);
+		void drawText(const String& text, Font* font, const Vector2f& position, unsigned int align, Color color);
+		void drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size, uint flipFlags = 0, const Vector2f& minUV = Vector2f::Zero(), const Vector2f& maxUV = Vector2f::Ones());
+		void drawCircleOutline(Vector2f position, float radius, const Color& color, int segments);
+		void drawWireSphere(const Color& color, int segments, int slices);
+		void drawPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type);
+		//@}
+
+	private:
+		void setGlColor(const Color& col);
 
 	private:
 		bool myDrawing;
-		Texture* myTargetTexture;
+		//Texture* myTargetTexture;
 		Dictionary<String, Ref<Font> > myFonts;
 		Font* myDefaultFont;
 		Lock myLock;
 
-		bool myForceDiffuseColor;
+		Color myColor;
+
+		const DrawContext* myContext;
+
+		//bool myForceDiffuseColor;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,12 +109,12 @@ namespace omega {
 	{ return myDrawing; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void DrawInterface::setTargetTexture(Texture* texture)
-	{ myTargetTexture = texture; }
+	//inline void DrawInterface::setTargetTexture(Texture* texture)
+	//{ myTargetTexture = texture; }
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Texture* DrawInterface::getTargetTexture()
-	{ return myTargetTexture; }
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline Texture* DrawInterface::getTargetTexture()
+	//{ return myTargetTexture; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Font* DrawInterface::getDefaultFont()

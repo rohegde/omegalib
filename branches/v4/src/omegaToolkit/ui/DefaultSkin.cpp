@@ -32,7 +32,7 @@ using namespace omega;
 using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
-Color sBaseColor = Color(0.9, 0.9, 1.0, 1.0);
+Color sBaseColor = Color(0.9f, 0.9f, 1.0f, 1.0f);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void DefaultButtonRenderable::drawContent(const DrawContext& context)

@@ -24,57 +24,31 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __PIXEL_DATA_H__
-#define __PIXEL_DATA_H__
+#ifndef __TEXTURE_SOURCE_H__
+#define __TEXTURE_SOURCE_H__
 
 #include "osystem.h"
-#include "omega/TextureSource.h"
+#include "omega/ApplicationBase.h"
+#include "omega/Texture.h"
 
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API PixelData: public TextureSource
+	class OMEGA_API TextureSource: public ReferenceType
 	{
 	public:
-		enum Format { FormatRgb, FormatRgba, FormatMonochrome};
-	public:
-		PixelData(Format fmt, int width, int height, byte* data = NULL);
-		virtual ~PixelData();
+		virtual ~TextureSource() {}
 
-		byte* lockData();
-		void unlockData();
+		virtual Texture* getTexture(const DrawContext* context);
 
-		void resize(int width, int height);
-
-		int getWidth() { return myWidth; }
-		int getHeight() { return myHeight; }
-		Format getFormat() { return myFormat; }
-		size_t getSize() { return mySize; }
-
-		int getPitch();
-		int getBpp();
-
-		uint getRedMask();
-		uint getGreenMask();
-		uint getBlueMask();
-		uint getAlphaMask();
-
-		void setDeleteDisabled(bool value) { myDeleteDisabled = value; }
-		bool isDeleteDisabled() { return myDeleteDisabled; }
-
-		bool isDirty() { return myDirty; }
-		void setDirty(bool value) { myDirty = value; }
+		virtual bool isDirty() { return myDirty; }
+		virtual void setDirty(bool value);
 
 	protected:
-		void refreshTexture(Texture* texture, const DrawContext* context);
+		virtual void refreshTexture(Texture* texture, const DrawContext* context) = 0;
 
 	private:
-		Lock myLock;
-		Format myFormat;
-		byte* myData;
-		int myWidth;
-		int myHeight;
-		size_t mySize;
-		bool myDeleteDisabled;
+		Ref<Texture> myTextures[GpuContext::MaxContexts];
+		uint64_t myTextureUpdateFlags;
 		bool myDirty;
 	};
 }; // namespace omega

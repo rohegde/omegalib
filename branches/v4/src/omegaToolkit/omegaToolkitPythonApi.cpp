@@ -95,7 +95,13 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_ENUM_VALUE(Widget, Front)
 		PYAPI_ENUM_VALUE(Widget, Middle)
 		PYAPI_ENUM_VALUE(Widget, Back)
-		//PYAPI_ENUM_VALUE(Container, LayoutGrid)
+		;
+
+	// Widget Blend Mode
+	PYAPI_ENUM(Widget::BlendMode, WidgetBlendMode)
+		PYAPI_ENUM_VALUE(Widget, BlendInherit)
+		PYAPI_ENUM_VALUE(Widget, BlendNormal)
+		PYAPI_ENUM_VALUE(Widget, BlendAdditive)
 		;
 
 	PYAPI_BASE_CLASS(ToolkitUtils)
@@ -175,6 +181,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(Widget, setVisible)
 		PYAPI_METHOD(Widget, isVisible)
 		.def("setPosition", setPosition1)
+		PYAPI_METHOD(Widget, setCenter)
 		PYAPI_GETTER(Widget, getPosition)
 		.def("setSize", setSize1)
 		PYAPI_GETTER(Widget, getSize)
@@ -189,6 +196,14 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(Widget, getAutosize)
 		PYAPI_METHOD(Widget, setAutosize)
 		PYAPI_GETTER(Widget, transformPoint)
+		PYAPI_METHOD(Widget, setAlpha)
+		PYAPI_METHOD(Widget, getAlpha)
+		PYAPI_METHOD(Widget, setBlendMode)
+		PYAPI_METHOD(Widget, getBlendMode)
+		PYAPI_METHOD(Widget, setScale)
+		PYAPI_METHOD(Widget, getScale)
+		PYAPI_METHOD(Widget, setUpdateCommand)
+		PYAPI_GETTER(Widget, getUpdateCommand)
 		;
 
 	// Container
@@ -197,6 +212,10 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(Container, isPixelOutputEnabled)
 		PYAPI_METHOD(Container, setPixelOutputEnabled)
 		PYAPI_REF_GETTER(Container, getPixels)
+		PYAPI_METHOD(Container, addChild)
+		PYAPI_METHOD(Container, removeChild)
+		PYAPI_REF_GETTER(Container, getChildByIndex)
+		PYAPI_REF_GETTER(Container, getChildByName)
 		;
 
 	// Button
@@ -211,6 +230,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 
 	// Image
 	PYAPI_REF_CLASS(Image, Widget)
+		PYAPI_STATIC_REF_GETTER(Image, create)
 		PYAPI_REF_GETTER(Image, getData)
 		PYAPI_METHOD(Image, setData)
 		PYAPI_METHOD(Image, isAutoRefreshEnabled)

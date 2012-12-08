@@ -194,3 +194,9 @@ uint PixelData::getAlphaMask()
 	}
 	return 0;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PixelData::refreshTexture(Texture* texture, const DrawContext* context)
+{
+}
+

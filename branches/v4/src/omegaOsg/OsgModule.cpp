@@ -24,6 +24,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#include "omega/PixelData.h"
 #include "omegaOsg/OsgModule.h"
 #include "omegaOsg/OsgRenderPass.h"
 #include "omegaOsg/OsgSceneObject.h"

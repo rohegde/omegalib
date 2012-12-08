@@ -466,7 +466,11 @@ void OmegaViewer::handleCommand(const String& cmd)
 			omsg("\t r <appName> - run the specified script application");
 			omsg("\t lo          - list live objects");
 			omsg("\t ln          - print the scene node tree");
-			omsg("\t q           - quit");
+			omsg("\t u           - unload all running applications");
+			omsg("\t u           - unload all running applications");
+			omsg("\t c           - toggle console");
+			omsg("\t s		     - print statistics");
+			omsg("\t porthole    - (experimental) enable porthole");
 		}
 	}
 	else if(args[0] == "r" && args.size() > 1)
@@ -503,6 +507,11 @@ void OmegaViewer::handleCommand(const String& cmd)
 		// c: toggle console
 		bool isConsoleEnabled = getEngine()->isConsoleEnabled();
 		getEngine()->setConsoleEnabled(!isConsoleEnabled);
+	}
+	else if(args[0] == "s")
+	{
+		// s: print statistics
+		SystemManager::instance()->getStatsManager()->printStats();
 	}
 	else if(args[0] == "porthole")
 	{

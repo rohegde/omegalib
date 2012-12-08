@@ -29,10 +29,11 @@
 
 #include "osystem.h"
 #include "omega/GpuManager.h"
-#include "omega/PixelData.h"
 
 namespace omega
 {
+	class PixelData;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API Texture: public GpuResource
 	{

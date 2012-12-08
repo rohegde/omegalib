@@ -56,8 +56,8 @@ Widget::Widget(Engine* server):
 	myDebugModeEnabled(false),
 	myAutosize(false),
 	myRotation(0),
-	myUserMoveEnabled(false),
-	myMoving(false),
+	//myUserMoveEnabled(false),
+	//myMoving(false),
 	myMaximumSize(FLT_MAX, FLT_MAX),
 	myMinimumSize(0, 0),
 	myActive(false),
@@ -66,7 +66,10 @@ Widget::Widget(Engine* server):
 	myVerticalNextWidget(NULL),
 	myVerticalPrevWidget(NULL),
 	mySize(Vector2f::Zero()),
-	myPosition(Vector2f::Zero())
+	myPosition(Vector2f::Zero()),
+	myBlendMode(BlendInherit),
+	myAlpha(1.0f),
+	myScale(1.0f)
 {
 	myId = mysNameGenerator.getNext();
 	myName = mysNameGenerator.generate();
@@ -85,6 +88,12 @@ Widget::~Widget()
 		dispose();
 	}
 	UiModule::instance()->myWidgets[myId] = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::setCenter(const omega::Vector2f& value)
+{
+	setPosition(value - mySize / 2);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,6 +124,11 @@ void Widget::update(const omega::UpdateContext& context)
 		//ofmsg("Initializing Widget: %1%", %getName());
 		initialize(myServer);
 		myInitialized = true;
+	}
+	if(myUpdateCommand.size() > 0)
+	{
+		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+		interp->eval(myUpdateCommand);
 	}
 }
 
@@ -485,11 +499,29 @@ void WidgetRenderable::preDraw()
 	Vector2f center = myOwner->myPosition + (myOwner->mySize / 2);
 	Vector2f mcenter = -center;
 
+	float scale = myOwner->getScale();
 	glTranslatef(center[0], center[1], 0.0f);
 	glRotatef(myOwner->myRotation, 0, 0, 1);
+	glScalef(scale, scale, scale);
 	glTranslatef(mcenter[0], mcenter[1], 0.0f);
 
 	glTranslatef((float)myOwner->myPosition[0], (float)myOwner->myPosition[1], 0);
+
+	Widget::BlendMode bm = myOwner->getBlendMode();
+	if(bm != Widget::BlendInherit)
+	{
+		glPushAttrib(GL_ENABLE_BIT);
+		glEnable(GL_BLEND);
+		if(bm == Widget::BlendAdditive)
+		{
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		}
+		else
+		{
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		}
+		glColor4f(1.0f, 1.0f, 1.0f, myOwner->getAlpha());
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -497,6 +529,12 @@ void WidgetRenderable::postDraw()
 {
 	// reset transform.
 	glPopMatrix();
+
+	if(myOwner->getBlendMode() != Widget::BlendInherit)
+	{
+		glDisable(GL_BLEND);
+		glPopAttrib();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

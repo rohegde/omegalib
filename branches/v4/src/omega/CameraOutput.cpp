@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/CameraOutput.h"
 #include "omega/Camera.h"
+#include "omega/PixelData.h"
 
 using namespace omega;
 

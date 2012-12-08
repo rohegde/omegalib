@@ -28,10 +28,20 @@
 #include "omega/Renderer.h"
 #include "omegaToolkit/ui/Image.h"
 #include "omega/DrawInterface.h"
+#include "omegaToolkit/ui/Container.h"
 
 using namespace omega;
 using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Image* Image::create(PixelData* image, Container* container)
+{
+	Image* img = new Image(Engine::instance());
+	img->setData(image);
+	container->addChild(img);
+	return img;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Image::Image(Engine* srv):

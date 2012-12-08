@@ -33,7 +33,8 @@ using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-UiScriptCommand::UiScriptCommand()
+UiScriptCommand::UiScriptCommand():
+	myUiEventsOnly(false)
 {
 	myUI = UiModule::instance();
 	myInterpreter = SystemManager::instance()->getScriptInterpreter();

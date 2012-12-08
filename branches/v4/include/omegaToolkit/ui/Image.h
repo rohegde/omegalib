@@ -37,6 +37,9 @@ namespace omegaToolkit { namespace ui {
 	{
 	friend class ImageRenderable;
 	public:
+		static Image* create(PixelData* image, Container* container);
+
+	public:
 		Image(Engine* srv);
 		virtual ~Image();
 
@@ -70,7 +73,7 @@ namespace omegaToolkit { namespace ui {
 
 	private:
 		Image* myOwner;
-		Texture* myTexture;
+		Ref<Texture> myTexture;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

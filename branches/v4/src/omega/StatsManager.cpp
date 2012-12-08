@@ -54,6 +54,18 @@ Stat* StatsManager::findStat(const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void StatsManager::printStats()
+{
+	omsg("-------------------------------------------------------------------------------- STATS");
+	omsg("NAME        CUR      MIN      MAX      AVG");
+	foreach(Stat* s, myStatList)
+	{
+		ofmsg("%-11s %-8.1f %-8.1f %-8.1f %-8.1f", %s->getName().c_str() %s->getCur() %s->getMin() %s->getMax() %s->getAvg());
+	}
+	omsg("-------------------------------------------------------------------------------- STATS");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 List<Stat*>::Range StatsManager::getStats()
 {
 	return List<Stat*>::Range(myStatList.begin(), myStatList.end());
