@@ -129,7 +129,7 @@ void Container::addChild(Widget* child)
 	requestLayoutRefresh();
 	myChildren.push_back(child);
 	child->setContainer(this);
-	updateChildrenNavigation();
+	if(child->isEnabled()) updateChildrenNavigation();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -138,7 +138,7 @@ void Container::removeChild(Widget* child)
 	requestLayoutRefresh();
 	myChildren.remove(child);
 	child->setContainer(NULL);
-	updateChildrenNavigation();
+	if(child->isEnabled()) updateChildrenNavigation();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
