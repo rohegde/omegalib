@@ -42,6 +42,7 @@ namespace omega
 
 		//! Initializes this texture object
 		void initialize(int width, int height); 
+		bool isInitialized() { return myInitialized; }
 
 		void writePixels(PixelData* data);
 		void readPixels(PixelData* data);

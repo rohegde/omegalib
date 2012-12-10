@@ -25,16 +25,45 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/TextureSource.h"
+#include "omega/ApplicationBase.h"
+#include "omega/Renderer.h"
 
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Texture* TextureSource::getTexture(const DrawContext* context)
+Texture* TextureSource::getTexture(const DrawContext& context)
 {
-	return NULL;
+	uint id = context.gpuContext->getId();
+	if(myTextures[id].isNull())
+	{
+		myTextures[id] = context.renderer->createTexture();
+		myTextureUpdateFlags |= 1 << id;
+	}
+
+	// See if the texture needs refreshing
+	if(myDirty && (myTextureUpdateFlags & (1 << id)))
+	{
+		refreshTexture(myTextures[id], context);
+		myTextureUpdateFlags &= ~(1 << id);
+
+		// If no other texture needs refreshing, reset the dirty flag
+		if(!myTextureUpdateFlags) myDirty = false;
+	}
+
+	return myTextures[id];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void TextureSource::setDirty(bool value)
 {
+	myDirty = value;
+	if(myDirty)
+	{
+		// mark textures as needing update
+		for(int i = 0; i < GpuContext::MaxContexts; i++)
+		{
+			// if the ith texture exists, set the ith bit in the update mask.
+			if(!myTextures[i].isNull()) myTextureUpdateFlags |= 1 << i;
+		}
+	}
 }

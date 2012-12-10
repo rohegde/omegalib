@@ -28,7 +28,7 @@ def onEvent():
 def onUpdate(frame, tile, dt):
 	for circle in circles:
 		value = circle.getAlpha()
-		value = value - (value * dt * 2)
+		value = value - (value * dt * 0.1)
 		if(value <= 0.1): 
 			overlay.removeChild(circle)
 			circles.remove(circle)

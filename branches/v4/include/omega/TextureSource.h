@@ -28,23 +28,24 @@
 #define __TEXTURE_SOURCE_H__
 
 #include "osystem.h"
-#include "omega/ApplicationBase.h"
 #include "omega/Texture.h"
 
 namespace omega {
+	struct DrawContext;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API TextureSource: public ReferenceType
 	{
 	public:
 		virtual ~TextureSource() {}
 
-		virtual Texture* getTexture(const DrawContext* context);
+		virtual Texture* getTexture(const DrawContext& context);
 
 		virtual bool isDirty() { return myDirty; }
-		virtual void setDirty(bool value);
+		virtual void setDirty(bool value = true);
 
 	protected:
-		virtual void refreshTexture(Texture* texture, const DrawContext* context) = 0;
+		virtual void refreshTexture(Texture* texture, const DrawContext& context) = 0;
 
 	private:
 		Ref<Texture> myTextures[GpuContext::MaxContexts];

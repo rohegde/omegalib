@@ -436,3 +436,36 @@ Font* DrawInterface::getFont(omega::String fontName)
 {
 	return myFonts[fontName];
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void DrawInterface::fillTexture(TextureSource* texture)
+{
+	myBrush.texture = texture->getTexture(*myContext);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void DrawInterface::textureFlip(uint flipflags)
+{
+	myBrush.flip = flipflags;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void DrawInterface::textureRegion(float su, float sv, float eu, float ev)
+{
+	myBrush.startuv = Vector2f(su, sv);
+	myBrush.enduv = Vector2f(eu, ev);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void DrawInterface::rect(float x, float y, float width, float height)
+{
+	if(!myBrush.texture.isNull())
+	{
+		drawRectTexture(myBrush.texture,
+			Vector2f(x, y),
+			Vector2f(width, height),
+			myBrush.flip,
+			myBrush.startuv,
+			myBrush.enduv);
+	}
+}

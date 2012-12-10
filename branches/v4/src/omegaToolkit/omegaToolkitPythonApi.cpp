@@ -233,8 +233,6 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_STATIC_REF_GETTER(Image, create)
 		PYAPI_REF_GETTER(Image, getData)
 		PYAPI_METHOD(Image, setData)
-		PYAPI_METHOD(Image, isAutoRefreshEnabled)
-		PYAPI_METHOD(Image, setAutoRefresh)
 		;
 
 	// Slider

@@ -32,9 +32,27 @@
 #include "omega/ApplicationBase.h"
 
 #include "omega/Texture.h"
+#include "omega/TextureSource.h"
 #include "omega/GpuBuffer.h"
 
 namespace omega {
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	struct Brush
+	{
+		Brush()
+		{
+			flip = 0;
+			startuv = Vector2f(0, 0);
+			enduv = Vector2f(1, 1);
+		}
+
+		Ref<Texture> texture;
+		Color color;
+		uint flip;
+		Vector2f startuv;
+		Vector2f enduv;
+	};
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API DrawInterface: public ReferenceType
 	{
@@ -72,6 +90,10 @@ namespace omega {
 		//! New drawing API
 		//@{
 		void setColor(const Color& col) { myColor = col; }
+		void fillTexture(TextureSource* texture);
+		void textureFlip(uint flipflags);
+		void textureRegion(float su, float sv, float eu, float ev);
+		void rect(float x, float y, float width, float height);
 		//@}
 
 		//! Old drawing API
@@ -100,6 +122,8 @@ namespace omega {
 		Color myColor;
 
 		const DrawContext* myContext;
+
+		Brush myBrush;
 
 		//bool myForceDiffuseColor;
 	};
