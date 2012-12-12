@@ -467,7 +467,6 @@ void OmegaViewer::handleCommand(const String& cmd)
 			omsg("\t lo          - list live objects");
 			omsg("\t ln          - print the scene node tree");
 			omsg("\t u           - unload all running applications");
-			omsg("\t u           - unload all running applications");
 			omsg("\t c           - toggle console");
 			omsg("\t s		     - print statistics");
 			omsg("\t porthole    - (experimental) enable porthole");
