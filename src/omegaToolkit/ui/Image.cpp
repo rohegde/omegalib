@@ -85,7 +85,7 @@ void ImageRenderable::refresh()
 	if(myOwner->myData != NULL)
 	{
 		PixelData* pd = myOwner->myData;
-		if(myTexture == NULL)
+		if(myTexture == NULL || myTexture->getWidth() != pd->getWidth() || myTexture->getHeight() != pd->getHeight())
 		{
 			myTexture = new Texture(getClient()->getGpuContext());
 			myTexture->initialize(pd->getWidth(), pd->getHeight());
