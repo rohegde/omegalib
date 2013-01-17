@@ -1,4 +1,4 @@
-*[https://groups.google.com/forum/#!forum/omegalib Ask a question]*
+*[https://groups.google.com/forum/#!forum/omegalib Support Forum]*
 	
 
  * [GettingStarted Getting Started with omegalib]
