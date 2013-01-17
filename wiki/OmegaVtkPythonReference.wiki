@@ -3,13 +3,13 @@
 
 <p>*Last revision:* ver. 3.2 - 4 December 2012</p>*
 
-<wiki:toc max_depth="4" />
+<wiki:toc max_depth="2" />
 
 = Module omegaVtk =
 omegaVtk adds support for the visualization toolkit to omegalib
  
 -------------------------------------------------------------------------------
-==  Free Functions ==
+==  Misc Functions ==
 
 === `vtkAttachProp(actor, sceneNode)` ===
 Returns the main omegalib camera instance

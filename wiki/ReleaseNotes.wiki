@@ -2,8 +2,31 @@
 #sidebar Sidebar
 
 ------------------------------------------------------------------------
+= omegalib v3.3 (*current developer version*) =
+*Initial Revision*: 2400
+
+------------------------------------------------------------------------
 = omegalib v3.2 (*current developer version*) =
 *Initial Revision*: 2345
+*Branch-out Revision*: 2399
+
+== Summary ==
+	This is a maintenance version with a few changes and bugfixes in several omegalib modules.
+== Major Changes ==
+	* omega
+		* reorganized log messages to simplify reading
+		* fixed a few Camera bugs
+		* Event setProcessed / isProcesed usable in Python
+	* omegaToolkit
+		* Image now supports refreshing with images of different dimensions
+		* Extended Widget Python API
+	* cyclops
+		* Textures can be created and updated using PixelData objects (C++ and python)
+		* Fixed Bump shader errors
+	* misc
+		* orun now tries to load config file based on loaded script. Also, added a couple of related fixes to Engine and module services
+		* simplified slider.py demo
+		* added ui render-to-texture example
 
 ------------------------------------------------------------------------
 = omegalib v3.1  =

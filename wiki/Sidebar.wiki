@@ -17,9 +17,4 @@
 		* [https://docs.google.com/document/pub?id=1FwqDf0A5SONJZ_9o9AW4TI2ZJv9B5sI5xDuu9ab50kw Stats Manager Design Document]
 		* [https://docs.google.com/document/pub?id=1mMToiKXZTeQWJ4v8cQSErNkxi1IWxvG1YxcoRjB2v6c Porthole Brainstorming]
 		* [https://docs.google.com/document/pub?id=1-4qjugWuHnWgBEwGXNCGmCrhZ05p19nwLlOU2pDQzyY Notes for an omegalib tutorial]
-		* [Scraps General Notes]
-			* [OldScraps Old Notes Archive]   
-			* [PortholeMarkOne Porthole Mark 1]
-			* [PackagingChecklist Packaging checklist]
-			* [OldConcept old introduction (pre-1.0)]
 	 

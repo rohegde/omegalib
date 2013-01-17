@@ -3,7 +3,7 @@
 
 <p>*Last revision:* ver. 3.2 - 4 December 2012</p>*
 
-<wiki:toc max_depth="4" />
+<wiki:toc max_depth="2" />
 
 = Module omegaToolkit =
 omegaToolkit is a utility module for omegalib. It exposes some non-core functionalities such as

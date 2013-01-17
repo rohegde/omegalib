@@ -3,7 +3,7 @@
 
 <p>*Last revision:* ver. 3.2 - 4 December 2012</p>*
 
-<wiki:toc max_depth="4" />
+<wiki:toc max_depth="2" />
 
 = Module cyclops =
 Cyclops is a utility library that sits on top of omegalib and OpenSceneGraph, and it is designed to simplify developement of applications that need to draw complex and visually pleasant scenes, without having to deal with the low-level details of osg. SOme of cyclops features are:
@@ -12,7 +12,7 @@ Cyclops is a utility library that sits on top of omegalib and OpenSceneGraph, an
  * Out-of-the-box support for soft shadows
  * An expandable shaders and effects library
 -------------------------------------------------------------------------------
-==  Free Functions ==
+==  Misc Functions ==
 
 === `getSceneManager()` ===
 Returns a reference to the cyclops scene manager
