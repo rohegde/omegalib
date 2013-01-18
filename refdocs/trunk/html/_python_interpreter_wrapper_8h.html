@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.1</span>
+   &#160;<span id="projectnumber">3.2</span>
    </div>
   </td>
  </tr>
@@ -49,7 +49,8 @@
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">PythonInterpreterWrapper.h File Reference</div>  </div>
 </div><!--header-->
@@ -75,14 +76,15 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a73ee1a7f40bfe5bc969217682ca44815"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a73ee1a7f40bfe5bc969217682ca44815">BOOST_PYTHON_NO_LIB</a></td></tr>
-<tr class="memitem:a670f6daa55c354894e6fa4d0b974574d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a670f6daa55c354894e6fa4d0b974574d">PYAPI_RETURN_VALUE</a>&#160;&#160;&#160;return_value_policy&lt;copy_const_reference&gt;()</td></tr>
+<tr class="memitem:a670f6daa55c354894e6fa4d0b974574d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a670f6daa55c354894e6fa4d0b974574d">PYAPI_RETURN_VALUE</a>&#160;&#160;&#160;return_value_policy&lt;return_by_value&gt;()</td></tr>
 <tr class="memitem:a255c94991a300c145e28198c7b7bb2a4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a255c94991a300c145e28198c7b7bb2a4">PYAPI_RETURN_REF</a>&#160;&#160;&#160;return_value_policy&lt;return_by_smart_ptr&gt;()</td></tr>
 <tr class="memitem:a1aed1bbb6beef72b78ebaf45638518fd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a1aed1bbb6beef72b78ebaf45638518fd">PYAPI_RETURN_NEW_INSTANCE</a>&#160;&#160;&#160;return_value_policy&lt;manage_new_object&gt;()</td></tr>
+<tr class="memitem:a09efa4b1df2655e5660c36e03edc02eb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a09efa4b1df2655e5660c36e03edc02eb">PYAPI_RETURN_INTERNAL_REF</a>&#160;&#160;&#160;return_internal_reference&lt;&gt;()</td></tr>
 <tr class="memitem:a1a5fa0b2aa3291182544fcdd7a2c031b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a1a5fa0b2aa3291182544fcdd7a2c031b">PYAPI_POINTER_LIST</a>(itemName, className)&#160;&#160;&#160;class_&lt; List&lt;itemName*&gt; &gt; (className, no_init).def(&quot;__iter__&quot;, iterator&lt; List&lt;itemName*&gt;, return_internal_reference&lt;&gt; &gt;());</td></tr>
 <tr class="memitem:ad9dbfaa7512438ab9846b6e337b377cb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#ad9dbfaa7512438ab9846b6e337b377cb">PYAPI_ENUM</a>(fullEnumName, enumName)&#160;&#160;&#160;enum_&lt;fullEnumName&gt;(#enumName)</td></tr>
 <tr class="memitem:a75721f97d98cdbcc0862ab2458b58d90"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a75721f97d98cdbcc0862ab2458b58d90">PYAPI_ENUM_VALUE</a>(enumName, valueName)&#160;&#160;&#160;.<a class="el" href="glew_8h.html#a6a4f8a1a444e9080b297963b3db29fe0">value</a>(#valueName, enumName::valueName)</td></tr>
 <tr class="memitem:a9629d4fa41774f39061296f19ed1ac48"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a9629d4fa41774f39061296f19ed1ac48">PYAPI_METHOD</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName)</td></tr>
-<tr class="memitem:a5e6297873b1d86758d49244cd4018111"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a5e6297873b1d86758d49244cd4018111">PYAPI_GETTER</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName, return_value_policy&lt;copy_const_reference&gt;())</td></tr>
+<tr class="memitem:a5e6297873b1d86758d49244cd4018111"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a5e6297873b1d86758d49244cd4018111">PYAPI_GETTER</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName, return_value_policy&lt;return_by_value&gt;())</td></tr>
 <tr class="memitem:ad52e2c51e05209747a72cb543f5cd334"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#ad52e2c51e05209747a72cb543f5cd334">PYAPI_REF_GETTER</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName, return_value_policy&lt;return_by_smart_ptr&gt;())</td></tr>
 <tr class="memitem:a3f112a6af155bdfa7bbb1550adc7097a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a3f112a6af155bdfa7bbb1550adc7097a">PYAPI_STATIC_REF_GETTER</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName, return_value_policy&lt;return_by_smart_ptr&gt;()).staticmethod(#methodName)</td></tr>
 <tr class="memitem:a206dab69b8827018aedc0d42f98ca313"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a206dab69b8827018aedc0d42f98ca313">PYAPI_PROPERTY</a>(className, propName)&#160;&#160;&#160;.def_readwrite(#propName, &amp;className::propName)</td></tr>
@@ -91,6 +93,11 @@ Macros</h2></td></tr>
 <tr class="memitem:ace9281fd0f5279db158d1c37a3095e4e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#ace9281fd0f5279db158d1c37a3095e4e">PYAPI_REF_CLASS</a>(className, baseName)&#160;&#160;&#160;class_&lt;className, bases&lt;baseName&gt;, boost::noncopyable, Ref&lt;className&gt; &gt;(#className, no_init)</td></tr>
 <tr class="memitem:aba9add631890a00a83a5e7e5bbc373e8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#aba9add631890a00a83a5e7e5bbc373e8">PYAPI_REF_BASE_CLASS</a>(className)&#160;&#160;&#160;class_&lt;className, boost::noncopyable, Ref&lt;className&gt; &gt;(#className, no_init)</td></tr>
 <tr class="memitem:a5591d7f6c4de3edb014d3559b2840277"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a5591d7f6c4de3edb014d3559b2840277">PYAPI_REF_BASE_CLASS_WITH_CTOR</a>(className)&#160;&#160;&#160;class_&lt;className, boost::noncopyable, Ref&lt;className&gt; &gt;(#className)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a62281d511615ae092041be09579f74f2"><td class="memItemLeft" align="right" valign="top">bool <a class="el" href="include_2omega_2osystem_8h.html#a8218be650a705d9f2357f037aa34be9f">OMEGA_API</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a62281d511615ae092041be09579f74f2">isRefPtrForwardingEnabled</a> ()</td></tr>
+<tr class="memitem:a7f136e98a84f7f6c39e0cae642c7b9ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> <a class="el" href="include_2omega_2osystem_8h.html#a8218be650a705d9f2357f037aa34be9f">OMEGA_API</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a7f136e98a84f7f6c39e0cae642c7b9ab">disableRefPtrForwarding</a> ()</td></tr>
 </table>
 <h2>Macro Definition Documentation</h2>
 <a class="anchor" id="a73ee1a7f40bfe5bc969217682ca44815"></a>
@@ -208,7 +215,7 @@ Macros</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;.def(#methodName, &amp;className::methodName, return_value_policy&lt;copy_const_reference&gt;())</td>
+          <td></td><td>&#160;&#160;&#160;.def(#methodName, &amp;className::methodName, return_value_policy&lt;return_by_value&gt;())</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -377,6 +384,18 @@ Macros</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a09efa4b1df2655e5660c36e03edc02eb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PYAPI_RETURN_INTERNAL_REF&#160;&#160;&#160;return_internal_reference&lt;&gt;()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a1aed1bbb6beef72b78ebaf45638518fd"></a>
 <div class="memitem">
 <div class="memproto">
@@ -406,7 +425,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define PYAPI_RETURN_VALUE&#160;&#160;&#160;return_value_policy&lt;copy_const_reference&gt;()</td>
+          <td class="memname">#define PYAPI_RETURN_VALUE&#160;&#160;&#160;return_value_policy&lt;return_by_value&gt;()</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -433,6 +452,37 @@ Macros</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td>&#160;&#160;&#160;.def(#methodName, &amp;className::methodName, return_value_policy&lt;return_by_smart_ptr&gt;()).staticmethod(#methodName)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2>Function Documentation</h2>
+<a class="anchor" id="a7f136e98a84f7f6c39e0cae642c7b9ab"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> <a class="el" href="include_2omega_2osystem_8h.html#a8218be650a705d9f2357f037aa34be9f">OMEGA_API</a> disableRefPtrForwarding </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a62281d511615ae092041be09579f74f2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="include_2omega_2osystem_8h.html#a8218be650a705d9f2357f037aa34be9f">OMEGA_API</a> isRefPtrForwardingEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">

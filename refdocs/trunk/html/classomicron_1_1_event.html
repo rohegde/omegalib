@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.1</span>
+   &#160;<span id="projectnumber">3.2</span>
    </div>
   </td>
  </tr>
@@ -150,6 +150,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4b8526fb1b60859c3d898d24ab2d78fb inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a4b8526fb1b60859c3d898d24ab2d78fb">~ReferenceType</a> ()</td></tr>
 <tr class="memitem:ab697105dd0bd4549995d9996f142daa1 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#ab697105dd0bd4549995d9996f142daa1">ref</a> ()</td></tr>
 <tr class="memitem:ab142bd02b19831effeeb43d7db1d4e7f inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#ab142bd02b19831effeeb43d7db1d4e7f">unref</a> ()</td></tr>
+<tr class="memitem:a8a70b1992a3ac5bf501e18b95e0dc961 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a8a70b1992a3ac5bf501e18b95e0dc961">refCount</a> ()</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -186,37 +187,25 @@ Additional Inherited Members</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ab1f3e0a5d901729bf93e3b5ff37a54be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerates the service classes supported by omicron.  <a href="classomicron_1_1_event_base.html#ab1f3e0a5d901729bf93e3b5ff37a54be">More...</a><br/></td></tr>
 <tr class="memitem:af95879546c1e3486d8b26c24e787dc53 inherit pub_types_classomicron_1_1_event_base"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53">Type</a> { <br/>
-&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a4f8a18876f2626671e0c3c0b4cf66f56">Select</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a0f072cf3885d6b9c5e91bff5597db5a5">Toggle</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a1f8d4a31d62fc6e9c52d3e8f957d7d68">ChangeValue</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53aedaf961c6bfe48c3889aed7480320e64">Update</a>, 
+&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a4f8a18876f2626671e0c3c0b4cf66f56">Select</a> =  0, 
+<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a0f072cf3885d6b9c5e91bff5597db5a5">Toggle</a> =  1, 
+<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a1f8d4a31d62fc6e9c52d3e8f957d7d68">ChangeValue</a> =  2, 
+<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53aedaf961c6bfe48c3889aed7480320e64">Update</a> =  3, 
 <br/>
-&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a18111bc12fb3e086fd7b810e4255f19e">Move</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a38b89b3f23109db7ce6e49947d909b64">Down</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a0113d8bf8529d050fe6c8c1026436a7d">Up</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a59de9a6fda32daf5e9ce1bf817b10766">Trace</a>, 
+&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a18111bc12fb3e086fd7b810e4255f19e">Move</a> =  4, 
+<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a38b89b3f23109db7ce6e49947d909b64">Down</a> =  5, 
+<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a0113d8bf8529d050fe6c8c1026436a7d">Up</a> =  6, 
+<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a59de9a6fda32daf5e9ce1bf817b10766">Trace</a> =  7, 
 <br/>
 &#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53af50fe8c924d6591582d5ad0dd75ee306">Connect</a> =  Trace, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a7b08b1eae1eedf03b19d125ec2e42742">Untrace</a>, 
+<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a7b08b1eae1eedf03b19d125ec2e42742">Untrace</a> =  8, 
 <a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53add3786ebed4f09618dcc401af49c9ece">Disconnect</a> =  Untrace, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a58969b7f740850ea5c7161dc821e98a5">Click</a>, 
+<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a58969b7f740850ea5c7161dc821e98a5">Click</a> =  9, 
 <br/>
-&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53ae4fe6f55eebeea2b04c259eef4545b92">DoubleClick</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53add1992af16b7c4e68df3573295d89503">MoveLeft</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53aa64d9bb9b985ecd680eade9d60364bae">MoveRight</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a31d50314fc5ebab09182e86fb3564e75">MoveUp</a>, 
-<br/>
-&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53ae2bfa7347547a078bc0982e31bbd9abd">MoveDown</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53abb0d8887aa4828d24e68e0f2d53a8390">Zoom</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53ab0e1e32179fadb8eade8cd9c78071d87">SplitStart</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53adf3b3cea37ced416e5c591577dac7026">SplitEnd</a>, 
-<br/>
-&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a462c0bd5353a17e9b548d678e70a96c2">Split</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a893f816c86d76448e072d53036a40eb4">RotateStart</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a691459e788f6bc0189dbbad7ac0e522f">RotateEnd</a>, 
-<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53ac322b209e1a2899f456f18b87d4097b3">Rotate</a>, 
-<br/>
-&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a8b32e4c6339728750b064785e2fe184e">Null</a>
+&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53abb0d8887aa4828d24e68e0f2d53a8390">Zoom</a> =  15, 
+<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a462c0bd5353a17e9b548d678e70a96c2">Split</a> =  18, 
+<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53ac322b209e1a2899f456f18b87d4097b3">Rotate</a> =  21, 
+<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a8b32e4c6339728750b064785e2fe184e">Null</a> =  666
 <br/>
  }</td></tr>
 <tr class="memdesc:af95879546c1e3486d8b26c24e787dc53"><td class="mdescLeft">&#160;</td><td class="mdescRight">#PYAPI Supported event types.  <a href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53">More...</a><br/></td></tr>

@@ -1,0 +1,9 @@
+<map id="omega::xml::TiXmlNode" name="omega::xml::TiXmlNode">
+<area shape="rect" id="node5" href="$classomega_1_1xml_1_1_ti_xml_comment.html" title="An XML comment." alt="" coords="376,5,531,29"/>
+<area shape="rect" id="node7" href="$classomega_1_1xml_1_1_ti_xml_declaration.html" title="In correct XML the declaration is the first entry in the file." alt="" coords="371,53,535,77"/>
+<area shape="rect" id="node9" href="$classomega_1_1xml_1_1_ti_xml_document.html" title="Always the top level node." alt="" coords="374,101,533,125"/>
+<area shape="rect" id="node11" href="$classomega_1_1xml_1_1_ti_xml_element.html" title="The element is a container class." alt="" coords="379,149,527,173"/>
+<area shape="rect" id="node13" href="$classomega_1_1xml_1_1_ti_xml_text.html" title="XML text." alt="" coords="387,197,519,221"/>
+<area shape="rect" id="node15" href="$classomega_1_1xml_1_1_ti_xml_unknown.html" title="Any tag that tinyXml doesn&#39;t recognize is saved as an unknown." alt="" coords="376,245,531,269"/>
+<area shape="rect" id="node2" href="$classomega_1_1xml_1_1_ti_xml_base.html" title="TiXmlBase is a base class for every class in TinyXml." alt="" coords="5,125,139,149"/>
+</map>

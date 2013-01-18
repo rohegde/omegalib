@@ -1,8 +1,10 @@
-<map id="D:/Workspace/omegalib/trunk/src/omega/omega/eqinternal/ChannelImpl.cpp" name="D:/Workspace/omegalib/trunk/src/omega/omega/eqinternal/ChannelImpl.cpp">
-<area shape="rect" id="node3" href="$eqinternal_8h.html" title="eqinternal.h" alt="" coords="221,101,301,125"/>
-<area shape="rect" id="node15" href="$_display_system_8h.html" title="DisplaySystem.h" alt="" coords="326,245,428,269"/>
-<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="104,317,212,341"/>
-<area shape="rect" id="node7" href="$_application_8h.html" title="omega/Application.h" alt="" coords="22,245,142,269"/>
-<area shape="rect" id="node10" href="$_render_target_8h.html" title="omega/RenderTarget.h" alt="" coords="167,245,301,269"/>
-<area shape="rect" id="node13" href="$_equalizer_display_system_8h.html" title="omega/EqualizerDisplaySystem.h" alt="" coords="171,173,350,197"/>
+<map id="D:/Workspace/omegalib/trunk/src/omega/eqinternal/ChannelImpl.cpp" name="D:/Workspace/omegalib/trunk/src/omega/eqinternal/ChannelImpl.cpp">
+<area shape="rect" id="node3" href="$eqinternal_8h.html" title="eqinternal.h" alt="" coords="204,101,284,125"/>
+<area shape="rect" id="node15" href="$_display_system_8h.html" title="DisplaySystem.h" alt="" coords="333,245,435,269"/>
+<area shape="rect" id="node23" href="$_sage_manager_8h.html" title="omega/SageManager.h" alt="" coords="577,101,711,125"/>
+<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="187,317,295,341"/>
+<area shape="rect" id="node7" href="$_application_8h.html" title="omega/Application.h" alt="" coords="29,245,149,269"/>
+<area shape="rect" id="node10" href="$_render_target_8h.html" title="omega/RenderTarget.h" alt="" coords="174,245,308,269"/>
+<area shape="rect" id="node13" href="$_equalizer_display_system_8h.html" title="omega/EqualizerDisplaySystem.h" alt="" coords="154,173,333,197"/>
+<area shape="rect" id="node25" href="$_module_services_8h.html" title="omega/ModuleServices.h" alt="" coords="502,245,644,269"/>
 </map>

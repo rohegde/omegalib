@@ -1,18 +1,18 @@
-<map id="D:/Workspace/omegalib/trunk/src/omega/omega/Camera.cpp" name="D:/Workspace/omegalib/trunk/src/omega/omega/Camera.cpp">
-<area shape="rect" id="node3" href="$_render_target_8h.html" title="omega/RenderTarget.h" alt="" coords="8,547,142,571"/>
-<area shape="rect" id="node14" href="$_camera_8h.html" title="omega/Camera.h" alt="" coords="312,403,417,427"/>
-<area shape="rect" id="node24" href="$_camera_output_8h.html" title="omega/CameraOutput.h" alt="" coords="189,475,328,499"/>
-<area shape="rect" id="node31" href="$_module_services_8h.html" title="omega/ModuleServices.h" alt="" coords="486,259,628,283"/>
-<area shape="rect" id="node42" href="$_wand_camera_controller_8h.html" title="omega/WandCameraController.h" alt="" coords="460,108,640,132"/>
-<area shape="rect" id="node51" href="$_gamepad_camera_controller_8h.html" title="omega/GamepadCameraController.h" alt="" coords="1080,108,1277,132"/>
-<area shape="rect" id="node56" href="$_mouse_camera_controller_8h.html" title="omega/MouseCameraController.h" alt="" coords="676,108,858,132"/>
-<area shape="rect" id="node61" href="$_keyboard_mouse_camera_controller_8h.html" title="omega/KeyboardMouseCamera\lController.h" alt="" coords="883,102,1054,138"/>
-<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="481,763,553,787"/>
-<area shape="rect" id="node7" href="$_gpu_manager_8h.html" title="GpuManager.h" alt="" coords="30,691,124,715"/>
-<area shape="rect" id="node10" href="$_texture_8h.html" title="Texture.h" alt="" coords="103,619,173,643"/>
-<area shape="rect" id="node17" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="751,547,893,571"/>
-<area shape="rect" id="node20" href="$_scene_node_8h.html" title="omega/SceneNode.h" alt="" coords="300,547,422,571"/>
-<area shape="rect" id="node34" href="$_engine_8h.html" title="Engine.h" alt="" coords="456,331,520,355"/>
-<area shape="rect" id="node39" href="$_shared_data_services_8h.html" title="omega/SharedDataServices.h" alt="" coords="594,403,760,427"/>
-<area shape="rect" id="node46" href="$_camera_controller_8h.html" title="omega/CameraController.h" alt="" coords="810,187,962,211"/>
+<map id="D:/Workspace/omegalib/trunk/src/omega/Camera.cpp" name="D:/Workspace/omegalib/trunk/src/omega/Camera.cpp">
+<area shape="rect" id="node3" href="$_render_target_8h.html" title="omega/RenderTarget.h" alt="" coords="8,536,142,560"/>
+<area shape="rect" id="node14" href="$_camera_8h.html" title="omega/Camera.h" alt="" coords="312,392,417,416"/>
+<area shape="rect" id="node24" href="$_camera_output_8h.html" title="omega/CameraOutput.h" alt="" coords="189,464,328,488"/>
+<area shape="rect" id="node31" href="$_module_services_8h.html" title="omega/ModuleServices.h" alt="" coords="486,248,628,272"/>
+<area shape="rect" id="node42" href="$_wand_camera_controller_8h.html" title="omega/WandCameraController.h" alt="" coords="460,97,640,121"/>
+<area shape="rect" id="node51" href="$_gamepad_camera_controller_8h.html" title="omega/GamepadCameraController.h" alt="" coords="1080,97,1277,121"/>
+<area shape="rect" id="node56" href="$_mouse_camera_controller_8h.html" title="omega/MouseCameraController.h" alt="" coords="676,97,858,121"/>
+<area shape="rect" id="node61" href="$_keyboard_mouse_camera_controller_8h.html" title="omega/KeyboardMouseCamera\lController.h" alt="" coords="883,91,1054,127"/>
+<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="481,752,553,776"/>
+<area shape="rect" id="node7" href="$_gpu_manager_8h.html" title="GpuManager.h" alt="" coords="30,680,124,704"/>
+<area shape="rect" id="node10" href="$_texture_8h.html" title="Texture.h" alt="" coords="103,608,173,632"/>
+<area shape="rect" id="node17" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="751,536,893,560"/>
+<area shape="rect" id="node20" href="$_scene_node_8h.html" title="omega/SceneNode.h" alt="" coords="300,536,422,560"/>
+<area shape="rect" id="node34" href="$_engine_8h.html" title="Engine.h" alt="" coords="456,320,520,344"/>
+<area shape="rect" id="node39" href="$_shared_data_services_8h.html" title="omega/SharedDataServices.h" alt="" coords="594,392,760,416"/>
+<area shape="rect" id="node46" href="$_camera_controller_8h.html" title="omega/CameraController.h" alt="" coords="810,176,962,200"/>
 </map>

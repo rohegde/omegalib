@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.1</span>
+   &#160;<span id="projectnumber">3.2</span>
    </div>
   </td>
  </tr>
@@ -126,6 +126,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a4a5bdfb7689e6a172dd65073651e1c67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a point from local to world coordinates using the camera position and orientation.  <a href="#a4a5bdfb7689e6a172dd65073651e1c67"></a><br/></td></tr>
 <tr class="memitem:aa35fbee2f34aa213b2ed28060f05919e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#abe495230fb99452e2ea1b9d237a98885">Quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#aa35fbee2f34aa213b2ed28060f05919e">localToWorldOrientation</a> (const <a class="el" href="namespaceomicron.html#abe495230fb99452e2ea1b9d237a98885">Quaternion</a> &amp;orientation)</td></tr>
 <tr class="memdesc:aa35fbee2f34aa213b2ed28060f05919e"><td class="mdescLeft">&#160;</td><td class="mdescRight">converts an orientation to the world reference frame using the camera orientation  <a href="#aa35fbee2f34aa213b2ed28060f05919e"></a><br/></td></tr>
+<tr class="memitem:a87185cda18e03ad741c6165b0d80c401"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a87185cda18e03ad741c6165b0d80c401">worldToLocalPosition</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;position)</td></tr>
+<tr class="memdesc:a87185cda18e03ad741c6165b0d80c401"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a point from world to local coordinates using the camera position and orientation.  <a href="#a87185cda18e03ad741c6165b0d80c401"></a><br/></td></tr>
 <tr class="memitem:a05c9a3dadab12da3651b6492866f6fcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a05c9a3dadab12da3651b6492866f6fcd">endDraw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
 <tr class="memitem:ac9ad9dc0119c93f313e12e2a3f5bac8f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ac9ad9dc0119c93f313e12e2a3f5bac8f">beginDraw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
 <tr class="memitem:a7bc4f82669159aebb08ba2fde4773079"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a7bc4f82669159aebb08ba2fde4773079">startFrame</a> (const <a class="el" href="structomega_1_1_frame_info.html">FrameInfo</a> &amp;frame)</td></tr>
@@ -299,6 +301,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4b8526fb1b60859c3d898d24ab2d78fb inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a4b8526fb1b60859c3d898d24ab2d78fb">~ReferenceType</a> ()</td></tr>
 <tr class="memitem:ab697105dd0bd4549995d9996f142daa1 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#ab697105dd0bd4549995d9996f142daa1">ref</a> ()</td></tr>
 <tr class="memitem:ab142bd02b19831effeeb43d7db1d4e7f inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#ab142bd02b19831effeeb43d7db1d4e7f">unref</a> ()</td></tr>
+<tr class="memitem:a8a70b1992a3ac5bf501e18b95e0dc961 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a8a70b1992a3ac5bf501e18b95e0dc961">refCount</a> ()</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -1209,10 +1212,28 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a87185cda18e03ad741c6165b0d80c401"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> Camera::worldToLocalPosition </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>position</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts a point from world to local coordinates using the camera position and orientation. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>D:/Workspace/omegalib/trunk/include/omega/<a class="el" href="_camera_8h.html">Camera.h</a></li>
-<li>D:/Workspace/omegalib/trunk/src/omega/omega/<a class="el" href="_camera_8cpp.html">Camera.cpp</a></li>
-<li>D:/Workspace/omegalib/trunk/src/omega/omega/<a class="el" href="_camera_controller_8cpp.html">CameraController.cpp</a></li>
+<li>D:/Workspace/omegalib/trunk/src/omega/<a class="el" href="_camera_8cpp.html">Camera.cpp</a></li>
+<li>D:/Workspace/omegalib/trunk/src/omega/<a class="el" href="_camera_controller_8cpp.html">CameraController.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -1,6 +1,5 @@
 <map id="omicron::TcpConnection" name="omicron::TcpConnection">
-<area shape="rect" id="node5" href="$classomega_1_1_mission_control_connection.html" title="omega::MissionControlConnection" alt="" coords="382,5,567,29"/>
-<area shape="rect" id="node7" href="$classomicron_1_1_tablet_connection.html" title="omicron::TabletConnection" alt="" coords="399,53,550,77"/>
-<area shape="rect" id="node9" href="$classomicron_1_1_tcp_client_connection.html" title="omicron::TcpClientConnection" alt="" coords="392,101,557,125"/>
-<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,53,147,77"/>
+<area shape="rect" id="node5" href="$classomega_1_1_mission_control_connection.html" title="omega::MissionControlConnection" alt="" coords="5,149,189,173"/>
+<area shape="rect" id="node7" href="$classomicron_1_1_tcp_client_connection.html" title="omicron::TcpClientConnection" alt="" coords="215,149,380,173"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="127,5,268,29"/>
 </map>
