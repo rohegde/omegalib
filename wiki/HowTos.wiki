@@ -11,6 +11,18 @@ Cameras in omegalib (and in other VR toolkits) work a little differently than wh
  * The camera position and orientation, which infuence the view transform. They determine the conversion between the physical space in your system , and the space used your virtual world.
  * The *head position and orientation*, which influence both the view and the projection transforms. They represent the position of the observer in the phisical space. head transform, camera transform and display geometry all contribute in determining what will appear on the screens.
 
+=== "In a VR system, how do I convert my trackable object position / orientation into world coordinates?" ===
+Tracked objects like stereo glasses, wands etc. generate events with positions and orientations in *sensor space*. This space usually corresponds to the physical space used to describe the VR system structure. For instance in CAVE2 bot sensor space and VR system space cosider the origin as the center of the sphere (on the ground), with Z pointing forward.
+
+When navigating within the scene, you move the camera to a different position and orientation. Consequently, tracked object positions do not make sense anymore, until you convert them to this new, "virtual world" space defined by the camera transformations. Luckily, the `Camera` class comes with method that do exactly this.
+
+Given a `Vector3f trackerPosition`, you can convert it to the world reference frame doing (in C++)
+{{{
+	Camera* cam = Engine::instance()->getDefaultCamera(); // equivalent to the getDefaultCamera python call.
+	cam->localToWorldPosition(Vector3f position);
+	// use cam->localToWorldOrientation(orientation) to convert an orientation instead.
+}}}
+
 ---------------------------------------------------------------------------------------------------
 = Visual Studio 2010 =
 omegalib supports builds in visual studio 2008 and 2010. Both 32 and 64 bit builds should work, but currently only
