@@ -24,7 +24,7 @@ struct LitSurfaceData
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-$fragmentLightSection
+$@fragmentLightSection
 {
 	// Compute light direction
 	vec3 lightDir = normalize(var_LightVector[@lightIndex]);
