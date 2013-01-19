@@ -58,7 +58,7 @@ void UiScriptCommand::handleEvent(const Event& evt)
 	{
 		if(evt.getType() == Event::Toggle)
 		{
-			AbstractButton* btn = myUI->getSource<AbstractButton>(evt);
+			AbstractButton* btn = Widget::getSource<AbstractButton>(evt);
 			if(btn != NULL)
 			{
 				String expr = StringUtils::replaceAll(myCommand, "%value%", ostr("%1%", %btn->isChecked()));
@@ -67,7 +67,7 @@ void UiScriptCommand::handleEvent(const Event& evt)
 		}
 		else if(evt.getType() == Event::ChangeValue)
 		{
-			Slider* sld = myUI->getSource<Slider>(evt);
+			Slider* sld = Widget::getSource<Slider>(evt);
 			if(sld != NULL)
 			{
 				int value = sld->getValue();
