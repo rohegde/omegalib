@@ -1,0 +1,109 @@
+omegalib data search paths:
+::: D:\Workspace\omegalib\devbuild-win32
+::: D:/Workspace/omegalib/apps
+::: D:/Workspace/omegalib/trunk/data
+omegalib application config lookup:
+::: trying runExamples/runExamples.cfg
+::: not found, trying runExamples.cfg
+::: not found, trying default.cfg
+::: found config: default.cfg
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OMEGALIB BOOT
+SystemManager::setup
+Opened config file: default.cfg
+Opened config file: system/desktop.cfg
+Service added: MouseService
+Service added: KeyboardService
+Service added: ViewRayService
+SystemManager::setupDisplaySystem: type = Equalizer
+Bezel size: 0 0
+canvas pixel size: 854 480
+ServiceManager::initialize
+Event buffer allocated. Max events: 1024
+SharedDataServices::registerObject: queuing interp for registration
+PythonInterpreter::addPythonPath: ./
+PythonInterpreter::addPythonPath: D:/Workspace/omegalib/apps
+PythonInterpreter: starting interactive shell thread.
+omegaPythonApiInit()
+Python Interpreter initialized.
+Initializing mission control server...
+MissionControlServer: adding log listener
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< OMEGALIB BOOT
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DISPLAY INITIALIZATION
+[EQ] ConfigImpl::ConfigImpl
+[EQ] ConfigImpl::init
+Console: adding log listener
+Camera controller: keyboardmouse
+[EQ] NodeImpl::NodeImpl
+[EQ] NodeImpl::configInit 9d55f0a6749292a8:f59f3ab8a65545e0
+@Renderer::Initialize: id = 0
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< DISPLAY INITIALIZATION
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> APPLICATION LOOP
+omegaToolkitPythonApiInit()
+cyclopsPythonApiInit()
+---------------------------------------------------------------------
+Welcome to orun!
+	omegalib version 3.2.1
+	To get a list of quick commands type :?
+	Type :? . to list all global symbols
+	Type :? C to list all members of class or variable `C`
+		example :? SceneNode
+	Type :? ./C [prefix] to list global symbols or object members starting with `prefix`
+		example :? . si
+		example :? SceneNode set
+Looking for script file examples/tutorial/step1-basicScene.py
+:: found at D:/Workspace/omegalib/trunk/data/examples/tutorial/step1-basicScene.py
+Looking for config file examples/tutorial/step1-basicScene.cfg
+SceneManager configuration loaded
+::    Shadows enabled: 0
+:: Shadow resolution ratio: 1
+Image loaded: D:/Workspace/omegalib/trunk/data/cyclops/common/defaultTexture.png. Size: 32x32
+Recompiling shaders (variation: .0)
+ModelLoaderThread: start
+Renderer(0): adding render pass OsgRenderPass
+Active lights changed (was 0, is 1)
+Recompiling shaders (variation: .1)
+Loading shader: cyclops/common/Colored.vert
+Loading shader: cyclops/common/Colored.frag
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< APPLICATION LOOP
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OMEGALIB SHUTDOWN
+MissionControlServer: removing log listener
+~PythonInterpreter
+Engine::dispose
+ModuleServices::disposeAll
+EventSharingModule::dispose
+Engine: removing render pass OsgRenderPass
+~SceneView
+~RenderPass OsgRenderPass
+ModelLoaderThread: shutdown
+SceneManager::unload: emptying load queue (0 queued items)
+SceneManager::unload: releasing 0 models
+SceneManager::unload: releasing 1 lights
+~Node: Unnamed_4
+SceneManager::unload: releasing 2 objects
+SceneManager::unload: releasing 1 programs
+SceneManager::unload: releasing 1 programs
+~EngineModule Module_1
+~EngineModule EventSharingModule
+~EngineModule Module_2
+~OsgModule
+~EngineModule OsgModule
+~EngineModule SceneManager
+~Node: root
+Engine::dispose: cleaning up 0 cameras
+~Node: Unnamed_1
+~Engine
+~Console: removing log listener
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< OMEGALIB SHUTDOWN
+
+
+===================== ReferenceType object leaks follow:
+class cyclops::SphereShape: 1
+class omega::Pointer: 4
+class omegaOsg::OsgSceneObject: 2
+class cyclops::BoxShape: 1
