@@ -58,9 +58,6 @@ UiModule::UiModule():
 {
 	// This module has high priority. It will receive events before modules with lower priority.
 	setPriority(EngineModule::PriorityHigh);
-
-	// Clean the widget table
-	memset(myWidgets, 0, MaxWidgets * sizeof(void*));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

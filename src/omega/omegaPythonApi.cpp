@@ -655,6 +655,31 @@ PixelData* loadImage(const String& filename)
 	//return ImageFile(filename, data);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void resetDataPaths()
+{
+	DataManager* dm = DataManager::getInstance();
+	dm->removeAllSources();
+
+	// Always re-add search paths for relative and absolute paths.
+	dm->addSource(new FilesystemDataSource("./"));
+	dm->addSource(new FilesystemDataSource(""));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void addDataPath(const String& path)
+{
+	DataManager* dm = DataManager::getInstance();
+	dm->addSource(new FilesystemDataSource(path));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void printDataPaths()
+{
+	DataManager* dm = DataManager::getInstance();
+	omsg(dm->getDataSourceNames());
+}
+
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeYawOverloads, yaw, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodePitchOverloads, pitch, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeRollOverloads, roll, 1, 2) 
@@ -939,6 +964,11 @@ BOOST_PYTHON_MODULE(omega)
 	def("osetdataprefix", osetdataprefix);
 	def("isMaster", isMaster);
 	def("loadImage", loadImage, PYAPI_RETURN_REF);
+
+	// NEW IN 3.2.1
+	def("addDataPath", addDataPath);
+	def("resetDataPaths", addDataPath);
+	def("printDataPaths", printDataPaths);
 };
 
 // Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)

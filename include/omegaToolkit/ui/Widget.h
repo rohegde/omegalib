@@ -44,6 +44,7 @@ namespace omegaToolkit {
     friend class WidgetRenderable;
     public:
 		enum Layer { Back, Middle, Front, NumLayers };
+		static const int MaxWidgets = 16384;
     public:
         Widget(Engine* server);
         virtual ~Widget();
@@ -188,6 +189,8 @@ namespace omegaToolkit {
 		bool hitTest(const Vector2f& point);
         Vector2f transformPoint(const omega::Vector2f& point);
 
+		template<typename W> static W* getSource(const Event& evt);
+
     protected:
         bool simpleHitTest(const omega::Vector2f& point);
         static bool simpleHitTest(const omega::Vector2f& point, const omega::Vector2f& pos, const omega::Vector2f& size);
@@ -280,6 +283,8 @@ namespace omegaToolkit {
 		};
 
 		BorderStyle myBorders[4];
+
+		static ui::Widget* mysWidgets[MaxWidgets];
     };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -450,6 +455,19 @@ namespace omegaToolkit {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     inline void Widget::setVisible(bool value) 
     { myVisible = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	// NOTE: Widget::getSource is only used by UiScriptCommand. See if there is a way to get rid of this.
+	template<typename W> 
+	inline W* Widget::getSource(const Event& evt)
+	{
+		if(evt.getServiceType() == Service::Ui)
+		{
+			W* w = dynamic_cast<W*>(mysWidgets[evt.getSourceId()]);
+			return w;
+		}
+		return NULL;
+	}
 };
 }; // namespace omegaToolkit
 

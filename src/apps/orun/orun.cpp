@@ -23,6 +23,9 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * orun
+ *	A python script launcher and interpreter for omegalib applications.
  *************************************************************************************************/
 #include <omega.h>
 #include <omegaToolkit.h>
@@ -49,6 +52,8 @@ using namespace cyclops;
 
 // The name of the script to launch automatically at startup
 String sDefaultScript = "";
+// When set to true, add the script containing directory to the data search paths.
+bool sAddScriptDirectoryToData = false;
 
 class AppDrawer;
 
@@ -317,10 +322,26 @@ void OmegaViewer::initialize()
 	// Initialize the python wrapper module for this class.
 	initomegaViewer();
 
+	// If a default script has been passed to orun, queue it's execution through the python
+	// interpreter. Queuing it will make sure the script is launched on all nodes when running
+	// in a cluster environment.
 	if(sDefaultScript != "")
 	{
 		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-		interp->queueCommand(ostr("orun(\"%1%\")", %sDefaultScript));
+		// If this flag is active, set the script containing folder as the default application data path.
+		if(sAddScriptDirectoryToData)
+		{
+			String scriptPath;
+			String baseScriptFilename;
+			StringUtils::splitFilename(sDefaultScript, baseScriptFilename, scriptPath);
+
+			interp->queueCommand(ostr("addDataPath(\"%1%\")", %scriptPath));
+			interp->queueCommand(ostr("orun(\"%1%\")", %baseScriptFilename));
+		}
+		else
+		{
+			interp->queueCommand(ostr("orun(\"%1%\")", %sDefaultScript));
+		}
 	}
 
 	if(myAppDrawer != NULL)	myAppDrawer->initialize();
@@ -414,7 +435,10 @@ void OmegaViewer::run(const String& appName)
 		}
 
 		// Run the application main script.
-		sys->getScriptInterpreter()->runFile(scriptName);
+		// NOTE: Instead of running the script immediately through PythonInterpreter::runFile, we queue a local orun command.
+		// We do this to give the system a chance to finish reset, if this script is loading through a :r! command.
+		// Also note how we explicitly import module omega, since all global symbols may have been unloaded by the previously mentioned reset command.
+		sys->getScriptInterpreter()->queueCommand(ostr("from omega import *; orun('%1%')", %scriptName), true);
 	}
 }
 
@@ -517,8 +541,22 @@ int main(int argc, char** argv)
 {
 	String applicationName = "orun";
 
-	oargs().newNamedString('s', "script", "script", "script to launch at startup", sDefaultScript);
+	String launchScript = "";
+
+	// launch script
+	oargs().newOptionalString("launch script", "the script to launch at startup", launchScript);
+	
+	// Legacy default script (new apps should use launch script instead)
+	oargs().newNamedString('s', "script", "script", "(DEPRECATED) script to launch at startup", sDefaultScript);
 	oargs().process(argc, argv);
+
+	// If a launch script has been specified, override sDefaultScript, and also tell the system to
+	// add its containing directory to the data search paths.
+	if(launchScript != "")
+	{
+		sDefaultScript = launchScript;
+		sAddScriptDirectoryToData = true;
+	}
 
 	// If a start script is specified, use it to change the application name. This in turn allows for
 	// loading of per-application config files

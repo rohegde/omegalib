@@ -42,6 +42,9 @@ using namespace omegaToolkit::ui;
 
 NameGenerator Widget::mysNameGenerator("Widget_");
 
+// Table of widgets by Id (used by getSource)
+ui::Widget* Widget::mysWidgets[Widget::MaxWidgets];
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Widget::Widget(Engine* server):
 	myLayer(Middle),
@@ -74,7 +77,7 @@ Widget::Widget(Engine* server):
 	myFillEnabled = false;
 	memset(myBorders, 0, sizeof(BorderStyle) * 4);
 
-	UiModule::instance()->myWidgets[myId] = this;
+	mysWidgets[myId] = this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,7 +87,8 @@ Widget::~Widget()
 	{
 		dispose();
 	}
-	UiModule::instance()->myWidgets[myId] = NULL;
+	
+	mysWidgets[myId] = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

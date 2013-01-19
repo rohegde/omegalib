@@ -38,9 +38,6 @@ namespace omegaToolkit
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	class OTK_API UiModule: public EngineModule
 	{
-	friend class ui::Widget;
-	public:
-		static const int MaxWidgets = 16384;
 	public:
 		static UiModule* instance() { return mysInstance; }
 		static UiModule* createAndInitialize();
@@ -72,8 +69,6 @@ namespace omegaToolkit
 
 		void activateWidget(ui::Widget* w);
 
-		template<typename W> W* getSource(const Event& evt);
-
 		//! Extended ui
 		//@{
 		ui::Container* createExtendedUi(const String& name, uint mask, int rendererId);
@@ -96,8 +91,6 @@ namespace omegaToolkit
 
 		bool myLocalEventsEnabled;
 
-		ui::Widget* myWidgets[MaxWidgets];
-
 		Ref<ui::Widget> myActiveWidget;
 		Ref<ui::Container> myUi;
 		Ref<ui::WidgetFactory> myWidgetFactory;
@@ -115,17 +108,5 @@ namespace omegaToolkit
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline ui::WidgetFactory* UiModule::getWidgetFactory()
 	{ return myWidgetFactory; }
-		
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	template<typename W> 
-	inline W* UiModule::getSource(const Event& evt)
-	{
-		if(evt.getServiceType() == Service::Ui)
-		{
-			W* w = dynamic_cast<W*>(myWidgets[evt.getSourceId()]);
-			return w;
-		}
-		return NULL;
-	}
 };
 #endif
