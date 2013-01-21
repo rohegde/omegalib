@@ -1,6 +1,5 @@
 @fsinclude shadowMap
 
-uniform vec4 unif_Ambient;
 uniform float unif_Alpha;
 
 varying vec3 var_EyeVector;
@@ -39,6 +38,7 @@ $@fragmentLightSection
 		float specular = pow( max(dot(halfVec, N), 0.0), surf.shininess ); 
 		ld.luminance += gl_LightSource[@lightIndex].diffuse * specular * surf.gloss; 
 	}
+	ld.luminance += surf.albedo * gl_LightSource[@lightIndex].ambient;
 } 
 $
 
@@ -57,9 +57,6 @@ LitSurfaceData computeLighting(SurfaceData surf)
 
 	@fragmentLightSection
 
-	// Add ambient component from main light.
-	ld.luminance += surf.albedo * unif_Ambient;
-	
 	ld.luminance.a = surf.albedo.a * unif_Alpha;
 	// Add emissive surface component to final luminance.
 	ld.luminance += surf.emissive;

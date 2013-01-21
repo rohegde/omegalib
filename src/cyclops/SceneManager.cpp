@@ -498,18 +498,6 @@ void SceneManager::updateLights()
 			mySoftShadowMap->setSoftnessWidth(myMainLight->getSoftShadowWidth());
 			mySoftShadowMap->setJitteringScale(myMainLight->getSoftShadowJitter());
 		}
-
-		// Set ambient light uniform.
-		osg::Uniform* unifAmbient = myScene->getOrCreateStateSet()->getUniform("unif_Ambient");
-		if(unifAmbient == NULL)
-		{
-			unifAmbient = new osg::Uniform("unif_Ambient", COLOR_TO_OSG(myMainLight->getAmbient()));
-			myScene->getStateSet()->addUniform(unifAmbient, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
-		}
-		else
-		{
-			unifAmbient->set(COLOR_TO_OSG(myMainLight->getAmbient()));
-		}
 	}
 
 	// If the number of lights changed, reset the shaders
