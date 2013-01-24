@@ -11,10 +11,5 @@ from omega import *
 
 # Effects
 #queueCommand(':r examples/fxdemo')
-
-
-# -------------------------------------------------------------------------------------------------
-# Tutorials
-
-# Step 1: a basic scene
-queueCommand(':r examples/tutorial/step1-basicScene')
+#queueCommand(':r examples/multilight')
+queueCommand(':r examples/picking')

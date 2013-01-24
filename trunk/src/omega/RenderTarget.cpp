@@ -136,7 +136,7 @@ void RenderTarget::readback()
 		{
 			glReadPixels(
 				myReadbackViewport.x(), myReadbackViewport.y(), 
-				myReadbackViewport.width(), myReadbackViewport.height(), GL_BGR, GL_UNSIGNED_BYTE, 
+				myReadbackViewport.width(), myReadbackViewport.height(), GL_RGB, GL_UNSIGNED_BYTE, 
 				(GLvoid*)myReadbackColorTarget->lockData());
 			myReadbackColorTarget->unlockData();
 		}
@@ -144,7 +144,7 @@ void RenderTarget::readback()
 		{
 			glReadPixels(
 				myReadbackViewport.x(), myReadbackViewport.y(), 
-				myReadbackViewport.width(), myReadbackViewport.height(), GL_BGRA, GL_UNSIGNED_BYTE, 
+				myReadbackViewport.width(), myReadbackViewport.height(), GL_RGBA, GL_UNSIGNED_BYTE, 
 				(GLvoid*)myReadbackColorTarget->lockData());
 			myReadbackColorTarget->unlockData();
 		}

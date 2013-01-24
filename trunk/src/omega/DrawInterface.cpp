@@ -179,7 +179,7 @@ void DrawInterface::drawRect(Vector2f pos, Vector2f size, Color color)
 	int width = size[0];
 	int height = size[1];
 
-	glColor4fv(color.data());
+	glColor4f(color[0], color[1], color[2], color[3]);
 	glRecti(x, y, x + width, y + height);
 }
 
@@ -383,11 +383,11 @@ void DrawInterface::drawPrimitives(VertexBuffer* vertices, uint* indices, uint s
 Font* DrawInterface::createFont(omega::String fontName, omega::String filename, int size)
 {
 	Font::lock();
-	if(getFont(fontName))
-	{
-		ofwarn("FontManager::createFont: font '%1%' already existing.", %fontName);
-		return getFont(fontName);
-	}
+	//if(getFont(fontName))
+	//{
+	//	ofwarn("FontManager::createFont: font '%1%' already existing.", %fontName);
+	//	return getFont(fontName);
+	//}
 
 	DataManager* dm = SystemManager::instance()->getDataManager();
 	DataInfo info = dm->getInfo(filename);
@@ -422,5 +422,17 @@ Font* DrawInterface::createFont(omega::String fontName, omega::String filename, 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Font* DrawInterface::getFont(omega::String fontName)
 {
-	return myFonts[fontName];
+	if(myFonts.find(fontName) != myFonts.end())
+		return myFonts[fontName];
+
+	ofmsg("Creating Font %1%", %fontName);
+	Vector<String> args = StringUtils::split(fontName);
+	if(args.size() < 2)
+	{
+		owarn("Invalid font creation arguments");
+		return NULL;
+	}
+	String fontFile = args[0];
+	int fontSize = boost::lexical_cast<int>(args[1]);
+	return createFont(fontName, fontFile, fontSize);
 }
