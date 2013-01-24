@@ -44,7 +44,7 @@ using namespace omega;
 using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
-#define PYCAP_GET(pyobj, className) pyobj != NULL ? (className*)PyCapsule_GetPointer(pyobj, #className) : NULL
+//#define PYCAP_GET(pyobj, className) pyobj != NULL ? (className*)PyCapsule_GetPointer(pyobj, #className) : NULL
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //PyObject* uiImageLoad(PyObject* self, PyObject* args)
@@ -225,6 +225,9 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 	PYAPI_REF_CLASS(Label, Widget)
 		PYAPI_METHOD(Label, getText)
 		PYAPI_METHOD(Label, setText)
+		PYAPI_METHOD(Label, setColor)
+		PYAPI_METHOD(Label, setFont)
+		PYAPI_METHOD(Label, getFont)
 		;
 }
 

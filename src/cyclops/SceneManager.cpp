@@ -461,7 +461,6 @@ void SceneManager::updateLights()
 
 			osg::Light* ol = l->myOsgLight;
 			osg::LightSource* ols = l->myOsgLightSource;
-
 			const Vector3f pos = l->getDerivedPosition();
 			const Vector3f& att = l->getAttenuation();
 
@@ -485,7 +484,9 @@ void SceneManager::updateLights()
 		{
 			if(l->myOsgLightSource != NULL)
 			{
-				l->myOsgLightSource->setLocalStateSetModes(osg::StateAttribute::OFF); 
+				osg::StateSet* sState = myScene->getOrCreateStateSet();
+				l->myOsgLightSource->setStateSetModes(*sState,osg::StateAttribute::OFF); 
+				l->myOsgLightSource->setLight(NULL);
 			}
 		}
 	}

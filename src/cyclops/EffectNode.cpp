@@ -248,6 +248,12 @@ protected:
 					bf->setFunction(GL_SRC_ALPHA, GL_ONE);
 					ss->setAttribute(bf);
 				}
+				else
+				{
+					osg::BlendFunc* bf = new osg::BlendFunc();
+					bf->setFunction(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					ss->setAttribute(bf);
+				}				
 			}
 		}
 
@@ -266,6 +272,7 @@ protected:
 
 			// By default keep original texture size
 			tex->setResizeNonPowerOfTwoHint(false);
+			tex->setInternalFormatMode(osg::Texture::USE_IMAGE_DATA_FORMAT);
 			if(tex != NULL)
 			{
 				ss->setTextureAttribute(0, tex);

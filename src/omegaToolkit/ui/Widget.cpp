@@ -416,7 +416,14 @@ void Widget::setStyle(const String& style)
 	foreach(String token, tokens)
 	{
 		Vector<String> args = StringUtils::split(token, ":");
-		setStyleValue(args[0], args[1]);
+		if(args.size() < 2)
+		{
+			ofwarn("Widget::setStyle: error in style element %1%", %token);
+		}
+		else
+		{
+			setStyleValue(args[0], args[1]);
+		}
 	}
 	updateStyle();
 }
