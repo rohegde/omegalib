@@ -43,10 +43,10 @@ void PointerRenderable::draw(const DrawContext& context)
 {
 	if(myPointer->myVisible)
 	{
-		if(context.task == DrawContext::OverlayDrawTask && 
-			myPointer->getPointerMode() == Pointer::ModeMouse)
+		if(context.task == DrawContext::OverlayDrawTask)
 		{
-			int size = 30;
+			int size = myPointer->getSize();
+
 			int x = myPointer->myPosition[0];
 			int y = myPointer->myPosition[1];
 
@@ -69,41 +69,6 @@ void PointerRenderable::draw(const DrawContext& context)
 			{
 				getRenderer()->drawText(myPointer->myText, fnt, Vector2f(x + size, y + size), Font::HALeft | Font::VABottom, Color::White);
 			}
-		}
-		if(context.task == DrawContext::SceneDrawTask && 
-			myPointer->getPointerMode() == Pointer::ModeWand)
-		{
-			glDisable(GL_LIGHTING);
-
-			float size = myPointer->myPointerSize;
-			float length = myPointer->myPointerLength;
-			float px = myPointer->myRay.getOrigin().x();
-			float py = myPointer->myRay.getOrigin().y();
-			float pz = myPointer->myRay.getOrigin().z();
-
-			float x = px + myPointer->myRay.getDirection().x() * length;
-			float y = py + myPointer->myRay.getDirection().y() * length;
-			float z = pz + myPointer->myRay.getDirection().z() * length;
-
-			glColor4fv(myPointer->myColor.data());
-			glBegin(GL_TRIANGLES);
-			glVertex3f(x, y, z);
-			glVertex3f(px + size, py, pz);
-			glVertex3f(px - size, py, pz);
-			glVertex3f(x, y, z);
-			glVertex3f(px, py + size, pz);
-			glVertex3f(px, py - size, pz);
-			glEnd();
-
-			glColor4f(1, 1, 1, 1);
-			glBegin(GL_LINE_LOOP);
-			glVertex3f(x, y, z);
-			glVertex3f(px + size, py, pz);
-			glVertex3f(px - size, py, pz);
-			glVertex3f(x, y, z);
-			glVertex3f(px, py + size, pz);
-			glVertex3f(px, py - size, pz);
-			glEnd();
 		}
 	}
 }
