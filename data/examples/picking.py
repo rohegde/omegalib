@@ -65,7 +65,6 @@ def onObjectSelected(node, distance):
 #--------------------------------------------------------------------------------------------------
 def onEvent():
 	e = getEvent()
-	#if(e.getType() != EventType.Update): print(e.getType() )
 	if(e.getServiceType() == ServiceType.Pointer or e.getServiceType() == ServiceType.Wand):
 		# Button mappings are different when using wand or mouse
 		confirmButton = EventFlags.Button2
@@ -80,6 +79,6 @@ setEventFunction(onEvent)
 
 #--------------------------------------------------------------------------------------------------
 def onUpdate(frame, t, dt):
-	label1.setPosition(Vector2(0, abs(sin(dt / 10)) * 20));
+	label1.setPosition(Vector2(0, 20 - abs(sin(t * 2)) * 20));
 
 setUpdateFunction(onUpdate)
