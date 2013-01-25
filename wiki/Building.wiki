@@ -1,9 +1,9 @@
 #summary Building omegalib
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.0 - 21 August 2012</p>
+<p>*Last revision:* ver. 3.2 - 25 January 2013</p>
 
-Omegalib is distributed as a source-only project. Users are responsible for creating binaries for their operating system and architecture. The build process is kept as simple as possible and should require very little configuration effort by the user. Omegalib can build out-of-the-box and has no external dependencies, unless the user wants to activate advanced functionalities like vtk support and Python scripting.
+On most platforms, omegalib is distributed as a source-only project. Users are responsible for creating binaries for their operating system and architecture. The build process is kept as simple as possible and should require very little configuration effort by the user. Omegalib can build out-of-the-box and has no external dependencies, unless the user wants to activate advanced functionalities like vtk support and Python scripting.
 
 == Operating system support ==
 This is the current supported status of omegalib:
@@ -41,7 +41,7 @@ _^The Windows CMake GUI. Versions on other operating systems have a similar layo
 
 *SUGGESTION:* Keep both directories under a single 'root' folder. For example you can have something like this
  * `omegalib`: your root folder
-  * `source`: the source code directory, checked out from http://omegalib.googlecode.com/svn/trunk/
+  * `core`: the source code directory, checked out from http://omegalib.googlecode.com/svn/trunk/
   * `build`: the build and binaries directory
   
 === Step 3: building ===
@@ -61,7 +61,7 @@ The basic instructions are the same as for the Windows guide. Under linux, you w
    * `mkdir omegalib`
    * `cd omegalib`
  * Download the omegalib source code:
-   * `svn co https://omegalib.googlecode.com/svn/trunk omegalib --username<your-username>`
+   * `svn co https://omegalib.googlecode.com/svn/trunk core --username<your-username>`
    * (if you are not a committer) `svn co http://omegalib.googlecode.com/svn/trunk omegalib`
  * *(optional)* Download the omegalib applications source code:
    * `svn co https://omegalib-apps.googlecode.com/svn/trunk apps --username<your-username>`
@@ -70,8 +70,8 @@ The basic instructions are the same as for the Windows guide. Under linux, you w
    * `mkdir build`
    * `cd build`
  * run cmake using one of the following commands:
-   * `cmake -i ../omegalib` 
-   * `ccmake ../omegalib` 
+   * `cmake -i ../core` 
+   * `ccmake ../core` 
    * `cmake-gui`. 
    * (The commands will respectively run an interactive shell version of cmake, a curses based version, and a gui version similar to the windows one)
  * Follow the same steps as the one in windows to generate a makefile
@@ -81,7 +81,7 @@ The basic instructions are the same as for the Windows guide. Under linux, you w
 === IMPORTANT: Solving missing `eq/eq.h` include ===
 On some linux distributions, the build may fail due to a missing `eq/eq.h` include. For some reason cmake won't compute project dependencies correctly and it will forget to build the Equalizer project before building omega. A quick solution to this problem is building equalizer manually: 
 
-run `make equalizer` and wait for equqlizer to build, then run `make`.
+run `make equalizer` and wait for equalizer to build, then run `make`.
 
 ---------------------------------------------------------------------------------------------------
 == CMake options ==
@@ -94,4 +94,5 @@ This section is a quick guide to some build options ofered in cmake.
  * `OMEGA_USE_DISPLAY_GLUT`: Enables GLUT display system support. GLUT support is not really tested and may be broken. By default, omegalib uses the Equalizer display system even if you leave this option on, so you should not need to change it.
  * `OMEGA_USE_EXTERNAL_OSG`: *Advanced* specifies an external osg build instead of the internal one. Used for debugging.
  * `OMEGA_USE_OPENCL`: Enables OpenCL support. You will need OpenCL-compatible hardware to select this option. omegalib will try to use an internal copy of the OpenCL SDK when enabled.
+ * `OMEGA_USE_SAGE`: Enables SAGE support. This option is enabled by default if a SAGE installation is found on the target machine.
  * `OMEGA_APP_DIR`: Optional path to the omegalib applications root directory. Omegalib applications can be downloaded from this repository: https://code.google.com/p/omegalib-apps/ 
