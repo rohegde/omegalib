@@ -46,6 +46,14 @@ Renderer::Renderer(Engine* engine)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Texture* Renderer::createTexture()
+{
+	Texture* tex = new Texture(this->myGpuContext);
+	myTextures.push_back(tex);
+	return tex;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::addRenderPass(RenderPass* pass, bool addToFront)
 {
 	myRenderPassLock.lock();
@@ -134,6 +142,12 @@ void Renderer::finishFrame(const FrameInfo& frame)
 	foreach(Ref<Camera> cam, myServer->getCameras())
 	{
 		cam->finishFrame(frame);
+	}
+
+	// Dispose of unused textures
+	foreach(Texture* tex, myTextures)
+	{
+		if(tex->refCount() == 1) myTextures.remove(tex);
 	}
 }
 

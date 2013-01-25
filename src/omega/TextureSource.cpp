@@ -1,11 +1,11 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
- * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted 
  * provided that the following conditions are met:
@@ -24,76 +24,46 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/Texture.h"
-#include "omega/glheaders.h"
+#include "omega/TextureSource.h"
+#include "omega/ApplicationBase.h"
+#include "omega/Renderer.h"
 
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Texture::initialize(byte* data, int width, int height)
+Texture* TextureSource::getTexture(const DrawContext& context)
 {
-	myData = data; 
-	myWidth = width; 
-	myHeight = height; 
-
-	//Now generate the OpenGL texture object 
-	glGenTextures(1, &myId);
-		
-	GLenum glErr = glGetError();
-	if(glErr)
+	uint id = context.gpuContext->getId();
+	if(myTextures[id].isNull())
 	{
-		const unsigned char* str = gluErrorString(glErr);
-		oferror("Texture initialization: %1%", %str);
-		return;
+		myTextures[id] = context.renderer->createTexture();
+		myTextureUpdateFlags |= 1 << id;
 	}
-	myDirty = true;
-	myInitialized = true;
-	refresh();
+
+	// See if the texture needs refreshing
+	if(myDirty && (myTextureUpdateFlags & (1 << id)))
+	{
+		refreshTexture(myTextures[id], context);
+		myTextureUpdateFlags &= ~(1 << id);
+
+		// If no other texture needs refreshing, reset the dirty flag
+		if(!myTextureUpdateFlags) myDirty = false;
+	}
+
+	return myTextures[id];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Texture::reset(byte* data, int width, int height)
+void TextureSource::setDirty(bool value)
 {
-	oassert(myInitialized);
-
-	myData = data; 
-	myWidth = width; 
-	myHeight = height; 
-
-	myDirty = true;
-	refresh();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Texture::refresh()
-{
+	myDirty = value;
 	if(myDirty)
 	{
-		glBindTexture(GL_TEXTURE_2D, myId);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, myWidth, myHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,(GLvoid*)myData );
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		GLenum glErr = glGetError();
-
-		if(glErr)
+		// mark textures as needing update
+		for(int i = 0; i < GpuContext::MaxContexts; i++)
 		{
-			const unsigned char* str = gluErrorString(glErr);
-			oferror("Texture refresh: %1%", %str);
-			return;
+			// if the ith texture exists, set the ith bit in the update mask.
+			if(!myTextures[i].isNull()) myTextureUpdateFlags |= 1 << i;
 		}
-		myDirty = false;
 	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Texture::bind(GpuManager::TextureUnit unit)
-{
-	myTextureUnit = unit;
-	glActiveTexture(myTextureUnit);
-	glBindTexture(GL_TEXTURE_2D, myId);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Texture::unbind()
-{
-	myTextureUnit = GpuManager::TextureUnitInvalid;
 }

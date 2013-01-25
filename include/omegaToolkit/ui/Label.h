@@ -69,6 +69,7 @@ namespace omegaToolkit { namespace ui {
 
 	protected:
 		unsigned int getFontAlignFlags();
+		virtual void updateStyle();
 
 	protected:
 		String myText;

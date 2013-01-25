@@ -44,6 +44,7 @@ namespace omegaToolkit {
     friend class WidgetRenderable;
     public:
 		enum Layer { Back, Middle, Front, NumLayers };
+		enum BlendMode { BlendInherit, BlendNormal, BlendAdditive, BlendDisabled };
 		static const int MaxWidgets = 16384;
     public:
         Widget(Engine* server);
@@ -86,6 +87,8 @@ namespace omegaToolkit {
         //! Sets the widget position
         void setPosition(const omega::Vector2f& value) { myPosition = value; }
         void setPosition(int value, int dimension) { myPosition[dimension] = value; }
+		// Convenience method to center the widget around the specified point.
+		void setCenter(const omega::Vector2f& value);
         //! Sets the widget rotation
         //! @param value - the widget rotation in degrees
         void setRotation(float value) { myRotation = value; }
@@ -144,8 +147,8 @@ namespace omegaToolkit {
 			//ofmsg("Widget %1% active: %2%", %myId %value);
 		} 
 
-        bool isUserMoveEnabled() { return myUserMoveEnabled; }
-        void setUserMoveEnabled(bool value) { myUserMoveEnabled = value; }
+        //bool isUserMoveEnabled() { return myUserMoveEnabled; }
+        //void setUserMoveEnabled(bool value) { myUserMoveEnabled = value; }
         
         //! Returns the unique Widget id.
         int getId();
@@ -172,22 +175,28 @@ namespace omegaToolkit {
         virtual void autosize(Renderer* r) {}
         virtual void updateSize(Renderer* r);
 
-        //! style
+        //! Appearance
 		//@{
 		void setStyle(const String& style);
 		String getStyleValue(const String& key, const String& defaultValue = "");
 		void setStyleValue(const String& key, const String& value);
+		void setScale(float value) { myScale = value; }
+		float getScale() { return myScale; }
+		void setAlpha(float value) { myAlpha = value; }
+		float getAlpha() { return myAlpha; }
+		void setBlendMode(BlendMode value) { myBlendMode = value; }
+		BlendMode getBlendMode() { return myBlendMode; }
 		//@}
 
-        //! layer
-		//@{
 		Layer getLayer() { return myLayer; }
 		void setLayer(Layer layer) { myLayer = layer; }
-		//@}
 
 		//! Returns true if the point is within this widget's bounding box.
 		bool hitTest(const Vector2f& point);
         Vector2f transformPoint(const omega::Vector2f& point);
+
+		void setUpdateCommand(const String& cmd) { myUpdateCommand = cmd; }
+		String getUpdateCommand() { return myUpdateCommand; }
 
 		template<typename W> static W* getSource(const Event& evt);
 
@@ -250,9 +259,9 @@ namespace omegaToolkit {
         bool myDebugModeEnabled;
         omega::Color myDebugModeColor;
 
-        bool myUserMoveEnabled;
-        bool myMoving;
-        omega::Vector2f myUserMovePosition;
+        //bool myUserMoveEnabled;
+        //bool myMoving;
+        //omega::Vector2f myUserMovePosition;
 
 		// When true, the widget is visible.
         bool myVisible;
@@ -265,6 +274,11 @@ namespace omegaToolkit {
         omega::Vector2f myMinimumSize;
         omega::Vector2f myMaximumSize;
         bool myAutosize;
+
+		// Blend mode
+		BlendMode myBlendMode;
+		float myAlpha;
+		float myScale;
 
 		// Style data
 		Dictionary<String, String> myStyleDictionary;
@@ -282,6 +296,8 @@ namespace omegaToolkit {
 			int width;
 		};
 
+		String myUpdateCommand;
+
 		BorderStyle myBorders[4];
 
 		static ui::Widget* mysWidgets[MaxWidgets];
@@ -298,6 +314,8 @@ namespace omegaToolkit {
     protected:
         virtual void preDraw();
         virtual void postDraw();
+		void pushDrawAttributes();
+		void popDrawAttributes();
 
         //! Gets the current renderstate (accessible inside drawContent)
         RenderState* getRenderState() { return myRenderState; }

@@ -37,6 +37,9 @@ namespace omegaToolkit { namespace ui {
 	{
 	friend class ImageRenderable;
 	public:
+		static Image* create(PixelData* image, Container* container);
+
+	public:
 		Image(Engine* srv);
 		virtual ~Image();
 
@@ -45,15 +48,11 @@ namespace omegaToolkit { namespace ui {
 		PixelData* getData();
 		void setData(PixelData* data);
 
-		void setAutoRefresh(bool value) { myAutoRefresh = value; }
-		bool isAutoRefreshEnabled() { return myAutoRefresh; }
-
 		void flipX(bool value);
 		void flipY(bool value);
 
 	protected:
 		Ref<PixelData> myData;
-		bool myAutoRefresh;
 		uint myFlipFlags;
 	};
 
@@ -61,7 +60,7 @@ namespace omegaToolkit { namespace ui {
 	class OTK_API ImageRenderable: public WidgetRenderable
 	{
 	public:
-		ImageRenderable(Image* owner): WidgetRenderable(owner), myOwner(owner), myTexture(NULL) {}
+		ImageRenderable(Image* owner): WidgetRenderable(owner), myOwner(owner) {}
 		virtual ~ImageRenderable();
 		virtual void refresh();
 
@@ -70,7 +69,6 @@ namespace omegaToolkit { namespace ui {
 
 	private:
 		Image* myOwner;
-		Texture* myTexture;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

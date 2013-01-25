@@ -95,6 +95,44 @@ unsigned int Label::getFontAlignFlags()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Label::updateStyle()
+{
+	Widget::updateStyle();
+
+	// Font
+	String font = getStyleValue("font");
+	if(font != "")
+	{
+		setFont(font);
+	}
+
+	// Text alignment
+	String align = getStyleValue("align");
+	if(align != "")
+	{
+		Vector<String> args = StringUtils::split(align, "-");
+		if(args.size() == 2)
+		{
+			StringUtils::toLowerCase(args[0]);
+			StringUtils::toLowerCase(args[1]);
+			if(args[0] == "top") setVerticalAlign(AlignTop);
+			else if(args[0] == "middle") setVerticalAlign(AlignMiddle);
+			else if(args[0] == "bottom") setVerticalAlign(AlignBottom);
+			if(args[1] == "left") setHorizontalAlign(AlignLeft);
+			else if(args[1] == "center") setHorizontalAlign(AlignCenter);
+			else if(args[1] == "right") setHorizontalAlign(AlignRight);
+		}
+	}
+
+	// Font color
+	String color = getStyleValue("color");
+	if(color!= "")
+	{
+		setColor(Color(color));
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderable* Label::createRenderable()
 {
 	return new LabelRenderable(this);
@@ -112,7 +150,17 @@ void LabelRenderable::drawContent(const DrawContext& context)
 	WidgetRenderable::drawContent(context);
 
 	// If not font has been set, use default ui font.
-	if(!myFont) myFont = getRenderer()->getDefaultFont();
+	if(!myFont)
+	{
+		if(myOwner->getFont() != "")
+		{
+			myFont = getRenderer()->getFont(myOwner->getFont());
+		}
+		else
+		{
+			myFont = getRenderer()->getDefaultFont();
+		}
+	}
 
 	if(myFont)
 	{

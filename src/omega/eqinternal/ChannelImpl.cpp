@@ -152,8 +152,13 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
     context->modelview = mw * cam->getViewTransform();
 
 	// Setup the stencil buffer if needed.
+	// The stencil buffer is set up if th tile is using an interleaved mode (line or pixel)
+	// or if the tile is left in default mode and the global stereo mode is an interleaved mode
 	if(myDC.tile->stereoMode == DisplayTileConfig::LineInterleaved ||
-		(myDC.tile->stereoMode == DisplayTileConfig::Default && dcfg.stereoMode == DisplayTileConfig::LineInterleaved))
+		myDC.tile->stereoMode == DisplayTileConfig::PixelInterleaved ||
+		(myDC.tile->stereoMode == DisplayTileConfig::Default && (
+				dcfg.stereoMode == DisplayTileConfig::LineInterleaved ||
+				dcfg.stereoMode == DisplayTileConfig::PixelInterleaved)))
 	{
 		if(!myStencilInitialized)
 		{
@@ -161,13 +166,6 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 			myStencilInitialized = true;
 		}
 	}
-
-    // Setup draw buffer
-    //if(myDrawBuffer == NULL)
-    //{
-    //    myDrawBuffer = new RenderTarget(pipe->getGpuContext(), RenderTarget::RenderOnscreen, getDrawable());
-    //}
-    //context->drawBuffer = myDrawBuffer.get();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -308,7 +306,10 @@ void ChannelImpl::setupStencil(int gliWindowWidth, int gliWindowHeight)
 	GLint gliStencilBits;
 	glGetIntegerv(GL_STENCIL_BITS,&gliStencilBits);
 
-	float gliY;
+	EqualizerDisplaySystem* ds = dynamic_cast<EqualizerDisplaySystem*>(SystemManager::instance()->getDisplaySystem());
+	DisplayTileConfig::StereoMode stereoMode = myDC.tile->stereoMode;
+	if(stereoMode == DisplayTileConfig::Default) stereoMode = ds->getDisplayConfig().stereoMode;
+
 	// seting screen-corresponding geometry
 	glViewport(0,0,gliWindowWidth,gliWindowHeight);
 	glMatrixMode(GL_MODELVIEW);
@@ -330,15 +331,29 @@ void ChannelImpl::setupStencil(int gliWindowWidth, int gliWindowHeight)
 	glStencilFunc(GL_ALWAYS,1,1); // to avoid interaction with stencil content
 	
 	// drawing stencil pattern
-	glColor4f(1,1,1,0);	// alfa is 0 not to interfere with alpha tests
+	glColor4f(1,1,1,0);	// alpha is 0 not to interfere with alpha tests
 	
-	for (gliY=-2; gliY<=gliWindowHeight; gliY+=2)
+	if(stereoMode == DisplayTileConfig::LineInterleaved)
 	{
-		glLineWidth(1);
-		glBegin(GL_LINES);
-			glVertex2f(0, gliY);
-			glVertex2f(gliWindowWidth, gliY);
-		glEnd();	
+		for(float gliY=-2; gliY<=gliWindowHeight; gliY+=2)
+		{
+			glLineWidth(1);
+			glBegin(GL_LINES);
+				glVertex2f(0, gliY);
+				glVertex2f(gliWindowWidth, gliY);
+			glEnd();	
+		}
+	}
+	else if(stereoMode == DisplayTileConfig::PixelInterleaved)
+	{
+		for(float gliX=-2; gliX<=gliWindowWidth; gliX+=2)
+		{
+			glLineWidth(1);
+			glBegin(GL_LINES);
+				glVertex2f(gliX, 0);
+				glVertex2f(gliX, gliWindowHeight);
+			glEnd();	
+		}
 	}
 	glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP); // disabling changes in stencil buffer
 	glFlush();
@@ -374,6 +389,7 @@ struct StatisticData
     const std::string name;
     const Color color;
 };
+
 
 static StatisticData _statisticData[] =
 {{ Statistic::NONE,

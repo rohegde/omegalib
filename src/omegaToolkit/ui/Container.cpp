@@ -129,7 +129,7 @@ void Container::addChild(Widget* child)
 	requestLayoutRefresh();
 	myChildren.push_back(child);
 	child->setContainer(this);
-	updateChildrenNavigation();
+	if(child->isEnabled()) updateChildrenNavigation();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -138,22 +138,10 @@ void Container::removeChild(Widget* child)
 	requestLayoutRefresh();
 	myChildren.remove(child);
 	child->setContainer(NULL);
-	updateChildrenNavigation();
+	if(child->isEnabled()) updateChildrenNavigation();
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Container::removeChild(const String& name)
-{
-	requestLayoutRefresh();
-	Widget* w = getChildByName(name);
-	if(w != NULL)
-	{
-		myChildren.remove(w);
-	}
-	updateChildrenNavigation();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 Widget* Container::getChildByName(const String& name)
 {
 	foreach(Widget* w, myChildren)
@@ -745,7 +733,13 @@ void ContainerRenderable::beginDraw(const DrawContext& context)
 
 		myRenderTarget->bind();
 
-		if(myOwner->isPixelOutputEnabled()) glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		pushDrawAttributes();
+
+		if(myOwner->isPixelOutputEnabled()) 
+		{
+			glClearColor(0, 0, 0, 0);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		}
 	}
 	else
 	{
@@ -767,6 +761,7 @@ void ContainerRenderable::endDraw(const DrawContext& context)
 		if(myOwner->isPixelOutputEnabled()) myRenderTarget->readback();
 
 		myRenderTarget->unbind();
+		popDrawAttributes();
 	}
 	else
 	{

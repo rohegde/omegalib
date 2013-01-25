@@ -490,7 +490,10 @@ void OmegaViewer::handleCommand(const String& cmd)
 			omsg("\t r <appName> - run the specified script application");
 			omsg("\t lo          - list live objects");
 			omsg("\t ln          - print the scene node tree");
-			omsg("\t q           - quit");
+			omsg("\t u           - unload all running applications");
+			omsg("\t c           - toggle console");
+			omsg("\t s		     - print statistics");
+			omsg("\t porthole    - (experimental) enable porthole");
 		}
 	}
 	else if(args[0] == "r" && args.size() > 1)
@@ -527,6 +530,24 @@ void OmegaViewer::handleCommand(const String& cmd)
 		// c: toggle console
 		bool isConsoleEnabled = getEngine()->isConsoleEnabled();
 		getEngine()->setConsoleEnabled(!isConsoleEnabled);
+	}
+	else if(args[0] == "s")
+	{
+		// s: print statistics
+		SystemManager::instance()->getStatsManager()->printStats();
+	}
+	else if(args[0] == "porthole")
+	{
+	
+		// porthole: start the porthole server
+		String xmlFile = "porthole/porthello.xml";
+		String cssFile = "porthole/porthello.css";
+		if(args.size() == 3)
+		{
+			xmlFile = args[1];
+			cssFile = args[2];
+		}
+		PortholeService* service = PortholeService::createAndInitialize(4080,xmlFile, cssFile);
 	}
 	else if(args[0] == "q")
 	{
@@ -569,5 +590,17 @@ int main(int argc, char** argv)
 	}
 
 	Application<OmegaViewer> app(applicationName);
+	oargs().process(argc, argv);
+
+	// If a start script is specified, use it to change the application name. This in turn allows for
+	// loading of per-application config files
+	// (i.e. orun -s apps/test.py will name the application apps/test and look for apps/test.cfg as the 
+	// default configuration file)
+	if(sDefaultScript != "")
+	{
+		String extension;
+		StringUtils::splitBaseFilename(sDefaultScript, applicationName, extension);
+	}
+
 	return omain(app, argc, argv);
 }

@@ -66,7 +66,6 @@ namespace omega {
 	public:
 		typedef List< Ref<Camera> > CameraCollection;
 		enum PointerMode { PointerModeMouse, PointerModeWand, PointerModeDynamic };
-		static const int MaxPointers = 4;
 
 	friend class Renderer;
 	public:
@@ -169,7 +168,7 @@ namespace omega {
 		Ref<SceneNode> myScene;
 
 		// Pointers
-		Pointer* myPointers[MaxPointers];
+		Dictionary< int, Ref<Pointer> > myPointers;
 		bool myDrawPointers;
 		//float myActivePointerTimeout;
 		//PointerMode myPointerMode;

@@ -176,12 +176,6 @@ void Engine::initialize()
 	Setting& scfg = cfg->lookup("config");
 	myEventSharingEnabled = Config::getBoolValue("enableEventSharing", scfg, true);
 
-	for(int i = 0; i < MaxPointers; i++)
-	{
-		myPointers[i] = new Pointer();
-		myPointers[i]->initialize(this);
-	}
-
 	// Initialize the default camera using the 
 	//Observer* obs = getDisplaySystem()->getObserver(0);
 	//myDefaultCamera->setPosition(obs->getHeadPosition());
@@ -207,9 +201,6 @@ void Engine::dispose()
 	ofmsg("Engine::dispose: cleaning up %1% cameras", %myCameras.size());
 	myCameras.clear();
 	myDefaultCamera = NULL;
-
-	// clean up Pointers.
-	for(int i = 0; i < MaxPointers; i++) myPointers[i] = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -240,18 +231,22 @@ void Engine::removeRenderPass(const String& renderPassName)
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void Engine::refreshPointer(int pointerId, const Event& evt)
 {
-	Pointer* ptr = myPointers[pointerId];
+	Vector3f pos = evt.getPosition();
 
-	ptr->setVisible(true);
-	ptr->setPointerMode(Pointer::ModeWand);
-	ptr->setPosition(evt.getPosition().x(), evt.getPosition().y());
-
-	// Generate a view ray for the event.
-	Ray ray;
-	if(getDisplaySystem()->getViewRayFromEvent(evt, ray))
+	Pointer* ptr = NULL;
+	if(myPointers.find(pointerId) == myPointers.end())
 	{
-		ptr->setRay(ray);
+		ofmsg("Engine::refreshPointer: creating pointer %1%", %pointerId);
+		ptr = new Pointer();
+		myPointers[pointerId] = ptr;
+		ptr->initialize(this);
 	}
+	else
+	{
+		ptr = myPointers[pointerId];
+}
+	ptr->setVisible(true);
+	ptr->setPosition(pos[0], pos[1]);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -287,12 +282,14 @@ void Engine::handleEvent(const Event& evt)
 		}
 
 		// Update pointers.
-		// NOTE: 0 is reserved for the local mouse pointer.
-		if(evt.getServiceType() == Service::Pointer  || evt.getServiceType() == Service::Wand/*&& evt.getSourceId() > 0*/)
+		if(myDrawPointers)
 		{
-			int pointerId = evt.getSourceId();
-			//refreshPointer(pointerId, evt);
+			if(evt.getServiceType() == Service::Pointer) 
+			{
+				refreshPointer(evt.getSourceId(), evt);
 		}
+		}
+
 		if(!evt.isProcessed()) 
 		{
 			myDefaultCamera->handleEvent(evt);
@@ -341,8 +338,10 @@ void Engine::drawPointers(Renderer* client, const DrawContext& context)
 {
 	if(myDrawPointers)
 	{
-		foreach(Pointer* p, myPointers)
+		typedef pair<int, Ref<Pointer> > PointerItem;
+		foreach(PointerItem i, myPointers)
 		{
+			Pointer* p = i.second;
 			if(p->getVisible())
 			{
 				Renderable* r = p->getRenderable(client);

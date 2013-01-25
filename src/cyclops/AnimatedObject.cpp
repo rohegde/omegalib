@@ -71,7 +71,8 @@ AnimatedObject::AnimatedObject(SceneManager* scene, const String& modelName):
 		myAnimationManager(NULL),
 		myAnimations(NULL),
 		myCurAnimation(NULL),
-		myNeedStartAnimation(false)
+		myNeedStartAnimation(false),
+		myCurAnimationId(-1)
 {
 	myModel = scene->getModel(modelName);
 

@@ -38,6 +38,7 @@ PixelData::PixelData(Format fmt, int width, int height, byte* data):
 	myDeleteDisabled(false),
 	myDirty(true)
 {
+	setDirty(true);
 	if(myData == NULL)
 	{
 		switch(myFormat)
@@ -95,7 +96,7 @@ void PixelData::resize(int width, int height)
 		}
 		myData = (byte*)malloc(mySize);
 
-		myDirty = true;
+		setDirty(true);
 		myLock.unlock();
 	}
 }
@@ -194,3 +195,11 @@ uint PixelData::getAlphaMask()
 	}
 	return 0;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PixelData::refreshTexture(Texture* texture, const DrawContext& context)
+{
+	if(!texture->isInitialized()) texture->initialize(myWidth, myHeight);
+	texture->writePixels(this);
+}
+
