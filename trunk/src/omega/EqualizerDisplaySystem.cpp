@@ -186,7 +186,8 @@ void EqualizerDisplaySystem::generateEqConfig()
 	foreach(TileIterator p, eqcfg.tiles)
 	{
 		DisplayTileConfig* t = p.second;
-		
+		if(t->enabled)
+		{
 		START_BLOCK(result, "layout");
 		result += 
 			L(ostr("name \"layout-%1%\"", %t->name));
@@ -200,6 +201,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 			L("viewport [0 0 1 1]");
 		END_BLOCK(result);
 		END_BLOCK(result)
+	}
 	}
 	//END_BLOCK(result)
 	// ------------------------------------------ END layout
@@ -229,7 +231,8 @@ void EqualizerDisplaySystem::generateEqConfig()
 	foreach(TileIterator p, eqcfg.tiles)
 	{
 		DisplayTileConfig* t = p.second;
-
+		if(t->enabled)
+		{
 		START_BLOCK(result, "canvas");
 		result += 
 			L(ostr("name \"canvas-%1%\"", %t->name)) +
@@ -255,6 +258,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 		result += tileCfg;
 		
 		END_BLOCK(result);
+	}
 	}
 	// ------------------------------------------ END main canvas
 
@@ -289,6 +293,8 @@ void EqualizerDisplaySystem::generateEqConfig()
 	foreach(TileIterator p, eqcfg.tiles)
 	{
 		DisplayTileConfig* tc = p.second;
+		if(tc->enabled)
+		{
 		//String segmentName = ostr("segment-%1%", %tc->name);
 		//String viewName = "main";
 
@@ -329,6 +335,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 				result += tileCfg;
 			}
 		}
+	}
 	}
 
 	if(eqcfg.displayStatsOnMaster)
@@ -442,6 +449,12 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 
 			if(nc.hostname != "local")
 			{
+				// Launch the node if at least one of the tiles on the node is enabled.
+				bool enabled = false;
+				for(int i = 0; i < nc.numTiles; i++) enabled |= nc.tiles[i]->enabled;
+				
+				if(enabled)
+				{
 				String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
 				executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
 				
@@ -453,6 +466,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 				String cmd = ostr("%1% -c %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
 				olaunch(cmd);
 			}
+		}
 		}
 		osleep(myDisplayConfig.launcherInterval);
 	}

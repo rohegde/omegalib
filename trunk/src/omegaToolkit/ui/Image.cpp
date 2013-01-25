@@ -28,15 +28,24 @@
 #include "omega/Renderer.h"
 #include "omegaToolkit/ui/Image.h"
 #include "omega/DrawInterface.h"
+#include "omegaToolkit/ui/Container.h"
 
 using namespace omega;
 using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Image* Image::create(PixelData* image, Container* container)
+{
+	Image* img = new Image(Engine::instance());
+	img->setData(image);
+	container->addChild(img);
+	return img;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Image::Image(Engine* srv):
 	Widget(srv),
-	myAutoRefresh(false),
 	myData(NULL),
 	myFlipFlags(DrawInterface::FlipY)
 {
@@ -81,17 +90,17 @@ void Image::flipY(bool value)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ImageRenderable::refresh()
 {
-	GpuManager* gpu = getClient()->getGpuContext()->getGpu();
-	if(myOwner->myData != NULL)
-	{
-		PixelData* pd = myOwner->myData;
-		if(myTexture == NULL || myTexture->getWidth() != pd->getWidth() || myTexture->getHeight() != pd->getHeight())
-		{
-			myTexture = new Texture(getClient()->getGpuContext());
-			myTexture->initialize(pd->getWidth(), pd->getHeight());
-		}
-		myTexture->writePixels(pd);
-	}
+	//GpuManager* gpu = getClient()->getGpuContext()->getGpu();
+	//if(myOwner->myData != NULL)
+	//{
+	//	PixelData* pd = myOwner->myData;
+	//	if(myTexture == NULL)
+	//	{
+	//		myTexture = new Texture(getClient()->getGpuContext());
+	//		myTexture->initialize(pd->getWidth(), pd->getHeight());
+	//	}
+	//	myTexture->writePixels(pd);
+	//}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,27 +113,29 @@ void ImageRenderable::drawContent(const DrawContext& context)
 {
 	WidgetRenderable::drawContent(context);
 
-	if(myTexture != NULL)
+	PixelData* tex = myOwner->getData();
+	if(tex != NULL)
 	{
-		// If autorefresh is enabled, refresh texture data every time you draw.
-		// Not very efficient but works for now.
-		if(myOwner->myAutoRefresh) refresh();
+		DrawInterface* di = getRenderer();
+		di->fillTexture(tex);
+		di->textureRegion(0, 0, 1, 1);
 
 		if(myOwner->isStereo())
 		{
 			DrawContext::Eye eye = context.eye;
 			if(eye == DrawContext::EyeLeft)
 			{
-				getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), DrawInterface::FlipY, Vector2f(0, 0), Vector2f(0.5f, 1.0f));
+				di->textureRegion(0, 0, 0.5f, 1);
 			}
 			else if(eye == DrawContext::EyeRight)
 			{
-				getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), DrawInterface::FlipY, Vector2f(0.5f, 0), Vector2f(1.0f, 1.0f));
+				di->textureRegion(0.5f, 0, 0.5f, 1);
 			}
 		}
 		else
 		{
-			getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), myOwner->myFlipFlags);
+			Vector2f size = myOwner->getSize();
+			di->rect(0, 0, size[0], size[1]);
 		}
 	}
 	else

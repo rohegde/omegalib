@@ -69,6 +69,7 @@ namespace omega
 		Stat* createStat(const String& name);
 		Stat* findStat(const String& name);
 		List<Stat*>::Range getStats();
+		void printStats();
 
 	private:
 		Dictionary<String, Stat*> myStatDictionary;

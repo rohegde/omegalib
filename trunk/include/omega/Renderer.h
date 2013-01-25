@@ -69,6 +69,8 @@ namespace omega {
 		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
 		ServiceManager*   getServiceManager()   { return SystemManager::instance()->getServiceManager(); }
 		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
+
+		Texture* createTexture();
 	private:
 		void innerDraw(const DrawContext& context, Camera* camera);
 
@@ -78,10 +80,14 @@ namespace omega {
 
 		GpuContext* myGpuContext;
 
-		Ref<Engine> myServer;
+		// Cant use Ref<Engine> because of circular header dependency
+		Engine* myServer;
+
 		Ref<DrawInterface> myRenderer;
 		List< Ref<RenderPass> > myRenderPassList;
 		Queue< Ref<IRendererCommand> > myRenderableCommands;
+
+		List< Ref<Texture> > myTextures;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +96,7 @@ namespace omega {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Engine* Renderer::getEngine()
-	{ return myServer.get(); }
+	{ return myServer; }
 }; // namespace omega
 
 #endif

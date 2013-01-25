@@ -29,10 +29,11 @@
 
 #include "osystem.h"
 #include "omega/GpuManager.h"
-#include "omega/PixelData.h"
 
 namespace omega
 {
+	class PixelData;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API Texture: public GpuResource
 	{
@@ -41,6 +42,7 @@ namespace omega
 
 		//! Initializes this texture object
 		void initialize(int width, int height); 
+		bool isInitialized() { return myInitialized; }
 
 		void writePixels(PixelData* data);
 		void readPixels(PixelData* data);

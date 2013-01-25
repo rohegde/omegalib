@@ -35,27 +35,16 @@ namespace omega {
 	{
 	friend class PointerRenderable;
 	public:
-		enum PointerMode { ModeMouse, ModeWand };
-
-	public:
 		Pointer(): 
  		  myVisible(true),
 		  myColor(0.1f, 0.1f, 0.2f, 0.95f),
-		  myMode(ModeMouse),
 		  myText("Pointer"),
-		  myPointerSize(0.01f),
-		  myPointerLength(4.0f) {}
+		  myPointerSize(30) {}
 
 		virtual Renderable* createRenderable();
 
 		void setVisible(bool value);
 		bool getVisible();
-
-		void setRay(const Ray& value);
-		const Ray& getRay();
-
-		PointerMode getPointerMode();
-		void setPointerMode(PointerMode value);
 
 		void setPosition(const Vector2i& position);
 		void setPosition(int x, int y);
@@ -67,8 +56,8 @@ namespace omega {
 		String getText();
 		void setText(const String& value);
 		
-		void setLength(float value) { myPointerLength = value; }
-		void setSize(float value) { myPointerSize = value; }
+		void setSize(int value) { myPointerSize = value; }
+		int getSize() { return myPointerSize; }
 
 	private:
 		bool myVisible;
@@ -76,10 +65,7 @@ namespace omega {
 		Vector2i myPosition;
 		Ray myRay;
 		String myText;
-		PointerMode myMode;
-		
-		float myPointerLength;
-		float myPointerSize;
+		int myPointerSize;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,22 +116,6 @@ namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Pointer::setText(const String& value)
 	{ myText = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Pointer::setRay(const Ray& value)
-	{ myRay = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const Ray& Pointer::getRay()
-	{ return myRay; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Pointer::PointerMode Pointer::getPointerMode()
-	{ return myMode; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Pointer::setPointerMode(Pointer::PointerMode value)
-	{ myMode = value; }
 }; // namespace omega
 
 #endif

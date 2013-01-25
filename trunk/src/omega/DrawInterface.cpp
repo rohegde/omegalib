@@ -37,10 +37,10 @@ using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 DrawInterface::DrawInterface():
-	myTargetTexture(NULL),
+	//myTargetTexture(NULL),
 	myDrawing(false),
 	myDefaultFont(NULL),
-	myForceDiffuseColor(false)
+	myContext(NULL)
 {
 }
 
@@ -64,6 +64,7 @@ void DrawInterface::beginDraw3D(const DrawContext& context)
 	glDepthMask(GL_TRUE);
 
 	myDrawing = true;
+	myContext = &context;
 
 	//int maxVaryingFloats = 0;
 	//glGetIntegerv(GL_MAX_VARYING_FLOATS, &maxVaryingFloats);
@@ -97,6 +98,7 @@ void DrawInterface::beginDraw2D(const DrawContext& context)
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	myDrawing = true;
+	myContext = &context;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,6 +110,17 @@ void DrawInterface::endDraw()
     glPopMatrix();
 	glPopAttrib();
 	myDrawing = false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void DrawInterface::setGlColor(const Color& col)
+{
+	glColor4f(
+		col[0] * myColor[0], 
+		col[1] * myColor[1],
+		col[2] * myColor[2],
+		col[3] * myColor[3]
+	);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,7 +149,7 @@ void DrawInterface::drawRectGradient(Vector2f pos, Vector2f size, Orientation or
 
 	float s = 0;
 
-	glColor4fv(startColor.data());
+	setGlColor(startColor);
 	if(orientation == Horizontal)
 	{
 		// draw full color portion
@@ -148,7 +161,7 @@ void DrawInterface::drawRectGradient(Vector2f pos, Vector2f size, Orientation or
 		glBegin(GL_QUADS);
 		glVertex2i(x, y);
 		glVertex2i(x + width, y);
-		glColor4fv(endColor.data());
+		setGlColor(endColor);
 		glVertex2i(x + width, y + height);
 		glVertex2i(x, y + height);
 		glEnd(); 
@@ -164,7 +177,7 @@ void DrawInterface::drawRectGradient(Vector2f pos, Vector2f size, Orientation or
 		glBegin(GL_QUADS);
 		glVertex2i(x, y + height);
 		glVertex2i(x, y);
-		glColor4fv(endColor.data());
+		setGlColor(endColor);
 		glVertex2i(x + width, y);
 		glVertex2i(x + width, y + height);
 		glEnd();
@@ -191,7 +204,7 @@ void DrawInterface::drawRectOutline(Vector2f pos, Vector2f size, Color color)
 	int width = size[0];
 	int height = size[1];
 
-	glColor4fv(color.data());
+	setGlColor(color);
 
 	glBegin(GL_LINES);
 
@@ -213,7 +226,7 @@ void DrawInterface::drawRectOutline(Vector2f pos, Vector2f size, Color color)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void DrawInterface::drawText(const String& text, Font* font, const Vector2f& position, unsigned int align, Color color) 
 { 
-	glColor4fv(color.data());
+	setGlColor(color);
 
 	Vector2f rect = font->computeSize(text);
 	float x, y;
@@ -234,6 +247,8 @@ void DrawInterface::drawRectTexture(Texture* texture, const Vector2f& position, 
 {
 	glEnable(GL_TEXTURE_2D);
 	texture->bind(GpuManager::TextureUnit0);
+
+	glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_MODULATE);
 
 	float x = position[0];
 	float y = position[1];
@@ -256,8 +271,6 @@ void DrawInterface::drawRectTexture(Texture* texture, const Vector2f& position, 
 		miny = 1;
 		maxy = 0;
 	}
-
-	glColor4ub(255, 255, 255, 255);
 
 	glBegin(GL_TRIANGLE_STRIP);
 
@@ -287,7 +300,7 @@ void DrawInterface::drawCircleOutline(Vector2f position, float radius, const Col
 	glDisable(GL_BLEND);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColor4fv(color.data());
+	setGlColor(color);
 
 	float stp = Math::Pi * 2 / segments;
 	glBegin(GL_LINE_LOOP);
@@ -309,7 +322,7 @@ void DrawInterface::drawWireSphere(const Color& color, int segments, int slices)
 	glDisable(GL_BLEND);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColor4fv(color.data());
+	setGlColor(color);
 
 	float stp = Math::Pi * 2 / segments;
 	float stp2 = Math::Pi / (slices + 1);
@@ -361,11 +374,11 @@ void DrawInterface::drawPrimitives(VertexBuffer* vertices, uint* indices, uint s
 
 	// HACK: vertex buffer may reset the color array flag, so make sure we override it
 	// if forced diffuse color is enabled.
-	if(myForceDiffuseColor)
-	{
-		glDisableClientState(GL_COLOR_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	}
+	//if(myForceDiffuseColor)
+	//{
+	//	glDisableClientState(GL_COLOR_ARRAY);
+	//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	//}
 	if(indices != NULL)
 	{
 		//ofmsg("glDrawElements %1%", %size);
@@ -393,7 +406,6 @@ Font* DrawInterface::createFont(omega::String fontName, omega::String filename, 
 	DataInfo info = dm->getInfo(filename);
 	oassert(!info.isNull());
 	oassert(info.local);
-
 
 	FTFont* fontImpl = new FTTextureFont(info.path.c_str());
 
@@ -435,4 +447,37 @@ Font* DrawInterface::getFont(omega::String fontName)
 	String fontFile = args[0];
 	int fontSize = boost::lexical_cast<int>(args[1]);
 	return createFont(fontName, fontFile, fontSize);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void DrawInterface::fillTexture(TextureSource* texture)
+{
+	myBrush.texture = texture->getTexture(*myContext);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void DrawInterface::textureFlip(uint flipflags)
+{
+	myBrush.flip = flipflags;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void DrawInterface::textureRegion(float su, float sv, float eu, float ev)
+{
+	myBrush.startuv = Vector2f(su, sv);
+	myBrush.enduv = Vector2f(eu, ev);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void DrawInterface::rect(float x, float y, float width, float height)
+{
+	if(!myBrush.texture.isNull())
+	{
+		drawRectTexture(myBrush.texture,
+			Vector2f(x, y),
+			Vector2f(width, height),
+			myBrush.flip,
+			myBrush.startuv,
+			myBrush.enduv);
+	}
 }

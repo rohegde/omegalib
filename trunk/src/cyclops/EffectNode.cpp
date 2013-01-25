@@ -270,11 +270,10 @@ protected:
 		{
 			osg::Texture2D* tex = sm->getTexture(diffuse);
 
-			// By default keep original texture size
-			tex->setResizeNonPowerOfTwoHint(false);
-			tex->setInternalFormatMode(osg::Texture::USE_IMAGE_DATA_FORMAT);
 			if(tex != NULL)
 			{
+				// By default keep original texture size
+				tex->setResizeNonPowerOfTwoHint(false);
 				ss->setTextureAttribute(0, tex);
 			}
 		}

@@ -54,7 +54,8 @@ namespace omega
 			drawFps(false), 
 			disableScene(false), 
 			disableOverlay(false), 
-			stereoMode(Mono)
+			stereoMode(Mono),
+			enabled(false)
 			 {}
 
 		StereoMode stereoMode;
@@ -84,6 +85,8 @@ namespace omega
 		bool drawFps;
 		bool disableScene;
 		bool disableOverlay;
+
+		bool enabled;
 
 		//! When set to true render this tile offscreen.
 		bool offscreen;
