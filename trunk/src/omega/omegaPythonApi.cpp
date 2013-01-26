@@ -801,6 +801,7 @@ BOOST_PYTHON_MODULE(omega)
 		.def("pitch", &Node::pitch, NodePitchOverloads())
 		.def("roll", &Node::roll, NodeRollOverloads())
 
+		PYAPI_METHOD(Node, lookAt)
 		PYAPI_METHOD(Node, numChildren)
 		PYAPI_METHOD(Node, addChild)
 		.def("getChildByName", getChildByName, PYAPI_RETURN_REF)
@@ -832,6 +833,8 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(SceneNode, setBoundingBoxVisible)
 		PYAPI_METHOD(SceneNode, setTag)
 		PYAPI_GETTER(SceneNode, getTag)
+		PYAPI_GETTER(SceneNode, setFacingCamera)
+		PYAPI_GETTER(SceneNode, getFacingCamera)
 	;
 
 	// Camera

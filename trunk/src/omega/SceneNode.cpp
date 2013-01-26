@@ -28,6 +28,7 @@
 #include "omega/SceneNode.h"
 #include "omega/Renderable.h"
 #include "omega/Engine.h"
+#include "omega/Camera.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
@@ -142,6 +143,12 @@ void SceneNode::draw(const DrawContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::update(bool updateChildren, bool parentHasChanged)
 {
+	// Reorient the node if a facing camera is set
+	if(myFacingCamera != NULL)
+	{
+		lookAt(myFacingCamera->getPosition() + myFacingCamera->getHeadOffset(), Vector3f::UnitY());
+	}
+
     // Short circuit the off case
     if (!updateChildren && !mNeedParentUpdate && !mNeedChildUpdate && !parentHasChanged)
     {
