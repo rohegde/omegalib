@@ -35,6 +35,7 @@ namespace omega {
 	class Engine;
 	class Renderable;
 	class SceneNode;
+	class Camera;
 	struct RenderState;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,7 +74,8 @@ namespace omega {
 			mySelectable(false),
 			myChanged(false),
 			myVisible(true),
-			mySelected(false)
+			mySelected(false),
+			myFacingCamera(NULL)
 			{}
 
 		SceneNode(Engine* server, const String& name):
@@ -84,7 +86,8 @@ namespace omega {
 			mySelectable(false),
 			myChanged(false),
 			myVisible(true),
-			mySelected(false)
+			mySelected(false),
+			myFacingCamera(NULL)
 			{}
 
 		Engine* getEngine();
@@ -132,6 +135,9 @@ namespace omega {
 		void setTag(const String& value) { myTag = value; }
 		const String& getTag() { return myTag; } 
 
+		void setFacingCamera(Camera* cam);
+		Camera* getFacingCamera();
+
 	private:
 		void drawBoundingBox();
 		void updateBoundingBox();
@@ -157,6 +163,9 @@ namespace omega {
 		// Bounding box stuff.
 		bool myBoundingBoxVisible;
 		Color myBoundingBoxColor;
+
+		// Target camera for billboard mode. Can't use Ref due to circular dependency.
+		Camera* myFacingCamera;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,6 +195,14 @@ namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void SceneNode::setSelectable(bool value) 
 	{ mySelectable = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void SceneNode::setFacingCamera(Camera* cam)
+	{ myFacingCamera = cam; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Camera* SceneNode::getFacingCamera()
+	{ return myFacingCamera; }
 }; // namespace omega
 
 #endif

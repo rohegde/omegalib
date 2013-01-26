@@ -342,6 +342,25 @@ void Node::resetOrientation(void)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Node::lookAt(const Vector3f& position, const Vector3f& upVector)
+{
+	Vector3f zaxis = position - mPosition;
+	zaxis.normalize();
+
+	Vector3f xaxis = upVector.cross(zaxis);
+	xaxis.normalize();
+
+	Vector3f yaxis = zaxis.cross(xaxis);
+
+	Matrix3f m;
+	m.col(0) = xaxis;
+	m.col(1) = yaxis;
+	m.col(2) = zaxis;
+	mOrientation = m;
+	needUpdate();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Node::setPosition(const Vector3f& pos)
 {
 	//oassert(!pos.isNaN() && "Invalid vector supplied as parameter");

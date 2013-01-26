@@ -336,6 +336,9 @@ namespace omega {
         */
         virtual void rotate(const Quaternion& q, TransformSpace relativeTo = TransformLocal);
 
+		//! Rotate the node to make its positive Z axis point toward the specified position.
+		virtual void lookAt(const Vector3f& position, const Vector3f& upVector);
+
         /** Gets a matrix whose columns are the local axes based on
             the nodes orientation relative to it's parent. */
         virtual Matrix3f getLocalAxes(void) const;
