@@ -28,7 +28,7 @@
 #define __OSG_SCENE_OBJECT_H__
 
 #include "omegaOsg/oosgbase.h"
-#include "omega/ISceneObject.h"
+#include "omega/NodeComponent.h"
 #include "omega/SceneNode.h"
 
 namespace osg
@@ -42,7 +42,7 @@ namespace omegaOsg
 	using namespace omega;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OOSG_API OsgSceneObject: public ISceneObject, SceneNodeListener
+	class OOSG_API OsgSceneObject: public NodeComponent, SceneNodeListener
 	{
 	public:
 		OsgSceneObject(osg::Node* node);

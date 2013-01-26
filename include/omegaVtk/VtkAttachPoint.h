@@ -27,7 +27,7 @@
 #ifndef __VTK_ATTACH_POINT_H__
 #define __VTK_ATTACH_POINT_H__
 
-#include "omega/ISceneObject.h"
+#include "omega/NodeComponent.h"
 
 #include "ovtkbase.h"
 
@@ -41,7 +41,7 @@ namespace omegaVtk {
 	//using namespace omegaToolkit;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OVTK_API VtkAttachPoint: public ISceneObject
+	class OVTK_API VtkAttachPoint: public NodeComponent
 	{
 	public:
 		VtkAttachPoint();

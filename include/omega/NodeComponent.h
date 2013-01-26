@@ -24,26 +24,39 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/SceneNode.h"
-#include "omegaToolkit/RenderableSceneObject.h"
-#include "omega/Engine.h"
+#ifndef __ISCENE_OBJECT_H__
+#define __ISCENE_OBJECT_H__
 
-using namespace omega;
-using namespace omegaToolkit;
+#include "osystem.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-RenderableSceneObject::RenderableSceneObject()
-{
-}
+namespace omega {
+	class SceneNode;
+	class Engine;
+	struct DrawContext;
+	struct RenderState;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void RenderableSceneObject::draw(SceneNode* node, const DrawContext& context)
-{ 
-	SceneRenderable* sr = (SceneRenderable*)getRenderable(context.renderer);
-	if(sr != NULL)
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OMEGA_API NodeComponent: public ReferenceType
 	{
-		sr->setSceneNode(node);
-		sr->draw(context);
-	}
-}
+	public:
+		NodeComponent(): myNeedBoundingBoxUpdate(false) {}
+		virtual void update(SceneNode* owner) = 0;
+		virtual void draw(SceneNode* node, const DrawContext& context) {};
+		virtual const AlignedBox3* getBoundingBox() = 0;
+		virtual bool hasBoundingBox() = 0;
+		virtual bool isInitialized() = 0;
+		virtual bool hasCustomRayIntersector() { return false; }
+		virtual bool intersectRay(const Ray& ray, Vector3f* hitPoint) { return false; }
+		virtual void initialize(Engine* server) = 0;
+		virtual void updateBoundingBox() { myNeedBoundingBoxUpdate = false; }
+		
+		void requestBoundingBoxUpdate() { myNeedBoundingBoxUpdate = true; }
+		bool needsBoundingBoxUpdate() { return myNeedBoundingBoxUpdate; }
 
+
+	private:
+		bool myNeedBoundingBoxUpdate;
+	};
+}; // namespace omega
+
+#endif

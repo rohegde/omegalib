@@ -44,7 +44,8 @@ Entity::Entity(SceneManager* scene):
 		myStateSet(NULL),
 		myAlphaUniform(NULL),
 		myAlpha(1.0f),
-		myOsgSceneObject(NULL)
+		myOsgSceneObject(NULL),
+		myCastShadow(true)
 {
 	myEffect = new EffectNode();
 	
@@ -64,6 +65,9 @@ void Entity::initialize(osg::Node* node)
 {
 	myOsgNode = node;
 
+	// Make sure the shado caster flags are up to date.
+	castShadow(myCastShadow);
+
 	// Create an omegalib scene node. The scene node will be used to manipulate some of this drawable object basic
 	// properties like transform and visibility. The scene node also gives access to the object bounding sphere and
 	// allows for simple hit tests.
@@ -79,7 +83,7 @@ void Entity::initialize(osg::Node* node)
 	myStateSet->addUniform(myAlphaUniform);
 
 	// OsgSceneObject is the 'glue point' between an osg Node and an omegalib scene node.
-	addObject(myOsgSceneObject);
+	addComponent(myOsgSceneObject);
 
 	// Now add this drawable object to the scene.
 	mySceneManager->addEntity(this);
@@ -145,7 +149,6 @@ void Entity::setFollowOffset(const Vector3f& offset, const Quaternion& ooffset)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Entity::unfollow()
 {
 	if(myTracker != NULL)
@@ -153,4 +156,27 @@ void Entity::unfollow()
 		ModuleServices::removeModule(myTracker);
 		myTracker = NULL;
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::castShadow(bool value)
+{
+	myCastShadow = value;
+	if(myOsgNode != NULL)
+	{
+		if(!myCastShadow)
+		{
+			myOsgNode->setNodeMask(0xffffffff & ~SceneManager::CastsShadowTraversalMask);
+		}
+		else
+		{
+			myOsgNode->setNodeMask(0xffffffff);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Entity::doesCastShadow()
+{
+	return myCastShadow;
 }

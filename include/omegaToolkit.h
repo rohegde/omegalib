@@ -33,8 +33,6 @@
 #include "omegaToolkit/MouseManipulator.h"
 #include "omegaToolkit/DefaultMouseInteractor.h"
 #include "omegaToolkit/DefaultTwoHandsInteractor.h"
-#include "omegaToolkit/Mesh.h"
-#include "omegaToolkit/MeshData.h"
 #include "omegaToolkit/SceneEditorModule.h"
 #include "omegaToolkit/ToolkitUtils.h"
 #include "omegaToolkit/TrackedObject.h"
