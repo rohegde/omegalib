@@ -42,11 +42,13 @@ label1.setAutosize(False)
 label1.setStyle('font: fonts/arial.ttf 80; color: white')
 container1.setPixelOutputEnabled(True)
 scene.createTexture('button1Texture', container1.getPixels())
+
 button1 = BoxShape.create(0.3, 0.1, 0.01)
 button1.setPosition(Vector3(-1, 2, -3))
 button1.setEffect('textured -d button1Texture')
 button1.setSelectable(True)
 button1.setName('playButton')
+button1.setFacingCamera(getDefaultCamera())
 
 #--------------------------------------------------------------------------------------------------
 def onObjectSelected(node, distance):
@@ -54,11 +56,13 @@ def onObjectSelected(node, distance):
 		if(node.getName() == 'playButton'): 
 			if(skel.getCurAnimation() == -1):
 				skel.loopAnimation(0)
-				container1.setStyle('fill: black; border: 20 green;')
+				container1.setStyle('fill: black; border: 20 white;')
+				label1.setStyle('color: white')
 				label1.setText('Stop')
 			else:
 				skel.stopAllAnimations()
-				container1.setStyle('fill: black; border: 20 white;')
+				container1.setStyle('fill: white; border: 20 black;')
+				label1.setStyle('color: black')
 				label1.setText('Play')
 			
 		
@@ -77,8 +81,3 @@ def onEvent():
 
 setEventFunction(onEvent)
 
-#--------------------------------------------------------------------------------------------------
-def onUpdate(frame, t, dt):
-	label1.setPosition(Vector2(0, 20 - abs(sin(t * 2)) * 20));
-
-setUpdateFunction(onUpdate)
