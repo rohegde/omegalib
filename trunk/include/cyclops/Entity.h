@@ -67,6 +67,9 @@ namespace cyclops {
 		void setFollowOffset(const Vector3f& offset, const Quaternion& ooffset);
 		void unfollow();
 
+		void castShadow(bool value);
+		bool doesCastShadow();
+
 	protected:
 		void initialize(osg::Node* node);
 
@@ -83,6 +86,8 @@ namespace cyclops {
 
 		Ref<EffectNode> myEffect;
 		Ref<omegaToolkit::TrackedObject> myTracker;
+
+		bool myCastShadow;
 	};
 };
 

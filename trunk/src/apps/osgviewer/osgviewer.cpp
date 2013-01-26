@@ -123,7 +123,7 @@ void OsgViewer::initialize()
 	// osg object through omegalib interactors.
 	OsgSceneObject* oso = new OsgSceneObject(node);
 	mySceneNode = new SceneNode(getEngine());
-	mySceneNode->addObject(oso);
+	mySceneNode->addComponent(oso);
 	mySceneNode->setBoundingBoxVisible(true);
 	getEngine()->getScene()->addChild(mySceneNode);
 	getEngine()->getDefaultCamera()->focusOn(getEngine()->getScene());

@@ -93,7 +93,7 @@ bool SceneNode::isSelected()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::addObject(ISceneObject* o) 
+void SceneNode::addComponent(NodeComponent* o) 
 { 
 	myObjects.push_back(o); 
 	//needUpdate();
@@ -103,13 +103,13 @@ void SceneNode::addObject(ISceneObject* o)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int SceneNode::getNumObjects()
+int SceneNode::getNumComponents()
 { 
 	return myObjects.size(); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::removeObject(ISceneObject* o) 
+void SceneNode::removeComponent(NodeComponent* o) 
 {
 	myObjects.remove(o);
 	updateBoundingBox();
@@ -126,7 +126,7 @@ void SceneNode::draw(const DrawContext& context)
 		if(myBoundingBoxVisible) drawBoundingBox();
 
 		// Draw drawables attached to this node.
-		foreach(ISceneObject* d, myObjects)
+		foreach(NodeComponent* d, myObjects)
 		{
 			d->draw(this, context);
 		}
@@ -158,7 +158,7 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 	Node::update(updateChildren, parentHasChanged);
 
 	// UPdate attached scene objects
-	foreach(ISceneObject* d, myObjects)
+	foreach(NodeComponent* d, myObjects)
 	{
 		d->update(this);
 	}
@@ -169,7 +169,7 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 bool SceneNode::needsBoundingBoxUpdate() 
 { 
 	bool needbbupdate = false;
-	foreach(ISceneObject* d, myObjects) needbbupdate |= d->needsBoundingBoxUpdate();
+	foreach(NodeComponent* d, myObjects) needbbupdate |= d->needsBoundingBoxUpdate();
 	if(needbbupdate) return true;
 
 	foreach(Node* n, getChildren())
@@ -203,7 +203,7 @@ void SceneNode::updateBoundingBox()
 	// Reset bounding box.
 	myBBox.setNull();
 
-	foreach(ISceneObject* d, myObjects)
+	foreach(NodeComponent* d, myObjects)
 	{
 		if(d->hasBoundingBox())
 		{
@@ -289,7 +289,7 @@ bool SceneNode::hit(const Ray& ray, Vector3f* hitPoint, HitType hitType)
 	if(hitType == HitBest)
 	{
 		bool hasCustomIntersectors = false;
-		foreach(ISceneObject* iso, myObjects)
+		foreach(NodeComponent* iso, myObjects)
 		{
 			if(iso->hasCustomRayIntersector())
 			{

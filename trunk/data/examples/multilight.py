@@ -4,6 +4,11 @@ from omega import *
 from cyclops import *
 #from omegaToolkit import *
 
+scene = getSceneManager()
+ss = ShadowSettings()
+ss.shadowsEnabled = True
+scene.resetShadowSettings(ss)
+
 sphere = SphereShape.create(0.5, 4)
 sphere.setPosition(Vector3(0, 2, -4))
 sphere.setEffect("colored -d white -s 10 -g 1.0")
@@ -20,10 +25,11 @@ light1.setAmbient(Color("#200000"))
 light1.setEnabled(True)
 lightSphere1 = SphereShape.create(0.1, 4)
 lightSphere1.setEffect("colored -v emissive -d #ff5555")
-lightSphere1.setPosition(Vector3(-1, 3, -3))
+lightSphere1.setPosition(Vector3(-1, 3, -4))
 interactor1 = ToolkitUtils.setupInteractor("config/interactor")
 interactor1.setSceneNode(lightSphere1)
 lightSphere1.addChild(light1)
+lightSphere1.castShadow(False)
 
 # Create second light, light sphere and interactor
 light2 = Light.create()
@@ -32,10 +38,11 @@ light2.setAmbient(Color("#002000"))
 light2.setEnabled(True)
 lightSphere2 = SphereShape.create(0.1, 4)
 lightSphere2.setEffect("colored -v emissive -d #55ff55")
-lightSphere2.setPosition(Vector3(0, 3, -3))
+lightSphere2.setPosition(Vector3(0, 3, -4))
 interactor2 = ToolkitUtils.setupInteractor("config/interactor")
 interactor2.setSceneNode(lightSphere2)
 lightSphere2.addChild(light2)
+lightSphere2.castShadow(False)
 
 # Create third light, light sphere and interactor
 light3 = Light.create()
@@ -44,12 +51,11 @@ light3.setAmbient(Color("#000020"))
 light3.setEnabled(True)
 lightSphere3 = SphereShape.create(0.1, 4)
 lightSphere3.setEffect("colored -v emissive -d #5555ff")
-lightSphere3.setPosition(Vector3(1, 3, -3))
+lightSphere3.setPosition(Vector3(1, 3, -4))
 interactor3 = ToolkitUtils.setupInteractor("config/interactor")
 interactor3.setSceneNode(lightSphere3)
 lightSphere3.addChild(light3)
-
-scene = getSceneManager()
+lightSphere3.castShadow(False)
 
 # Load a static model
 torusModel = ModelInfo()
@@ -86,6 +92,9 @@ lightmnu.addButton("Toggle red light", "toggleLight1()")
 lightmnu.addButton("Toggle green light", "toggleLight2()")
 lightmnu.addButton("Toggle blue light", "toggleLight3()")
 mm.setMainMenu(lightmnu);
+
+# Set shadow caster light
+scene.setMainLight(light2)
 
 #------------------------------------------------------------------------------
 # Functions to toggle lights

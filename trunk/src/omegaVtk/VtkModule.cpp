@@ -110,7 +110,7 @@ void VtkModule::attachProp(vtkProp3D* actor, SceneNode* node)
 		ofmsg("VtkModule::attachProp: creating attach point for node %1%", %node->getName());
 		vtkap = new VtkAttachPoint();
 		myAttachPoints[node] = vtkap;
-		node->addObject(vtkap);
+		node->addComponent(vtkap);
 	}
 	vtkap->attachProp(actor);
 	vtkap->requestBoundingBoxUpdate();

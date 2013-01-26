@@ -33,23 +33,17 @@ add_definitions( -D_CRT_SECURE_NO_WARNINGS -DOTK_EXPORTING -DEQ_FABRIC_STATIC -D
 # Source files
 set( srcs 
 		ToolkitUtils.cpp
-		Box.cpp
 		ControllerManipulator.cpp
 		WandManipulator.cpp
 		MouseManipulator.cpp
 		DefaultMouseInteractor.cpp
 		DefaultTwoHandsInteractor.cpp
-		Mesh.cpp
-		MeshData.cpp
 		omegaToolkitPythonApi.cpp
-		RenderableSceneObject.cpp
 		SceneEditorModule.cpp
-		SceneRenderable.cpp
 		TrackedObject.cpp
 		UiModule.cpp
 		UiRenderPass.cpp
 		UiScriptCommand.cpp
-		ViewManager.cpp
 		
 		# omega::ui
 		ui/AbstractButton.cpp
@@ -70,22 +64,16 @@ set( headers
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit.h
 		
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ToolkitUtils.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Box.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ControllerManipulator.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/WandManipulator.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/DefaultMouseInteractor.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/MouseManipulator.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/DefaultTwoHandsInteractor.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Mesh.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/MeshData.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/RenderableSceneObject.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/SceneEditorModule.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/SceneRenderable.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/TrackedObject.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiModule.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiRenderPass.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiScriptCommand.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ViewManager.h
 		
 		# omega::ui
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/AbstractButton.h

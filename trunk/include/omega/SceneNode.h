@@ -28,7 +28,7 @@
 #define __SCENE_NODE_H__
 
 #include "osystem.h"
-#include "omega/ISceneObject.h"
+#include "omega/NodeComponent.h"
 #include "omega/Node.h"
 
 namespace omega {
@@ -94,9 +94,9 @@ namespace omega {
 
 		// Object
 		//@{
-		void addObject(ISceneObject* o);
-		int getNumObjects();
-		void removeObject(ISceneObject* o);
+		void addComponent(NodeComponent* o);
+		int getNumComponents();
+		void removeComponent(NodeComponent* o);
 		//@}
 
 		// Options
@@ -148,7 +148,7 @@ namespace omega {
 
 		List<SceneNodeListener*> myListeners;
 
-		List< Ref<ISceneObject> > myObjects;
+		List< Ref<NodeComponent> > myObjects;
 
 		bool mySelectable;
 		bool mySelected;
