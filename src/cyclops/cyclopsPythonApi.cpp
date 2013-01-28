@@ -65,6 +65,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_GETTER(SceneManager, getCurrentShadowSettings)
 		PYAPI_METHOD(SceneManager, resetShadowSettings)
 		PYAPI_METHOD(SceneManager, setShaderMacroToFile)
+		PYAPI_METHOD(SceneManager, setShaderMacroToString)
 		PYAPI_REF_GETTER(SceneManager, createTexture)
 		;
 
@@ -131,6 +132,8 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def("getSoftShadowJitter", &Light::getSoftShadowJitter)
 		.def("setSoftShadowWidth", &Light::setSoftShadowWidth)
 		.def("getSoftShadowWidth", &Light::getSoftShadowWidth)
+		PYAPI_METHOD(Light, getLightFunction)
+		PYAPI_METHOD(Light, setLightFunction)
 		;
 
 	// ModelInfo

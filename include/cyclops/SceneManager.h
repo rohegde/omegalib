@@ -90,6 +90,9 @@ namespace cyclops {
 		void setSoftShadowJitter(int value) { mySoftShadowJitter = value; }
 		float getSoftShadowJitter() { return mySoftShadowJitter; }
 
+		void setLightFunction(const String& function) { myLightFunction = function; }
+		String getLightFunction() { return myLightFunction; }
+
 	private:
 		Ref<SceneManager> mySceneManager;
 
@@ -103,6 +106,8 @@ namespace cyclops {
 		// osg light stuff.
 		Ref<osg::Light> myOsgLight;
 		Ref<osg::LightSource> myOsgLightSource;
+
+		String myLightFunction;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -323,6 +328,7 @@ namespace cyclops {
 
 		// Lights and shadows
 		List< Ref<Light> > myLights;
+		Vector<Light*> myActiveLights;
 		Ref<Light> myMainLight;
 		
 		Ref<osgShadow::ShadowedScene> myShadowedScene;

@@ -35,6 +35,7 @@ struct LitSurfaceData
 };
 
 @fsinclude lightFunctions
+@customFragmentFunctions
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 $@fragmentLightSection
@@ -51,7 +52,7 @@ $@fragmentLightSection
 	if(@lightIndex == 0) ld.shadow = shadow;
 	else ld.shadow = 1.0;
 	
-	litSurfData.luminance += pointLightFunction(surf, ld);
+	litSurfData.luminance += @lightFunction(surf, ld);
 } 	
 $
 
