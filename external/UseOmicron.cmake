@@ -42,6 +42,11 @@ if(APPLE)
 		CMAKE_ARGS 
 			-DOMICRON_USE_CUSTOM_OUTPUT:BOOL=true
 			
+			# Disable build of omicron examples (they se external projects and look for binary files in the wrong place
+			# due to binary file redirection we do here.
+			-DOMICRON_BUILD_EXAMPLES:BOOL=false
+			
+			-DOMICRON_LIBRARY_OUTPUT_DIRECTORY:PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 			-DOMICRON_LIBRARY_OUTPUT_DIRECTORY:PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 			-DOMICRON_ARCHIVE_OUTPUT_DIRECTORY:PATH=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
 			-DOMICRON_RUNTIME_OUTPUT_DIRECTORY:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
@@ -71,6 +76,10 @@ else(APPLE)
 		TMP_DIR ${OMICRON_BASE_DIR}/tmp
 		CMAKE_ARGS 
 			-DOMICRON_USE_CUSTOM_OUTPUT:BOOL=true
+			
+			# Disable build of omicron examples (they se external projects and look for binary files in the wrong place
+			# due to binary file redirection we do here.
+			-DOMICRON_BUILD_EXAMPLES:BOOL=false
 			
 			-DOMICRON_LIBRARY_OUTPUT_DIRECTORY:PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 			-DOMICRON_ARCHIVE_OUTPUT_DIRECTORY:PATH=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
