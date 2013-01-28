@@ -5,6 +5,7 @@ from cyclops import *
 #from omegaToolkit import *
 
 scene = getSceneManager()
+
 #ss = ShadowSettings()
 #ss.shadowsEnabled = True
 #scene.resetShadowSettings(ss)
@@ -30,6 +31,7 @@ interactor1 = ToolkitUtils.setupInteractor("config/interactor")
 interactor1.setSceneNode(lightSphere1)
 lightSphere1.addChild(light1)
 lightSphere1.castShadow(False)
+
 
 # Create second light, light sphere and interactor
 light2 = Light.create()

@@ -111,7 +111,8 @@ Light::Light(SceneManager* scene):
 	myEnabled(false),
 	mySoftShadowWidth(0.005f),
 	mySoftShadowJitter(32),
-	myOsgLight(NULL), myOsgLightSource(NULL)
+	myOsgLight(NULL), myOsgLightSource(NULL),
+	myLightFunction("pointLightFunction")
 {
 	mySceneManager->addLight(this);
 }
@@ -334,6 +335,9 @@ void SceneManager::initialize()
 
 	setShaderMacroToFile("fsinclude lightFunctions", "cyclops/common/forward/lightFunctions.frag");
 
+	setShaderMacroToString("customFragmentFuctions", "");
+	//setShaderMacroToString("lightFunction", "pointLightFunction");
+
 	resetShadowSettings(myShadowSettings);
 
 	myModelLoaderThread = new ModelLoaderThread(this);
@@ -510,6 +514,15 @@ void SceneManager::updateLights()
 
 		// Set the number of lights shader macro parameter.
 		myNumActiveLights = i;
+
+		// Update active lights vector.
+		myActiveLights.clear();
+		foreach(Light* l, myLights)
+		{
+			if(l->isEnabled()) myActiveLights.push_back(l);
+		}
+
+
 		String numLightsString = ostr("%1%", %myNumActiveLights);
 		setShaderMacroToString("numLights", numLightsString);
 		recompileShaders();
@@ -714,11 +727,18 @@ void SceneManager::loadShader(osg::Shader* shader, const String& name)
 		String fragmentShaderLightSection = "";
 		for(int i = 0; i < myNumActiveLights; i++)
 		{
+			Light* light = myActiveLights[i];
+
 			// Add the light index to the section
 			String fragmentShaderLightCodeIndexed = StringUtils::replaceAll(
 				fragmentShaderLightCode, 
 				"@lightIndex", 
 				boost::lexical_cast<String>(i));
+
+			// Replace light function call with light function name specified for light.
+			fragmentShaderLightCodeIndexed = StringUtils::replaceAll(fragmentShaderLightCodeIndexed,
+				"@lightFunction", light->getLightFunction());
+
 			fragmentShaderLightSection += fragmentShaderLightCodeIndexed;
 		}
 		shaderSrc = StringUtils::replaceAll(shaderSrc, 
