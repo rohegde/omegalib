@@ -17,51 +17,64 @@ struct SurfaceData
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+struct LightData
+{
+	vec4 diffuse;
+	vec4 ambient;
+	vec4 specular;
+	vec3 dir;
+	vec3 halfDir;
+
+	float shadow;
+	float distance;
+	vec3 attenuation;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 struct LitSurfaceData
 {
 	vec4 luminance;
 };
 
+@fsinclude lightFunctions
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 $@fragmentLightSection
-{
-	// Compute light direction
-	vec3 lightDir = normalize(var_LightVector[@lightIndex]);
-	vec3 halfVec = normalize(var_LightHalfVector[@lightIndex]);
-
-	float lambertTerm = dot(lightDir, N); 
-
-	if(@lightIndex == 0) lambertTerm *= shadow;
-	if (lambertTerm > 0.0) 
-	{ 
-		ld.luminance += surf.albedo * gl_LightSource[@lightIndex].diffuse * lambertTerm; 
-		float specular = pow( max(dot(halfVec, N), 0.0), surf.shininess ); 
-		ld.luminance += gl_LightSource[@lightIndex].diffuse * specular * surf.gloss; 
-	}
-	ld.luminance += surf.albedo * gl_LightSource[@lightIndex].ambient;
-} 
+{ 
+	LightData ld;
+	
+	ld.diffuse = gl_LightSource[@lightIndex].diffuse;
+	ld.specular = gl_LightSource[@lightIndex].specular;
+	ld.ambient = gl_LightSource[@lightIndex].ambient;
+	ld.dir = normalize(var_LightVector[@lightIndex]);
+	ld.halfDir = normalize(var_LightHalfVector[@lightIndex]);
+	ld.distance = 1.0;
+	ld.attenuation = vec3(0, 0, 0);
+	if(@lightIndex == 0) ld.shadow = shadow;
+	else ld.shadow = 1.0;
+	
+	litSurfData.luminance += pointLightFunction(surf, ld);
+} 	
 $
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 LitSurfaceData computeLighting(SurfaceData surf)
 {
-	LitSurfaceData ld;
+	LitSurfaceData litSurfData;
 	float shadow = computeShadowMap();
 	
-	vec3 N = surf.normal;
-	
 	// If we are rendering a back-facing fragment, invert the normal by default
-	if(!gl_FrontFacing) N = -N;
+	if(!gl_FrontFacing) surf.normal = -surf.normal;
 
-	ld.luminance = vec4(0, 0, 0, 0);
+	litSurfData.luminance = vec4(0, 0, 0, 0);
 
 	@fragmentLightSection
-
-	ld.luminance.a = surf.albedo.a * unif_Alpha;
-	// Add emissive surface component to final luminance.
-	ld.luminance += surf.emissive;
 	
-	return ld;
+	litSurfData.luminance.a = surf.albedo.a * unif_Alpha;
+	// Add emissive surface component to final luminance.
+	litSurfData.luminance += surf.emissive;
+	
+	return litSurfData;
 }
 
 // Surface shader main function declaration

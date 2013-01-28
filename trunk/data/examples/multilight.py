@@ -5,9 +5,9 @@ from cyclops import *
 #from omegaToolkit import *
 
 scene = getSceneManager()
-ss = ShadowSettings()
-ss.shadowsEnabled = True
-scene.resetShadowSettings(ss)
+#ss = ShadowSettings()
+#ss.shadowsEnabled = True
+#scene.resetShadowSettings(ss)
 
 sphere = SphereShape.create(0.5, 4)
 sphere.setPosition(Vector3(0, 2, -4))

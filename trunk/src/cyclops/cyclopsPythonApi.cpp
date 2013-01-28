@@ -64,6 +64,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_METHOD(SceneManager, setWandSize)
 		PYAPI_GETTER(SceneManager, getCurrentShadowSettings)
 		PYAPI_METHOD(SceneManager, resetShadowSettings)
+		PYAPI_METHOD(SceneManager, setShaderMacroToFile)
 		PYAPI_REF_GETTER(SceneManager, createTexture)
 		;
 
