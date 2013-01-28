@@ -9,8 +9,7 @@ from omega import *
 # -------------------------------------------------------------------------------------------------
 # Examples
 
-# Effects
-#queueCommand(':r examples/fxdemo')
-queueCommand(':r examples/multilight')
+queueCommand(':r examples/fxdemo')
+#queueCommand(':r examples/multilight')
 #queueCommand(':r examples/picking')
 #queueCommand(':r examples/billboard')

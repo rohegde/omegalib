@@ -332,6 +332,8 @@ void SceneManager::initialize()
 	setShaderMacroToFile("vsinclude envMap", "cyclops/common/envMap/noEnvMap.vert");
 	setShaderMacroToFile("fsinclude envMap", "cyclops/common/envMap/noEnvMap.frag");
 
+	setShaderMacroToFile("fsinclude lightFunctions", "cyclops/common/forward/lightFunctions.frag");
+
 	resetShadowSettings(myShadowSettings);
 
 	myModelLoaderThread = new ModelLoaderThread(this);
