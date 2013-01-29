@@ -27,12 +27,11 @@
 #ifndef __TRACKED_OBJECT__
 #define __TRACKED_OBJECT__
 
-#include "omegaToolkitConfig.h"
 #include "omega/Actor.h"
 
-namespace omegaToolkit {
+namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OTK_API TrackedObject: public Actor
+	class OMEGA_API TrackedObject: public Actor
 	{
 	public:
 		TrackedObject();

@@ -36,6 +36,7 @@ namespace omega {
 	class Renderable;
 	class SceneNode;
 	class Camera;
+	class TrackedObject;
 	struct RenderState;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,8 +136,18 @@ namespace omega {
 		void setTag(const String& value) { myTag = value; }
 		const String& getTag() { return myTag; } 
 
+		//! Billboard mode
+		//@{
 		void setFacingCamera(Camera* cam);
 		Camera* getFacingCamera();
+		//@}
+
+		//! Trackable object
+		//@{
+		void followTrackable(int trackableId);
+		void setFollowOffset(const Vector3f& offset, const Quaternion& ooffset);
+		void unfollow();
+		//@}
 
 	private:
 		void drawBoundingBox();
@@ -166,6 +177,8 @@ namespace omega {
 
 		// Target camera for billboard mode. Can't use Ref due to circular dependency.
 		Camera* myFacingCamera;
+		// Tracked object. This is internally managed and does not need Ref. 
+		TrackedObject* myTracker;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

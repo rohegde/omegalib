@@ -35,6 +35,7 @@ set(SRCS
 		SceneLoader.cpp
 		SceneManager.cpp
 		StaticObject.cpp
+		Uniforms.cpp
 		cyclopsPythonApi.cpp)
     
 set(HEADERS 
@@ -47,7 +48,8 @@ set(HEADERS
 		${CMAKE_SOURCE_DIR}/include/cyclops/Skybox.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/StaticObject.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/SceneLoader.h
-		${CMAKE_SOURCE_DIR}/include/cyclops/SceneManager.h)
+		${CMAKE_SOURCE_DIR}/include/cyclops/SceneManager.h
+		${CMAKE_SOURCE_DIR}/include/cyclops/Uniforms.h)
 		
 ###################################################################################################
 # Setup compile info

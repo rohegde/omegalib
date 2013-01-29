@@ -29,6 +29,7 @@
 
 #include "osystem.h"
 #include "omega/Application.h"
+#include "omega/ModuleServices.h"
 
 namespace omega {
 	class SceneNode;
