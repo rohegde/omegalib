@@ -43,19 +43,26 @@ namespace omega {
 	class Application: public ApplicationBase
 	{
 	public:
-		Application(const String& name): myAppName(name) 
+		Application(const String& name): myAppName(name), myExecutableName(name)
 		{ }
 
 		virtual const char* getName() 
 		{ return myAppName.c_str(); }
 
+		virtual void setExecutableName(const String& name) 
+		{ myExecutableName = name; }
+
+		virtual const char* getExecutableName() 
+		{ return myExecutableName.c_str(); }
+		
 		virtual void initialize() 
 		{ 
-ModuleServices::addModule(new T());
+			ModuleServices::addModule(new T());
 		}
 
 	private:
 		String myAppName;
+		String myExecutableName;
 	};
 }; // namespace omega
 
