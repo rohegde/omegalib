@@ -3,7 +3,7 @@
 // The diffuse texture
 uniform sampler2D unif_DiffuseMap;
 varying vec2 var_TexCoord;
-varying float def;
+varying vec3 def;
 
 uniform float unif_Shininess;
 uniform float unif_Gloss;
