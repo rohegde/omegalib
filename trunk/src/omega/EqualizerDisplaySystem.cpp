@@ -455,7 +455,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 				
 				if(enabled)
 				{
-				String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
+				String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getExecutableName());
 				executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
 				
 				// Substitute %d with current working directory

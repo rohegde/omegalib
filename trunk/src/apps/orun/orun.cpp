@@ -55,6 +55,7 @@ String sDefaultScript = "";
 // When set to true, add the script containing directory to the data search paths.
 bool sAddScriptDirectoryToData = false;
 
+
 class AppDrawer;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -493,6 +494,7 @@ void OmegaViewer::handleCommand(const String& cmd)
 			omsg("\t u           - unload all running applications");
 			omsg("\t c           - toggle console");
 			omsg("\t s		     - print statistics");
+			omsg("\t w		     - toggle wand");
 			omsg("\t porthole    - (experimental) enable porthole");
 		}
 	}
@@ -561,36 +563,22 @@ void OmegaViewer::handleCommand(const String& cmd)
 int main(int argc, char** argv)
 {
 	String applicationName = "orun";
-
-	String launchScript = "";
-
-	// launch script
-	oargs().newOptionalString("launch script", "the script to launch at startup", launchScript);
 	
 	// Legacy default script (new apps should use launch script instead)
-	oargs().newNamedString('s', "script", "script", "(DEPRECATED) script to launch at startup", sDefaultScript);
-	oargs().process(argc, argv);
-
-	// If a launch script has been specified, override sDefaultScript, and also tell the system to
-	// add its containing directory to the data search paths.
-	if(launchScript != "")
-	{
-		sDefaultScript = launchScript;
-		sAddScriptDirectoryToData = true;
-	}
+	oargs().newNamedString('s', "script", "script", "script to launch at startup", sDefaultScript);
 
 	// If a start script is specified, use it to change the application name. This in turn allows for
 	// loading of per-application config files
 	// (i.e. orun -s apps/test.py will name the application apps/test and look for apps/test.cfg as the 
 	// default configuration file)
-	if(sDefaultScript != "")
-	{
-		String extension;
-		StringUtils::splitBaseFilename(sDefaultScript, applicationName, extension);
-	}
+	// if(sDefaultScript != "")
+	// {
+		// String extension;
+		// StringUtils::splitBaseFilename(sDefaultScript, applicationName, extension);
+	// }
 
 	Application<OmegaViewer> app(applicationName);
-	oargs().process(argc, argv);
+	app.setExecutableName(argv[0]);
 
 	// If a start script is specified, use it to change the application name. This in turn allows for
 	// loading of per-application config files
