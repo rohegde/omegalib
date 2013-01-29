@@ -2,94 +2,112 @@ from math import *
 from euclid import *
 from omega import *
 from cyclops import *
-#from omegaToolkit import *
-
-sphere = SphereShape.create(1, 4)
-sphere.setPosition(Vector3(0, 2, -5))
-sphere.setEffect("colored -d green")
-
-plane = PlaneShape.create(10, 10)
-plane.setPosition(Vector3(0, 0, -5))
-plane.pitch(radians(-90))
-plane.setEffect("colored -d gray")
-
-light = Light.create()
-light.setColor(Color("white"))
-light.setAmbient(Color("#202020"))
-light.setEnabled(True)
-
-lightSphere = SphereShape.create(0.1, 4)
-lightSphere.setPosition(Vector3(0, 0, 0))
-lightSphere.setEffect("colored -d yellow")
-lightSphere.setPosition(Vector3(0, 5, -5))
-
-interactor = ToolkitUtils.setupInteractor("config/interactor")
-interactor.setSceneNode(lightSphere)
-lightSphere.addChild(light)
 
 scene = getSceneManager()
-scene.setMainLight(light)
 
+# create a box
+box = BoxShape.create(1, 0.6, 0.8)
+box.setPosition(Vector3(-1, 1.8, -3))
+box.setEffect("colored -d white")
+
+# create a ground plane
+plane = PlaneShape.create(10, 10)
+plane.setPosition(Vector3(0, 0, -4))
+plane.pitch(radians(-90))
+plane.setEffect("colored -d #555500")
+
+# Create a light
+light = Light.create()
+light.setColor(Color("#999999"))
+light.setAmbient(Color("#3030a0"))
+light.setEnabled(True)
+
+# Load a static model
 torusModel = ModelInfo()
 torusModel.name = "torus"
 torusModel.path = "cyclops/test/torus.fbx"
-torusModel.size = 3.0
+torusModel.size = 1.0
 scene.loadModel(torusModel)
 
+# Create a scene object using the loaded model
 torus = StaticObject.create("torus")
-torus.setPosition(Vector3(0, 4, -4.5))
-torus.setEffect("colored -d blue")
+torus.setPosition(Vector3(1, 2, -4))
+torus.setEffect("colored -d yellow")
 torus.pitch(radians(20))
 torus.roll(radians(20))
 
+# Load an animated model
+skelModel = ModelInfo()
+skelModel.name = "skelModel"
+skelModel.path = "examples/data/surgseq/surgseq3.fbx"
+scene.loadModel(skelModel)
 
+# Create a scene object using the loaded animated model, and start the animation
+skel = AnimatedObject.create("skelModel")
+skel.setPosition(Vector3(2, 1.5, -4))
+skel.setScale(Vector3(0.02, 0.02, 0.02))
+skel.yaw(radians(-30))
+skel.setEffect("textured")
+skel.loopAnimation(0)
+
+# create a main menu to turn on and off lights
+mm = MenuManager.createAndInitialize()
+lightmnu = mm.createMenu("lightmenu")
+lightmnu.addButton("Toggle red light", "toggleLight1()")
+lightmnu.addButton("Toggle green light", "toggleLight2()")
+lightmnu.addButton("Toggle blue light", "toggleLight3()")
+mm.setMainMenu(lightmnu);
+
+# Set shadow caster light
+scene.setMainLight(light2)
+
+#------------------------------------------------------------------------------
+# Functions to toggle lights
+# we define one function for each light, each one switched the light state 
+# on / off. To add some eye candy, we also change the light sphere color, when 
+# the light is off.
+def toggleLight1():
+	light1.setEnabled(not light1.isEnabled())
+	if(light1.isEnabled()):
+		lightSphere1.setEffect("colored -v emissive -d #ff5555")
+	else:
+		lightSphere1.setEffect("colored -d #ff5555")
+
+def toggleLight2():
+	light2.setEnabled(not light2.isEnabled())
+	if(light2.isEnabled()):
+		lightSphere2.setEffect("colored -v emissive -d #55ff55")
+	else:
+		lightSphere2.setEffect("colored -d #55ff55")
+		
+def toggleLight3():
+	light3.setEnabled(not light3.isEnabled())
+	if(light3.isEnabled()):
+		lightSphere3.setEffect("colored -v emissive -d #5555ff")
+	else:
+		lightSphere3.setEffect("colored -d #5555ff")
+
+#------------------------------------------------------------------------------
+# Update function
 def onUpdate(frame, t, dt):
-    torus.setPosition(Vector3(0, sin(t) * 0.5 + 0.5, -2))
-	# torus.pitch(dt)
-	# torus.yaw(dt)
+	torus.pitch(dt / 2)
+	torus.yaw(dt / 4)
+	
 
-def onEvent():
-	e = getEvent()
-	print(e.getType())
-
+# register the update function
 setUpdateFunction(onUpdate)
-#setEventFunction(onEvent)
 
-# def onSelectedChanged(source):
-    # if isSelected(source):
-        # setEffect(source, "colored -d yellow")
-    # else:
-        # setEffect(source, "colored -d green")
+#------------------------------------------------------------------------------
+# Event function
+def onEvent():
+	# Use keys to turn on / of lights
+	e = getEvent()
+	if(e.isKeyDown(ord('1'))): toggleLight1()
+	if(e.isKeyDown(ord('2'))): toggleLight2()
+	if(e.isKeyDown(ord('3'))): toggleLight3()
 
-
-# loadModel("simpleModel", "cyclops/test/torus.fbx", 1.0)
-
-# object = newStaticObject("simpleModel")
-# setEffect(object, "colored -d green")
-
-# plane = newPlaneShape(4, 4, 1, 1)
-# setEffect(plane, "colored -d gray")
-# pitch(plane, radians(-90))
-# setPosition(plane, 0, -1, -2)
-
-# light = newLight()
-# setLightEnabled(light, True)
-# setMainLight(light)
-# setPosition(light, 0, 50, 0)
-# setLightColor(light, "#ffff90")
-# setLightAmbient(light, "#202020")
-
-# addToEditor(object)
-# setEditorEnabled(True)
-
-# addSelectionListener(object, "onSelectedChanged(object)")
-
-# menu = newMenu("menu")
-# setMainMenu(menu)
-
-# quitMenuItem = addMenuItem(menu, ButtonMenuItem)
-# setMenuItemText(quitMenuItem, "Quit")
-# setMenuItemCommand(quitMenuItem, "oexit()")
+# register the event function
+setEventFunction(onEvent)
 
 
 

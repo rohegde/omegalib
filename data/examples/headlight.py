@@ -28,10 +28,13 @@ headlight.setColor(Color("white"))
 headlight.setEnabled(True)
 getDefaultCamera().addChild(headlight)
 
+# We assume 0 is the id of the trackable associated to the user head. Change this to the right number in your application.
+headlight.followTrackable(0)
+
 def onEvent():
 	e = getEvent()
 	# toggle headlight on and off
-	if(e.isKeyDown('l')):
+	if(e.isKeyDown('l') or e.isButtonDown(EventFlags.ButtonLeft)):
 		print("Toggle Light")
 		headlight.setEnabled(not headlight.isEnabled())
 
