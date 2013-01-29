@@ -335,7 +335,7 @@ void SceneManager::initialize()
 
 	setShaderMacroToFile("fsinclude lightFunctions", "cyclops/common/forward/lightFunctions.frag");
 
-	setShaderMacroToString("customFragmentFuctions", "");
+	setShaderMacroToString("customFragmentFunctions", "");
 	//setShaderMacroToString("lightFunction", "pointLightFunction");
 
 	resetShadowSettings(myShadowSettings);
