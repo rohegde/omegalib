@@ -1,6 +1,9 @@
 #summary omegalib How-tos, tips and tricks
 #sidebar Sidebar
 
+<wiki:toc max_depth="2" />
+
+
 This page contains suggestions, code snippets and tips that are not elaborate enough to require their own page
 
 ---------------------------------------------------------------------------------------------------
