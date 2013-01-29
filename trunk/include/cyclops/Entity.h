@@ -29,6 +29,7 @@
 
 #include "cyclopsConfig.h"
 #include "EffectNode.h"
+#include "Uniforms.h"
 
 #include <osg/Group>
 
@@ -63,10 +64,6 @@ namespace cyclops {
 		void setAlpha(float value);
 		float getAlpha() { return myAlpha; }
 
-		void followTrackable(int trackableId);
-		void setFollowOffset(const Vector3f& offset, const Quaternion& ooffset);
-		void unfollow();
-
 		void castShadow(bool value);
 		bool doesCastShadow();
 
@@ -85,7 +82,6 @@ namespace cyclops {
 		Ref<OsgSceneObject> myOsgSceneObject;
 
 		Ref<EffectNode> myEffect;
-		Ref<omegaToolkit::TrackedObject> myTracker;
 
 		bool myCastShadow;
 	};

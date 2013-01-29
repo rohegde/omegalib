@@ -30,6 +30,7 @@
 #include "cyclopsConfig.h"
 #include "Skybox.h"
 #include "Shapes.h"
+#include "Uniforms.h"
 
 #include <osg/Texture2D>
 #include <osg/Light>
@@ -54,12 +55,11 @@ namespace cyclops {
 	class AnimatedObject;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! PYAPI
 	class CY_API Light: public SceneNode
 	{
 	friend class SceneManager;
 	public:
-		//! PYAPI Convenience method for creating Light instances
+		//! Convenience method for creating Light instances
 		static Light* create();
 	
 	public:
@@ -338,7 +338,7 @@ namespace cyclops {
 		String myShaderVariationName;
 
 		// Wand
-		Ref<omegaToolkit::TrackedObject> myWandTracker;
+		Ref<omega::TrackedObject> myWandTracker;
 		Ref<CylinderShape> myWandEntity;
 	};
 

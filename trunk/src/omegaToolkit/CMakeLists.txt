@@ -40,7 +40,6 @@ set( srcs
 		DefaultTwoHandsInteractor.cpp
 		omegaToolkitPythonApi.cpp
 		SceneEditorModule.cpp
-		TrackedObject.cpp
 		UiModule.cpp
 		UiRenderPass.cpp
 		UiScriptCommand.cpp
@@ -70,7 +69,6 @@ set( headers
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/MouseManipulator.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/DefaultTwoHandsInteractor.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/SceneEditorModule.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/TrackedObject.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiModule.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiRenderPass.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiScriptCommand.h

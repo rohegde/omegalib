@@ -24,32 +24,78 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OTK_H__
-#define __OTK_H__
+#ifndef __CY_UNIFORM__
+#define __CY_UNIFORM__
 
-#include "omegaToolkit/omegaToolkitConfig.h"
-#include "omegaToolkit/ControllerManipulator.h"
-#include "omegaToolkit/WandManipulator.h"
-#include "omegaToolkit/MouseManipulator.h"
-#include "omegaToolkit/DefaultMouseInteractor.h"
-#include "omegaToolkit/DefaultTwoHandsInteractor.h"
-#include "omegaToolkit/SceneEditorModule.h"
-#include "omegaToolkit/ToolkitUtils.h"
-#include "omegaToolkit/UiModule.h"
-#include "omegaToolkit/UiScriptCommand.h"
+#include "cyclopsConfig.h"
 
-#include "omegaToolkit/ui/AbstractButton.h"
-#include "omegaToolkit/ui/BareboneSkin.h"
-#include "omegaToolkit/ui/Button.h"
-#include "omegaToolkit/ui/Container.h"
-#include "omegaToolkit/ui/Image.h"
-#include "omegaToolkit/ui/Label.h"
-#include "omegaToolkit/ui/MenuManager.h"
-#include "omegaToolkit/ui/DefaultSkin.h"
-#include "omegaToolkit/ui/Slider.h"
-#include "omegaToolkit/ui/Widget.h"
-#include "omegaToolkit/ui/WidgetFactory.h"
+#include <osg/Uniform>
 
-OTK_API void omegaToolkitPythonApiInit();
+#define OMEGA_NO_GL_HEADERS
+#include <omega.h>
+#include <omegaOsg.h>
+#include <omegaToolkit.h>
+
+namespace cyclops {
+	using namespace omega;
+	using namespace omegaOsg;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class CY_API Uniform: public ReferenceType
+	{
+	public:
+		enum Type { Int, Float, Vector2f, Vector3f, Vector4f };
+
+	public:
+		Uniform(osg::Uniform* uniform, Type type, uint elements = 1);
+		virtual ~Uniform();
+
+		bool isArray() { return myNumElements != 1; }
+		Type getType() { return myType; }
+		uint getNumElements() { return myNumElements; }
+
+		//! Setters / getters
+		//@{
+		void setFloat(float value);
+		float getFloat();
+		void setInt(int value);
+		int getInt();
+		void setVector2f(const omega::Vector2f& value);
+		omega::Vector2f getVector2f();
+		void setVector3f(const omega::Vector2f& value);
+		omega::Vector3f getVector3f();
+		void setVector4f(const omega::Vector4f& value);
+		omega::Vector4f getVector4f();
+		//@}
+
+	private:
+		Ref<osg::Uniform> myOsgUniform;
+		Type myType;
+		uint myNumElements;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class CY_API Uniforms: public ReferenceType
+	{
+	public:
+
+	public:
+		Uniforms(osg::StateSet* stateset);
+		virtual ~Uniforms();
+
+		Uniform* add(const String& name, Uniform::Type type);
+		Uniform* addArray(const String& name, Uniform::Type type, uint elements);
+		Uniform* get(const String& name);
+		void removeAll();
+
+	private:
+		osg::Uniform::Type toOsgUniformType(Uniform::Type Type);
+
+	private:
+		Ref<osg::StateSet> myStateSet;
+
+		Dictionary<String, Ref< Uniform > > myUniformDictionary;
+	};
+};
 
 #endif

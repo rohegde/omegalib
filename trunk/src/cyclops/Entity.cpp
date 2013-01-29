@@ -130,35 +130,6 @@ void Entity::setEffect(const String& effectDefinition)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::followTrackable(int trackableId)
-{
-	if(myTracker == NULL)
-	{
-		myTracker = new omegaToolkit::TrackedObject();
-		ModuleServices::addModule(myTracker);
-		myTracker->setSceneNode(this);
-	}
-	myTracker->setTrackableSourceId(trackableId);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::setFollowOffset(const Vector3f& offset, const Quaternion& ooffset)
-{
-	myTracker->setOffset(offset);
-	myTracker->setOrientationOffset(ooffset);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::unfollow()
-{
-	if(myTracker != NULL)
-	{
-		ModuleServices::removeModule(myTracker);
-		myTracker = NULL;
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Entity::castShadow(bool value)
 {
 	myCastShadow = value;

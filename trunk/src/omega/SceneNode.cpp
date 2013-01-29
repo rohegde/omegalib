@@ -29,7 +29,9 @@
 #include "omega/Renderable.h"
 #include "omega/Engine.h"
 #include "omega/Camera.h"
+#include "omega/ModuleServices.h"
 #include "omega/glheaders.h"
+#include "omega/TrackedObject.h"
 
 using namespace omega;
 
@@ -313,4 +315,34 @@ bool SceneNode::hit(const Ray& ray, Vector3f* hitPoint, HitType hitType)
 		return h.first;
 	}
 	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneNode::followTrackable(int trackableId)
+{
+	if(myTracker == NULL)
+	{
+		myTracker = new TrackedObject();
+		ModuleServices::addModule(myTracker);
+		myTracker->setSceneNode(this);
+	}
+	myTracker->setTrackableSourceId(trackableId);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneNode::setFollowOffset(const Vector3f& offset, const Quaternion& ooffset)
+{
+	myTracker->setOffset(offset);
+	myTracker->setOrientationOffset(ooffset);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneNode::unfollow()
+{
+	if(myTracker != NULL)
+	{
+		ModuleServices::removeModule(myTracker);
+		delete myTracker;
+		myTracker = NULL;
+	}
 }
