@@ -76,7 +76,8 @@ namespace omega {
 			myChanged(false),
 			myVisible(true),
 			mySelected(false),
-			myFacingCamera(NULL)
+			myFacingCamera(NULL),
+			myTracker(NULL)
 			{}
 
 		SceneNode(Engine* server, const String& name):
@@ -88,7 +89,8 @@ namespace omega {
 			myChanged(false),
 			myVisible(true),
 			mySelected(false),
-			myFacingCamera(NULL)
+			myFacingCamera(NULL),
+			myTracker(NULL)
 			{}
 
 		Engine* getEngine();
