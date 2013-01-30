@@ -3,7 +3,35 @@
 
 ------------------------------------------------------------------------
 = omegalib v3.3 (*current developer version*) =
+*Initial Revision*: 2440
+
+------------------------------------------------------------------------
+= omegalib v3.3-beta =
 *Initial Revision*: 2400
+*Branch-out Revision*: 2439
+
+== Summary ==
+	This is a work-in-progress release created for the EVL CAVE2 programming tutorial. Various changes merged from the 4.0 branch, mostly involving advanced GUI support, optimizations and GUI render-to-texture. Prebuilt version is much better on windows, and python scripts can now be launched from any directory on all platforms. Some work in progress on cyclops effects and materials.
+
+omega
+	* various bugfixes
+	* followTrackable moved from cyclops Entity to SceneNode
+	* Equalizer CUDA support disabled by default
+	* ISceneObject >> NodeComponent
+	* SceneNode facing camera support
+omegaToolkit
+	* removed obsolete SceneRenderable classes
+misc
+	* updated MakeDistro batch
+	* updated examples
+	* new examples
+	* python scripts can run from any directory now
+	* merged changes from v4.0 branch
+cyclops	
+	* Started revising Effect support to use Materials for high-frequency property changes to objects.
+	* Separate cyclops light functions and Custom light shader function support
+	* Entity.castShadow
+	* shaders - ambient accumulated for all lights 
 
 ------------------------------------------------------------------------
 = omegalib v3.2 (*current developer version*) =

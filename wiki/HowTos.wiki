@@ -7,13 +7,33 @@ This page contains suggestions, code snippets and tips that are not elaborate en
 
 ---------------------------------------------------------------------------------------------------
 = General =
+== Python Snippets ==
+=== Creating a headlight ===
+*Added:* ver. 3.3 - 29 January 2013
+In some applications you want to have a light attached to the main camera: when the camera moves and rotates the light should follow. This is very easy to implement, given that the `Camera` class derives from `SceneNode`, and it can have children attached to it:
+{{{
+	# Create a full white headlight
+	headlight = Light.create()
+	headlight.setColor(Color("white"))
+	headlight.setEnabled(True)
+	getDefaultCamera().addChild(headlight)
+}}}
+Remember the light will be attached by default at the camera origin: inside a VR system this does not correspond to the head position of the tracked user. If you want to take the head offset into account, you can make the light follow the head trackable object. Add the following line:
+{{{
+	headlight.followTrackable(headTrackableId)
+}}}
+Where `headTrackableId` is the integer Id of the head trackable (check your VR system config file or tracker configuration for this).
+Note that you need to attach the light to the camera *AND* to the head trackable to have a full headlight. Without attaching the light to the camera, the light will not move when navigating in the scene.
+
 == FAQ ==
 === "I set the camera position to (x, y, z) but the output is not what I expected" ===
+*Added:* ver. 3.2 - 20 December 2012
 Cameras in omegalib (and in other VR toolkits) work a little differently than what yo could expect in classic graphic engines. There are two things that influence the final camera view:
  * The camera position and orientation, which infuence the view transform. They determine the conversion between the physical space in your system , and the space used your virtual world.
  * The *head position and orientation*, which influence both the view and the projection transforms. They represent the position of the observer in the phisical space. head transform, camera transform and display geometry all contribute in determining what will appear on the screens.
 
 === "In a VR system, how do I convert my trackable object position / orientation into world coordinates?" ===
+*Added:* ver. 3.2 - 20 December 2012
 Tracked objects like stereo glasses, wands etc. generate events with positions and orientations in *sensor space*. This space usually corresponds to the physical space used to describe the VR system structure. For instance in CAVE2 bot sensor space and VR system space cosider the origin as the center of the sphere (on the ground), with Z pointing forward.
 
 When navigating within the scene, you move the camera to a different position and orientation. Consequently, tracked object positions do not make sense anymore, until you convert them to this new, "virtual world" space defined by the camera transformations. Luckily, the `Camera` class comes with method that do exactly this.

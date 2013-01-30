@@ -1,0 +1,18 @@
+#summary Python Examples
+#sidebar Sidebar
+
+<p>*Last revision:* ver. 3.3 - 28 January 2013</p>*
+
+<wiki:toc max_depth="4" />
+
+= List of Python Examples =
+This documents lists all of the python examples included in the omegalib distribution. The examples can be found in the `data/examples` directory. They can be started using the `orun` command, like the
+following:
+{{{
+	orun -s examples/picking.py
+}}}
+In general, orun should be launched from its containing binary directory, to make sure all libraries and data paths are set up correctly. In linux, this is not as important, and examples should run regardless of the starting directory.
+
+==  Example List ==
+|| *Screenshot* || *Summary* ||
+|| <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/red.png" width="150"/> || blah blah blah ||
