@@ -28,6 +28,7 @@
 #define __CY_EFFECT__
 
 #include "cyclopsConfig.h"
+#include "Uniforms.h"
 
 #include <osgFX/Effect>
 #include <osgFX/Technique>
@@ -44,10 +45,11 @@ namespace cyclops {
 	using namespace omegaOsg;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API Material: public ReferenceType
+	class CY_API Material: public Uniforms
 	{
 	public:
 		Material(osg::StateSet* ss):
+			Uniforms(ss),
 			myStateSet(ss),
 			myTransparent(false)
 			{}

@@ -169,16 +169,20 @@ namespace cyclops {
 	{
 	public:
 		ProgramAsset():
-			program(NULL), vertexShader(NULL), fragmentShader(NULL)
+			program(NULL), vertexShaderBinary(NULL), fragmentShaderBinary(NULL), embedded(false)
 		{}
 	
 		String name;
 		String vertexShaderName;
 		String fragmentShaderName;
 
+		bool embedded;
+		String vertexShaderSource;
+		String fragmentShaderSource;
+
 		Ref<osg::Program> program;
-		Ref<osg::Shader> vertexShader;
-		Ref<osg::Shader> fragmentShader;
+		Ref<osg::Shader> vertexShaderBinary;
+		Ref<osg::Shader> fragmentShaderBinary;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -279,6 +283,7 @@ namespace cyclops {
 		osg::Texture2D* getTexture(const String& name);
 		osg::Texture2D* createTexture(const String& name, PixelData* pixels);
 		ProgramAsset* getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);
+		ProgramAsset* createProgramFromString(const String& name, const String& vertexShaderCode, const String& fragmentShaderCode);
 		void initShading();
 
 		void setShaderMacroToString(const String& macroName, const String& macroString);
@@ -295,6 +300,7 @@ namespace cyclops {
 		void updateLights();
 		void loadConfiguration();
 		void loadShader(osg::Shader* shader, const String& name);
+		void compileShader(osg::Shader* shader, const String& source);
 		void recompileShaders(ProgramAsset* program, const String& variationName);
 		void recompileShaders();
 

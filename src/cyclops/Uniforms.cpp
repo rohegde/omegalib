@@ -128,7 +128,7 @@ Uniforms::~Uniforms()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Uniform* Uniforms::add(const String& name, Uniform::Type type)
+Uniform* Uniforms::addUniform(const String& name, Uniform::Type type)
 {
 	if(myUniformDictionary.find(name) == myUniformDictionary.end())
 	{
@@ -140,7 +140,7 @@ Uniform* Uniforms::add(const String& name, Uniform::Type type)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Uniform* Uniforms::addArray(const String& name, Uniform::Type type, uint elements)
+Uniform* Uniforms::addUniformArray(const String& name, Uniform::Type type, uint elements)
 {
 	if(myUniformDictionary.find(name) == myUniformDictionary.end())
 	{
@@ -152,14 +152,14 @@ Uniform* Uniforms::addArray(const String& name, Uniform::Type type, uint element
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Uniform* Uniforms::get(const String& name)
+Uniform* Uniforms::getUniform(const String& name)
 {
 	if(myUniformDictionary.find(name) == myUniformDictionary.end()) return NULL;
 	return myUniformDictionary[name];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Uniforms::removeAll()
+void Uniforms::removeAllUniforms()
 {
 }
 
