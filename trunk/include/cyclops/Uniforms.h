@@ -83,10 +83,10 @@ namespace cyclops {
 		Uniforms(osg::StateSet* stateset);
 		virtual ~Uniforms();
 
-		Uniform* add(const String& name, Uniform::Type type);
-		Uniform* addArray(const String& name, Uniform::Type type, uint elements);
-		Uniform* get(const String& name);
-		void removeAll();
+		Uniform* addUniform(const String& name, Uniform::Type type);
+		Uniform* addUniformArray(const String& name, Uniform::Type type, uint elements);
+		Uniform* getUniform(const String& name);
+		void removeAllUniforms();
 
 	private:
 		osg::Uniform::Type toOsgUniformType(Uniform::Type Type);

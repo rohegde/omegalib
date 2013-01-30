@@ -73,8 +73,29 @@ BOOST_PYTHON_MODULE(cyclops)
 	class_<osg::Texture2D, boost::noncopyable, Ref<osg::Texture2D> >("Texture2D", no_init)
 		;
 
+	// Uniform
+	PYAPI_REF_BASE_CLASS(Uniform)
+		PYAPI_GETTER(Uniform, getType)
+		PYAPI_METHOD(Uniform, setInt)
+		PYAPI_METHOD(Uniform, getInt)
+		PYAPI_METHOD(Uniform, setFloat)
+		PYAPI_METHOD(Uniform, getFloat)
+		PYAPI_METHOD(Uniform, setVector2f)
+		PYAPI_GETTER(Uniform, getVector2f)
+		PYAPI_METHOD(Uniform, setVector3f)
+		PYAPI_GETTER(Uniform, getVector3f)
+		PYAPI_METHOD(Uniform, setVector4f)
+		PYAPI_GETTER(Uniform, getVector4f);
+
+	// Uniforms
+	PYAPI_REF_BASE_CLASS(Uniforms)
+		PYAPI_REF_GETTER(Uniforms, addUniform)
+		PYAPI_REF_GETTER(Uniforms, addUniformArray)
+		PYAPI_REF_GETTER(Uniforms, getUniform)
+		PYAPI_METHOD(Uniforms, removeAllUniforms);
+
 	// Material
-	PYAPI_REF_BASE_CLASS(Material)
+	PYAPI_REF_CLASS(Material, Uniforms)
 		PYAPI_METHOD(Material, setDiffuseColor)
 		PYAPI_METHOD(Material, setEmissiveColor)
 		PYAPI_METHOD(Material, setTransparent)

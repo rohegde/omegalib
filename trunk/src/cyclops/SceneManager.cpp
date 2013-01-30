@@ -673,88 +673,104 @@ void SceneManager::setShaderMacroToFile(const String& macroName, const String& n
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::loadShader(osg::Shader* shader, const String& name)
 {
-	String path;
-	if(DataManager::findFile(name, path))
+	// If shader source is not in the cache, load it now.
+	if(myShaderCache.find(name) == myShaderCache.end())
 	{
-		ofmsg("Loading shader: %1%", %name);
-
-		std::ifstream t(path.c_str());
-		std::stringstream buffer;
-		buffer << t.rdbuf();
-
-		String shaderPreSrc = buffer.str();
-		String lightSectionMacroName = "fragmentLightSection";
-
-		// Replace shader macros.
-		// Do a multiple replacement passes to process macros-within macros.
-		int replacementPasses = 3;
-		for(int i = 0; i < replacementPasses; i++)
+		String path;
+		if(DataManager::findFile(name, path))
 		{
-			foreach(ShaderMacroDictionary::Item macro, myShaderMacros)
-			{
-				if(macro.getKey() != lightSectionMacroName)
-				{
-					String macroName = ostr("@%1%", %macro.getKey());
-					shaderPreSrc = StringUtils::replaceAll(shaderPreSrc, macroName, macro.getValue());
-				}
-			}
-		}
+			ofmsg("Loading shader: %1%", %name);
 
-		// Read local macro definitions (only supported one now is fragmentLightSection)
-		String shaderSrc = "";
-		Vector<String> segments = StringUtils::split(shaderPreSrc, "$");
-		//ofmsg("segments %1%", %segments.size());
-		foreach(String segment, segments)
+			std::ifstream t(path.c_str());
+			std::stringstream buffer;
+			buffer << t.rdbuf();
+			String shaderSrc = buffer.str();
+
+			myShaderCache[name] = shaderSrc;
+		}
+		else
 		{
-			if(StringUtils::startsWith(segment, "@"))
-			{
-				Vector<String> macroNames = StringUtils::split(segment, "\r\n\t ", 1);
-				
-				String macroContent = StringUtils::replaceAll(segment, macroNames[0], "");
-				
-				String macroName = macroNames[0].substr(1);
-				//ofmsg("SEGMENT IDENTIFIED: %1%", %macroName);
-				myShaderMacros[macroName] = macroContent;
-			}
-			else
-			{
-				shaderSrc.append(segment);
-			}
+			ofwarn("Could not find shader file %1%", %name);
 		}
-
-		// Special section: replicate lighting code as many times as the active lights
-		String fragmentShaderLightCode = myShaderMacros[lightSectionMacroName];
-		String fragmentShaderLightSection = "";
-		for(int i = 0; i < myNumActiveLights; i++)
-		{
-			Light* light = myActiveLights[i];
-
-			// Add the light index to the section
-			String fragmentShaderLightCodeIndexed = StringUtils::replaceAll(
-				fragmentShaderLightCode, 
-				"@lightIndex", 
-				boost::lexical_cast<String>(i));
-
-			// Replace light function call with light function name specified for light.
-			fragmentShaderLightCodeIndexed = StringUtils::replaceAll(fragmentShaderLightCodeIndexed,
-				"@lightFunction", light->getLightFunction());
-
-			fragmentShaderLightSection += fragmentShaderLightCodeIndexed;
-		}
-		shaderSrc = StringUtils::replaceAll(shaderSrc, 
-			"@" + lightSectionMacroName, 
-			fragmentShaderLightSection);
-
-		//ofmsg("Loading shader file %1%", %name);
-		// omsg("#############################################################");
-		// omsg(shaderSrc);
-		// omsg("#############################################################");
-		shader->setShaderSource(shaderSrc);
 	}
-	else
+
+	if(myShaderCache.find(name) != myShaderCache.end())
 	{
-		ofwarn("Could not find shader file %1%", %name);
+		compileShader(shader, myShaderCache[name]);
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::compileShader(osg::Shader* shader, const String& source)
+{
+	String shaderPreSrc = source;
+	String lightSectionMacroName = "fragmentLightSection";
+
+	// Replace shader macros.
+	// Do a multiple replacement passes to process macros-within macros.
+	int replacementPasses = 3;
+	for(int i = 0; i < replacementPasses; i++)
+	{
+		foreach(ShaderMacroDictionary::Item macro, myShaderMacros)
+		{
+			if(macro.getKey() != lightSectionMacroName)
+			{
+				String macroName = ostr("@%1%", %macro.getKey());
+				shaderPreSrc = StringUtils::replaceAll(shaderPreSrc, macroName, macro.getValue());
+			}
+		}
+	}
+
+	// Read local macro definitions (only supported one now is fragmentLightSection)
+	String shaderSrc = "";
+	Vector<String> segments = StringUtils::split(shaderPreSrc, "$");
+	//ofmsg("segments %1%", %segments.size());
+	foreach(String segment, segments)
+	{
+		if(StringUtils::startsWith(segment, "@"))
+		{
+			Vector<String> macroNames = StringUtils::split(segment, "\r\n\t ", 1);
+				
+			String macroContent = StringUtils::replaceAll(segment, macroNames[0], "");
+				
+			String macroName = macroNames[0].substr(1);
+			//ofmsg("SEGMENT IDENTIFIED: %1%", %macroName);
+			myShaderMacros[macroName] = macroContent;
+		}
+		else
+		{
+			shaderSrc.append(segment);
+		}
+	}
+
+	// Special section: replicate lighting code as many times as the active lights
+	String fragmentShaderLightCode = myShaderMacros[lightSectionMacroName];
+	String fragmentShaderLightSection = "";
+	for(int i = 0; i < myNumActiveLights; i++)
+	{
+		Light* light = myActiveLights[i];
+
+		// Add the light index to the section
+		String fragmentShaderLightCodeIndexed = StringUtils::replaceAll(
+			fragmentShaderLightCode, 
+			"@lightIndex", 
+			boost::lexical_cast<String>(i));
+
+		// Replace light function call with light function name specified for light.
+		fragmentShaderLightCodeIndexed = StringUtils::replaceAll(fragmentShaderLightCodeIndexed,
+			"@lightFunction", light->getLightFunction());
+
+		fragmentShaderLightSection += fragmentShaderLightCodeIndexed;
+	}
+	shaderSrc = StringUtils::replaceAll(shaderSrc, 
+		"@" + lightSectionMacroName, 
+		fragmentShaderLightSection);
+
+	//ofmsg("Loading shader file %1%", %name);
+	// omsg("#############################################################");
+	// omsg(shaderSrc);
+	// omsg("#############################################################");
+	shader->setShaderSource(shaderSrc);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -781,13 +797,33 @@ ProgramAsset* SceneManager::getProgram(const String& name, const String& vertexS
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+ProgramAsset* SceneManager::createProgramFromString(const String& name, const String& vertexShaderCode, const String& fragmentShaderCode)
+{
+	ProgramAsset* asset = new ProgramAsset();
+	asset->program = new osg::Program();
+	asset->name = name;
+	asset->program->setName(name);
+	asset->fragmentShaderSource = fragmentShaderCode;
+	asset->fragmentShaderName = name + "Fragment";
+	asset->vertexShaderSource = vertexShaderCode;
+	asset->vertexShaderName = name + "Vertex";
+	asset->embedded = true;
+
+	myPrograms[name] = asset;
+
+	recompileShaders(asset, myShaderVariationName);
+
+	return asset;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::recompileShaders(ProgramAsset* program, const String& variationName)
 {
 	osg::Program* osgProg = program->program;
 
 	// Remove current shaders from program
-	osgProg->removeShader(program->vertexShader);
-	osgProg->removeShader(program->fragmentShader);
+	osgProg->removeShader(program->vertexShaderBinary);
+	osgProg->removeShader(program->fragmentShaderBinary);
 	//osgProg->releaseGLObjects();
 
 	String fullVertexShaderName = program->vertexShaderName + variationName;
@@ -799,10 +835,19 @@ void SceneManager::recompileShaders(ProgramAsset* program, const String& variati
 		vertexShader = new osg::Shader( osg::Shader::VERTEX );
 		// increase reference count to avoid being deallocated by osg program when deattached.
 		vertexShader->ref();
-		loadShader(vertexShader, program->vertexShaderName);
+		
+		// If the program asset has embedded code, use the code from the asset instead of looking up a file.
+		if(program->embedded)
+		{
+			compileShader(vertexShader, program->vertexShaderSource);
+		}
+		else
+		{
+			loadShader(vertexShader, program->vertexShaderName);
+		}
 		myShaders[fullVertexShaderName] = vertexShader;
 	}
-	program->vertexShader = vertexShader;
+	program->vertexShaderBinary = vertexShader;
 	osgProg->addShader(vertexShader);
 
 	String fullFragmentShaderName = program->fragmentShaderName + variationName;
@@ -814,10 +859,18 @@ void SceneManager::recompileShaders(ProgramAsset* program, const String& variati
 		fragmentShader = new osg::Shader( osg::Shader::FRAGMENT );
 		// increase reference count to avoid being deallocated by osg program when deattached.
 		fragmentShader->ref();
-		loadShader(fragmentShader, program->fragmentShaderName);
+		// If the program asset has embedded code, use the code from the asset instead of looking up a file.
+		if(program->embedded)
+		{
+			compileShader(fragmentShader, program->fragmentShaderSource);
+		}
+		else
+		{
+			loadShader(fragmentShader, program->fragmentShaderName);
+		}
 		myShaders[fullFragmentShaderName] = fragmentShader;
 	}
-	program->fragmentShader = fragmentShader;
+	program->fragmentShaderBinary = fragmentShader;
 	osgProg->addShader(fragmentShader);
 }
 
