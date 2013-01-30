@@ -67,7 +67,7 @@ fx = "textured -v examples/custom2 -d cyclops/test/checker.jpg -t"; xmnu.addButt
 
 #--------------------------------------------------------------------------------------------------
 # multipass effect definitions
-fx = "textured -d cyclops/test/checker.jpg | colored -v fxdemo/wire -V -d yellow -g 1.0 -s 10 -t -D"; kmnu.addButton(fx, "selected.setEffect('" + fx + "')")
+fx = "textured -d cyclops/test/checker.jpg | colored -v examples/wire -V -d yellow -g 1.0 -s 10 -t -D"; kmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 
 #--------------------------------------------------------------------------------------------------
 def onUpdate(frame, t, dt):
