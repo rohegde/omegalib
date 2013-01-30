@@ -203,6 +203,7 @@ namespace cyclops {
 	public:
 		typedef AsyncTask< std::pair< Ref<ModelInfo>, bool > > LoadModelAsyncTask;
 		typedef Dictionary<String, String> ShaderMacroDictionary;
+		typedef Dictionary<String, String> ShaderCache;
 		enum AssetType { ModelAssetType };
 
 		static const int MaxLights = 16;
@@ -229,7 +230,7 @@ namespace cyclops {
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt);
 
-		//! #PYAPI sets the background color
+		//! Sets the background color
 		void setBackgroundColor(const Color& color);
 
 		//! Model Management
@@ -272,7 +273,6 @@ namespace cyclops {
 		Entity* getEntityByName(const String& name);
 		Entity* getEntityByIndex(int index);
 		int getNumEntities();
-		//List<Entity*>::Range getObjects();
 		//@}
 
 		osg::Group* getOsgRoot() { return myScene; }
@@ -320,6 +320,7 @@ namespace cyclops {
 		Dictionary<String, Ref<osg::Shader> > myShaders;
 
 		ShaderMacroDictionary myShaderMacros;
+		ShaderCache myShaderCache;
 
 		Vector< Entity* > myObjectVector;
 		Dictionary<Entity*, osg::Node*> myEntityNodeMap;
@@ -361,10 +362,6 @@ namespace cyclops {
 	{
 		return myListener;
 	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//inline List<Entity*>::Range SceneManager::getObjects()
-	//{ return List<Entity*>::Range(myObjectList.begin(), myObjectList.end()); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline int SceneManager::getNumActiveLights()

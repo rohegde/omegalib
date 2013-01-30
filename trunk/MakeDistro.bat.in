@@ -25,11 +25,8 @@ copy "${CMAKE_SOURCE_DIR}\tools\MissionControl\bin\Release\MissionControl.exe" .
 copy "${CMAKE_SOURCE_DIR}\tools\hstart.exe" .\bin /Y
 
 xcopy "${CMAKE_SOURCE_DIR}\data\examples" .\examples\ /S /Y
-copy "${CMAKE_SOURCE_DIR}\data\runExamples.py" .\ 
-copy "${CMAKE_SOURCE_DIR}\data\runOmega.py" .\ 
 
-echo bin\orun.exe runExamples.py > runExamples.bat
-echo bin\orun.exe runOmega.py > runOmega.bat
+echo ./bin/orun.exe -s spincube.py > orun.bat
 
 REM echo bin\oinputserver.exe > oinputserver.bat
 

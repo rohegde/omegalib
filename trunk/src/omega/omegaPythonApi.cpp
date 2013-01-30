@@ -855,7 +855,12 @@ BOOST_PYTHON_MODULE(omega)
 		;
 
 	// Color
-	class_<Color>("Color", init<String>());
+	class_<Color>("Color", init<String>())
+		.def(init<float, float, float, float>())
+		.add_property("red", &Color::getRed, &Color::setRed)
+		.add_property("green", &Color::getGreen, &Color::setGreen)
+		.add_property("blue", &Color::getBlue, &Color::setBlue)
+		.add_property("alpha", &Color::getAlpha, &Color::setAlpha);
 
 	// Setting
 	PYAPI_BASE_CLASS(Setting);

@@ -1,7 +1,5 @@
 @fsinclude shadowMap
 
-uniform float unif_Alpha;
-
 varying vec3 var_EyeVector;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,7 +69,6 @@ LitSurfaceData computeLighting(SurfaceData surf)
 
 	@fragmentLightSection
 
-	litSurfData.luminance.a = surf.albedo.a * unif_Alpha;
 	// Add emissive surface component to final luminance.
 	litSurfData.luminance += surf.emissive;
 	
