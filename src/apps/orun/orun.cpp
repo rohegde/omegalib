@@ -53,7 +53,7 @@ using namespace cyclops;
 // The name of the script to launch automatically at startup
 String sDefaultScript = "";
 // When set to true, add the script containing directory to the data search paths.
-bool sAddScriptDirectoryToData = false;
+bool sAddScriptDirectoryToData = true;
 
 
 class AppDrawer;
@@ -328,6 +328,12 @@ void OmegaViewer::initialize()
 	// in a cluster environment.
 	if(sDefaultScript != "")
 	{
+		// Substitute the OMEGA_DATA_ROOT and OMEGA_APP_ROOT macros in the path.
+		sDefaultScript = StringUtils::replaceAll(sDefaultScript, "OMEGA_DATA_ROOT", OMEGA_DATA_PATH);
+#ifdef OMEGA_APPROOT_DIRECTORY
+		sDefaultScript = StringUtils::replaceAll(sDefaultScript, "OMEGA_APP_ROOT", OMEGA_APPROOT_DIRECTORY);
+#endif
+
 		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
 		// If this flag is active, set the script containing folder as the default application data path.
 		if(sAddScriptDirectoryToData)
@@ -584,11 +590,11 @@ int main(int argc, char** argv)
 	// loading of per-application config files
 	// (i.e. orun -s apps/test.py will name the application apps/test and look for apps/test.cfg as the 
 	// default configuration file)
-	if(sDefaultScript != "")
-	{
-		String extension;
-		StringUtils::splitBaseFilename(sDefaultScript, applicationName, extension);
-	}
+	//if(sDefaultScript != "")
+	//{
+	//	String extension;
+	//	StringUtils::splitBaseFilename(sDefaultScript, applicationName, extension);
+	//}
 
 	return omain(app, argc, argv);
 }

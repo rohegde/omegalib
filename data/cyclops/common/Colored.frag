@@ -11,7 +11,7 @@ SurfaceData getSurfaceData(void)
 	SurfaceData sd;
     sd.albedo.rgb = gl_Color.rgb; 
 	sd.albedo.a = 1.0;
-	sd.emissive = vec4(0, 0, 0, 0);
+	sd.emissive = gl_FrontMaterial.emission;
 	sd.shininess = unif_Shininess;
 	sd.gloss = unif_Gloss;
 	sd.normal = normalize(var_Normal);

@@ -60,9 +60,7 @@ namespace cyclops {
 
 		bool hasEffect();
 		void setEffect(const String& effectDefinition);
-
-		void setAlpha(float value);
-		float getAlpha() { return myAlpha; }
+		Material* getMaterial();
 
 		void castShadow(bool value);
 		bool doesCastShadow();
@@ -72,10 +70,6 @@ namespace cyclops {
 
 	private:
 		SceneManager* mySceneManager;
-
-		osg::StateSet* myStateSet;
-		osg::Uniform* myAlphaUniform;
-		float myAlpha;
 
 		Ref<osg::Node> myOsgNode;
 		//SceneNode* mySceneNode;

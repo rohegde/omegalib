@@ -27,12 +27,69 @@
 #include "cyclops/EffectNode.h"
 #include "cyclops/SceneManager.h"
 
-#include <osg/Material>
 #include <osgFX/Technique>
 #include <osg/PolygonMode>
 #include<osg/BlendFunc>
 
 using namespace cyclops;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Material::setDiffuseColor(const Color& color)
+{
+	if(myMaterial == NULL)
+	{
+		myMaterial = new osg::Material();
+		myMaterial->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
+		myStateSet->setAttributeAndModes(myMaterial, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+	}
+	myMaterial->setDiffuse(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(color));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Material::setEmissiveColor(const Color& color)
+{
+	if(myMaterial == NULL)
+	{
+		myMaterial = new osg::Material();
+		myMaterial->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
+		myStateSet->setAttributeAndModes(myMaterial, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+	}
+	myMaterial->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(color));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Material::setShininess(float value)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Material::setGloss(float value)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Material::setTransparent(bool value)
+{
+	myTransparent = value;
+	if(myTransparent)
+	{
+		//if(myStateSet->getRenderingHint() == osg::StateSet::OPAQUE_BIN)
+		//{
+		//	ofmsg("Entity::setAlpha: entity %1% switched to transparent bin", %getName());
+		//}
+		myStateSet->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+		myStateSet->setMode(GL_BLEND, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+	}
+	else
+	{
+		//if(myStateSet->getRenderingHint() == osg::StateSet::TRANSPARENT_BIN)
+		//{
+		//	ofmsg("Entity::setAlpha: entity %1% switched to opaque bin", %getName());
+		//}
+		myStateSet->setRenderingHint(osg::StateSet::OPAQUE_BIN);
+		myStateSet->setMode(GL_BLEND, osg::StateAttribute::OFF);
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class Technique: public osgFX::Technique
@@ -116,7 +173,8 @@ protected:
 	void define_passes_colored(const String& def)
 	{
 		String effectName;
-		String diffuse;
+		String diffuse = "";
+		String emissive = "";
 		double shininess = 10;
 		double gloss = 0;
 		bool transparent = false;
@@ -128,6 +186,7 @@ protected:
 		libconfig::ArgumentHelper ah;
 		ah.newString("effectName", "the effect name", effectName);
 		ah.newNamedString('d', "diffuse", "diffuse material", "diffuse material color", diffuse);
+		ah.newNamedString('e', "emissive", "emissive material", "emissive material color", emissive);
 		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
 		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
 		ah.newNamedString('v', "variation", "variation", "effect variation", variation);
@@ -171,24 +230,32 @@ protected:
 
 		if(disableCull)
 		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF|osg::StateAttribute::OVERRIDE );
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF); //|osg::StateAttribute::OVERRIDE );
 		}
 		else
 		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON|osg::StateAttribute::OVERRIDE );
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON); //|osg::StateAttribute::OVERRIDE );
 		}
 
 		// If we have colors, add material attribute
-		if(diffuse != "")
+		if(diffuse != "" | emissive != "")
 		{
-			Color diffuseColor(diffuse);
 			osg::Material* mat = new osg::Material();
 			mat->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
-			mat->setDiffuse(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(diffuseColor));
-			mat->setAmbient(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(diffuseColor));
-			mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
+
+			if(diffuse != "")
+			{
+				Color diffuseColor(diffuse);
+				mat->setDiffuse(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(diffuseColor));
+				mat->setAmbient(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(diffuseColor));
+			}
+			if(emissive != "")
+			{
+				Color emissiveColor(emissive);
+				mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(emissiveColor));
+			}
 			mat->setSpecular(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
-			ss->setAttributeAndModes(mat, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+			ss->setAttributeAndModes(mat, osg::StateAttribute::ON); // | osg::StateAttribute::OVERRIDE);
 		}
 
 		addPass(ss);
@@ -259,11 +326,11 @@ protected:
 
 		if(disableCull)
 		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF|osg::StateAttribute::OVERRIDE );
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF); //|osg::StateAttribute::OVERRIDE );
 		}
 		else
 		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON|osg::StateAttribute::OVERRIDE );
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON); //|osg::StateAttribute::OVERRIDE );
 		}
 
 		if(diffuse != "")
@@ -346,11 +413,11 @@ protected:
 
 		if(disableCull)
 		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF|osg::StateAttribute::OVERRIDE );
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF); //|osg::StateAttribute::OVERRIDE );
 		}
 		else
 		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON|osg::StateAttribute::OVERRIDE );
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON); //|osg::StateAttribute::OVERRIDE );
 		}
 
 		if(diffuse != "")
@@ -389,6 +456,13 @@ EffectNode::~EffectNode()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Material* EffectNode::getMaterial()
+{
+	if(myMaterial == NULL) myMaterial = new Material(getOrCreateStateSet());
+	return myMaterial;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void EffectNode::setDefinition(const String& definition)
 {
 	myDefinition = definition;
@@ -402,3 +476,4 @@ bool EffectNode::define_techniques()
 	this->addTechnique(tech);
 	return true;
 }
+

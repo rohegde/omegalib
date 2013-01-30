@@ -73,17 +73,23 @@ BOOST_PYTHON_MODULE(cyclops)
 	class_<osg::Texture2D, boost::noncopyable, Ref<osg::Texture2D> >("Texture2D", no_init)
 		;
 
+	// Material
+	PYAPI_REF_BASE_CLASS(Material)
+		PYAPI_METHOD(Material, setDiffuseColor)
+		PYAPI_METHOD(Material, setEmissiveColor)
+		PYAPI_METHOD(Material, setTransparent)
+		PYAPI_METHOD(Material, isTransparent);
+
 	// Entity
 	PYAPI_REF_CLASS(Entity, SceneNode)
-		PYAPI_METHOD(Entity, hasEffect)
-		PYAPI_METHOD(Entity, setEffect)
-		PYAPI_METHOD(Entity, getAlpha)
-		PYAPI_METHOD(Entity, setAlpha)
 		PYAPI_METHOD(Entity, followTrackable)
 		PYAPI_METHOD(Entity, setFollowOffset)
 		PYAPI_METHOD(Entity, unfollow)
 		PYAPI_METHOD(Entity, castShadow)
 		PYAPI_METHOD(Entity, doesCastShadow)
+		PYAPI_METHOD(Entity, hasEffect)
+		PYAPI_METHOD(Entity, setEffect)
+		PYAPI_REF_GETTER(Entity, getMaterial)
 		;
 
 	// SphereShape

@@ -10,6 +10,12 @@ scene = getSceneManager()
 #ss.shadowsEnabled = True
 #scene.resetShadowSettings(ss)
 
+# define some colors
+light1Color = Color("#ff5555")
+light2Color = Color("#55ff55")
+light3Color = Color("#5555ff")
+blackColor = Color("black")
+
 sphere = SphereShape.create(0.5, 4)
 sphere.setPosition(Vector3(0, 2, -4))
 sphere.setEffect("colored -d white -s 10 -g 1.0")
@@ -21,11 +27,11 @@ plane.setEffect("colored -d gray")
 
 # Create first light, light sphere and interactor
 light1 = Light.create()
-light1.setColor(Color("#ff5555"))
+light1.setColor(light1Color)
 light1.setAmbient(Color("#200000"))
 light1.setEnabled(True)
 lightSphere1 = SphereShape.create(0.1, 4)
-lightSphere1.setEffect("colored -v emissive -d #ff5555")
+lightSphere1.setEffect("colored -d black -e #ff5555")
 lightSphere1.setPosition(Vector3(-1, 3, -4))
 interactor1 = ToolkitUtils.setupInteractor("config/interactor")
 interactor1.setSceneNode(lightSphere1)
@@ -35,11 +41,11 @@ lightSphere1.castShadow(False)
 
 # Create second light, light sphere and interactor
 light2 = Light.create()
-light2.setColor(Color("#55ff55"))
+light2.setColor(light2Color)
 light2.setAmbient(Color("#002000"))
 light2.setEnabled(True)
 lightSphere2 = SphereShape.create(0.1, 4)
-lightSphere2.setEffect("colored -v emissive -d #55ff55")
+lightSphere2.setEffect("colored -d black -e #55ff55")
 lightSphere2.setPosition(Vector3(0, 3, -4))
 interactor2 = ToolkitUtils.setupInteractor("config/interactor")
 interactor2.setSceneNode(lightSphere2)
@@ -48,11 +54,11 @@ lightSphere2.castShadow(False)
 
 # Create third light, light sphere and interactor
 light3 = Light.create()
-light3.setColor(Color("#5555ff"))
+light3.setColor(light3Color)
 light3.setAmbient(Color("#000020"))
 light3.setEnabled(True)
 lightSphere3 = SphereShape.create(0.1, 4)
-lightSphere3.setEffect("colored -v emissive -d #5555ff")
+lightSphere3.setEffect("colored -d black -e #5555ff")
 lightSphere3.setPosition(Vector3(1, 3, -4))
 interactor3 = ToolkitUtils.setupInteractor("config/interactor")
 interactor3.setSceneNode(lightSphere3)
@@ -70,13 +76,11 @@ scene.loadModel(torusModel)
 torus = StaticObject.create("torus")
 torus.setPosition(Vector3(-1, 2, -4))
 torus.setEffect("colored -d yellow")
-torus.pitch(radians(20))
-torus.roll(radians(20))
 
 # Load an animated model
 skelModel = ModelInfo()
 skelModel.name = "skelModel"
-skelModel.path = "examples/data/surgseq/surgseq3.fbx"
+skelModel.path = "data/surgseq/surgseq3.fbx"
 scene.loadModel(skelModel)
 
 # Create a scene object using the loaded animated model, and start the animation
@@ -106,23 +110,29 @@ scene.setMainLight(light2)
 def toggleLight1():
 	light1.setEnabled(not light1.isEnabled())
 	if(light1.isEnabled()):
-		lightSphere1.setEffect("colored -v emissive -d #ff5555")
+		lightSphere1.getMaterial().setEmissiveColor(light1Color)
+		lightSphere1.getMaterial().setDiffuseColor(blackColor)
 	else:
-		lightSphere1.setEffect("colored -d #ff5555")
+		lightSphere1.getMaterial().setEmissiveColor(blackColor)
+		lightSphere1.getMaterial().setDiffuseColor(light1Color)
 
 def toggleLight2():
 	light2.setEnabled(not light2.isEnabled())
 	if(light2.isEnabled()):
-		lightSphere2.setEffect("colored -v emissive -d #55ff55")
+		lightSphere2.getMaterial().setEmissiveColor(light2Color)
+		lightSphere2.getMaterial().setDiffuseColor(blackColor)
 	else:
-		lightSphere2.setEffect("colored -d #55ff55")
+		lightSphere2.getMaterial().setEmissiveColor(blackColor)
+		lightSphere2.getMaterial().setDiffuseColor(light2Color)
 		
 def toggleLight3():
 	light3.setEnabled(not light3.isEnabled())
 	if(light3.isEnabled()):
-		lightSphere3.setEffect("colored -v emissive -d #5555ff")
+		lightSphere3.getMaterial().setEmissiveColor(light3Color)
+		lightSphere3.getMaterial().setDiffuseColor(blackColor)
 	else:
-		lightSphere3.setEffect("colored -d #5555ff")
+		lightSphere3.getMaterial().setEmissiveColor(blackColor)
+		lightSphere3.getMaterial().setDiffuseColor(light3Color)
 
 #------------------------------------------------------------------------------
 # Update function

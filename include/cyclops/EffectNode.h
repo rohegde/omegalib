@@ -31,6 +31,8 @@
 
 #include <osgFX/Effect>
 #include <osgFX/Technique>
+#include <osg/Material>
+#include <osg/StateSet>
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
@@ -40,6 +42,31 @@
 namespace cyclops {
 	using namespace omega;
 	using namespace omegaOsg;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class CY_API Material: public ReferenceType
+	{
+	public:
+		Material(osg::StateSet* ss):
+			myStateSet(ss),
+			myTransparent(false)
+			{}
+
+		void setDiffuseColor(const Color& color);
+		void setEmissiveColor(const Color& color);
+		void setShininess(float value);
+		void setGloss(float value);
+
+		void setTransparent(bool value);
+		bool isTransparent() { return myTransparent; }
+
+	private:
+		Ref<osg::StateSet> myStateSet;
+		Ref<osg::Material> myMaterial;
+		Ref<osg::Uniform> myShininess;
+		Ref<osg::Uniform> myGloss;
+		bool myTransparent;
+	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class CY_API EffectNode: public osgFX::Effect
@@ -62,8 +89,11 @@ namespace cyclops {
 		String getDefinition() { return myDefinition; }
 		void setDefinition(const String& definition);
 
+		Material* getMaterial();
+
 	private:
 		Ref<osgFX::Technique> myCurrentTechnique;
+		Ref<Material> myMaterial;
 		String myDefinition;
 	};
 };
