@@ -1,7 +1,7 @@
 #summary Python reference: module omega
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.2 - 5 December 2012</p>*
+<p>*Last revision:* ver. 3.3 - 31 January 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -233,6 +233,8 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_
 || `getScale()`, `setScale(pos)` || Gets and sets the node scale ||
 || `getOrientation()`, `setOrientation(orientation)` || Gets and sets the node orientation ||
 || `yaw(rads)`, `pitch(rads)`, `roll(rads)` || Applies a yaw, pitch or roll to the node (in radians) ||
+|| `lookAt(node)` || Changes the node orientation to make it face the specified node. Front facing direction is assumed to be positive Z. ||
+|| `setFacingCamera(camera)` `getFacingCamera()` || Makes the node face the specified camera (billboard) pass `None` to disable billboard mode. ||
 || *Hierarchy* || ||
 || `numChildren()` || Gets the number of children of this node ||
 || `getChildByName(name)` || Finds a child by name ||
