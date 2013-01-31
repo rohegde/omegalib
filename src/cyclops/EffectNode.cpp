@@ -40,7 +40,7 @@ void Material::setDiffuseColor(const Color& color)
 	{
 		myMaterial = new osg::Material();
 		myMaterial->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
-		myStateSet->setAttributeAndModes(myMaterial, osg::StateAttribute::ON | osg::StateAttribute::Values::OVERRIDE);
+		myStateSet->setAttributeAndModes(myMaterial, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 	}
 	myMaterial->setDiffuse(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(color));
 }
