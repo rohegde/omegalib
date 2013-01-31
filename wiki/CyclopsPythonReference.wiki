@@ -44,8 +44,8 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 || `getCurrentShadowSettings()` || Gets the current settings for shadow mapping ||
 || `resetShadowSettings(settings)` || Resets the shadow settings. Can be used to turn shadow maps on and off, and to change their quality ||
 || *Shaders* || ||
-|| `setShaderMacroToFile(macro, file)` || Sets the specified shader macro to the contents of a file. Appearances of the macro in any loaded shader will be replaced with the file contents. Example: `scene.setShaderMacroToFile('macro1', 'file.frag')` will substitute `@macro1` in shaders with the text from `file.frag` ||
-|| `setShaderMacroToString(macro, string)` || Sets the specified shader macro to the specified string. Appearances of the macro in any loaded shader will be replaced with the string text. Example: `scene.setShaderMacroToFile('macro1', 'a = b + c')` will substitute `@macro1` in shaders with `a = b + c` ||
+|| `setShaderMacroToFile(macro, file)` || Sets the specified shader macro to the contents of a file. Appearances of the macro in any loaded shader will be replaced with the file contents. Example: <code>scene.setShaderMacroToFile('macro1', 'file.frag')</code> will substitute `@macro1` in shaders with the text from `file.frag` ||
+|| `setShaderMacroToString(macro, string)` || Sets the specified shader macro to the specified string. Appearances of the macro in any loaded shader will be replaced with the string text. Example: <code>scene.setShaderMacroToFile('macro1', 'a = b + c')</code> will substitute `@macro1` in shaders with `a = b + c` ||
 || `createProgramFromString(name, vertexCode, fragmentCode)` || Creates a new Gpu Program using the vertex and fragment source code passed as parameters. Registers the program with the specified name, so it can be used in effect definitions. It aso returns the program as a `ProgramAsset` object. ||
 || *Textures* || ||
 || `createTexture(name, pixels)` || Creates a texture with the specified name using the passed `PixelData` object. The texture can then be referenced in effect definitions. ||
