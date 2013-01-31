@@ -1,7 +1,7 @@
 #summary Python reference: module cyclops
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.2 - 4 December 2012</p>*
+<p>*Last revision:* ver. 3.3 - 31 January 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -16,6 +16,10 @@ Cyclops is a utility library that sits on top of omegalib and OpenSceneGraph, an
 
 === `getSceneManager()` ===
 Returns a reference to the cyclops scene manager
+
+-------------------------------------------------------------------------------
+==  `class ProgramAsset` ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_program_asset.html cyclops::ProgramAsset] class. Represents a Gpu program source and its associated binary code.
 
 -------------------------------------------------------------------------------
 ==  `class SceneManager` ==
@@ -39,6 +43,40 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 || `getMainLight()`, `setMainLight(light)` || Sets the main scene light. When shadow mapping is enabled, it will be used to cast shadows ||
 || `getCurrentShadowSettings()` || Gets the current settings for shadow mapping ||
 || `resetShadowSettings(settings)` || Resets the shadow settings. Can be used to turn shadow maps on and off, and to change their quality ||
+|| *Shaders* || ||
+|| `setShaderMacroToFile(macro, file)` || Sets the specified shader macro to the contents of a file. Appearances of the macro in any loaded shader will be replaced with the file contents. Example: `scene.setShaderMacroToFile('macro1', 'file.frag')` will substitute `@macro1` in shaders with the text from `file.frag` ||
+|| `setShaderMacroToString(macro, string)` || Sets the specified shader macro to the specified string. Appearances of the macro in any loaded shader will be replaced with the string text. Example: `scene.setShaderMacroToFile('macro1', 'a = b + c')` will substitute `@macro1` in shaders with `a = b + c` ||
+|| `createProgramFromString(name, vertexCode, fragmentCode)` || Creates a new Gpu Program using the vertex and fragment source code passed as parameters. Registers the program with the specified name, so it can be used in effect definitions. It aso returns the program as a `ProgramAsset` object. ||
+|| *Textures* || ||
+|| `createTexture(name, pixels)` || Creates a texture with the specified name using the passed `PixelData` object. The texture can then be referenced in effect definitions. ||
+
+-------------------------------------------------------------------------------
+==  `class Uniform` ==
+=== Methods ===
+|| Method(s) || Description ||
+|| `getType()` || Returns the uniform type. ||
+|| `setInt(value)`, `getInt()` || ||
+|| `setFloat(value)`, `getFloat()` || ||
+|| `setVector2f(value)`, `getVector2f()` || ||
+|| `setVector3f(value)`, `getVector3f()` || ||
+|| `setVector4f(value)`, `getVector4f()` || ||
+
+-------------------------------------------------------------------------------
+==  `class Uniforms` ==
+=== Methods ===
+|| Method(s) || Description ||
+|| `addUniform(name, type)` ||  ||
+|| `addUniformrray(name, type, numElements)` ||  ||
+|| `getUniform(name)` ||  ||
+|| `removeAllUniforms()` ||  ||
+
+-------------------------------------------------------------------------------
+==  `class Material` (extends `Uniforms`) ==
+=== Methods ===
+|| Method(s) || Description ||
+|| `setDiffuseColor(color)` ||  ||
+|| `setEmissiveColor(color)` ||  ||
+|| `setTransparent(value)` `isTransparent()` ||  ||
 
 -------------------------------------------------------------------------------
 ==  `class Entity` (extends `SceneNode`) ==
