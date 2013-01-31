@@ -40,7 +40,7 @@ void Material::setDiffuseColor(const Color& color)
 	{
 		myMaterial = new osg::Material();
 		myMaterial->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
-		myStateSet->setAttributeAndModes(myMaterial, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+		myStateSet->setAttributeAndModes(myMaterial, osg::StateAttribute::ON | osg::StateAttribute::Values::OVERRIDE);
 	}
 	myMaterial->setDiffuse(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(color));
 }
@@ -163,8 +163,7 @@ protected:
 			}
 			else
 			{
-				ofwarn("EffectNode: could not create effect with definition '%1%'", %myDefinition);
-				addPass(new osg::StateSet());
+				define_passes_custom(*iter);
 			}
 		}
 	}
@@ -230,11 +229,11 @@ protected:
 
 		if(disableCull)
 		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF); //|osg::StateAttribute::OVERRIDE );
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE );
 		}
 		else
 		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON); //|osg::StateAttribute::OVERRIDE );
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
 		}
 
 		// If we have colors, add material attribute
@@ -255,7 +254,7 @@ protected:
 				mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(emissiveColor));
 			}
 			mat->setSpecular(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
-			ss->setAttributeAndModes(mat, osg::StateAttribute::ON); // | osg::StateAttribute::OVERRIDE);
+			ss->setAttributeAndModes(mat, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 		}
 
 		addPass(ss);
@@ -326,11 +325,11 @@ protected:
 
 		if(disableCull)
 		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF); //|osg::StateAttribute::OVERRIDE );
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE );
 		}
 		else
 		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON); //|osg::StateAttribute::OVERRIDE );
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
 		}
 
 		if(diffuse != "")
@@ -413,11 +412,11 @@ protected:
 
 		if(disableCull)
 		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF); //|osg::StateAttribute::OVERRIDE );
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE );
 		}
 		else
 		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON); //|osg::StateAttribute::OVERRIDE );
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
 		}
 
 		if(diffuse != "")
@@ -437,6 +436,94 @@ protected:
 				ss->setTextureAttribute(1, tex);
 			}
 		}
+		addPass(ss);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	void define_passes_custom(const String& def)
+	{
+		String effectName;
+		String diffuse = "";
+		String emissive = "";
+		double shininess = 10;
+		double gloss = 0;
+		bool transparent = false;
+		bool additive = false;
+		bool disableDepth = false;
+		bool disableCull = false;
+		libconfig::ArgumentHelper ah;
+		ah.newString("effectName", "the effect name", effectName);
+		ah.newNamedString('d', "diffuse", "diffuse material", "diffuse material color", diffuse);
+		ah.newNamedString('e', "emissive", "emissive material", "emissive material color", emissive);
+		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
+		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
+		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
+		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
+		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
+		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
+		ah.process(def.c_str());
+
+		SceneManager* sm = SceneManager::instance();
+		osg::StateSet* ss = new osg::StateSet();
+		ProgramAsset* asset = getProgram(effectName, "", false);
+
+		if(asset != NULL)
+		{
+			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
+			ss->addUniform( new osg::Uniform("unif_Shininess", (float)shininess) );
+			ss->addUniform( new osg::Uniform("unif_Gloss", (float)gloss) );
+			if(disableDepth)
+			{
+				ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
+			}
+			if(transparent)
+			{
+				ss->setMode(GL_BLEND, osg::StateAttribute::ON);
+				//ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF); 
+				ss->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+				if(additive)
+				{
+					osg::BlendFunc* bf = new osg::BlendFunc();
+					bf->setFunction(GL_SRC_ALPHA, GL_ONE);
+					ss->setAttribute(bf);
+				}
+			}
+			else
+			{
+				ss->setMode(GL_BLEND, osg::StateAttribute::OFF);
+			}
+		}
+
+		if(disableCull)
+		{
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE );
+		}
+		else
+		{
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
+		}
+
+		// If we have colors, add material attribute
+		if(diffuse != "" | emissive != "")
+		{
+			osg::Material* mat = new osg::Material();
+			mat->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
+
+			if(diffuse != "")
+			{
+				Color diffuseColor(diffuse);
+				mat->setDiffuse(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(diffuseColor));
+				mat->setAmbient(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(diffuseColor));
+			}
+			if(emissive != "")
+			{
+				Color emissiveColor(emissive);
+				mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(emissiveColor));
+			}
+			mat->setSpecular(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
+			ss->setAttributeAndModes(mat, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+		}
+
 		addPass(ss);
 	}
 
