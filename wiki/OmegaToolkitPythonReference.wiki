@@ -147,8 +147,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `setCenter(point)` || Sets the widget position by it center ||
 || `setAlpha(value)` `getAlpha()` || Gets or sets the transparency of the widget. Blendng must be enabled through `setBlendMode` ||
 || `setBlendMode(value)` `setBlendMode()` || Gets or sets the blend mode for the widget ||
-|| `setUpdateCommand(cmdstring)` `getUpdateCommand()` || Gets or specified an update command to be executed for each update cycle on the widget. Example: {{{ 
-	widget.setUpdateCommand("print('widget updated')") }}} ||
+|| `setUpdateCommand(cmdstring)` `getUpdateCommand()` || Gets or specified an update command to be executed for each update cycle on the widget. Example: {{{ widget.setUpdateCommand("print('widget updated')") }}} ||
 
 === Widget layers ===
 The method `getLayer()` returns a value from the `WidgetLayer` enumeration. The `WidgetLayer` enumeration contains the following values: `Front`, `Middle`, `Back`
