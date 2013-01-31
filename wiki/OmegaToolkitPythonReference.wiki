@@ -144,9 +144,19 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `setUiEventCommand(command)` || Sets the command to be invoked when events happen in the widget area (like clicks or value changes) ||
 || `getLayer()`, `setLayer(value)` || Gets or sets the layer for the widget. Layers influence the drawing order of widgets within the same container ||
 || `transformPoint(point)` || Transforms a point from global pixel coordinates to local pixel coordinates in the widget space. Returns a `Vector2` value ||
+|| `setCenter(point)` || Sets the widget position by it center ||
+|| `setAlpha(value)` `getAlpha()` || Gets or sets the transparency of the widget. Blendng must be enabled through `setBlendMode` ||
+|| `setBlendMode(value)` `setBlendMode()` || Gets or sets the blend mode for the widget ||
+|| `setUpdateCommand(cmdstring)` `getUpdateCommand()` || Gets or specified an update command to be executed for each update cycle on the widget (example: `widget.setUpdateCommand("print('widget updated')")`) ||
 
 === Widget layers ===
 The method `getLayer()` returns a value from the `WidgetLayer` enumeration. The `WidgetLayer` enumeration contains the following values: `Front`, `Middle`, `Back`
+
+=== Widget Blend Mode ===
+The method `getLayer()` returns a value from the `WidgetBlendMode` enumeration. The `WidgetLayer` enumeration:
+	* `BlendInherit` sets the blend mode to inherited from parent
+	* `BlendNormal` sets the blend mode to standard blending
+	* `BlendAdditive` sets the blend mode to additive blending
 
 === Styles ===
 *TODO*
@@ -157,6 +167,12 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 === Methods ===
 || Method(s) || Description ||
 || `get3dSettings()` || Returns the container 3d settings for the container ||
+|| `setPixelOutputEnabled(bool)` `isPixelOutputEnabled()` || Sets pixel output for the container. When enabled, the container will render to a pixel buffer instead of the screen ||
+|| `getPixels()` || Returns the pixel data from the container when pixel output is enabled. Returned object is of `PixelData` type ||
+|| `addChild(widget)` || Adds a child to this container ||
+|| `removeChild(widget)` || Removes a child from this container ||
+|| `getChildByIndex(int)` || Returns a child by index. Returns `None` if index is invalid. ||
+|| `getChildByName()` || Returns a child by name. Returns `None` if name is invalid. ||
 
 ---------------------------------------------------------------------------------------------------
 ==  `class Button` (extends `Widget`) ==
@@ -174,7 +190,6 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 === Methods ===
 || Method(s) || Description ||
 || `getData()`, `setData(value)` || Gets or sets the image data visualized by this widget as a `PixelData` object ||
-|| `isAutoRefreshEnabled()`, `setAutoRefresh(value)` || Gets or sets autorefresh mode. When autorefresh is enabled, the image widget re-reads the pixel data associated to it before each draw ||
 
 ---------------------------------------------------------------------------------------------------
 ==  `class Label` (extends `Widget`) ==
@@ -182,3 +197,5 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 === Methods ===
 || Method(s) || Description ||
 || `getText()`, `setText(name)` || Gets or sets the label for the label||
+|| `setColor(color)` || Sets the label color. Exaample: `label.setColor(Color('white'))` ||
+|| `setFont(fontName)` || Sets the label font using a `<font> <size>` string. Example: `label.setFont('fonts/arial.ttf 20'')` ||
