@@ -1,7 +1,7 @@
 #summary Python reference: module omegaToolkit
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.2 - 4 December 2012</p>*
+<p>*Last revision:* ver. 3.3 - 31 January 2013</p>*
 
 <wiki:toc max_depth="2" />
 
