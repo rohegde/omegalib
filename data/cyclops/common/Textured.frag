@@ -4,8 +4,8 @@
 uniform sampler2D unif_DiffuseMap;
 varying vec2 var_TexCoord;
 
-uniform float unif_Shininess;
 uniform float unif_Gloss;
+uniform float unif_Shininess;
 
 varying vec3 var_Normal;
 

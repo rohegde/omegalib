@@ -47,6 +47,9 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_STATIC_REF_GETTER(SceneLoader, getLastLoadedEntity)
 		;
 
+	// ProgramAsset
+	PYAPI_REF_BASE_CLASS(ProgramAsset);
+
 	// SceneManager
 	void (SceneManager::*loadModelAsync1)(ModelInfo*, const String&) = &SceneManager::loadModelAsync;
 	PYAPI_REF_BASE_CLASS(SceneManager)
@@ -66,6 +69,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_METHOD(SceneManager, resetShadowSettings)
 		PYAPI_METHOD(SceneManager, setShaderMacroToFile)
 		PYAPI_METHOD(SceneManager, setShaderMacroToString)
+		PYAPI_REF_GETTER(SceneManager, createProgramFromString)
 		PYAPI_REF_GETTER(SceneManager, createTexture)
 		;
 

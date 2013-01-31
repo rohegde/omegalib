@@ -9,8 +9,7 @@ varying vec3 var_Normal;
 SurfaceData getSurfaceData(void)
 {
 	SurfaceData sd;
-    sd.albedo.rgb = gl_Color.rgb; 
-	sd.albedo.a = 1.0;
+    sd.albedo = gl_Color; //gl_FrontMaterial.diffuse; 
 	sd.emissive = gl_FrontMaterial.emission;
 	sd.shininess = unif_Shininess;
 	sd.gloss = unif_Gloss;

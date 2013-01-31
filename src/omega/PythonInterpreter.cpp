@@ -171,6 +171,19 @@ void PythonInterpreter::initialize(const char* programName)
 	// full path.
 	Py_SetProgramName((char*)programName);
 
+	// Use the datamanager to lookup for a local copy of the python library:
+	String pythonModulePath;
+	if(DataManager::findFile("python/Lib/site.py", pythonModulePath))
+	{
+		// Remove the final part of the path to get the python library root.
+		String pythonLibPath = StringUtils::replaceAll(pythonModulePath, "/Lib/site.py", "");
+		ofmsg("PythonInterpreter::initialize: found local python library in %1%", %pythonLibPath);
+
+		static char pythonHome[1024];
+		strcpy(pythonHome, pythonLibPath.c_str());
+		Py_SetPythonHome(pythonHome);
+	}
+
 	// initialize the statically linked modules
 	//CMakeLoadAllPythonModules();
 
