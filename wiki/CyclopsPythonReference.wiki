@@ -206,6 +206,35 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 || `isEnabled()`, `setEnabled(value)` || Gets or sets the light enabled value ||
 || `getSoftShadowJitter()`, `setSoftShadowJitter(value)` || Gets or sets soft shadow jitter value for this light. Used only for the main light when shadows are enabled ||
 || `getSoftShadowWidth()`, `setSoftShadowWidth(value)` || Gets or sets soft shadow width value for this light. Used only for the main light when shadows are enabled ||
+|| `setAttenuation(consant, linear, quadratic)`, `getAttenuation()` || Sets or gets the light attenuation values. `getAttenuation()` returns the attenuation parameters as a `Vector3` object. ||
+|| `setLightType(type)`, `getLightType()` || Sets or gets the light type ||
+|| `setLightFunction(string)`, `getLightFunction()` || Sets or gets the light function ||
+
+=== Light Types ===
+The `setLightType()` method accepts a value from the `LightType` enumeration. Supported values are:
+	* `Point`: for point lights
+	* `Directional`: for directional lights
+	* `Spot`: for spot lights
+	* `Custom`: for custom lights
+
+Custom lights allow the user to specify a custom, per pixel light function:
+{{{
+	scene = getSceneManager()
+	
+	// Use the customFragmentFunctions macro to inject code into fragment shaders.
+	scene.setShaderMacroToString('customFragmentFunctions', '''
+		customLightFunction(SurfaceData sd, LightData ld)
+		{
+			// Trivial example: return a fixed color regardless of light or surface properties
+			return vec4(1, 0, 0, 0);
+		}
+	'''
+	)
+	
+	light = Light.create()
+	light.setType(lightType.Custom)
+	light.setLightFunction('customLightFunction')
+}}}
 
 -------------------------------------------------------------------------------
 ==  `class ModelInfo` ==
