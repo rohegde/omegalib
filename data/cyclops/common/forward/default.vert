@@ -16,7 +16,7 @@ void main(void)
 	setupEnvMap(eyeSpacePosition.xyz);
 	setupSurfaceData(eyeSpacePosition);
 	
-	var_EyeVector = -eyeSpacePosition.xyz;
+	var_EyeVector = eyeSpacePosition.xyz;
 	var_Normal = gl_NormalMatrix * gl_Normal;
 	
 	gl_FrontColor = gl_Color;
