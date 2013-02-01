@@ -1,11 +1,11 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2013		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
- * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2013, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted 
  * provided that the following conditions are met:
@@ -31,6 +31,7 @@
 #include "Skybox.h"
 #include "Shapes.h"
 #include "Uniforms.h"
+#include "Light.h"
 
 #include <osg/Texture2D>
 #include <osg/Light>
@@ -53,62 +54,6 @@ namespace cyclops {
 	class SceneLoader;
 	class SceneManager;
 	class AnimatedObject;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API Light: public SceneNode
-	{
-	friend class SceneManager;
-	public:
-		//! Convenience method for creating Light instances
-		static Light* create();
-	
-	public:
-		Light(SceneManager* scene);
-		virtual ~Light();
-
-		void setColor(const Color& value) { myColor = value; }
-		const Color& getColor() { return myColor; }
-
-		void setAmbient(const Color& value) { myAmbient = value; }
-		const Color& getAmbient() { return myAmbient; }
-
-		void setEnabled(bool value) { myEnabled = value; }
-		bool isEnabled() { return myEnabled; }
-
-		void setAttenuation(const Vector3f value) { myAttenuation = value; }
-		void setAttenuation(float constant, float linear, float quadratic) 
-		{ 
-			myAttenuation[0] = constant; 
-			myAttenuation[1] = linear; 
-			myAttenuation[2] = quadratic; 
-		}
-		const Vector3f& getAttenuation() { return myAttenuation; }
-
-		void setSoftShadowWidth(float value) { mySoftShadowWidth = value; }
-		float getSoftShadowWidth() { return mySoftShadowWidth; }
-
-		void setSoftShadowJitter(int value) { mySoftShadowJitter = value; }
-		float getSoftShadowJitter() { return mySoftShadowJitter; }
-
-		void setLightFunction(const String& function) { myLightFunction = function; }
-		String getLightFunction() { return myLightFunction; }
-
-	private:
-		Ref<SceneManager> mySceneManager;
-
-		Color myColor;
-		Color myAmbient;
-		bool myEnabled;
-		Vector3f myAttenuation;
-		float mySoftShadowWidth;
-		int mySoftShadowJitter;
-
-		// osg light stuff.
-		Ref<osg::Light> myOsgLight;
-		Ref<osg::LightSource> myOsgLightSource;
-
-		String myLightFunction;
-	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct ModelInfo: public ReferenceType

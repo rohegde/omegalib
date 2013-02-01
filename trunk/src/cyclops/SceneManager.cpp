@@ -1,11 +1,11 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2013		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
- * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2013, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted 
  * provided that the following conditions are met:
@@ -93,33 +93,6 @@ public:
 private:
 	SceneManager* mySceneManager;
 };
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Light* Light::create()
-{
-	return new Light(SceneManager::instance());
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-Light::Light(SceneManager* scene):
-	SceneNode(scene->getEngine()),
-	mySceneManager(scene),
-	myColor(Color::White),
-	myAmbient(Color::Gray),
-	myAttenuation(Vector3f(1.0, 0.0, 0.0)),
-	myEnabled(false),
-	mySoftShadowWidth(0.005f),
-	mySoftShadowJitter(32),
-	myOsgLight(NULL), myOsgLightSource(NULL),
-	myLightFunction("pointLightFunction")
-{
-	mySceneManager->addLight(this);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-Light::~Light()
-{}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct AnimationManagerFinder : public osg::NodeVisitor 
@@ -455,48 +428,10 @@ void SceneManager::updateLights()
 	int i = 0;
 	foreach(Light* l, myLights)
 	{
-		if(l->isEnabled())
-		{
-			if(l->myOsgLight == NULL)
-			{
-				l->myOsgLight = new osg::Light();
-				l->myOsgLightSource = new osg::LightSource();
-				//l->myOsgLightSource->setReferenceFrame(osg::LightSource::ABSOLUTE_RF);
-				myScene->addChild(l->myOsgLightSource);
-			}
-
-			osg::Light* ol = l->myOsgLight;
-			osg::LightSource* ols = l->myOsgLightSource;
-			const Vector3f pos = l->getDerivedPosition();
-			const Vector3f& att = l->getAttenuation();
-
-			int lightId = i++;
-
-			ol->setLightNum(lightId);
-			ol->setPosition(osg::Vec4(pos[0], pos[1], pos[2], 1.0));
-			ol->setAmbient(COLOR_TO_OSG(l->getAmbient()));
-			ol->setDiffuse(COLOR_TO_OSG(l->getColor()));
-			ol->setSpecular(COLOR_TO_OSG(l->getColor()));
-			ol->setConstantAttenuation(att[0]);
-			ol->setLinearAttenuation(att[1]);
-			ol->setQuadraticAttenuation(att[2]);
-
-			ols->setLight(ol);
-
-			osg::StateSet* sState = myScene->getOrCreateStateSet();
-			ols->setStateSetModes(*sState,osg::StateAttribute::ON);
-		}
-		else
-		{
-			if(l->myOsgLightSource != NULL)
-			{
-				osg::StateSet* sState = myScene->getOrCreateStateSet();
-				l->myOsgLightSource->setStateSetModes(*sState,osg::StateAttribute::OFF); 
-				l->myOsgLightSource->setLight(NULL);
-			}
-		}
+		l->updateOsgLight(i++, myScene);
 	}
 
+	// Setup shadow parameters for main light.
 	if(myMainLight != NULL)
 	{
 		if(mySoftShadowMap != NULL)
