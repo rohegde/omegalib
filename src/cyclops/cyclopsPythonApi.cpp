@@ -1,11 +1,11 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2013		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
- * Copyright (c) 2010-2012, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2013, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted 
  * provided that the following conditions are met:
@@ -152,6 +152,13 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def("setAnimationStart", &AnimatedObject::setAnimationStart)
 		;
 
+	// LightType
+	PYAPI_ENUM(Light::LightType, LightType)
+		PYAPI_ENUM_VALUE(Light, Point)
+		PYAPI_ENUM_VALUE(Light, Directional)
+		PYAPI_ENUM_VALUE(Light, Spot)
+		PYAPI_ENUM_VALUE(Light, Custom);
+
 	// Light
 	class_<Light, bases<Node>, boost::noncopyable, Ref<Light> >("Light", no_init)
 		.def("create", &Light::create, PYAPI_RETURN_REF).staticmethod("create")
@@ -163,6 +170,10 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def("getSoftShadowJitter", &Light::getSoftShadowJitter)
 		.def("setSoftShadowWidth", &Light::setSoftShadowWidth)
 		.def("getSoftShadowWidth", &Light::getSoftShadowWidth)
+		PYAPI_METHOD(Light, setAttenuation)
+		PYAPI_GETTER(Light, getAttenuation)
+		PYAPI_METHOD(Light, getLightType)
+		PYAPI_METHOD(Light, setLightType)
 		PYAPI_METHOD(Light, getLightFunction)
 		PYAPI_METHOD(Light, setLightFunction)
 		;
