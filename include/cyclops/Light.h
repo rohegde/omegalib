@@ -85,6 +85,9 @@ namespace cyclops {
 		void setLightType(LightType type);
 		LightType getLightType() { return myType; }
 
+		void setLightDirection(const Vector3f& value) { myLightDirection = value; }
+		Vector3f getLightDirection() { return myLightDirection; }
+
 		void setLightFunction(const String& function) { myLightFunction = function; }
 		String getLightFunction() { return myLightFunction; }
 
@@ -100,6 +103,8 @@ namespace cyclops {
 		Vector3f myAttenuation;
 		float mySoftShadowWidth;
 		int mySoftShadowJitter;
+
+		Vector3f myLightDirection;
 
 		// osg light stuff.
 		Ref<osg::Light> myOsgLight;

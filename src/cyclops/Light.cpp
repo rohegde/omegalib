@@ -29,10 +29,6 @@
 
 using namespace cyclops;
 
-#ifdef OMEGA_OS_LINUX
-	// On linux we need to define all static variables, even if they have been assigned in the header file.
-	const int SceneManager::MaxLights;
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Light* Light::create()
@@ -97,6 +93,7 @@ void Light::updateOsgLight(int lightId, osg::Group* rootNode)
 		ol->setConstantAttenuation(myAttenuation[0]);
 		ol->setLinearAttenuation(myAttenuation[1]);
 		ol->setQuadraticAttenuation(myAttenuation[2]);
+		ol->setDirection(osg::Vec3(myLightDirection[0], myLightDirection[1], myLightDirection[2]));
 
 		ols->setLight(ol);
 
