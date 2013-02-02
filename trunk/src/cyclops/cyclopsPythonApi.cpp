@@ -176,6 +176,8 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_METHOD(Light, setLightType)
 		PYAPI_METHOD(Light, getLightFunction)
 		PYAPI_METHOD(Light, setLightFunction)
+		PYAPI_METHOD(Light, setLightDirection)
+		PYAPI_METHOD(Light, getLightDirection)
 		;
 
 	// ModelInfo
