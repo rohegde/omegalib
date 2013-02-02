@@ -194,7 +194,16 @@ protected:
 		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
 		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
 		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
+		bool help = false;
+		ah.newFlag('?', "help", "prints help", help);
 		ah.process(def.c_str());
+
+		if(help)
+		{
+			osg::StateSet* ss = new osg::StateSet();
+			ah.writeUsage(cout);
+			addPass(ss);
+		}
 
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
@@ -285,7 +294,16 @@ protected:
 		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
 		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
 		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
+		bool help = false;
+		ah.newFlag('?', "help", "prints help", help);
 		ah.process(def.c_str());
+
+		if(help)
+		{
+			osg::StateSet* ss = new osg::StateSet();
+			ah.writeUsage(cout);
+			addPass(ss);
+		}
 		
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
@@ -374,7 +392,16 @@ protected:
 		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
 		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
 		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
+		bool help = false;
+		ah.newFlag('?', "help", "prints help", help);
 		ah.process(def.c_str());
+
+		if(help)
+		{
+			osg::StateSet* ss = new osg::StateSet();
+			ah.writeUsage(cout);
+			addPass(ss);
+		}
 		
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
@@ -461,7 +488,16 @@ protected:
 		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
 		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
 		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
+		bool help = false;
+		ah.newFlag('?', "help", "prints help", help);
 		ah.process(def.c_str());
+
+		if(help)
+		{
+			osg::StateSet* ss = new osg::StateSet();
+			ah.writeUsage(cout);
+			addPass(ss);
+		}
 
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
