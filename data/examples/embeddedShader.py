@@ -26,11 +26,13 @@ scene.createProgramFromString("glow",
 # Fragment shader
 '''
 	varying vec2 var_TexCoord;
+	
+	uniform float unif_Glow;
 
 	void main (void)
 	{
-		float vx = pow(abs((var_TexCoord.x - 0.5) * 2), 10);
-		float vy = pow(abs((var_TexCoord.y - 0.5) * 2), 10);
+		float vx = pow(abs((var_TexCoord.x - 0.5) * 2), unif_Glow);
+		float vy = pow(abs((var_TexCoord.y - 0.5) * 2), unif_Glow);
 
 		gl_FragColor.rgb = gl_Color.rgb;	
 		gl_FragColor.a = (vx + vy);
@@ -42,6 +44,8 @@ box.setPosition(Vector3(0, 2, -3))
 
 # Apply an emissive textured effect (no lighting)
 box.setEffect("glow -d red -t")
+glowPower = box.getMaterial().addUniform('unif_Glow', UniformType.Float)
+glowPower.setFloat(10)
 
 # Spin the box!
 def onUpdate(frame, t, dt):

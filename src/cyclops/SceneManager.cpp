@@ -1072,6 +1072,14 @@ void SceneManager::recompileShaders()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::reloadAndRecompileShaders()
+{
+	myShaderCache.clear();
+	myShaders.clear();
+	recompileShaders();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::displayWand(uint wandId, uint trackableId)
 {
 	// Simple single-wand implementation: we ignore wandId

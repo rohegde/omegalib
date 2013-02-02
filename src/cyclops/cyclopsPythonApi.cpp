@@ -71,11 +71,20 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_METHOD(SceneManager, setShaderMacroToString)
 		PYAPI_REF_GETTER(SceneManager, createProgramFromString)
 		PYAPI_REF_GETTER(SceneManager, createTexture)
+		PYAPI_METHOD(SceneManager, reloadAndRecompileShaders)
 		;
 
 	// osg Texture2D
 	class_<osg::Texture2D, boost::noncopyable, Ref<osg::Texture2D> >("Texture2D", no_init)
 		;
+
+	// UniformType
+	PYAPI_ENUM(Uniform::Type, UniformType)
+		PYAPI_ENUM_VALUE(Uniform, Vector2f)
+		PYAPI_ENUM_VALUE(Uniform, Vector3f)
+		PYAPI_ENUM_VALUE(Uniform, Vector4f)
+		PYAPI_ENUM_VALUE(Uniform, Float)
+		PYAPI_ENUM_VALUE(Uniform, Int);
 
 	// Uniform
 	PYAPI_REF_BASE_CLASS(Uniform)
