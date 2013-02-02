@@ -178,6 +178,7 @@ namespace cyclops {
 		virtual void dispose();
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt);
+		virtual void handleCommand(const String& cmd);
 
 		//! Sets the background color
 		void setBackgroundColor(const Color& color);

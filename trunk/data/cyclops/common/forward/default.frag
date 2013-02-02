@@ -20,6 +20,10 @@ struct LightData
 	vec4 specular;
 	vec3 dir;
 	vec3 halfDir;
+	
+	vec3 spotDirection;
+	float spotCutoff;
+	float spotExponent;
 
 	float shadow;
 	float distance;
@@ -48,6 +52,9 @@ $@fragmentLightSection
 	ld.dir = normalize(lightVector);
 	ld.halfDir = reflect(-ld.dir, surf.normal);
 	ld.distance = length(lightVector);
+	ld.spotDirection = gl_LightSource[@lightIndex].spotDirection;
+	ld.spotExponent = gl_LightSource[@lightIndex].spotExponent;
+	ld.spotCutoff = gl_LightSource[@lightIndex].spotCosCutoff;
 	
 	ld.attenuation[0] = gl_LightSource[@lightIndex].constantAttenuation;
 	ld.attenuation[1] = gl_LightSource[@lightIndex].linearAttenuation;

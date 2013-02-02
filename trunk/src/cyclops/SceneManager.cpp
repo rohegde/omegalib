@@ -426,9 +426,13 @@ void SceneManager::removeLight(Light* l)
 void SceneManager::updateLights()
 {
 	int i = 0;
+	bool needShaderUpdate = false;
 	foreach(Light* l, myLights)
 	{
-		l->updateOsgLight(i++, myScene);
+		if(l->isEnabled())
+		{
+			needShaderUpdate |= l->updateOsgLight(i++, myScene);
+		}
 	}
 
 	// Setup shadow parameters for main light.
@@ -443,9 +447,9 @@ void SceneManager::updateLights()
 	}
 
 	// If the number of lights changed, reset the shaders
-	if(i != myNumActiveLights)
+	if(i != myNumActiveLights || needShaderUpdate)
 	{
-		ofmsg("Active lights changed (was %1%, is %2%)", %myNumActiveLights %i);
+		ofmsg("Lights changed (active lights: %1%)", %i);
 
 		// Set the number of lights shader macro parameter.
 		myNumActiveLights = i;
@@ -766,7 +770,8 @@ void SceneManager::recompileShaders(ProgramAsset* program, const String& variati
 	// If the shader does not exist in the shader registry, we need to create it now.
 	if(vertexShader == NULL)
 	{
-		//ofmsg("Creating vertex shader %1%", %fullVertexShaderName);
+		ofmsg("Creating vertex shader %1%", %fullVertexShaderName);
+
 		vertexShader = new osg::Shader( osg::Shader::VERTEX );
 		// increase reference count to avoid being deallocated by osg program when deattached.
 		vertexShader->ref();
@@ -790,7 +795,8 @@ void SceneManager::recompileShaders(ProgramAsset* program, const String& variati
 	// If the shader does not exist in the shader registry, we need to create it now.
 	if(fragmentShader == NULL)
 	{
-		//ofmsg("Creating fragment shader %1%", %fullFragmentShaderName);
+		ofmsg("Creating fragment shader %1%", %fullFragmentShaderName);
+
 		fragmentShader = new osg::Shader( osg::Shader::FRAGMENT );
 		// increase reference count to avoid being deallocated by osg program when deattached.
 		fragmentShader->ref();
@@ -1042,8 +1048,17 @@ void SceneManager::resetShadowSettings(const ShadowSettings& settings)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::recompileShaders()
 {
+	// Add light functions to shader variation name
+	String lightFunc = "";
+	foreach(Light* l, myActiveLights)
+	{
+		lightFunc.append(l->getLightFunction());
+	}
+	std::hash<String> hashFx;
+	size_t lightFuncHash = hashFx(lightFunc);
+
 	// Update the shader variation name
-	myShaderVariationName = ostr(myShadowSettings.shadowsEnabled ? ".sm%1%" : ".%1%", %myNumActiveLights);
+	myShaderVariationName = ostr(myShadowSettings.shadowsEnabled ? ".sm%1%-%2$x" : ".%1%-%2$x", %myNumActiveLights %lightFuncHash);
 
 	//omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SceneManager::recompileShaders");
 	ofmsg("Recompiling shaders (variation: %1%)", %myShaderVariationName);
@@ -1109,4 +1124,23 @@ Entity* SceneManager::getEntityByName(const String& name)
 		if(e->getName() == name) return e;
 	}
 	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::handleCommand(const String& cmd)
+{
+	Vector<String> args = StringUtils::split(cmd);
+	if(args[0] == "?")
+	{
+		omsg("SceneManager");
+		omsg("\t shaderInfo  - prints list of cached shaders");
+	}
+	else if(args[0] == "shaderInfo")
+	{
+		typedef Dictionary<String, Ref<osg::Shader> >::Item ShaderItem;
+		foreach(ShaderItem si, myShaders)
+		{
+			omsg(si.getKey());
+		}
+	}
 }

@@ -47,7 +47,10 @@ Light::Light(SceneManager* scene):
 	myEnabled(false),
 	mySoftShadowWidth(0.005f),
 	mySoftShadowJitter(32),
-	myOsgLight(NULL), myOsgLightSource(NULL)
+	myOsgLight(NULL), myOsgLightSource(NULL),
+	myDirty(false),
+	mySpotCutoff(0),
+	mySpotExponent(1)
 {
 	mySceneManager->addLight(this);
 	setLightType(Point);
@@ -67,10 +70,11 @@ void Light::setLightType(LightType type)
 	case Directional: myLightFunction = "directionalLightFunction"; break;
 	case Spot: myLightFunction = "spotLightFunction"; break;
 	}
+	myDirty = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void Light::updateOsgLight(int lightId, osg::Group* rootNode)
+bool Light::updateOsgLight(int lightId, osg::Group* rootNode)
 {
 	if(myEnabled)
 	{
@@ -94,6 +98,8 @@ void Light::updateOsgLight(int lightId, osg::Group* rootNode)
 		ol->setLinearAttenuation(myAttenuation[1]);
 		ol->setQuadraticAttenuation(myAttenuation[2]);
 		ol->setDirection(osg::Vec3(myLightDirection[0], myLightDirection[1], myLightDirection[2]));
+		ol->setSpotCutoff(mySpotCutoff);
+		ol->setSpotExponent(mySpotExponent);
 
 		ols->setLight(ol);
 
@@ -109,5 +115,9 @@ void Light::updateOsgLight(int lightId, osg::Group* rootNode)
 			myOsgLightSource->setLight(NULL);
 		}
 	}
+
+	bool dirty = myDirty;
+	myDirty = false;
+	return dirty;
 }
 

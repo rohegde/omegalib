@@ -88,11 +88,16 @@ namespace cyclops {
 		void setLightDirection(const Vector3f& value) { myLightDirection = value; }
 		Vector3f getLightDirection() { return myLightDirection; }
 
+		void setSpotExponent(float value) { mySpotExponent = value; }
+		float getSpotExponent() { return mySpotExponent; }
+		void setSpotCutoff(float value) { mySpotCutoff = value; }
+		float getSpotCutoff() { return mySpotCutoff; }
+
 		void setLightFunction(const String& function) { myLightFunction = function; }
 		String getLightFunction() { return myLightFunction; }
 
 		//! @internal update the osg light parameters.
-		void updateOsgLight(int lightId, osg::Group* rootNode);
+		bool updateOsgLight(int lightId, osg::Group* rootNode);
 
 	private:
 		Ref<SceneManager> mySceneManager;
@@ -104,6 +109,9 @@ namespace cyclops {
 		float mySoftShadowWidth;
 		int mySoftShadowJitter;
 
+		float mySpotExponent;
+		float mySpotCutoff;
+
 		Vector3f myLightDirection;
 
 		// osg light stuff.
@@ -112,6 +120,8 @@ namespace cyclops {
 
 		LightType myType;
 		String myLightFunction;
+
+		bool myDirty;
 	};
 };
 
