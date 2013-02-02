@@ -235,6 +235,8 @@ namespace cyclops {
 		void setShaderMacroToString(const String& macroName, const String& macroString);
 		void setShaderMacroToFile(const String& macroName, const String& path);
 
+		void reloadAndRecompileShaders();
+
 	private:
 		SceneManager();
 		virtual ~SceneManager();
