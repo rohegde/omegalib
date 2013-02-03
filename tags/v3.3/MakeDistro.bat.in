@@ -1,0 +1,34 @@
+cd "${CMAKE_BINARY_DIR}\..\devbuild-win32"
+
+REM ---------------------------------------------------------------------------
+REM copy binaries
+md bin
+
+copy "${CMAKE_BINARY_DIR}\bin\release\*.dll" .\bin /Y
+xcopy "${CMAKE_BINARY_DIR}\bin\release\osgPlugins-3.0.1" .\bin\osgPlugins-3.0.1\ /S /Y
+
+copy "${CMAKE_BINARY_DIR}\bin\release\orun.exe" .\bin /Y
+copy "${CMAKE_BINARY_DIR}\bin\release\oinputserver.exe" .\bin /Y
+copy "${CMAKE_BINARY_DIR}\bin\release\mcsend.exe" .\bin /Y
+
+REM ---------------------------------------------------------------------------
+REM copy data and scripts
+xcopy "${CMAKE_SOURCE_DIR}\data\cyclops" .\cyclops\ /S /Y
+xcopy "${CMAKE_SOURCE_DIR}\data\system" .\system\ /S /Y
+xcopy "${CMAKE_SOURCE_DIR}\data\fonts" .\fonts\ /S /Y
+
+copy "${CMAKE_SOURCE_DIR}\data\default.cfg" .\ /Y
+copy "${CMAKE_SOURCE_DIR}\external\omicron\data\oinputserver.cfg" .\ /Y
+
+copy "${CMAKE_SOURCE_DIR}\tools\MissionControl\bin\Release\FastColoredTextBox.dll" .\bin /Y
+copy "${CMAKE_SOURCE_DIR}\tools\MissionControl\bin\Release\MissionControl.exe" .\bin /Y
+copy "${CMAKE_SOURCE_DIR}\tools\hstart.exe" .\bin /Y
+
+xcopy "${CMAKE_SOURCE_DIR}\data\examples" .\examples\ /S /Y
+
+echo .\bin\orun.exe -s examples/spincube.py > orun.bat
+
+REM echo bin\oinputserver.exe > oinputserver.bat
+
+echo bin\hstart.exe /NOCONSOLE bin\MissionControl.exe > attachDebugger.bat
+
