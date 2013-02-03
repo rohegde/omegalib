@@ -50,3 +50,4 @@ omegalib exposes 4 main python modules:
  * [CyclopsPythonReference `cyclops`] a simple osg-based graphic engine
  * [http://code.google.com/p/pyeuclid/source/browse/trunk/euclid.txt `euclid`] a 3d geometry module
  
+ 

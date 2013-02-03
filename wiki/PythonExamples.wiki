@@ -1,7 +1,7 @@
 #summary Python Examples
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.3 - 28 January 2013</p>*
+<p>*Last revision:* ver. 3.3 - 2 February 2013</p>*
 
 <wiki:toc max_depth="4" />
 

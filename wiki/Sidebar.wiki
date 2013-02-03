@@ -3,6 +3,7 @@
 
  * [GettingStarted Getting Started with omegalib]
  * [BasicPython Python Reference]
+		* [PythonExamples python examples]
 		* [OmegaPythonReference module omega]
 		* [CyclopsPythonReference module cyclops]
 		* [OmegaToolkitPythonReference module omegaToolkit]

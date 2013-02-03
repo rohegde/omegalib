@@ -12,6 +12,7 @@ This page offers extended information on how to develop applications for omegali
  * [BasicCyclops Cyclops programming in omegalib].
  * [BasicVtk Vtk programming in omegalib].
  * [BasicPython Python omegalib developement].
+ * [PythonExamples python examples]
  * [PortholeReference Porthole development]
 
 == Intermediate topics ==
