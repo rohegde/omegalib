@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.2</span>
+   &#160;<span id="projectnumber">3.3</span>
    </div>
   </td>
  </tr>
@@ -53,7 +53,55 @@
 <div class="title">ConvertToInventor.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<table class="memberdecls">
+<div class="textblock"><code>#include &lt;osg/BlendFunc&gt;</code><br/>
+<code>#include &lt;osg/Billboard&gt;</code><br/>
+<code>#include &lt;osg/Geode&gt;</code><br/>
+<code>#include &lt;osg/Geometry&gt;</code><br/>
+<code>#include &lt;osg/Group&gt;</code><br/>
+<code>#include &lt;osg/LightModel&gt;</code><br/>
+<code>#include &lt;osg/LOD&gt;</code><br/>
+<code>#include &lt;osg/Material&gt;</code><br/>
+<code>#include &lt;osg/MatrixTransform&gt;</code><br/>
+<code>#include &lt;osg/Node&gt;</code><br/>
+<code>#include &lt;osg/NodeVisitor&gt;</code><br/>
+<code>#include &lt;osg/PositionAttitudeTransform&gt;</code><br/>
+<code>#include &lt;osg/PrimitiveSet&gt;</code><br/>
+<code>#include &lt;osg/ShapeDrawable&gt;</code><br/>
+<code>#include &lt;osg/TexEnv&gt;</code><br/>
+<code>#include &lt;osg/TexGen&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoBaseColor.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoCoordinate3.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoCoordinate4.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoCube.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoCone.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoCylinder.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoFaceSet.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoIndexedFaceSet.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoIndexedLineSet.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoIndexedTriangleStripSet.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoLightModel.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoLineSet.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoLOD.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoLevelOfDetail.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoMaterial.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoMatrixTransform.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoNode.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoNormal.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoNormalBinding.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoPointSet.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoSeparator.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoShapeHints.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoSphere.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoTexture2.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoTextureCoordinate2.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoTextureCoordinateEnvironment.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoTransform.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoTranslation.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoTriangleStripSet.h&gt;</code><br/>
+<code>#include &lt;Inventor/fields/SoFields.h&gt;</code><br/>
+<code>#include &quot;<a class="el" href="_convert_to_inventor_8h.html">ConvertToInventor.h</a>&quot;</code><br/>
+<code>#include &lt;assert.h&gt;</code><br/>
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ae3c5664bc98738447915425613ef9f18"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_convert_to_inventor_8cpp.html#ae3c5664bc98738447915425613ef9f18">DEBUG_IV_WRITER</a>&#160;&#160;&#160;1</td></tr>
@@ -71,7 +119,7 @@ Functions</h2></td></tr>
 <tr class="memitem:afd643b2b923b8d4d8a208502428a9f43"><td class="memTemplParams" colspan="2">template&lt;typename fieldClass , typename ivType , typename osgType , int shift&gt; </td></tr>
 <tr class="memitem:afd643b2b923b8d4d8a208502428a9f43"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_convert_to_inventor_8cpp.html#afd643b2b923b8d4d8a208502428a9f43">osgArray2ivMField_composite_template</a> (const osg::Array *<a class="el" href="glew_8h.html#a52f38e7d822a46377fde7a02708eedb1">array</a>, fieldClass &amp;field, int startIndex=0, int stopIndex=0, int numItemsUntilMinusOne=0)</td></tr>
 <tr class="memitem:a6a0eecac6e80108efae424eece77fdc1"><td class="memTemplParams" colspan="2">template&lt;typename fieldClass , typename ivType , typename osgType , int numComponents&gt; </td></tr>
-<tr class="memitem:a6a0eecac6e80108efae424eece77fdc1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_convert_to_inventor_8cpp.html#a6a0eecac6e80108efae424eece77fdc1">osgArray2ivMField_pack_template</a> (const osg::Array *<a class="el" href="glew_8h.html#a52f38e7d822a46377fde7a02708eedb1">array</a>, fieldClass &amp;field, osgType mul, osgType <a class="el" href="_mesh_data_8cpp.html#affe776513b24d84b39af8ab0930fef7f">max</a>, osgType <a class="el" href="_mesh_data_8cpp.html#ac6afabdc09a49a433ee19d8a9486056d">min</a>, int startIndex=0, int stopIndex=0, int numItemsUntilMinusOne=0)</td></tr>
+<tr class="memitem:a6a0eecac6e80108efae424eece77fdc1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_convert_to_inventor_8cpp.html#a6a0eecac6e80108efae424eece77fdc1">osgArray2ivMField_pack_template</a> (const osg::Array *<a class="el" href="glew_8h.html#a52f38e7d822a46377fde7a02708eedb1">array</a>, fieldClass &amp;field, osgType mul, osgType max, osgType min, int startIndex=0, int stopIndex=0, int numItemsUntilMinusOne=0)</td></tr>
 <tr class="memitem:ac1f4d6f6419a70bb2ea0c7fde1c8f018"><td class="memTemplParams" colspan="2">template&lt;typename fieldClass , typename fieldItemType &gt; </td></tr>
 <tr class="memitem:ac1f4d6f6419a70bb2ea0c7fde1c8f018"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_convert_to_inventor_8cpp.html#ac1f4d6f6419a70bb2ea0c7fde1c8f018">ivApplicateIntType</a> (const osg::Array *<a class="el" href="glew_8h.html#a52f38e7d822a46377fde7a02708eedb1">array</a>, fieldClass &amp;field, int startIndex, int stopIndex, int numItemsUntilMinusOne)</td></tr>
 <tr class="memitem:ae0a3f0e3bd843b14af8fc3eb9af0f21d"><td class="memTemplParams" colspan="2">template&lt;typename variableType , typename indexType &gt; </td></tr>

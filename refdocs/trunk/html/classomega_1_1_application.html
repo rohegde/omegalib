@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.2</span>
+   &#160;<span id="projectnumber">3.3</span>
    </div>
   </td>
  </tr>
@@ -58,6 +58,8 @@
 
 <p>a convenience application class to create <a class="el" href="namespaceomega_toolkit.html">omegaToolkit</a> applications  
  <a href="classomega_1_1_application.html#details">More...</a></p>
+
+<p><code>#include &lt;Application.h&gt;</code></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for omega::Application&lt; T &gt;:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -81,6 +83,8 @@
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a166720ef8f57606a8489cd9439b3991a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a166720ef8f57606a8489cd9439b3991a">Application</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
 <tr class="memitem:a460079543442388f05b6166f19bc0bdd"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a460079543442388f05b6166f19bc0bdd">getName</a> ()</td></tr>
+<tr class="memitem:abb96fd1dbc8761022265e0db0cd8a06d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#abb96fd1dbc8761022265e0db0cd8a06d">setExecutableName</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
+<tr class="memitem:aa4f8851d979f8e99ba4311581241f756"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#aa4f8851d979f8e99ba4311581241f756">getExecutableName</a> ()</td></tr>
 <tr class="memitem:ad94a951867033557cf57f18abeb9ce1a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#ad94a951867033557cf57f18abeb9ce1a">initialize</a> ()</td></tr>
 <tr class="memdesc:ad94a951867033557cf57f18abeb9ce1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called once for entire application initialization tasks.  <a href="#ad94a951867033557cf57f18abeb9ce1a"></a><br/></td></tr>
 </table><table class="memberdecls">
@@ -122,6 +126,33 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2>Member Function Documentation</h2>
+<a class="anchor" id="aa4f8851d979f8e99ba4311581241f756"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const char* <a class="el" href="classomega_1_1_application.html">omega::Application</a>&lt; T &gt;::getExecutableName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classomega_1_1_application_base.html#a35ec048bdbed409fb33db7702b2e69e5">omega::ApplicationBase</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a460079543442388f05b6166f19bc0bdd"></a>
 <div class="memitem">
 <div class="memproto">
@@ -175,6 +206,32 @@ template&lt;typename T &gt; </div>
 <p>Called once for entire application initialization tasks. </p>
 
 <p>Reimplemented from <a class="el" href="classomega_1_1_application_base.html#ad75e31a47aeb76cb10f89547038a44ea">omega::ApplicationBase</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abb96fd1dbc8761022265e0db0cd8a06d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> <a class="el" href="classomega_1_1_application.html">omega::Application</a>&lt; T &gt;::setExecutableName </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

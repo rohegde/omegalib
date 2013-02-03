@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.2</span>
+   &#160;<span id="projectnumber">3.3</span>
    </div>
   </td>
  </tr>
@@ -54,20 +54,33 @@
 <div class="title">SceneManager.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+<div class="textblock"><code>#include &quot;<a class="el" href="cyclops_config_8h.html">cyclopsConfig.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_skybox_8h.html">Skybox.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_shapes_8h.html">Shapes.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_uniforms_8h.html">Uniforms.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_light_8h.html">Light.h</a>&quot;</code><br/>
+<code>#include &lt;osg/Texture2D&gt;</code><br/>
+<code>#include &lt;osg/Light&gt;</code><br/>
+<code>#include &lt;osg/Group&gt;</code><br/>
+<code>#include &lt;osg/Switch&gt;</code><br/>
+<code>#include &lt;osgShadow/ShadowedScene&gt;</code><br/>
+<code>#include &lt;osgShadow/SoftShadowMap&gt;</code><br/>
+<code>#include &lt;osgAnimation/BasicAnimationManager&gt;</code><br/>
+<code>#include &lt;<a class="el" href="omega_8h.html">omega.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="omega_osg_8h.html">omegaOsg.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="omega_toolkit_8h.html">omegaToolkit.h</a>&gt;</code><br/>
+</div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for SceneManager.h:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="_scene_manager_8h__incl.png" border="0" usemap="#_d_1_2_workspace_2omegalib_2trunk_2include_2cyclops_2_scene_manager_8h" alt=""/></div>
 <map name="_d_1_2_workspace_2omegalib_2trunk_2include_2cyclops_2_scene_manager_8h" id="_d_1_2_workspace_2omegalib_2trunk_2include_2cyclops_2_scene_manager_8h">
-<area shape="rect" id="node3" href="cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="156,259,255,283"/><area shape="rect" id="node10" href="_skybox_8h.html" title="Skybox.h" alt="" coords="243,187,309,211"/><area shape="rect" id="node15" href="omega_8h.html" title="omega.h" alt="" coords="279,259,343,283"/><area shape="rect" id="node18" href="omega_osg_8h.html" title="omegaOsg.h" alt="" coords="367,259,449,283"/><area shape="rect" id="node20" href="omega_toolkit_8h.html" title="omegaToolkit.h" alt="" coords="474,259,568,283"/><area shape="rect" id="node22" href="_shapes_8h.html" title="Shapes.h" alt="" coords="459,108,525,132"/><area shape="rect" id="node5" href="include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="199,403,307,427"/><area shape="rect" id="node7" href="_application_8h.html" title="omega/Application.h" alt="" coords="243,331,363,355"/><area shape="rect" id="node24" href="_entity_8h.html" title="cyclops/Entity.h" alt="" coords="435,187,533,211"/></map>
+<area shape="rect" id="node3" href="cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="156,331,255,355"/><area shape="rect" id="node10" href="_skybox_8h.html" title="Skybox.h" alt="" coords="132,259,199,283"/><area shape="rect" id="node15" href="omega_8h.html" title="omega.h" alt="" coords="279,331,343,355"/><area shape="rect" id="node18" href="omega_osg_8h.html" title="omegaOsg.h" alt="" coords="380,331,463,355"/><area shape="rect" id="node20" href="omega_toolkit_8h.html" title="omegaToolkit.h" alt="" coords="487,331,581,355"/><area shape="rect" id="node22" href="_shapes_8h.html" title="Shapes.h" alt="" coords="427,108,493,132"/><area shape="rect" id="node27" href="_uniforms_8h.html" title="Uniforms.h" alt="" coords="273,259,348,283"/><area shape="rect" id="node39" href="_light_8h.html" title="Light.h" alt="" coords="474,259,528,283"/><area shape="rect" id="node5" href="include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="199,475,307,499"/><area shape="rect" id="node7" href="_application_8h.html" title="omega/Application.h" alt="" coords="243,403,363,427"/><area shape="rect" id="node24" href="_entity_8h.html" title="cyclops/Entity.h" alt="" coords="387,187,485,211"/></map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_light.html">cyclops::Light</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI.  <a href="classcyclops_1_1_light.html#details">More...</a><br/></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcyclops_1_1_model_info.html">cyclops::ModelInfo</a></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcyclops_1_1_shadow_settings.html">cyclops::ShadowSettings</a></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_model_asset.html">cyclops::ModelAsset</a></td></tr>

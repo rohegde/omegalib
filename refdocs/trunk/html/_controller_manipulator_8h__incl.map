@@ -1,6 +1,7 @@
 <map id="D:/Workspace/omegalib/trunk/include/omegaToolkit/ControllerManipulator.h" name="D:/Workspace/omegalib/trunk/include/omegaToolkit/ControllerManipulator.h">
 <area shape="rect" id="node3" href="$omega_toolkit_config_8h.html" title="omegaToolkitConfig.h" alt="" coords="5,101,131,125"/>
 <area shape="rect" id="node10" href="$_actor_8h.html" title="omega/Actor.h" alt="" coords="155,101,249,125"/>
-<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="82,245,189,269"/>
-<area shape="rect" id="node7" href="$_application_8h.html" title="omega/Application.h" alt="" coords="76,173,196,197"/>
+<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="99,245,207,269"/>
+<area shape="rect" id="node7" href="$_application_8h.html" title="omega/Application.h" alt="" coords="45,173,165,197"/>
+<area shape="rect" id="node14" href="$_module_services_8h.html" title="omega/ModuleServices.h" alt="" coords="241,173,383,197"/>
 </map>

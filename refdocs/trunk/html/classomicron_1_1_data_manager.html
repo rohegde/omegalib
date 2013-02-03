@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.2</span>
+   &#160;<span id="projectnumber">3.3</span>
    </div>
   </td>
  </tr>
@@ -57,6 +57,8 @@
 <div class="title">omicron::DataManager Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;DataManager.h&gt;</code></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for omicron::DataManager:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -89,9 +91,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1b8636fedf9c5d30432482348476f0fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_data_manager.html#a1b8636fedf9c5d30432482348476f0fd">addSource</a> (<a class="el" href="classomicron_1_1_data_source.html">DataSource</a> *<a class="el" href="glew_8h.html#afdd0f0e67e302eefcb4f6b23732e7ea3">source</a>)</td></tr>
 <tr class="memdesc:a1b8636fedf9c5d30432482348476f0fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data sources.  <a href="#a1b8636fedf9c5d30432482348476f0fd"></a><br/></td></tr>
 <tr class="memitem:a3769e1892d351445321c6d8563bb53d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_data_manager.html#a3769e1892d351445321c6d8563bb53d3">removeSource</a> (<a class="el" href="classomicron_1_1_data_source.html">DataSource</a> *<a class="el" href="glew_8h.html#afdd0f0e67e302eefcb4f6b23732e7ea3">source</a>)</td></tr>
-<tr class="memitem:a8fff649b0bdb8008e6e5c74c89cc07f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_data_source.html">DataSource</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_data_manager.html#a8fff649b0bdb8008e6e5c74c89cc07f5">getSource</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
 <tr class="memitem:a296247405f18ae60f3b790922bf6e312"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_data_manager.html#a296247405f18ae60f3b790922bf6e312">removeAllSources</a> ()</td></tr>
 <tr class="memdesc:a296247405f18ae60f3b790922bf6e312"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all currently registered data sources.  <a href="#a296247405f18ae60f3b790922bf6e312"></a><br/></td></tr>
+<tr class="memitem:a9b5f4c102ac87d008ae2dd2ba72018e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_data_manager.html#a9b5f4c102ac87d008ae2dd2ba72018e2">getDataSourceNames</a> ()</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a20db0bd8ad5787bd4c2406ecf4f3b114"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomicron_1_1_data_info.html">DataInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_data_manager.html#a20db0bd8ad5787bd4c2406ecf4f3b114">getInfo</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;<a class="el" href="glew_8h.html#ae517c090b864e6b2846c380c4125f4c5">path</a>)</td></tr>
 <tr class="memdesc:a20db0bd8ad5787bd4c2406ecf4f3b114"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data streams.  <a href="#a20db0bd8ad5787bd4c2406ecf4f3b114"></a><br/></td></tr>
@@ -235,6 +237,21 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a9b5f4c102ac87d008ae2dd2ba72018e2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> omicron::DataManager::getDataSourceNames </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a20db0bd8ad5787bd4c2406ecf4f3b114"></a>
 <div class="memitem">
 <div class="memproto">
@@ -272,22 +289,6 @@ Additional Inherited Members</h2></td></tr>
 <span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a8fff649b0bdb8008e6e5c74c89cc07f5"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classomicron_1_1_data_source.html">DataSource</a>* omicron::DataManager::getSource </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
 </div><div class="memdoc">
 
 </div>

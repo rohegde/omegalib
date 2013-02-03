@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.2</span>
+   &#160;<span id="projectnumber">3.3</span>
    </div>
   </td>
  </tr>
@@ -52,7 +52,56 @@
 <div class="title">ConvertFromInventor.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<table class="memberdecls">
+<div class="textblock"><code>#include &quot;<a class="el" href="_convert_from_inventor_8h.html">ConvertFromInventor.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_pendulum_callback_8h.html">PendulumCallback.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_shuttle_callback_8h.html">ShuttleCallback.h</a>&quot;</code><br/>
+<code>#include &lt;osg/MatrixTransform&gt;</code><br/>
+<code>#include &lt;osg/Node&gt;</code><br/>
+<code>#include &lt;osg/Geode&gt;</code><br/>
+<code>#include &lt;osg/Notify&gt;</code><br/>
+<code>#include &lt;osg/LineWidth&gt;</code><br/>
+<code>#include &lt;osg/Point&gt;</code><br/>
+<code>#include &lt;osg/TexEnv&gt;</code><br/>
+<code>#include &lt;osg/Texture2D&gt;</code><br/>
+<code>#include &lt;osg/PolygonMode&gt;</code><br/>
+<code>#include &lt;osg/BlendFunc&gt;</code><br/>
+<code>#include &lt;osg/Material&gt;</code><br/>
+<code>#include &lt;osg/CullFace&gt;</code><br/>
+<code>#include &lt;osg/Depth&gt;</code><br/>
+<code>#include &lt;osg/LightModel&gt;</code><br/>
+<code>#include &lt;osg/LightSource&gt;</code><br/>
+<code>#include &lt;osg/ShadeModel&gt;</code><br/>
+<code>#include &lt;osg/LOD&gt;</code><br/>
+<code>#include &lt;osgDB/ReadFile&gt;</code><br/>
+<code>#include &lt;osgUtil/TransformCallback&gt;</code><br/>
+<code>#include &lt;Inventor/SoDB.h&gt;</code><br/>
+<code>#include &lt;Inventor/SoInteraction.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoSeparator.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoTransformSeparator.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoShape.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoVertexShape.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoLight.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoDirectionalLight.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoSpotLight.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoPointLight.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoRotor.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoPendulum.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoShuttle.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoLOD.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoTexture2.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoEnvironment.h&gt;</code><br/>
+<code>#include &lt;Inventor/misc/SoChildList.h&gt;</code><br/>
+<code>#include &lt;Inventor/SoPrimitiveVertex.h&gt;</code><br/>
+<code>#include &lt;Inventor/SbLinear.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoTransform.h&gt;</code><br/>
+<code>#include &lt;Inventor/nodes/SoInfo.h&gt;</code><br/>
+<code>#include &lt;Inventor/actions/SoWriteAction.h&gt;</code><br/>
+<code>#include &lt;Inventor/elements/SoModelMatrixElement.h&gt;</code><br/>
+<code>#include &lt;map&gt;</code><br/>
+<code>#include &lt;assert.h&gt;</code><br/>
+<code>#include &lt;<a class="el" href="_math_8h.html">math.h</a>&gt;</code><br/>
+<code>#include &lt;string.h&gt;</code><br/>
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a6454eaa7c5cb352ac04b5b37bbc0957a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_convert_from_inventor_8cpp.html#a6454eaa7c5cb352ac04b5b37bbc0957a">DEBUG_IV_PLUGIN</a></td></tr>

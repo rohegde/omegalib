@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.2</span>
+   &#160;<span id="projectnumber">3.3</span>
    </div>
   </td>
  </tr>
@@ -63,6 +63,8 @@
 
 <p>PYAPI Class representing a general-purpose node in an articulated scene graph.  
  <a href="classomega_1_1_node.html#details">More...</a></p>
+
+<p><code>#include &lt;Node.h&gt;</code></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for omega::Node:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -70,7 +72,7 @@
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classomega_1_1_node__inherit__graph.png" border="0" usemap="#omega_1_1_node_inherit__map" alt="Inheritance graph"/></div>
 <map name="omega_1_1_node_inherit__map" id="omega_1_1_node_inherit__map">
-<area shape="rect" id="node5" href="classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph." alt="" coords="109,149,224,173"/><area shape="rect" id="node2" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="96,5,237,29"/><area shape="rect" id="node7" href="classcyclops_1_1_entity.html" title="PYAPI." alt="" coords="5,221,99,245"/><area shape="rect" id="node9" href="classcyclops_1_1_light.html" title="PYAPI." alt="" coords="123,221,211,245"/><area shape="rect" id="node11" href="classomega_1_1_camera.html" title="omega::Camera" alt="" coords="235,221,333,245"/></map>
+<area shape="rect" id="node5" href="classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph." alt="" coords="109,149,224,173"/><area shape="rect" id="node2" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="96,5,237,29"/><area shape="rect" id="node7" href="classcyclops_1_1_entity.html" title="PYAPI." alt="" coords="5,221,99,245"/><area shape="rect" id="node9" href="classcyclops_1_1_light.html" title="cyclops::Light" alt="" coords="123,221,211,245"/><area shape="rect" id="node11" href="classomega_1_1_camera.html" title="omega::Camera" alt="" coords="235,221,333,245"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for omega::Node:</div>
@@ -153,6 +155,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a3f60558c0dab25655e8c6a0f3d2c26ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotate the node around an arbitrary axis.  <a href="#a3f60558c0dab25655e8c6a0f3d2c26ab"></a><br/></td></tr>
 <tr class="memitem:af5c1c904284aa895e1631ac3f9a226c7"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#af5c1c904284aa895e1631ac3f9a226c7">rotate</a> (const <a class="el" href="namespaceomicron.html#abe495230fb99452e2ea1b9d237a98885">Quaternion</a> &amp;<a class="el" href="glew_8h.html#a8fc1e7b9baaae687804c7eed46ca09c6">q</a>, <a class="el" href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56e">TransformSpace</a> relativeTo=<a class="el" href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56ea52b3eed17fdeae2ecd5652d33dbb04d5">TransformLocal</a>)</td></tr>
 <tr class="memdesc:af5c1c904284aa895e1631ac3f9a226c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotate the node around an aritrary axis using a Quarternion.  <a href="#af5c1c904284aa895e1631ac3f9a226c7"></a><br/></td></tr>
+<tr class="memitem:aa20eccd9241a94513751fa36dd007686"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#aa20eccd9241a94513751fa36dd007686">lookAt</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;position, const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;upVector)</td></tr>
+<tr class="memdesc:aa20eccd9241a94513751fa36dd007686"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotate the node to make its positive Z axis point toward the specified position.  <a href="#aa20eccd9241a94513751fa36dd007686"></a><br/></td></tr>
 <tr class="memitem:aac21f9d5bedf6bd5f26909c5ed5d079c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceomicron.html#afa904a5c11be921305cabc6d5ec0f6e6">Matrix3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#aac21f9d5bedf6bd5f26909c5ed5d079c">getLocalAxes</a> (<a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>) const </td></tr>
 <tr class="memdesc:aac21f9d5bedf6bd5f26909c5ed5d079c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a matrix whose columns are the local axes based on the nodes orientation relative to it's parent.  <a href="#aac21f9d5bedf6bd5f26909c5ed5d079c"></a><br/></td></tr>
 <tr class="memitem:a132699398b350e83b548a5645e69beb0"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a132699398b350e83b548a5645e69beb0">addChild</a> (<a class="el" href="classomega_1_1_node.html">Node</a> *child)</td></tr>
@@ -1024,6 +1028,42 @@ See setInheritOrientation for more info. </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa20eccd9241a94513751fa36dd007686"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> Node::lookAt </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>upVector</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Rotate the node to make its positive Z axis point toward the specified position. </p>
 
 </div>
 </div>

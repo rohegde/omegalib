@@ -1,8 +1,9 @@
 <map id="D:/Workspace/omegalib/trunk/include/cyclops/Shapes.h" name="D:/Workspace/omegalib/trunk/include/cyclops/Shapes.h">
-<area shape="rect" id="node3" href="$_entity_8h.html" title="cyclops/Entity.h" alt="" coords="216,101,315,125"/>
-<area shape="rect" id="node5" href="$cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="5,245,104,269"/>
-<area shape="rect" id="node7" href="$_effect_node_8h.html" title="EffectNode.h" alt="" coords="182,173,268,197"/>
-<area shape="rect" id="node10" href="$omega_8h.html" title="omega.h" alt="" coords="128,245,192,269"/>
-<area shape="rect" id="node12" href="$omega_osg_8h.html" title="omegaOsg.h" alt="" coords="216,245,299,269"/>
-<area shape="rect" id="node14" href="$omega_toolkit_8h.html" title="omegaToolkit.h" alt="" coords="323,245,417,269"/>
+<area shape="rect" id="node3" href="$_entity_8h.html" title="cyclops/Entity.h" alt="" coords="185,101,284,125"/>
+<area shape="rect" id="node5" href="$cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="5,317,104,341"/>
+<area shape="rect" id="node7" href="$_effect_node_8h.html" title="EffectNode.h" alt="" coords="191,173,277,197"/>
+<area shape="rect" id="node10" href="$_uniforms_8h.html" title="Uniforms.h" alt="" coords="116,245,191,269"/>
+<area shape="rect" id="node13" href="$omega_8h.html" title="omega.h" alt="" coords="128,317,192,341"/>
+<area shape="rect" id="node15" href="$omega_osg_8h.html" title="omegaOsg.h" alt="" coords="229,317,312,341"/>
+<area shape="rect" id="node17" href="$omega_toolkit_8h.html" title="omegaToolkit.h" alt="" coords="337,317,431,341"/>
 </map>

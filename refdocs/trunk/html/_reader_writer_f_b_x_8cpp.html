@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.2</span>
+   &#160;<span id="projectnumber">3.3</span>
    </div>
   </td>
  </tr>
@@ -53,7 +53,30 @@
 <div class="title">ReaderWriterFBX.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<table class="memberdecls">
+<div class="textblock"><code>#include &lt;sstream&gt;</code><br/>
+<code>#include &lt;memory&gt;</code><br/>
+<code>#include &lt;<a class="el" href="strings_8h.html">strings.h</a>&gt;</code><br/>
+<code>#include &lt;osg/Notify&gt;</code><br/>
+<code>#include &lt;osg/MatrixTransform&gt;</code><br/>
+<code>#include &lt;osg/Material&gt;</code><br/>
+<code>#include &lt;osg/PositionAttitudeTransform&gt;</code><br/>
+<code>#include &lt;osg/Texture2D&gt;</code><br/>
+<code>#include &lt;osg/Version&gt;</code><br/>
+<code>#include &lt;osgDB/ConvertUTF&gt;</code><br/>
+<code>#include &lt;osgDB/FileNameUtils&gt;</code><br/>
+<code>#include &lt;osgDB/FileUtils&gt;</code><br/>
+<code>#include &lt;osgDB/ReadFile&gt;</code><br/>
+<code>#include &lt;osgDB/Registry&gt;</code><br/>
+<code>#include &lt;osgAnimation/AnimationManagerBase&gt;</code><br/>
+<code>#include &lt;osgAnimation/Bone&gt;</code><br/>
+<code>#include &lt;osgAnimation/RigGeometry&gt;</code><br/>
+<code>#include &lt;osgAnimation/Skeleton&gt;</code><br/>
+<code>#include &lt;osgAnimation/VertexInfluence&gt;</code><br/>
+<code>#include &lt;fbxsdk.h&gt;</code><br/>
+<code>#include &quot;<a class="el" href="_reader_writer_f_b_x_8h.html">ReaderWriterFBX.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="fbx_reader_8h.html">fbxReader.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_writer_node_visitor_8h.html">WriterNodeVisitor.h</a>&quot;</code><br/>
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_clean_up_fbx.html">CleanUpFbx</a></td></tr>

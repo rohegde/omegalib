@@ -1,6 +1,6 @@
 <map id="omegaToolkit::ui::Image" name="omegaToolkit::ui::Image">
-<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="239,101,381,125"/>
+<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="297,101,439,125"/>
 <area shape="rect" id="node4" href="$classomega_1_1_renderable_factory.html" title="Base class for objects that can create renderables." alt="" coords="5,5,160,29"/>
 <area shape="rect" id="node6" href="$classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="185,5,321,29"/>
-<area shape="rect" id="node16" href="$classomicron_1_1_ref.html" title="omicron::Ref\&lt; PixelData \&gt;" alt="" coords="582,101,732,125"/>
+<area shape="rect" id="node16" href="$classomicron_1_1_ref.html" title="omicron::Ref\&lt; PixelData \&gt;" alt="" coords="529,101,679,125"/>
 </map>

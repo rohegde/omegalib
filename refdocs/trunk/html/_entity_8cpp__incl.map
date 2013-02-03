@@ -1,9 +1,9 @@
 <map id="D:/Workspace/omegalib/trunk/src/cyclops/Entity.cpp" name="D:/Workspace/omegalib/trunk/src/cyclops/Entity.cpp">
-<area shape="rect" id="node13" href="$_scene_manager_8h.html" title="cyclops/SceneManager.h" alt="" coords="723,91,865,115"/>
-<area shape="rect" id="node26" href="$_entity_8h.html" title="cyclops/Entity.h" alt="" coords="496,248,595,272"/>
-<area shape="rect" id="node15" href="$cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="389,320,488,344"/>
-<area shape="rect" id="node17" href="$_skybox_8h.html" title="Skybox.h" alt="" coords="405,248,472,272"/>
-<area shape="rect" id="node20" href="$omega_8h.html" title="omega.h" alt="" coords="513,320,577,344"/>
-<area shape="rect" id="node22" href="$omega_osg_8h.html" title="omegaOsg.h" alt="" coords="283,320,365,344"/>
-<area shape="rect" id="node24" href="$_shapes_8h.html" title="Shapes.h" alt="" coords="456,169,523,193"/>
+<area shape="rect" id="node13" href="$_scene_manager_8h.html" title="cyclops/SceneManager.h" alt="" coords="1105,91,1247,115"/>
+<area shape="rect" id="node22" href="$_entity_8h.html" title="cyclops/Entity.h" alt="" coords="825,248,924,272"/>
+<area shape="rect" id="node15" href="$cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="975,392,1073,416"/>
+<area shape="rect" id="node17" href="$_skybox_8h.html" title="Skybox.h" alt="" coords="1507,248,1573,272"/>
+<area shape="rect" id="node20" href="$_shapes_8h.html" title="Shapes.h" alt="" coords="848,169,915,193"/>
+<area shape="rect" id="node25" href="$_uniforms_8h.html" title="Uniforms.h" alt="" coords="765,320,840,344"/>
+<area shape="rect" id="node31" href="$_light_8h.html" title="Light.h" alt="" coords="998,169,1052,193"/>
 </map>

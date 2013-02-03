@@ -1,5 +1,5 @@
 <map id="omegaOsg::OsgSceneObject" name="omegaOsg::OsgSceneObject">
-<area shape="rect" id="node2" href="$classomega_1_1_i_scene_object.html" title="omega::ISceneObject" alt="" coords="13,77,139,101"/>
+<area shape="rect" id="node2" href="$classomega_1_1_node_component.html" title="omega::NodeComponent" alt="" coords="5,77,147,101"/>
 <area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,5,147,29"/>
-<area shape="rect" id="node6" href="$classomega_1_1_scene_node_listener.html" title="omega::SceneNodeListener" alt="" coords="164,77,319,101"/>
+<area shape="rect" id="node6" href="$classomega_1_1_scene_node_listener.html" title="omega::SceneNodeListener" alt="" coords="172,77,327,101"/>
 </map>

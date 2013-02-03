@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.2</span>
+   &#160;<span id="projectnumber">3.3</span>
    </div>
   </td>
  </tr>
@@ -60,6 +60,8 @@
 
 <p>Loads and manages image data.  
  <a href="classomega_1_1_image_utils.html#details">More...</a></p>
+
+<p><code>#include &lt;ImageUtils.h&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -75,11 +77,11 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ad31ab848e93c11b312e2c1f2341cffc0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_ref.html">Ref</a>&lt; <a class="el" href="structomega_1_1_pixel_data.html">PixelData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#ad31ab848e93c11b312e2c1f2341cffc0">loadImage</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;filename, bool hasFullPath=false)</td></tr>
+<tr class="memitem:ad31ab848e93c11b312e2c1f2341cffc0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_ref.html">Ref</a>&lt; <a class="el" href="classomega_1_1_pixel_data.html">PixelData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#ad31ab848e93c11b312e2c1f2341cffc0">loadImage</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;filename, bool hasFullPath=false)</td></tr>
 <tr class="memdesc:ad31ab848e93c11b312e2c1f2341cffc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a file.  <a href="#ad31ab848e93c11b312e2c1f2341cffc0"></a><br/></td></tr>
 <tr class="memitem:a386b9c6734e07212ca5b90c6b6734b2c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1_image_utils.html#a7d4ba2105bb9584f509346fef33e2ea2">LoadImageAsyncTask</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a386b9c6734e07212ca5b90c6b6734b2c">loadImageAsync</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;filename, bool hasFullPath=false)</td></tr>
 <tr class="memdesc:a386b9c6734e07212ca5b90c6b6734b2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load image from a file (async)  <a href="#a386b9c6734e07212ca5b90c6b6734b2c"></a><br/></td></tr>
-<tr class="memitem:abf0dee73ad2ee17169c11fb1797b31af"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structomicron_1_1_byte_array.html">ByteArray</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#abf0dee73ad2ee17169c11fb1797b31af">encode</a> (<a class="el" href="structomega_1_1_pixel_data.html">PixelData</a> *<a class="el" href="glew_8h.html#a42c2b1d86fa71a425e73a882cb0a72c8">data</a>, <a class="el" href="classomega_1_1_image_utils.html#a3adea18d896812a9499e62290793f35c">ImageFormat</a> <a class="el" href="glew_8h.html#a1e3b09934060e9d373139c3557730d37">format</a>)</td></tr>
+<tr class="memitem:abf0dee73ad2ee17169c11fb1797b31af"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structomicron_1_1_byte_array.html">ByteArray</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#abf0dee73ad2ee17169c11fb1797b31af">encode</a> (<a class="el" href="classomega_1_1_pixel_data.html">PixelData</a> *<a class="el" href="glew_8h.html#a42c2b1d86fa71a425e73a882cb0a72c8">data</a>, <a class="el" href="classomega_1_1_image_utils.html#a3adea18d896812a9499e62290793f35c">ImageFormat</a> <a class="el" href="glew_8h.html#a1e3b09934060e9d373139c3557730d37">format</a>)</td></tr>
 <tr class="memitem:a2fa94e6047770e5383a8e47783b70bbb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a2fa94e6047770e5383a8e47783b70bbb">internalInitialize</a> ()</td></tr>
 <tr class="memitem:aff53aa5f29908ae61515349430562917"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#aff53aa5f29908ae61515349430562917">internalDispose</a> ()</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
@@ -139,7 +141,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structomicron_1_1_byte_array.html">ByteArray</a> * ImageUtils::encode </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structomega_1_1_pixel_data.html">PixelData</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_pixel_data.html">PixelData</a> *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
@@ -310,7 +312,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomicron_1_1_ref.html">Ref</a>&lt; <a class="el" href="structomega_1_1_pixel_data.html">PixelData</a> &gt; ImageUtils::loadImage </td>
+          <td class="memname"><a class="el" href="classomicron_1_1_ref.html">Ref</a>&lt; <a class="el" href="classomega_1_1_pixel_data.html">PixelData</a> &gt; ImageUtils::loadImage </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
           <td class="paramname"><em>filename</em>, </td>

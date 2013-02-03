@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.2</span>
+   &#160;<span id="projectnumber">3.3</span>
    </div>
   </td>
  </tr>
@@ -113,6 +113,10 @@
 <li>rcVirtualScreen
 : <a class="el" href="struct_g_p_u___d_e_v_i_c_e.html#a8114b952ef41b24d6a9b72af9f965b4b">PGPU_DEVICE</a>
 </li>
+<li>read()
+: <a class="el" href="classomicron_1_1_file_data_stream.html#a00873e9093be7ff62924f249f9c9d33d">omicron::FileDataStream</a>
+, <a class="el" href="classomicron_1_1_tcp_connection.html#adcc42bc190752586ecb54e8c36d61e39">omicron::TcpConnection</a>
+</li>
 <li>Read
 : <a class="el" href="classomicron_1_1_data_stream.html#a61261206c57ae0d52a4b584b29105e79ab3ac00b86cfbe48d93adf55f80e0d81f">omicron::DataStream</a>
 , <a class="el" href="structomega_1_1_python_interpreter_wrapper.html#ade63cab7d304c51a4391af63c31d2aa4">omega::PythonInterpreterWrapper</a>
@@ -121,8 +125,6 @@
 : <a class="el" href="classomega_1_1_gpu_buffer.html#a86def74611c21fdc4e0c81d855811ed3">omega::GpuBuffer</a>
 , <a class="el" href="classomega_1_1_shared_i_stream.html#a1a0ce84840ab1ef3648c5c2573d43feb">omega::SharedIStream</a>
 , <a class="el" href="classomicron_1_1_data_stream.html#acd4c90445d1aefc67ae3572758ea4c23">omicron::DataStream</a>
-, <a class="el" href="classomicron_1_1_file_data_stream.html#a00873e9093be7ff62924f249f9c9d33d">omicron::FileDataStream</a>
-, <a class="el" href="classomicron_1_1_tcp_connection.html#adcc42bc190752586ecb54e8c36d61e39">omicron::TcpConnection</a>
 </li>
 <li>readback()
 : <a class="el" href="classomega_1_1_render_target.html#aeb91247be79f5a87efca0985acd31c12">omega::RenderTarget</a>
@@ -223,6 +225,9 @@
 <li>RecordState()
 : <a class="el" href="classwiimote.html#ad94ecc4081d59bf1ca90dbf185b76d22">wiimote</a>
 </li>
+<li>rect()
+: <a class="el" href="classomega_1_1_draw_interface.html#ad43dc745687db386ba6a9cffbffac70a">omega::DrawInterface</a>
+</li>
 <li>Rect()
 : <a class="el" href="structomicron_1_1_rect.html#a5507bb2a4a8071707104fb2b9188c320">omicron::Rect</a>
 </li>
@@ -265,20 +270,22 @@
 <li>reflectionTexture
 : <a class="el" href="struct_state_set_content.html#ad21690a622387a2594dbbe18ef9e92b7">StateSetContent</a>
 </li>
-<li>Refresh
-: <a class="el" href="structomega_1_1_renderable_command.html#a2f709f4e25ad366db288a9b610df01eaa323785c6a47ac3b6573d87e79558b86b">omega::RenderableCommand</a>
-</li>
 <li>refresh()
 : <a class="el" href="classomega_1_1_renderable.html#a4707a9f506717f2ed3017faf7ef72f3a">omega::Renderable</a>
 , <a class="el" href="classomega_1_1_renderable_factory.html#aac0fd13a212077e91ee654ac18de8508">omega::RenderableFactory</a>
-, <a class="el" href="classomega_1_1_texture.html#a6169cae39408f818f07f932eb844d8b3">omega::Texture</a>
-, <a class="el" href="classomega_toolkit_1_1_mesh_renderable.html#a5df71dec6d89ec399a08a97108b5801e">omegaToolkit::MeshRenderable</a>
 , <a class="el" href="classomega_1_1_texture.html#a7e39d24b29152a831c0be98644f47fa1">omega::Texture</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_image_renderable.html#a097f84a9cc8d97d3350828b004c134a9">omegaToolkit::ui::ImageRenderable</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_label_renderable.html#a1b2087189362168e887cd7d8e522e232">omegaToolkit::ui::LabelRenderable</a>
 </li>
+<li>Refresh
+: <a class="el" href="structomega_1_1_renderable_command.html#a2f709f4e25ad366db288a9b610df01eaa323785c6a47ac3b6573d87e79558b86b">omega::RenderableCommand</a>
+</li>
 <li>RefreshState()
 : <a class="el" href="classwiimote.html#a64b4b2a79f5f4f238465a16e8160bca2">wiimote</a>
+</li>
+<li>refreshTexture()
+: <a class="el" href="classomega_1_1_pixel_data.html#a639c76e160aa4e757cc3a52321d8865c">omega::PixelData</a>
+, <a class="el" href="classomega_1_1_texture_source.html#a720c6d105f1519a637bd1df2f86a92f4">omega::TextureSource</a>
 </li>
 <li>registerCallback()
 : <a class="el" href="classomega_1_1_python_interpreter.html#a047be3bf6896714f316fba9fdcda1843">omega::PythonInterpreter</a>
@@ -296,6 +303,9 @@
 <li>releaseAllGLObjects()
 : <a class="el" href="class_scene_view.html#a0a61adde4d4091b4c31e1c9da01d6167">SceneView</a>
 </li>
+<li>reloadAndRecompileShaders()
+: <a class="el" href="classcyclops_1_1_scene_manager.html#aed3d2f2f11645ce21a3486a215985948">cyclops::SceneManager</a>
+</li>
 <li>Remove()
 : <a class="el" href="classomega_1_1xml_1_1_ti_xml_attribute_set.html#a984196a7503b57f6490778f251748fbe">omega::xml::TiXmlAttributeSet</a>
 </li>
@@ -308,15 +318,21 @@
 <li>removeAllSources()
 : <a class="el" href="classomicron_1_1_data_manager.html#a296247405f18ae60f3b790922bf6e312">omicron::DataManager</a>
 </li>
+<li>removeAllUniforms()
+: <a class="el" href="classcyclops_1_1_uniforms.html#a002b7e62450dd96df8bc476871dab77d">cyclops::Uniforms</a>
+</li>
 <li>RemoveAttribute()
 : <a class="el" href="classomega_1_1xml_1_1_ti_xml_element.html#a892e687b3396e61934938d2840a3424f">omega::xml::TiXmlElement</a>
+</li>
+<li>RemoveChild()
+: <a class="el" href="classomega_1_1xml_1_1_ti_xml_node.html#a056aca6aab4fbe630e7167bfb0335f71">omega::xml::TiXmlNode</a>
 </li>
 <li>removeChild()
 : <a class="el" href="classomega_1_1_node.html#a171c2cba5e3b6cdfb503fb182e303d26">omega::Node</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a6ae465718f0088d1fb2911f084bfbe27">omegaToolkit::ui::Container</a>
 </li>
-<li>RemoveChild()
-: <a class="el" href="classomega_1_1xml_1_1_ti_xml_node.html#a056aca6aab4fbe630e7167bfb0335f71">omega::xml::TiXmlNode</a>
+<li>removeComponent()
+: <a class="el" href="classomega_1_1_scene_node.html#a86c73d9e9a6934de0209919637ab8721">omega::SceneNode</a>
 </li>
 <li>removeLine()
 : <a class="el" href="classcyclops_1_1_line_set.html#a5e8c862f336f6ce96680a21ed6cee482">cyclops::LineSet</a>
@@ -329,10 +345,6 @@
 </li>
 <li>removeNode()
 : <a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#af6cf27114a61878ab18bfb333f4a2ce3">omegaToolkit::SceneEditorModule</a>
-</li>
-<li>removeObject()
-: <a class="el" href="classoengine_1_1_scene_node.html#a342e50fd276df615412f944008cc7592">oengine::SceneNode</a>
-, <a class="el" href="classomega_1_1_scene_node.html#ab2d6bc24a610576acc50257c0717fc18">omega::SceneNode</a>
 </li>
 <li>removeRenderPass()
 : <a class="el" href="classomega_1_1_engine.html#ae05c780d977ef7b1a023b735f762753d">omega::Engine</a>
@@ -360,24 +372,19 @@
 <li>RenderableFactory()
 : <a class="el" href="classomega_1_1_renderable_factory.html#a0c214829b3885bec9ae3dc85bca8fd23">omega::RenderableFactory</a>
 </li>
-<li>RenderableSceneObject()
-: <a class="el" href="classomega_toolkit_1_1_renderable_scene_object.html#a69da47e3ea8920ca1f5b91959c1fb527">omegaToolkit::RenderableSceneObject</a>
-</li>
 <li>RenderCustom
 : <a class="el" href="classomega_1_1_render_pass.html#a10ca0c009b64d3d72050cdcf7c34a688a7157db9875ff700142c58553332f9915">omega::RenderPass</a>
 </li>
 <li>Renderer
 : <a class="el" href="classomega_1_1_engine.html#a70538530bc36e033e360880ef311df61">omega::Engine</a>
+, <a class="el" href="classomega_1_1_renderer.html#a31b9e03e98fcceb7d38c1c8b1ab9a830">omega::Renderer</a>
 </li>
 <li>renderer
 : <a class="el" href="structomega_1_1_draw_context.html#ad73cece31947621325ab581514f8868f">omega::DrawContext</a>
 </li>
-<li>Renderer()
-: <a class="el" href="classomega_1_1_renderer.html#a31b9e03e98fcceb7d38c1c8b1ab9a830">omega::Renderer</a>
-</li>
 <li>RenderFlags
-: <a class="el" href="classomega_1_1_render_pass.html#a10ca0c009b64d3d72050cdcf7c34a688">omega::RenderPass</a>
-, <a class="el" href="classomega_vtk_1_1_vtk_render_pass.html#a61124589ad3cf3488b7548b9d06410e2">omegaVtk::VtkRenderPass</a>
+: <a class="el" href="classomega_vtk_1_1_vtk_render_pass.html#a61124589ad3cf3488b7548b9d06410e2">omegaVtk::VtkRenderPass</a>
+, <a class="el" href="classomega_1_1_render_pass.html#a10ca0c009b64d3d72050cdcf7c34a688">omega::RenderPass</a>
 </li>
 <li>RenderOffscreen
 : <a class="el" href="classomega_1_1_render_target.html#a3660bf54c67b1f9006259b92b1e24e8ca0c222a8ac843d5373280683fdb21e578">omega::RenderTarget</a>
@@ -428,7 +435,7 @@
 : <a class="el" href="classwiimote.html#a59d903fd9d23adbe7db4eb86486393c1">wiimote</a>
 </li>
 <li>requestBoundingBoxUpdate()
-: <a class="el" href="classomega_1_1_i_scene_object.html#a7b136ad0d15d35e456c8f7f0fe72d736">omega::ISceneObject</a>
+: <a class="el" href="classomega_1_1_node_component.html#ac1ae14475a3608896e21ec703f7d3108">omega::NodeComponent</a>
 </li>
 <li>requestLayoutRefresh()
 : <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#aa184d0186a8cc49399fac53e4e058af4">omegaToolkit::ui::Widget</a>
@@ -440,18 +447,15 @@
 : <a class="el" href="classomega_1_1xml_1_1_ti_xml_string.html#abace737189e2040d36f345c367512f91">omega::xml::TiXmlString</a>
 </li>
 <li>reset()
-: <a class="el" href="classomega_1_1_texture.html#a1c527d725d3fee8a0de49579c40f0855">omega::Texture</a>
-, <a class="el" href="classomicron_1_1_ref.html#a4f577aa01999f68430b44b2c41067cb4">omicron::Ref&lt; T &gt;</a>
+: <a class="el" href="classomicron_1_1_event.html#a3aa2f1c57b3d40a46e8bb0b5eff0379a">omicron::Event</a>
+, <a class="el" href="classomega_1_1_camera_controller.html#a1611bea0a7091875949b330628bfdf41">omega::CameraController</a>
+, <a class="el" href="classomicron_1_1_ref.html#ae7e93674bffb72e026c8845a1dc8bd79">omicron::Ref&lt; T &gt;</a>
 </li>
 <li>Reset()
 : <a class="el" href="classwiimote.html#a5cad3408a3c007d67ad927eb138cb564">wiimote</a>
 </li>
 <li>reset()
-: <a class="el" href="classomega_1_1_camera_controller.html#a1611bea0a7091875949b330628bfdf41">omega::CameraController</a>
-, <a class="el" href="classomicron_1_1_name_generator.html#a5a74725283c900b6351916ae214900eb">omicron::NameGenerator</a>
-, <a class="el" href="classomicron_1_1_event.html#a3aa2f1c57b3d40a46e8bb0b5eff0379a">omicron::Event</a>
-, <a class="el" href="classomicron_1_1_ref.html#ae7e93674bffb72e026c8845a1dc8bd79">omicron::Ref&lt; T &gt;</a>
-, <a class="el" href="classomega_1_1_texture.html#a84c668e87353fd14b435077d97e5c3de">omega::Texture</a>
+: <a class="el" href="classomicron_1_1_name_generator.html#a5a74725283c900b6351916ae214900eb">omicron::NameGenerator</a>
 </li>
 <li>resetDroppedEvents()
 : <a class="el" href="classomicron_1_1_service_manager.html#af3038c837a32469bc3501cd5a565f69a">omicron::ServiceManager</a>
@@ -469,7 +473,7 @@
 : <a class="el" href="classcyclops_1_1_scene_manager.html#af04fa59505d4e680b0c1f890afd3182c">cyclops::SceneManager</a>
 </li>
 <li>resize()
-: <a class="el" href="structomega_1_1_pixel_data.html#ab191d1b55e5f467dbdcd178e92fb0296">omega::PixelData</a>
+: <a class="el" href="classomega_1_1_pixel_data.html#ab191d1b55e5f467dbdcd178e92fb0296">omega::PixelData</a>
 </li>
 <li>Right
 : <a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a24435f3ee9832b1ab148c81de2bfb2c9">omicron::EventBase</a>
@@ -483,30 +487,27 @@
 <li>RootElement()
 : <a class="el" href="classomega_1_1xml_1_1_ti_xml_document.html#a9282b5c25d7048e44f2fc8404d8abc07">omega::xml::TiXmlDocument</a>
 </li>
-<li>rotate()
-: <a class="el" href="classomega_1_1_node.html#af5c1c904284aa895e1631ac3f9a226c7">omega::Node</a>
-</li>
 <li>Rotate
 : <a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53ac322b209e1a2899f456f18b87d4097b3">omicron::EventBase</a>
 </li>
 <li>rotate()
 : <a class="el" href="classomega_1_1_node.html#a3f60558c0dab25655e8c6a0f3d2c26ab">omega::Node</a>
 </li>
-<li>Row()
-: <a class="el" href="classomega_1_1xml_1_1_ti_xml_base.html#a9f9df487f49ea79da309f4d63345edeb">omega::xml::TiXmlBase</a>
-</li>
 <li>row
 : <a class="el" href="structomega_1_1xml_1_1_ti_xml_cursor.html#a26ba00a841630eccc4044ae40b47b687">omega::xml::TiXmlCursor</a>
+</li>
+<li>Row()
+: <a class="el" href="classomega_1_1xml_1_1_ti_xml_base.html#a9f9df487f49ea79da309f4d63345edeb">omega::xml::TiXmlBase</a>
 </li>
 <li>RumbleForAsync()
 : <a class="el" href="classwiimote.html#ad25bec842f8764c1302790ba77ea0f58">wiimote</a>
 </li>
 <li>run()
-: <a class="el" href="classomega_1_1_equalizer_display_system.html#a8b92b31d02114926597892e649d2a7ab">omega::EqualizerDisplaySystem</a>
-, <a class="el" href="classomega_1_1_glut_display_system.html#a64db551b35506991a95b349167e027e5">omega::GlutDisplaySystem</a>
+: <a class="el" href="classomega_1_1_display_system.html#ad8e7f603922fb84a8a4079619a7d2319">omega::DisplaySystem</a>
 , <a class="el" href="classomega_1_1_system_manager.html#a51eb11945f7445275abb45b1fa7f028d">omega::SystemManager</a>
-, <a class="el" href="classomega_1_1_display_system.html#ad8e7f603922fb84a8a4079619a7d2319">omega::DisplaySystem</a>
 , <a class="el" href="classomega_1_1_equalizer_display_system.html#a41e4103460f536d2f6dca8464f642824">omega::EqualizerDisplaySystem</a>
+, <a class="el" href="classomega_1_1_glut_display_system.html#a64db551b35506991a95b349167e027e5">omega::GlutDisplaySystem</a>
+, <a class="el" href="classomega_1_1_equalizer_display_system.html#a8b92b31d02114926597892e649d2a7ab">omega::EqualizerDisplaySystem</a>
 </li>
 <li>runComputeStage()
 : <a class="el" href="classomega_1_1_gpu_program.html#a3944e7c9811d6442f12341f398a6094f">omega::GpuProgram</a>

@@ -12,7 +12,7 @@
 <area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="533,461,597,485"/>
 <area shape="rect" id="node16" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="434,245,576,269"/>
 <area shape="rect" id="node19" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="357,317,467,341"/>
-<area shape="rect" id="node26" href="$_i_scene_object_8h.html" title="omega/ISceneObject.h" alt="" coords="760,317,893,341"/>
+<area shape="rect" id="node26" href="$_node_component_8h.html" title="omega/NodeComponent.h" alt="" coords="761,317,908,341"/>
 <area shape="rect" id="node29" href="$_node_8h.html" title="omega/Node.h" alt="" coords="592,317,685,341"/>
 <area shape="rect" id="node45" href="$_render_target_8h.html" title="omega/RenderTarget.h" alt="" coords="902,245,1036,269"/>
 <area shape="rect" id="node48" href="$_camera_output_8h.html" title="omega/CameraOutput.h" alt="" coords="760,173,899,197"/>

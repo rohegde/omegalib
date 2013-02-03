@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.2</span>
+   &#160;<span id="projectnumber">3.3</span>
    </div>
   </td>
  </tr>
@@ -55,7 +55,11 @@
 <div class="title">glxew.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+<div class="textblock"><code>#include &lt;X11/Xlib.h&gt;</code><br/>
+<code>#include &lt;X11/Xutil.h&gt;</code><br/>
+<code>#include &lt;X11/Xmd.h&gt;</code><br/>
+<code>#include &quot;<a class="el" href="glew_8h.html">glew.h</a>&quot;</code><br/>
+</div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for glxew.h:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
@@ -233,7 +237,7 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a8b8746df5fb259da5aa3bec2c717dc5a"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="glxew_8h.html#a8b8746df5fb259da5aa3bec2c717dc5a">PFNGLXQUERYGLXPBUFFERSGIXPROC</a> )(Display *dpy, GLXPbuffer pbuf, int attribute, unsigned int *<a class="el" href="glew_8h.html#a6a4f8a1a444e9080b297963b3db29fe0">value</a>)</td></tr>
 <tr class="memitem:a127714467db5ba1d07d7c73317de494b"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="glxew_8h.html#a127714467db5ba1d07d7c73317de494b">PFNGLXSELECTEVENTSGIXPROC</a> )(Display *dpy, GLXDrawable drawable, unsigned long <a class="el" href="glew_8h.html#abb269dedb7ad104274cc9f5c0c7285bc">mask</a>)</td></tr>
 <tr class="memitem:ac8608bab0fc7b1d0200097985edde73f"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="glxew_8h.html#ac8608bab0fc7b1d0200097985edde73f">PFNGLXBINDSWAPBARRIERSGIXPROC</a> )(Display *dpy, GLXDrawable drawable, int <a class="el" href="wglew_8h.html#a78bd9428b187e1d2cca0eca84ca713e1">barrier</a>)</td></tr>
-<tr class="memitem:a7614c05b920e343852f8e2723fc452d0"><td class="memItemLeft" align="right" valign="top">typedef Bool(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="glxew_8h.html#a7614c05b920e343852f8e2723fc452d0">PFNGLXQUERYMAXSWAPBARRIERSSGIXPROC</a> )(Display *dpy, int screen, int *<a class="el" href="_mesh_data_8cpp.html#affe776513b24d84b39af8ab0930fef7f">max</a>)</td></tr>
+<tr class="memitem:a7614c05b920e343852f8e2723fc452d0"><td class="memItemLeft" align="right" valign="top">typedef Bool(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="glxew_8h.html#a7614c05b920e343852f8e2723fc452d0">PFNGLXQUERYMAXSWAPBARRIERSSGIXPROC</a> )(Display *dpy, int screen, int *max)</td></tr>
 <tr class="memitem:a15fb2accda10a04805e5619222f3eefc"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="glxew_8h.html#a15fb2accda10a04805e5619222f3eefc">PFNGLXJOINSWAPGROUPSGIXPROC</a> )(Display *dpy, GLXDrawable drawable, GLXDrawable member)</td></tr>
 <tr class="memitem:a7b7bbfbb45a9441f84d705a78dd20a63"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="glxew_8h.html#a7b7bbfbb45a9441f84d705a78dd20a63">PFNGLXBINDCHANNELTOWINDOWSGIXPROC</a> )(Display *display, int screen, int channel, <a class="el" href="classeq_1_1_window.html">Window</a> window)</td></tr>
 <tr class="memitem:a17f507e4ed112bbafb761b9a923898ad"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="glxew_8h.html#a17f507e4ed112bbafb761b9a923898ad">PFNGLXCHANNELRECTSGIXPROC</a> )(Display *display, int screen, int channel, int <a class="el" href="glew_8h.html#ad77deca22f617d3f0e0eb786445689fc">x</a>, int <a class="el" href="glew_8h.html#a9298c7ad619074f5285b32c6b72bfdea">y</a>, int <a class="el" href="glew_8h.html#a433584688554d9a05d22844c39473968">w</a>, int <a class="el" href="glew_8h.html#afa0fb1b5e976920c0abeff2dca3ed774">h</a>)</td></tr>
@@ -2376,7 +2380,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef Bool( *  PFNGLXQUERYMAXSWAPBARRIERSSGIXPROC)(Display *dpy, int screen, int *<a class="el" href="_mesh_data_8cpp.html#affe776513b24d84b39af8ab0930fef7f">max</a>)</td>
+          <td class="memname">typedef Bool( *  PFNGLXQUERYMAXSWAPBARRIERSSGIXPROC)(Display *dpy, int screen, int *max)</td>
         </tr>
       </table>
 </div><div class="memdoc">

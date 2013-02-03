@@ -1,13 +1,13 @@
 <map id="D:/Workspace/omegalib/trunk/include/omega/CameraOutput.h" name="D:/Workspace/omegalib/trunk/include/omega/CameraOutput.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="268,317,340,341"/>
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="272,317,344,341"/>
 <area shape="rect" id="node10" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="81,101,223,125"/>
-<area shape="rect" id="node20" href="$_scene_node_8h.html" title="omega/SceneNode.h" alt="" coords="283,173,405,197"/>
-<area shape="rect" id="node29" href="$_render_target_8h.html" title="omega/RenderTarget.h" alt="" coords="535,101,669,125"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="307,389,372,413"/>
+<area shape="rect" id="node20" href="$_scene_node_8h.html" title="omega/SceneNode.h" alt="" coords="287,173,409,197"/>
+<area shape="rect" id="node29" href="$_render_target_8h.html" title="omega/RenderTarget.h" alt="" coords="551,101,685,125"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="311,389,376,413"/>
 <area shape="rect" id="node13" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="55,245,164,269"/>
 <area shape="rect" id="node16" href="$_display_config_8h.html" title="DisplayConfig.h" alt="" coords="147,173,244,197"/>
-<area shape="rect" id="node23" href="$_i_scene_object_8h.html" title="omega/ISceneObject.h" alt="" coords="289,245,423,269"/>
-<area shape="rect" id="node26" href="$_node_8h.html" title="omega/Node.h" alt="" coords="447,245,540,269"/>
-<area shape="rect" id="node32" href="$_gpu_manager_8h.html" title="GpuManager.h" alt="" coords="615,245,708,269"/>
-<area shape="rect" id="node35" href="$_texture_8h.html" title="Texture.h" alt="" coords="666,173,736,197"/>
+<area shape="rect" id="node23" href="$_node_component_8h.html" title="omega/NodeComponent.h" alt="" coords="290,245,437,269"/>
+<area shape="rect" id="node26" href="$_node_8h.html" title="omega/Node.h" alt="" coords="463,245,556,269"/>
+<area shape="rect" id="node32" href="$_gpu_manager_8h.html" title="GpuManager.h" alt="" coords="631,245,724,269"/>
+<area shape="rect" id="node35" href="$_texture_8h.html" title="Texture.h" alt="" coords="682,173,752,197"/>
 </map>
