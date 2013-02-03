@@ -1054,7 +1054,11 @@ void SceneManager::recompileShaders()
 	{
 		lightFunc.append(l->getLightFunction());
 	}
+#ifdef OMEGA_OS_LINUX
+	std::tr1::hash<String> hashFx;
+#else
 	std::hash<String> hashFx;
+#endif
 	size_t lightFuncHash = hashFx(lightFunc);
 
 	// Update the shader variation name
