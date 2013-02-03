@@ -14,5 +14,13 @@ following:
 In general, orun should be launched from its containing binary directory, to make sure all libraries and data paths are set up correctly. In linux, this is not as important, and examples should run regardless of the starting directory.
 
 ==  Example List ==
-|| *Screenshot* || *Summary* ||
-|| <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/red.png" width="150"/> || blah blah blah ||
+|| *Screenshot* || *Script name* || *Techniques* ||
+|| <img src="http://omegalib.googlecode.com/svn/wiki/PythonExamples/billboard.png" width="150"/> || *billboard.py* || camera facing nodes and interactors. ||
+|| <img src="http://omegalib.googlecode.com/svn/wiki/PythonExamples/embeddedShader.png" width="150"/> || *embeddedShader.py* || Custom object shaders embedded in python script. Custom shader uniforms. ||
+|| <img src="http://omegalib.googlecode.com/svn/wiki/PythonExamples/fxdemo.png" width="150"/> || *fxdemo.py* || Various rendering effects. Custom multilevel menus. Picking. ||
+|| <img src="http://omegalib.googlecode.com/svn/wiki/PythonExamples/headlight.png" width="150"/> || *headlight.py* || Scene hierarchy. Camera-attached lights. Trackable objects. ||
+|| <img src="http://omegalib.googlecode.com/svn/wiki/PythonExamples/lightFunction.png" width="150"/> || *lightFunction.py* || CUstom shader light functions. Interactors. ||
+|| <img src="http://omegalib.googlecode.com/svn/wiki/PythonExamples/multilight.png" width="150"/> || *multilight.py* || Multple scene lights. Event Handling. Interactors. Scene hierarchy. Menus. ||
+|| <img src="http://omegalib.googlecode.com/svn/wiki/PythonExamples/picking.png" width="150"/> || *picking.py* || Object ray picking. Ui-to-texture rendering. ||
+|| <img src="http://omegalib.googlecode.com/svn/wiki/PythonExamples/spincube.png" width="150"/> || *spincube.py* || Basic shape creation. Using the update function. ||
+|| <img src="http://omegalib.googlecode.com/svn/wiki/PythonExamples/uitotexture.png" width="150"/> || *spincube.py* || Render-to-texture ui. Using the update function. ||

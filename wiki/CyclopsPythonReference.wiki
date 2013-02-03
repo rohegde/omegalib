@@ -1,7 +1,7 @@
 #summary Python reference: module cyclops
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.3 - 31 January 2013</p>*
+<p>*Last revision:* ver. 3.3 - 1 February 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -47,6 +47,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 || `setShaderMacroToFile(macro, file)` || Sets the specified shader macro to the contents of a file. Appearances of the macro in any loaded shader will be replaced with the file contents. Example: <code>scene.setShaderMacroToFile('macro1', 'file.frag')</code> will substitute `@macro1` in shaders with the text from `file.frag` ||
 || `setShaderMacroToString(macro, string)` || Sets the specified shader macro to the specified string. Appearances of the macro in any loaded shader will be replaced with the string text. Example: <code>scene.setShaderMacroToFile('macro1', 'a = b + c')</code> will substitute `@macro1` in shaders with `a = b + c` ||
 || `createProgramFromString(name, vertexCode, fragmentCode)` || Creates a new Gpu Program using the vertex and fragment source code passed as parameters. Registers the program with the specified name, so it can be used in effect definitions. It aso returns the program as a `ProgramAsset` object. ||
+|| `reloadAndRecompileShaders()` || Forces the shaders to be reloaded and recompiled from source ||
 || *Textures* || ||
 || `createTexture(name, pixels)` || Creates a texture with the specified name using the passed `PixelData` object. The texture can then be referenced in effect definitions. ||
 
@@ -60,6 +61,14 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 || `setVector2f(value)`, `getVector2f()` || ||
 || `setVector3f(value)`, `getVector3f()` || ||
 || `setVector4f(value)`, `getVector4f()` || ||
+
+=== Uniform Types ===
+Currently supported uniform types are listed in the `UniformType` enumeration:
+	* `Float`
+	* `Int`
+	* `Vector2f`
+	* `Vector3f`
+	* `Vector4f`
 
 -------------------------------------------------------------------------------
 ==  `class Uniforms` ==
@@ -209,6 +218,9 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 || `setAttenuation(consant, linear, quadratic)`, `getAttenuation()` || Sets or gets the light attenuation values. `getAttenuation()` returns the attenuation parameters as a `Vector3` object. ||
 || `setLightType(type)`, `getLightType()` || Sets or gets the light type ||
 || `setLightFunction(string)`, `getLightFunction()` || Sets or gets the light function ||
+|| `setLightDirection(value)`, `getLightDirection()` || Sets or gets the light direction for Spot or Directional light types ||
+|| `setSpotExponent(value)`, `getSpotExponent()` || Sets or gets the spot exponent for Spot lights ||
+|| `setSpotCutoff(value)`, `getSpotCutoff()` || Sets or gets the spot cutoff for Spot lights ||
 
 === Light Types ===
 The `setLightType()` method accepts a value from the `LightType` enumeration. Supported values are:
