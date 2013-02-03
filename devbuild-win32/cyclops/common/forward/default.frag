@@ -20,6 +20,10 @@ struct LightData
 	vec4 specular;
 	vec3 dir;
 	vec3 halfDir;
+	
+	vec3 spotDirection;
+	float spotCutoff;
+	float spotExponent;
 
 	float shadow;
 	float distance;
@@ -40,13 +44,22 @@ $@fragmentLightSection
 { 
 	LightData ld;
 	
+	vec3 lightVector = vec3(gl_LightSource[@lightIndex].position.xyz - var_EyeVector);
+	
 	ld.diffuse = gl_LightSource[@lightIndex].diffuse;
 	ld.specular = gl_LightSource[@lightIndex].specular;
 	ld.ambient = gl_LightSource[@lightIndex].ambient;
-	ld.dir = normalize(vec3(gl_LightSource[@lightIndex].position.xyz + var_EyeVector));
+	ld.dir = normalize(lightVector);
 	ld.halfDir = reflect(-ld.dir, surf.normal);
-	ld.distance = 1.0;
-	ld.attenuation = vec3(0, 0, 0);
+	ld.distance = length(lightVector);
+	ld.spotDirection = gl_LightSource[@lightIndex].spotDirection;
+	ld.spotExponent = gl_LightSource[@lightIndex].spotExponent;
+	ld.spotCutoff = gl_LightSource[@lightIndex].spotCosCutoff;
+	
+	ld.attenuation[0] = gl_LightSource[@lightIndex].constantAttenuation;
+	ld.attenuation[1] = gl_LightSource[@lightIndex].linearAttenuation;
+	ld.attenuation[2] = gl_LightSource[@lightIndex].quadraticAttenuation;
+	
 	if(@lightIndex == 0) ld.shadow = shadow;
 	else ld.shadow = 1.0;
 	

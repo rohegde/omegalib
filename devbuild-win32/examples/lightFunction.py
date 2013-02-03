@@ -1,41 +1,53 @@
-# Basic example showing how to add a headlight to the camera.
 from math import *
 from euclid import *
 from omega import *
 from cyclops import *
 
-sphere = SphereShape.create(1, 4)
-sphere.setPosition(Vector3(0, 2, -5))
-sphere.setEffect("colored -d green")
+scene = getSceneManager()
+scene.setShaderMacroToString('customFragmentFunctions', '''
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	vec4 dropShadowLightFunction(SurfaceData sd, LightData ld)
+	{
+		vec4 l = vec4(0, 0, 0, 0);
+		float lambertTerm = dot(sd.normal, ld.dir); 
+		l += sd.albedo * ld.diffuse; 
+		
+		vec3 ka = ld.attenuation;
+		float att = clamp(0, 1, 1.0 / (ka[0] + ld.distance * ka[1] + ld.distance * ld.distance * ka[2]));
+		
+		// Scale luminance by attenuation and return
+		vec4 luminance = l * (1 - att) * lambertTerm;
+		luminance += sd.albedo * ld.ambient;
+		return luminance;
+	}
+''')
 
 plane = PlaneShape.create(10, 10)
-plane.setPosition(Vector3(0, 0, -5))
+plane.setPosition(Vector3(0, 0, -4))
 plane.pitch(radians(-90))
-plane.setEffect("textured -v emissive -d examples/data/GradientBackground.jpg")
+plane.setEffect("colored -d white")
 
-scene = getSceneManager()
+scenelight = Light.create()
+scenelight.setColor(Color('#555555'))
+scenelight.setAmbient(Color("black"))
+scenelight.setPosition(Vector3(0, 10, -4))
+scenelight.setEnabled(True)
 
-light = Light.create()
-light.setColor(Color("#505050"))
-light.setAmbient(Color("#202020"))
-light.setPosition(Vector3(0, 20, -5))
-light.setEnabled(True)
-scene.setMainLight(light)
+# Create first light, light sphere and interactor
+dslight = Light.create()
+dslight.setColor(Color('#555555'))
+dslight.setAmbient(Color("black"))
+dslight.setEnabled(True)
+dslight.setLightType(LightType.Custom)
+dslight.setLightFunction('dropShadowLightFunction')
+dslight.setAttenuation(0, 1, 1)
 
-# headlight
-headlight = Light.create()
-headlight.setColor(Color("white"))
-headlight.setEnabled(True)
-getDefaultCamera().addChild(headlight)
-
-def onEvent():
-	e = getEvent()
-	# toggle headlight on and off
-	if(e.isKeyDown('l')):
-		print("Toggle Light")
-		headlight.setEnabled(not headlight.isEnabled())
-
-setEventFunction(onEvent)
+sphere = SphereShape.create(0.5, 4)
+sphere.setEffect("colored -d blue")
+sphere.setPosition(Vector3(-1, 3, -4))
+interactor = ToolkitUtils.setupInteractor("config/interactor")
+interactor.setSceneNode(sphere)
+sphere.addChild(dslight)
 
 
 
