@@ -761,7 +761,6 @@ BOOST_PYTHON_MODULE(omega)
 			PYAPI_ENUM_VALUE(Service,Generic)
 			PYAPI_ENUM_VALUE(Service,Brain)
 			PYAPI_ENUM_VALUE(Service,Wand) 
-			PYAPI_ENUM_VALUE(Service,Audio)
 			;
 
 	// Event
@@ -912,6 +911,7 @@ BOOST_PYTHON_MODULE(omega)
 	// SoundEnvironment
 	PYAPI_REF_BASE_CLASS(SoundEnvironment)
 		PYAPI_REF_GETTER(SoundEnvironment, loadSoundFromFile)
+		PYAPI_REF_GETTER(SoundEnvironment, setAssetDirectory)
 		;
 
 	// Sound
@@ -944,6 +944,7 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(SoundInstance, getMix)
 		PYAPI_METHOD(SoundInstance, setReverb)
 		PYAPI_METHOD(SoundInstance, getReverb)
+		PYAPI_METHOD(SoundInstance, fade)
 		;
 
 	// Free Functions
