@@ -86,9 +86,6 @@ namespace omega
 	//! @return true if the command launched succesfully, false otherwise.
 	OMEGA_API bool olaunch(const String& command);
 
-	//! Stops the current thread for the specified number of milliseconds.
-	OMEGA_API void osleep(uint msecs);
-
 	//! Returns the current working directory.
 	OMEGA_API String ogetcwd();
 
