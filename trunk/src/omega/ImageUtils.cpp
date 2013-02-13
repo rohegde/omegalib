@@ -127,6 +127,9 @@ void ImageUtils::internalInitialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ImageUtils::internalDispose()
 {
+	sShutdownLoaderThread = true;
+	sImageLoaderThread->stop();
+
 	FreeImage_DeInitialise();
 
 	// Clean up preallocated memory blocks.
