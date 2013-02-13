@@ -33,13 +33,13 @@
 
 #include <iostream>
 
-#ifdef WIN32
-#include <windows.h> // needed for Sleep 
-#else
-#include <unistd.h>
-#include<sys/wait.h>
-#define Sleep(x) usleep((x)*1000)
-#endif
+//#ifdef WIN32
+//#include <windows.h> // needed for Sleep 
+//#else
+//#include <unistd.h>
+//#include<sys/wait.h>
+//#define Sleep(x) usleep((x)*1000)
+//#endif
 
 // TODO: move thi to osystem (ogetcwd)
 #ifdef OMEGA_OS_WIN
@@ -293,14 +293,14 @@ namespace omega
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void osleep(uint msecs)
-	{
-#ifdef WIN32
-		Sleep(msecs);
-#else
-		usleep((msecs)*1000);
-#endif
-	}
+//	void osleep(uint msecs)
+//	{
+//#ifdef WIN32
+//		Sleep(msecs);
+//#else
+//		usleep((msecs)*1000);
+//#endif
+//	}
 
 	#ifndef OMEGA_OS_WIN
 	// the signal handler for SIGCHILD
