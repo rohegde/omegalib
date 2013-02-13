@@ -46,11 +46,12 @@ namespace omega {
 		{
 			LoadImageAsyncTaskData() {}
 			LoadImageAsyncTaskData(const String& _path, bool _isFullPath):
-				path(_path), isFullPath(_isFullPath) {}
+				path(_path), isFullPath(_isFullPath), preallocBlockId(-1) {}
 				
 			Ref<PixelData> image;
 			String path;
 			bool isFullPath;
+			int preallocBlockId;
 		};
 
 		typedef AsyncTask<LoadImageAsyncTaskData> LoadImageAsyncTask;
@@ -79,11 +80,14 @@ namespace omega {
 		static void internalInitialize();
 		static void internalDispose();
 
+		static bool setVerbose(bool value) { sVerbose = value; }
+
 	private:
 		static Vector<void*> sPreallocBlocks;
 		static size_t sPreallocBlockSize;
 		static int sLoadPreallocBlock;
 		static Thread* sImageLoaderThread;
+		static bool sVerbose;
 
 	private:
 		ImageUtils() {}
