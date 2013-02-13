@@ -86,7 +86,7 @@ namespace omega {
 		static Vector<void*> sPreallocBlocks;
 		static size_t sPreallocBlockSize;
 		static int sLoadPreallocBlock;
-		static Thread* sImageLoaderThread;
+		static List<Thread*> sImageLoaderThread;
 		static bool sVerbose;
 
 	private:
