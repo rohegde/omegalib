@@ -491,6 +491,7 @@ void MenuManager::initialize()
 		myDefaultMenuPosition = Config::getVector3fValue("menuDefaultPosition", sUi, myDefaultMenuPosition);
 		myDefaultMenuScale = Config::getFloatValue("menuDefaultScale", sUi, myDefaultMenuScale);
 		my3dMenuEnabled = Config::getBoolValue("menu3dEnabled", sUi, myDefaultMenuScale);
+		myNavigationSuspended = Config::getBoolValue("menuSuspendNavigation", sUi, myNavigationSuspended);
 
 		// Parse menu toggle button name (if present)
 		String toggleButtonName = Config::getStringValue("menuToggleButton", sUi, "");
