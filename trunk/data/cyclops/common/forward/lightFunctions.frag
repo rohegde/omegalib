@@ -14,7 +14,8 @@ vec4 pointLightFunction(SurfaceData sd, LightData ld)
 	l += sd.albedo * ld.ambient;
 	
 	vec3 ka = ld.attenuation;
-	float att = clamp(0, 1, 1.0 / (ka[0] + ld.distance * ka[1] + ld.distance * ld.distance * ka[2]));
+//	float att = clamp(0, 1, 1.0 / (ka[0] + ld.distance * ka[1] + ld.distance * ld.distance * ka[2]));
+	float att = 1.0 / (ka[0] + ld.distance * ka[1] + ld.distance * ld.distance * ka[2]);
 	
 	// Scale luminance by attenuation and return
 	vec4 luminance = l * att;
