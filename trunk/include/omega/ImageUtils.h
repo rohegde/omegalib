@@ -80,7 +80,7 @@ namespace omega {
 		static void internalInitialize();
 		static void internalDispose();
 
-		static bool setVerbose(bool value) { sVerbose = value; }
+		static void setVerbose(bool value) { sVerbose = value; }
 
 	private:
 		static Vector<void*> sPreallocBlocks;
