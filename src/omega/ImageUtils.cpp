@@ -39,6 +39,8 @@ Lock sImageQueueLock;
 Queue< Ref<ImageUtils::LoadImageAsyncTask> > sImageQueue;
 bool sShutdownLoaderThread = false;
 
+bool ImageUtils::sVerbose = false;
+
 Thread* ImageUtils::sImageLoaderThread = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -223,7 +225,7 @@ Ref<PixelData> ImageUtils::loadImage(const String& filename, bool hasFullPath)
 		return NULL;
 	}
 
-	ofmsg("Image loaded: %1%. Size: %2%x%3%", %filename %width %height);
+	if(sVerbose) ofmsg("Image loaded: %1%. Size: %2%x%3%", %filename %width %height);
 	
 	byte* data = pixelData->lockData();
 	
