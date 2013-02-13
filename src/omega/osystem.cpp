@@ -43,6 +43,7 @@
 
 #ifndef WIN32
 	#include <unistd.h>
+	#include<sys/wait.h>
 #endif
 
 // TODO: move thi to osystem (ogetcwd)
