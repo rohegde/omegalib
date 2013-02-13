@@ -7,6 +7,7 @@
 		* [OmegaPythonReference module omega]
 		* [CyclopsPythonReference module cyclops]
 		* [OmegaToolkitPythonReference module omegaToolkit]
+ * [CAVE2HowTo How to run python scripts in CAVE2]
  * [EffectReference Effects and Shaders]
 	* [ConfigReference Configuration files]
 	* [http://omegalib.googlecode.com/svn/refdocs/trunk/html/index.html API reference (trunk)]

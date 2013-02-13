@@ -1,0 +1,57 @@
+#summary Running omegalib scripts in CAVE2
+#sidebar Sidebar
+
+= Running omegalib scripts in CAVE2 =
+<p>*Last revision:* ver. 3.3 - 13 February 2012</p>
+This step by step guide explains how to run omegalib scripts on the EVL CAVE2 system. It is targeted at users that already have an account set up in the system. For more information on python programming check the [BasicPython] page, or the python reference section in the sidebar
+
+== Prerequisites ==
+The user should have a personal account on the CAVE2 cluster, and should be able to `ssh` into the cluster head node. Furthermore, password-less ssh into other nodes in the cluster from the head node should be set up.
+
+== Step 1: setting the path ==
+The omegalib user version is installed in `/data/evl/omegalib-user`. To simplify launching scripts from your account, you should add the binary folder from this install to your path. For instance, you can add the following lines to the `.bashrc` file in your home directory:
+{{{
+	# Add the omegalib bin directory to path
+	PATH=$PATH:/data/evl/omegalib-user/build/bin
+	export PATH
+}}}
+To see if you have done this correctly, log into into your account and type.
+{{{
+	> orun
+}}}
+This command should start omegalib on the cluster, showing a gray background on all screens. Your console should allow you to type in interactive python commands. For instance, if you type
+{{{
+	> sphere = SphereShape.create(1, 4)
+	> sphere.setPosition(Vector3(0, 1.5, -2))
+}}}
+You should see a sphere towards the front of CAVE2.
+
+=== Stopping orun ===
+To stop orun, type `oexit()` at the console, or press `control-C`. If orun gets stuck or crashes on some nodes and you can't control it anymore, you can force a kill by opening another ssh connection to the head node and running
+{{{
+	> orun -K
+}}}
+This command will kill any orun instances you control on all nodes in the cluster.
+
+== Step 2: running scripts ==
+Assume you have an omegalib script application in your home directory, into a directory called `hello`. If the main script for this application is called `main.py`, you can start it typing (from you home dir)
+{{{
+	> cd hello
+	> orun -s main.py
+}}}
+It is important to launch the script from the root directory of your application, since omegalib will use that directory to resolve relative data paths for file lookups.
+
+== Step 3: using custom configurations ==
+By default omegalib configures the system by looking up for a `default.cfg` configuration file. If the file is not found in you application directory, omegalib will use the one in `/data/evl/omegalib-user/core/data`. If you want to run a custom configuration in CAVE2, simply add a default.cfg file in your application directory. You can use this file to *redirect* the system configuration to a different file:
+{{{
+	config:
+	{
+		// We don't want to use this configuration file...
+		//systemConfig = "evl/lyra-xinerama.cfg";
+		
+		// Let's use this instead.
+		systemConfig = "system/desktop.cfg";
+	};
+}}}
+Or you can directly write a full system configuration into your own default.cfg.
+

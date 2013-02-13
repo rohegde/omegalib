@@ -24,3 +24,6 @@ This page offers extended information on how to develop applications for omegali
 == Configuring hardware systems ==
 Omegalib uses configuration files to describe system display and input capabilities.
  * [ConfigReference Configuration file reference]
+ 
+== Special Topics ==
+ * [CAVE2HowTo How to run python scripts in CAVE2]
