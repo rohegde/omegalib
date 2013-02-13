@@ -41,7 +41,9 @@ bool sShutdownLoaderThread = false;
 
 bool ImageUtils::sVerbose = false;
 
-Thread* ImageUtils::sImageLoaderThread = NULL;
+int sNumLoaderThreads = 4;
+
+List<Thread*> ImageUtils::sImageLoaderThread;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class ImageLoaderThread: public Thread
@@ -63,6 +65,8 @@ public:
 				Ref<ImageUtils::LoadImageAsyncTask> task = sImageQueue.front();
 				sImageQueue.pop();
 
+				sImageQueueLock.unlock();
+
 				Ref<PixelData> res = ImageUtils::loadImage(task->getData().path, task->getData().isFullPath);
 				if(!sShutdownLoaderThread)
 				{
@@ -70,7 +74,6 @@ public:
 					task->notifyComplete();
 				}
 
-				sImageQueueLock.unlock();
 			}
 			osleep(100);
 		}
@@ -130,7 +133,8 @@ void ImageUtils::internalInitialize()
 void ImageUtils::internalDispose()
 {
 	sShutdownLoaderThread = true;
-	sImageLoaderThread->stop();
+
+	foreach(Thread* t, sImageLoaderThread) t->stop();
 
 	FreeImage_DeInitialise();
 
@@ -145,10 +149,14 @@ void ImageUtils::internalDispose()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ImageUtils::LoadImageAsyncTask* ImageUtils::loadImageAsync(const String& filename, bool hasFullPath)
 {
-	if(sImageLoaderThread == NULL)
+	if(sImageLoaderThread.size() == 0)
 	{
-		sImageLoaderThread = new ImageLoaderThread();
-		sImageLoaderThread->start();
+		for(int i = 0; i < sNumLoaderThreads; i++)
+		{
+			Thread* t = new ImageLoaderThread();
+			t->start();
+			sImageLoaderThread.push_back(t);;
+		}
 	}
 
 	sImageQueueLock.lock();
