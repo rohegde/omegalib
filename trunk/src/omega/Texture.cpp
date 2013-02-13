@@ -74,6 +74,14 @@ void Texture::writePixels(PixelData* data)
 
 		GLenum format = GL_RGBA;
 		if(data->getFormat() == PixelData::FormatRgb) format = GL_RGB;
+		if(format == GL_RGB)
+		{
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		}
+		else
+		{
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+		}
 
 		glTexSubImage2D(GL_TEXTURE_2D, 0, xoffset, yoffset, w, h, format, GL_UNSIGNED_BYTE,(GLvoid*)pixels);
 		data->unlockData();
