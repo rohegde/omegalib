@@ -41,6 +41,10 @@
 //#define Sleep(x) usleep((x)*1000)
 //#endif
 
+#ifndef WIN32
+	#include <unistd.h>
+#endif
+
 // TODO: move thi to osystem (ogetcwd)
 #ifdef OMEGA_OS_WIN
     #include <direct.h>
