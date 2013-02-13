@@ -54,28 +54,44 @@
 #include <boost/utility.hpp>
 using namespace boost::python;
 
+// INTERNAL USE ONLY >>>>>
 #define PYAPI_RETURN_VALUE return_value_policy<return_by_value>()
 #define PYAPI_RETURN_REF return_value_policy<return_by_smart_ptr>()
 #define PYAPI_RETURN_NEW_INSTANCE return_value_policy<manage_new_object>()
 #define PYAPI_RETURN_INTERNAL_REF return_internal_reference<>()
 //#define PYAPI_RETURN_REFERENCE return_value_policy<copy_const_reference>()
 #define PYAPI_POINTER_LIST(itemName, className) class_< List<itemName*> > (className, no_init).def("__iter__", iterator< List<itemName*>, return_internal_reference<> >());
+// <<<<< INTERNAL USE ONLY
 
+//! Start declaring an enumeration
 #define PYAPI_ENUM(fullEnumName, enumName) enum_<fullEnumName>(#enumName)
+//! Declare an enumeration value
 #define PYAPI_ENUM_VALUE(enumName, valueName) .value(#valueName, enumName::valueName)
 
-#define PYAPI_METHOD(className, methodName) .def(#methodName, &className::methodName)
-#define PYAPI_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_value>())
-#define PYAPI_REF_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_smart_ptr>())
-#define PYAPI_STATIC_REF_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_smart_ptr>()).staticmethod(#methodName)
-#define PYAPI_PROPERTY(className, propName) .def_readwrite(#propName, &className::propName)
-
+//! Declare a new class with by-value semantics and no constructor. Useful for objects that can be 
+//! created on the C++ side and passed to python, but that should not be created by python code.
 #define PYAPI_BASE_CLASS(className) 	class_<className, boost::noncopyable >(#className, no_init)
+//! Declare a new class with by value semantics, and with an empty constructor.
 #define PYAPI_BASE_CLASS_WITH_CTOR(className) class_<className, boost::noncopyable >(#className)
 
+//! Declare a new class with by-reference semantics and that supports reference counting. 
+//! baseName is the id of the base for this class
 #define PYAPI_REF_CLASS(className, baseName) class_<className, bases<baseName>, boost::noncopyable, Ref<className> >(#className, no_init)
+//! Declare a new class with by-reference semantics and that supports reference counting. 
+//! The class has no base for the python API. Its C++ implementation should derive from ReferenceType.
 #define PYAPI_REF_BASE_CLASS(className) class_<className, boost::noncopyable, Ref<className> >(#className, no_init)
+//! Declare a new class with by-reference semantics and that supports reference counting. The class has an empty constuctor.
 #define PYAPI_REF_BASE_CLASS_WITH_CTOR(className) class_<className, boost::noncopyable, Ref<className> >(#className)
+
+//! Declare a method. Can be used for methods returning void, or returning simple plain types like int, float, bool etc.
+#define PYAPI_METHOD(className, methodName) .def(#methodName, &className::methodName)
+//! Declare a method returning an object by value
+#define PYAPI_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_value>())
+//! Declare a method returning an object by reference
+#define PYAPI_REF_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_smart_ptr>())
+//! Declare a static method returning an object by reference
+#define PYAPI_STATIC_REF_GETTER(className, methodName) .def(#methodName, &className::methodName, return_value_policy<return_by_smart_ptr>()).staticmethod(#methodName)
+#define PYAPI_PROPERTY(className, propName) .def_readwrite(#propName, &className::propName)
 
 bool OMEGA_API isRefPtrForwardingEnabled();
 void OMEGA_API disableRefPtrForwarding();
