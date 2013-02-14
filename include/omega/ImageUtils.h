@@ -82,12 +82,17 @@ namespace omega {
 
 		static void setVerbose(bool value) { sVerbose = value; }
 
+		//! Sets the number if image loading threads. Must be called before the fist call to loadImageAsync.
+		static void setImageLoaderThreads(int num) { sNumLoaderThreads = num; }
+		static int getImageLoaderThreads() { return sNumLoaderThreads; }
+		
 	private:
 		static Vector<void*> sPreallocBlocks;
 		static size_t sPreallocBlockSize;
 		static int sLoadPreallocBlock;
 		static List<Thread*> sImageLoaderThread;
 		static bool sVerbose;
+		static int sNumLoaderThreads;
 
 	private:
 		ImageUtils() {}
