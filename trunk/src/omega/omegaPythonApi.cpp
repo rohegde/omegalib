@@ -572,6 +572,13 @@ bool isMaster()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+String getHostname()
+{
+	Vector<String> args = StringUtils::split(SystemManager::instance()->getHostname(), ":");
+	return args[0];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneNode* getScene()
 {
 	return Engine::instance()->getScene();
@@ -994,7 +1001,7 @@ BOOST_PYTHON_MODULE(omega)
 	// NEW IN 3.3
 	def("setImageLoaderThreads", setImageLoaderThreads);
 	def("getImageLoaderThreads", getImageLoaderThreads);
-	
+	def("getHostname", getHostname, PYAPI_RETURN_VALUE);
 };
 
 // Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)
