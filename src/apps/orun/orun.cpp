@@ -501,6 +501,7 @@ void OmegaViewer::handleCommand(const String& cmd)
 			omsg("\t c           - toggle console");
 			omsg("\t s		     - print statistics");
 			omsg("\t w		     - toggle wand");
+			omsg("\t f		     - toggle draw fps");
 			omsg("\t porthole    - (experimental) enable porthole");
 		}
 	}
@@ -543,6 +544,13 @@ void OmegaViewer::handleCommand(const String& cmd)
 	{
 		// s: print statistics
 		SystemManager::instance()->getStatsManager()->printStats();
+	}
+	else if(args[0] == "f")
+	{
+		// f: toggle raw fps
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+		bool dfps = ds->isDrawFpsEnabled();
+		ds->drawFps(!dfps);
 	}
 	else if(args[0] == "porthole")
 	{

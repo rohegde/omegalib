@@ -76,13 +76,17 @@ public:
 	float getNearZ() { return myNearZ; }
 	float getFarZ() { return myFarZ; }
 
+	void drawFps(bool value) { myDrawFps = value; }
+	bool isDrawFpsEnabled() { return myDrawFps; }
+
 protected:
-	DisplaySystem(): myBackgroundColor(0.2f, 0.2f, 0.2f), myNearZ(0), myFarZ(0) {}
+	DisplaySystem(): myBackgroundColor(0.2f, 0.2f, 0.2f), myNearZ(0), myFarZ(0), myDrawFps(false) {}
 
 private:
 	Color myBackgroundColor;
 	float myNearZ;
 	float myFarZ;
+	bool myDrawFps;
 };
 
 }; // namespace omega

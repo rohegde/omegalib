@@ -36,7 +36,6 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 {
-	//myDrawFps = Config::getBoolValue("drawFps", scfg);
 	//myDrawStatistics = Config::getBoolValue("drawStatistics", scfg);
 
 	String cfgType = Config::getStringValue("geometry", scfg, "ConfigPlanar");
@@ -87,8 +86,6 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 		cfg.statsTile.drawStats = true;
 	}
 
-	bool drawFps = Config::getBoolValue("drawFps", scfg, false);
-
 	cfg.enableVSync= Config::getBoolValue("enableVSync", scfg, false);
 	cfg.enableSwapSync = Config::getBoolValue("enableSwapSync", scfg, true);
 
@@ -128,7 +125,6 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 				
 				tc->enabled = Config::getBoolValue("enabled", sTile);
 				
-				tc->drawFps = drawFps;
 				//tc.index = index;
 				//tc.interleaved = Config::getBoolValue("interleaved", sTile);
 				tc->device = Config::getIntValue("device", sTile);
