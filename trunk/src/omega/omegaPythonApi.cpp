@@ -680,6 +680,18 @@ void printDataPaths()
 	omsg(dm->getDataSourceNames());
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void setImageLoaderThreads(int threads)
+{
+	ImageUtils::setImageLoaderThreads(threads);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int getImageLoaderThreads()
+{
+	return ImageUtils::getImageLoaderThreads();
+}
+
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeYawOverloads, yaw, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodePitchOverloads, pitch, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeRollOverloads, roll, 1, 2) 
@@ -978,6 +990,11 @@ BOOST_PYTHON_MODULE(omega)
 	def("addDataPath", addDataPath);
 	def("resetDataPaths", addDataPath);
 	def("printDataPaths", printDataPaths);
+
+	// NEW IN 3.3
+	def("setImageLoaderThreads", setImageLoaderThreads);
+	def("getImageLoaderThreads", getImageLoaderThreads);
+	
 };
 
 // Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)

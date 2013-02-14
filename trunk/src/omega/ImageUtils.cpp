@@ -36,12 +36,14 @@ size_t ImageUtils::sPreallocBlockSize;
 int ImageUtils::sLoadPreallocBlock = -1;
 
 Lock sImageQueueLock;
+Lock sImageLoaderLock;
+
 Queue< Ref<ImageUtils::LoadImageAsyncTask> > sImageQueue;
 bool sShutdownLoaderThread = false;
 
 bool ImageUtils::sVerbose = false;
 
-int sNumLoaderThreads = 4;
+int ImageUtils::sNumLoaderThreads = 4;
 
 List<Thread*> ImageUtils::sImageLoaderThread;
 
@@ -58,9 +60,9 @@ public:
 
 		while(!sShutdownLoaderThread)
 		{
+			sImageQueueLock.lock();
 			if(sImageQueue.size() > 0)
 			{
-				sImageQueueLock.lock();
 
 				Ref<ImageUtils::LoadImageAsyncTask> task = sImageQueue.front();
 				sImageQueue.pop();
@@ -74,6 +76,10 @@ public:
 					task->notifyComplete();
 				}
 
+			}
+			else
+			{
+				sImageQueueLock.unlock();
 			}
 			osleep(100);
 		}
