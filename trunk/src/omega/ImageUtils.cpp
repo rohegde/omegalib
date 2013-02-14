@@ -36,7 +36,7 @@ size_t ImageUtils::sPreallocBlockSize;
 int ImageUtils::sLoadPreallocBlock = -1;
 
 Lock sImageQueueLock;
-Lock sImageLoaderLock;
+//Lock sImageLoaderLock;
 
 Queue< Ref<ImageUtils::LoadImageAsyncTask> > sImageQueue;
 bool sShutdownLoaderThread = false;

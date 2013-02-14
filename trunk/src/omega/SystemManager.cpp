@@ -378,3 +378,10 @@ void SystemManager::loadAppConfig(const String& filename)
 		myAppConfig = cfg;
 	}
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+String SystemManager::getHostname() 
+{ 
+	Vector<String> args = StringUtils::split(myHostname, ":");
+	return args[0];
+}

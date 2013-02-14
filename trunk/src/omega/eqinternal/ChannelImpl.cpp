@@ -269,7 +269,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 			}
 		}
     }
-    else if(myDC.tile->drawFps)
+	else if(ds->isDrawFpsEnabled())
     {
         glMatrixMode( GL_PROJECTION );
         glLoadIdentity();

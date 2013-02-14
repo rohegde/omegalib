@@ -114,7 +114,7 @@ namespace omega
 		bool isInitialized();
 		
 		bool isMaster() { return myIsMaster; }
-		const String& getHostname() { return myHostname; }
+		String getHostname();
 
 		PythonInterpreter* getScriptInterpreter() { return myInterpreter; }
 

@@ -51,7 +51,6 @@ namespace omega
 
 		DisplayTileConfig(): 
 			drawStats(false), 
-			drawFps(false), 
 			disableScene(false), 
 			disableOverlay(false), 
 			stereoMode(Mono),
@@ -82,7 +81,6 @@ namespace omega
 		float yaw;
 		float pitch;
 		bool drawStats;
-		bool drawFps;
 		bool disableScene;
 		bool disableOverlay;
 
