@@ -424,7 +424,7 @@ void EqualizerDisplaySystem::setupEqInitArgs(int& numArgs, const char** argv)
 		argv[0] = appName;
 		argv[1] = "--eq-client";
 		argv[2] = "--eq-listen";
-		argv[3] = SystemManager::instance()->getHostname().c_str();
+		argv[3] = SystemManager::instance()->getHostnameAndPort().c_str();
 		numArgs = 4;
 	}
 }

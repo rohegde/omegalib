@@ -385,3 +385,9 @@ String SystemManager::getHostname()
 	Vector<String> args = StringUtils::split(myHostname, ":");
 	return args[0];
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+String SystemManager::getHostnameAndPort() 
+{ 
+	return myHostname;
+}
