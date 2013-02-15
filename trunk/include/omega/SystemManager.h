@@ -115,6 +115,7 @@ namespace omega
 		
 		bool isMaster() { return myIsMaster; }
 		String getHostname();
+		String getHostnameAndPort();
 
 		PythonInterpreter* getScriptInterpreter() { return myInterpreter; }
 
