@@ -35,7 +35,7 @@ List< EngineModule* > ModuleServices::mysNonCoreModules;
 bool ModuleServices::mysCoreMode = true;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool EngineModule::enableSharedData() 
+void EngineModule::enableSharedData() 
 { 
 	oassert(!myInitialized); 
 	mySharedDataEnabled = true; 

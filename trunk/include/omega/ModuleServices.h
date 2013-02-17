@@ -46,7 +46,7 @@ namespace omega {
 		EngineModule(): myInitialized(false), myEngine(NULL), myName(mysNameGenerator.generate()), myPriority(PriorityNormal) {}
 		virtual ~EngineModule();
 
-		bool enableSharedData();
+		void enableSharedData();
 
 		virtual void initialize() {}
 		virtual void dispose() {}
