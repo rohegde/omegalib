@@ -55,7 +55,7 @@ private:
 class HelloApplication: public EngineModule
 {
 public:
-	HelloApplication() {}
+	HelloApplication() { enableSharedData(); }
 
 	~HelloApplication()
 	{

@@ -698,6 +698,16 @@ int getImageLoaderThreads()
 	return ImageUtils::getImageLoaderThreads();
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void printModules()
+{
+	Vector<EngineModule*> mods = ModuleServices::getModules();
+	foreach(EngineModule* m, mods)
+	{
+		ofmsg("%1%", %m->getName());
+	}
+}
+
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeYawOverloads, yaw, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodePitchOverloads, pitch, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeRollOverloads, roll, 1, 2) 
@@ -1001,6 +1011,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("setImageLoaderThreads", setImageLoaderThreads);
 	def("getImageLoaderThreads", getImageLoaderThreads);
 	def("getHostname", getHostname, PYAPI_RETURN_VALUE);
+	def("printModules", printModules);
 };
 
 // Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)

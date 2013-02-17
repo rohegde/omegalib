@@ -28,10 +28,7 @@
 #define __MODULE_SERVICES_H__
 
 #include "osystem.h"
-//#include "Renderer.h"
 #include "Engine.h"
-//#include "omega/ApplicationBase.h"
-//#include "omega/SystemManager.h"
 #include "omega/SharedDataServices.h"
 
 namespace omega {
@@ -45,9 +42,11 @@ namespace omega {
 		enum Priority { PriorityLow = 0, PriorityNormal = 1, PriorityHigh = 2 };
 
 	public:
-		EngineModule(const String& name): myInitialized(false), myEngine(NULL), myName(name), myPriority(PriorityNormal) {}
+		EngineModule(const String& name): myInitialized(false), myEngine(NULL), myName(name), myPriority(PriorityNormal), mySharedDataEnabled(false) {}
 		EngineModule(): myInitialized(false), myEngine(NULL), myName(mysNameGenerator.generate()), myPriority(PriorityNormal) {}
 		virtual ~EngineModule();
+
+		bool enableSharedData();
 
 		virtual void initialize() {}
 		virtual void dispose() {}
@@ -79,6 +78,7 @@ namespace omega {
 		String myName;
 		Priority myPriority;
 		bool myInitialized;
+		bool mySharedDataEnabled;
 
 		static NameGenerator mysNameGenerator;
 	};
@@ -98,6 +98,8 @@ namespace omega {
 		static void setNonCoreMode() { mysCoreMode = false; }
 		static void setCoreMode() { mysCoreMode = true; }
 		static bool isCoreMode() { return mysCoreMode; }
+		
+		static Vector<EngineModule*> getModules();
 
 	private:
 		static List< Ref<EngineModule> > mysModules;

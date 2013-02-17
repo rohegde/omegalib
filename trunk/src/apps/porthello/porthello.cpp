@@ -87,7 +87,7 @@ private:
 class HelloApplication: public EngineModule
 {
 public:
-	HelloApplication() {}
+	HelloApplication() { enableSharedData(); }
 
 	virtual void initializeRenderer(Renderer* r) 
 	{ 

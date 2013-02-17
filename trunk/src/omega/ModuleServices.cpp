@@ -35,6 +35,13 @@ List< EngineModule* > ModuleServices::mysNonCoreModules;
 bool ModuleServices::mysCoreMode = true;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+bool EngineModule::enableSharedData() 
+{ 
+	oassert(!myInitialized); 
+	mySharedDataEnabled = true; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 EngineModule::~EngineModule()
 {
 	ofmsg("~EngineModule %1%", %myName);
@@ -52,7 +59,7 @@ void EngineModule::doInitialize(Engine* server)
 			initializeRenderer(r);
 		}
 
-		SharedDataServices::registerObject(this, myName);
+		if(mySharedDataEnabled) SharedDataServices::registerObject(this, myName);
 		myInitialized = true; 
 	}
 }
@@ -63,7 +70,7 @@ void EngineModule::doDispose()
 	if(myInitialized) 
 	{
 		myInitialized = false;
-		SharedDataServices::unregisterObject(myName);
+		if(mySharedDataEnabled) SharedDataServices::unregisterObject(myName);
 		dispose();
 	}
 }
@@ -171,6 +178,14 @@ void ModuleServices::disposeNonCoreModules()
 		mysModules.remove(module);
 	}
 	mysNonCoreModules.clear();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Vector<EngineModule*> ModuleServices::getModules()
+{
+	Vector<EngineModule*> ret;
+	foreach(EngineModule* m, mysModules) ret.push_back(m);
+	return ret;
 }
 
 //static void preDraw(Engine* srv, Renderer* r, const DrawContext& context)
