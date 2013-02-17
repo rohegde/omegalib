@@ -29,6 +29,20 @@
 
 #include "omega/osystem.h"
 
+//! Mark beginning of timed code block.
+#define OMEGA_STAT_BEGIN(name) \
+	static Stat* __##name##Stat = NULL; \
+	Timer __##name##Timer; \
+	__##name##Timer.start();
+
+//! Mark end of timed code block.
+#define OMEGA_STAT_END(name) \
+	__##name##Timer.stop(); \
+	if(__##name##Stat == NULL) { \
+		StatsManager* sm = SystemManager::instance()->getStatsManager(); \
+		__##name##Stat = sm->createStat(#name); } \
+	__##name##Stat->addSample(__##name##Timer.getElapsedTime() * 1000);
+
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
