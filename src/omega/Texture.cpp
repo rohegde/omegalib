@@ -30,6 +30,8 @@
 
 using namespace omega;
 
+bool Texture::sUsePbo = false;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Texture::Texture(GpuContext* context): 
 	GpuResource(context),
@@ -48,6 +50,14 @@ void Texture::initialize(int width, int height)
 	glBindTexture(GL_TEXTURE_2D, myId);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, myWidth, myHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	
+	if(sUsePbo)
+	{
+		glGenBuffers(1, &myPboId);
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, myPboId);
+        glBufferData(GL_PIXEL_UNPACK_BUFFER, width * height * 4, 0, GL_STREAM_DRAW);
+	}
+
 	GLenum glErr = glGetError();
 
 	if(glErr)
@@ -65,12 +75,17 @@ void Texture::writePixels(PixelData* data)
 {
 	if(myInitialized && data != NULL)
 	{
+		if(sUsePbo)
+		{
+			glBindBuffer(GL_PIXEL_UNPACK_BUFFER, myPboId);
+		}
+
 		glBindTexture(GL_TEXTURE_2D, myId);
 		int xoffset = 0;
 		int yoffset = 0;
 		int h = data->getHeight();
 		int w = data->getWidth();
-		byte* pixels = data->lockData();
+		byte* pixels = data->bind(getContext());
 
 		GLenum format = GL_RGBA;
 		if(data->getFormat() == PixelData::FormatRgb) format = GL_RGB;
@@ -84,7 +99,7 @@ void Texture::writePixels(PixelData* data)
 		}
 
 		glTexSubImage2D(GL_TEXTURE_2D, 0, xoffset, yoffset, w, h, format, GL_UNSIGNED_BYTE,(GLvoid*)pixels);
-		data->unlockData();
+		data->unbind();
 		GLenum glErr = glGetError();
 
 		if(glErr)

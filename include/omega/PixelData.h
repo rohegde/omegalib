@@ -36,12 +36,16 @@ namespace omega {
 	{
 	public:
 		enum Format { FormatRgb, FormatRgba, FormatMonochrome};
+		enum UsageFlags { RenderTexture = 1 << 0 , PixelBufferObject = 1 << 1 };
 	public:
-		PixelData(Format fmt, int width, int height, byte* data = NULL);
+		PixelData(Format fmt, int width, int height, byte* data = NULL, uint usageFlags = 0);
 		virtual ~PixelData();
 
-		byte* lockData();
-		void unlockData();
+		byte* map();
+		void unmap();
+
+		byte* bind(const GpuContext* context);
+		void unbind();
 
 		void resize(int width, int height);
 
@@ -64,12 +68,19 @@ namespace omega {
 		bool isDirty() { return myDirty; }
 		void setDirty(bool value) { myDirty = value; }
 
+		bool checkUsage(UsageFlags flag) { return (myUsageFlags & flag) == flag; }
 
+		void copyFrom(PixelData* other);
 
 	protected:
 		void refreshTexture(Texture* texture, const DrawContext& context);
 
 	private:
+		void updateSize();
+
+	private:
+		uint myUsageFlags;
+
 		Lock myLock;
 		Format myFormat;
 		byte* myData;
@@ -78,6 +89,9 @@ namespace omega {
 		size_t mySize;
 		bool myDeleteDisabled;
 		bool myDirty;
+
+		// PBO stuff
+		GLuint myPBOId;
 	};
 }; // namespace omega
 

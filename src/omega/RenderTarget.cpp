@@ -135,28 +135,31 @@ void RenderTarget::readback()
 	{
 		if(myReadbackColorTarget->getFormat() == PixelData::FormatRgb)
 		{
+			GLvoid* target = myReadbackColorTarget->bind(getContext());
 			glReadPixels(
 				myReadbackViewport.x(), myReadbackViewport.y(), 
 				myReadbackViewport.width(), myReadbackViewport.height(), GL_RGB, GL_UNSIGNED_BYTE, 
-				(GLvoid*)myReadbackColorTarget->lockData());
-			myReadbackColorTarget->unlockData();
+				target);
+			myReadbackColorTarget->unbind();
 		}
 		else if(myReadbackColorTarget->getFormat() == PixelData::FormatRgba)
 		{
+			GLvoid* target = myReadbackColorTarget->bind(getContext());
 			glReadPixels(
 				myReadbackViewport.x(), myReadbackViewport.y(), 
 				myReadbackViewport.width(), myReadbackViewport.height(), GL_RGBA, GL_UNSIGNED_BYTE, 
-				(GLvoid*)myReadbackColorTarget->lockData());
-			myReadbackColorTarget->unlockData();
+				target);
+			myReadbackColorTarget->unbind();
 		}
 	}
 	if(myReadbackDepthTarget != NULL)
 	{
+		GLvoid* target = myReadbackDepthTarget->bind(getContext());
 		glReadPixels(
 			myReadbackViewport.x(), myReadbackViewport.y(), 
 			myReadbackViewport.width(), myReadbackViewport.height(), GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, 
-			(GLvoid*)myReadbackDepthTarget->lockData());
-		myReadbackDepthTarget->unlockData();
+			target);
+		myReadbackDepthTarget->unbind();
 	}
 	if(needBinding) unbind();
 }

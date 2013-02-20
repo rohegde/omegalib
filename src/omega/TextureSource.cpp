@@ -54,6 +54,19 @@ Texture* TextureSource::getTexture(const DrawContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void TextureSource::attachTexture(Texture* tex, const DrawContext& context)
+{
+	uint id = context.gpuContext->getId();
+	// If a texture already exists for this context it will be deattached and will not be refreshed
+	// by this object anymore. Texture ref counting should take care of deletion when needed.
+	myTextures[id] = tex;
+	// always refresh the texture
+	refreshTexture(myTextures[id], context);
+	// Make sure the refresh flag for this texture is reset.
+	myTextureUpdateFlags &= ~(1 << id);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void TextureSource::setDirty(bool value)
 {
 	myDirty = value;

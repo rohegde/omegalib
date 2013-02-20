@@ -38,6 +38,9 @@ namespace omega
 	class OMEGA_API Texture: public GpuResource
 	{
 	public:
+		static void enablePboTransfers(bool value) { sUsePbo = value; }
+
+	public:
 		Texture(GpuContext* context);
 
 		//! Initializes this texture object
@@ -61,10 +64,14 @@ namespace omega
 		//@}
 
 	private:
+		static bool sUsePbo;
+
 		bool myInitialized;
 		GLuint myId;
 		int myWidth;
 		int myHeight;
+
+		GLuint myPboId;
 
 		GpuManager::TextureUnit myTextureUnit;
 	};

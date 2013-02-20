@@ -79,10 +79,10 @@ osg::Image* OsgModule::pixelDataToOsg(PixelData* img)
         internalFormat,
         pixelFormat,
         dataType,
-		img->lockData(),
+		img->map(),
 		leaveMemoryAlone ? osg::Image::NO_DELETE : osg::Image::USE_MALLOC_FREE);
 
-	img->unlockData();
+	img->unmap();
 
 	return pOsgImage;
 }

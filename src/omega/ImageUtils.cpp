@@ -241,7 +241,7 @@ Ref<PixelData> ImageUtils::loadImage(const String& filename, bool hasFullPath)
 
 	if(sVerbose) ofmsg("Image loaded: %1%. Size: %2%x%3%", %filename %width %height);
 	
-	byte* data = pixelData->lockData();
+	byte* data = pixelData->map();
 	
 	for(int i = 0; i < height; i++)
 	{
@@ -257,7 +257,7 @@ Ref<PixelData> ImageUtils::loadImage(const String& filename, bool hasFullPath)
 			//data[j * pixelOffset + 3] = pixels[j * pixelOffset + 3];
 		}
 	}
-	pixelData->unlockData();
+	pixelData->unmap();
 	
 	FreeImage_Unload(image);
 
@@ -276,7 +276,7 @@ ByteArray* ImageUtils::encode(PixelData* data, ImageFormat format)
 			FIMEMORY* fmem = FreeImage_OpenMemory();
 
 			// For some reason it looks like color masks are ignored right now. Maybe it is just when encoding to png.
-			byte* pdpixels = data->lockData();
+			byte* pdpixels = data->map();
 			FIBITMAP* fibmp = FreeImage_ConvertFromRawBits(
 				pdpixels,
 				data->getWidth(),
@@ -299,7 +299,7 @@ ByteArray* ImageUtils::encode(PixelData* data, ImageFormat format)
 			FreeImage_CloseMemory(fmem);
 			FreeImage_Unload(fibmp);
 
-			data->unlockData();
+			data->unmap();
 
 			return encodedData;
 		}
@@ -313,7 +313,7 @@ ByteArray* ImageUtils::encode(PixelData* data, ImageFormat format)
 			FIMEMORY* fmem = FreeImage_OpenMemory();
 
 			// For some reason it looks like color masks are ignored right now. Maybe it is just when encoding to png.
-			byte* pdpixels = data->lockData();
+			byte* pdpixels = data->map();
 			FIBITMAP* fibmp = FreeImage_ConvertFromRawBits(
 				pdpixels,
 				data->getWidth(),
@@ -336,7 +336,7 @@ ByteArray* ImageUtils::encode(PixelData* data, ImageFormat format)
 			FreeImage_CloseMemory(fmem);
 			FreeImage_Unload(fibmp);
 
-			data->unlockData();
+			data->unmap();
 
 			return encodedData;
 		}
