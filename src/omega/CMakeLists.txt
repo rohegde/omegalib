@@ -265,6 +265,15 @@ if(OMEGA_USE_OPENCL)
 	set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h )
 endif(OMEGA_USE_OPENCL)
 
+# Fast image loading library
+if(NOT WIN32)
+	set(OMEGA_USE_FASTIMAGE true CACHE BOOL "Enable Fast Image API for image loading")
+	if(OMEGA_USE_FASTIMAGE)
+		set( srcs ${srcs} image.c)
+		target_link_libraries(omega -ltiff -ljpeg -lpng -lm)
+	endif()
+endif()
+
 ###################################################################################################
 # Group source files into separate folders for visual studio project (this is just eye candy)
 source_group(omega REGULAR_EXPRESSION omega/)		
