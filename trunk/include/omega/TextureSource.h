@@ -40,6 +40,7 @@ namespace omega {
 		virtual ~TextureSource() {}
 
 		virtual Texture* getTexture(const DrawContext& context);
+		virtual void attachTexture(Texture* tex, const DrawContext& context);
 
 		virtual bool isDirty() { return myDirty; }
 		virtual void setDirty(bool value = true);

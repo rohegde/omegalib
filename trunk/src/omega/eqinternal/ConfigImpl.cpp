@@ -238,7 +238,7 @@ uint32_t ConfigImpl::startFrame( const uint128_t& version )
 	mySharedData.setUpdateContext(uc);
 
 	// Update fps stats every 10 frames.
-	if(uc.frameNum % 10 == 0)
+	if(uc.frameNum % 10 == 0 && uc.dt > 0.0f)
 	{
 		myFpsStat->addSample(1.0f / uc.dt);
 	}

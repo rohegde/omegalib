@@ -29,7 +29,8 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PixelData::PixelData(Format fmt, int width, int height, byte* data):
+PixelData::PixelData(Format fmt, int width, int height, byte* data, uint usageFlags):
+	myUsageFlags(usageFlags),
 	myData(data),
 	myWidth(width),
 	myHeight(height),
@@ -39,25 +40,21 @@ PixelData::PixelData(Format fmt, int width, int height, byte* data):
 	myDirty(true)
 {
 	setDirty(true);
-	if(myData == NULL)
+	updateSize();
+
+	if(checkUsage(PixelBufferObject))
 	{
-		switch(myFormat)
-		{
-		case FormatRgb:
-			mySize = width * height * 3;
-			break;
-		case FormatRgba:
-			mySize = width * height * 4;
-			break;
-		case FormatMonochrome:
-			mySize = width * height;
-			break;
-		}
-		myData = (byte*)malloc(mySize);
+		// This pixel data storage is handled through an opengl pixel buffer object.
+		glGenBuffers(1, &myPBOId);
+        glBindBuffer(GL_PIXEL_UNPACK_BUFFER, myPBOId);
+        glBufferData(GL_PIXEL_UNPACK_BUFFER, mySize, data, GL_STREAM_DRAW);
 	}
 	else
 	{
-		myDeleteDisabled = true;
+		// If no user pointer is passed, allocate memory. Otherwise, use user pointer and
+		// Disable deallocation.
+		if(myData == NULL) myData = (byte*)malloc(mySize);
+		else myDeleteDisabled = true;
 	}
 }
 
@@ -68,6 +65,27 @@ PixelData::~PixelData()
 	{
 		//ofmsg("PixelData::~PixelData: deleting %1%x%2% image", %myWidth %myHeight);
 		free(myData);
+	}
+	if(checkUsage(PixelBufferObject))
+	{
+		glDeleteBuffers(1, &myPBOId);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PixelData::updateSize()
+{
+	switch(myFormat)
+	{
+	case FormatRgb:
+		mySize = myWidth * myHeight * 3;
+		break;
+	case FormatRgba:
+		mySize = myWidth * myHeight * 4;
+		break;
+	case FormatMonochrome:
+		mySize = myWidth * myHeight;
+		break;
 	}
 }
 
@@ -82,18 +100,7 @@ void PixelData::resize(int width, int height)
 		myHeight = height;
 
 		if(!myDeleteDisabled) free(myData);
-		switch(myFormat)
-		{
-		case FormatRgb:
-			mySize = width * height * 3;
-			break;
-		case FormatRgba:
-			mySize = width * height * 4;
-			break;
-		case FormatMonochrome:
-			mySize = width * height;
-			break;
-		}
+		updateSize();
 		myData = (byte*)malloc(mySize);
 
 		setDirty(true);
@@ -132,16 +139,48 @@ int PixelData::getBpp()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-byte* PixelData::lockData()
+byte* PixelData::map()
 {
+	myLock.lock();
+	if(checkUsage(PixelBufferObject))
+	{
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, myPBOId);
+        byte* ptr = (byte*)glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
+		return ptr;
+	}
+	return myData;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PixelData::unmap()
+{
+	if(checkUsage(PixelBufferObject))
+	{
+		glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
+        glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+	}
+	myLock.unlock();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+byte* PixelData::bind(const GpuContext* context)
+{
+	if(checkUsage(PixelBufferObject))
+	{
+        glBindBuffer(GL_PIXEL_UNPACK_BUFFER, myPBOId);
+		return NULL;
+	}
 	myLock.lock();
 	return myData;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PixelData::unlockData()
+void PixelData::unbind()
 {
-	myLock.unlock();
+	if(checkUsage(PixelBufferObject))
+	{
+        glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,10 +188,8 @@ uint PixelData::getRedMask()
 {
 	switch(myFormat)
 	{
-	case FormatRgb:
-		return 0x0000ff;
-	case FormatRgba:
-		return 0xff000000;
+	case FormatRgb:	return 0x0000ff;
+	case FormatRgba: return 0xff000000;
 	}
 	return 0;
 }
@@ -162,10 +199,8 @@ uint PixelData::getGreenMask()
 {
 	switch(myFormat)
 	{
-	case FormatRgb:
-		return 0x00ff00;
-	case FormatRgba:
-		return 0x00000000;
+	case FormatRgb: return 0x00ff00;
+	case FormatRgba: return 0x00000000;
 	}
 	return 0;
 }
@@ -175,10 +210,8 @@ uint PixelData::getBlueMask()
 {
 	switch(myFormat)
 	{
-	case FormatRgb:
-		return 0xff0000;
-	case FormatRgba:
-		return 0x00000000;
+	case FormatRgb: return 0xff0000;
+	case FormatRgba: return 0x00000000;
 	}
 	return 0;
 }
@@ -188,12 +221,23 @@ uint PixelData::getAlphaMask()
 {
 	switch(myFormat)
 	{
-	case FormatRgb:
-		return 0x000000;
-	case FormatRgba:
-		return 0xff000000;
+	case FormatRgb: return 0x000000;
+	case FormatRgba: return 0xff000000;
 	}
 	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PixelData::copyFrom(PixelData* other)
+{
+	if(other != NULL && other->getSize() == mySize)
+	{
+		void* meptr = map();
+		void* otherptr = other->map();
+		memcpy(meptr, otherptr, mySize);
+		unmap();
+		unmap();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
