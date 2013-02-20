@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include "gl.h"
+#include "GL/gl.h"
 
 /* NOTE: Channel byte count implies channel storage type:                     */
 /*     b = 1 selects unsigned byte                                            */

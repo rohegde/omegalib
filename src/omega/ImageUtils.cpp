@@ -28,6 +28,10 @@
 #include "omega/SystemManager.h"
 #include "FreeImage.h"
 
+#ifdef OMEGA_USE_FASTIMAGE
+#include "image.h"
+#endif
+
 using namespace omega;
 
 // Vector of preallocated memory blocks for image loading.
@@ -70,11 +74,13 @@ public:
 				sImageQueueLock.unlock();
 
 				Ref<PixelData> res = ImageUtils::loadImage(task->getData().path, task->getData().isFullPath);
+				
 				if(!sShutdownLoaderThread)
 				{
 					task->getData().image = res;
 					task->notifyComplete();
 				}
+				//sImageQueueLock.unlock();
 
 			}
 			else
@@ -196,17 +202,48 @@ Ref<PixelData> ImageUtils::loadImage(const String& filename, bool hasFullPath)
 		path = filename;
 	}
 
+	uint bpp = 0;
+	int width = 0;
+	int height = 0;
+
 	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(path.c_str(), 0);
+	
+#ifdef OMEGA_USE_FASTIMAGE
+	// Use the fast image loader for jpegs only for now.
+	if(format == FIF_JPEG)
+	{
+		int b;
+		int channels;
+		byte* p = (byte*)image_read(path.c_str(), &width, &height, &channels, &b);
+		bpp = channels * b;
+		ofmsg("IMAGE %1% %2% %3% %4%", %width %height %channels %b);
+		Ref<PixelData> pixelData;
+		if(channels == 3)
+		{
+			pixelData = new PixelData(PixelData::FormatRgb, width, height, p);
+		}
+		else if(channels == 4)
+		{
+			pixelData = new PixelData(PixelData::FormatRgba, width, height, p);
+		}
+		// The pixel data object will own the image pointer, so re-enable delete.
+		pixelData->setDeleteDisabled(true);
+		return pixelData;
+	}
+#endif
+
+	//OMEGA_STAT_BEGIN(imageLoad)
 	FIBITMAP* image = FreeImage_Load(format, path.c_str());
+	//OMEGA_STAT_END(imageLoad)
 	if(image == NULL)
 	{
 		ofwarn("ImageUtils::loadImage: could not load %1%: unsupported file format, corrupted file or out of memory.", %filename);
 		return NULL;
 	}
 
-	uint bpp = FreeImage_GetBPP(image);
-	int width = FreeImage_GetWidth(image);
-	int height = FreeImage_GetHeight(image);
+	bpp = FreeImage_GetBPP(image);
+	width = FreeImage_GetWidth(image);
+	height = FreeImage_GetHeight(image);
 
 	// If blockId is not -1, use a preallocated memory block to load this image.
 	byte* pdata = NULL;

@@ -270,7 +270,7 @@ if(NOT WIN32)
 	set(OMEGA_USE_FASTIMAGE true CACHE BOOL "Enable Fast Image API for image loading")
 	if(OMEGA_USE_FASTIMAGE)
 		set( srcs ${srcs} image.c)
-		target_link_libraries(omega -ltiff -ljpeg -lpng -lm)
+		add_definitions(-DOMEGA_USE_FASTIMAGE)
 	endif()
 endif()
 
@@ -325,6 +325,12 @@ endif()
 if(OMEGA_USE_SAGE)
 	include_directories(${SAGE_INCLUDE_DIR})
 	target_link_libraries( omega ${SAGE_LIBS})
+endif()
+
+if(OMEGA_USE_FASTIMAGE)
+	#target_link_libraries(omega -ltiff -ljpeg -lpng -lm)
+	find_package(JPEG)
+	target_link_libraries(omega ${JPEG_LIBRARIES})
 endif()
 
 ###################################################################################################
