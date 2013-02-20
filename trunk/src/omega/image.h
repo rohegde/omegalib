@@ -21,7 +21,7 @@
 #ifndef UTIL3D_IMAGE_H
 #define UTIL3D_IMAGE_H
 
-#include "gl.h"
+//#include "gl.h"
 
 #ifdef __cplusplus
 extern "C" {
