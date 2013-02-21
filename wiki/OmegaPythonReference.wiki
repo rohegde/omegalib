@@ -116,6 +116,7 @@ Example:
 
 === `getSoundEnvironment()` ===
 Returns an instance of the `SoundEnvironment` class if sound support is available on the system. Return `None` otherwise.
+For more information on sound support check the [https://code.google.com/p/omicron-sdk/wiki/SoundAPIReference omicron Sound Reference Page]
 
 === `isSoundEnabled()` ===
 Returns `True` if sound is enabled and available on the system
@@ -164,6 +165,9 @@ Returns `True` if the script is executing on the *master node* of a cluster disp
 
 -------------------------------------------------------------------------------
 == Misc. Functions ==
+
+=== `getHostname()` ===
+Gets the name of the host running the slave instance of omegalib
 
 === `getScene()` ===
 Returns the root node of the scene.
@@ -215,9 +219,14 @@ Prints the tree of children of `node` up to the specified depth
 === `printObjCounts()` ===
 Prints a list and count of currently allocated refcounted objects
 
+=== `printModules()` ===
+Lists the modules currently active in the application
+
 === `loadImage(filename)` ===
 Loads an image given a file path. If loading is succesfull, returns an instance of `PixelData`. If loading fails, return `None`
 
+=== `setImageLoaderThreads(int)`, `getImageLoaderThreads()` ===
+Gets or sets the number of threads used for asynchronous image loading. Async image loading is currently available only for native code modules.
 
 -------------------------------------------------------------------------------
 ==  `class SceneNode` ==
@@ -252,6 +261,8 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_
 || `isBoundingBoxVisible()`, `setBoundingBoxVisible(value)` || ||
 || `isSelected()`, `setSelected(value)`|| ||
 || `isSelectable()`, `setSelectable(value)` || ||
+|| `getTag()`, `setTag(tag)` || Gets or sets the string tag for the node ||
+|| `getFacingCamera()`, `setFacingCamera(camera)` || Gets or sets the camera this node should be always facing (billboard mode) ||
 
 === Examples ===
 ==== Basic ====
