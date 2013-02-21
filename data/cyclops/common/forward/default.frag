@@ -84,6 +84,8 @@ LitSurfaceData computeLighting(SurfaceData surf)
 
 	// Add emissive surface component to final luminance.
 	litSurfData.luminance += surf.emissive;
+	litSurfData.luminance.a = surf.albedo.a; //u
+	
 	
 	return litSurfData;
 }
