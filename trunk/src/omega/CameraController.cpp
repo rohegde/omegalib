@@ -32,7 +32,7 @@ using namespace omega;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 CameraController::CameraController(): 
 	myCamera(NULL), 
-	myOriginalOrientation( Quaternion::Identity() ), 
+	//myOriginalOrientation( Quaternion::Identity() ), 
 	mySpeed(2.0f) 
 { 
 	setPriority(PriorityLow); 
@@ -45,24 +45,24 @@ bool CameraController::isEnabled()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void CameraController::updateCamera(const Vector3f& speed, const Quaternion& orientation, float dt)
-{
-	if(myCamera != NULL)
-	{
-		Quaternion o = myOriginalOrientation * orientation;
-		Vector3f ns = o * speed;
-		Vector3f position = myCamera->getPosition() + (ns * dt);
-		myCamera->setPosition(position);
-		myCamera->setOrientationAndResetController(o);
-	}
-}
+//void CameraController::updateCamera(const Vector3f& speed, const Quaternion& orientation, float dt)
+//{
+//	if(myCamera != NULL)
+//	{
+//		Quaternion o = orientation * myOriginalOrientation;
+//		Vector3f ns = o * speed;
+//		Vector3f position = myCamera->getPosition() + (ns * dt);
+//		myCamera->setPosition(position);
+//		myCamera->setOrientationAndResetController(orientation);
+//	}
+//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void CameraController::updateCamera(const Vector3f& speed, float yaw, float pitch, float roll, float dt)
-{
-	Quaternion orientation =   AngleAxis(yaw, Vector3f::UnitY()) * AngleAxis(pitch, Vector3f::UnitX()) * AngleAxis(roll, Vector3f::UnitZ());
-	updateCamera(speed, orientation, dt);
-}
+//void CameraController::updateCamera(const Vector3f& speed, float yaw, float pitch, float roll, float dt)
+//{
+//	Quaternion orientation =   AngleAxis(pitch, Vector3f::UnitX()) * AngleAxis(yaw, Vector3f::UnitY()) * AngleAxis(roll, Vector3f::UnitZ());
+//	updateCamera(speed, orientation, dt);
+//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Vector3f CameraController::computeSpeedVector(uint moveFlags, float speed, float strafeMultiplier)
@@ -81,15 +81,15 @@ Vector3f CameraController::computeSpeedVector(uint moveFlags, float speed, float
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void CameraController::reset()
 {
-	if( getCamera() != NULL )
-	{
-		myOriginalOrientation = getCamera()->getOrientation();
-	}
+	//if( getCamera() != NULL )
+	//{
+	//	myOriginalOrientation = getCamera()->getOrientation();
+	//}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void Camera::setOrientationAndResetController(const Quaternion& value)
-{ 
-	SceneNode::setOrientation(value);
-	if(myController != NULL) myController->reset();
-}
+//void Camera::setOrientationAndResetController(const Quaternion& value)
+//{ 
+//	SceneNode::setOrientation(value);
+//	if(myController != NULL) myController->reset();
+//}

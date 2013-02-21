@@ -67,6 +67,6 @@ void GamepadCameraController::handleEvent(const Event& evt)
 void GamepadCameraController::update(const UpdateContext& context)
 {
 	if(!isEnabled()) return;
-	updateCamera(mySpeedVector, myYaw, myPitch, 0, context.dt);
+	//updateCamera(mySpeedVector, myYaw, myPitch, 0, context.dt);
 }
 

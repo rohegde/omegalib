@@ -73,7 +73,7 @@ void MouseCameraController::handleEvent(const Event& evt)
 void MouseCameraController::update(const UpdateContext& context)
 {
 	if(!isEnabled()) return;
-	updateCamera(myMoveDir, myYaw, myPitch, 0, context.dt);
+	//updateCamera(myMoveDir, myYaw, myPitch, 0, context.dt);
 	myMoveDir = Vector3f::Zero();
 	reset();
 	myYaw = 0;
