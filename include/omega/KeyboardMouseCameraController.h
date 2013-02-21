@@ -44,7 +44,6 @@ namespace omega {
 
 	private:
 		// Navigation stuff.
-		float mySpeed;
 		float myStrafeMultiplier;
 		float myYawMultiplier;
 		float myPitchMultiplier;

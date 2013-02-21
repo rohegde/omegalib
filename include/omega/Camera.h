@@ -71,7 +71,7 @@ namespace omega {
 		//const Vector3f& getProjectionOffset() { return myProjectionOffset; }
 		//void setProjectionOffset(const Vector3f& value) { myProjectionOffset = value; }
 
-		void setOrientationAndResetController(const Quaternion& value);
+		//void setOrientationAndResetController(const Quaternion& value);
 
 		//! PYAPI
 		void setYawPitchRoll(const Vector3f& yawPitchRoll);

@@ -31,6 +31,7 @@
 #include "omega/Engine.h"
 #include "omega/Actor.h"
 #include "omega/ImageUtils.h"
+#include "omega/CameraController.h"
 #ifdef OMEGA_USE_PORTHOLE
 	#include "omega/PortholeService.h"
 #endif
@@ -864,8 +865,15 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_GETTER(SceneNode, getFacingCamera)
 	;
 
+	// CameraController
+	PYAPI_REF_BASE_CLASS(CameraController)
+		PYAPI_METHOD(CameraController, getSpeed)
+		PYAPI_METHOD(CameraController, setSpeed);
+
 	// Camera
 	PYAPI_REF_CLASS(Camera, Node)
+		PYAPI_REF_GETTER(Camera, getController)
+		PYAPI_METHOD(Camera, setController)
 		PYAPI_METHOD(Camera, setYawPitchRoll)
 		PYAPI_GETTER(Camera, getHeadOffset)
 		PYAPI_METHOD(Camera, setHeadOffset)

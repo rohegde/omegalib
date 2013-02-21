@@ -31,7 +31,6 @@ using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 KeyboardMouseCameraController::KeyboardMouseCameraController():
-	mySpeed(2.0f),
 	myStrafeMultiplier(1.0f),
 	myYawMultiplier(0.002f),
 	myPitchMultiplier(0.002f),
@@ -77,10 +76,15 @@ void KeyboardMouseCameraController::update(const UpdateContext& context)
 {
 	if(!isEnabled()) return;
 
+	Camera* c = getCamera();
+
 	Vector3f speed = computeSpeedVector(myMoveFlags, mySpeed, myStrafeMultiplier);
-	updateCamera(speed, myYaw, myPitch, 0, context.dt);
+	//updateCamera(speed, myYaw, myPitch, 0, context.dt);
+	c->setYawPitchRoll(Vector3f(myPitch, myYaw, 0));
+	c->translate(speed * context.dt, Node::TransformLocal);
+
 	reset();
-	myYaw = 0;
-	myPitch = 0;
+	//myYaw = 0;
+	//myPitch = 0;
 }
 

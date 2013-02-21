@@ -56,16 +56,16 @@ namespace omega {
 		virtual void setup(Setting& s) {}
 		virtual void update(const UpdateContext& context) {}
 		virtual void handleEvent(const Event& evt) {}
-		virtual void reset(); 
-		void setCamera(Camera* value) { myCamera = value; reset();}
+		virtual void reset();
+		void setCamera(Camera* value) { myCamera = value; reset(); }
 		Camera* getCamera() { return myCamera; }
 		
 		float getSpeed() { return mySpeed; }
 		void setSpeed(float value) { mySpeed = value; }
 
 		//! Utility method: updates the camera position using speed, yaw pich roll, and a time step.
-		void updateCamera(const Vector3f& speed, float yaw, float pitch, float roll, float dt);
-		void updateCamera(const Vector3f& speed, const Quaternion& orientation, float dt);
+		//void updateCamera(const Vector3f& speed, float yaw, float pitch, float roll, float dt);
+		//void updateCamera(const Vector3f& speed, const Quaternion& orientation, float dt);
 
 		//! Utility method: return a speed vector depeding on move flags and speed multipliers.
 		//! Useful for turning digital input from keyboards / gamepads into speed information.
@@ -73,7 +73,7 @@ namespace omega {
 
 	private:
 		Camera* myCamera;
-		Quaternion myOriginalOrientation;
+		//Quaternion myOriginalOrientation;
 		
 	protected:
 		float mySpeed;

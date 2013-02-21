@@ -115,7 +115,7 @@ void WandCameraController::handleEvent(const Event& evt)
 		
 		if(myFreeFly)
 		{
-			Vector3f dv = (evt.getPosition() - myLastPointerPosition) * 8;
+			Vector3f dv = (evt.getPosition() - myLastPointerPosition) * 4 * CameraController::mySpeed;
 			//float speedMul = 1 + dv.norm();
 			//ofmsg("Speedmul %1%", %speedMul);
 			mySpeed += dv;
