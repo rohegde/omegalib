@@ -5,6 +5,13 @@
 = omegalib v3.4 (*current developer version*) =
 *Initial Revision*: 2478
 
+== Major Changes ==
+omega
+	* PixelData and Texture support PixelBufferObject transfers
+	* Improvements to python API
+	* Shader fixes
+
+
 ------------------------------------------------------------------------
 = omegalib v3.3 =
 *Initial Revision*: 2440
