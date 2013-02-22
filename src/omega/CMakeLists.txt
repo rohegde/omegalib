@@ -267,7 +267,7 @@ endif(OMEGA_USE_OPENCL)
 
 # Fast image loading library
 if(NOT WIN32)
-	set(OMEGA_USE_FASTIMAGE true CACHE BOOL "Enable Fast Image API for image loading")
+	set(OMEGA_USE_FASTIMAGE false CACHE BOOL "Enable Fast Image API for image loading")
 	if(OMEGA_USE_FASTIMAGE)
 		set( srcs ${srcs} image.c)
 		add_definitions(-DOMEGA_USE_FASTIMAGE)
