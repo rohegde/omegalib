@@ -198,8 +198,7 @@ namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Camera::setYawPitchRoll(const Vector3f& yawPitchRoll) 
 	{ 
-		Quaternion orientation = AngleAxis(yawPitchRoll[0], Vector3f::UnitX()) * 
-			AngleAxis(yawPitchRoll[1], Vector3f::UnitY()) * 
+		Quaternion orientation = AngleAxis(yawPitchRoll[1], Vector3f::UnitY()) * AngleAxis(yawPitchRoll[0], Vector3f::UnitX()) * 
 			AngleAxis(yawPitchRoll[2], Vector3f::UnitZ());
 		SceneNode::setOrientation(orientation);
 	}

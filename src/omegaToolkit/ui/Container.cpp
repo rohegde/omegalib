@@ -646,6 +646,12 @@ void ContainerRenderable::draw3d(const DrawContext& context)
 		glColor4ub(255, 255, 255, (GLubyte)(c3ds.alpha * 255));
 
 		glPushMatrix();
+
+		if(c3ds.node != NULL)
+		{
+			getRenderer()->pushTransform(c3ds.node->getFullTransform());
+		}
+
 		if(!c3ds.center)
 		{
 			glTranslatef(c3ds.position[0], c3ds.position[1], c3ds.position[2]);
@@ -655,6 +661,7 @@ void ContainerRenderable::draw3d(const DrawContext& context)
 			glTranslatef(c3ds.position[0] - width / 2, c3ds.position[1] - height / 2, c3ds.position[2]);
 		}
 
+		// TODO: redo this using DrawInterface.
 		Vector3f downLeft = c3ds.up;
 		Vector3f topRight = downLeft.cross(c3ds.normal);
 		downLeft *= height;
@@ -676,6 +683,11 @@ void ContainerRenderable::draw3d(const DrawContext& context)
 		glVertex3f(downRight.x(), downRight.y(), downRight.z());
 
 		glEnd();
+
+		if(c3ds.node != NULL)
+		{
+			getRenderer()->popTransform();
+		}
 		glPopMatrix();
 
 		myTexture->unbind();

@@ -186,6 +186,9 @@ Menu::Menu(const String& name, MenuManager* manager):
 
 	my3dSettings.enable3d = MenuManager::instance()->is3dMenuEnabled();
 	myContainer->setAutosize(true);
+
+	// By default menus are attached to the default camera.
+	my3dSettings.node = manager->getEngine()->getDefaultCamera();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -241,6 +244,7 @@ void Menu::update(const UpdateContext& context)
 	//c3ds.position = my3dSettings.position;
 	//c3ds.scale = my3dSettings.scale;
 	c3ds.alpha += (my3dSettings.alpha - c3ds.alpha) * speed;
+	c3ds.node = my3dSettings.node;
 	//c3ds.alpha = my3dSettings.alpha;
 
 	if(myContainer->isVisible())
@@ -403,18 +407,37 @@ void Menu::placeOnWand(const Event& evt)
 	if(SystemManager::instance()->getDisplaySystem()->getViewRayFromEvent(evt, ray))
 	{
 		Vector3f pos = ray.getPoint(distance);
+		Vector3f dir = ray.getDirection();
+
+		// If the menu is attached to a node (usually the default camera)
+		// use untransformed values for its position and direction, since the node transform applied during draw will
+		// take care of transformations.
+		if(my3dSettings.node != NULL)
+		{
+			pos = my3dSettings.node->convertWorldToLocalPosition(pos);
+			dir = -Vector3f::UnitZ(); //my3dSettings.node->getOrientation() * dir;
+		}
+
 		//ofmsg("menu position: %1%", %pos);
 		Container3dSettings& c3ds = get3dSettings();
 		Widget* menuWidget = myContainer;
 		Vector3f offset = Vector3f(0, menuWidget->getHeight() * c3ds.scale, 0);
 		c3ds.position = pos - offset;
-		c3ds.normal = -ray.getDirection();
+		c3ds.normal = -dir;
 		
-		// Find up vector.
-		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
-		Camera* cam = Engine::instance()->getDefaultCamera();			
-		Vector3f up = Vector3f::UnitY();
-		c3ds.up = cam->getOrientation() * up;
+		// If the menu widget is not attached to a node, set the up vector sing the default camera orientation.
+		if(my3dSettings.node == NULL)
+		{
+			DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+			Camera* cam = Engine::instance()->getDefaultCamera();			
+			Vector3f up = Vector3f::UnitY();
+			c3ds.up = cam->getOrientation() * up;
+		}
+		else
+		{
+			// If the menu is attached to a node, the up vector is just positive Y (the node transform applied later will do the rest)
+			c3ds.up = Vector3f::UnitY();
+		}
 		
 		//c3ds.normal = Vector3f(0, 0, 1);
 		c3ds.scale = scale;
@@ -461,7 +484,7 @@ MenuManager::MenuManager():
 	myMainMenu(NULL),
 	myDefaultMenuPosition(-1.0, -0.5, -2.0),
 	myDefaultMenuScale(1.0f),
-	myNavigationSuspended(true),
+	myNavigationSuspended(false),
 	myRayPlaceEnabled(true),
 	myMenuToggleButton(Event::User),
 	myUseMenuToggleButton(false),
@@ -490,7 +513,7 @@ void MenuManager::initialize()
 		myRayPlaceEnabled = Config::getBoolValue("menuRayPlaceEnabled", sUi, myRayPlaceEnabled);
 		myDefaultMenuPosition = Config::getVector3fValue("menuDefaultPosition", sUi, myDefaultMenuPosition);
 		myDefaultMenuScale = Config::getFloatValue("menuDefaultScale", sUi, myDefaultMenuScale);
-		my3dMenuEnabled = Config::getBoolValue("menu3dEnabled", sUi, myDefaultMenuScale);
+		my3dMenuEnabled = Config::getBoolValue("menu3dEnabled", sUi, true);
 		myNavigationSuspended = Config::getBoolValue("menuSuspendNavigation", sUi, myNavigationSuspended);
 
 		// Parse menu toggle button name (if present)
