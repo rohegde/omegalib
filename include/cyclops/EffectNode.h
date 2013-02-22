@@ -48,11 +48,7 @@ namespace cyclops {
 	class CY_API Material: public Uniforms
 	{
 	public:
-		Material(osg::StateSet* ss):
-			Uniforms(ss),
-			myStateSet(ss),
-			myTransparent(false)
-			{}
+		Material(osg::StateSet* ss);
 
 		void setDiffuseColor(const Color& color);
 		void setEmissiveColor(const Color& color);

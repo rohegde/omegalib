@@ -34,6 +34,12 @@
 using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Material::Material(osg::StateSet* ss): Uniforms(ss), myStateSet(ss), myTransparent(false)
+{
+	ss->setNestRenderBins(false);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Material::setDiffuseColor(const Color& color)
 {
 	if(myMaterial == NULL)
@@ -207,6 +213,9 @@ protected:
 
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
+		ss->setNestRenderBins(false);
+		addPass(ss);
+
 		ProgramAsset* asset = getProgram("Colored", variation, vertexShaderVariant);
 
 		if(asset != NULL)
@@ -223,6 +232,7 @@ protected:
 				ss->setMode(GL_BLEND, osg::StateAttribute::ON);
 				//ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF); 
 				ss->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+				//ss->setBinName("SORT_FRONT_TO_BACK");
 				if(additive)
 				{
 					osg::BlendFunc* bf = new osg::BlendFunc();
@@ -265,8 +275,6 @@ protected:
 			mat->setSpecular(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
 			ss->setAttributeAndModes(mat, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 		}
-
-		addPass(ss);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -307,6 +315,8 @@ protected:
 		
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
+		ss->setNestRenderBins(false);
+		addPass(ss);
 		osg::Program* prog = NULL;
 		ProgramAsset* asset = getProgram("Textured", variant, vertexShaderVariant);
 		if(asset != NULL)
@@ -361,8 +371,6 @@ protected:
 				ss->setTextureAttribute(0, tex);
 			}
 		}
-
-		addPass(ss);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -405,6 +413,8 @@ protected:
 		
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
+		ss->setNestRenderBins(false);
+		addPass(ss);
 		osg::Program* prog = NULL;
 		ProgramAsset* asset = getProgram("Bump", variant, vertexShaderVariant);
 		if(asset != NULL)

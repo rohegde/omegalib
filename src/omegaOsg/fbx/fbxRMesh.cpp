@@ -307,6 +307,7 @@ osg::Geometry* getGeometry(osg::Geode* pGeode, GeometryMap& geometryMap,
         {
             stateSet->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
             stateSet->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+			stateSet->setNestRenderBins(false);
         }
     }
 
