@@ -83,9 +83,7 @@ LitSurfaceData computeLighting(SurfaceData surf)
 	@fragmentLightSection
 
 	// Add emissive surface component to final luminance.
-	litSurfData.luminance += surf.emissive;
-	litSurfData.luminance.a = surf.albedo.a; //u
-	
+	litSurfData.luminance =  litSurfData.luminance * surf.albedo; // + surf.emissive;
 	
 	return litSurfData;
 }
