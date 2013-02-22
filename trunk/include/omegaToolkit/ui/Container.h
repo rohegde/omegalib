@@ -38,6 +38,7 @@ namespace omegaToolkit { namespace ui {
 		Container3dSettings():
 			enable3d(false),
 			center(false),
+			node(NULL),
 			position(Vector3f::Zero()),
 			normal(Vector3f::UnitZ()), 
 			up(Vector3f::UnitY()),
@@ -57,6 +58,9 @@ namespace omegaToolkit { namespace ui {
 		//! For example, a 100x300 pixel container with a scale of 0.01 will be drawn as a 
 		// billboard 1x3 meters big in 3d mode.
 		float scale;
+
+		//! node is used to make transforms relative to a scene node.
+		SceneNode* node;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

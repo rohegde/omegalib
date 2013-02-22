@@ -153,6 +153,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_PROPERTY(Container3dSettings, scale)
 		PYAPI_PROPERTY(Container3dSettings, up)
 		PYAPI_PROPERTY(Container3dSettings, alpha)
+		PYAPI_PROPERTY(Container3dSettings, node)
 		;
 
 	// UiModule
