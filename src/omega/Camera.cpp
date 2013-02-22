@@ -75,7 +75,7 @@ void Camera::setup(Setting& s)
 	if(s.exists("orientation"))
 	{
 		Vector3f camOri = Config::getVector3fValue("orientation", s); 
-		setYawPitchRoll(camOri * Math::DegToRad);
+		setPitchYawRoll(camOri * Math::DegToRad);
 	}
 	
 	myTrackerSourceId = Config::getIntValue("trackerSourceId", s, -1);

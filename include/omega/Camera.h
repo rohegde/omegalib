@@ -74,7 +74,7 @@ namespace omega {
 		//void setOrientationAndResetController(const Quaternion& value);
 
 		//! PYAPI
-		void setYawPitchRoll(const Vector3f& yawPitchRoll);
+		void setPitchYawRoll(const Vector3f& yawPitchRoll);
 				
 		const AffineTransform3& getViewTransform();
 
@@ -196,11 +196,9 @@ namespace omega {
 	{ myAutoAspect = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Camera::setYawPitchRoll(const Vector3f& yawPitchRoll) 
+	inline void Camera::setPitchYawRoll(const Vector3f& pitchYawRoll) 
 	{ 
-		Quaternion orientation = AngleAxis(yawPitchRoll[1], Vector3f::UnitY()) * AngleAxis(yawPitchRoll[0], Vector3f::UnitX()) * 
-			AngleAxis(yawPitchRoll[2], Vector3f::UnitZ());
-		SceneNode::setOrientation(orientation);
+		SceneNode::setOrientation(Math::quaternionFromEuler(pitchYawRoll));
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
