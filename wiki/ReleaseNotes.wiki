@@ -10,6 +10,11 @@ omega
 	* PixelData and Texture support PixelBufferObject transfers
 	* Improvements to python API
 	* Shader fixes
+omegaToolikt
+	* 3d widgets can be attached to scene nodes
+	* Menus are by default attached to camera
+	* Camera navigation stays enabled by default when in menus. Can be disabled through a config file option.
+
 
 
 ------------------------------------------------------------------------

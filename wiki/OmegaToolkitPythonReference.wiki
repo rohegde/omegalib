@@ -1,7 +1,7 @@
 #summary Python reference: module omegaToolkit
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.3 - 31 January 2013</p>*
+<p>*Last revision:* ver. 3.4 - 21 February 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -101,6 +101,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/structomega_too
 || `up` || The container 3d up vector as a `Vector3` value ||
 || `scale` || The container scale. Scale is the conversion between pixels and world units ||
 || `alpha` || The container transparency (between 0.0 and 1.0) ||
+|| `node` || The scene node this container is attached to. When a container is attached to a scene node and rendered in 3d, its position and orientation will be relative to the attached node. This is useful to create camera-attached 3d widgets. ||
 
 ---------------------------------------------------------------------------------------------------
 ==  `class UiModule` ==
