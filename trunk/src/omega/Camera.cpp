@@ -136,7 +136,7 @@ void Camera::update(const UpdateContext& context)
 	myHeadTransform.rotate(myHeadOrientation);
 
 	// Update view transform.
-	myViewTransform = Math::makeViewMatrix(mPosition, mOrientation);
+	myViewTransform = Math::makeViewMatrix(getDerivedPosition(), getDerivedOrientation());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

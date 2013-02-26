@@ -415,7 +415,17 @@ void Menu::placeOnWand(const Event& evt)
 		if(my3dSettings.node != NULL)
 		{
 			pos = my3dSettings.node->convertWorldToLocalPosition(pos);
-			dir = -Vector3f::UnitZ(); //my3dSettings.node->getOrientation() * dir;
+			// This is a bit of trickery: If the event is a pointer event we use the orientation of the node
+			// to determine the menu orientation.
+			// If the event is a Wand event (with 6DOF tracking) we use the actual wand orientation.
+			if(evt.getServiceType() == Event::ServiceTypeWand)
+			{
+				dir = evt.getOrientation() * -Vector3f::UnitZ() ;
+			}
+			else
+			{
+				dir = -Vector3f::UnitZ(); //my3dSettings.node->getOrientation() * dir;
+			}
 		}
 
 		//ofmsg("menu position: %1%", %pos);
