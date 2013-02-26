@@ -33,6 +33,8 @@ selected = None
 
 #--------------------------------------------------------------------------------------------------
 mm = MenuManager.createAndInitialize()
+# disable main menu
+mm.setMainMenu(None)
 fxmnu = mm.createMenu("fxmenu")
 
 cmnu = fxmnu.addSubMenu("colored")
@@ -87,6 +89,7 @@ def onObjectSelected(node, distance):
 		selected = node
 		fxmnu.placeOnWand(e)
 		fxmnu.show()
+		mm.setMainMenu(fxmnu)
 		fxmnu.setLabel(selected.getName() + " effects")
 
 #--------------------------------------------------------------------------------------------------
@@ -106,7 +109,9 @@ def onEvent():
 		# When the confirm button is pressed:
 		if(e.isButtonDown(confirmButton)):
 			# If the effect menu is is open, close it
-			if(fxmnu.isVisible()): fxmnu.hide()
+			if(fxmnu.isVisible()): 
+				fxmnu.hide()
+				mm.setMainMenu(None)
 			# ...otherwise, shoot a ray in the scene to perform selection
 			else:
 				if(r[0]): querySceneRay(r[1], r[2], onObjectSelected)
