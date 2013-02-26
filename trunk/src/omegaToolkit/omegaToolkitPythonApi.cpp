@@ -115,6 +115,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_STATIC_REF_GETTER(MenuManager, createAndInitialize)
 		PYAPI_REF_GETTER(MenuManager, createMenu)
 		PYAPI_METHOD(MenuManager, setMainMenu)
+		PYAPI_REF_GETTER(MenuManager, getMainMenu)
 		;
 
 	// Menu

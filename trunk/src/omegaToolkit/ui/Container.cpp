@@ -493,6 +493,17 @@ bool Container::rayToPointerEvent(const Event& inEvt, Event& outEvt)
 
 	// Intersect the pointer ray with the container 3d plane.
 	Vector3f pos = my3dSettings.position;
+	Vector3f normal = my3dSettings.normal;
+
+	// If the container is attached to a node, convert the container position and normal to world
+	// space before computing the plane intersection.
+	if(my3dSettings.node != NULL)
+	{
+		const AffineTransform3& xform = my3dSettings.node->getFullTransform();
+		pos = my3dSettings.node->convertLocalToWorldPosition(pos);
+		normal = my3dSettings.node->getDerivedOrientation() * normal;
+	}
+
 	if(my3dSettings.center)
 	{
 		float width = getWidth() * my3dSettings.scale;
@@ -500,7 +511,7 @@ bool Container::rayToPointerEvent(const Event& inEvt, Event& outEvt)
 		pos -= Vector3f(width / 2, height / 2, 0);
 	}
 
-	Plane plane(my3dSettings.normal, pos);
+	Plane plane(normal, pos);
 	std::pair<bool, float> result = Math::intersects(r, plane);
 	if(result.first)
 	{
