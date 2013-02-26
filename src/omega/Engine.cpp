@@ -300,19 +300,22 @@ void Engine::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Engine::update(const UpdateContext& context)
 {
+	// First update the script
+	getSystemManager()->getScriptInterpreter()->update(context);
+
+	// Then run update on modules
+    ModuleServices::update(this, context);
+	
+	// Update cameras after modules, to make sure the camera view transform keeps into account 
+	// changes applied during script or module execution.
 	myDefaultCamera->update(context);
 	foreach(Camera* c, myCameras)
 	{
 		c->update(context);
 	}
-
-	getSystemManager()->getScriptInterpreter()->update(context);
-
-    ModuleServices::update(this, context);
-
+	
     myScene->update(false, false);
 
-	
 	if( soundEnv != NULL )
 	{
 		// Update the listener position with the camera's 'navigative' position

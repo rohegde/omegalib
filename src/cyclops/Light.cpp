@@ -42,7 +42,7 @@ Light::Light(SceneManager* scene):
 	SceneNode(scene->getEngine()),
 	mySceneManager(scene),
 	myColor(Color::White),
-	myAmbient(Color::Gray),
+	myAmbient(Color::Black),
 	myAttenuation(Vector3f(1.0, 0.0, 0.0)),
 	myEnabled(false),
 	mySoftShadowWidth(0.005f),
