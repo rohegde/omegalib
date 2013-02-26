@@ -1,11 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 vec4 pointLightFunction(SurfaceData sd, LightData ld)
 {
-	vec4 l = vec4(0, 0, 0, 1);
+	vec4 l = vec4(0, 0, 0, sd.albedo.a);
 	float lambertTerm = dot(sd.normal, ld.dir) * ld.shadow; 
 	if (lambertTerm > 0.0) 
 	{ 
-		l.rgb += ld.diffuse.rgb * lambertTerm; 
+		l.rgb += sd.albedo.rgb * ld.diffuse.rgb * lambertTerm; 
 		
 		// Compute specular factor
 		float specular = pow( max(dot(ld.halfDir, sd.normal), 0.0), sd.shininess ); 
@@ -26,7 +26,7 @@ vec4 pointLightFunction(SurfaceData sd, LightData ld)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 vec4 spotLightFunction(SurfaceData sd, LightData ld)
 {
-	vec4 l = vec4(0, 0, 0, 1);
+	vec4 l = vec4(0, 0, 0, sd.albedo.a);
 	float lambertTerm = dot(sd.normal, ld.dir) * ld.shadow; 
 	if (lambertTerm > 0.0) 
 	{ 
@@ -34,7 +34,7 @@ vec4 spotLightFunction(SurfaceData sd, LightData ld)
 		
 		if(spot > ld.spotCutoff)
 		{
-			l.rgb += ld.diffuse.rgb * lambertTerm; 
+			l.rgb += sd.albedo.rgb * ld.diffuse.rgb * lambertTerm; 
 			
 			// Compute specular factor
 			float specular = pow( max(dot(ld.halfDir, sd.normal), 0.0), sd.shininess ); 
