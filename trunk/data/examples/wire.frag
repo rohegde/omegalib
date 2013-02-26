@@ -24,7 +24,7 @@ SurfaceData getSurfaceData(void)
 	else sd.emissive.a = (vx + vy) * min(unif_Gloss * gl_Color.r, 1.0);
 	if(sd.emissive.a <= 0) discard;
 
-	sd.albedo.a=0.0;
+	sd.albedo.a=1.0;
 	
 	if(var_CurrentX > unif_ClipX) discard;
 	
