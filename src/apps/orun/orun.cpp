@@ -323,6 +323,10 @@ void OmegaViewer::initialize()
 	// Initialize the python wrapper module for this class.
 	initomegaViewer();
 
+	// Run the init script.
+	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+	interp->runFile("orun_init.py");
+
 	// If a default script has been passed to orun, queue it's execution through the python
 	// interpreter. Queuing it will make sure the script is launched on all nodes when running
 	// in a cluster environment.
@@ -334,7 +338,6 @@ void OmegaViewer::initialize()
 		sDefaultScript = StringUtils::replaceAll(sDefaultScript, "OMEGA_APP_ROOT", OMEGA_APPROOT_DIRECTORY);
 #endif
 
-		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
 		// If this flag is active, set the script containing folder as the default application data path.
 		if(sAddScriptDirectoryToData)
 		{
