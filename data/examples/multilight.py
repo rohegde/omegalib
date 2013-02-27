@@ -18,7 +18,7 @@ blackColor = Color("black")
 
 sphere = SphereShape.create(0.5, 4)
 sphere.setPosition(Vector3(0, 2, -4))
-sphere.setEffect("colored -d white -s 10 -g 1.0")
+sphere.setEffect("colored -d #00ffff50 -t -s 10 -g 1.0")
 
 plane = PlaneShape.create(10, 10)
 plane.setPosition(Vector3(0, 0, -4))
@@ -68,36 +68,35 @@ lightSphere3.castShadow(False)
 # Load a static model
 torusModel = ModelInfo()
 torusModel.name = "torus"
-torusModel.path = "cyclops/test/torus.fbx"
+torusModel.path = "data/cube.fbx"#"cyclops/test/torus.fbx"
 torusModel.size = 1.0
 scene.loadModel(torusModel)
 
 # Create a scene object using the loaded model
 torus = StaticObject.create("torus")
 torus.setPosition(Vector3(-1, 2, -4))
-torus.setEffect("colored -d yellow")
+torus.setEffect("colored -d #ffffff50 -t")
 
 # Load an animated model
-skelModel = ModelInfo()
-skelModel.name = "skelModel"
-skelModel.path = "data/surgseq/surgseq3.fbx"
-scene.loadModel(skelModel)
+# skelModel = ModelInfo()
+# skelModel.name = "skelModel"
+# skelModel.path = "data/surgseq/surgseq3.fbx"
+# scene.loadModel(skelModel)
 
-# Create a scene object using the loaded animated model, and start the animation
-skel = AnimatedObject.create("skelModel")
-skel.setPosition(Vector3(2, 1.5, -4))
-skel.setScale(Vector3(0.02, 0.02, 0.02))
-skel.yaw(radians(-30))
-skel.setEffect("textured")
-skel.loopAnimation(0)
+# # Create a scene object using the loaded animated model, and start the animation
+# skel = AnimatedObject.create("skelModel")
+# skel.setPosition(Vector3(2, 1.5, -4))
+# skel.setScale(Vector3(0.02, 0.02, 0.02))
+# skel.yaw(radians(-30))
+# skel.setEffect("textured")
+# skel.loopAnimation(0)
 
 # create a main menu to turn on and off lights
 mm = MenuManager.createAndInitialize()
-lightmnu = mm.createMenu("lightmenu")
+lightmnu = mm.getMainMenu()
 lightmnu.addButton("Toggle red light", "toggleLight1()")
 lightmnu.addButton("Toggle green light", "toggleLight2()")
 lightmnu.addButton("Toggle blue light", "toggleLight3()")
-mm.setMainMenu(lightmnu);
 
 # Set shadow caster light
 scene.setMainLight(light2)
