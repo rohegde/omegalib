@@ -46,9 +46,9 @@ kmnu = fxmnu.addSubMenu("multipass")
 #--------------------------------------------------------------------------------------------------
 # colored effect definitions
 fx = "colored -d red"; cmnu.addButton(fx, "selected.setEffect('" + fx + "')")
-fx = "colored -d #404040"; cmnu.addButton(fx, "selected.setEffect('" + fx + "')")
+fx = "colored -d #ff404050 -t"; cmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 fx = "colored -d blue -g 1.0 -s 30"; cmnu.addButton(fx, "selected.setEffect('" + fx + "')")
-fx = "colored -d #202020 -g 1.0 -s 30 -t -a"; cmnu.addButton(fx, "selected.setEffect('" + fx + "')")
+fx = "colored -d #20202050 -g 1.0 -s 30 -t"; cmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 fx = "colored -d #202020 -g 1.0 -s 30 -t -a -C"; cmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 
 #--------------------------------------------------------------------------------------------------
