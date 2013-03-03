@@ -32,6 +32,7 @@
 #include "omega/Actor.h"
 #include "omega/ImageUtils.h"
 #include "omega/CameraController.h"
+#include "omega/MissionControl.h"
 #ifdef OMEGA_USE_PORTHOLE
 	#include "omega/PortholeService.h"
 #endif
@@ -322,15 +323,14 @@ void printObjCounts()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool settingExists(const String& settingName)
+const bool getBoolSetting(const String& section, const String& name, bool defaultValue)
 {
-	return SystemManager::settingExists(settingName);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-const Setting& settingLookup(const String& settingName)
-{
-	return SystemManager::settingLookup(settingName);
+	if(SystemManager::settingExists(section))
+	{
+		const Setting& s = SystemManager::settingLookup(section);
+		return Config::getBoolValue(name, s, defaultValue);
+	}
+	return defaultValue;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -627,6 +627,51 @@ void toggleStereo()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void mcstart(int port = MissionControlServer::DefaultPort)
+{
+	if(isMaster())
+	{
+		omsg("Initializing mission control server...");
+		MissionControlServer* srv = new MissionControlServer();
+		srv->setMessageHandler(new MissionControlMessageHandler());
+		srv->setPort(port);
+
+		// Register the mission control server. The service manager will take care of polling the server
+		// periodically to check for new connections.
+		SystemManager::instance()->getServiceManager()->addService(srv);
+		srv->start();
+	}
+}
+
+// Oh god the humanity!!
+static Ref<MissionControlClient> sMissionControlClient = NULL;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void mcconnect(const String& host = "127.0.0.1", int port = MissionControlServer::DefaultPort)
+{
+	if(isMaster())
+	{
+		sMissionControlClient = new MissionControlClient();
+		ModuleServices::addModule(sMissionControlClient);
+		sMissionControlClient->doInitialize(Engine::instance());
+		sMissionControlClient->connect(host, port);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void mcclose()
+{
+	if(isMaster())
+	{
+		if(sMissionControlClient != NULL)
+		{
+			ModuleServices::removeModule(sMissionControlClient);
+			sMissionControlClient = NULL;
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 //! Class wrapping a PixelData object and a filename, used by the python wrapper
 //class ImageFile
 //{
@@ -709,6 +754,8 @@ void printModules()
 	}
 }
 
+BOOST_PYTHON_FUNCTION_OVERLOADS(mcstartOverloads , mcstart, 0, 1)
+BOOST_PYTHON_FUNCTION_OVERLOADS(mcconnectOverloads , mcconnect, 0, 2)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeYawOverloads, yaw, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodePitchOverloads, pitch, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeRollOverloads, roll, 1, 2) 
@@ -898,9 +945,6 @@ BOOST_PYTHON_MODULE(omega)
 		.add_property("blue", &Color::getBlue, &Color::setBlue)
 		.add_property("alpha", &Color::getAlpha, &Color::setAlpha);
 
-	// Setting
-	PYAPI_BASE_CLASS(Setting);
-
 	// Actor
 	PYAPI_REF_BASE_CLASS(Actor)
 		PYAPI_METHOD(Actor, setSceneNode)
@@ -1000,8 +1044,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("getRayFromEvent", getRayFromEvent);
 	def("printChildren", &printChildren);
 	def("printObjCounts", &printObjCounts);
-	def("settingLookup", &settingLookup, PYAPI_RETURN_VALUE);
-	def("settingExists", &settingExists);
+	def("getBoolSetting", &getBoolSetting);
 	def("toggleStats", &toggleStats);
 	def("overridePanopticStereo", overridePanopticStereo);
 	def("toggleStereo", toggleStereo);
@@ -1021,6 +1064,11 @@ BOOST_PYTHON_MODULE(omega)
 	def("getImageLoaderThreads", getImageLoaderThreads);
 	def("getHostname", getHostname, PYAPI_RETURN_VALUE);
 	def("printModules", printModules);
+
+	// NEW IN 3.4
+	def("mcstart", mcstart, mcstartOverloads());
+	def("mcconnect", mcconnect, mcconnectOverloads());
+	def("mcclose", mcclose);
 };
 
 // Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)

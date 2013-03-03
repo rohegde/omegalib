@@ -1139,7 +1139,7 @@ Entity* SceneManager::getEntityByName(const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::handleCommand(const String& cmd)
+bool SceneManager::handleCommand(const String& cmd)
 {
 	Vector<String> args = StringUtils::split(cmd);
 	if(args[0] == "?")
@@ -1154,5 +1154,7 @@ void SceneManager::handleCommand(const String& cmd)
 		{
 			omsg(si.getKey());
 		}
+		return true;
 	}
+	return false;
 }

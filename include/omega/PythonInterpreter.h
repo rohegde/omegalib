@@ -99,7 +99,6 @@ namespace omega
 		virtual void updateSharedData(SharedIStream& in);
 
 		//String getHelpString(const String& filter);
-
 	protected:
 		struct QueuedCommand
 		{

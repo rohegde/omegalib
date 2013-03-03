@@ -46,7 +46,7 @@ WandCameraController::WandCameraController():
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void WandCameraController::handleCommand(const String& cmd)
+bool WandCameraController::handleCommand(const String& cmd)
 {
 	Vector<String> args = StringUtils::split(cmd);
 	if(args[0] == "?")
@@ -60,7 +60,10 @@ void WandCameraController::handleCommand(const String& cmd)
 		// freefly: toggle freefly mode
 		myFreeFlyEnabled = !myFreeFlyEnabled;
 		ofmsg("WandCameraController: freeFlyEnabled = %1%", %myFreeFlyEnabled);
+		// Mark command as handled
+		return true;
 	}
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

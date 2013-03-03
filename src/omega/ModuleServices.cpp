@@ -126,7 +126,7 @@ void ModuleServices::handleEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ModuleServices::handleCommand(const String& cmd)
+bool ModuleServices::handleCommand(const String& cmd)
 {
 	for(int i = EngineModule::PriorityHigh; i >= EngineModule::PriorityLow; i--)
 	{
@@ -137,11 +137,12 @@ void ModuleServices::handleCommand(const String& cmd)
 			{
 				if(module->getPriority() == i)
 				{
-					module->handleCommand(cmd);
+					if(module->handleCommand(cmd)) return true;
 				}
 			}
 		}
 	}
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

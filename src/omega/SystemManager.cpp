@@ -100,9 +100,6 @@ SystemManager::SystemManager():
 	myExitRequested(false),
 	myIsInitialized(false),
 	myIsMaster(true),
-	myMissionControlServer(NULL),
-	myMissionControlEnabled(false),
-	myMissionControlPort(MissionControlServer::DefaultPort),
 	mySageManager(NULL)
 {
 	myDataManager = DataManager::getInstance();
@@ -158,10 +155,6 @@ void SystemManager::setup(Config* appcfg)
 			{
 				const Setting& sConfig = mySystemConfig->lookup("config");
 				myInterpreter->setup(sConfig);
-
-				// See if mission control is enabled.
-				myMissionControlEnabled = Config::getBoolValue("missionControlEnabled", sConfig, false);
-				myMissionControlPort = Config::getIntValue("missionControlPort", sConfig, myMissionControlPort);
 			}
 		}
 	}
@@ -295,22 +288,6 @@ void SystemManager::initialize()
 	myInterpreter->initialize("omegalib");
 
 	myStatsManager = new StatsManager();
-	if(isMaster())
-	{
-		// Initialize mission control server if we are on the master node and mission control is enabled.
-		if(myMissionControlEnabled)
-		{
-			omsg("Initializing mission control server...");
-			myMissionControlServer = new MissionControlServer();
-			myMissionControlServer->setPort(myMissionControlPort);
-
-			// Register the mission control server. The service manager will take care of polling the server
-			// periodically to check for new connections.
-			myServiceManager->addService(myMissionControlServer);
-			myMissionControlServer->start();
-		}
-	}
-
 	myIsInitialized = true;
 }
 

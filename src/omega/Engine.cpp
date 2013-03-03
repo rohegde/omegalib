@@ -64,7 +64,6 @@ void Engine::initialize()
     ImageUtils::internalInitialize();
 
 	ModuleServices::addModule(new EventSharingModule());
-	ModuleServices::setNonCoreMode();
 
     myScene = new SceneNode(this, "root");
 
@@ -180,6 +179,8 @@ void Engine::initialize()
 	//Observer* obs = getDisplaySystem()->getObserver(0);
 	//myDefaultCamera->setPosition(obs->getHeadPosition());
 	myDefaultCamera->setPosition(Vector3f::Zero());
+
+	ModuleServices::setNonCoreMode();
 
 	myLock.unlock();
 }

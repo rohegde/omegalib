@@ -117,7 +117,7 @@ public:
 	virtual void initialize();
 	void update(const UpdateContext& context);
 	virtual void handleEvent(const Event& evt);
-	virtual void handleCommand(const String& cmd);
+	virtual bool handleCommand(const String& cmd);
 
 	AppDrawer* getAppDrawer() { return myAppDrawer; }
 
@@ -474,7 +474,7 @@ void OmegaViewer::reset()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OmegaViewer::handleCommand(const String& cmd)
+bool OmegaViewer::handleCommand(const String& cmd)
 {
 	Vector<String> args = StringUtils::split(cmd);
 	if(args[0] == "?")
@@ -512,22 +512,26 @@ void OmegaViewer::handleCommand(const String& cmd)
 	{
 		// r: run application.
 		run(args[1]);
+		return true;
 	}
 	else if(args[0] == "r!" && args.size() > 1)
 	{
 		// r!: reset state and run application.
 		reset();
 		run(args[1]);
+		return true;
 	}
 	else if(args[0] == "u")
 	{
 		// u: unload all running applications.
 		reset();
+		return true;
 	}
 	else if(args[0] == "lo")
 	{
 		// lo: list objects
 		ReferenceType::printObjCounts();
+		return true;
 	}
 	else if(args[0] == "ln")
 	{
@@ -536,17 +540,20 @@ void OmegaViewer::handleCommand(const String& cmd)
 		// ls is really just a shortcut for printChildren(getEngine().getScene(), <tree depth>)
 		SystemManager* sys = SystemManager::instance();
 		sys->getScriptInterpreter()->eval("printChildren(getEngine().getScene(), 10");
+		return true;
 	}
 	else if(args[0] == "c")
 	{
 		// c: toggle console
 		bool isConsoleEnabled = getEngine()->isConsoleEnabled();
 		getEngine()->setConsoleEnabled(!isConsoleEnabled);
+		return true;
 	}
 	else if(args[0] == "s")
 	{
 		// s: print statistics
 		SystemManager::instance()->getStatsManager()->printStats();
+		return true;
 	}
 	else if(args[0] == "f")
 	{
@@ -554,6 +561,7 @@ void OmegaViewer::handleCommand(const String& cmd)
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 		bool dfps = ds->isDrawFpsEnabled();
 		ds->drawFps(!dfps);
+		return true;
 	}
 	else if(args[0] == "porthole")
 	{
@@ -567,12 +575,15 @@ void OmegaViewer::handleCommand(const String& cmd)
 			cssFile = args[2];
 		}
 		PortholeService* service = PortholeService::createAndInitialize(4080,xmlFile, cssFile);
+		return true;
 	}
 	else if(args[0] == "q")
 	{
 		// q: quit
 		SystemManager::instance()->postExitRequest();
+		return true;
 	}
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
