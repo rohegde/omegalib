@@ -29,33 +29,54 @@
 
 #include "omega/osystem.h"
 #include "omega/StatsManager.h"
+#include "omega/ModuleServices.h"
+#include "omega/PythonInterpreter.h"
 #include "omicron/Tcp.h"
 
 namespace omega {
 	
 	class MissionControlServer;
-    
+	class MissionControlConnection;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class MissionControlConnection: public TcpConnection
+	class OMEGA_API IMissionControlMessageHandler: public ReferenceType
 	{
 	public:
-		MissionControlConnection(ConnectionInfo ci, MissionControlServer* server);
+		virtual bool handleMessage(MissionControlConnection* sender, const char* header, char* data, int size) = 0;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class OMEGA_API MissionControlMessageHandler: public IMissionControlMessageHandler
+	{
+	public:
+		virtual bool handleMessage(MissionControlConnection* sender, const char* header, char* data, int size);
+	private:
+		List<Stat*> myEnabledStats;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class OMEGA_API MissionControlConnection: public TcpConnection
+	{
+	public:
+		MissionControlConnection(ConnectionInfo ci, IMissionControlMessageHandler* msgHandler, MissionControlServer* server);
 
 		virtual void handleData();
 		virtual void handleClosed();
 		virtual void handleConnected();
 
 		void sendMessage(const char* header, void* data, int size);
+		//! Client side: tells the server we are done talking and waits for graceful close.
+		void goodbyeServer();
 
 	private:
 		static const int BufferSize = 1024;
 		char myBuffer[BufferSize];
 		MissionControlServer* myServer;
-		List<Stat*> myEnabledStats;
+		IMissionControlMessageHandler* myMessageHandler;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class MissionControlServer: public TcpServer, public ILogListener
+	class OMEGA_API MissionControlServer: public TcpServer, public ILogListener
 	{
 	public:
 		static const int DefaultPort = 22500;
@@ -65,13 +86,32 @@ namespace omega {
 
 		virtual TcpConnection* createConnection(const ConnectionInfo& ci);
 		void closeConnection(MissionControlConnection* conn);
-		void broadcastMessage(const char* header, void* data, int size);
+		void broadcastMessage(const char* header, void* data, int size, MissionControlConnection* sender = NULL);
+		void setMessageHandler(IMissionControlMessageHandler* msgHandler) { myMessageHandler = msgHandler; }
 	
 		// from ILogListener
 		virtual void addLine(const String& line);
 
 	private:
 		List<MissionControlConnection*> myConnections;
+		Ref<IMissionControlMessageHandler> myMessageHandler;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class OMEGA_API MissionControlClient: public EngineModule
+	{
+	public:
+		virtual void dispose();
+		virtual void initialize();
+		virtual void update(const UpdateContext& context);
+		virtual void handleEvent(const UpdateContext& context);
+		virtual bool handleCommand(const String& command);
+		void connect(const String& host, int port);
+
+	private:
+		Ref<MissionControlConnection> myConnection;
+		Ref<IMissionControlMessageHandler> myMessageHandler;
+		asio::io_service myIoService;
 	};
 }; // namespace omicron
 
