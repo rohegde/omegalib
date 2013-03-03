@@ -40,7 +40,7 @@ namespace cyclops {
 	class CY_API LineSet: public Entity
 	{
 	public:
-		class CY_API Line
+		class CY_API Line: public ReferenceType
 		{
 		public:
 			Line();
@@ -67,6 +67,7 @@ namespace cyclops {
 		};
 
 	public:
+		static LineSet* create();
 		LineSet(SceneManager* sm);
 		Line* addLine();
 		void removeLine(Line* line);

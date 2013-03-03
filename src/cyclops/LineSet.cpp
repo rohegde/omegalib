@@ -25,10 +25,17 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "cyclops/LineSet.h"
+#include "cyclops/SceneManager.h"
 
 #include<osgwTools/Shapes.h>
 
 using namespace cyclops;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+LineSet* LineSet::create()
+{
+	return new LineSet(SceneManager::instance());
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 LineSet::Line::Line():

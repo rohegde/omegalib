@@ -33,9 +33,9 @@
 using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-CylinderShape* CylinderShape::create(float length, float radius1, float radius2, int subdivisions, int sides, Vector2f tiling)
+CylinderShape* CylinderShape::create(float length, float radius1, float radius2, int subdivisions, int sides)
 {
-	return new CylinderShape(SceneManager::instance(), length, radius1, radius2, subdivisions, sides, tiling);
+	return new CylinderShape(SceneManager::instance(), length, radius1, radius2, subdivisions, sides);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
