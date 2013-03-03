@@ -40,7 +40,7 @@ namespace omega {
 	public:
 		WandCameraController();
 
-		virtual void handleCommand(const String& cmd);
+		virtual bool handleCommand(const String& cmd);
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt);
 
