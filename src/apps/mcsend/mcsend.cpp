@@ -31,10 +31,10 @@
 using namespace omega;
 using namespace omicron;
 
-class MCSender: public TcpClientConnection
+class MCSender: public TcpConnection
 {
 public:
-	MCSender(const ConnectionInfo& info): TcpClientConnection(info), done(false)
+	MCSender(const ConnectionInfo& info): TcpConnection(info), done(false)
 	{}
 
 	virtual void handleConnected()
@@ -53,7 +53,7 @@ public:
 
 	virtual void handleError(const ConnectionError& err)
 	{
-		TcpClientConnection::handleError(err);
+		TcpConnection::handleError(err);
 		done = true;
 	}
 
