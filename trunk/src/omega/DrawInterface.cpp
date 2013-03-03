@@ -274,16 +274,16 @@ void DrawInterface::drawRectTexture(Texture* texture, const Vector2f& position, 
 
 	glBegin(GL_TRIANGLE_STRIP);
 
-	glTexCoord2f(minx, miny);
+	glTexCoord2f(minx, maxy);
 	glVertex2f(x, y);
 
-	glTexCoord2f(maxx, miny);
+	glTexCoord2f(maxx, maxy);
 	glVertex2f(x + width, y);
 
-	glTexCoord2f(minx, maxy);
+	glTexCoord2f(minx, miny);
 	glVertex2f(x, y + height);
 
-	glTexCoord2f(maxx, maxy);
+	glTexCoord2f(maxx, miny);
 	glVertex2f(x + width, y + height);
 
 	glEnd();
