@@ -34,39 +34,21 @@ const int MissionControlServer::DefaultPort;
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-MissionControlConnection::MissionControlConnection(ConnectionInfo ci, MissionControlServer* server): 
-	TcpConnection(ci),
-	myServer(server)
+bool MissionControlMessageHandler::handleMessage(MissionControlConnection* sender, const char* header, char* data, int size)
 {
-}
-        
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MissionControlConnection::handleData()
-{
-    // Read message header.
-	char header[4];
-    read((byte*)myBuffer, 4);
-	memcpy(header, myBuffer, 4);
-
-    // Read data length.
-	int dataSize;
-    read((byte*)myBuffer, 4);
-	memcpy(&dataSize, myBuffer, 4);
-
-    // Read data.
-    read((byte*)myBuffer, dataSize);
-	myBuffer[dataSize] = '\0';
+	bool handled = true;
 
 	if(!strncmp(header, "scmd", 4)) 
 	{
 		//script command message
-		String command(myBuffer);
+		String command(data);
 		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
 		if(interp != NULL)
 		{
 			interp->queueCommand(command);
 		}
 	}
+
 	//if(!strncmp(header, "help", 4)) 
 	//{
 	//	// Request for help string.
@@ -90,7 +72,7 @@ void MissionControlConnection::handleData()
 				statIds.append(s->getName());
 				statIds.append("|");
 			}
-			sendMessage("strq", (void*)statIds.c_str(), statIds.size());
+			sender->sendMessage("strq", (void*)statIds.c_str(), statIds.size());
 		}
 	}
 	if(!strncmp(header, "sten", 4)) 
@@ -99,7 +81,7 @@ void MissionControlConnection::handleData()
 		if(sm != NULL)
 		{
 			// Set enabled stats.
-			String stats(myBuffer);
+			String stats(data);
 			myEnabledStats.clear();
 			std::vector<String> statVector = StringUtils::tokenise(stats, " ");
 			foreach(String statId, statVector)
@@ -122,23 +104,58 @@ void MissionControlConnection::handleData()
 			{
 				statIds.append(ostr("%1% %2% %3% %4% %5% ", %s->getName() %(int)s->getCur() %(int)s->getMin() %(int)s->getMax() %(int)s->getAvg()));
 			}
-			sendMessage("stup", (void*)statIds.c_str(), statIds.size());
+			sender->sendMessage("stup", (void*)statIds.c_str(), statIds.size());
 		}
 	}
+	return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+MissionControlConnection::MissionControlConnection(ConnectionInfo ci, IMissionControlMessageHandler* msgHandler, MissionControlServer* server): 
+	TcpConnection(ci),
+	myServer(server),
+	myMessageHandler(msgHandler)
+{
+}
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MissionControlConnection::handleData()
+{
+    // Read message header.
+	char header[4];
+    read((byte*)myBuffer, 4);
+	memcpy(header, myBuffer, 4);
+
+    // Read data length.
+	int dataSize;
+    read((byte*)myBuffer, 4);
+	memcpy(&dataSize, myBuffer, 4);
+
+    // Read data.
+    read((byte*)myBuffer, dataSize);
+	myBuffer[dataSize] = '\0';
+
+	// Handle message locally, if a message handler is available.
+	if(myMessageHandler != NULL) myMessageHandler->handleMessage(this, header, myBuffer, dataSize);
+
+	// Broadcast the message to other connected nodes
+	if(myServer != NULL) myServer->broadcastMessage(header, myBuffer, dataSize, this);
+
+	// 'bye!' message closes the connection
+	if(!strncmp(header, "bye!", 4)) close();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MissionControlConnection::handleClosed()
 {
     ofmsg("Mission control connection closed (id=%1%)", %getConnectionInfo().id);
-	myServer->closeConnection(this);
+	if(myServer != NULL) myServer->closeConnection(this);
 }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MissionControlConnection::handleConnected()
 {
 	TcpConnection::handleConnected();
-
     ofmsg("Mission control connection open (id=%1%)", %getConnectionInfo().id);
 }
 
@@ -148,6 +165,13 @@ void MissionControlConnection::sendMessage(const char* header, void* data, int s
 	write((void*)header, 4);
 	write(&size, sizeof(int));
 	write(data, size);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+void MissionControlConnection::goodbyeServer()
+{
+	sendMessage("bye!", NULL, 0);
+	waitClose();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -172,7 +196,7 @@ void MissionControlServer::dispose()
 ///////////////////////////////////////////////////////////////////////////////////////////
 TcpConnection* MissionControlServer::createConnection(const ConnectionInfo& ci)
 {
-	MissionControlConnection* conn = new MissionControlConnection(ci, this);
+	MissionControlConnection* conn = new MissionControlConnection(ci, myMessageHandler, this);
 	myConnections.push_back(conn);
 	return conn;
 }
@@ -184,11 +208,11 @@ void MissionControlServer::closeConnection(MissionControlConnection* conn)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MissionControlServer::broadcastMessage(const char* header, void* data, int size)
+void MissionControlServer::broadcastMessage(const char* header, void* data, int size, MissionControlConnection* sender)
 {
 	foreach(MissionControlConnection* conn, myConnections)
 	{
-		if(conn->getState() == TcpConnection::ConnectionOpen)
+		if(conn->getState() == TcpConnection::ConnectionOpen && conn != sender)
 		{
 			conn->sendMessage(header, data, size);
 		}
@@ -199,4 +223,44 @@ void MissionControlServer::broadcastMessage(const char* header, void* data, int 
 void MissionControlServer::addLine(const String& line)
 {
 	broadcastMessage("smsg", (void*)line.c_str(), line.size());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MissionControlClient::initialize()
+{
+	myMessageHandler = new MissionControlMessageHandler();
+	myConnection = new MissionControlConnection(ConnectionInfo(myIoService), myMessageHandler, NULL);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MissionControlClient::dispose()
+{
+	if(myConnection->getState() == TcpConnection::ConnectionOpen)
+	{
+		myConnection->goodbyeServer();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MissionControlClient::update(const UpdateContext& context)
+{
+	myConnection->poll();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MissionControlClient::handleEvent(const UpdateContext& context)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MissionControlClient::connect(const String& host, int port)
+{
+	myConnection->open(host, port);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool MissionControlClient::handleCommand(const String& command)
+{
+	myConnection->sendMessage("scmd", (void*)command.c_str(), command.size());
+	return true;
 }

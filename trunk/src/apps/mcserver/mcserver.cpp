@@ -22,47 +22,32 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *---------------------------------------------------------------------------------------------------------------------
- *	mcsend
- *		Sends a single command to a running omegalib application, using the Mission Control protocol
+ *	mcserver
+ *		Implements a stand-alone mission control server.
  *********************************************************************************************************************/
 #include <omega.h>
-#include "omicron/Tcp.h"
 
 using namespace omega;
-using namespace omicron;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv)
 {
-	String host = "127.0.0.1";
-	int port = omega::MissionControlServer::DefaultPort;
-	String command;
+	int defaultPort = MissionControlServer::DefaultPort;
 
-	for(int i = 1; i < argc; i++)
-	{
-		if(!strcmp(argv[i], "-h"))
-		{
-			i++;
-			host = argv[i];
-		}
-		else if(!strcmp(argv[i], "-p"))
-		{
-			i++;
-			port = boost::lexical_cast<int>(argv[i]);
-		}
-		else
-		{
-			//command += " ";
-			command = argv[i];
-		}
-	}
+	libconfig::ArgumentHelper ah;
+	ah.newOptionalInt("port", "port", defaultPort);
+	ah.process(argc, argv);
 
-	asio::io_service ioService;
-	Ref<MissionControlConnection> conn = new MissionControlConnection(ConnectionInfo(ioService), NULL, NULL);
-	conn->open(host, port);
-	if(conn->getState() == TcpConnection::ConnectionOpen)
+	Ref<MissionControlServer> server = new MissionControlServer();
+	server->setPort(defaultPort);
+	server->initialize();
+	server->start();
+	while(true)
 	{
-		conn->sendMessage("scmd", (void*)command.c_str(), command.size());
-		conn->goodbyeServer();
+		server->poll(); 
 	}
+	server->stop();
+	server->dispose();
+	return 0;
 }
+

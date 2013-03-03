@@ -119,8 +119,6 @@ namespace omega
 
 		PythonInterpreter* getScriptInterpreter() { return myInterpreter; }
 
-		MissionControlServer* getMissionControlServer() { return myMissionControlServer; }
-
 		SageManager* getSageManager() { return mySageManager; }
 
 		void setupServiceManager();
@@ -150,11 +148,6 @@ namespace omega
 
 		String myHostname;
 		String myProgramName;
-
-		// Mission control server
-		bool myMissionControlEnabled;
-		int myMissionControlPort;
-		MissionControlServer* myMissionControlServer;
 
 		// Stats manager.
 		StatsManager* myStatsManager;

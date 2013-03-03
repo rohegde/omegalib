@@ -285,14 +285,24 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 	char* str = const_cast<char*>(script.c_str());
 	if(format == NULL)
 	{
+		bool handled = false;
 		// Handle special 'shortcut' commands. Commands starting with a ':' won't be interpreted
 		// using the python interpreter. Instead, we will dispatch them to EngineModule::handleCommand 
 		// methods.
 		if(script.length() > 0 && script[0] == ':')
 		{
-			ModuleServices::handleCommand(script.substr(1, script.length() - 1));
+			// Remove colon.
+			String sscript = script.substr(1, script.length() - 1);
+			handled = ModuleServices::handleCommand(sscript);
+			if(!handled)
+			{
+				// If none of the modules handled this command, remove the colon and 
+				lockInterpreter();
+				PyRun_SimpleString(sscript.c_str());
+				unlockInterpreter();
+			}
 		}
-		else
+		else		
 		{
 			lockInterpreter();
 			PyRun_SimpleString(str);
@@ -399,6 +409,7 @@ void PythonInterpreter::update(const UpdateContext& context)
 				{
 					ofmsg("running %1%", %qc->command);
 				}
+				// Execute the command
 				eval(qc->command);
 				qc->needsExecute = false;
 			}
@@ -539,7 +550,6 @@ void PythonInterpreter::draw(const DrawContext& context, Camera* cam)
 //	return result;
 //}
 
-
 #else
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -606,4 +616,11 @@ void PythonInterpreter::draw(const DrawContext& context, Camera* cam) {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::evalEventCommand(const String& command, const Event& evt) {}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::addListener(IScriptListener* listener) {}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::removeListener(IScriptListener* listener) {}
+
 #endif

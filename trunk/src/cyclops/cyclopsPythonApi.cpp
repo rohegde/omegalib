@@ -28,7 +28,7 @@
 #include "cyclops/SceneManager.h"
 #include "cyclops/AnimatedObject.h"
 #include "cyclops/SceneLoader.h"
-#include "cyclops/SceneLoader.h"
+#include "cyclops/LineSet.h"
 
 #ifdef OMEGA_USE_PYTHON
 
@@ -141,6 +141,26 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_STATIC_REF_GETTER(BoxShape, create)
 		;
 
+	// CylinderShape
+	PYAPI_REF_CLASS(CylinderShape, Entity)
+		PYAPI_STATIC_REF_GETTER(CylinderShape, create)
+		;
+
+	// Line
+	class_<LineSet::Line, boost::noncopyable, Ref<LineSet::Line> >("Line", no_init)
+		PYAPI_METHOD(LineSet::Line, setStart)
+		PYAPI_METHOD(LineSet::Line, setEnd)
+		PYAPI_METHOD(LineSet::Line, setThickness)
+		PYAPI_METHOD(LineSet::Line, getThickness)
+		;
+
+	// LineSet
+	PYAPI_REF_CLASS(LineSet, Entity)
+		PYAPI_STATIC_REF_GETTER(LineSet, create)
+		PYAPI_REF_GETTER(LineSet, addLine)
+		PYAPI_METHOD(LineSet, removeLine)
+		;
+
 	// StaticObject
 	PYAPI_REF_CLASS(StaticObject, Entity)
 		PYAPI_STATIC_REF_GETTER(StaticObject, create)
@@ -212,6 +232,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def_readwrite("shadowResolutionRatio", &ShadowSettings::shadowResolutionRatio)
 		;
 
+	// SkyBox
 	PYAPI_REF_BASE_CLASS_WITH_CTOR(Skybox)
 		PYAPI_METHOD(Skybox, loadCubeMap)
 		;

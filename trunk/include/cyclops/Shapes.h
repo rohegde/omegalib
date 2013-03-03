@@ -38,7 +38,7 @@ namespace cyclops {
 	{
 	public:
 		//! Convenience method for creating SphereShape
-		static CylinderShape* create(float length = 1.0f, float radius1 = 1.0f, float radius2 = 1.0f, int subdivisions = 1, int sides = 8, Vector2f tiling = Vector2f::Ones());
+		static CylinderShape* create(float length, float radius1, float radius2, int subdivisions, int sides);
 
 	public:
 		CylinderShape(SceneManager* scene, float length = 1.0f, float radius1 = 1.0f, float radius2 = 1.0f, int subdivisions = 1, int sides = 8, Vector2f tiling = Vector2f::Ones());

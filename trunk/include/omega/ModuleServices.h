@@ -52,7 +52,7 @@ namespace omega {
 		virtual void dispose() {}
 		virtual void update(const UpdateContext& context) {}
 		virtual void handleEvent(const Event& evt) {}
-		virtual void handleCommand(const String& cmd) {}
+		virtual bool handleCommand(const String& cmd) { return false; }
 		virtual void commitSharedData(SharedOStream& out) {}
 		virtual void updateSharedData(SharedIStream& in) {}
 
@@ -91,7 +91,7 @@ namespace omega {
 		static void removeModule(EngineModule* module);
 		static void update(Engine* srv, const UpdateContext& context);
 		static void handleEvent(const Event& evt);
-		static void handleCommand(const String& cmd);
+		static bool handleCommand(const String& cmd);
 		//static void initializeRenderer(Engine* srv, Renderer* r);
 		static void disposeAll();
 		static void disposeNonCoreModules();
