@@ -68,7 +68,7 @@ lightSphere3.castShadow(False)
 # Load a static model
 torusModel = ModelInfo()
 torusModel.name = "torus"
-torusModel.path = "data/cube.fbx"#"cyclops/test/torus.fbx"
+torusModel.path = "cyclops/test/torus.fbx"
 torusModel.size = 1.0
 scene.loadModel(torusModel)
 
@@ -78,18 +78,18 @@ torus.setPosition(Vector3(-1, 2, -4))
 torus.setEffect("colored -d #ffffff50 -t")
 
 # Load an animated model
-# skelModel = ModelInfo()
-# skelModel.name = "skelModel"
-# skelModel.path = "data/surgseq/surgseq3.fbx"
-# scene.loadModel(skelModel)
+skelModel = ModelInfo()
+skelModel.name = "skelModel"
+skelModel.path = "data/surgseq/surgseq3.fbx"
+scene.loadModel(skelModel)
 
-# # Create a scene object using the loaded animated model, and start the animation
-# skel = AnimatedObject.create("skelModel")
-# skel.setPosition(Vector3(2, 1.5, -4))
-# skel.setScale(Vector3(0.02, 0.02, 0.02))
-# skel.yaw(radians(-30))
-# skel.setEffect("textured")
-# skel.loopAnimation(0)
+# Create a scene object using the loaded animated model, and start the animation
+skel = AnimatedObject.create("skelModel")
+skel.setPosition(Vector3(2, 1.5, -4))
+skel.setScale(Vector3(0.02, 0.02, 0.02))
+skel.yaw(radians(-30))
+skel.setEffect("textured")
+skel.loopAnimation(0)
 
 # create a main menu to turn on and off lights
 mm = MenuManager.createAndInitialize()
