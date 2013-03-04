@@ -41,6 +41,7 @@ namespace omega {
 		KeyboardMouseCameraController();
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
+		virtual void reset();
 
 	private:
 		// Navigation stuff.

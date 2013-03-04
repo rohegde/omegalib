@@ -82,9 +82,11 @@ void KeyboardMouseCameraController::update(const UpdateContext& context)
 	//updateCamera(speed, myYaw, myPitch, 0, context.dt);
 	c->setPitchYawRoll(Vector3f(myPitch, myYaw, 0));
 	c->translate(speed * context.dt, Node::TransformLocal);
-
-	reset();
-	//myYaw = 0;
-	//myPitch = 0;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void KeyboardMouseCameraController::reset()
+{
+	myYaw = 0;
+	myPitch = 0;
+}

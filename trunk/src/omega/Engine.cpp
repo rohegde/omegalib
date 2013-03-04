@@ -205,6 +205,20 @@ void Engine::dispose()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Engine::reset()
+{
+	// dispose non-core modules
+	ModuleServices::disposeNonCoreModules();
+
+	// Remove all children from the scene root.
+	myScene->removeAllChildren();
+
+	myDefaultCamera->resetOrientation();
+	myDefaultCamera->setPosition(Vector3f::Zero());
+	myDefaultCamera->getController()->reset();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Engine::addRenderer(Renderer* client)
 {
     oassert(client != NULL);
@@ -424,3 +438,4 @@ Renderer* Engine::getRendererByContextId(int id)
 	}
 	return NULL;
 }
+
