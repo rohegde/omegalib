@@ -261,6 +261,11 @@ void MissionControlClient::connect(const String& host, int port)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MissionControlClient::handleCommand(const String& command)
 {
-	myConnection->sendMessage("scmd", (void*)command.c_str(), command.size());
-	return true;
+	if(StringUtils::startsWith(command, "post"))
+	{
+		String cmd = command.substr(5);
+		myConnection->sendMessage("scmd", (void*)cmd.c_str(), cmd.size());
+	}
+	// Let other modules process commands.
+	return false;
 }
