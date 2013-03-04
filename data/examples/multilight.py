@@ -2,7 +2,7 @@ from math import *
 from euclid import *
 from omega import *
 from cyclops import *
-#from omegaToolkit import *
+from omegaToolkit import *
 
 scene = getSceneManager()
 
