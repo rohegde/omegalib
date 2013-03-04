@@ -73,7 +73,7 @@ void Renderer::addRenderPass(RenderPass* pass, bool addToFront)
 void Renderer::removeRenderPass(RenderPass* pass)
 {
 	myRenderPassLock.lock();
-	myRenderPassList.remove(pass);
+	pass->requestDispose();
 	myRenderPassLock.unlock();
 }
 
@@ -81,7 +81,7 @@ void Renderer::removeRenderPass(RenderPass* pass)
 void Renderer::removeAllRenderPasses()
 {
 	myRenderPassLock.lock();
-	myRenderPassList.clear();
+	foreach(RenderPass* rp, myRenderPassList) rp->requestDispose();
 	myRenderPassLock.unlock();
 }
 
@@ -168,6 +168,17 @@ void Renderer::draw(const DrawContext& context)
 	{
 		if(!rp->isInitialized()) rp->initialize();
 	}
+	// Now check if some render passes need to be disposed
+	List<RenderPass*> tbdisposed;
+	foreach(RenderPass* rp, myRenderPassList)
+	{
+		if(rp->needsDispose())
+		{
+			rp->dispose();
+			tbdisposed.push_back(rp);
+		}
+	}
+	foreach(RenderPass* rp, tbdisposed) myRenderPassList.remove(rp);
 
 	// Execute renderable commands.
 	myRenderCommandLock.lock();

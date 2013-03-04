@@ -35,7 +35,7 @@
 using namespace omegaOsg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node), myInitialized(false)
+OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node), myInitialized(false), mySceneNode(NULL)
 {
     myTransform = new osg::MatrixTransform();
     myTransform->addChild( node );

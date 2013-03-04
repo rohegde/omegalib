@@ -64,8 +64,11 @@ PixelData::~PixelData()
 {
 	if(!myDeleteDisabled)
 	{
-		//ofmsg("PixelData::~PixelData: deleting %1%x%2% image", %myWidth %myHeight);
-		free(myData);
+		if(myData != NULL)
+		{
+			//ofmsg("PixelData::~PixelData: deleting %1%x%2% image", %myWidth %myHeight);
+			free(myData);
+		}
 	}
 	if(checkUsage(PixelBufferObject))
 	{

@@ -332,26 +332,7 @@ void OmegaViewer::initialize()
 	// in a cluster environment.
 	if(sDefaultScript != "")
 	{
-		// Substitute the OMEGA_DATA_ROOT and OMEGA_APP_ROOT macros in the path.
-		sDefaultScript = StringUtils::replaceAll(sDefaultScript, "OMEGA_DATA_ROOT", OMEGA_DATA_PATH);
-#ifdef OMEGA_APPROOT_DIRECTORY
-		sDefaultScript = StringUtils::replaceAll(sDefaultScript, "OMEGA_APP_ROOT", OMEGA_APPROOT_DIRECTORY);
-#endif
-
-		// If this flag is active, set the script containing folder as the default application data path.
-		if(sAddScriptDirectoryToData)
-		{
-			String scriptPath;
-			String baseScriptFilename;
-			StringUtils::splitFilename(sDefaultScript, baseScriptFilename, scriptPath);
-
-			interp->queueCommand(ostr("addDataPath(\"%1%\")", %scriptPath));
-			interp->queueCommand(ostr("orun(\"%1%\")", %baseScriptFilename));
-		}
-		else
-		{
-			interp->queueCommand(ostr("orun(\"%1%\")", %sDefaultScript));
-		}
+		run(sDefaultScript);
 	}
 
 	if(myAppDrawer != NULL)	myAppDrawer->initialize();
@@ -366,13 +347,6 @@ void OmegaViewer::initialize()
 	omsg("\tType :? ./C [prefix] to list global symbols or object members starting with `prefix`");
 	omsg("\t\texample :? . si");
 	omsg("\t\texample :? SceneNode set");
-
-
-	//Setting& base = SystemManager::instance()->getAppConfig()->lookup("config");
-	//if(Config::getBoolValue("cyclopsEnabled", base, false))
-	//{
-	//	SceneManager* sm = SceneManager::createAndInitialize();
-	//}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -410,46 +384,25 @@ void OmegaViewer::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OmegaViewer::run(const String& appName)
 {
-	String baseName;
-	// If appName is a path, treat it differently than just an application name.
-	if(appName.find('/') != String::npos)
-	{
-		baseName = appName;
-	}
-	else
-	{
-		baseName = appName + "/" + appName;
-	}
+	// Substitute the OMEGA_DATA_ROOT and OMEGA_APP_ROOT macros in the path.
+	String path = appName;
+	path = StringUtils::replaceAll(path, "OMEGA_DATA_ROOT", OMEGA_DATA_PATH);
+#ifdef OMEGA_APPROOT_DIRECTORY
+	path = StringUtils::replaceAll(path, "OMEGA_APP_ROOT", OMEGA_APPROOT_DIRECTORY);
+#endif
 
-	String scriptName = baseName + ".py";
-	String cfgName = baseName + ".cfg";
+	SystemManager* sys = SystemManager::instance();
+	PythonInterpreter* interp = sys->getScriptInterpreter();
 
-	ofmsg("Looking for script file %1%", %scriptName);
 	String scriptPath;
-	if(DataManager::findFile(scriptName, scriptPath))
-	{
-		ofmsg(":: found at %1%", %scriptPath);
-		ofmsg("Looking for config file %1%", %cfgName);
+	String baseScriptFilename;
+	StringUtils::splitFilename(path, baseScriptFilename, scriptPath);
 
-		SystemManager* sys = SystemManager::instance();
-
-		String cfgPath;
-		if(DataManager::findFile(cfgName, cfgPath))
-		{
-			ofmsg(":: found at %1%", %cfgPath);
-
-			// Load and set the new app config.
-			Config* cfg = new Config(cfgName);
-			cfg->load();
-			sys->setAppConfig(cfg);
-		}
-
-		// Run the application main script.
-		// NOTE: Instead of running the script immediately through PythonInterpreter::runFile, we queue a local orun command.
-		// We do this to give the system a chance to finish reset, if this script is loading through a :r! command.
-		// Also note how we explicitly import module omega, since all global symbols may have been unloaded by the previously mentioned reset command.
-		sys->getScriptInterpreter()->queueCommand(ostr("from omega import *; orun('%1%')", %scriptName), true);
-	}
+	DataManager::getInstance()->setCurrentPath(scriptPath);
+	//	// NOTE: Instead of running the script immediately through PythonInterpreter::runFile, we queue a local orun command.
+	//	// We do this to give the system a chance to finish reset, if this script is loading through a :r! command.
+	//	// Also note how we explicitly import module omega, since all global symbols may have been unloaded by the previously mentioned reset command.
+	interp->queueCommand(ostr("from omega import *; orun(\"%1%\")", %baseScriptFilename), true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -459,18 +412,21 @@ void OmegaViewer::reset()
 	SystemManager* sys = SystemManager::instance();
 	PythonInterpreter* interp = sys->getScriptInterpreter();
 
-	// unregister callbacks
-	interp->unregisterAllCallbacks();
-
-	// dispose non-core modules
-	ModuleServices::disposeNonCoreModules();
-
 	// destroy all global variables
 	interp->eval("for uniquevar in [var for var in globals().copy() if var[0] != \"_\" and var != 'clearall']: del globals()[uniquevar]");
 
 	// Use this line instead of the previous to get debugging info on variable deletion. Useful in 
 	// case of crashes to know which variable is currently being deleted.
 	//interp->eval("for uniquevar in [var for var in globals().copy() if var[0] != \"_\" and var != 'clearall']: print(\"deleting \" + uniquevar); del globals()[uniquevar]");
+
+	// unregister callbacks
+	interp->unregisterAllCallbacks();
+
+	// dispose non-core modules
+	ModuleServices::disposeNonCoreModules();
+
+	// Remove all children from the scene root.
+	getEngine()->getScene()->removeAllChildren();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -595,28 +551,8 @@ int main(int argc, char** argv)
 	// Legacy default script (new apps should use launch script instead)
 	oargs().newNamedString('s', "script", "script", "script to launch at startup", sDefaultScript);
 
-	// If a start script is specified, use it to change the application name. This in turn allows for
-	// loading of per-application config files
-	// (i.e. orun -s apps/test.py will name the application apps/test and look for apps/test.cfg as the 
-	// default configuration file)
-	// if(sDefaultScript != "")
-	// {
-		// String extension;
-		// StringUtils::splitBaseFilename(sDefaultScript, applicationName, extension);
-	// }
-
 	Application<OmegaViewer> app(applicationName);
 	app.setExecutableName(argv[0]);
-
-	// If a start script is specified, use it to change the application name. This in turn allows for
-	// loading of per-application config files
-	// (i.e. orun -s apps/test.py will name the application apps/test and look for apps/test.cfg as the 
-	// default configuration file)
-	//if(sDefaultScript != "")
-	//{
-	//	String extension;
-	//	StringUtils::splitBaseFilename(sDefaultScript, applicationName, extension);
-	//}
 
 	return omain(app, argc, argv);
 }

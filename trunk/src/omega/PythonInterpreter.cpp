@@ -279,9 +279,10 @@ void PythonInterpreter::addModule(const char* name, PyMethodDef* methods, const 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::eval(const String& script, const char* format, ...)
+void PythonInterpreter::eval(const String& cscript, const char* format, ...)
 {
-
+	String script = cscript;
+	StringUtils::trim(script);
 	char* str = const_cast<char*>(script.c_str());
 	if(format == NULL)
 	{
@@ -294,12 +295,11 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 			// Remove colon.
 			String sscript = script.substr(1, script.length() - 1);
 			handled = ModuleServices::handleCommand(sscript);
-			if(!handled)
+			// if command is a ':post' we still execute it.
+			if(StringUtils::startsWith(sscript, "post"))
 			{
-				// If none of the modules handled this command, remove the colon and 
-				lockInterpreter();
-				PyRun_SimpleString(sscript.c_str());
-				unlockInterpreter();
+				String cmd = sscript.substr(5);
+				eval(cmd);
 			}
 		}
 		else		
@@ -616,11 +616,4 @@ void PythonInterpreter::draw(const DrawContext& context, Camera* cam) {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::evalEventCommand(const String& command, const Event& evt) {}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::addListener(IScriptListener* listener) {}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::removeListener(IScriptListener* listener) {}
-
 #endif

@@ -69,7 +69,8 @@ namespace omegaOsg
 		AlignedBox3 myBBox;
 		bool myInitialized;
 		
-		Ref<SceneNode> mySceneNode;
+		//Ref<SceneNode> mySceneNode;
+		SceneNode* mySceneNode;
 	};
 };
 #endif

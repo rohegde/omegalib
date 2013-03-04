@@ -46,13 +46,16 @@ namespace omega {
 
 	public:
 		RenderPass(Renderer* client, const String& name): 
-		  myInitialized(false), myClient(client), myName(name), myCameraMask(0)
+		  myInitialized(false), myDisposeRequested(false), myClient(client), myName(name), myCameraMask(0)
 		  {}
 		virtual ~RenderPass()
 		{ ofmsg("~RenderPass %1%", %myName); }
 
 		virtual void initialize() { myInitialized = true; }
 		virtual void render(Renderer* client, const DrawContext& context) = 0;
+		virtual void dispose() {}
+		void requestDispose() { myDisposeRequested = true; }
+		bool needsDispose() { return myDisposeRequested; }
 
 		const String& getName() { return myName; }
 
@@ -68,11 +71,13 @@ namespace omega {
 
 	private: 
 		bool myInitialized;
+		bool myDisposeRequested;
 		void* myUserData;
 		String myName;
 		Renderer* myClient;
 		unsigned int myCameraMask;
 	};
+
 }; // namespace omega
 
 #endif
