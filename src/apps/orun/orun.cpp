@@ -56,56 +56,6 @@ String sDefaultScript = "";
 bool sAddScriptDirectoryToData = true;
 
 
-class AppDrawer;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-struct AppInfo: public ReferenceType
-{
-	String name;
-	String label;
-	String iconFile;
-
-	void initialize(AppDrawer* drawer);
-
-	AppDrawer* myDrawer;
-
-	// ui stuff.
-	Ref<UiModule> myUi;
-	Ref<Container> myContainer;
-	Ref<Button> myButton;
-	Ref<Image> myImage;
-	Ref<UiScriptCommand> myCommand;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class AppDrawer: public ReferenceType
-{
-public:
-
-	void initialize();
-	Container* getContainer() { return myContainer; }
-	UiModule* getUi() { return myUi; }
-	void update(const UpdateContext& context);
-	void show();
-	void hide();
-	bool isVisible() { return myVisible; }
-	void addApp(AppInfo* app);
-	float getDrawerScale() { return myDrawerScale; }
-	void setDrawerScale(float value) { myDrawerScale = value; }
-	int getIconSize() { return myIconSize; }
-	void setIconSize(int value) { myIconSize = value; }
-
-private:
-	Ref<UiModule> myUi;
-	List < Ref<AppInfo> > myAppList;
-	Ref<Container> myContainer;
-	Container3dSettings my3dSettings;
-	bool myVisible;
-	float myDrawerScale;
-	int myIconSize;
-};
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class OmegaViewer: public EngineModule
 {
@@ -124,12 +74,6 @@ public:
 	void setAppDrawerToggleButton(Event::Flags value) { myAppDrawerToggleButton = value; }
 	Event::Flags getAppDrawerToggleButton() { return myAppDrawerToggleButton; }
 
-public:
-	//! Start the selected application
-	void run(const String& appName);
-	//! Unload all running applications
-	void reset();
-
 private:
 	Ref<UiModule> myUiModule;
 	Ref<AppDrawer> myAppDrawer;
@@ -145,148 +89,14 @@ OmegaViewer* getViewer() { return gViewerInstance; }
 #include "omega/PythonInterpreterWrapper.h"
 BOOST_PYTHON_MODULE(omegaViewer)
 {
-	// SceneLoader
+	// OmegaViewer
 	PYAPI_REF_BASE_CLASS(OmegaViewer)
-		PYAPI_METHOD(OmegaViewer, run)
-		PYAPI_METHOD(OmegaViewer, reset)
 		PYAPI_METHOD(OmegaViewer, getAppDrawerToggleButton)
 		PYAPI_METHOD(OmegaViewer, setAppDrawerToggleButton)
 		PYAPI_REF_GETTER(OmegaViewer, getAppDrawer)
 		;
 
-	// App drawer
-	PYAPI_REF_BASE_CLASS(AppDrawer)
-		PYAPI_METHOD(AppDrawer, show)
-		PYAPI_METHOD(AppDrawer, hide)
-		PYAPI_METHOD(AppDrawer, isVisible)
-		PYAPI_METHOD(AppDrawer, addApp)
-		PYAPI_METHOD(AppDrawer, setDrawerScale)
-		PYAPI_METHOD(AppDrawer, getDrawerScale)
-		PYAPI_METHOD(AppDrawer, getIconSize)
-		PYAPI_METHOD(AppDrawer, setIconSize)
-		PYAPI_REF_GETTER(AppDrawer, getContainer)
-		;
-
-	// AppInfo
-	PYAPI_REF_BASE_CLASS_WITH_CTOR(AppInfo)
-		PYAPI_PROPERTY(AppInfo, name)
-		PYAPI_PROPERTY(AppInfo, label)
-		PYAPI_PROPERTY(AppInfo, iconFile)
-		;
-
 	def("getViewer", getViewer, PYAPI_RETURN_REF);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void AppInfo::initialize(AppDrawer* drawer)
-{
-	myDrawer = drawer;
-
-	myUi = myDrawer->getUi();
-	WidgetFactory* wf = myUi->getWidgetFactory();
-
-	myContainer = wf->createContainer(name, drawer->getContainer(), Container::LayoutVertical);
-
-	myImage = wf->createImage(name + "Icon", myContainer);
-	myImage->setData(ImageUtils::loadImage(iconFile));
-	myImage->setSize(Vector2f(myDrawer->getIconSize(), myDrawer->getIconSize()));
-
-	myButton = wf->createButton(name + "Button", myContainer);
-	myButton->setText(label);
-
-	// Add an event handler to the button that will run the specified application.
-	// the ':r!' command is handled by the OmegaViewer::handleCommand method.
-	myCommand = new UiScriptCommand(ostr(":r! %1%", %name));
-	myButton->setUIEventHandler(myCommand.get());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void AppDrawer::initialize()
-{
-	myDrawerScale = 1.0f;
-	myIconSize = 128;
-	myUi = UiModule::instance();
-	myContainer = myUi->getWidgetFactory()->createContainer("appDrawer", myUi->getUi(), Container::LayoutHorizontal);
-	myContainer->get3dSettings().enable3d = true;
-	myContainer->get3dSettings().center = true;
-	hide();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void AppDrawer::addApp(AppInfo* info)
-{
-	info->initialize(this);
-	myAppList.push_back(info);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void AppDrawer::update(const UpdateContext& context)
-{
-	float speed = context.dt * 10;
-
-	ui::Container3dSettings& c3ds = myContainer->get3dSettings();
-	//c3ds.enable3d = my3dSettings.enable3d;
-	//c3ds.normal = my3dSettings.normal;
-	//c3ds.up = my3dSettings.up;
-	c3ds.position += (my3dSettings.position - c3ds.position) * speed;
-	c3ds.scale += (my3dSettings.scale - c3ds.scale) * speed;
-	c3ds.alpha += (my3dSettings.alpha - c3ds.alpha) * speed;
-
-	if(myContainer->isVisible())
-	{
-		if(c3ds.alpha <= 0.1f)
-		{
-			myContainer->setVisible(false);
-			myVisible = false;
-		}
-	}
-	else
-	{
-		if(c3ds.alpha > 0.1f)
-		{
-			myContainer->setVisible(true);
-			myVisible = true;
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void AppDrawer::show()
-{
-	myVisible = true;
-	myContainer->setEnabled(true);
-
-	myContainer->get3dSettings().alpha = 0.0f;
-	my3dSettings.enable3d = true;
-	my3dSettings.alpha = 1.0f;
-	my3dSettings.up = Vector3f(0, 1, 0);
-	my3dSettings.normal = Vector3f(0, 0, 1);
-
-	myContainer->get3dSettings().scale = myDrawerScale / 2000;
-	my3dSettings.scale = myDrawerScale / 1000;
-
-	Camera* cam = Engine::instance()->getDefaultCamera();
-	Vector3f pos = cam->getPosition() + cam->getHeadOffset();
-	pos.z() -= 2.5;
-	ofmsg("App drawer position: %1%", %pos);
-	my3dSettings.position = pos;
-	
-	UiModule::instance()->activateWidget(myContainer);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void AppDrawer::hide()
-{
-	//omsg("Menu hide");
-
-	myVisible = false;
-	myContainer->setEnabled(false);
-	//myContainer->setDebugModeEnabled(true);
-
-	UiModule::instance()->activateWidget(NULL);
-
-	my3dSettings.alpha = 0.0f;
-	my3dSettings.scale = myDrawerScale / 1000;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -332,7 +142,7 @@ void OmegaViewer::initialize()
 	// in a cluster environment.
 	if(sDefaultScript != "")
 	{
-		run(sDefaultScript);
+		interp->runFile(sDefaultScript);
 	}
 
 	if(myAppDrawer != NULL)	myAppDrawer->initialize();
@@ -382,61 +192,13 @@ void OmegaViewer::handleEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OmegaViewer::run(const String& appName)
-{
-	// Substitute the OMEGA_DATA_ROOT and OMEGA_APP_ROOT macros in the path.
-	String path = appName;
-	path = StringUtils::replaceAll(path, "OMEGA_DATA_ROOT", OMEGA_DATA_PATH);
-#ifdef OMEGA_APPROOT_DIRECTORY
-	path = StringUtils::replaceAll(path, "OMEGA_APP_ROOT", OMEGA_APPROOT_DIRECTORY);
-#endif
-
-	SystemManager* sys = SystemManager::instance();
-	PythonInterpreter* interp = sys->getScriptInterpreter();
-
-	String scriptPath;
-	String baseScriptFilename;
-	StringUtils::splitFilename(path, baseScriptFilename, scriptPath);
-
-	DataManager::getInstance()->setCurrentPath(scriptPath);
-	//	// NOTE: Instead of running the script immediately through PythonInterpreter::runFile, we queue a local orun command.
-	//	// We do this to give the system a chance to finish reset, if this script is loading through a :r! command.
-	//	// Also note how we explicitly import module omega, since all global symbols may have been unloaded by the previously mentioned reset command.
-	interp->queueCommand(ostr("from omega import *; orun(\"%1%\")", %baseScriptFilename), true);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void OmegaViewer::reset()
-{
-	// u: unload the current application.
-	SystemManager* sys = SystemManager::instance();
-	PythonInterpreter* interp = sys->getScriptInterpreter();
-
-	// destroy all global variables
-	interp->eval("for uniquevar in [var for var in globals().copy() if var[0] != \"_\" and var != 'clearall']: del globals()[uniquevar]");
-
-	// Use this line instead of the previous to get debugging info on variable deletion. Useful in 
-	// case of crashes to know which variable is currently being deleted.
-	//interp->eval("for uniquevar in [var for var in globals().copy() if var[0] != \"_\" and var != 'clearall']: print(\"deleting \" + uniquevar); del globals()[uniquevar]");
-
-	// unregister callbacks
-	interp->unregisterAllCallbacks();
-
-	// dispose non-core modules
-	ModuleServices::disposeNonCoreModules();
-
-	// Remove all children from the scene root.
-	getEngine()->getScene()->removeAllChildren();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 bool OmegaViewer::handleCommand(const String& cmd)
 {
 	Vector<String> args = StringUtils::split(cmd);
+	SystemManager* sys = SystemManager::instance();
+	PythonInterpreter* interp = sys->getScriptInterpreter();
 	if(args[0] == "?")
 	{
-		SystemManager* sys = SystemManager::instance();
-		PythonInterpreter* interp = sys->getScriptInterpreter();
 		// ?: command help
 		if(args.size() == 2)
 		{
@@ -467,20 +229,19 @@ bool OmegaViewer::handleCommand(const String& cmd)
 	else if(args[0] == "r" && args.size() > 1)
 	{
 		// r: run application.
-		run(args[1]);
+		interp->runFile(args[1]);
 		return true;
 	}
 	else if(args[0] == "r!" && args.size() > 1)
 	{
 		// r!: reset state and run application.
-		reset();
-		run(args[1]);
+		interp->cleanRun(args[1]);
 		return true;
 	}
 	else if(args[0] == "u")
 	{
 		// u: unload all running applications.
-		reset();
+		interp->clean();
 		return true;
 	}
 	else if(args[0] == "lo")
@@ -494,8 +255,7 @@ bool OmegaViewer::handleCommand(const String& cmd)
 		// ln: list nodes
 
 		// ls is really just a shortcut for printChildren(getEngine().getScene(), <tree depth>)
-		SystemManager* sys = SystemManager::instance();
-		sys->getScriptInterpreter()->eval("printChildren(getEngine().getScene(), 10");
+		interp->eval("printChildren(getEngine().getScene(), 10");
 		return true;
 	}
 	else if(args[0] == "c")

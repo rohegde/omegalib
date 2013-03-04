@@ -24,33 +24,65 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OTK_H__
-#define __OTK_H__
+#ifndef __APP_DRAWER__
+#define __APP_DRAWER__
 
-#include "omegaToolkit/omegaToolkitConfig.h"
-#include "omegaToolkit/AppDrawer.h"
-#include "omegaToolkit/ControllerManipulator.h"
-#include "omegaToolkit/WandManipulator.h"
-#include "omegaToolkit/MouseManipulator.h"
-#include "omegaToolkit/DefaultMouseInteractor.h"
-#include "omegaToolkit/DefaultTwoHandsInteractor.h"
-#include "omegaToolkit/SceneEditorModule.h"
-#include "omegaToolkit/ToolkitUtils.h"
+#include "omega/Engine.h"
+#include "omega/Application.h"
 #include "omegaToolkit/UiModule.h"
-#include "omegaToolkit/UiScriptCommand.h"
+#include "ui/Container.h"
+#include "ui/Button.h"
+#include "ui/WidgetFactory.h"
 
-#include "omegaToolkit/ui/AbstractButton.h"
-#include "omegaToolkit/ui/BareboneSkin.h"
-#include "omegaToolkit/ui/Button.h"
-#include "omegaToolkit/ui/Container.h"
-#include "omegaToolkit/ui/Image.h"
-#include "omegaToolkit/ui/Label.h"
-#include "omegaToolkit/ui/MenuManager.h"
-#include "omegaToolkit/ui/DefaultSkin.h"
-#include "omegaToolkit/ui/Slider.h"
-#include "omegaToolkit/ui/Widget.h"
-#include "omegaToolkit/ui/WidgetFactory.h"
+namespace omegaToolkit
+{
+class AppDrawer;
 
-OTK_API void omegaToolkitPythonApiInit();
+///////////////////////////////////////////////////////////////////////////////////////////////////
+struct OTK_API AppInfo: public ReferenceType
+{
+	String name;
+	String label;
+	String iconFile;
 
+	void initialize(AppDrawer* drawer);
+
+	AppDrawer* myDrawer;
+
+	// ui stuff.
+	Ref<UiModule> myUi;
+	Ref<ui::Container> myContainer;
+	Ref<ui::Button> myButton;
+	Ref<ui::Image> myImage;
+	Ref<UiScriptCommand> myCommand;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class OTK_API AppDrawer: public ReferenceType
+{
+public:
+
+	void initialize();
+	ui::Container* getContainer() { return myContainer; }
+	UiModule* getUi() { return myUi; }
+	void update(const UpdateContext& context);
+	void show();
+	void hide();
+	bool isVisible() { return myVisible; }
+	void addApp(AppInfo* app);
+	float getDrawerScale() { return myDrawerScale; }
+	void setDrawerScale(float value) { myDrawerScale = value; }
+	int getIconSize() { return myIconSize; }
+	void setIconSize(int value) { myIconSize = value; }
+
+private:
+	Ref<UiModule> myUi;
+	List < Ref<AppInfo> > myAppList;
+	Ref<ui::Container> myContainer;
+	ui::Container3dSettings my3dSettings;
+	bool myVisible;
+	float myDrawerScale;
+	int myIconSize;
+};
+};
 #endif

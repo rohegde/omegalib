@@ -70,6 +70,10 @@ namespace omega
 		//! Immediately executes a script statement on the local node.
 		void eval(const String& script, const char* format = NULL, ...);
 		void runFile(const String& filename);
+		//! Cleans the application state.
+		void clean();
+		//! Cleans the application state and runs a new script.
+		void cleanRun(const String& filename);
 
 		//! Executes an event command statement.
 		//! @remarks Event command statements are commonly used as event handlers. 

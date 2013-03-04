@@ -349,8 +349,23 @@ void PythonInterpreter::evalEventCommand(const String& command, const Event& evt
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::runFile(const String& filename)
 {
+	// Substitute the OMEGA_DATA_ROOT and OMEGA_APP_ROOT macros in the path.
+	String path = filename;
+	path = StringUtils::replaceAll(path, "OMEGA_DATA_ROOT", OMEGA_DATA_PATH);
+#ifdef OMEGA_APPROOT_DIRECTORY
+	path = StringUtils::replaceAll(path, "OMEGA_APP_ROOT", OMEGA_APPROOT_DIRECTORY);
+#endif
+
+	SystemManager* sys = SystemManager::instance();
+	PythonInterpreter* interp = sys->getScriptInterpreter();
+
+	String scriptPath;
+	String baseScriptFilename;
+	StringUtils::splitFilename(path, baseScriptFilename, scriptPath);
+
 	DataManager* dm = SystemManager::instance()->getDataManager();
-	DataInfo cfgInfo = dm->getInfo(filename);
+	dm->setCurrentPath(scriptPath);
+	DataInfo cfgInfo = dm->getInfo(baseScriptFilename);
 
 	if(!cfgInfo.isNull())
 	{
@@ -361,6 +376,32 @@ void PythonInterpreter::runFile(const String& filename)
 	{
 		ofwarn("PythonInterpreter: script not found: %1%", %filename);
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::clean()
+{
+	// destroy all global variables
+	eval("for uniquevar in [var for var in globals().copy() if var[0] != \"_\" and var != 'clearall']: del globals()[uniquevar]");
+
+	// Use this line instead of the previous to get debugging info on variable deletion. Useful in 
+	// case of crashes to know which variable is currently being deleted.
+	//eval("for uniquevar in [var for var in globals().copy() if var[0] != \"_\" and var != 'clearall']: print(\"deleting \" + uniquevar); del globals()[uniquevar]");
+
+	// unregister callbacks
+	unregisterAllCallbacks();
+
+	Engine::instance()->reset();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::cleanRun(const String& filename)
+{
+	clean();
+	// NOTE: Instead of running the script immediately through PythonInterpreter::runFile, we queue a local orun command.
+	// We do this to give the system a chance to finish reset, if this script is loading through a :r! command.
+	// Also note how we explicitly import module omega, since all global symbols have been unloaded by the previously mentioned reset command.
+	queueCommand(ostr("from omega import *; orun(\"%1%\")", %filename), true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -616,4 +657,10 @@ void PythonInterpreter::draw(const DrawContext& context, Camera* cam) {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::evalEventCommand(const String& command, const Event& evt) {}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::clean() {}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::cleanRun(const String& filename) {}
 #endif

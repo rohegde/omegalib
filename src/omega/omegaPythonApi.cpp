@@ -84,19 +84,6 @@ static PyObject* omegaFindFile(PyObject* self, PyObject* args)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-static PyObject* omegaRun(PyObject* self, PyObject* args)
-{
-	const char* name;
-	if(!PyArg_ParseTuple(args, "s", &name)) return NULL;
-
-	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-	interp->runFile(name);
-
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
 static PyObject* omegaUpdateCallback(PyObject *dummy, PyObject *args)
 {
     PyObject *result = NULL;
@@ -265,10 +252,6 @@ static PyMethodDef omegaMethods[] =
     {"ofindFile", omegaFindFile, METH_VARARGS, 
 		"ofindFile(name)\n"
 		"Searches for a file in the application data filesystems and returns a full path if found"},
-
-    {"orun", omegaRun, METH_VARARGS, 
-		"orun(fileName)\n"
-		"Runs an external script"},
 
     {"setUpdateFunction", omegaUpdateCallback, METH_VARARGS, 
 		"setUpdateFunction(funcRef)\n"
@@ -672,6 +655,27 @@ void mcclose()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void orun(const String& script)
+{
+	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+	interp->runFile(script);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void oclean()
+{
+	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+	interp->clean();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ocleanrun(const String& script)
+{
+	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+	interp->cleanRun(script);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 //! Class wrapping a PixelData object and a filename, used by the python wrapper
 //class ImageFile
 //{
@@ -1069,6 +1073,10 @@ BOOST_PYTHON_MODULE(omega)
 	def("mcstart", mcstart, mcstartOverloads());
 	def("mcconnect", mcconnect, mcconnectOverloads());
 	def("mcclose", mcclose);
+
+	def("orun", orun);
+	def("oclean", oclean);
+	def("ocleanrun", ocleanrun);
 };
 
 // Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)

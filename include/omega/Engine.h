@@ -144,6 +144,8 @@ namespace omega {
 
 		virtual void initialize();
 		virtual void dispose();
+		//! Resets the omegalib engine to its initial state. Useful for runtime application switching.
+		void reset();
 
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
