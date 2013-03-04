@@ -28,8 +28,8 @@ If the interactive console as been enabled in the loaded configuration file (usi
 
 In addition to python, the orun console supports *quick commands* that perform some utility functions at runtime. All quick commands start with a colon symbol, like `:q` or `:r`. The default commands supported by orun are:
   * `:? [topic] [prefix]`: prints help reference for objects and classes. Use this to quickly look up the methods offered by a specific class or object. The command also accepts a `prefix` argument, to limit results that start with a specified string. The command `:? . [prefix]` returns the name of all global variables currently used by the script. A fex examples of the command are `:? .`, `:? SceneNode`, `:? Entity get`.
-  * `:r [script]` Runs a script
-  * `:r! [script]` Runs a script, after unloading the current one
+  * `:r [script]` Runs a script (shortcut to `orun(script)`)
+  * `:r! [script]` Runs a script, after unloading the current one (shortcut to `ocleanrun(script)`)
   * `:lo` Lists all live, reference counted objects
   * `:ln` Prints the scene node tree
 

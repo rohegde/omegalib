@@ -6,14 +6,26 @@
 *Initial Revision*: 2478
 
 == Major Changes ==
+omicron
+	* Event::getAxis
+	* Tcp: merged TcpConnection and TcpClientConnection into a single class.
+	* Tcp: improved disconnection logic.
 omega
 	* PixelData and Texture support PixelBufferObject transfers
 	* Improvements to python API
 	* Shader fixes
+	* orun now executes a default startup script (orun_init.py) before launching applications. Useful to execute system-specific code (like creating system menus)
+	* Improved Mission Control services: mission control server can now be run standalone and multiple omegalib instances can connect and share python commands. This can be used as a starting point for collaborative sessions.
+	* Improved runtime switching of applications. Added new commands (`oclean()`, `ocleanrun()`) to handle application switching from scripts.
 omegaToolikt
 	* 3d widgets can be attached to scene nodes
 	* Menus are by default attached to camera
 	* Camera navigation stays enabled by default when in menus. Can be disabled through a config file option.
+	* added `AppDrawer` utility class 
+cyclops
+	* Major fixes to transparency support: Now all objects share the same depth sorted bin by default, and shader alpha handling has been made more consistent.
+	* Other misc fixes to shaders.
+	* CylinderShape, LineSet, Line can be used in python scripts.
 
 
 

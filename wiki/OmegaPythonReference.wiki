@@ -1,7 +1,7 @@
 #summary Python reference: module omega
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.3 - 31 January 2013</p>*
+<p>*Last revision:* ver. 3.4 - 3 March 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -122,6 +122,12 @@ For more information on sound support check the [https://code.google.com/p/omicr
 Returns `True` if sound is enabled and available on the system
 
 -------------------------------------------------------------------------------
+== Settings ==
+=== `getBoolSetting(section, name, default)` ===
+Reads a boolean-type setting `name` from setting section `section`. The section is searched inside the app configuration file first, then in system configuration.
+If the setting is not found, the function return the specified default value.
+
+-------------------------------------------------------------------------------
 == Application Control ==
 
 === `oexit()` ===
@@ -132,6 +138,12 @@ Queues a script command for execution. The command will be executed during the n
 
 === `orun(script)` ===
 Runs an external script. The script is executed immediately.
+
+=== `oclean()` ===
+Stops the current script, cleans the engine and get everything back to its initial state.
+
+=== `ocleanrun(script)` ===
+Like orun, but performs a cleanup first. Useful for runtime switching to a different application.
 
 === `toggleStats(stats)` ===
 Enables or disables statistics output from a specific source in the statitics window. The statistics window must be enabled for the configuration. The `stats` parameter is a list of statistic or tile names separated by spaces.
@@ -228,6 +240,14 @@ Loads an image given a file path. If loading is succesfull, returns an instance 
 === `setImageLoaderThreads(int)`, `getImageLoaderThreads()` ===
 Gets or sets the number of threads used for asynchronous image loading. Async image loading is currently available only for native code modules.
 
+=== `mcstart([port])` ===
+Starts a mission control server on the specified port. If no port is specified the default one will be used
+In cluster systems this command only runs on the master node.
+
+=== `mcconnect([host], [port])` ===
+Connects to a mission control server. By default connects to a local server on the default port.
+In cluster systems this command only runs on the master node.
+
 -------------------------------------------------------------------------------
 ==  `class SceneNode` ==
 Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_scene_node.html omega::SceneNode] C++ class. Base class for nodes in the scene graph
@@ -296,6 +316,7 @@ This class is used within the context of an event handler function, registered t
 || Method(s) || Description ||
 || `isKeyDown(key)`, `isKeyUp(key)` || ||
 || `isButtonDown(button)`, `isButtonUp(button)` || ||
+|| `getAxis(index)` || Gets the value for the specified axis (if available) Non available axes return 0 by default. ||
 || `getSourceId()` || ||
 || `getType()` || ||
 || `getServiceType()` || ||

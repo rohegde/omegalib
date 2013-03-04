@@ -1,7 +1,7 @@
 #summary Python reference: module cyclops
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.3 - 1 February 2013</p>*
+<p>*Last revision:* ver. 3.4 - 25 February 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -133,6 +133,32 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 === Methods ===
 || Method(s) || Description ||
 || `create(width, height, depth)` *static* || Creates a box with the specified width, height and depth ||
+
+-------------------------------------------------------------------------------
+==  `class CylinderShape` (extends `Entity`) ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_cylinder_shape.html cyclops::CylinderShape]. Defines a cylinder that can be added to the scene. Cylinder shapes have custom subdivision levels and different radii for their ends, allowing the user to create a variety of shapes (cylinder, pyramid, truncated pyramid, tetrahedron, etc).
+
+=== Methods ===
+|| Method(s) || Description ||
+|| `create(length, radius1, radius2, subdivisions, sides)` *static* || Creates a new cylinder shape ||
+
+-------------------------------------------------------------------------------
+==  `class LineSet` (extends `Entity`) ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_line_set.html cyclops::LineSet]. Defines a container of 3D line primitives. Lines are drawn as cylinders. Using this class instead of the CylinderShape class is better if:
+	* You have to draw lots of lines (or cylinders) that share the same material / effect
+	* You want to place lines in the scene defining a start / end point and thickness (instead of position / orientation / scale)
+
+=== Methods ===
+|| Method(s) || Description ||
+|| `create()` *static* || Creates a new LineSet object ||
+|| `addLine()` || Creates a new line ||
+|| `removeLine(line)` || Removes the specified line ||
+
+`addLine()` returns an object of type `Line` that supports the following methods:
+|| Method(s) || Description ||
+|| `setStart(position)` || Sets the start position of the line (as a `Vector3`) ||
+|| `setEnd(position)` || Sets the end position of the line (as a `Vector3`) ||
+|| `getThickness()` `setThickness(value)` || Gets or sets the line thickness ||
 
 -------------------------------------------------------------------------------
 ==  `class StaticObject` (extends `Entity`) ==
@@ -291,3 +317,4 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 	skybox.loadCubeMap("common/cubemaps/grid4", "png")
 	getSceneManager().setSkyBox(skybox)
 }}}
+

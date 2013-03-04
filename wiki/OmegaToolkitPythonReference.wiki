@@ -1,7 +1,7 @@
 #summary Python reference: module omegaToolkit
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.4 - 21 February 2013</p>*
+<p>*Last revision:* ver. 3.4 - 3 March 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -45,7 +45,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || Method(s) || Description ||
 || `createAndInitialize()` *static* || Creates a new instance of the MenManager and initializes it ||
 || `createMenu(name)` || Creates a new menu and returns it ||
-|| `setMainMenu(menu)` || Sets the specified menu object as the main menu (it will be opened when a system-specific key or button will be pressed ||
+|| `setMainMenu(menu)`, `getMainMenu()` || Gets or Sets the main menu (it will be opened when a system-specific key or button will be pressed ||
 
 === Examples ===
 ==== Basic ====
@@ -200,3 +200,23 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `getText()`, `setText(name)` || Gets or sets the label for the label||
 || `setColor(color)` || Sets the label color. Exaample: `label.setColor(Color('white'))` ||
 || `setFont(fontName)` || Sets the label font using a `<font> <size>` string. Example: `label.setFont('fonts/arial.ttf 20'')` ||
+
+---------------------------------------------------------------------------------------------------
+==  `class AppDrawer`  ==
+=== Methods ===
+|| Method(s) || Description ||
+|| `show()` || ||
+|| `hide()` || ||
+|| `isVisible()` || ||
+|| `addApp(appInfo)` || ||
+|| `setDrawerScale(scale)`, `getDrawerScale()` || ||
+|| `setIconSize(scale)`, `getIconSize()` || ||
+|| `getContainer()` || ||
+
+---------------------------------------------------------------------------------------------------
+==  `class AppInfo`  ==
+=== Methods ===
+|| Property || Description ||
+|| `name` || ||
+|| `label` || ||
+|| `iconFile` || ||
