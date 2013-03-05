@@ -1,0 +1,92 @@
+<gui>
+  
+  <elements>
+    
+    <element id="move_ctrl" type="HTML">
+      <div class="div-aligned">
+        <fieldset  data-type="horizontal" class="">
+          <input type="button" data-role="button" onmousedown="if(isMaster()): camera=getCameraById(%id%); position = camera.getPosition(); position[1] += 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-u" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+          <input type="button" data-role="button" onmousedown="if(isMaster()): camera=getCameraById(%id%); position=camera.getPosition(); position[1] -= 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-d" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+          <input type="button" data-role="button" onmousedown="if(isMaster()): camera=getCameraById(%id%); position=camera.getPosition(); position[0] -= 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-l" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+          <input type="button" data-role="button" onmousedown="if(isMaster()): camera=getCameraById(%id%); position=camera.getPosition(); position[0] += 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="arrow-r" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+        </fieldset>
+      </div>
+    </element>
+    
+    <element id="element2" type="googlemap" />
+    
+    <element id="camera" type="camera_stream" camera="custom"/>
+
+    <element id="zoom_slider" type="HTML">
+      <div>
+          <input type="range" name="slider" id="slider" value="0" min="-800" max="800" data-highlight="true" onchange="camera=getCameraById(%id%); position=camera.getPosition(); position[2] = float(%value%)/100; camera.setPosition(position);"/>
+      </div>
+    </element>
+
+    <element id="zoom_ctrl" type="HTML">
+      <div class="div-aligned">
+        <fieldset  data-type="horizontal" class="">
+          <input type="button" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[2] -= 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="plus" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+          <input type="button" data-role="button" onmousedown="camera=getCameraById(%id%); position=camera.getPosition(); position[2] += 0.025; camera.setPosition(position);" data-shadow="false" data-inline="true" data-corner="false" data-iconpos="notext" data-icon="minus" data-continuous="true" class="ui-btn ui-btn-icon-notext"/>
+        </fieldset>
+      </div>
+    </element>
+
+    <element id="color_ctrl" type="HTML">
+      <div class="div-aligned">
+        <input type="hidden" id="color_label" name="color_label" value="#000000" data-role="none" data-inline="true" onchange="print('%value%');"/>
+        <div id="color_picker" data-role="none" data-inline="true" ></div>
+      </div>
+    </element>
+    
+  </elements>
+  
+  <interfaces>
+
+    <interface minWidth="0" minHeight="0" id="small">
+      <portrait layout="vertical">
+        <element width="100%" height="10%" id="move_ctrl"/>
+        <element width="100%" height="90%" id="camera"/>
+      </portrait>
+      <landscape layout="vertical">
+        <element width="100%" height="100%" id="camera"/>
+      </landscape>
+    </interface>
+
+    <interface minWidth="320" minHeight="470" id="medium">
+      <portrait layout="vertical">
+        <element width="100%" height="10%" id="move_ctrl"/>
+        <element width="100%" height="90%" id="camera"/>
+      </portrait>
+      <landscape layout="vertical">
+        <element width="100%" height="100%" id="camera"/>
+      </landscape>
+    </interface>
+
+    <interface minWidth="480" minHeight="640" id="large">
+      <portrait layout="vertical">
+        <element width="100%" height="5%" id="move_ctrl"/>
+        <element width="100%" height="5%" id="zoom_ctrl"/>
+        <element width="100%" height="90%" id="camera"/>
+      </portrait>
+      <landscape layout="horizontal">
+        <element width="90%" height="100%" id="camera"/>
+        <element width="10%" height="100%" id="move_ctrl"/>
+      </landscape>   
+    </interface>
+
+    <interface minWidth="720" minHeight="960" id="xlarge">
+      <portrait layout="vertical">
+        <element width="100%" height="5%" id="move_ctrl"/>
+        <element width="100%" height="5%" id="zoom_ctrl"/>
+        <element width="100%" height="90%" id="camera"/>
+      </portrait>
+      <landscape layout="horizontal">
+        <element width="90%" height="100%" id="camera"/>
+        <element width="10%" height="100%" id="move_ctrl"/>
+      </landscape>
+    </interface>
+    
+  </interfaces>
+  
+</gui>
