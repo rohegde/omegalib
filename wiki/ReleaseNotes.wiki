@@ -1,9 +1,14 @@
 #summary This page contains release notes for omegalib starting from version 0.8
 #sidebar Sidebar
 
+<wiki:toc max_depth="2" />
+
 ------------------------------------------------------------------------
-= omegalib v3.4 (*current developer version*) =
-*Initial Revision*: 2478
+= omegalib v4.0 (*current developer version*) =
+== Major Changes ==
+
+------------------------------------------------------------------------
+= omegalib v3.4  =
 
 == Major Changes ==
 omicron
