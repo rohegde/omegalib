@@ -9,6 +9,9 @@
 
 ------------------------------------------------------------------------
 = omegalib v3.4  =
+== Summary ==
+omegalib 3.4 Improves a few existing functionalities (3D widgets, runtime application switching) and fixes a few shader and transparency bugs in cyclops.
+It also introduces `mcserver`, a mission control server that allows multiple omegalib instances to connect and share scripting commands, allowing the creation of collaborative instances.
 
 == Major Changes ==
 omicron
