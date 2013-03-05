@@ -15,7 +15,7 @@ In general, orun should be launched from its containing binary directory, to mak
 
 ==  Example List ==
 || *Screenshot* || *Script name* || *Techniques* ||
-|| <img src="http://omegalib.googlecode.com/svn/wiki/PythonExamples/loadModel.png" width="150"/> || *loadModel.py* || simple model loading, point and spot lights. ||
+|| <img src="http://omegalib.googlecode.com/svn/wiki/PythonExamples/loadModel.png" width="150"/> || [https://code.google.com/p/omegalib/source/browse/trunk/data/examples/loadModel.py loadModel.py] || simple model loading, point and spot lights. ||
 || <img src="http://omegalib.googlecode.com/svn/wiki/PythonExamples/billboard.png" width="150"/> || *billboard.py* || camera facing nodes and interactors. ||
 || <img src="http://omegalib.googlecode.com/svn/wiki/PythonExamples/embeddedShader.png" width="150"/> || *embeddedShader.py* || Custom object shaders embedded in python script. Custom shader uniforms. ||
 || <img src="http://omegalib.googlecode.com/svn/wiki/PythonExamples/fxdemo.png" width="150"/> || *fxdemo.py* || Various rendering effects. Custom multilevel menus. Picking. ||
