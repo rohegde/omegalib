@@ -1,7 +1,7 @@
 #summary This page contains release notes for omegalib starting from version 0.8
 #sidebar Sidebar
 
-<wiki:toc max_depth="2" />
+<wiki:toc max_depth="1" />
 
 ------------------------------------------------------------------------
 = omegalib v4.0 (*current developer version*) =
@@ -82,7 +82,7 @@ cyclops
 	* shaders - ambient accumulated for all lights 
 
 ------------------------------------------------------------------------
-= omegalib v3.2 (*current developer version*) =
+= omegalib v3.2  =
 *Initial Revision*: 2345
 *Branch-out Revision*: 2399
 
