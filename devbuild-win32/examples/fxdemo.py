@@ -33,6 +33,8 @@ selected = None
 
 #--------------------------------------------------------------------------------------------------
 mm = MenuManager.createAndInitialize()
+# disable main menu
+mm.setMainMenu(None)
 fxmnu = mm.createMenu("fxmenu")
 
 cmnu = fxmnu.addSubMenu("colored")
@@ -44,9 +46,9 @@ kmnu = fxmnu.addSubMenu("multipass")
 #--------------------------------------------------------------------------------------------------
 # colored effect definitions
 fx = "colored -d red"; cmnu.addButton(fx, "selected.setEffect('" + fx + "')")
-fx = "colored -d #404040"; cmnu.addButton(fx, "selected.setEffect('" + fx + "')")
+fx = "colored -d #ff404050 -t"; cmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 fx = "colored -d blue -g 1.0 -s 30"; cmnu.addButton(fx, "selected.setEffect('" + fx + "')")
-fx = "colored -d #202020 -g 1.0 -s 30 -t -a"; cmnu.addButton(fx, "selected.setEffect('" + fx + "')")
+fx = "colored -d #20202050 -g 1.0 -s 30 -t"; cmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 fx = "colored -d #202020 -g 1.0 -s 30 -t -a -C"; cmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 
 #--------------------------------------------------------------------------------------------------
@@ -87,6 +89,7 @@ def onObjectSelected(node, distance):
 		selected = node
 		fxmnu.placeOnWand(e)
 		fxmnu.show()
+		mm.setMainMenu(fxmnu)
 		fxmnu.setLabel(selected.getName() + " effects")
 
 #--------------------------------------------------------------------------------------------------
@@ -106,7 +109,9 @@ def onEvent():
 		# When the confirm button is pressed:
 		if(e.isButtonDown(confirmButton)):
 			# If the effect menu is is open, close it
-			if(fxmnu.isVisible()): fxmnu.hide()
+			if(fxmnu.isVisible()): 
+				fxmnu.hide()
+				mm.setMainMenu(None)
 			# ...otherwise, shoot a ray in the scene to perform selection
 			else:
 				if(r[0]): querySceneRay(r[1], r[2], onObjectSelected)

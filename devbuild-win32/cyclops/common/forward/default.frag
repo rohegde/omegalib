@@ -63,7 +63,9 @@ $@fragmentLightSection
 	if(@lightIndex == 0) ld.shadow = shadow;
 	else ld.shadow = 1.0;
 	
-	litSurfData.luminance += @lightFunction(surf, ld);
+	vec4 lum = @lightFunction(surf, ld);
+	litSurfData.luminance.rgb += lum.rgb;
+	litSurfData.luminance.a *= lum.a;
 } 	
 $
 
@@ -78,12 +80,13 @@ LitSurfaceData computeLighting(SurfaceData surf)
 	// If we are rendering a back-facing fragment, invert the normal by default
 	if(!gl_FrontFacing) surf.normal = -surf.normal;
 
-	litSurfData.luminance = vec4(0, 0, 0, 0);
+	litSurfData.luminance = vec4(0, 0, 0, 1);
 
 	@fragmentLightSection
 
 	// Add emissive surface component to final luminance.
-	litSurfData.luminance += surf.emissive;
+	litSurfData.luminance.rgb += surf.emissive.rgb;
+	litSurfData.luminance.a *= surf.emissive.a;
 	
 	return litSurfData;
 }

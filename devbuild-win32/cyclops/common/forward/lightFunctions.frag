@@ -1,30 +1,32 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 vec4 pointLightFunction(SurfaceData sd, LightData ld)
 {
-	vec4 l = vec4(0, 0, 0, 0);
+	vec4 l = vec4(0, 0, 0, sd.albedo.a);
 	float lambertTerm = dot(sd.normal, ld.dir) * ld.shadow; 
 	if (lambertTerm > 0.0) 
 	{ 
-		l += sd.albedo * ld.diffuse * lambertTerm; 
+		l.rgb += sd.albedo.rgb * ld.diffuse.rgb * lambertTerm; 
 		
 		// Compute specular factor
 		float specular = pow( max(dot(ld.halfDir, sd.normal), 0.0), sd.shininess ); 
-		l += ld.specular * specular * sd.gloss; 
+		l.rgb += ld.specular.rgb * specular * sd.gloss; 
 	} 
-	l += sd.albedo * ld.ambient;
+	l.rgb += ld.ambient.rgb;
 	
 	vec3 ka = ld.attenuation;
-	float att = clamp(0, 1, 1.0 / (ka[0] + ld.distance * ka[1] + ld.distance * ld.distance * ka[2]));
+//	float att = clamp(0, 1, 1.0 / (ka[0] + ld.distance * ka[1] + ld.distance * ld.distance * ka[2]));
+	float att = 1.0 / (ka[0] + ld.distance * ka[1] + ld.distance * ld.distance * ka[2]);
 	
 	// Scale luminance by attenuation and return
 	vec4 luminance = l * att;
+	luminance.a = l.a;
 	return luminance;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 vec4 spotLightFunction(SurfaceData sd, LightData ld)
 {
-	vec4 l = vec4(0, 0, 0, 0);
+	vec4 l = vec4(0, 0, 0, sd.albedo.a);
 	float lambertTerm = dot(sd.normal, ld.dir) * ld.shadow; 
 	if (lambertTerm > 0.0) 
 	{ 
@@ -32,17 +34,17 @@ vec4 spotLightFunction(SurfaceData sd, LightData ld)
 		
 		if(spot > ld.spotCutoff)
 		{
-			l += sd.albedo * ld.diffuse * lambertTerm; 
+			l.rgb += sd.albedo.rgb * ld.diffuse.rgb * lambertTerm; 
 			
 			// Compute specular factor
 			float specular = pow( max(dot(ld.halfDir, sd.normal), 0.0), sd.shininess ); 
-			l += ld.specular * specular * sd.gloss; 
+			l.rgb += ld.specular.rgb * specular * sd.gloss; 
 			
 			vec3 ka = ld.attenuation;
 			float att = clamp(0, 1, 1.0 / (ka[0] + ld.distance * ka[1] + ld.distance * ld.distance * ka[2]));
 			
 			// Scale luminance by attenuation and return
-			l *= att * pow(spot, ld.spotExponent);
+			l.rgb *= att * pow(spot, ld.spotExponent);
 		}
 	} 
 	return l;

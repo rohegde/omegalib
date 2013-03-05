@@ -8,7 +8,7 @@ ui = UiModule.createAndInitialize()
 wf = ui.getWidgetFactory()
 overlay = ui.getUi()
 
-starImage = loadImage('examples/data/star.png')
+starImage = loadImage('data/star.png')
 
 stars = []
 

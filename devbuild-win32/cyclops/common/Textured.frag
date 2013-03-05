@@ -13,7 +13,7 @@ varying vec3 var_Normal;
 SurfaceData getSurfaceData(void)
 {
 	SurfaceData sd;
-    sd.albedo = texture2D(unif_DiffuseMap, var_TexCoord);
+    sd.albedo = texture2D(unif_DiffuseMap, var_TexCoord) * gl_Color;
 	sd.emissive = vec4(0, 0, 0, 0);
 	sd.shininess = unif_Shininess;
 	sd.gloss = unif_Gloss;
