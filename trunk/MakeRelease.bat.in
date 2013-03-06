@@ -1,4 +1,6 @@
-cd "${CMAKE_BINARY_DIR}\..\devbuild-win32"
+rm "${CMAKE_BINARY_DIR}\release-win32"
+md "${CMAKE_BINARY_DIR}\release-win32"
+cd "${CMAKE_BINARY_DIR}\release-win32"
 
 REM ---------------------------------------------------------------------------
 REM copy binaries
@@ -11,6 +13,11 @@ copy "${CMAKE_BINARY_DIR}\bin\release\orun.exe" .\bin /Y
 copy "${CMAKE_BINARY_DIR}\bin\release\oinputserver.exe" .\bin /Y
 copy "${CMAKE_BINARY_DIR}\bin\release\mcsend.exe" .\bin /Y
 copy "${CMAKE_BINARY_DIR}\bin\release\mcserver.exe" .\bin /Y
+
+REM ---------------------------------------------------------------------------
+REM copy python stuff
+xcopy "${CMAKE_SOURCE_DIR}\external\python\Lib" .\python /S /Y 
+xcopy "${CMAKE_SOURCE_DIR}\external\python\DLLs" .\python /S /Y
 
 REM ---------------------------------------------------------------------------
 REM copy data and scripts
