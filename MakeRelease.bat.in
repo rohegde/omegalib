@@ -1,4 +1,3 @@
-rm "${CMAKE_BINARY_DIR}\release-win32"
 md "${CMAKE_BINARY_DIR}\release-win32"
 cd "${CMAKE_BINARY_DIR}\release-win32"
 
@@ -16,8 +15,11 @@ copy "${CMAKE_BINARY_DIR}\bin\release\mcserver.exe" .\bin /Y
 
 REM ---------------------------------------------------------------------------
 REM copy python stuff
-xcopy "${CMAKE_SOURCE_DIR}\external\python\Lib" .\python /S /Y 
-xcopy "${CMAKE_SOURCE_DIR}\external\python\DLLs" .\python /S /Y
+md python
+cd python
+xcopy "${CMAKE_SOURCE_DIR}\external\python\Lib" .\Lib\ /S /Y 
+xcopy "${CMAKE_SOURCE_DIR}\external\python\DLLs" .\DLLs\ /S /Y
+cd ..
 
 REM ---------------------------------------------------------------------------
 REM copy data and scripts
@@ -41,3 +43,4 @@ REM echo bin\oinputserver.exe > oinputserver.bat
 
 echo bin\hstart.exe /NOCONSOLE bin\MissionControl.exe > attachDebugger.bat
 
+pause
