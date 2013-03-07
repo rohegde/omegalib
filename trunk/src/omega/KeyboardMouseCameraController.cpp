@@ -37,7 +37,8 @@ KeyboardMouseCameraController::KeyboardMouseCameraController():
 	myYaw(0),
 	myPitch(0),
 	myMoveFlags(0),
-	myRotating(false)
+	myRotating(false),
+	myBaseOrientation(Quaternion::Identity())
 {
 }
 
@@ -77,16 +78,18 @@ void KeyboardMouseCameraController::update(const UpdateContext& context)
 	if(!isEnabled()) return;
 
 	Camera* c = getCamera();
+	if(c->isUpdateNeeded()) reset();
 
 	Vector3f speed = computeSpeedVector(myMoveFlags, mySpeed, myStrafeMultiplier);
 	//updateCamera(speed, myYaw, myPitch, 0, context.dt);
-	c->setPitchYawRoll(Vector3f(myPitch, myYaw, 0));
+	c->setOrientation(myBaseOrientation * Math::quaternionFromEuler(Vector3f(myPitch, myYaw, 0)));
 	c->translate(speed * context.dt, Node::TransformLocal);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void KeyboardMouseCameraController::reset()
 {
+	myBaseOrientation = getCamera()->getOrientation();
 	myYaw = 0;
 	myPitch = 0;
 }

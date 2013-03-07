@@ -52,6 +52,7 @@ OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node), myInitialized(fal
 	//ofmsg("&OsgRenderable center: %1%, size: %2%", %center %bs.radius());
 
 	myBBox.setExtents(center - radius, center + radius);
+	requestBoundingBoxUpdate();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +79,20 @@ void OsgSceneObject::update(SceneNode* node)
 	osg::Matrix oxform;
 	oxform.set(m.data());
 	myTransform->setMatrix( oxform );
- }
+	requestBoundingBoxUpdate();
+
+	//const osg::BoundingSphere& bs = myNode->getBound();
+	//Vector3f center(bs.center()[0], bs.center()[1], bs.center()[2]);
+
+	//float fradius = bs.radius();
+	//if(fradius == -1) fradius = 0;
+
+	//Vector3f radius(fradius, fradius, fradius);
+
+	//ofmsg("&OsgRenderable center: %1%, size: %2%", %center %bs.radius());
+
+	//myBBox.setExtents(center - radius, center + radius);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 const AlignedBox3* OsgSceneObject::getBoundingBox()

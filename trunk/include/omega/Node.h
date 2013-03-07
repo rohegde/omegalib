@@ -55,7 +55,7 @@ namespace omega {
             /// Transform is relative to the local space
             TransformLocal,
             /// Transform is relative to the space of the parent node
-            TransformParent,
+            TransformParent,	
             /// Transform is relative to world space
             TransformWorld
         };
@@ -478,7 +478,7 @@ namespace omega {
 		void setUserData(void* data) { myUserData = data; }
 
 		void setName(const String& name);
-
+		bool isUpdateNeeded() { return mNeedParentUpdate; }
 		//! Children begin iterator
 		//List<Node*>::iterator begin() { return mChildrenList.begin(); }
 		//List<Node*>::const_iterator begin() const { return mChildrenList.begin(); }

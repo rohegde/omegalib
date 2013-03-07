@@ -135,8 +135,17 @@ void Camera::update(const UpdateContext& context)
 	myHeadTransform.translate(myHeadOffset);
 	myHeadTransform.rotate(myHeadOrientation);
 
-	// Update view transform.
-	myViewTransform = Math::makeViewMatrix(getDerivedPosition(), getDerivedOrientation());
+	if(isUpdateNeeded())
+	{
+		// Update view transform.
+		myViewTransform = Math::makeViewMatrix(getDerivedPosition(), getDerivedOrientation());
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+void Camera::lookAt(const Vector3f& position, const Vector3f& upVector)
+{
+	Node::lookAt(myHeadOffset - position, upVector);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -147,9 +156,12 @@ void Camera::focusOn(SceneNode* node)
 	dir.normalize();
 
 	const Sphere& bs = node->getBoundingSphere();
-	mOrientation = Math::buildRotation(Vector3f::UnitZ(), dir, Vector3f::UnitY());
+	ofmsg("Camera:focuson %1% %2%", %bs.getCenter() %bs.getRadius());
+	mPosition = bs.getCenter() + Vector3f(0, 0, bs.getRadius() * 2) - myHeadOffset;
+	lookAt(node->getPosition(), Vector3f::UnitY());
+	//mOrientation = Math::buildRotation(Vector3f::UnitZ(), dir, Vector3f::UnitY());
 	//mPosition = bs.getCenter() + Vector3f(0, 0, bs.getRadius());
-    needUpdate();
+    //needUpdate();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

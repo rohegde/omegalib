@@ -120,6 +120,10 @@ namespace omega {
 		void setBoundingBoxVisible(bool value);
 		const Color& getBoundingBoxColor();
 		void setBoundingBoxColor(const Color& color);
+		const Vector3f& getBoundMinimum();
+		const Vector3f& getBoundMaximum();
+		const Vector3f& getBoundCenter();
+		float getBoundRadius();
 		//@}
 
 		// Listeners

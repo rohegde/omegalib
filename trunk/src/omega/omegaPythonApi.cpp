@@ -915,6 +915,10 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_GETTER(SceneNode, getTag)
 		PYAPI_GETTER(SceneNode, setFacingCamera)
 		PYAPI_GETTER(SceneNode, getFacingCamera)
+		PYAPI_GETTER(SceneNode, getBoundMinimum)
+		PYAPI_GETTER(SceneNode, getBoundMaximum)
+		PYAPI_GETTER(SceneNode, getBoundCenter)
+		PYAPI_GETTER(SceneNode, getBoundRadius)
 	;
 
 	// CameraController
@@ -939,6 +943,7 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(Camera, isControllerEnabled)
 		PYAPI_METHOD(Camera, localToWorldPosition)
 		PYAPI_METHOD(Camera, localToWorldOrientation)
+		PYAPI_METHOD(Camera, focusOn)
 		;
 
 	// Color
