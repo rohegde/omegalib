@@ -10,7 +10,7 @@ scene = getSceneManager()
 plane = PlaneShape.create(10, 10)
 plane.setPosition(Vector3(0, 0, -4))
 plane.pitch(radians(-90))
-plane.setEffect("colored -v emissive -d yellow")
+plane.setEffect("colored -e yellow")
 
 # create a floating image panel
 img1 = PlaneShape.create(1, 1)
