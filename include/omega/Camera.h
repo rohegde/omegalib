@@ -101,6 +101,7 @@ namespace omega {
 		//@}
 
 		void focusOn(SceneNode* node);
+		virtual void lookAt(const Vector3f& position, const Vector3f& upVector);
 
 		//! Returns true if this camera is enabled in the specified draw context.
 		bool isEnabled(const DrawContext& context);
