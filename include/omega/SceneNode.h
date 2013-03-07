@@ -122,7 +122,7 @@ namespace omega {
 		void setBoundingBoxColor(const Color& color);
 		const Vector3f& getBoundMinimum();
 		const Vector3f& getBoundMaximum();
-		const Vector3f& getBoundCenter();
+		const Vector3f getBoundCenter();
 		float getBoundRadius();
 		//@}
 
