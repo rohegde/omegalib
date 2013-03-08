@@ -299,6 +299,13 @@ bool OmegaViewer::handleCommand(const String& cmd)
 		SystemManager::instance()->postExitRequest();
 		return true;
 	}
+	else if(args[0] == "hint")
+	{
+		if(args[1] == "displayWand")
+		{
+			interp->queueCommand("getSceneManager().displayWand(0, 1)", true);
+		}
+	}
 	return false;
 }
 
