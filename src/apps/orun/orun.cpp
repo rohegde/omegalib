@@ -142,7 +142,7 @@ void OmegaViewer::initialize()
 	// in a cluster environment.
 	if(sDefaultScript != "")
 	{
-		interp->runFile(sDefaultScript);
+		interp->queueCommand(ostr(":r %1%", %sDefaultScript));
 	}
 
 	if(myAppDrawer != NULL)	myAppDrawer->initialize();
