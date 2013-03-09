@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.3</span>
+   &#160;<span id="projectnumber">4.0</span>
    </div>
   </td>
  </tr>
@@ -100,7 +100,7 @@
 : <a class="el" href="classomicron_1_1_math.html#a23e6a9c651b9fb9e517152bb944b8805">omicron::Math</a>
 </li>
 <li>handle_connect()
-: <a class="el" href="classomicron_1_1_tcp_client_connection.html#a9862c7527d97a6b29801fbae93d57608">omicron::TcpClientConnection</a>
+: <a class="el" href="classomicron_1_1_tcp_connection.html#ad6680eba54c47533604128a5185dd0ad">omicron::TcpConnection</a>
 </li>
 <li>handleAccept()
 : <a class="el" href="classomicron_1_1_tcp_server.html#a2920d2fda40ae4f81fd539a2eefc888b">omicron::TcpServer</a>
@@ -110,24 +110,27 @@
 , <a class="el" href="classomicron_1_1_tcp_connection.html#a9d7f114f50dd161010fdc5965266dd01">omicron::TcpConnection</a>
 </li>
 <li>handleCommand()
-: <a class="el" href="classcyclops_1_1_scene_manager.html#a0ee53fbe53660f857f38f5b1b8effa9f">cyclops::SceneManager</a>
-, <a class="el" href="classomega_1_1_engine_module.html#a6a44bda7e9079e42c17f44824d6f89f6">omega::EngineModule</a>
-, <a class="el" href="classomega_1_1_module_services.html#ab8dd5f090f7934a1e92af2c56841a159">omega::ModuleServices</a>
-, <a class="el" href="classomega_1_1_wand_camera_controller.html#a2979c5808376a9868bfe1793eddf533e">omega::WandCameraController</a>
+: <a class="el" href="classcyclops_1_1_scene_manager.html#a70d850aee2f6f8933304f3923100e743">cyclops::SceneManager</a>
+, <a class="el" href="classomega_1_1_mission_control_client.html#a0b43c9ed48d488e79351dc35d50017bc">omega::MissionControlClient</a>
+, <a class="el" href="classomega_1_1_engine_module.html#a6641ffd16fad35600540fd470614556e">omega::EngineModule</a>
+, <a class="el" href="classomega_1_1_module_services.html#aacd28b8e5942a9ba542fe1891a75a04d">omega::ModuleServices</a>
+, <a class="el" href="classomega_1_1_wand_camera_controller.html#a8d2b4c9ebd33545d3160861dad63cab4">omega::WandCameraController</a>
 </li>
 <li>handleConnected()
 : <a class="el" href="classomega_1_1_mission_control_connection.html#ab6b360947015052b63810af86a195764">omega::MissionControlConnection</a>
 , <a class="el" href="classomicron_1_1_tcp_connection.html#a5722d39d18650705ead6644fb6393778">omicron::TcpConnection</a>
 </li>
 <li>handleData()
-: <a class="el" href="classomega_1_1_mission_control_connection.html#aff46f65112d4fb6517b9b74978d02187">omega::MissionControlConnection</a>
-, <a class="el" href="classomicron_1_1_tcp_connection.html#a20e49e12995626d0a0e553d2e3cdee43">omicron::TcpConnection</a>
+: <a class="el" href="classomicron_1_1_tcp_connection.html#a20e49e12995626d0a0e553d2e3cdee43">omicron::TcpConnection</a>
+, <a class="el" href="classomega_1_1_mission_control_connection.html#aff46f65112d4fb6517b9b74978d02187">omega::MissionControlConnection</a>
 </li>
 <li>handleError()
 : <a class="el" href="classomicron_1_1_tcp_connection.html#a67ac03b2a302b6559c36ba3f617dc29f">omicron::TcpConnection</a>
 </li>
 <li>handleEvent()
-: <a class="el" href="classomega_toolkit_1_1_controller_manipulator.html#aaffe3225061a99b6ad2916c0824d7ff3">omegaToolkit::ControllerManipulator</a>
+: <a class="el" href="classomega_1_1_wand_camera_controller.html#a62812383624cecb876f557a6699a0b81">omega::WandCameraController</a>
+, <a class="el" href="classomega_osg_1_1_osg_module.html#a80a035013435d2dd15b459267198fe0d">omegaOsg::OsgModule</a>
+, <a class="el" href="classomega_toolkit_1_1_controller_manipulator.html#aaffe3225061a99b6ad2916c0824d7ff3">omegaToolkit::ControllerManipulator</a>
 , <a class="el" href="classomega_toolkit_1_1_default_mouse_interactor.html#a6e35265a2b644d2a4b85757b07c64cde">omegaToolkit::DefaultMouseInteractor</a>
 , <a class="el" href="class_cyclops.html#a02e89df275e3abb96b5a75c0041c9208">Cyclops</a>
 , <a class="el" href="classomega_toolkit_1_1_default_two_hands_interactor.html#a95961643d261c5240af2ddcaed6d5767">omegaToolkit::DefaultTwoHandsInteractor</a>
@@ -143,21 +146,24 @@
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_slider.html#a6000aa9a39ccb041b6b6d8d976c734b5">omegaToolkit::ui::Slider</a>
 , <a class="el" href="classomega_1_1_camera_controller.html#a7b866242221178ddd2b49b4f796a52a1">omega::CameraController</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a5758dff9b9d41098aa879d0254c047be">omegaToolkit::ui::Widget</a>
-, <a class="el" href="classomicron_1_1_i_event_listener.html#a367ac6304045971ed815358e6f57bc77">omicron::IEventListener</a>
-, <a class="el" href="classomega_vtk_1_1_vtk_module.html#a9b214041bb6a0a1e82aad4c6d0a7cecd">omegaVtk::VtkModule</a>
 , <a class="el" href="classomega_toolkit_1_1_ui_module.html#a23c7d8ca93cadcea6cbcbe668a1397dc">omegaToolkit::UiModule</a>
 , <a class="el" href="classomega_1_1_engine.html#a1b173c05a06c1664519b0746cd492ba4">omega::Engine</a>
 , <a class="el" href="classomega_toolkit_1_1_ui_script_command.html#ab6d2fb097a9951e2e337d24c64862323">omegaToolkit::UiScriptCommand</a>
 , <a class="el" href="classomega_toolkit_1_1_wand_manipulator.html#acd17a2d7aa9ee3edd48a4adf355d3cc8">omegaToolkit::WandManipulator</a>
 , <a class="el" href="classomega_1_1_gamepad_camera_controller.html#a9f8e119cf6a06c613d4dd2e23fe45d02">omega::GamepadCameraController</a>
+, <a class="el" href="classomega_vtk_1_1_vtk_module.html#a9b214041bb6a0a1e82aad4c6d0a7cecd">omegaVtk::VtkModule</a>
+, <a class="el" href="classomicron_1_1_i_event_listener.html#a367ac6304045971ed815358e6f57bc77">omicron::IEventListener</a>
 , <a class="el" href="classomega_1_1_keyboard_mouse_camera_controller.html#a7376ba8fd16b9c33ad92dc4034287309">omega::KeyboardMouseCameraController</a>
+, <a class="el" href="classomega_1_1_mission_control_client.html#afa70918392636788f81965095409d8a1">omega::MissionControlClient</a>
 , <a class="el" href="classomega_1_1_engine_module.html#aaa37722672c81e782e202d07534f3b14">omega::EngineModule</a>
 , <a class="el" href="classomega_1_1_module_services.html#acec487e4e485732a0c5b94b015b523cc">omega::ModuleServices</a>
 , <a class="el" href="classomega_1_1_mouse_camera_controller.html#a96d5fe2850376a97bf288805fd83ab55">omega::MouseCameraController</a>
 , <a class="el" href="classomega_1_1_python_interpreter.html#afdd6814295e9189271ca2a947e20b4fb">omega::PythonInterpreter</a>
 , <a class="el" href="classomega_1_1_tracked_object.html#aa4c4f16d458808b1e24cc7a23aee810e">omega::TrackedObject</a>
-, <a class="el" href="classomega_1_1_wand_camera_controller.html#a62812383624cecb876f557a6699a0b81">omega::WandCameraController</a>
-, <a class="el" href="classomega_osg_1_1_osg_module.html#a80a035013435d2dd15b459267198fe0d">omegaOsg::OsgModule</a>
+</li>
+<li>handleMessage()
+: <a class="el" href="classomega_1_1_mission_control_message_handler.html#a71209c90df64b5a81dc93d1872720c7c">omega::MissionControlMessageHandler</a>
+, <a class="el" href="classomega_1_1_i_mission_control_message_handler.html#a8bb7f06fb55ce415f7fb1905f2dd57e4">omega::IMissionControlMessageHandler</a>
 </li>
 <li>HARight
 : <a class="el" href="classomega_1_1_font.html#a778510098a82da8818d37608e8531fadae4d195b81e1827462f4fc95a7747d810">omega::Font</a>
@@ -169,13 +175,13 @@
 : <a class="el" href="classcyclops_1_1_animated_object.html#a8cb0920a7436fff8992f02b07475fbb6">cyclops::AnimatedObject</a>
 </li>
 <li>hasBoundingBox()
-: <a class="el" href="classomega_vtk_1_1_vtk_attach_point.html#a5433c2c04955763da61af463b51850a8">omegaVtk::VtkAttachPoint</a>
-, <a class="el" href="classomega_1_1_node_component.html#ac438c5c85990d44ba820f101630a137b">omega::NodeComponent</a>
+: <a class="el" href="classomega_1_1_node_component.html#ac438c5c85990d44ba820f101630a137b">omega::NodeComponent</a>
+, <a class="el" href="classomega_vtk_1_1_vtk_attach_point.html#a5433c2c04955763da61af463b51850a8">omegaVtk::VtkAttachPoint</a>
 , <a class="el" href="classomega_osg_1_1_osg_scene_object.html#a99f157b8dbdfe2ad2851dc1b2357b53f">omegaOsg::OsgSceneObject</a>
 </li>
 <li>hasCustomRayIntersector()
-: <a class="el" href="classomega_1_1_node_component.html#a8e73be8d7f10d61eb8d8f2715c19a196">omega::NodeComponent</a>
-, <a class="el" href="classomega_osg_1_1_osg_scene_object.html#a3f01f2fdba9b845066ca5845aacc0595">omegaOsg::OsgSceneObject</a>
+: <a class="el" href="classomega_osg_1_1_osg_scene_object.html#a3f01f2fdba9b845066ca5845aacc0595">omegaOsg::OsgSceneObject</a>
+, <a class="el" href="classomega_1_1_node_component.html#a8e73be8d7f10d61eb8d8f2715c19a196">omega::NodeComponent</a>
 </li>
 <li>hasEffect()
 : <a class="el" href="classcyclops_1_1_entity.html#ad2e770f00ba45945d6f0fc30e30d899c">cyclops::Entity</a>
@@ -189,12 +195,13 @@
 <li>HeartbeatService()
 : <a class="el" href="classomicron_1_1_heartbeat_service.html#abe8182226050fba5efbe191cce3f7b1c">omicron::HeartbeatService</a>
 </li>
-<li>height()
-: <a class="el" href="structomicron_1_1_rect.html#a818f926a8da7c29fb20b7670d69befd4">omicron::Rect</a>
-, <a class="el" href="structrecv__message.html#a2cf322c5cec698170aca4898db989c84">recv_message</a>
+<li>height
+: <a class="el" href="structrecv__message.html#a2cf322c5cec698170aca4898db989c84">recv_message</a>
+, <a class="el" href="structomicron_1_1_rect.html#a818f926a8da7c29fb20b7670d69befd4">omicron::Rect</a>
 </li>
 <li>hide()
 : <a class="el" href="classomega_toolkit_1_1ui_1_1_menu.html#a8061d90f02167fb3610b6b277ef3f88b">omegaToolkit::ui::Menu</a>
+, <a class="el" href="classomega_toolkit_1_1_app_drawer.html#a4a8abd014265f90e9a7142c992afa4c7">omegaToolkit::AppDrawer</a>
 </li>
 <li>hideWand()
 : <a class="el" href="classcyclops_1_1_scene_manager.html#a334f58674728ec6873c3c91f9db6ad51">cyclops::SceneManager</a>
@@ -221,8 +228,8 @@
 : <a class="el" href="classomega_1_1_scene_node.html#ad5215802413a8141d732b05718bca18f">omega::SceneNode</a>
 </li>
 <li>HorizontalAlign
-: <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a136df0270d0e028ada4352c896d6f886">omegaToolkit::ui::Container</a>
-, <a class="el" href="classomega_toolkit_1_1ui_1_1_label.html#af4aa282d78286938f53219d9dbab245a">omegaToolkit::ui::Label</a>
+: <a class="el" href="classomega_toolkit_1_1ui_1_1_label.html#af4aa282d78286938f53219d9dbab245a">omegaToolkit::ui::Label</a>
+, <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a136df0270d0e028ada4352c896d6f886">omegaToolkit::ui::Container</a>
 </li>
 <li>hostname
 : <a class="el" href="structomega_1_1_display_node_config.html#a3a8a4bfaa6d8f6630dbbf89b61fc239d">omega::DisplayNodeConfig</a>

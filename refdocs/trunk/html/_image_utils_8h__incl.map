@@ -1,9 +1,9 @@
-<map id="D:/Workspace/omegalib/trunk/include/omega/ImageUtils.h" name="D:/Workspace/omegalib/trunk/include/omega/ImageUtils.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="143,245,215,269"/>
-<area shape="rect" id="node10" href="$_pixel_data_8h.html" title="omega/PixelData.h" alt="" coords="21,101,134,125"/>
-<area shape="rect" id="node16" href="$_async_task_8h.html" title="omega/AsyncTask.h" alt="" coords="228,101,346,125"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="182,317,247,341"/>
-<area shape="rect" id="node13" href="$_texture_source_8h.html" title="omega/TextureSource.h" alt="" coords="56,173,195,197"/>
-<area shape="rect" id="node19" href="$_system_manager_8h.html" title="omega/SystemManager.h" alt="" coords="270,173,415,197"/>
-<area shape="rect" id="node22" href="$_python_interpreter_8h.html" title="omega/PythonInterpreter.h" alt="" coords="440,173,595,197"/>
+<map id="D:/Workspace/omegalib/core/include/omega/ImageUtils.h" name="D:/Workspace/omegalib/core/include/omega/ImageUtils.h">
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="163,235,235,259"/>
+<area shape="rect" id="node10" href="$_pixel_data_8h.html" title="omega/PixelData.h" alt="" coords="41,91,153,115"/>
+<area shape="rect" id="node16" href="$_async_task_8h.html" title="omega/AsyncTask.h" alt="" coords="247,91,365,115"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="202,307,267,331"/>
+<area shape="rect" id="node13" href="$_texture_source_8h.html" title="omega/TextureSource.h" alt="" coords="76,163,215,187"/>
+<area shape="rect" id="node19" href="$_system_manager_8h.html" title="omega/SystemManager.h" alt="" coords="290,163,435,187"/>
+<area shape="rect" id="node22" href="$_python_interpreter_8h.html" title="omega/PythonInterpreter.h" alt="" coords="459,163,615,187"/>
 </map>

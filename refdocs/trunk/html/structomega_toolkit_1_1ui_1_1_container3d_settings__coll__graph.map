@@ -1,2 +1,4 @@
 <map id="omegaToolkit::ui::Container3dSettings" name="omegaToolkit::ui::Container3dSettings">
+<area shape="rect" id="node6" href="$classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph." alt="" coords="211,259,327,283"/>
+<area shape="rect" id="node8" href="$classomega_1_1_node.html" title="PYAPI Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="215,163,301,187"/>
 </map>

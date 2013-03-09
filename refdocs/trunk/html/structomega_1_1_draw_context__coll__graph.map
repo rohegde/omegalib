@@ -1,10 +1,10 @@
 <map id="omega::DrawContext" name="omega::DrawContext">
-<area shape="rect" id="node2" href="$classomega_1_1_render_target.html" title="omega::RenderTarget" alt="" coords="261,80,390,104"/>
+<area shape="rect" id="node2" href="$classomega_1_1_render_target.html" title="omega::RenderTarget" alt="" coords="261,73,390,97"/>
 <area shape="rect" id="node4" href="$classomega_1_1_gpu_resource.html" title="omega::GpuResource" alt="" coords="6,5,133,29"/>
-<area shape="rect" id="node8" href="$structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="254,263,397,287"/>
+<area shape="rect" id="node8" href="$structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="254,251,397,275"/>
 <area shape="rect" id="node10" href="$classomega_1_1_camera.html" title="omega::Camera" alt="" coords="20,53,119,77"/>
-<area shape="rect" id="node24" title="STL class." alt="" coords="33,472,105,496"/>
-<area shape="rect" id="node30" href="$structomicron_1_1_rect.html" title="Stores a rectangular region in integer units." alt="" coords="281,420,370,444"/>
-<area shape="rect" id="node32" href="$classomega_1_1_renderer.html" title="omega::Renderer" alt="" coords="272,468,379,492"/>
-<area shape="rect" id="node34" href="$classomega_1_1_gpu_context.html" title="omega::GpuContext" alt="" coords="265,576,385,600"/>
+<area shape="rect" id="node24" title="STL class." alt="" coords="33,460,105,484"/>
+<area shape="rect" id="node30" href="$structomicron_1_1_rect.html" title="Stores a rectangular region in integer units." alt="" coords="281,408,370,432"/>
+<area shape="rect" id="node32" href="$classomega_1_1_renderer.html" title="omega::Renderer" alt="" coords="272,456,379,480"/>
+<area shape="rect" id="node34" href="$classomega_1_1_gpu_context.html" title="omega::GpuContext" alt="" coords="265,564,385,588"/>
 </map>

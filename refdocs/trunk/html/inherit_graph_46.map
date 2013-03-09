@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classomega_1_1_gpu_program_params.html" title="omega::GpuProgramParams" alt="" coords="6,5,162,29"/>
+<area shape="rect" id="node1" href="$classomega_1_1_i_display_config_builder.html" title="Interface for display configuration generators." alt="" coords="5,39,168,63"/>
+<area shape="rect" id="node3" href="$classomega_1_1_cylindrical_display_config.html" title="omega::CylindricalDisplay\lConfig" alt="" coords="223,5,367,41"/>
+<area shape="rect" id="node5" href="$classomega_1_1_planar_display_config.html" title="omega::PlanarDisplayConfig" alt="" coords="216,65,373,89"/>
 </map>

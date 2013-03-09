@@ -1,11 +1,11 @@
-<map id="D:/Workspace/omegalib/trunk/include/omega/AsyncTask.h" name="D:/Workspace/omegalib/trunk/include/omega/AsyncTask.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="231,461,303,485"/>
-<area shape="rect" id="node10" href="$_system_manager_8h.html" title="omega/SystemManager.h" alt="" coords="57,317,201,341"/>
-<area shape="rect" id="node16" href="$_python_interpreter_8h.html" title="omega/PythonInterpreter.h" alt="" coords="266,101,421,125"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="270,533,335,557"/>
-<area shape="rect" id="node13" href="$_stats_manager_8h.html" title="StatsManager.h" alt="" coords="55,389,153,413"/>
-<area shape="rect" id="node19" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="111,245,253,269"/>
-<area shape="rect" id="node23" href="$_i_renderer_command_8h.html" title="omega/IRendererCommand.h" alt="" coords="570,245,733,269"/>
-<area shape="rect" id="node26" href="$_shared_data_services_8h.html" title="omega/SharedDataServices.h" alt="" coords="329,317,495,341"/>
-<area shape="rect" id="node29" href="$_camera_8h.html" title="omega/Camera.h" alt="" coords="239,173,344,197"/>
+<map id="D:/Workspace/omegalib/core/include/omega/AsyncTask.h" name="D:/Workspace/omegalib/core/include/omega/AsyncTask.h">
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="255,451,327,475"/>
+<area shape="rect" id="node10" href="$_system_manager_8h.html" title="omega/SystemManager.h" alt="" coords="81,307,225,331"/>
+<area shape="rect" id="node16" href="$_python_interpreter_8h.html" title="omega/PythonInterpreter.h" alt="" coords="290,91,445,115"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="294,523,359,547"/>
+<area shape="rect" id="node13" href="$_stats_manager_8h.html" title="StatsManager.h" alt="" coords="79,379,177,403"/>
+<area shape="rect" id="node19" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="135,235,277,259"/>
+<area shape="rect" id="node23" href="$_i_renderer_command_8h.html" title="omega/IRendererCommand.h" alt="" coords="594,235,757,259"/>
+<area shape="rect" id="node26" href="$_shared_data_services_8h.html" title="omega/SharedDataServices.h" alt="" coords="353,307,519,331"/>
+<area shape="rect" id="node29" href="$_camera_8h.html" title="omega/Camera.h" alt="" coords="263,163,368,187"/>
 </map>

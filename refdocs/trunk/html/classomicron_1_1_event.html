@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.3</span>
+   &#160;<span id="projectnumber">4.0</span>
    </div>
   </td>
  </tr>
@@ -122,6 +122,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a929456c6a2665c59b159941d89b964fb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a929456c6a2665c59b159941d89b964fb">isButtonDown</a> (<a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977">Flags</a> button) const </td></tr>
 <tr class="memdesc:a929456c6a2665c59b159941d89b964fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility method to check if the event is a button down event.  <a href="#a929456c6a2665c59b159941d89b964fb"></a><br/></td></tr>
 <tr class="memitem:aeb1445e151f6f57bfc08cb956386d404"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#aeb1445e151f6f57bfc08cb956386d404">isButtonUp</a> (<a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977">Flags</a> button) const </td></tr>
+<tr class="memitem:a791f744a066a646f74723582f0594ab0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a791f744a066a646f74723582f0594ab0">getAxis</a> (int axisId) const </td></tr>
+<tr class="memdesc:a791f744a066a646f74723582f0594ab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility method to read an axis value from the event extra data.  <a href="#a791f744a066a646f74723582f0594ab0"></a><br/></td></tr>
 <tr class="memitem:a73f1a0f7e6a2d138a70cab8174f92117"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a73f1a0f7e6a2d138a70cab8174f92117">isFrom</a> (<a class="el" href="classomicron_1_1_service.html">Service</a> *svc, int sourceId) const </td></tr>
 <tr class="memdesc:a73f1a0f7e6a2d138a70cab8174f92117"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility method to check if an event is from a specific source service and source id.  <a href="#a73f1a0f7e6a2d138a70cab8174f92117"></a><br/></td></tr>
 <tr class="memitem:a8fa5a56ef198a62b6168c54e0a9ed887"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a8fa5a56ef198a62b6168c54e0a9ed887">isFrom</a> (<a class="el" href="classomicron_1_1_service.html#a3992f0756d1aee668f6740487ddb4daf">Service::ServiceType</a> <a class="el" href="glew_8h.html#a8d78e2e8a676abd547a596dd84811285">type</a>, int sourceId) const </td></tr>
@@ -184,7 +186,7 @@ Additional Inherited Members</h2></td></tr>
 <a class="el" href="classomicron_1_1_event_base.html#ab1f3e0a5d901729bf93e3b5ff37a54bea15384c8f38dd6541dc707913f9611872">ServiceTypeBrain</a>, 
 <a class="el" href="classomicron_1_1_event_base.html#ab1f3e0a5d901729bf93e3b5ff37a54bea891e9497786f155e6573e7024293f9ee">ServiceTypeWand</a>, 
 <br/>
-&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#ab1f3e0a5d901729bf93e3b5ff37a54beafbd4510c9849cfea8cad63ec377884d7">ServiceTypeAudio</a>
+&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#ab1f3e0a5d901729bf93e3b5ff37a54bea6dd1fd9a1a0d9851a6c5fe3458d6f3c0">ServiceTypeSpeech</a>
 <br/>
  }</td></tr>
 <tr class="memdesc:ab1f3e0a5d901729bf93e3b5ff37a54be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerates the service classes supported by omicron.  <a href="classomicron_1_1_event_base.html#ab1f3e0a5d901729bf93e3b5ff37a54be">More...</a><br/></td></tr>
@@ -248,7 +250,8 @@ Additional Inherited Members</h2></td></tr>
 <a class="el" href="classomicron_1_1_event_base.html#a91f2e2308ea1cec00fe036789a040bb9a55a82e2aa3f2da1963b553965351e78c">ExtraDataIntArray</a>, 
 <a class="el" href="classomicron_1_1_event_base.html#a91f2e2308ea1cec00fe036789a040bb9a9fd6ee8f135412dae328f41be3ccf924">ExtraDataVector3Array</a>, 
 <br/>
-&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#a91f2e2308ea1cec00fe036789a040bb9ad90616e7e76e3ef4e8285a8ec7fe9d00">ExtraDataString</a>
+&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#a91f2e2308ea1cec00fe036789a040bb9ad90616e7e76e3ef4e8285a8ec7fe9d00">ExtraDataString</a>, 
+<a class="el" href="classomicron_1_1_event_base.html#a91f2e2308ea1cec00fe036789a040bb9ac025021ba5673c0dadb4d69ac0b98d75">ExtraDataKinectSpeech</a>
 <br/>
  }</td></tr>
 <tr class="memitem:a8347c53970a3fd6eedd99718622009c6 inherit pub_types_classomicron_1_1_event_base"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6">OmicronSkeletonJoint</a> { <br/>
@@ -363,6 +366,32 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a791f744a066a646f74723582f0594ab0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float omicron::Event::getAxis </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>axisId</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Utility method to read an axis value from the event extra data. </p>
 
 </div>
 </div>
@@ -1642,7 +1671,7 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/trunk/external/omicron/include/omicron/<a class="el" href="_event_8h.html">Event.h</a></li>
+<li>D:/Workspace/omegalib/core/external/omicron/include/omicron/<a class="el" href="_event_8h.html">Event.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

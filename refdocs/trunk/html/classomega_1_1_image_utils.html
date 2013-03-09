@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.3</span>
+   &#160;<span id="projectnumber">4.0</span>
    </div>
   </td>
  </tr>
@@ -84,6 +84,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:abf0dee73ad2ee17169c11fb1797b31af"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structomicron_1_1_byte_array.html">ByteArray</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#abf0dee73ad2ee17169c11fb1797b31af">encode</a> (<a class="el" href="classomega_1_1_pixel_data.html">PixelData</a> *<a class="el" href="glew_8h.html#a42c2b1d86fa71a425e73a882cb0a72c8">data</a>, <a class="el" href="classomega_1_1_image_utils.html#a3adea18d896812a9499e62290793f35c">ImageFormat</a> <a class="el" href="glew_8h.html#a1e3b09934060e9d373139c3557730d37">format</a>)</td></tr>
 <tr class="memitem:a2fa94e6047770e5383a8e47783b70bbb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a2fa94e6047770e5383a8e47783b70bbb">internalInitialize</a> ()</td></tr>
 <tr class="memitem:aff53aa5f29908ae61515349430562917"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#aff53aa5f29908ae61515349430562917">internalDispose</a> ()</td></tr>
+<tr class="memitem:a156a3d3faf3a11cda9089c480e8c4c96"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a156a3d3faf3a11cda9089c480e8c4c96">setVerbose</a> (bool <a class="el" href="glew_8h.html#a6a4f8a1a444e9080b297963b3db29fe0">value</a>)</td></tr>
+<tr class="memitem:aff1b8cac1f0d71f44eefd35c66c0609d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#aff1b8cac1f0d71f44eefd35c66c0609d">setImageLoaderThreads</a> (int <a class="el" href="glew_8h.html#a85149b1510a8c7b78a603f657799ec2d">num</a>)</td></tr>
+<tr class="memdesc:aff1b8cac1f0d71f44eefd35c66c0609d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the number if image loading threads. Must be called before the fist call to loadImageAsync.  <a href="#aff1b8cac1f0d71f44eefd35c66c0609d"></a><br/></td></tr>
+<tr class="memitem:aa87156f1020df5b76753e872efbe59ed"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#aa87156f1020df5b76753e872efbe59ed">getImageLoaderThreads</a> ()</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ad8622dcca54636ecd6e5fa95898e1602"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#ad8622dcca54636ecd6e5fa95898e1602">preallocateBlocks</a> (size_t <a class="el" href="glew_8h.html#a3d1e3edfcf61ca2d831883e1afbad89e">size</a>, int numBlocks)</td></tr>
 <tr class="memdesc:ad8622dcca54636ecd6e5fa95898e1602"><td class="mdescLeft">&#160;</td><td class="mdescRight">Preallocated memory management.  <a href="#ad8622dcca54636ecd6e5fa95898e1602"></a><br/></td></tr>
@@ -159,6 +163,29 @@ Static Public Member Functions</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa87156f1020df5b76753e872efbe59ed"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int omega::ImageUtils::getImageLoaderThreads </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -414,6 +441,32 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aff1b8cac1f0d71f44eefd35c66c0609d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> omega::ImageUtils::setImageLoaderThreads </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the number if image loading threads. Must be called before the fist call to loadImageAsync. </p>
+
+</div>
+</div>
 <a class="anchor" id="a64b3e90e74b2d20cf31e85920687d790"></a>
 <div class="memitem">
 <div class="memproto">
@@ -441,9 +494,33 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a156a3d3faf3a11cda9089c480e8c4c96"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> omega::ImageUtils::setVerbose </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>D:/Workspace/omegalib/trunk/include/omega/<a class="el" href="_image_utils_8h.html">ImageUtils.h</a></li>
-<li>D:/Workspace/omegalib/trunk/src/omega/<a class="el" href="_image_utils_8cpp.html">ImageUtils.cpp</a></li>
+<li>D:/Workspace/omegalib/core/include/omega/<a class="el" href="_image_utils_8h.html">ImageUtils.h</a></li>
+<li>D:/Workspace/omegalib/core/src/omega/<a class="el" href="_image_utils_8cpp.html">ImageUtils.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

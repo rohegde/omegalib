@@ -1,8 +1,8 @@
 <map id="omega::DisplayConfig" name="omega::DisplayConfig">
-<area shape="rect" id="node2" href="$structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="251,628,394,652"/>
+<area shape="rect" id="node2" href="$structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="251,616,394,640"/>
 <area shape="rect" id="node32" href="$structomega_1_1_display_node_config.html" title="omega::DisplayNodeConfig" alt="" coords="572,411,724,435"/>
-<area shape="rect" id="node4" href="$classomega_1_1_camera.html" title="omega::Camera" alt="" coords="16,573,115,597"/>
+<area shape="rect" id="node4" href="$classomega_1_1_camera.html" title="omega::Camera" alt="" coords="16,561,115,585"/>
 <area shape="rect" id="node18" title="STL class." alt="" coords="29,392,101,416"/>
-<area shape="rect" id="node22" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, DisplayTileConfig * \&gt;" alt="" coords="563,1074,733,1110"/>
-<area shape="rect" id="node24" href="$classstdext_1_1hash__map.html" title="stdext::hash_map\&lt; String,\l DisplayTileConfig * \&gt;" alt="" coords="246,1074,399,1110"/>
+<area shape="rect" id="node22" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, DisplayTileConfig * \&gt;" alt="" coords="563,1062,733,1098"/>
+<area shape="rect" id="node24" href="$classstdext_1_1hash__map.html" title="stdext::hash_map\&lt; String,\l DisplayTileConfig * \&gt;" alt="" coords="246,1062,399,1098"/>
 </map>

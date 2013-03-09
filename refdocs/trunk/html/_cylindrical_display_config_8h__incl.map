@@ -1,6 +1,6 @@
-<map id="D:/Workspace/omegalib/trunk/include/omega/CylindricalDisplayConfig.h" name="D:/Workspace/omegalib/trunk/include/omega/CylindricalDisplayConfig.h">
-<area shape="rect" id="node3" href="$_application_base_8h.html" title="ApplicationBase.h" alt="" coords="27,101,133,125"/>
-<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="65,317,137,341"/>
-<area shape="rect" id="node7" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="47,245,156,269"/>
-<area shape="rect" id="node10" href="$_display_config_8h.html" title="DisplayConfig.h" alt="" coords="118,173,215,197"/>
+<map id="D:/Workspace/omegalib/core/include/omega/CylindricalDisplayConfig.h" name="D:/Workspace/omegalib/core/include/omega/CylindricalDisplayConfig.h">
+<area shape="rect" id="node3" href="$_application_base_8h.html" title="ApplicationBase.h" alt="" coords="37,101,144,125"/>
+<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="76,317,148,341"/>
+<area shape="rect" id="node7" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="57,245,167,269"/>
+<area shape="rect" id="node10" href="$_display_config_8h.html" title="DisplayConfig.h" alt="" coords="129,173,225,197"/>
 </map>

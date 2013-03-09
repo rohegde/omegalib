@@ -1,7 +1,7 @@
-<map id="D:/Workspace/omegalib/trunk/include/omega/RenderTarget.h" name="D:/Workspace/omegalib/trunk/include/omega/RenderTarget.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="64,317,136,341"/>
-<area shape="rect" id="node10" href="$_gpu_manager_8h.html" title="GpuManager.h" alt="" coords="80,173,173,197"/>
-<area shape="rect" id="node16" href="$_texture_8h.html" title="Texture.h" alt="" coords="111,101,181,125"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="103,389,168,413"/>
-<area shape="rect" id="node13" href="$_gpu_program_8h.html" title="omega/GpuProgram.h" alt="" coords="87,245,213,269"/>
+<map id="D:/Workspace/omegalib/core/include/omega/RenderTarget.h" name="D:/Workspace/omegalib/core/include/omega/RenderTarget.h">
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="96,307,168,331"/>
+<area shape="rect" id="node10" href="$_gpu_manager_8h.html" title="GpuManager.h" alt="" coords="112,163,205,187"/>
+<area shape="rect" id="node16" href="$_texture_8h.html" title="Texture.h" alt="" coords="143,91,213,115"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="135,379,200,403"/>
+<area shape="rect" id="node13" href="$_gpu_program_8h.html" title="omega/GpuProgram.h" alt="" coords="119,235,245,259"/>
 </map>

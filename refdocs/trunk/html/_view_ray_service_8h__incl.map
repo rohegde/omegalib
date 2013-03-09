@@ -1,6 +1,6 @@
-<map id="D:/Workspace/omegalib/trunk/include/omega/ViewRayService.h" name="D:/Workspace/omegalib/trunk/include/omega/ViewRayService.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="17,245,124,269"/>
-<area shape="rect" id="node10" href="$_display_system_8h.html" title="omega/DisplaySystem.h" alt="" coords="58,101,195,125"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="74,317,139,341"/>
-<area shape="rect" id="node13" href="$_application_base_8h.html" title="ApplicationBase.h" alt="" coords="108,173,215,197"/>
+<map id="D:/Workspace/omegalib/core/include/omega/ViewRayService.h" name="D:/Workspace/omegalib/core/include/omega/ViewRayService.h">
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="31,245,139,269"/>
+<area shape="rect" id="node10" href="$_display_system_8h.html" title="omega/DisplaySystem.h" alt="" coords="73,101,209,125"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="89,317,153,341"/>
+<area shape="rect" id="node13" href="$_application_base_8h.html" title="ApplicationBase.h" alt="" coords="123,173,229,197"/>
 </map>

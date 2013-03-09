@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.3</span>
+   &#160;<span id="projectnumber">4.0</span>
    </div>
   </td>
  </tr>
@@ -84,13 +84,18 @@ Public Types</h2></td></tr>
 <a class="el" href="classomega_1_1_pixel_data.html#aed2bcb71792727351cc8e0b6383765bea69919616a58da990c9c24f50fdc0525b">FormatRgba</a>, 
 <a class="el" href="classomega_1_1_pixel_data.html#aed2bcb71792727351cc8e0b6383765bea349296e1e8053e6a5c0a4cfefccf3a83">FormatMonochrome</a>
  }</td></tr>
+<tr class="memitem:abb71dbc979c930b70d653b2265ddccec"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#abb71dbc979c930b70d653b2265ddccec">UsageFlags</a> { <a class="el" href="classomega_1_1_pixel_data.html#abb71dbc979c930b70d653b2265ddccecaa0122235e131ab905a19246265df8e89">RenderTexture</a> =  1 &lt;&lt; 0, 
+<a class="el" href="classomega_1_1_pixel_data.html#abb71dbc979c930b70d653b2265ddccecac011354b1927a1ff790059ad3f8bed67">PixelBufferObject</a> =  1 &lt;&lt; 1
+ }</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a62bed24184b7743649a5a6531479263f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#a62bed24184b7743649a5a6531479263f">PixelData</a> (<a class="el" href="classomega_1_1_pixel_data.html#aed2bcb71792727351cc8e0b6383765be">Format</a> fmt, int <a class="el" href="glew_8h.html#aa105b18f96e6bc2485cb7f576a7fb9ba">width</a>, int <a class="el" href="glew_8h.html#aa214bd63e12f7ddf524c83894fcc69a7">height</a>, <a class="el" href="namespaceomicron.html#accbbf225f8124c69519d9bbaf963107c">byte</a> *<a class="el" href="glew_8h.html#a42c2b1d86fa71a425e73a882cb0a72c8">data</a>=NULL)</td></tr>
+<tr class="memitem:a2cc75c8c4a89f0e7130fb45f7154888a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#a2cc75c8c4a89f0e7130fb45f7154888a">PixelData</a> (<a class="el" href="classomega_1_1_pixel_data.html#aed2bcb71792727351cc8e0b6383765be">Format</a> fmt, int <a class="el" href="glew_8h.html#aa105b18f96e6bc2485cb7f576a7fb9ba">width</a>, int <a class="el" href="glew_8h.html#aa214bd63e12f7ddf524c83894fcc69a7">height</a>, <a class="el" href="namespaceomicron.html#accbbf225f8124c69519d9bbaf963107c">byte</a> *<a class="el" href="glew_8h.html#a42c2b1d86fa71a425e73a882cb0a72c8">data</a>=NULL, <a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a> usageFlags=0)</td></tr>
 <tr class="memitem:a5f4fce53930139c138fc45763df230b2"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#a5f4fce53930139c138fc45763df230b2">~PixelData</a> ()</td></tr>
-<tr class="memitem:a9eb4e62cff0ba68c6e3a5b1e74ca66fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#accbbf225f8124c69519d9bbaf963107c">byte</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#a9eb4e62cff0ba68c6e3a5b1e74ca66fc">lockData</a> ()</td></tr>
-<tr class="memitem:a27883b83662fe4c74e97d301503a641e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#a27883b83662fe4c74e97d301503a641e">unlockData</a> ()</td></tr>
+<tr class="memitem:ace36891f8dee787bdf25a95ddde62208"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#accbbf225f8124c69519d9bbaf963107c">byte</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#ace36891f8dee787bdf25a95ddde62208">map</a> ()</td></tr>
+<tr class="memitem:ac71604d38416a36253149de6a05b81c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#ac71604d38416a36253149de6a05b81c2">unmap</a> ()</td></tr>
+<tr class="memitem:ac4dbbb7020594de2e836bc16a7706bac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#accbbf225f8124c69519d9bbaf963107c">byte</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#ac4dbbb7020594de2e836bc16a7706bac">bind</a> (const <a class="el" href="classomega_1_1_gpu_context.html">GpuContext</a> *context)</td></tr>
+<tr class="memitem:a7cd9dd39615b92a6d2f9b4efc93b99fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#a7cd9dd39615b92a6d2f9b4efc93b99fe">unbind</a> ()</td></tr>
 <tr class="memitem:ab191d1b55e5f467dbdcd178e92fb0296"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#ab191d1b55e5f467dbdcd178e92fb0296">resize</a> (int <a class="el" href="glew_8h.html#aa105b18f96e6bc2485cb7f576a7fb9ba">width</a>, int <a class="el" href="glew_8h.html#aa214bd63e12f7ddf524c83894fcc69a7">height</a>)</td></tr>
 <tr class="memitem:aa30d37e2b0b336568e5fe5642054689d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#aa30d37e2b0b336568e5fe5642054689d">getWidth</a> ()</td></tr>
 <tr class="memitem:a7e7539bfce9645fea25d2a28e8a210bf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#a7e7539bfce9645fea25d2a28e8a210bf">getHeight</a> ()</td></tr>
@@ -106,9 +111,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0a15329b6967d3642902bd20600d3e21"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#a0a15329b6967d3642902bd20600d3e21">isDeleteDisabled</a> ()</td></tr>
 <tr class="memitem:a0d6739981cae7ff71db7b352ffb91f09"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#a0d6739981cae7ff71db7b352ffb91f09">isDirty</a> ()</td></tr>
 <tr class="memitem:a10f4f5e9d714a89f786378f3b8855e40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#a10f4f5e9d714a89f786378f3b8855e40">setDirty</a> (bool <a class="el" href="glew_8h.html#a6a4f8a1a444e9080b297963b3db29fe0">value</a>)</td></tr>
+<tr class="memitem:a6f6fbcab324efb914ac1ab21be175d72"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#a6f6fbcab324efb914ac1ab21be175d72">checkUsage</a> (<a class="el" href="classomega_1_1_pixel_data.html#abb71dbc979c930b70d653b2265ddccec">UsageFlags</a> flag)</td></tr>
+<tr class="memitem:a96c78631f89bbf76bcfa29a727ac3409"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pixel_data.html#a96c78631f89bbf76bcfa29a727ac3409">copyFrom</a> (<a class="el" href="classomega_1_1_pixel_data.html">PixelData</a> *other)</td></tr>
 <tr class="inherit_header pub_methods_classomega_1_1_texture_source"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomega_1_1_texture_source')"><img src="closed.png" alt="-"/>&nbsp;Public Member Functions inherited from <a class="el" href="classomega_1_1_texture_source.html">omega::TextureSource</a></td></tr>
 <tr class="memitem:ac71f89db0c6ec1fc4382b26dc898135b inherit pub_methods_classomega_1_1_texture_source"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture_source.html#ac71f89db0c6ec1fc4382b26dc898135b">~TextureSource</a> ()</td></tr>
 <tr class="memitem:ab28ec63d64b9c1f26d7d36a5754c5f33 inherit pub_methods_classomega_1_1_texture_source"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_texture.html">Texture</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture_source.html#ab28ec63d64b9c1f26d7d36a5754c5f33">getTexture</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
+<tr class="memitem:a41c8b183b08898414d3ec739edfd6561 inherit pub_methods_classomega_1_1_texture_source"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture_source.html#a41c8b183b08898414d3ec739edfd6561">attachTexture</a> (<a class="el" href="classomega_1_1_texture.html">Texture</a> *tex, const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
 <tr class="inherit_header pub_methods_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&nbsp;Public Member Functions inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a67ee43bd869da4325f4fc86a74c7dee5 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a67ee43bd869da4325f4fc86a74c7dee5">ReferenceType</a> ()</td></tr>
 <tr class="memitem:a4b8526fb1b60859c3d898d24ab2d78fb inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a4b8526fb1b60859c3d898d24ab2d78fb">~ReferenceType</a> ()</td></tr>
@@ -150,8 +158,28 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="abb71dbc979c930b70d653b2265ddccec"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classomega_1_1_pixel_data.html#abb71dbc979c930b70d653b2265ddccec">omega::PixelData::UsageFlags</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="abb71dbc979c930b70d653b2265ddccecaa0122235e131ab905a19246265df8e89"></a>RenderTexture</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="abb71dbc979c930b70d653b2265ddccecac011354b1927a1ff790059ad3f8bed67"></a>PixelBufferObject</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+</div>
+</div>
 <h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a62bed24184b7743649a5a6531479263f"></a>
+<a class="anchor" id="a2cc75c8c4a89f0e7130fb45f7154888a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -177,7 +205,13 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceomicron.html#accbbf225f8124c69519d9bbaf963107c">byte</a> *&#160;</td>
-          <td class="paramname"><em>data</em> = <code>NULL</code>&#160;</td>
+          <td class="paramname"><em>data</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a>&#160;</td>
+          <td class="paramname"><em>usageFlags</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -213,6 +247,62 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2>Member Function Documentation</h2>
+<a class="anchor" id="ac4dbbb7020594de2e836bc16a7706bac"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceomicron.html#accbbf225f8124c69519d9bbaf963107c">byte</a> * PixelData::bind </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1_gpu_context.html">GpuContext</a> *&#160;</td>
+          <td class="paramname"><em>context</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6f6fbcab324efb914ac1ab21be175d72"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::PixelData::checkUsage </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_pixel_data.html#abb71dbc979c930b70d653b2265ddccec">UsageFlags</a>&#160;</td>
+          <td class="paramname"><em>flag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a96c78631f89bbf76bcfa29a727ac3409"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PixelData::copyFrom </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_pixel_data.html">PixelData</a> *&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a96d533ac370f3c955e17b5883a91ff4b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -443,12 +533,12 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9eb4e62cff0ba68c6e3a5b1e74ca66fc"></a>
+<a class="anchor" id="ace36891f8dee787bdf25a95ddde62208"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceomicron.html#accbbf225f8124c69519d9bbaf963107c">byte</a> * PixelData::lockData </td>
+          <td class="memname"><a class="el" href="namespaceomicron.html#accbbf225f8124c69519d9bbaf963107c">byte</a> * PixelData::map </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -570,12 +660,27 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a27883b83662fe4c74e97d301503a641e"></a>
+<a class="anchor" id="a7cd9dd39615b92a6d2f9b4efc93b99fe"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PixelData::unlockData </td>
+          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PixelData::unbind </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac71604d38416a36253149de6a05b81c2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PixelData::unmap </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -586,8 +691,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>D:/Workspace/omegalib/trunk/include/omega/<a class="el" href="_pixel_data_8h.html">PixelData.h</a></li>
-<li>D:/Workspace/omegalib/trunk/src/omega/<a class="el" href="_pixel_data_8cpp.html">PixelData.cpp</a></li>
+<li>D:/Workspace/omegalib/core/include/omega/<a class="el" href="_pixel_data_8h.html">PixelData.h</a></li>
+<li>D:/Workspace/omegalib/core/src/omega/<a class="el" href="_pixel_data_8cpp.html">PixelData.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

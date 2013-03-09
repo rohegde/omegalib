@@ -1,11 +1,11 @@
-<map id="D:/Workspace/omegalib/trunk/include/omega/Actor.h" name="D:/Workspace/omegalib/trunk/include/omega/Actor.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="301,389,373,413"/>
-<area shape="rect" id="node10" href="$_application_8h.html" title="omega/Application.h" alt="" coords="291,101,411,125"/>
-<area shape="rect" id="node31" href="$_module_services_8h.html" title="omega/ModuleServices.h" alt="" coords="642,245,784,269"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="341,461,405,485"/>
-<area shape="rect" id="node13" href="$_renderer_8h.html" title="Renderer.h" alt="" coords="197,173,275,197"/>
-<area shape="rect" id="node16" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="43,245,185,269"/>
-<area shape="rect" id="node19" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="152,317,261,341"/>
-<area shape="rect" id="node25" href="$_shared_data_services_8h.html" title="omega/SharedDataServices.h" alt="" coords="511,317,676,341"/>
-<area shape="rect" id="node28" href="$_event_sharing_module_8h.html" title="omega/EventSharingModule.h" alt="" coords="414,173,580,197"/>
+<map id="D:/Workspace/omegalib/core/include/omega/Actor.h" name="D:/Workspace/omegalib/core/include/omega/Actor.h">
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="301,379,373,403"/>
+<area shape="rect" id="node10" href="$_application_8h.html" title="omega/Application.h" alt="" coords="291,91,411,115"/>
+<area shape="rect" id="node31" href="$_module_services_8h.html" title="omega/ModuleServices.h" alt="" coords="642,235,784,259"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="341,451,405,475"/>
+<area shape="rect" id="node13" href="$_renderer_8h.html" title="Renderer.h" alt="" coords="197,163,275,187"/>
+<area shape="rect" id="node16" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="43,235,185,259"/>
+<area shape="rect" id="node19" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="152,307,261,331"/>
+<area shape="rect" id="node25" href="$_shared_data_services_8h.html" title="omega/SharedDataServices.h" alt="" coords="511,307,676,331"/>
+<area shape="rect" id="node28" href="$_event_sharing_module_8h.html" title="omega/EventSharingModule.h" alt="" coords="414,163,580,187"/>
 </map>

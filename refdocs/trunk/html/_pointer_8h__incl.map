@@ -1,6 +1,6 @@
-<map id="D:/Workspace/omegalib/trunk/include/omega/Pointer.h" name="D:/Workspace/omegalib/trunk/include/omega/Pointer.h">
-<area shape="rect" id="node3" href="$_renderable_8h.html" title="Renderable.h" alt="" coords="30,101,116,125"/>
-<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="37,245,109,269"/>
-<area shape="rect" id="node7" href="$_render_pass_8h.html" title="RenderPass.h" alt="" coords="29,173,117,197"/>
-<area shape="rect" id="node10" href="$_i_renderer_command_8h.html" title="IRendererCommand.h" alt="" coords="143,173,271,197"/>
+<map id="D:/Workspace/omegalib/core/include/omega/Pointer.h" name="D:/Workspace/omegalib/core/include/omega/Pointer.h">
+<area shape="rect" id="node3" href="$_renderable_8h.html" title="Renderable.h" alt="" coords="46,91,132,115"/>
+<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="53,235,125,259"/>
+<area shape="rect" id="node7" href="$_render_pass_8h.html" title="RenderPass.h" alt="" coords="45,163,133,187"/>
+<area shape="rect" id="node10" href="$_i_renderer_command_8h.html" title="IRendererCommand.h" alt="" coords="159,163,287,187"/>
 </map>

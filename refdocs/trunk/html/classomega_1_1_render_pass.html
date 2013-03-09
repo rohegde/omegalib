@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.3</span>
+   &#160;<span id="projectnumber">4.0</span>
    </div>
   </td>
  </tr>
@@ -91,6 +91,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a523f96e2c6613f49cae092f2a07081b0"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_render_pass.html#a523f96e2c6613f49cae092f2a07081b0">~RenderPass</a> ()</td></tr>
 <tr class="memitem:a1a0dc4d585278956ac86a01eebbebf04"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_render_pass.html#a1a0dc4d585278956ac86a01eebbebf04">initialize</a> ()</td></tr>
 <tr class="memitem:ae3e96970db6b9188754b2ce49ac1b3dd"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_render_pass.html#ae3e96970db6b9188754b2ce49ac1b3dd">render</a> (<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *client, const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)=0</td></tr>
+<tr class="memitem:a864261e51c27c0831acc6c43039f8eee"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_render_pass.html#a864261e51c27c0831acc6c43039f8eee">dispose</a> ()</td></tr>
+<tr class="memitem:a80dfd477558e2869e9c136f4bc684ed5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_render_pass.html#a80dfd477558e2869e9c136f4bc684ed5">requestDispose</a> ()</td></tr>
+<tr class="memitem:af29a22b6a95a0b75896e9e5db1531d87"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_render_pass.html#af29a22b6a95a0b75896e9e5db1531d87">needsDispose</a> ()</td></tr>
 <tr class="memitem:a1c25a85c544e47918ce4a6e8144ab267"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_render_pass.html#a1c25a85c544e47918ce4a6e8144ab267">getName</a> ()</td></tr>
 <tr class="memitem:a713e3f69ae203a99cf0d5f73c61a1bf3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_render_pass.html#a713e3f69ae203a99cf0d5f73c61a1bf3">setUserData</a> (<a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> *<a class="el" href="glew_8h.html#a6a4f8a1a444e9080b297963b3db29fe0">value</a>)</td></tr>
 <tr class="memitem:af011dcccdcba103480e672478cc6faed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_render_pass.html#af011dcccdcba103480e672478cc6faed">getUserData</a> ()</td></tr>
@@ -196,6 +199,29 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2>Member Function Documentation</h2>
+<a class="anchor" id="a864261e51c27c0831acc6c43039f8eee"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> omega::RenderPass::dispose </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="aa45f44a7c27cdeebbf5895f11e0f4712"></a>
 <div class="memitem">
 <div class="memproto">
@@ -336,6 +362,29 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="af29a22b6a95a0b75896e9e5db1531d87"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::RenderPass::needsDispose </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="ae3e96970db6b9188754b2ce49ac1b3dd"></a>
 <div class="memitem">
 <div class="memproto">
@@ -369,6 +418,29 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implemented in <a class="el" href="classomega_vtk_1_1_vtk_render_pass.html#a1ecb3f368a61ec47e896cf6894bf8ece">omegaVtk::VtkRenderPass</a>, <a class="el" href="classomega_osg_1_1_osg_render_pass.html#a9eab356baae7f29d5540f0a544a9361d">omegaOsg::OsgRenderPass</a>, and <a class="el" href="classomega_toolkit_1_1_ui_render_pass.html#a239bbc4b1e2061cd9627d9f216e9a5d2">omegaToolkit::UiRenderPass</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a80dfd477558e2869e9c136f4bc684ed5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> omega::RenderPass::requestDispose </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -421,7 +493,7 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/trunk/include/omega/<a class="el" href="_render_pass_8h.html">RenderPass.h</a></li>
+<li>D:/Workspace/omegalib/core/include/omega/<a class="el" href="_render_pass_8h.html">RenderPass.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

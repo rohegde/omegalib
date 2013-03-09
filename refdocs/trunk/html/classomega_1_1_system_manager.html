@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.3</span>
+   &#160;<span id="projectnumber">4.0</span>
    </div>
   </td>
  </tr>
@@ -98,9 +98,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaf9d2211a1737efc30ba64853d33e1d2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aaf9d2211a1737efc30ba64853d33e1d2">getExitReason</a> ()</td></tr>
 <tr class="memitem:aabd898c0586740191737cf6f7dad6552"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aabd898c0586740191737cf6f7dad6552">isInitialized</a> ()</td></tr>
 <tr class="memitem:aa3c7095ea4401a7cfe072f4b37ed8328"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aa3c7095ea4401a7cfe072f4b37ed8328">isMaster</a> ()</td></tr>
-<tr class="memitem:aad6cd3d4650b272732f3a4bec557f99f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aad6cd3d4650b272732f3a4bec557f99f">getHostname</a> ()</td></tr>
+<tr class="memitem:a33688e9cdcb2feda18a5e089bee36612"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a33688e9cdcb2feda18a5e089bee36612">getHostname</a> ()</td></tr>
+<tr class="memitem:a5b8c734233e333b8ebfc071e29e401ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a5b8c734233e333b8ebfc071e29e401ab">getHostnameAndPort</a> ()</td></tr>
 <tr class="memitem:a1e7258d2d18910da157d430dda002f97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_python_interpreter.html">PythonInterpreter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a1e7258d2d18910da157d430dda002f97">getScriptInterpreter</a> ()</td></tr>
-<tr class="memitem:a9b207c233e3223bbde41c0d76ff7f9e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_mission_control_server.html">MissionControlServer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a9b207c233e3223bbde41c0d76ff7f9e6">getMissionControlServer</a> ()</td></tr>
 <tr class="memitem:a8a0535d253658c9e74f42dd2f2ad3099"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_sage_manager.html">SageManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a8a0535d253658c9e74f42dd2f2ad3099">getSageManager</a> ()</td></tr>
 <tr class="memitem:aeac4b1147af11a04922c795b5da577f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aeac4b1147af11a04922c795b5da577f9">setupServiceManager</a> ()</td></tr>
 <tr class="memitem:af0aa57cb40bcf5b6906741a91e08f95b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#af0aa57cb40bcf5b6906741a91e08f95b">setupDisplaySystem</a> ()</td></tr>
@@ -252,48 +252,32 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aad6cd3d4650b272732f3a4bec557f99f"></a>
+<a class="anchor" id="a33688e9cdcb2feda18a5e089bee36612"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>&amp; omega::SystemManager::getHostname </td>
+          <td class="memname"><a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> SystemManager::getHostname </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="a9b207c233e3223bbde41c0d76ff7f9e6"></a>
+<a class="anchor" id="a5b8c734233e333b8ebfc071e29e401ab"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomega_1_1_mission_control_server.html">MissionControlServer</a>* omega::SystemManager::getMissionControlServer </td>
+          <td class="memname"><a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> SystemManager::getHostnameAndPort </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -805,8 +789,8 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>D:/Workspace/omegalib/trunk/include/omega/<a class="el" href="_system_manager_8h.html">SystemManager.h</a></li>
-<li>D:/Workspace/omegalib/trunk/src/omega/<a class="el" href="_system_manager_8cpp.html">SystemManager.cpp</a></li>
+<li>D:/Workspace/omegalib/core/include/omega/<a class="el" href="_system_manager_8h.html">SystemManager.h</a></li>
+<li>D:/Workspace/omegalib/core/src/omega/<a class="el" href="_system_manager_8cpp.html">SystemManager.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>omegalib: D:/Workspace/omegalib/trunk/include/omega/PythonInterpreterWrapper.h File Reference</title>
+<title>omegalib: D:/Workspace/omegalib/core/include/omega/PythonInterpreterWrapper.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.3</span>
+   &#160;<span id="projectnumber">4.0</span>
    </div>
   </td>
  </tr>
@@ -65,8 +65,8 @@
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="_python_interpreter_wrapper_8h__incl.png" border="0" usemap="#_d_1_2_workspace_2omegalib_2trunk_2include_2omega_2_python_interpreter_wrapper_8h" alt=""/></div>
-<map name="_d_1_2_workspace_2omegalib_2trunk_2include_2omega_2_python_interpreter_wrapper_8h" id="_d_1_2_workspace_2omegalib_2trunk_2include_2omega_2_python_interpreter_wrapper_8h">
+<div class="center"><img src="_python_interpreter_wrapper_8h__incl.png" border="0" usemap="#_d_1_2_workspace_2omegalib_2core_2include_2omega_2_python_interpreter_wrapper_8h" alt=""/></div>
+<map name="_d_1_2_workspace_2omegalib_2core_2include_2omega_2_python_interpreter_wrapper_8h" id="_d_1_2_workspace_2omegalib_2core_2include_2omega_2_python_interpreter_wrapper_8h">
 <area shape="rect" id="node7" href="include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="219,101,291,125"/><area shape="rect" id="node11" href="include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="257,173,321,197"/></map>
 </div>
 </div><table class="memberdecls">
@@ -87,17 +87,28 @@ Macros</h2></td></tr>
 <tr class="memitem:a09efa4b1df2655e5660c36e03edc02eb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a09efa4b1df2655e5660c36e03edc02eb">PYAPI_RETURN_INTERNAL_REF</a>&#160;&#160;&#160;return_internal_reference&lt;&gt;()</td></tr>
 <tr class="memitem:a1a5fa0b2aa3291182544fcdd7a2c031b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a1a5fa0b2aa3291182544fcdd7a2c031b">PYAPI_POINTER_LIST</a>(itemName, className)&#160;&#160;&#160;class_&lt; List&lt;itemName*&gt; &gt; (className, no_init).def(&quot;__iter__&quot;, iterator&lt; List&lt;itemName*&gt;, return_internal_reference&lt;&gt; &gt;());</td></tr>
 <tr class="memitem:ad9dbfaa7512438ab9846b6e337b377cb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#ad9dbfaa7512438ab9846b6e337b377cb">PYAPI_ENUM</a>(fullEnumName, enumName)&#160;&#160;&#160;enum_&lt;fullEnumName&gt;(#enumName)</td></tr>
+<tr class="memdesc:ad9dbfaa7512438ab9846b6e337b377cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start declaring an enumeration.  <a href="#ad9dbfaa7512438ab9846b6e337b377cb"></a><br/></td></tr>
 <tr class="memitem:a75721f97d98cdbcc0862ab2458b58d90"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a75721f97d98cdbcc0862ab2458b58d90">PYAPI_ENUM_VALUE</a>(enumName, valueName)&#160;&#160;&#160;.<a class="el" href="glew_8h.html#a6a4f8a1a444e9080b297963b3db29fe0">value</a>(#valueName, enumName::valueName)</td></tr>
-<tr class="memitem:a9629d4fa41774f39061296f19ed1ac48"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a9629d4fa41774f39061296f19ed1ac48">PYAPI_METHOD</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName)</td></tr>
-<tr class="memitem:a5e6297873b1d86758d49244cd4018111"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a5e6297873b1d86758d49244cd4018111">PYAPI_GETTER</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName, return_value_policy&lt;return_by_value&gt;())</td></tr>
-<tr class="memitem:ad52e2c51e05209747a72cb543f5cd334"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#ad52e2c51e05209747a72cb543f5cd334">PYAPI_REF_GETTER</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName, return_value_policy&lt;return_by_smart_ptr&gt;())</td></tr>
-<tr class="memitem:a3f112a6af155bdfa7bbb1550adc7097a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a3f112a6af155bdfa7bbb1550adc7097a">PYAPI_STATIC_REF_GETTER</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName, return_value_policy&lt;return_by_smart_ptr&gt;()).staticmethod(#methodName)</td></tr>
-<tr class="memitem:a206dab69b8827018aedc0d42f98ca313"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a206dab69b8827018aedc0d42f98ca313">PYAPI_PROPERTY</a>(className, propName)&#160;&#160;&#160;.def_readwrite(#propName, &amp;className::propName)</td></tr>
+<tr class="memdesc:a75721f97d98cdbcc0862ab2458b58d90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare an enumeration value.  <a href="#a75721f97d98cdbcc0862ab2458b58d90"></a><br/></td></tr>
 <tr class="memitem:a54e8ca34f2943397f4206c991d49c40d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a54e8ca34f2943397f4206c991d49c40d">PYAPI_BASE_CLASS</a>(className)&#160;&#160;&#160;class_&lt;className, boost::noncopyable &gt;(#className, no_init)</td></tr>
+<tr class="memdesc:a54e8ca34f2943397f4206c991d49c40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a new class with by-value semantics and no constructor.  <a href="#a54e8ca34f2943397f4206c991d49c40d"></a><br/></td></tr>
 <tr class="memitem:a34e5eaef6a414f2675ffa910ad9e881c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a34e5eaef6a414f2675ffa910ad9e881c">PYAPI_BASE_CLASS_WITH_CTOR</a>(className)&#160;&#160;&#160;class_&lt;className, boost::noncopyable &gt;(#className)</td></tr>
+<tr class="memdesc:a34e5eaef6a414f2675ffa910ad9e881c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a new class with by value semantics, and with an empty constructor.  <a href="#a34e5eaef6a414f2675ffa910ad9e881c"></a><br/></td></tr>
 <tr class="memitem:ace9281fd0f5279db158d1c37a3095e4e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#ace9281fd0f5279db158d1c37a3095e4e">PYAPI_REF_CLASS</a>(className, baseName)&#160;&#160;&#160;class_&lt;className, bases&lt;baseName&gt;, boost::noncopyable, Ref&lt;className&gt; &gt;(#className, no_init)</td></tr>
+<tr class="memdesc:ace9281fd0f5279db158d1c37a3095e4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a new class with by-reference semantics and that supports reference counting.  <a href="#ace9281fd0f5279db158d1c37a3095e4e"></a><br/></td></tr>
 <tr class="memitem:aba9add631890a00a83a5e7e5bbc373e8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#aba9add631890a00a83a5e7e5bbc373e8">PYAPI_REF_BASE_CLASS</a>(className)&#160;&#160;&#160;class_&lt;className, boost::noncopyable, Ref&lt;className&gt; &gt;(#className, no_init)</td></tr>
+<tr class="memdesc:aba9add631890a00a83a5e7e5bbc373e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a new class with by-reference semantics and that supports reference counting.  <a href="#aba9add631890a00a83a5e7e5bbc373e8"></a><br/></td></tr>
 <tr class="memitem:a5591d7f6c4de3edb014d3559b2840277"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a5591d7f6c4de3edb014d3559b2840277">PYAPI_REF_BASE_CLASS_WITH_CTOR</a>(className)&#160;&#160;&#160;class_&lt;className, boost::noncopyable, Ref&lt;className&gt; &gt;(#className)</td></tr>
+<tr class="memdesc:a5591d7f6c4de3edb014d3559b2840277"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a new class with by-reference semantics and that supports reference counting. The class has an empty constuctor.  <a href="#a5591d7f6c4de3edb014d3559b2840277"></a><br/></td></tr>
+<tr class="memitem:a9629d4fa41774f39061296f19ed1ac48"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a9629d4fa41774f39061296f19ed1ac48">PYAPI_METHOD</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName)</td></tr>
+<tr class="memdesc:a9629d4fa41774f39061296f19ed1ac48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a method. Can be used for methods returning void, or returning simple plain types like int, float, bool etc.  <a href="#a9629d4fa41774f39061296f19ed1ac48"></a><br/></td></tr>
+<tr class="memitem:a5e6297873b1d86758d49244cd4018111"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a5e6297873b1d86758d49244cd4018111">PYAPI_GETTER</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName, return_value_policy&lt;return_by_value&gt;())</td></tr>
+<tr class="memdesc:a5e6297873b1d86758d49244cd4018111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a method returning an object by value.  <a href="#a5e6297873b1d86758d49244cd4018111"></a><br/></td></tr>
+<tr class="memitem:ad52e2c51e05209747a72cb543f5cd334"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#ad52e2c51e05209747a72cb543f5cd334">PYAPI_REF_GETTER</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName, return_value_policy&lt;return_by_smart_ptr&gt;())</td></tr>
+<tr class="memdesc:ad52e2c51e05209747a72cb543f5cd334"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a method returning an object by reference.  <a href="#ad52e2c51e05209747a72cb543f5cd334"></a><br/></td></tr>
+<tr class="memitem:a3f112a6af155bdfa7bbb1550adc7097a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a3f112a6af155bdfa7bbb1550adc7097a">PYAPI_STATIC_REF_GETTER</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName, return_value_policy&lt;return_by_smart_ptr&gt;()).staticmethod(#methodName)</td></tr>
+<tr class="memdesc:a3f112a6af155bdfa7bbb1550adc7097a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a static method returning an object by reference.  <a href="#a3f112a6af155bdfa7bbb1550adc7097a"></a><br/></td></tr>
+<tr class="memitem:a206dab69b8827018aedc0d42f98ca313"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a206dab69b8827018aedc0d42f98ca313">PYAPI_PROPERTY</a>(className, propName)&#160;&#160;&#160;.def_readwrite(#propName, &amp;className::propName)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -131,6 +142,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Declare a new class with by-value semantics and no constructor. </p>
+<p>Useful for objects that can be created on the C++ side and passed to python, but that should not be created by python code. </p>
+
 </div>
 </div>
 <a class="anchor" id="a34e5eaef6a414f2675ffa910ad9e881c"></a>
@@ -146,6 +160,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Declare a new class with by value semantics, and with an empty constructor. </p>
 
 </div>
 </div>
@@ -173,6 +189,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Start declaring an enumeration. </p>
+
 </div>
 </div>
 <a class="anchor" id="a75721f97d98cdbcc0862ab2458b58d90"></a>
@@ -198,6 +216,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Declare an enumeration value. </p>
 
 </div>
 </div>
@@ -225,6 +245,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Declare a method returning an object by value. </p>
+
 </div>
 </div>
 <a class="anchor" id="a9629d4fa41774f39061296f19ed1ac48"></a>
@@ -250,6 +272,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Declare a method. Can be used for methods returning void, or returning simple plain types like int, float, bool etc. </p>
 
 </div>
 </div>
@@ -319,6 +343,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Declare a new class with by-reference semantics and that supports reference counting. </p>
+<p>The class has no base for the python API. Its C++ implementation should derive from ReferenceType. </p>
+
 </div>
 </div>
 <a class="anchor" id="a5591d7f6c4de3edb014d3559b2840277"></a>
@@ -334,6 +361,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Declare a new class with by-reference semantics and that supports reference counting. The class has an empty constuctor. </p>
 
 </div>
 </div>
@@ -361,6 +390,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Declare a new class with by-reference semantics and that supports reference counting. </p>
+<p>baseName is the id of the base for this class </p>
+
 </div>
 </div>
 <a class="anchor" id="ad52e2c51e05209747a72cb543f5cd334"></a>
@@ -386,6 +418,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Declare a method returning an object by reference. </p>
 
 </div>
 </div>
@@ -460,6 +494,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Declare a static method returning an object by reference. </p>
 
 </div>
 </div>

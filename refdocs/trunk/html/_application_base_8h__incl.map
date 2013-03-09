@@ -1,7 +1,7 @@
-<map id="D:/Workspace/omegalib/trunk/include/omega/ApplicationBase.h" name="D:/Workspace/omegalib/trunk/include/omega/ApplicationBase.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="49,317,121,341"/>
-<area shape="rect" id="node10" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="49,173,159,197"/>
-<area shape="rect" id="node16" href="$_display_config_8h.html" title="DisplayConfig.h" alt="" coords="111,101,208,125"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="89,389,153,413"/>
-<area shape="rect" id="node13" href="$_stats_manager_8h.html" title="StatsManager.h" alt="" coords="80,245,179,269"/>
+<map id="D:/Workspace/omegalib/core/include/omega/ApplicationBase.h" name="D:/Workspace/omegalib/core/include/omega/ApplicationBase.h">
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="69,317,141,341"/>
+<area shape="rect" id="node10" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="69,173,179,197"/>
+<area shape="rect" id="node16" href="$_display_config_8h.html" title="DisplayConfig.h" alt="" coords="131,101,228,125"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="109,389,173,413"/>
+<area shape="rect" id="node13" href="$_stats_manager_8h.html" title="StatsManager.h" alt="" coords="100,245,199,269"/>
 </map>

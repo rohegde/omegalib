@@ -1,7 +1,7 @@
-<map id="D:/Workspace/omegalib/trunk/include/omega/EventSharingModule.h" name="D:/Workspace/omegalib/trunk/include/omega/EventSharingModule.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="47,245,155,269"/>
-<area shape="rect" id="node10" href="$_module_services_8h.html" title="omega/ModuleServices.h" alt="" coords="59,101,201,125"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="105,317,169,341"/>
-<area shape="rect" id="node13" href="$_engine_8h.html" title="Engine.h" alt="" coords="104,173,168,197"/>
-<area shape="rect" id="node16" href="$_shared_data_services_8h.html" title="omega/SharedDataServices.h" alt="" coords="192,173,357,197"/>
+<map id="D:/Workspace/omegalib/core/include/omega/EventSharingModule.h" name="D:/Workspace/omegalib/core/include/omega/EventSharingModule.h">
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="73,245,180,269"/>
+<area shape="rect" id="node10" href="$_module_services_8h.html" title="omega/ModuleServices.h" alt="" coords="85,101,227,125"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="130,317,195,341"/>
+<area shape="rect" id="node13" href="$_engine_8h.html" title="Engine.h" alt="" coords="129,173,193,197"/>
+<area shape="rect" id="node16" href="$_shared_data_services_8h.html" title="omega/SharedDataServices.h" alt="" coords="217,173,383,197"/>
 </map>

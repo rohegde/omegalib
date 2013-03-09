@@ -1,5 +1,6 @@
 <map id="omega::MissionControlConnection" name="omega::MissionControlConnection">
-<area shape="rect" id="node2" href="$classomicron_1_1_tcp_connection.html" title="omicron::TcpConnection" alt="" coords="231,91,369,115"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,5,147,29"/>
-<area shape="rect" id="node10" href="$structomicron_1_1_connection_info.html" title="omicron::ConnectionInfo" alt="" coords="376,5,517,29"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_tcp_connection.html" title="omicron::TcpConnection" alt="" coords="389,149,528,173"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="107,5,248,29"/>
+<area shape="rect" id="node10" href="$structomicron_1_1_connection_info.html" title="omicron::ConnectionInfo" alt="" coords="107,209,248,233"/>
+<area shape="rect" id="node15" title="STL class." alt="" coords="141,257,213,281"/>
 </map>

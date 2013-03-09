@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>omegalib: D:/Workspace/omegalib/trunk/include/omega/StatsManager.h File Reference</title>
+<title>omegalib: D:/Workspace/omegalib/core/include/omega/StatsManager.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.3</span>
+   &#160;<span id="projectnumber">4.0</span>
    </div>
   </td>
  </tr>
@@ -48,7 +48,8 @@
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
 <div class="title">StatsManager.h File Reference</div>  </div>
 </div><!--header-->
@@ -59,9 +60,9 @@
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="_stats_manager_8h__incl.png" border="0" usemap="#_d_1_2_workspace_2omegalib_2trunk_2include_2omega_2_stats_manager_8h" alt=""/></div>
-<map name="_d_1_2_workspace_2omegalib_2trunk_2include_2omega_2_stats_manager_8h" id="_d_1_2_workspace_2omegalib_2trunk_2include_2omega_2_stats_manager_8h">
-<area shape="rect" id="node3" href="include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="19,101,127,125"/><area shape="rect" id="node7" href="include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="77,173,141,197"/></map>
+<div class="center"><img src="_stats_manager_8h__incl.png" border="0" usemap="#_d_1_2_workspace_2omegalib_2core_2include_2omega_2_stats_manager_8h" alt=""/></div>
+<map name="_d_1_2_workspace_2omegalib_2core_2include_2omega_2_stats_manager_8h" id="_d_1_2_workspace_2omegalib_2core_2include_2omega_2_stats_manager_8h">
+<area shape="rect" id="node3" href="include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="51,91,159,115"/><area shape="rect" id="node7" href="include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="109,163,173,187"/></map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
@@ -72,7 +73,59 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceomega"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceomega.html">omega</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a9b97c8528215b954bf7e41b7199596d7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_stats_manager_8h.html#a9b97c8528215b954bf7e41b7199596d7">OMEGA_STAT_BEGIN</a>(<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
+<tr class="memdesc:a9b97c8528215b954bf7e41b7199596d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark beginning of timed code block.  <a href="#a9b97c8528215b954bf7e41b7199596d7"></a><br/></td></tr>
+<tr class="memitem:ad6e3cbb8048e908431de5d8bdfcb5c63"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_stats_manager_8h.html#ad6e3cbb8048e908431de5d8bdfcb5c63">OMEGA_STAT_END</a>(<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
+<tr class="memdesc:ad6e3cbb8048e908431de5d8bdfcb5c63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark end of timed code block.  <a href="#ad6e3cbb8048e908431de5d8bdfcb5c63"></a><br/></td></tr>
 </table>
+<h2>Macro Definition Documentation</h2>
+<a class="anchor" id="a9b97c8528215b954bf7e41b7199596d7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define OMEGA_STAT_BEGIN</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">static</span> Stat* __##<a class="code" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>##Stat = NULL; \</div>
+<div class="line">        Timer __##<a class="code" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>##Timer; \</div>
+<div class="line">        __##<a class="code" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>##Timer.start();</div>
+</div><!-- fragment -->
+<p>Mark beginning of timed code block. </p>
+
+</div>
+</div>
+<a class="anchor" id="ad6e3cbb8048e908431de5d8bdfcb5c63"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define OMEGA_STAT_END</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">__##<a class="code" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>##Timer.stop(); \</div>
+<div class="line">        if(__##<a class="code" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>##Stat == NULL) { \</div>
+<div class="line">                StatsManager* sm = SystemManager::instance()-&gt;getStatsManager(); \</div>
+<div class="line">                __##<a class="code" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>##Stat = sm-&gt;createStat(#<a class="code" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>); } \</div>
+<div class="line">        __##<a class="code" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>##Stat-&gt;addSample(__##<a class="code" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>##Timer.getElapsedTime() * 1000);</div>
+</div><!-- fragment -->
+<p>Mark end of timed code block. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
