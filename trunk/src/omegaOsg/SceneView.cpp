@@ -180,6 +180,9 @@ void SceneView::initialize()
     _updateVisitor = new UpdateVisitor;
 
     _cullVisitor = CullVisitor::create();
+	// Disable default computing of near/far plane: Equalizer takes care of this.
+	_cullVisitor->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
+	_cullVisitor->setCullingMode(osg::CullSettings::ENABLE_ALL_CULLING);
 
     _cullVisitor->setStateGraph(_stateGraph.get());
     _cullVisitor->setRenderStage(_renderStage.get());
@@ -310,7 +313,6 @@ void SceneView::cull(int eye)
 
     _cullVisitor->setTraversalMask(_cullMask);
     bool computeNearFar = cullStage(getProjectionMatrix(),getViewMatrix(),_cullVisitor.get(),_stateGraph.get(),_renderStage.get(),getViewport());
-
     if (computeNearFar)
     {
         CullVisitor::value_type zNear = _cullVisitor->getCalculatedNearPlane();
@@ -331,15 +333,9 @@ bool SceneView::cullStage(const osg::Matrixd& projection,const osg::Matrixd& mod
     // collect any occluder in the view frustum.
     if (_camera->containsOccluderNodes())
     {
-        //std::cout << "Scene graph contains occluder nodes, searching for them"<<std::endl;
-        
-        
         if (!_collectOccludersVisitor) _collectOccludersVisitor = new osg::CollectOccludersVisitor;
-        
         _collectOccludersVisitor->inheritCullSettings(*this);
-        
         _collectOccludersVisitor->reset();
-        
         _collectOccludersVisitor->setFrameStamp(_frameStamp.get());
 
         // use the frame number for the traversal number.
@@ -362,9 +358,6 @@ bool SceneView::cullStage(const osg::Matrixd& projection,const osg::Matrixd& mod
         // sort the occluder from largest occluder volume to smallest.
         _collectOccludersVisitor->removeOccludedOccluders();
         
-        
-        osg::notify(osg::DEBUG_INFO) << "finished searching for occluder - found "<<_collectOccludersVisitor->getCollectedOccluderSet().size()<<std::endl;
-           
         cullVisitor->getOccluderList().clear();
         std::copy(_collectOccludersVisitor->getCollectedOccluderSet().begin(),_collectOccludersVisitor->getCollectedOccluderSet().end(), std::back_insert_iterator<CullStack::OccluderList>(cullVisitor->getOccluderList()));
     }
@@ -379,10 +372,8 @@ bool SceneView::cullStage(const osg::Matrixd& projection,const osg::Matrixd& mod
     }
 
     cullVisitor->inheritCullSettings(*this);
-
     cullVisitor->setStateGraph(rendergraph);
     cullVisitor->setRenderStage(renderStage);
-
     cullVisitor->setRenderInfo( _renderInfo );
 
     renderStage->reset();
@@ -442,7 +433,6 @@ bool SceneView::cullStage(const osg::Matrixd& projection,const osg::Matrixd& mod
     
     // set the number of dynamic objects in the scene.    
     _dynamicObjectCount += renderStage->computeNumberOfDynamicRenderLeaves();
-
 
     bool computeNearFar = (cullVisitor->getComputeNearFarMode()!=osgUtil::CullVisitor::DO_NOT_COMPUTE_NEAR_FAR) && getSceneData()!=0;
     return computeNearFar;
