@@ -610,6 +610,28 @@ void toggleStereo()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void setNearFarZ(float nearZ, float farZ)
+{
+	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+	ds->setNearFarZ(nearZ, farZ);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+float getNearZ(float near)
+{
+	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+	return ds->getNearZ();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+float getFarZ(float near)
+{
+	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+	return ds->getFarZ();
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void mcstart(int port = MissionControlServer::DefaultPort)
 {
 	if(isMaster())
@@ -1082,6 +1104,10 @@ BOOST_PYTHON_MODULE(omega)
 	def("orun", orun);
 	def("oclean", oclean);
 	def("ocleanrun", ocleanrun);
+
+	def("setNearFarZ", setNearFarZ);
+	def("getNearZ", getNearZ);
+	def("getFarZ", getFarZ);
 };
 
 // Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)
