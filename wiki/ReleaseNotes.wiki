@@ -6,6 +6,15 @@
 ------------------------------------------------------------------------
 = omegalib v4.0 (*current developer version*) =
 == Major Changes ==
+omega
+	* Improvements to python API
+		* Camera.focusOn
+		* clip plane control
+		* SceneNode bounding box
+omegaOsg
+	* fixed bounding box generation
+	* fixes to clipping
+
 
 ------------------------------------------------------------------------
 = omegalib v3.4  =

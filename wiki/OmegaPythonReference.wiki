@@ -1,7 +1,7 @@
 #summary Python reference: module omega
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.4 - 3 March 2013</p>*
+<p>*Last revision:* ver. 4.0 - 6 March 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -22,6 +22,15 @@ Finds a camera by name or creates a new one if a camera with the specified name 
 
 === `getCameraById(id)` ===
 Retrieves a camera based on its id (*currently supported by Porthole service only*)
+
+=== `setNearFarZ(near, far)` ===
+Sets the near and far clip planes for the default camera
+
+=== `getNearZ()` ===
+Gets the near clip plane for the default camera
+
+=== `getFarZ()` ===
+Gets the far clip plane for the default camera
 
 -------------------------------------------------------------------------------
 == Callbacks ==
@@ -277,6 +286,9 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_
 || `isVisible()`, `setVisible(value)` || Gets or sets the node visibility status ||
 || *Bounding box* ||
 || `isBoundingBoxVisible()`, `setBoundingBoxVisible(value)` || ||
+|| `getBoundMinimum()`, `getBoundMaximum()` || Gets the bounding box minimum or maximum points (as `Vector3`) ||
+|| `getBoundCenter()` || Gets the bounding box center (as `Vector3`) ||
+|| `getBoundRadius()` || Gets the bounding box radius ||
 || *Selection control* ||
 || `isBoundingBoxVisible()`, `setBoundingBoxVisible(value)` || ||
 || `isSelected()`, `setSelected(value)`|| ||
@@ -366,6 +378,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_
 || `setControllerEnabled(value)`, `isControllerEnabled()` || ||
 || `localToWorldPosition(position)` || ||
 || `localToWorldOrientation(orientation)`|| ||
+|| `focusOn(node)`|| Moves and orients the camera to center the node in the field of view. ||
 
 -------------------------------------------------------------------------------
 ==  `class DrawInterface` ==
