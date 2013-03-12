@@ -26,6 +26,8 @@
  *************************************************************************************************/
 #include <vtkActor.h>
 #include <vtkProperty.h>
+#include <vtkOpenGLRenderer.h>
+#include <vtkLight.h>
 
 //#include "omegaVtk/PyVtk.h"
 #include "omega/PythonInterpreter.h"
@@ -130,23 +132,48 @@ void VtkModule::detachProp(vtkProp3D* actor, SceneNode* node)
 void VtkModule::update(const UpdateContext& context)
 {
 	bool itemDirty = false;
+	bool allRenderPassesInitialized = true;
 
-	typedef Dictionary<SceneNode*, VtkAttachPoint*>::Item DItem;
-
-	// See if any attach point is dirty.
-	foreach(DItem item, myAttachPoints)	itemDirty |= item->isDirty();
-
-	// If any item is dirty, reset render queues for all renderers
-	if(itemDirty)
+	// Reset render queues only if all render passes are initialized.
+	foreach(VtkRenderPass* rp, myRenderPasses) allRenderPassesInitialized &= rp->isInitialized();
+	
+	if(allRenderPassesInitialized)
 	{
-		foreach(VtkRenderPass* rp, myRenderPasses)
+		typedef Dictionary<SceneNode*, VtkAttachPoint*>::Item DItem;
+
+		// See if any attach point is dirty.
+		foreach(DItem item, myAttachPoints)	itemDirty |= item->isDirty();
+
+		// If any item is dirty, reset render queues for all renderers
+		if(itemDirty)
 		{
-			rp->resetPropQueues();
-			foreach(DItem item, myAttachPoints)
+			foreach(VtkRenderPass* rp, myRenderPasses)
 			{
-				item->queueProps(rp);
+				rp->resetPropQueues();
+				foreach(DItem item, myAttachPoints)
+				{
+					item->queueProps(rp);
+				}
 			}
 		}
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkModule::addLight(vtkLight* light)
+{
+	foreach(VtkRenderPass* rp, myRenderPasses) rp->getRenderer()->AddLight(light);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkModule::removeLight(vtkLight* light)
+{
+	foreach(VtkRenderPass* rp, myRenderPasses) rp->getRenderer()->RemoveLight(light);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkModule::removeAllLights()
+{
+	foreach(VtkRenderPass* rp, myRenderPasses) rp->getRenderer()->RemoveAllLights();
 }
 

@@ -33,6 +33,7 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DOVTK_EXPORTING -DVTK_LIBRARY_DIR="$
 # Source files
 SET( srcs 
 		vtkGenericOpenGLRenderWindow.cpp
+		CustomDepthPeelingPass.cpp
 		VtkModule.cpp
 		VtkRenderPass.cpp
 		VtkAttachPoint.cpp
@@ -49,6 +50,7 @@ endif()
 # Headers
 SET( headers 
 		# omega
+		CustomDepthPeelingPass.h
 		${CMAKE_SOURCE_DIR}/include/omegaVtk/ovtkbase.h
 		${CMAKE_SOURCE_DIR}/include/omegaVtk/PyVtk.h
 		${CMAKE_SOURCE_DIR}/include/omegaVtk/VtkModule.h

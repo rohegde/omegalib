@@ -25,15 +25,17 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include <vtkCamera.h>
-#include <vtkRenderer.h>
+#include <vtkLightsPass.h>
+#include <vtkOpenGLRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkOpaquePass.h>
-#include <vtkDepthPeelingPass.h>
 #include <vtkTranslucentPass.h>
 #include <vtkOverlayPass.h>
 #include <vtkVolumetricPass.h>
 #include <vtkRenderState.h>
+#include <vtkOpenGLRenderer.h>
 
+#include "CustomDepthPeelingPass.h"
 #include "omegaVtk/VtkRenderPass.h"
 #include "omegaVtk/vtkGenericOpenGLRenderWindow.h"
 
@@ -52,25 +54,36 @@ VtkRenderPass::~VtkRenderPass()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+vtkOpenGLRenderer* VtkRenderPass::getRenderer() 
+{
+	return myRenderer; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkRenderPass::initialize()
 {
 	RenderPass::initialize();
 
 	// Setup renderer and render window
-	myRenderer = vtkRenderer::New();
+	myRenderer = vtkOpenGLRenderer::New();
+	myRenderer->UseDepthPeelingOn();
 
 	myRenderWindow = vtkGenericOpenGLRenderWindow::New();
+	myRenderWindow->MakeCurrent();
+	myRenderWindow->OpenGLInit();
 	myRenderWindow->AddRenderer(myRenderer);
 	
 	myOpaquePass = vtkOpaquePass::New();
+	myDepthPeelingPass = CustomDepthPeelingPass::New();
 	myTranslucentPass = vtkTranslucentPass::New();
 	myOverlayPass = vtkOverlayPass::New();
 	myVolumetricPass = vtkVolumetricPass::New();
+	myLightsPass = vtkLightsPass::New();
 
 	myRenderState = new vtkRenderState(myRenderer);
 
 	//resetPropQueues();
-
+	myDepthPeelingPass->SetTranslucentPass(myTranslucentPass);
 	//myTranslucentPass->SetTranslucentPass(vtkTranslucentPass::New());
 }
 
@@ -86,6 +99,7 @@ sLock.lock();
 	{
 		myPropQueue[queue][myPropQueueSize[queue]++] = actor;
 	}
+	//myRenderer->AddViewProp(actor);
 sLock.unlock();
 }
 
@@ -93,6 +107,7 @@ sLock.unlock();
 void VtkRenderPass::resetPropQueues()
 {
 	for(int i = 0; i < NumQueues; i++) myPropQueueSize[i] = 0;
+	//myRenderer->RemoveAllViewProps();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,6 +115,8 @@ void VtkRenderPass::render(Renderer* mng, const DrawContext& context)
 {
 	if(context.task == DrawContext::SceneDrawTask)
 	{
+		myRenderWindow->SetSize(context.tile->pixelSize[0], context.tile->pixelSize[1]);
+		//myRenderWindow->SetTileViewport(context
 		//RenderState state;
 		//state.pass = this;
 		//state.flags = VtkRenderPass::RenderVtk;
@@ -118,7 +135,10 @@ void VtkRenderPass::render(Renderer* mng, const DrawContext& context)
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_LIGHTING);
 
+		//myRenderer->Render();
+
 sLock.lock();
+		myLightsPass->Render(myRenderState);
 		myRenderState->SetPropArrayAndCount(myPropQueue[QueueOpaque], myPropQueueSize[QueueOpaque]);
 		myOpaquePass->Render(myRenderState);
 sLock.unlock();
@@ -130,7 +150,8 @@ sLock.unlock();
 
 sLock.lock();
 		myRenderState->SetPropArrayAndCount(myPropQueue[QueueTransparent], myPropQueueSize[QueueTransparent]);
-		myTranslucentPass->Render(myRenderState);
+		//myTranslucentPass->Render(myRenderState);
+		myDepthPeelingPass->Render(myRenderState);
 sLock.unlock();
 	
 		// Volume rendering not supported for now: it requires forwarding to vtk information
