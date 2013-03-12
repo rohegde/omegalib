@@ -35,34 +35,50 @@ using namespace omegaVtk;
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-static PyObject* attachProp(PyObject* self, PyObject* args)
+void attachProp(boost::python::object pyactor, SceneNode* node)
 {
-	PyObject* pyactor = NULL;
-	PyObject* pynode = NULL;
-	PyArg_ParseTuple(args, "OO", &pyactor, &pynode);
-
-	if(pyactor != NULL && pynode != NULL)
+	if(pyactor != NULL && node != NULL)
 	{
-		PyVTKObject* pyvtkactor = (PyVTKObject *)pyactor;
-		vtkProp3D* vtkactor = (vtkProp3D*)pyvtkactor->vtk_ptr;
-		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pynode, "SceneNode");
-		Py_INCREF(pyactor);
-		VtkModule::instance()->attachProp(vtkactor, node);
+		PyVTKObject* vtkactor = (PyVTKObject*)pyactor.ptr();
+		VtkModule::instance()->attachProp((vtkProp3D*)vtkactor->vtk_ptr, node);
 	}
-
-	Py_INCREF(Py_None);
-	return Py_None;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-static PyMethodDef ovtkMethods[] = 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void detachProp(boost::python::object pyactor, SceneNode* node)
 {
-    {"vtkAttachProp", attachProp, METH_VARARGS, 
-		"attachProp(actor, sceneNode)\n"
-			"Attaches a vtk 3d prop to an omegalib scene node."},
+	if(pyactor != NULL && node != NULL)
+	{
+		PyVTKObject* vtkactor = (PyVTKObject*)pyactor.ptr();
+		VtkModule::instance()->detachProp((vtkProp3D*)vtkactor->vtk_ptr, node);
+	}
+}
 
-    {NULL, NULL, 0, NULL}
-};
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void addLight(boost::python::object pylight)
+{
+	if(pylight != NULL)
+	{
+		PyVTKObject* vtklight = (PyVTKObject*)pylight.ptr();
+		VtkModule::instance()->addLight((vtkLight*)vtklight->vtk_ptr);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void removeLight(boost::python::object pylight)
+{
+	if(pylight != NULL)
+	{
+		PyVTKObject* vtklight = (PyVTKObject*)pylight.ptr();
+		VtkModule::instance()->removeLight((vtkLight*)vtklight->vtk_ptr);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void removeAllLights()
+{
+	VtkModule::instance()->removeAllLights();
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 BOOST_PYTHON_MODULE(omegaVtk)
@@ -70,9 +86,15 @@ BOOST_PYTHON_MODULE(omegaVtk)
 	// SceneLoader
 	PYAPI_REF_BASE_CLASS(VtkModule)
 		PYAPI_STATIC_REF_GETTER(VtkModule, createAndInitialize)
-		PYAPI_METHOD(VtkModule, attachProp)
-		PYAPI_METHOD(VtkModule, detachProp)
+		//PYAPI_METHOD(VtkModule, attachProp)
+		//PYAPI_METHOD(VtkModule, detachProp)
 		;
+
+	def("vtkAttachProp", attachProp);
+	def("vtkDetachProp", detachProp);
+	def("vtkAddLight", addLight);
+	def("vtkRemoveLight", removeLight);
+	def("vtkRemoveAllLights", removeAllLights);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,8 +105,8 @@ void OVTK_API omegaVtkPythonApiInit()
 	if(!sApiInitialized)
 	{
 		omsg("omegaVtkPythonApiInit()");
-		omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-		interp->addModule("omegaVtk", ovtkMethods);
+		//omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+		//interp->addModule("omegaVtk", ovtkMethods);
 		initomegaVtk();
 	}
 }

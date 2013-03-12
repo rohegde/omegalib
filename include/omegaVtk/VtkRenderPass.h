@@ -31,9 +31,10 @@
 #include "omega/RenderPass.h"
 
 class vtkProp;
-class vtkRenderer;
+class vtkOpenGLRenderer;
 class vtkOpaquePass;
-class vtkDepthPeelingPass;
+class vtkLightsPass;
+class CustomDepthPeelingPass;
 class vtkTranslucentPass;
 class vtkOverlayPass;
 class vtkGenericOpenGLRenderWindow;
@@ -62,9 +63,10 @@ namespace omegaVtk
 		virtual void render(Renderer* client, const DrawContext& context);
 		void queueProp(vtkProp* actor, QueueType queue);
 		void resetPropQueues();
+		vtkOpenGLRenderer* getRenderer();
 
 	private:
-		vtkRenderer* myRenderer;
+		vtkOpenGLRenderer* myRenderer;
 		vtkRenderState* myRenderState;
 		vtkGenericOpenGLRenderWindow* myRenderWindow;
 
@@ -72,7 +74,9 @@ namespace omegaVtk
 		int myPropQueueSize[NumQueues];
 
 		// Rendering passes
+		vtkLightsPass* myLightsPass;
 		vtkOpaquePass* myOpaquePass;
+		CustomDepthPeelingPass* myDepthPeelingPass;
 		vtkTranslucentPass* myTranslucentPass;
 		vtkOverlayPass* myOverlayPass;
 		vtkVolumetricPass* myVolumetricPass;

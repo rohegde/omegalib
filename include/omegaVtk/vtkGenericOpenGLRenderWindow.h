@@ -101,6 +101,9 @@ public:
   void DestroyWindow();
   // }@
 
+  //! 1 = Window is using hardware acceleration
+  virtual int IsDirect() { return 1;}
+
 protected:
 
 private:

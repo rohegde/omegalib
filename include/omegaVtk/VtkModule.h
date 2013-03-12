@@ -36,6 +36,8 @@
 #include "omega/Engine.h"
 #include "omega/Application.h"
 
+class vtkLight;
+
 namespace omegaVtk
 {
 	using namespace omega;
@@ -62,6 +64,9 @@ namespace omegaVtk
 
 		void attachProp(vtkProp3D* actor, SceneNode* node);
 		void detachProp(vtkProp3D* actor, SceneNode* node);
+		void addLight(vtkLight* light);
+		void removeLight(vtkLight* light);
+		void removeAllLights();
 
 	private:
 		static VtkModule* myInstance;
