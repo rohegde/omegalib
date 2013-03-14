@@ -118,7 +118,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 	# Create a sphere with a radius on 1 meter, with a 4 subdivision level.
 	s = SphereShape.create(1, 4)
 	# Make the sphere half-transparent and move it
-	s.setAlpha(0.5)
+	s.getMaterial().setAlpha(0.5)
 	s.setPosition(Vector3(0, 1.5, 0))
 }}}
 
@@ -321,4 +321,3 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 	skybox.loadCubeMap("common/cubemaps/grid4", "png")
 	getSceneManager().setSkyBox(skybox)
 }}}
-
