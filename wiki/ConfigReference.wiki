@@ -223,3 +223,23 @@ Example:
 		serverEnabled = true;
 	};
 }}}
+
+
+---------------------------------------------------------------------------------------------------
+== Application configuration syntax ==
+The application configuration file contains configuration sections associated to each application. Altough applications can read and use custom configuration parameters, we list here a few common ones
+---------------------------------------------------------------------------------------------------
+=== `orun` section ===
+This section contains options used by the standard `orun` application used to launch omegalib python scripts.
+	* `initScript` (String): name or path to a script that will be launched at startup. Default is `orun_init.py`
+	* `appStartFunction` (String): name of a function that will be launched every time orun resets the current application or loads a new one. This function is typically defined in the init script. Default is `_onAppStart()`
+
+Example:
+{{{
+	orun:
+	{
+		initScript = "customInitScript.py";
+		// We add a print statement before calling a custom application start function.
+		appStartFunction = "print('Application Restart!'); _myOwnStartFunction()";
+	};
+}}}
