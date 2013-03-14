@@ -54,9 +54,6 @@ Lock sModelQueueLock;
 Queue< Ref<SceneManager::LoadModelAsyncTask> > sModelQueue;
 bool sShutdownLoaderThread = false;
 
-// Default attribute binding for tangent array.
-int DefaultTangentAttribBinding = 6;
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class ModelLoaderThread: public Thread
 {
@@ -94,104 +91,6 @@ public:
 
 private:
 	SceneManager* mySceneManager;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct AnimationManagerFinder : public osg::NodeVisitor 
-{ 
-    osgAnimation::BasicAnimationManager* am; 
-    
-    AnimationManagerFinder(): am(NULL) {setTraversalMode(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN); } 
-    
-    void apply(osg::Node& node) 
-	{ 
-        if (am != NULL) 
-            return; 
-    
-        if (node.getUpdateCallback())
-		{        
-            am = dynamic_cast<osgAnimation::BasicAnimationManager*>(node.getUpdateCallback()); 
-            return; 
-        } 
-        
-        traverse(node); 
-    } 
-}; 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class TextureResizeNonPowerOfTwoHintVisitor : public osg::NodeVisitor
-{
-protected:
-    void setHint(osg::StateSet * stateset)
-	{
-		//TODO: get max texture units from somewhere
-		for(int i = 0; i < 32; i++)
-		{
-			osg::StateAttribute* stateatt = stateset->getTextureAttribute(i, osg::StateAttribute::TEXTURE);
-			if(stateatt)
-			{
-				osg::Texture * texture = stateatt->asTexture();
-				if(texture)	texture->setResizeNonPowerOfTwoHint(_hint);
-			}
-		}
-	}        
-	bool _hint;
-
-public:
-    TextureResizeNonPowerOfTwoHintVisitor(bool hint): osg::NodeVisitor(TRAVERSE_ALL_CHILDREN)
-	{ _hint = hint;	}
-
-    ~TextureResizeNonPowerOfTwoHintVisitor()
-	{}
-
-    virtual void apply(osg::Node& node)
-	{
-		osg::StateSet * stateset = node.getOrCreateStateSet();
-		if(stateset) setHint(stateset);
-		traverse(node);
-	}
-
-    virtual void apply(osg::Geode& node)
-	{
-		osg::StateSet * stateset = node.getOrCreateStateSet();
-		if(stateset) setHint(stateset);
-    
-		for(int i = 0; i < node.getNumDrawables(); i++)
-		{
-			stateset = node.getDrawable(i)->getStateSet();
-			if(stateset) setHint(stateset);
-		}
-	}
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class TangentSpaceGeneratorVisitor: public osg::NodeVisitor
-{
-protected:
-	int tangentAttribBinding;
-
-public:
-	TangentSpaceGeneratorVisitor(int tangentAttribBinding = DefaultTangentAttribBinding): osg::NodeVisitor(TRAVERSE_ALL_CHILDREN)
-	{ this->tangentAttribBinding = tangentAttribBinding; }
-
-    ~TangentSpaceGeneratorVisitor()
-	{}
-
-    virtual void apply(osg::Geode& node)
-	{
-		for(int i = 0; i < node.getNumDrawables(); i++)
-		{
-			osg::Geometry* geom = node.getDrawable(i)->asGeometry();
-			if(geom != NULL)
-			{
-				Ref<osgUtil::TangentSpaceGenerator> tsg = new osgUtil::TangentSpaceGenerator();
-				tsg->generate(geom, 0);
-				osg::Vec4Array* a_tangent = tsg->getTangentArray();
-				geom->setVertexAttribArray (tangentAttribBinding, a_tangent);
-				geom->setVertexAttribBinding (tangentAttribBinding, osg::Geometry::BIND_PER_VERTEX);
-			}
-		}
-	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -236,6 +135,8 @@ SceneManager::SceneManager():
 
 	myModelLoaderThread = NULL;
 	sShutdownLoaderThread = false;
+
+	addLoader(new DefaultModelLoader());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -885,116 +786,77 @@ void SceneManager::loadModelAsync(ModelInfo* info, const String& callback)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::addLoader(ModelLoader* loader)
+{
+	if(loader != NULL)
+	{
+		myLoaderDictionary[loader->getName()] = loader;
+	}
+	else
+	{
+		owarn("SceneManager::addLoader: can't add NULL loader");
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::removeLoader(ModelLoader* loader)
+{
+	if(loader != NULL)
+	{
+		myLoaderDictionary.erase(loader->getName());
+	}
+	else
+	{
+		owarn("SceneManager::removeLoader: can't remove NULL loader");
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool SceneManager::loadModel(ModelInfo* info)
 {
 	omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SceneManager::loadModel");
-
+	bool result = false;
 
 	ModelAsset* asset = new ModelAsset();
-	asset->filename = info->path; /// changed filepath to filename (confirm from alassandro).
+	asset->name = info->path; /// changed filepath to filename (confirm from alassandro).
 	asset->numNodes = info->numFiles;
+	asset->info = info;
 
 	myModelDictionary[info->name] = asset;
 	myModelList.push_back(asset);
 
-	// Replace * with %1% so we can use our string formatting routines to add a number to the path strings.
-	String orfp = StringUtils::replaceAll(info->path, "*", "%1%");
-	String filePath = info->path;
-
-	for(int iterator=0; iterator < info->numFiles; iterator++)
+	Vector<String> args = StringUtils::tokenise(asset->name, " ", "'");
+	// If we have 2 arguments, the first one is the name of the loader
+	if(args.size() == 2)
 	{
-		// If present in the string, this line will substitute %1% with the iterator number.
-		if(info->numFiles != 1)
+		if(myLoaderDictionary.find(args[0]) != myLoaderDictionary.end())
 		{
-			filePath = ostr(orfp, %iterator);
-		}
-
-		String assetPath;
-		if(DataManager::findFile(filePath, assetPath))
-		{ 
-			ofmsg("Loading model %1%", %filePath);
-			osgDB::Options* options = new osgDB::Options; 
-			options->setOptionString("noTesselateLargePolygons noTriStripPolygons noRotation"); 
-
-			if(info->buildKdTree)
-			{
-				osgDB::Registry::instance()->setBuildKdTreesHint(osgDB::ReaderWriter::Options::BUILD_KDTREES);
-			}
-			else
-			{
-				osgDB::Registry::instance()->setBuildKdTreesHint(osgDB::ReaderWriter::Options::DO_NOT_BUILD_KDTREES);
-			}
-
-			osg::Node* node = osgDB::readNodeFile(assetPath, options);
-			if(node != NULL)
-			{
-				if(info->optimize)
-				{
-					omsg("Optimizing model");
-					osgUtil::Optimizer optOSGFile;
-					optOSGFile.optimize(node, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
-				}
-
-				if(info->usePowerOfTwoTextures)
-				{
-					TextureResizeNonPowerOfTwoHintVisitor potv(true);
-					node->accept(potv);
-				}
-				else
-				{
-					TextureResizeNonPowerOfTwoHintVisitor potv(false);
-					node->accept(potv);
-				}
-
-				if(info->size != 0.0f)
-				{
-					float r = node->getBound().radius() * 2;
-					float scale = info->size / r;
-
-					osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform();
-					pat->setScale(osg::Vec3(scale, scale, scale));
-					pat->addChild(node);
-
-					node = pat;
-				}
-
-				if(info->generateNormals)
-				{
-					omsg("Generating normals...");
-					osgUtil::SmoothingVisitor sv;
-					node->accept(sv);
-				}
-
-				if(info->generateTangents)
-				{
-					omsg("Generating tangents...");
-					TangentSpaceGeneratorVisitor tsgv;
-					node->accept(tsgv);
-				}
-
-				if(info->normalizeNormals)
-				{
-					node->getOrCreateStateSet()->setMode(GL_NORMALIZE, osg::StateAttribute::ON); 
-				}
-
-				asset->nodes.push_back(node);
-				asset->description = info->description;
-			}
-			else
-			{
-				ofwarn("loading failed: %1%", %assetPath);
-				// NEED TO CLEAN UP ASSET!
-			}
-		}
-		else
-		{
-			ofwarn("could not find file: %1%", %filePath);
-				// NEED TO CLEAN UP ASSET!
+			ModelLoader* loader = myLoaderDictionary[args[0]];
+			asset->name = args[1];
+			result = loader->load(asset);
 		}
 	}
-
+	// A single argument is just a filename, find the loader by supported extension.
+	else
+	{
+		String basename;
+		String extension;
+		StringUtils::splitBaseFilename(asset->name, basename, extension);
+		typedef pair<String, Ref<ModelLoader> > LoaderDictionaryItem;
+		foreach(LoaderDictionaryItem ml, myLoaderDictionary)
+		{
+			if(ml.second->supportsExtension(extension))
+			{
+				if(ml.second->load(asset)) 
+				{
+					result = true;
+					break;
+				}
+			}
+		}
+	}
 	omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< SceneManager::loadModel\n");
-	return true;
+	return result;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
