@@ -33,29 +33,38 @@ namespace omega {
 	class SceneNode;
 	class Engine;
 	struct DrawContext;
+	struct UpdateContext;
 	struct RenderState;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API NodeComponent: public ReferenceType
 	{
+	friend class SceneNode;
 	public:
-		NodeComponent(): myNeedBoundingBoxUpdate(false) {}
-		virtual void update(SceneNode* owner) = 0;
-		virtual void draw(SceneNode* node, const DrawContext& context) {};
-		virtual const AlignedBox3* getBoundingBox() = 0;
-		virtual bool hasBoundingBox() = 0;
+		NodeComponent(): myNeedBoundingBoxUpdate(false), myOwner(NULL) {}
+		virtual void update(const UpdateContext& context) = 0;
+		virtual void draw(const DrawContext& context) {};
+		virtual const AlignedBox3* getBoundingBox() { return NULL; }
+		virtual bool hasBoundingBox() { return false; }
 		virtual bool isInitialized() = 0;
 		virtual bool hasCustomRayIntersector() { return false; }
 		virtual bool intersectRay(const Ray& ray, Vector3f* hitPoint) { return false; }
 		virtual void initialize(Engine* server) = 0;
 		virtual void updateBoundingBox() { myNeedBoundingBoxUpdate = false; }
+		virtual void onAttached(SceneNode*) { }
+		virtual void onDetached(SceneNode*) { }
 		
 		void requestBoundingBoxUpdate() { myNeedBoundingBoxUpdate = true; }
 		bool needsBoundingBoxUpdate() { return myNeedBoundingBoxUpdate; }
 
+		SceneNode* getOwner() { return myOwner; }
 
 	private:
+		void attach(SceneNode* owner) { myOwner = owner; onAttached(myOwner); }
+		void detach(SceneNode* owner) { onDetached(myOwner); myOwner = NULL; }
+
 		bool myNeedBoundingBoxUpdate;
+		SceneNode* myOwner;
 	};
 }; // namespace omega
 

@@ -44,9 +44,8 @@ Entity::Entity(SceneManager* scene):
 		myOsgSceneObject(NULL),
 		myCastShadow(true)
 {
-	myEffect = new EffectNode();
-	
 	// By default attach new entities to the root node of the scene.
+	myEffect = new EffectNode();
 	Engine* engine = mySceneManager->getEngine();
 	engine->getScene()->addChild(this);
 }
@@ -91,7 +90,14 @@ bool Entity::hasEffect()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Entity::setEffect(const String& effectDefinition)
 {
-	myEffect->setDefinition(effectDefinition);
+	if(myEffect != NULL)
+	{
+		myEffect->setDefinition(effectDefinition);
+	}
+	else
+	{
+		ofwarn("Entity:setEffect: entity '%1' does not support effects", %getName());
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -121,4 +127,21 @@ void Entity::castShadow(bool value)
 bool Entity::doesCastShadow()
 {
 	return myCastShadow;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+omegaToolkit::ui::Menu* Entity::getContextMenu()
+{
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Entity::hasContextMenu()
+{
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::deleteContextMenu()
+{
 }

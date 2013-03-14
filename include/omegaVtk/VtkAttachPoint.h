@@ -50,7 +50,7 @@ namespace omegaVtk {
 		float getRepresentationSize();
 		void setRepresentationSize(float value);
 
-		virtual void update(SceneNode* owner);
+		virtual void update(const UpdateContext&);
 
 		virtual const AlignedBox3* getBoundingBox();
 		virtual bool hasBoundingBox();

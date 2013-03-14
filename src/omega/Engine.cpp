@@ -329,7 +329,8 @@ void Engine::update(const UpdateContext& context)
 		c->update(context);
 	}
 	
-    myScene->update(true, false);
+	// Run update on the scene graph.
+	myScene->update(context);
 
 	if( soundEnv != NULL )
 	{

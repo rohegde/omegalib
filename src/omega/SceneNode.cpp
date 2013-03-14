@@ -98,6 +98,7 @@ bool SceneNode::isSelected()
 void SceneNode::addComponent(NodeComponent* o) 
 { 
 	myObjects.push_back(o); 
+	o->attach(this);
 	//needUpdate();
 	updateBoundingBox();
 	// If the object has not been initialized yet, do it now.
@@ -114,6 +115,7 @@ int SceneNode::getNumComponents()
 void SceneNode::removeComponent(NodeComponent* o) 
 {
 	myObjects.remove(o);
+	o->detach(this);
 	updateBoundingBox();
 	//needUpdate();
 }
@@ -130,7 +132,7 @@ void SceneNode::draw(const DrawContext& context)
 		// Draw drawables attached to this node.
 		foreach(NodeComponent* d, myObjects)
 		{
-			d->draw(this, context);
+			d->draw(context);
 		}
 
 		// Draw children nodes.
@@ -159,12 +161,34 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 
 	Node::update(updateChildren, parentHasChanged);
 
-	// UPdate attached scene objects
+	updateBoundingBox();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneNode::update(const UpdateContext& context)
+{
+	// Step 1: traverse the scene graph and invoke update on all attached node components.
+	// Node components will have the change to change the owner node transforms.
+	updateTraversal(context);
+
+	// Step 2: update all needed transforms in the node hierarchy
+    update(true, false);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneNode::updateTraversal(const UpdateContext& context)
+{
+	// Update attached components
 	foreach(NodeComponent* d, myObjects)
 	{
-		d->update(this);
+		d->update(context);
 	}
-	updateBoundingBox();
+	// Update components of children nodes
+	foreach(Node* child, getChildren())
+	{
+		SceneNode* n = dynamic_cast<SceneNode*>(child);
+		if(n) n->updateTraversal(context);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

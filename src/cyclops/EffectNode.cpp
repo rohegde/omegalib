@@ -57,7 +57,7 @@ void Material::setEmissiveColor(const Color& color)
 	if(myMaterial == NULL)
 	{
 		myMaterial = new osg::Material();
-		myMaterial->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
+		myMaterial->setColorMode(osg::Material::EMISSION);
 		myStateSet->setAttributeAndModes(myMaterial, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 	}
 	myMaterial->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(color));

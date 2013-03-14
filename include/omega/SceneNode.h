@@ -135,6 +135,9 @@ namespace omega {
 		//! Hit test.
 		bool hit(const Ray& ray, Vector3f* hitPoint, HitType type);
 
+		//! Invoked the update function for all node components on this node and down in the hierarchy.
+		virtual void update(const UpdateContext& context);
+		//! @internal Updates all transforms from this node down in the hierarchy.
 		virtual void update(bool updateChildren, bool parentHasChanged);
 
 		void draw(const DrawContext& context);
@@ -159,6 +162,7 @@ namespace omega {
 		void drawBoundingBox();
 		void updateBoundingBox();
 		bool needsBoundingBoxUpdate();
+		void updateTraversal(const UpdateContext& context);
 
 	private:
 		Engine* myServer;
