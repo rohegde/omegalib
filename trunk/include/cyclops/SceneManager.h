@@ -32,6 +32,7 @@
 #include "Shapes.h"
 #include "Uniforms.h"
 #include "Light.h"
+#include "ModelLoader.h"
 
 #include <osg/Texture2D>
 #include <osg/Light>
@@ -56,57 +57,10 @@ namespace cyclops {
 	class AnimatedObject;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct ModelInfo: public ReferenceType
-	{
-		ModelInfo(): numFiles(1), size(0.0f), generateNormals(false), normalizeNormals(false), optimize(false), usePowerOfTwoTextures(true), buildKdTree(false), generateTangents(false)
-		{}
-
-		ModelInfo(const String name, const String path, float size = 0.0f, int numFiles = 1, bool generateNormals = false, bool normalizeNormals = false, bool generateTangents = false)
-		{
-			this->name = name;
-			this->path = path;
-			this->size = size;
-			this->numFiles = numFiles;
-			this->generateNormals = generateNormals;
-			this->generateTangents = generateTangents;
-			this->normalizeNormals = normalizeNormals;
-		}
-
-		String name;
-		String path;
-		String description;
-		uint numFiles;
-		float size;
-		bool generateNormals;
-		bool generateTangents;
-		bool optimize;
-
-		bool usePowerOfTwoTextures;
-		bool buildKdTree;
-		
-		bool normalizeNormals;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct ShadowSettings
 	{
 		bool shadowsEnabled;
 		float shadowResolutionRatio;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class ModelAsset: public ReferenceType
-	{
-	public:
-		ModelAsset(): id(0), numNodes(0) {}
-		String description;
-		String filename;
-		Vector< Ref<osg::Node> > nodes;
-		//! Number of nodes in this model (used for multimodel assets)
-		int numNodes;
-		int id;
-
-		Ref<ModelInfo> info;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -190,6 +144,8 @@ namespace cyclops {
 		void loadModelAsync(ModelInfo* info, const String& callback);
 		ModelAsset* getModel(const String& name);
 		const List< Ref<ModelAsset> >& getModels();
+		void addLoader(ModelLoader* loader);
+		void removeLoader(ModelLoader* loader);
 		//@}
 
 		//! Wand Management
@@ -302,6 +258,9 @@ namespace cyclops {
 		// Context menu stuff.
 		List< Entity* > myEntitiesWithMenu;
 		Ref<omegaToolkit::ui::MenuManager> myMenuManager;
+
+		// Model loaders
+		Dictionary< String, Ref<ModelLoader> > myLoaderDictionary;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
