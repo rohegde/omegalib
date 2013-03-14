@@ -1,7 +1,7 @@
 #summary Omegalib configuration file reference
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.4 - 21 February 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+<p>*Last revision:* ver. 4.0 - 13 March 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
 <wiki:toc max_depth="4" />
 
@@ -38,7 +38,14 @@ Configuration files follow the syntax of libconfig. Each section has a name and 
  * Vector of integers or floating points.
 A system configuration file contains several sections. A few of them (like the `display` section) are mandatory, while other are optional. The following paragraphs describe the structure of each supported section.
 
-=== Display configuration ===
+---------------------------------------------------------------------------------------------------
+=== Global configuration options ===
+These options go directly into the `config` section of the configuration file
+ * pythonShellEnabled (bool): enables the interactive python console.
+ * drawPointers (bool): draw 2D pointers on screen.
+
+---------------------------------------------------------------------------------------------------
+=== `display` section ===
 The display configuration section describes the display system geometry, resources and rendering modes used by omegalib. The `display` section contains the following entries:
  * `type` (string, required): The type of the display system manager running the display system. Can be one of the following values
   * `"Equalizer"`: Uses Equalizer to manage the display system.
@@ -63,10 +70,21 @@ The display configuration section describes the display system geometry, resourc
  * `enableVSync`
  * `enableSwapSync`
  * `tiles`
- 
-==== Node Configuration ====
+
+==== Node Cection ====
  * `hostname`
  * `port`
+
+Example:
+{{{
+	lyra-01:
+	{
+		hostname="lyra-01";
+		
+		// This is a tile section
+		t0x1: { device = 0; }; 
+	};
+}}}
 
 ==== Tile Configuration ====
  * `stereoMode`
@@ -79,7 +97,21 @@ The display configuration section describes the display system geometry, resourc
  * `offset`
  * `cameraName`
  
-=== ui configuration section ===
+Example:
+{{{
+	headTile:
+	{
+		resolution = [800, 800];
+		device = 0;
+		center = [0, 2, -2];
+		tileSize = [1.2, 0.8];
+		stereoMode = "Mono";
+		//enabled = true;
+	};
+}}}
+ 
+---------------------------------------------------------------------------------------------------
+=== `ui` section ===
  * `menuRayPlaceEnabled` (bool)
  * `menuDefaultPosition` (Vector3f)
  * `menuDefaultScale` (float)
@@ -87,67 +119,107 @@ The display configuration section describes the display system geometry, resourc
  * `menuSuspendNavigation` (bool)
  * `menuToggleButton` (String - button name)
 
-=== sound configuration section ===
-
-Here is an example of a complete system configuration file for reference.
-<code language="c">
-	config:
+---------------------------------------------------------------------------------------------------
+=== `sound` section ===
+Example:
+{{{
+	sound:
 	{
-		display:
+		soundServerIP = "xenakis.evl.uic.edu";
+		soundServerPort = 57120;
+		showMenuSound = "/Users/evldemo/sounds/menu_sounds/menu_load.wav";
+		hideMenuSound = "/Users/evldemo/sounds/menu_sounds/menu_closed.wav";
+		selectMenuSound = "/Users/evldemo/sounds/menu_sounds/menu_select.wav";
+		scrollMenuSound = "/Users/evldemo/sounds/menu_sounds/menu_scroll.wav";
+		
+		// Optional sound parameters
+		menuSoundVolume = 0.1;
+		menuSoundWidth = 1.0;
+		menuSoundMix = 0.1;
+		menuSoundReverb = 0.0;
+	};
+}}}
+---------------------------------------------------------------------------------------------------
+=== `services` section ===
+The `services` section can be alternatively called `input` for compatibility reasons. This section lists all the event services that should run at startup, and their configuration.
+
+Example:
+{{{
+	services:
+	{
+		NetService:
 		{
-			type = "Equalizer";
-			geometry = "ConfigPlanar";
-			numTiles = [1, 1];
-			referenceTile = [0, 0];
-			referenceOffset = [0.0, 0.0, 0.0];
-			tileSize = [1.2, 0.8];
-			autoOffsetWindows = true;
-			windowOffset = [200, 200];
-			tileResolution = [854, 480];
-			interleaved = false;
-			fullscreen = false;
-			tiles:
-			{
-				local:
-				{
-					t0x0: {};
-				};
-			};
-			observers:
-			{
-				observer0:
-				{
-					position = [ 0.0,  0.0,  1.0 ];
-				};
-			};
+			serverIP = "CAVE2Tracker.evl.uic.edu";
+			msgPort = 28000;
+			dataPort = 7001;
 		};
-		input:
-		{
-			MouseService: {};
-			KeyboardService: {};
-			ViewRayService:
-			{
-				inputService="MouseService";
-				//inputService="SagePointerService";
-				hasNormalizedInput = false;
-			};
-		};
-		defaultFont:
+	};
+}}}
+
+---------------------------------------------------------------------------------------------------
+=== `camera` section ===
+The `camera` section configures the default camera.
+ * `controller` (String - one of `wand` `gamepad` `mouse` `mousekeyboard`)
+ * `trackerSourceId` (int)
+
+Example:
+{{{
+	camera:
+	{
+		controller ="Wand";
+		trackerSourceId = 0;
+	};
+}}}
+
+---------------------------------------------------------------------------------------------------
+=== `interactor` section ===
+The `interactor` section configures the standard interactor mode for the application
+ * `style` (String - one of `wand` `mouse`)
+Example:
+{{{
+	interactor:
+	{
+		style = "Wand";
+	};
+}}}
+
+---------------------------------------------------------------------------------------------------
+=== `defaultFont` section ===
+The `defaultFont` section configures the fond used by default by all ui elements.
+ * `filename` (String): path to a font file
+ * `size` (int): font size
+Example:
+{{{
+	defaultFont:
+	{
+		filename = "fonts/segoeuimod.ttf";
+		size = 42;
+	};
+}}}
+
+---------------------------------------------------------------------------------------------------
+=== `console` section ===
+The `console` section configures the on-screen console.
+	* `font` (Subsection): configures the console font, following the same syntax used for the `defaultFont` section.
+
+Example:
+{{{
+	console:
+	{
+		font:
 		{
 			filename = "fonts/segoeuimod.ttf";
-			size = 24;
+			size = 32;
 		};
-		camera:
-		{
-			controller ="KeyboardMouse";
-		};
-		interactor:
-		{
-			style = "Mouse";
-		};
-		menu3dEnabled = true;
-		pythonShellEnabled = true;
 	};
-</code>
+}}}
 
-
+---------------------------------------------------------------------------------------------------
+=== `missionControl` section ===
+Example:
+{{{
+	missionControl:
+	{
+		serverEnabled = true;
+	};
+}}}
