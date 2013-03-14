@@ -46,7 +46,8 @@ Engine::Engine(ApplicationBase* app):
     myConsoleEnabled(false),
 	//myPointerMode(PointerModeWand)
 	myDrawPointers(false),
-	myDebugWand(false)
+	myDebugWand(false),
+	myPrimaryButton(Event::Button3)
 {
     mysInstance = this;
 }
@@ -161,6 +162,13 @@ void Engine::initialize()
 		soundEnv->setListenerOrientation( getDefaultCamera()->getOrientation() );
 
 		soundEnv->setUserPosition( Vector3f(0.0,1.8f,0.0) );
+	}
+
+	// Load input mapping
+	if(syscfg->exists("config/inputMap"))
+	{
+        Setting& s = syscfg->lookup("config/inputMap");
+		myPrimaryButton = Event::parseButtonName(Config::getStringValue("confirmButton", s, "Button3"));
 	}
 
 

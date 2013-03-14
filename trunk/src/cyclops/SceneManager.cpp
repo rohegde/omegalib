@@ -38,6 +38,8 @@
 #include "cyclops/Shapes.h"
 
 using namespace cyclops;
+using namespace omegaToolkit;
+using namespace omegaToolkit::ui;
 
 void cyclopsPythonApiInit();
 
@@ -315,6 +317,9 @@ void SceneManager::initialize()
 
 	myModelLoaderThread = new ModelLoaderThread(this);
 	myModelLoaderThread->start();
+
+	// Set the menu manager
+	myMenuManager = omegaToolkit::ui::MenuManager::instance();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -471,6 +476,46 @@ void SceneManager::updateLights()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::handleEvent(const Event& evt) 
 {
+	if(evt.isButtonDown(getEngine()->getPrimaryButton()))
+	{
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+		Ray r;
+		bool res = ds->getViewRayFromEvent(evt, r);
+		if(res)
+		{
+			Entity* menuEntity = NULL;
+			float distance = 100000;
+			foreach(Entity* e, myEntitiesWithMenu)
+			{
+				e->getContextMenu()->hide();
+				Vector3f hitPoint;
+				if(e->hit(r, &hitPoint, SceneNode::HitBest))
+				{
+					float d = (hitPoint - r.getOrigin()).norm();
+					if(d < distance)
+					{
+						menuEntity = e;
+						distance = d;
+					}
+				}
+			}
+
+			if(menuEntity != NULL)
+			{
+				Menu* m = menuEntity->getContextMenu();
+				m->placeOnWand(evt);
+				m->show();
+				evt.setProcessed();
+			}
+			else
+			{
+				foreach(Entity* e, myEntitiesWithMenu)
+				{
+					e->getContextMenu()->hide();
+				}
+			}
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1158,3 +1203,17 @@ bool SceneManager::handleCommand(const String& cmd)
 	}
 	return false;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+omegaToolkit::ui::Menu* SceneManager::createContextMenu(Entity* entity)
+{
+	myEntitiesWithMenu.push_back(entity);
+	return myMenuManager->createMenu(entity->getName());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::deleteContextMenu(Entity* entity)
+{
+	myEntitiesWithMenu.remove(entity);
+}
+
