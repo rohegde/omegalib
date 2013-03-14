@@ -35,7 +35,7 @@
 using namespace omegaOsg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node), myInitialized(false), mySceneNode(NULL)
+OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node), myInitialized(false)
 {
     myTransform = new osg::MatrixTransform();
     myTransform->addChild( node );
@@ -62,18 +62,24 @@ OsgSceneObject::~OsgSceneObject()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgSceneObject::update(SceneNode* node)
+void OsgSceneObject::onAttached(SceneNode* node)
 {
-	if(node != mySceneNode)
-	{
-		if(mySceneNode != NULL) mySceneNode->removeListener(this);
-		mySceneNode = node;
-		node->addListener(this);
+	node->addListener(this);
+	// Force and update of the visible and selected states for this object.
+	onVisibleChanged(node, node->isVisible());
+	onSelectedChanged(node, node->isSelected());
+}
 
-		// Force and update of the visible and selected states for this object.
-		onVisibleChanged(node, node->isVisible());
-		onSelectedChanged(node, node->isSelected());
-	}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgSceneObject::onDetached(SceneNode* node)
+{
+	node->removeListener(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgSceneObject::update(const UpdateContext& context)
+{
+	SceneNode* node = getOwner();
 	const AffineTransform3& xform =  node->getFullTransform();
 	const Matrix4f& m = xform.matrix();
 	osg::Matrix oxform;

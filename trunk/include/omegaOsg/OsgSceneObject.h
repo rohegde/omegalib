@@ -48,7 +48,7 @@ namespace omegaOsg
 		OsgSceneObject(osg::Node* node);
 		~OsgSceneObject();
 
-		virtual void update(SceneNode* owner);
+		virtual void update(const UpdateContext& context);
 
 		virtual void onVisibleChanged(SceneNode* source, bool value);
 		virtual void onSelectedChanged(SceneNode* source, bool value);
@@ -63,14 +63,15 @@ namespace omegaOsg
 
 		virtual bool hasCustomRayIntersector() { return true; }
 		virtual bool intersectRay(const Ray& ray, Vector3f* hitPoint);
+
+		virtual void onAttached(SceneNode*);
+		virtual void onDetached(SceneNode*);
+
 	private:
 		Ref<osg::Node> myNode;
 		Ref<osg::MatrixTransform> myTransform;
 		AlignedBox3 myBBox;
 		bool myInitialized;
-		
-		//Ref<SceneNode> mySceneNode;
-		SceneNode* mySceneNode;
 	};
 };
 #endif

@@ -45,6 +45,8 @@ namespace cyclops {
 	using namespace omegaOsg;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! Encapsulates an OpenSceneGraph stateset and offers a quick interface to a few commonly
+	//! used settings.
 	class CY_API Material: public Uniforms
 	{
 	public:
@@ -57,6 +59,8 @@ namespace cyclops {
 
 		void setTransparent(bool value);
 		bool isTransparent() { return myTransparent; }
+
+		osg::StateSet* getStateSet() { return myStateSet; }
 
 	private:
 		Ref<osg::StateSet> myStateSet;

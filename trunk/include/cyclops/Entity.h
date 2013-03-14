@@ -45,7 +45,8 @@ namespace cyclops {
 	class SceneManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! PYAPI
+	//! Encapsulates an osg node (or nodes) and offers a few additional functionality for them,
+	//! like shadow casting management, effects and shaders and context menus.
 	class CY_API Entity: public SceneNode
 	{
 	public:
@@ -65,6 +66,13 @@ namespace cyclops {
 		void castShadow(bool value);
 		bool doesCastShadow();
 
+		//! Context Menu
+		//@{
+		omegaToolkit::ui::Menu* getContextMenu();
+		bool hasContextMenu();
+		void deleteContextMenu();
+		//@}
+
 	protected:
 		void initialize(osg::Node* node);
 
@@ -76,6 +84,8 @@ namespace cyclops {
 		Ref<OsgSceneObject> myOsgSceneObject;
 
 		Ref<EffectNode> myEffect;
+
+		Ref<omegaToolkit::ui::Menu> myContextMenu;
 
 		bool myCastShadow;
 	};
