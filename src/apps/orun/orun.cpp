@@ -78,6 +78,7 @@ private:
 	Ref<UiModule> myUiModule;
 	Ref<AppDrawer> myAppDrawer;
 	Event::Flags myAppDrawerToggleButton;
+	String myAppStartFunctionCall;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,13 +131,24 @@ void OmegaViewer::initialize()
 	cyclopsPythonApiInit();
 #endif
 
+	//
+	String orunInitScriptName = "orun_init.py";
+	myAppStartFunctionCall = "_onAppStart()";
+	Config* cfg = SystemManager::instance()->getAppConfig();
+    if(cfg->exists("config/orun"))
+    {
+        Setting& s = cfg->lookup("config/orun");
+		orunInitScriptName = Config::getStringValue("initScript", s, orunInitScriptName);
+		myAppStartFunctionCall = Config::getStringValue("appStartFunction", s, myAppStartFunctionCall);
+    }
+
 	// Initialize the python wrapper module for this class.
 	initomegaViewer();
 
 	// Run the init script.
 	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-	interp->runFile("orun_init.py");
-	interp->eval("_onAppStart()");
+	interp->runFile(orunInitScriptName);
+	interp->eval(myAppStartFunctionCall);
 
 	// If a default script has been passed to orun, queue it's execution through the python
 	// interpreter. Queuing it will make sure the script is launched on all nodes when running
@@ -236,14 +248,14 @@ bool OmegaViewer::handleCommand(const String& cmd)
 	else if(args[0] == "r!" && args.size() > 1)
 	{
 		// r!: reset state and run application.
-		interp->queueCommand("_onAppStart()", true);
+		interp->queueCommand(myAppStartFunctionCall, true);
 		interp->cleanRun(args[1]);
 		return true;
 	}
 	else if(args[0] == "u")
 	{
 		// u: unload all running applications.
-		interp->queueCommand("_onAppStart()", true);
+		interp->queueCommand(myAppStartFunctionCall, true);
 		interp->clean();
 		return true;
 	}
