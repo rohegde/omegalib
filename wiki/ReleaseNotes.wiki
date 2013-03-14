@@ -21,7 +21,8 @@ omegaVtk
 	* added support for depth peeling
 cyclops
 	* Context menus can be attached to entities using a simpler API that does not require custom scripting.
-
+orun
+	* configurable startup script and application start function. The startup script can be used as a 'boot' script to modify applications depending on the system they are running on. The application start function (typically defined in the init script) is launched every time a new application starts and can be used to inject cutom functions (like system menus) into the application.
 
 ------------------------------------------------------------------------
 = omegalib v3.4  =
