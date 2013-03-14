@@ -1,7 +1,7 @@
 #summary Python reference: module cyclops
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.4 - 25 February 2013</p>*
+<p>*Last revision:* ver. 4.0 - 13 March 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -99,6 +99,10 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 || `followTrackable(trackabeId)` || Starts following the motion-captured trackable `trackableId` ||
 || `setFollowOffset(offset, orientationOffset)` || Sets the tracking position and orientation offset applied to this object, with respect to the motion captured trackable ||
 || `unfollow()` || Stops following a motion-captured trackable ||
+|| *Context menu* || ||
+|| `createContextMenu()` || Creates a context menu attached to this entity. When the user selectes the entity, the menu will pop up. Returns a `Menu` object ||
+|| `getContextMenu()` || Gets the attached context menu for the entity if one has been set. ||
+|| `deleteContextMenu()` || Deletes a context menu attached to this entity ||
 
 -------------------------------------------------------------------------------
 ==  `class SphereShape` (extends `SphereShape`) ==

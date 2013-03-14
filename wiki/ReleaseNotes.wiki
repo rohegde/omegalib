@@ -8,12 +8,19 @@
 == Major Changes ==
 omega
 	* Improvements to python API
-		* Camera.focusOn
-		* clip plane control
-		* SceneNode bounding box
+	* Camera.focusOn
+	* clip plane control
+	* SceneNode bounding box
+	* NodeComponent API slightly changed to support more functionalities for objects attached to scene nodes.
 omegaOsg
 	* fixed bounding box generation
 	* fixes to clipping
+omegaVtk
+	* re-added support for vtk python scripting
+	* added support for vtk lights.
+	* added support for depth peeling
+cyclops
+	* Context menus can be attached to entities using a simpler API that does not require custom scripting.
 
 
 ------------------------------------------------------------------------
