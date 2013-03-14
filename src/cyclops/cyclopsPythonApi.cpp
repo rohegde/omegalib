@@ -124,6 +124,9 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_METHOD(Entity, hasEffect)
 		PYAPI_METHOD(Entity, setEffect)
 		PYAPI_REF_GETTER(Entity, getMaterial)
+		PYAPI_REF_GETTER(Entity, createContextMenu)
+		PYAPI_REF_GETTER(Entity, getContextMenu)
+		PYAPI_METHOD(Entity, deleteContextMenu)
 		;
 
 	// SphereShape

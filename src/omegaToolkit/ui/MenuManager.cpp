@@ -501,6 +501,7 @@ MenuManager::MenuManager():
 	myHideSoundMenu(NULL),
 	myShowMenuSound(NULL)
 {
+	setPriority(EngineModule::PriorityLow);
 	mysInstance = this;
 }
 

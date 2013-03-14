@@ -69,7 +69,7 @@ namespace cyclops {
 		//! Context Menu
 		//@{
 		omegaToolkit::ui::Menu* getContextMenu();
-		bool hasContextMenu();
+		omegaToolkit::ui::Menu* createContextMenu();
 		void deleteContextMenu();
 		//@}
 

@@ -237,6 +237,9 @@ namespace cyclops {
 
 		void reloadAndRecompileShaders();
 
+		omegaToolkit::ui::Menu* createContextMenu(Entity* entity);
+		void deleteContextMenu(Entity* entity);
+
 	private:
 		SceneManager();
 		virtual ~SceneManager();
@@ -295,6 +298,10 @@ namespace cyclops {
 		// Wand
 		Ref<omega::TrackedObject> myWandTracker;
 		Ref<CylinderShape> myWandEntity;
+
+		// Context menu stuff.
+		List< Entity* > myEntitiesWithMenu;
+		Ref<omegaToolkit::ui::MenuManager> myMenuManager;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

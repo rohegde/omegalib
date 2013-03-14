@@ -60,7 +60,6 @@ namespace omega {
 	};
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! PYAPI
 	class OMEGA_API Engine: public ReferenceType, public IEventListener
 	{
 	public:
@@ -139,6 +138,11 @@ namespace omega {
 		SoundEnvironment* getSoundEnvironment();
 		//@}
 
+		//! Input mappings
+		//@{
+		Event::Flags getPrimaryButton() { return myPrimaryButton; }
+		//@}
+
 		void setDebugWandEnabled(float value) { myDebugWand = value; }
 		bool isDebugWandEnabled() { return myDebugWand; }
 
@@ -196,6 +200,9 @@ namespace omega {
 		// Sound
 		Ref<SoundManager> soundManager;
 		Ref<SoundEnvironment> soundEnv;
+
+		// Input mapping
+		Event::Flags myPrimaryButton;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

@@ -136,6 +136,7 @@ void OmegaViewer::initialize()
 	// Run the init script.
 	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
 	interp->runFile("orun_init.py");
+	interp->eval("_onAppStart()");
 
 	// If a default script has been passed to orun, queue it's execution through the python
 	// interpreter. Queuing it will make sure the script is launched on all nodes when running
@@ -235,12 +236,14 @@ bool OmegaViewer::handleCommand(const String& cmd)
 	else if(args[0] == "r!" && args.size() > 1)
 	{
 		// r!: reset state and run application.
+		interp->queueCommand("_onAppStart()", true);
 		interp->cleanRun(args[1]);
 		return true;
 	}
 	else if(args[0] == "u")
 	{
 		// u: unload all running applications.
+		interp->queueCommand("_onAppStart()", true);
 		interp->clean();
 		return true;
 	}
