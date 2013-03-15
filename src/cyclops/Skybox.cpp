@@ -192,7 +192,7 @@ void Skybox::updateSkyBox()
 
 		SceneManager* sm = SceneManager::instance();
 		ProgramAsset* cubeMapProgram = NULL;
-		cubeMapProgram = sm->getProgram(
+		cubeMapProgram = sm->getOrCreateProgram(
 			"skybox-cube", 
 			"cyclops/common/Skybox.vert", 
 			"cyclops/common/Skybox.frag");

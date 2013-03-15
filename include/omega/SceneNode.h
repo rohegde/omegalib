@@ -136,7 +136,7 @@ namespace omega {
 		bool hit(const Ray& ray, Vector3f* hitPoint, HitType type);
 
 		//! Invoked the update function for all node components on this node and down in the hierarchy.
-		void updateNode(const UpdateContext& context);
+		void update(const UpdateContext& context);
 		//! @internal Updates all transforms from this node down in the hierarchy.
 		virtual void update(bool updateChildren, bool parentHasChanged);
 

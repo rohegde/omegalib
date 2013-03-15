@@ -136,8 +136,8 @@ namespace omega {
 		void setMask(uint mask) { myMask = mask; }
 		uint getMask() { return myMask; }
 
-	//protected:
-		void updateCamera(const UpdateContext& context);
+	protected:
+		void updateTraversal(const UpdateContext& context);
 	
 	private:
 		//! View transform

@@ -17,8 +17,8 @@ REM ---------------------------------------------------------------------------
 REM copy python stuff
 md python
 cd python
-xcopy "${CMAKE_SOURCE_DIR}\external\python\Lib" .\Lib\ /S /Y 
-xcopy "${CMAKE_SOURCE_DIR}\external\python\DLLs" .\DLLs\ /S /Y
+xcopy "${CMAKE_BINARY_DIR}\python\Lib" .\Lib\ /S /Y 
+xcopy "${CMAKE_BINARY_DIR}\python\DLLs" .\DLLs\ /S /Y
 cd ..
 
 REM ---------------------------------------------------------------------------

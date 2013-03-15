@@ -128,7 +128,7 @@ void Camera::handleEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Camera::updateCamera(const UpdateContext& context)
+void Camera::updateTraversal(const UpdateContext& context)
 {
 	// Update the view transform
 	myHeadTransform = AffineTransform3::Identity();
@@ -145,7 +145,7 @@ void Camera::updateCamera(const UpdateContext& context)
 		myViewTransform = Math::makeViewMatrix(getDerivedPosition(), getDerivedOrientation());
 	}
 	
-	//SceneNode::updateTraversal(context);
+	SceneNode::updateTraversal(context);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

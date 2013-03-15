@@ -48,7 +48,13 @@ BOOST_PYTHON_MODULE(cyclops)
 		;
 
 	// ProgramAsset
-	PYAPI_REF_BASE_CLASS(ProgramAsset);
+	PYAPI_REF_BASE_CLASS_WITH_CTOR(ProgramAsset)
+		.def_readwrite("name", &ProgramAsset::name)
+		.def_readwrite("vertexShaderName", &ProgramAsset::vertexShaderName)
+		.def_readwrite("fragmentShaderName", &ProgramAsset::fragmentShaderName)
+		.def_readwrite("vertexShaderSource", &ProgramAsset::vertexShaderSource)
+		.def_readwrite("fragmentShaderSource", &ProgramAsset::fragmentShaderSource)
+		.def_readwrite("embedded", &ProgramAsset::embedded);
 
 	// SceneManager
 	void (SceneManager::*loadModelAsync1)(ModelInfo*, const String&) = &SceneManager::loadModelAsync;
@@ -69,6 +75,8 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_METHOD(SceneManager, resetShadowSettings)
 		PYAPI_METHOD(SceneManager, setShaderMacroToFile)
 		PYAPI_METHOD(SceneManager, setShaderMacroToString)
+		PYAPI_METHOD(SceneManager, addProgram)
+		PYAPI_METHOD(SceneManager, updateProgram)
 		PYAPI_REF_GETTER(SceneManager, createProgramFromString)
 		PYAPI_REF_GETTER(SceneManager, createTexture)
 		PYAPI_METHOD(SceneManager, reloadAndRecompileShaders)

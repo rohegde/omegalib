@@ -184,14 +184,19 @@ namespace cyclops {
 		osg::Group* getOsgRoot() { return myScene; }
 		osg::Texture2D* getTexture(const String& name);
 		osg::Texture2D* createTexture(const String& name, PixelData* pixels);
-		ProgramAsset* getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);
+
+		//! Shader management
+		//@{
+		ProgramAsset* getOrCreateProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);
+		void addProgram(ProgramAsset* program);
+		void updateProgram(ProgramAsset* program);
 		ProgramAsset* createProgramFromString(const String& name, const String& vertexShaderCode, const String& fragmentShaderCode);
 		void initShading();
-
 		void setShaderMacroToString(const String& macroName, const String& macroString);
 		void setShaderMacroToFile(const String& macroName, const String& path);
-
 		void reloadAndRecompileShaders();
+		//@}
+
 
 		omegaToolkit::ui::Menu* createContextMenu(Entity* entity);
 		void deleteContextMenu(Entity* entity);
