@@ -65,7 +65,6 @@ namespace omega {
 		CameraOutput* getOutput(uint contextId);
 
 		void setup(Setting& s);
-		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
 		//const Vector3f& getProjectionOffset() { return myProjectionOffset; }
@@ -108,22 +107,14 @@ namespace omega {
 
 		//! Observer control
 		//@{
-		//! PYAPI
 		void setHeadOffset(const Vector3f& value) { myHeadOffset = value; }
-		//! PYAPI
 		void setHeadOrientation(const Quaternion& value) { myHeadOrientation = value; }
-		//! PYAPI
 		const Vector3f& getHeadOffset() { return myHeadOffset; }
-		//! PYAPI
 		const Quaternion& getHeadOrientation() { return myHeadOrientation; }
 		const AffineTransform3& getHeadTransform();
-		//! PYAPI
 		bool isTrackingEnabled() { return myTrackingEnabled; }
-		//! PYAPI
 		void setTrackingEnabled(bool value) { myTrackingEnabled = value; }
-		//! PYAPI
 		int getTrackerSourceId() { return myTrackerSourceId; }
-		//! PYAPI
 		void setTrackerSourceId(int value) { myTrackerSourceId = value; }
 		//@}
 
@@ -145,6 +136,9 @@ namespace omega {
 		void setMask(uint mask) { myMask = mask; }
 		uint getMask() { return myMask; }
 
+	//protected:
+		void updateCamera(const UpdateContext& context);
+	
 	private:
 		//! View transform
 		AffineTransform3 myViewTransform;
