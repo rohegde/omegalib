@@ -128,18 +128,24 @@ void Camera::handleEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Camera::update(const UpdateContext& context)
+void Camera::updateCamera(const UpdateContext& context)
 {
 	// Update the view transform
 	myHeadTransform = AffineTransform3::Identity();
 	myHeadTransform.translate(myHeadOffset);
 	myHeadTransform.rotate(myHeadOrientation);
 
-	if(isUpdateNeeded())
+	// BUG: if we attach a child node to the camera, isUpdateNeeded gets reset at the wrong
+	// time and the camera view transform does not get updated.
+	// Needs fixing, but for now best solution is to disable the check and always update
+	// the view transform
+	//if(isUpdateNeeded())
 	{
 		// Update view transform.
 		myViewTransform = Math::makeViewMatrix(getDerivedPosition(), getDerivedOrientation());
 	}
+	
+	//SceneNode::updateTraversal(context);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -331,14 +331,14 @@ void Engine::update(const UpdateContext& context)
 	
 	// Update cameras after modules, to make sure the camera view transform keeps into account 
 	// changes applied during script or module execution.
-	myDefaultCamera->update(context);
+	myDefaultCamera->updateCamera(context);
 	foreach(Camera* c, myCameras)
 	{
-		c->update(context);
+		c->updateCamera(context);
 	}
 	
 	// Run update on the scene graph.
-	myScene->update(context);
+	myScene->updateNode(context);
 
 	if( soundEnv != NULL )
 	{
