@@ -1,7 +1,7 @@
 #summary Python reference: module cyclops
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 4.0 - 13 March 2013</p>*
+<p>*Last revision:* ver. 4.0 - 14 March 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -20,6 +20,14 @@ Returns a reference to the cyclops scene manager
 -------------------------------------------------------------------------------
 ==  `class ProgramAsset` ==
 Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_program_asset.html cyclops::ProgramAsset] class. Represents a Gpu program source and its associated binary code.
+=== Methods ===
+|| Property || Description ||
+|| `name` || ||
+|| `vertexShaderName` || ||
+|| `fragmentShaderName` || ||
+|| `embedded` || ||
+|| `vertexShaderSource` || ||
+|| `fragmentShaderSource` || ||
 
 -------------------------------------------------------------------------------
 ==  `class SceneManager` ==
@@ -47,6 +55,8 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 || `setShaderMacroToFile(macro, file)` || Sets the specified shader macro to the contents of a file. Appearances of the macro in any loaded shader will be replaced with the file contents. Example: <code>scene.setShaderMacroToFile('macro1', 'file.frag')</code> will substitute `@macro1` in shaders with the text from `file.frag` ||
 || `setShaderMacroToString(macro, string)` || Sets the specified shader macro to the specified string. Appearances of the macro in any loaded shader will be replaced with the string text. Example: <code>scene.setShaderMacroToFile('macro1', 'a = b + c')</code> will substitute `@macro1` in shaders with `a = b + c` ||
 || `createProgramFromString(name, vertexCode, fragmentCode)` || Creates a new Gpu Program using the vertex and fragment source code passed as parameters. Registers the program with the specified name, so it can be used in effect definitions. It aso returns the program as a `ProgramAsset` object. ||
+|| `addProgram(program)` || Adds a `ProgramAsset` to the gpu programs library ||
+|| `updateProgram(program)` || Updates a `ProgramAsset`, forcing reloading and recompiling of the associated shaders. ||
 || `reloadAndRecompileShaders()` || Forces the shaders to be reloaded and recompiled from source ||
 || *Textures* || ||
 || `createTexture(name, pixels)` || Creates a texture with the specified name using the passed `PixelData` object. The texture can then be referenced in effect definitions. ||
