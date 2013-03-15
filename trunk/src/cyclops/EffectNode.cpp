@@ -108,7 +108,7 @@ public:
     bool validate(osg::State&) const { return true; }
 protected:
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	ProgramAsset* getProgram(const String& name, const String& variant = "", bool vertexShaderVariant = false)
+	ProgramAsset* getOrCreateProgram(const String& name, const String& variant = "", bool vertexShaderVariant = false)
 	{
 		String shaderRoot = "cyclops/common";
 		String progName = name;
@@ -149,7 +149,7 @@ protected:
 		}
 
 		SceneManager* sm = SceneManager::instance();
-		return sm->getProgram(progName, vertName, fragName);
+		return sm->getOrCreateProgram(progName, vertName, fragName);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -216,7 +216,7 @@ protected:
 		ss->setNestRenderBins(false);
 		addPass(ss);
 
-		ProgramAsset* asset = getProgram("Colored", variation, vertexShaderVariant);
+		ProgramAsset* asset = getOrCreateProgram("Colored", variation, vertexShaderVariant);
 
 		if(asset != NULL)
 		{
@@ -318,7 +318,7 @@ protected:
 		ss->setNestRenderBins(false);
 		addPass(ss);
 		osg::Program* prog = NULL;
-		ProgramAsset* asset = getProgram("Textured", variant, vertexShaderVariant);
+		ProgramAsset* asset = getOrCreateProgram("Textured", variant, vertexShaderVariant);
 		if(asset != NULL)
 		{
 			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
@@ -416,7 +416,7 @@ protected:
 		ss->setNestRenderBins(false);
 		addPass(ss);
 		osg::Program* prog = NULL;
-		ProgramAsset* asset = getProgram("Bump", variant, vertexShaderVariant);
+		ProgramAsset* asset = getOrCreateProgram("Bump", variant, vertexShaderVariant);
 		if(asset != NULL)
 		{
 			// Set the bind location for the tangent attribute array
@@ -511,7 +511,7 @@ protected:
 
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
-		ProgramAsset* asset = getProgram(effectName, "", false);
+		ProgramAsset* asset = getOrCreateProgram(effectName, "", false);
 
 		if(asset != NULL)
 		{

@@ -659,7 +659,7 @@ void SceneManager::compileShader(osg::Shader* shader, const String& source)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ProgramAsset* SceneManager::getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName)
+ProgramAsset* SceneManager::getOrCreateProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName)
 {
 	// If program has been loaded already return it.
 	if(myPrograms.find(name) != myPrograms.end())
@@ -699,6 +699,32 @@ ProgramAsset* SceneManager::createProgramFromString(const String& name, const St
 	recompileShaders(asset, myShaderVariationName);
 
 	return asset;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::addProgram(ProgramAsset* program)
+{
+	myPrograms[program->name] = program;
+	program->program = new osg::Program();
+	recompileShaders(program, myShaderVariationName);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::updateProgram(ProgramAsset* program)
+{
+	// Delete current shaders to force reload.
+	String fullVertexShaderName = program->vertexShaderName + myShaderVariationName;
+	String fullFragmentShaderName = program->fragmentShaderName + myShaderVariationName;
+
+	// Delete binaries...
+	myShaders[fullVertexShaderName] = NULL;
+	myShaders[fullFragmentShaderName] = NULL;
+
+	// Delete source cache...
+	myShaderCache.erase(program->vertexShaderName);
+	myShaderCache.erase(program->fragmentShaderName);
+
+	recompileShaders(program, myShaderVariationName);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

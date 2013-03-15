@@ -165,7 +165,7 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::updateNode(const UpdateContext& context)
+void SceneNode::update(const UpdateContext& context)
 {
 	// Step 1: traverse the scene graph and invoke update on all attached node components.
 	// Node components will have the change to change the owner node transforms.
