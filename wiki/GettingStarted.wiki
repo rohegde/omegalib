@@ -4,14 +4,6 @@
 = Getting started with omegalib Developement =
 This page offers extended information on how to develop applications for omegalib.
 
-== Omegalib Binaries ==
-Currently, precompiled versions of omegalib are available for windows only. You can compile your own version of omegalib on linux or osx (no python support at the moment, sorry) following the instructions further down on this page.
-
-=== Major releases ===
-Major omegalib releases can be found on the [https://code.google.com/p/omegalib/downloads/list downloads] page of this website. For each major release you can read release notes in the [ReleaseNotes] page.
-=== Auto-update releases ===
-To get higher frequency updates and alpha version binaries of the current developer version, go to [https://www.dropbox.com/sh/gyjexun0it6fjmn/vHsKby16ix this Dropbox page]. If you add a dropbox omegalib release to your own dropbox account, you will receive updated versions automatically.
-
 == Basic Topics ==
  * [Building Building omegalib].
  * [NewApplication Setting up a new omegalib application].
