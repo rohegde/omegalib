@@ -8,7 +8,10 @@ This page offers extended information on how to develop applications for omegali
 Currently, precompiled versions of omegalib are available for windows only. You can compile your own version of omegalib on linux or osx (no python support at the moment, sorry) following the instructions further down on this page.
 
 === Major releases ===
-Major omegalib releases can be found on the [https://code.google.com/p/omegalib/downloads/list downloads] page of this website. For each major release you can read release notes in the [ReleaseNotes] page.
+For each major release you can read release notes in the [ReleaseNotes] page.
+	* (*Current Developer Version*) Omegalib 3.5 [https://dl.dropbox.com/shz/gyjexun0it6fjmn/vHsKby16ix/omegalib?token_hash=AAHUnCvOmseAKoHcdkMTOFpZZQvMnwwLIe_Uhruf_pSPwA&top_level_offset=0 [Download Zip]]
+	* Omegalib 3.4 [https://omegalib.googlecode.com/files/omegalib-3.4-win32.zip [Download Zip]]
+
 === Auto-update releases ===
 To get higher frequency updates and alpha version binaries of the current developer version, go to [https://www.dropbox.com/sh/gyjexun0it6fjmn/vHsKby16ix this Dropbox page]. If you add a dropbox omegalib release to your own dropbox account, you will receive updated versions automatically.
 
