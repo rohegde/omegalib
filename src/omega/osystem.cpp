@@ -167,9 +167,14 @@ namespace omega
 				ostr("log file to use with this application (default: %1%)", %logFilename).c_str(), "",
 				logFilename);
 
-			sArgs.setName(app.getName());
-			sArgs.setAuthor("Alessandro Febretti");
-			sArgs.setDescription("An omegalib application");
+			sArgs.setName("omegalib");
+			sArgs.setAuthor("The Electronic Visualization Lab, UIC");
+			String appName;
+			String extName;
+			String pathName;
+			StringUtils::splitFullFilename(app.getName(), appName, extName, pathName);
+			sArgs.setDescription(appName.c_str());
+			sArgs.setName(appName.c_str());
 			sArgs.setVersion(OMEGA_VERSION);
 			
 			// If argument processing fails, exit immediately.
