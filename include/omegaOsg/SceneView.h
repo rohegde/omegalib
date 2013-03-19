@@ -36,6 +36,7 @@
 #include <osg/Light>
 #include <osg/FrameStamp>
 #include <osg/DisplaySettings>
+#include <osgDB/DatabasePager>
 #include <osg/CollectOccludersVisitor>
 #include <osg/CullSettings>
 #include <osg/Camera>
@@ -48,7 +49,7 @@ class SceneView : public osg::Object, public osg::CullSettings
     public:
 
         /** Construct a default scene view.*/
-        SceneView(osg::DisplaySettings* ds=NULL);
+        SceneView(osgDB::DatabasePager* db=NULL, osg::DisplaySettings* ds=NULL);
 
         SceneView(const SceneView& sceneview, const osg::CopyOp& copyop = osg::CopyOp());
 
@@ -184,9 +185,9 @@ class SceneView : public osg::Object, public osg::CullSettings
         osg::NodeVisitor* getInitVisitor() { return _initVisitor.get(); }
         const osg::NodeVisitor* getInitVisitor() const { return _initVisitor.get(); }
 
-        void setUpdateVisitor(osg::NodeVisitor* av) { _updateVisitor = av; }
-        osg::NodeVisitor* getUpdateVisitor() { return _updateVisitor.get(); }
-        const osg::NodeVisitor* getUpdateVisitor() const { return _updateVisitor.get(); }
+        //void setUpdateVisitor(osg::NodeVisitor* av) { _updateVisitor = av; }
+        //osg::NodeVisitor* getUpdateVisitor() { return _updateVisitor.get(); }
+        //const osg::NodeVisitor* getUpdateVisitor() const { return _updateVisitor.get(); }
 
         void setCullVisitor(osgUtil::CullVisitor* cv) { _cullVisitor = cv; }
         osgUtil::CullVisitor* getCullVisitor() { return _cullVisitor.get(); }
@@ -267,7 +268,7 @@ class SceneView : public osg::Object, public osg::CullSettings
 
     protected:
 
-        virtual ~SceneView();
+		virtual ~SceneView();
 
         /** Do cull traversal of attached scene graph using Cull NodeVisitor. Return true if computeNearFar has been done during the cull traversal.*/
         virtual bool cullStage(const osg::Matrixd& projection,const osg::Matrixd& modelview,osgUtil::CullVisitor* cullVisitor, osgUtil::StateGraph* rendergraph, osgUtil::RenderStage* renderStage, osg::Viewport *viewport);
@@ -279,7 +280,7 @@ class SceneView : public osg::Object, public osg::CullSettings
         
         bool                                        _initCalled;
         osg::ref_ptr<osg::NodeVisitor>              _initVisitor;
-        osg::ref_ptr<osg::NodeVisitor>              _updateVisitor;
+        //osg::ref_ptr<osg::NodeVisitor>              _updateVisitor;
         osg::ref_ptr<osgUtil::CullVisitor>          _cullVisitor;
         osg::ref_ptr<osgUtil::StateGraph>           _stateGraph;
         osg::ref_ptr<osgUtil::RenderStage>          _renderStage;
@@ -295,6 +296,8 @@ class SceneView : public osg::Object, public osg::CullSettings
         osg::ref_ptr<osg::DisplaySettings>          _displaySettings;
         
         osg::ref_ptr<osg::StateSet>                 _secondaryStateSet;
+
+		osg::ref_ptr<osgDB::DatabasePager>			_databasePager;
 
         float                                       _fusionDistanceValue;
 
