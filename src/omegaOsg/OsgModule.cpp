@@ -33,6 +33,7 @@
 #include <osgUtil/UpdateVisitor>
 #include <osgDB/ReadFile>
 #include <osgDB/Registry>
+#include <osgDB/DatabasePager>
 #include <osg/Node>
 #include <osg/FrameStamp>
 
@@ -106,11 +107,17 @@ OsgModule::OsgModule():
 
     myRootNode = NULL;
     //myRootSceneObject = NULL;
+
+	myDatabasePager = osgDB::DatabasePager::create();
+
     myFrameStamp = new osg::FrameStamp;
     myUpdateVisitor = new osgUtil::UpdateVisitor;
     myUpdateVisitor->setFrameStamp( myFrameStamp );
+	myUpdateVisitor->setDatabaseRequestHandler(myDatabasePager);
 
-    osgDB::Registry::instance()->addReaderWriter(new ReaderFreeImage());
+	// FreeImage reader / writer does not support http streams. Standard readers are good enough 
+	// for most formats so we can probably keep this disabled.
+    //osgDB::Registry::instance()->addReaderWriter(new ReaderFreeImage());
 	osgDB::Registry::instance()->addReaderWriter(new ReaderWriterFBX());
 	//osgDB::Registry::instance()->addReaderWriter(new ReaderWriterIV());
 }
@@ -161,5 +168,6 @@ void OsgModule::update(const UpdateContext& context)
     {
         myRootNode->accept(*myUpdateVisitor);
     }
+	myDatabasePager->updateSceneGraph(*myFrameStamp);
 }
 

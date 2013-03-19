@@ -66,7 +66,7 @@ void OsgRenderPass::initialize()
 	RenderPass::initialize();
 
 	myModule = (OsgModule*)getUserData();
-	mySceneView = new SceneView();
+	mySceneView = new SceneView(myModule->getDatabasePager());
     mySceneView->initialize();
 	mySceneView->getState()->setContextID(getClient()->getGpuContext()->getId());
 
@@ -76,7 +76,7 @@ void OsgRenderPass::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 {
-	sInitLock.lock();
+	//sInitLock.lock();
 	if(context.task == DrawContext::SceneDrawTask)
 	{
 		bool getstats = false;
@@ -96,6 +96,8 @@ void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 			mySceneView->setSceneData(root);
 		}
 		mySceneView->setFrameStamp(myModule->getFrameStamp());
+
+		myModule->getDatabasePager()->signalBeginFrame(myModule->getFrameStamp());
 
 		if(getstats) myTimer.start();
 		mySceneView->cull(context.eye);
@@ -129,6 +131,7 @@ void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 			myDrawTimeStat->addSample(millis);
 		}
 
+		myModule->getDatabasePager()->signalEndFrame();
 		// Collect triangle count statistics (every 10 frames)
 		if(getstats)
 		{
@@ -141,5 +144,5 @@ void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 			myTriangleCountStat->addSample((float)mySceneView->getTriangleCount());
 		}
 	}
-	sInitLock.unlock();
+	//sInitLock.unlock();
 }
