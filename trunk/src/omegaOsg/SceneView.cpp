@@ -54,9 +54,10 @@ using namespace osg;
 using namespace osgUtil;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-SceneView::SceneView( osg::DisplaySettings* ds)
+SceneView::SceneView( osgDB::DatabasePager* dp, osg::DisplaySettings* ds)
 {
 	_displaySettings = ds;
+	_databasePager = dp;
 
     _prioritizeTextures = false;
     
@@ -177,9 +178,10 @@ void SceneView::initialize()
     _stateGraph = new StateGraph;
 	_renderStage = new RenderStage();
 
-    _updateVisitor = new UpdateVisitor;
+    //_updateVisitor = new UpdateVisitor;
 
     _cullVisitor = CullVisitor::create();
+	_cullVisitor->setDatabaseRequestHandler(_databasePager);
 	// Disable default computing of near/far plane: Equalizer takes care of this.
 	_cullVisitor->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
 	_cullVisitor->setCullingMode(osg::CullSettings::ENABLE_ALL_CULLING);
@@ -195,6 +197,7 @@ void SceneView::initialize()
     if (_camera.valid() && _initVisitor.valid())
     {
         _initVisitor->reset();
+		_initVisitor->setDatabaseRequestHandler(_databasePager);
         _initVisitor->setFrameStamp(_frameStamp.get());
         
         GLObjectsVisitor* dlv = dynamic_cast<GLObjectsVisitor*>(_initVisitor.get());
@@ -271,8 +274,6 @@ void SceneView::updateUniforms(int eye)
 	// Add the eye uniform
 	osg::Uniform* uniformEye = _localStateSet->getOrCreateUniform("unif_Eye",osg::Uniform::INT);
     uniformEye->set(eye);
-
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
