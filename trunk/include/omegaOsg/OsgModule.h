@@ -43,6 +43,11 @@ namespace osg
 	class Image;
 }
 
+namespace osgDB
+{
+	class DatabasePager;
+}
+
 namespace omegaOsg
 {
 	using namespace omega;
@@ -72,6 +77,8 @@ namespace omegaOsg
 		osg::Node* getRootNode() { return myRootNode; }
 		void setRootNode(osg::Node* value);
 
+		osgDB::DatabasePager* getDatabasePager() { return myDatabasePager; }
+
 	private:
 		static OsgModule* mysInstance;
 
@@ -79,6 +86,7 @@ namespace omegaOsg
 		Ref<osg::Node> myRootNode;
 		Ref<osg::FrameStamp> myFrameStamp;
 		Ref<osg::NodeVisitor> myUpdateVisitor;
+		Ref<osgDB::DatabasePager> myDatabasePager;
 	};
 };
 #endif
