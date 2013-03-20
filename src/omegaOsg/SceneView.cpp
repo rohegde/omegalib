@@ -164,9 +164,6 @@ void SceneView::initialize()
 	//osg::setNotifyHandler(new NH());
     osg::CullSettings::setDefaults();
 
-    //_camera->getProjectionMatrix().makePerspective(50.0f,1.4f,1.0f,10000.0f);
-    //_camera->getViewMatrix().makeIdentity();
-
     if (!_globalStateSet) _globalStateSet = new osg::StateSet;
     else _globalStateSet->clear();
 
@@ -183,7 +180,9 @@ void SceneView::initialize()
     _cullVisitor = CullVisitor::create();
 	_cullVisitor->setDatabaseRequestHandler(_databasePager);
 	// Disable default computing of near/far plane: Equalizer takes care of this.
+
 	_cullVisitor->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
+
 	_cullVisitor->setCullingMode(osg::CullSettings::ENABLE_ALL_CULLING);
 
     _cullVisitor->setStateGraph(_stateGraph.get());
@@ -559,4 +558,17 @@ void SceneView::collateReferencesToDependentCameras()
 void SceneView::clearReferencesToDependentCameras()
 {
     if (_renderStage.valid()) _renderStage->clearReferencesToDependentCameras();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneView::setAutoNearFar(bool value)
+{
+	if(value)
+	{
+		_cullVisitor->setComputeNearFarMode(osg::CullSettings::COMPUTE_NEAR_FAR_USING_BOUNDING_VOLUMES);
+	}
+	else
+	{
+		_cullVisitor->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
+	}
 }

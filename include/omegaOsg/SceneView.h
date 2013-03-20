@@ -116,6 +116,8 @@ class SceneView : public osg::Object, public osg::CullSettings
         void setLocalStateSet(osg::StateSet* state) { _localStateSet = state; }
         osg::StateSet* getLocalStateSet() { return _localStateSet.get(); }
         const osg::StateSet* getLocalStateSet() const { return _localStateSet.get(); }
+
+		void setAutoNearFar(bool value);
         
         enum ActiveUniforms
         {
