@@ -87,10 +87,10 @@ void UiRenderPass::render(Renderer* client, const DrawContext& context)
 		const Rect& vp = Rect(0, 0, displaySize[0], displaySize[1]);
 
 		// Update the root container size if necessary.
-		if((ui->getPosition().cwiseNotEqual(vp.min.cast<float>())).all() ||
-			ui->getSize().cwiseNotEqual(vp.max.cast<float>()).all())
+		if((ui->getPosition().cwiseNotEqual(vp.min.cast<omicron::real>())).all() ||
+			ui->getSize().cwiseNotEqual(vp.max.cast<omicron::real>()).all())
 		{
-			ui->setPosition(vp.min.cast<float>());
+			ui->setPosition(vp.min.cast<omicron::real>());
 			ui->setSize(Vector2f(vp.width(), vp.height()));
 			ofmsg("ui viewport update: position = %1% size = %2% %3%",
 				%vp.min %vp.width() %vp.height());
