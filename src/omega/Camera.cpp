@@ -166,7 +166,7 @@ void Camera::focusOn(SceneNode* node)
 	mPosition = bs.getCenter() + Vector3f(0, 0, bs.getRadius() * 2) - myHeadOffset;
 	lookAt(node->getPosition(), Vector3f::UnitY());
 	//mOrientation = Math::buildRotation(Vector3f::UnitZ(), dir, Vector3f::UnitY());
-	//mPosition = bs.getCenter() + Vector3f(0, 0, bs.getRadius());
+	//mPosition = bs.getCenter() + Vector3f(0, 0, bs.getRadius() * 2);
     //needUpdate();
 }
 
