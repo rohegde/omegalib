@@ -31,6 +31,8 @@
 #include "omega/PixelData.h"
 #include "omega/AsyncTask.h"
 
+struct FIBITMAP;
+
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Loads and manages image data.
@@ -72,6 +74,8 @@ namespace omega {
 
 		//! Load an image from a file.
 		static Ref<PixelData> loadImage(const String& filename, bool hasFullPath = false);
+		//! Load an image from a stream.
+		static Ref<PixelData> loadImageFromStream(std::istream& fin, const String& streamName);
 		//! Load image from a file (async)
 		static LoadImageAsyncTask* loadImageAsync(const String& filename, bool hasFullPath = false);
 
@@ -86,6 +90,9 @@ namespace omega {
 		static void setImageLoaderThreads(int num) { sNumLoaderThreads = num; }
 		static int getImageLoaderThreads() { return sNumLoaderThreads; }
 		
+	private:
+		static Ref<PixelData> ffbmpToPixelData(FIBITMAP* image, const String& filename);
+
 	private:
 		static Vector<void*> sPreallocBlocks;
 		static size_t sPreallocBlockSize;

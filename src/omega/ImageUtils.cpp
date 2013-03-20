@@ -181,6 +181,67 @@ ImageUtils::LoadImageAsyncTask* ImageUtils::loadImageAsync(const String& filenam
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Ref<PixelData> ImageUtils::ffbmpToPixelData(FIBITMAP* image, const String& filename)
+{
+	int bpp = FreeImage_GetBPP(image);
+	int width = FreeImage_GetWidth(image);
+	int height = FreeImage_GetHeight(image);
+
+	// If blockId is not -1, use a preallocated memory block to load this image.
+	byte* pdata = NULL;
+	if(sLoadPreallocBlock != -1) pdata = (byte*)getPreallocatedBlock(sLoadPreallocBlock);
+
+	Ref<PixelData> pixelData;
+	int pixelOffset;
+	if(bpp == 24)
+	{
+		pixelData = new PixelData(PixelData::FormatRgb, width, height, pdata);
+		pixelOffset = 3;
+	}
+	else if(bpp == 32)
+	{
+		pixelData = new PixelData(PixelData::FormatRgba, width, height, pdata);
+		pixelOffset = 4;
+	}
+	else if(bpp == 8)
+	{
+		// COnvert 8 bit palettized images to 24 bits.
+		FIBITMAP* temp = image;
+		image = FreeImage_ConvertTo24Bits(image);
+		FreeImage_Unload(temp);
+		pixelData = new PixelData(PixelData::FormatRgb, width, height, pdata);
+		pixelOffset = 3;
+	}
+	else
+	{
+		ofwarn("ImageUtils::loadImage: unhandled bpp (%1%) while loading %2%", %bpp %filename);
+		return NULL;
+	}
+
+	if(sVerbose) ofmsg("Image loaded: %1%. Size: %2%x%3%", %filename %width %height);
+	
+	byte* data = pixelData->map();
+	
+	for(int i = 0; i < height; i++)
+	{
+		char* pixels = (char*)FreeImage_GetScanLine(image, i);
+		for(int j = 0; j < width; j++)
+		{
+			int k = i * width + j;
+
+			data[k * pixelOffset + 0] = pixels[j * pixelOffset + 2];
+			data[k * pixelOffset + 1] = pixels[j * pixelOffset + 1];
+			data[k * pixelOffset + 2] = pixels[j * pixelOffset + 0];
+			if(bpp == 32) data[k * pixelOffset + 3] = pixels[j * pixelOffset + 3];
+			//data[j * pixelOffset + 3] = pixels[j * pixelOffset + 3];
+		}
+	}
+	pixelData->unmap();
+	
+	return pixelData;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Ref<PixelData> ImageUtils::loadImage(const String& filename, bool hasFullPath)
 {
 	String path;
@@ -241,62 +302,43 @@ Ref<PixelData> ImageUtils::loadImage(const String& filename, bool hasFullPath)
 		return NULL;
 	}
 
-	bpp = FreeImage_GetBPP(image);
-	width = FreeImage_GetWidth(image);
-	height = FreeImage_GetHeight(image);
+	Ref<PixelData> pixelData = ffbmpToPixelData(image, filename);
+	FreeImage_Unload(image);
 
-	// If blockId is not -1, use a preallocated memory block to load this image.
-	byte* pdata = NULL;
-	if(sLoadPreallocBlock != -1) pdata = (byte*)getPreallocatedBlock(sLoadPreallocBlock);
+	return pixelData;
+}
 
-	Ref<PixelData> pixelData;
-	int pixelOffset;
-	if(bpp == 24)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Ref<PixelData> ImageUtils::loadImageFromStream(std::istream& fin, const String& streamName)
+{
+	// get length of file:
+    fin.seekg (0, fin.end);
+    int length = fin.tellg();
+    fin.seekg (0, fin.beg);
+
+    char * buffer = new char [length];
+    fin.read(buffer,length);
+
+	FIMEMORY* mem = FreeImage_OpenMemory((BYTE*)buffer, length);
+
+	uint bpp = 0;
+	int width = 0;
+	int height = 0;
+
+	FREE_IMAGE_FORMAT format = FreeImage_GetFileTypeFromMemory(mem);
+	
+	FIBITMAP* image = FreeImage_LoadFromMemory(format, mem);
+	if(image == NULL)
 	{
-		pixelData = new PixelData(PixelData::FormatRgb, width, height, pdata);
-		pixelOffset = 3;
-	}
-	else if(bpp == 32)
-	{
-		pixelData = new PixelData(PixelData::FormatRgba, width, height, pdata);
-		pixelOffset = 4;
-	}
-	else if(bpp == 8)
-	{
-		// COnvert 8 bit palettized images to 24 bits.
-		FIBITMAP* temp = image;
-		image = FreeImage_ConvertTo24Bits(image);
-		FreeImage_Unload(temp);
-		pixelData = new PixelData(PixelData::FormatRgb, width, height, pdata);
-		pixelOffset = 3;
-	}
-	else
-	{
-		ofwarn("ImageUtils::loadImage: unhandled bpp (%1%) while loading %2%", %bpp %filename);
+		ofwarn("ImageUtils::loadImage: could not load %1%: unsupported file format, corrupted file or out of memory.", %streamName);
 		return NULL;
 	}
 
-	if(sVerbose) ofmsg("Image loaded: %1%. Size: %2%x%3%", %filename %width %height);
-	
-	byte* data = pixelData->map();
-	
-	for(int i = 0; i < height; i++)
-	{
-		char* pixels = (char*)FreeImage_GetScanLine(image, i);
-		for(int j = 0; j < width; j++)
-		{
-			int k = i * width + j;
-
-			data[k * pixelOffset + 0] = pixels[j * pixelOffset + 2];
-			data[k * pixelOffset + 1] = pixels[j * pixelOffset + 1];
-			data[k * pixelOffset + 2] = pixels[j * pixelOffset + 0];
-			if(bpp == 32) data[k * pixelOffset + 3] = pixels[j * pixelOffset + 3];
-			//data[j * pixelOffset + 3] = pixels[j * pixelOffset + 3];
-		}
-	}
-	pixelData->unmap();
+	Ref<PixelData> pixelData = ffbmpToPixelData(image, streamName);
 	
 	FreeImage_Unload(image);
+	FreeImage_CloseMemory(mem);
+	delete buffer;
 
 	return pixelData;
 }
