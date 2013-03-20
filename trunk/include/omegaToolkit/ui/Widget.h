@@ -132,6 +132,7 @@ namespace omegaToolkit {
         bool isVisible();
         void setVisible(bool value);
 		
+		//! When true, the widget is enabled, i.e. it can receive input events and takes part in navigation (can become active)
 		bool isEnabled() { return myEnabled; }
 		void setEnabled(bool value) { myEnabled = value; }
 
