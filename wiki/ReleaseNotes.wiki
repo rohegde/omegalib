@@ -4,17 +4,20 @@
 <wiki:toc max_depth="1" />
 
 ------------------------------------------------------------------------
-= omegalib v3.5 (*current developer version*) =
+= omegalib v3.5.1 (*current developer version*) =
 == Major Changes ==
+	* Reorganized source: all c++ and python examples are now under `/examples`.
 omega
 	* Improvements to python API
 	* Camera.focusOn
 	* clip plane control
-	* SceneNode bounding box
+	* (*3.5.1*) fixes to SceneNode bounding box
 	* NodeComponent API slightly changed to support more functionalities for objects attached to scene nodes.
 omegaOsg
 	* fixed bounding box generation
 	* fixes to clipping
+	* (*3.5.1*) Added auto near / far Z computation toggle (`:setautonearfar [on|off]`)
+	* (*3.5.1*) Added support for PagedLOD and DatabasePager
 omegaVtk
 	* re-added support for vtk python scripting
 	* added support for vtk lights.

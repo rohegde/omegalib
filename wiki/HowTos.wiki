@@ -75,6 +75,13 @@ The cause of this error is unclear, and so far it happened on only one virtual m
 
 A workaround is to *exclude* the equalizer project from the build after building the entire project the fist time (see the *Speeding up builds* tip in the general tips & tricks section)
 
+=== Other reasons for build failure ===
+Make sure that the path to your source and build directories *does not contain spaces*
+For example:
+`C:/Users/Me/omegalib/build` is fine
+`C:/Users/Alessandro Febretti/omegalib/build` is not.
+
+
 == General Tips & Tricks ==
 === Speeding up builds ===
 After the first build, it is possible to speed up successive builds by unloading projects in the 3rdparty folder. These dependencies need to be built only once per configuration, so they can be disabled after the first build. This way, the build system won't have to go through them to check if they are up to date. 
