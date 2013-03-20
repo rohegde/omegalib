@@ -117,9 +117,7 @@ OsgModule::OsgModule():
     myUpdateVisitor->setFrameStamp( myFrameStamp );
 	myUpdateVisitor->setDatabaseRequestHandler(myDatabasePager);
 
-	// FreeImage reader / writer does not support http streams. Standard readers are good enough 
-	// for most formats so we can probably keep this disabled.
-    //osgDB::Registry::instance()->addReaderWriter(new ReaderFreeImage());
+    osgDB::Registry::instance()->addReaderWriter(new ReaderFreeImage());
 	osgDB::Registry::instance()->addReaderWriter(new ReaderWriterFBX());
 	//osgDB::Registry::instance()->addReaderWriter(new ReaderWriterIV());
 }

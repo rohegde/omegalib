@@ -35,9 +35,15 @@ ReaderWriter::ReadResult ReaderFreeImage::readObject(const std::string& file, co
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ReaderWriter::ReadResult ReaderFreeImage::readImage(std::istream& fin,const Options* ) const
+ReaderWriter::ReadResult ReaderFreeImage::readImage(std::istream& fin,const Options* options) const
 {
-	return ReadResult::FILE_NOT_HANDLED;
+	omega::Ref<omega::PixelData> img = omega::ImageUtils::loadImageFromStream(fin, "STREAM");
+	if(img == NULL) return ReadResult::FILE_NOT_FOUND;
+	osg::Image* pOsgImage = omegaOsg::OsgModule::pixelDataToOsg(img);
+
+    ReadResult rr(pOsgImage);
+    if(rr.validImage()) rr.getImage()->setFileName("STREAM");
+    return rr;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
