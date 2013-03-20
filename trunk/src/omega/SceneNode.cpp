@@ -249,10 +249,10 @@ float SceneNode::getBoundRadius()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::updateBoundingBox()
+void SceneNode::updateBoundingBox(bool force)
 {
 	// Exit now if bouning box does not need an update.
-	if(!needsBoundingBoxUpdate()) return;
+	if(!force && !needsBoundingBoxUpdate()) return;
 
 	// Reset bounding box.
 	myBBox.setNull();
@@ -283,6 +283,12 @@ void SceneNode::updateBoundingBox()
 	{
 		// Compute bounding sphere.
 		myBSphere = Sphere(myBBox.getCenter(), myBBox.getHalfSize().maxCoeff());
+	}
+
+	SceneNode* parent = dynamic_cast<SceneNode*>(getParent());
+	if(parent != NULL)
+	{
+		parent->updateBoundingBox(true);
 	}
 }
 
