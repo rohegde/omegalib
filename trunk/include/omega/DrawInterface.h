@@ -44,6 +44,7 @@ namespace omega {
 			flip = 0;
 			startuv = Vector2f(0, 0);
 			enduv = Vector2f(1, 1);
+			color = Color();
 		}
 
 		Ref<Texture> texture;
@@ -89,7 +90,7 @@ namespace omega {
 
 		//! New drawing API
 		//@{
-		void setColor(const Color& col) { myColor = col; }
+		void setColor(const Color& col) { myBrush.color = col; }
 		void fillTexture(TextureSource* texture);
 		void textureFlip(uint flipflags);
 		void textureRegion(float su, float sv, float eu, float ev);
@@ -119,7 +120,7 @@ namespace omega {
 		Font* myDefaultFont;
 		Lock myLock;
 
-		Color myColor;
+		//Color myColor;
 
 		const DrawContext* myContext;
 
