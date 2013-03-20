@@ -357,7 +357,7 @@ uint32_t ConfigImpl::finishFrame()
 			
 		if(!ds->getDisplayConfig().panopticStereoEnabled)
 		{
-			Camera* cam = Engine::instance()->getDefaultCamera();
+			//Camera* cam = Engine::instance()->getDefaultCamera();
 			eq::fabric::Matrix4f om;
 			const AffineTransform3& ht = cam->getHeadTransform();
 			om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
