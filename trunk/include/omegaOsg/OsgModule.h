@@ -70,6 +70,7 @@ namespace omegaOsg
 		virtual void initializeRenderer(Renderer* r);
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt) {}
+		virtual bool handleCommand(const String& command);
 		//void loadScene(const String& filename);
 		//void addToScene(SceneNode* node);
 
@@ -79,8 +80,15 @@ namespace omegaOsg
 
 		osgDB::DatabasePager* getDatabasePager() { return myDatabasePager; }
 
+		// When set to true, osg will compute near and far planes automatically using scene geometry bounding boxes
+		// NOTE: this will lead to inconsistent depth testing with other render passes. 
+		void setAutoNearFar(bool value) { myAutoNearFar = value; }
+		bool getAutoNearFar() { return myAutoNearFar; }
+
 	private:
 		static OsgModule* mysInstance;
+
+		bool myAutoNearFar;
 
 		//OsgSceneObject* myRootSceneObject;
 		Ref<osg::Node> myRootNode;

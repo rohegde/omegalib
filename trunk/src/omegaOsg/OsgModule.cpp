@@ -105,6 +105,8 @@ OsgModule::OsgModule():
 {
     mysInstance = this;
 
+	myAutoNearFar = false;
+
     myRootNode = NULL;
     //myRootSceneObject = NULL;
 
@@ -171,3 +173,26 @@ void OsgModule::update(const UpdateContext& context)
 	myDatabasePager->updateSceneGraph(*myFrameStamp);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool OsgModule::handleCommand(const String& command)
+{
+	Vector<String> args = StringUtils::split(command);
+	if(args[0] == "?")
+	{
+		// ?: print help
+		omsg("OsgModule");
+		omsg("\t autonearfar [on|off] - toggle auto near far Z on or off");
+	}
+	else if(args[0] == "autonearfar")
+	{
+		if(args.size() > 1)
+		{
+			if(args[1] == "on") setAutoNearFar(true);
+			else if(args[1] == "off") setAutoNearFar(false);
+		}
+		ofmsg("OsgModule: autoNearFar = %1%", %getAutoNearFar());
+		// Mark command as handled
+		return true;
+	}
+	return false;
+}
