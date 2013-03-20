@@ -163,7 +163,7 @@ namespace omega {
 	
 	private:
 		void drawBoundingBox();
-		void updateBoundingBox();
+		void updateBoundingBox(bool force = false);
 		bool needsBoundingBoxUpdate();
 
 	private:
