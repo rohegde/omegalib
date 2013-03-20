@@ -355,21 +355,21 @@ void PythonInterpreter::runFile(const String& filename)
 #ifdef OMEGA_APPROOT_DIRECTORY
 	path = StringUtils::replaceAll(path, "OMEGA_APP_ROOT", OMEGA_APPROOT_DIRECTORY);
 #endif
-
-	SystemManager* sys = SystemManager::instance();
-	PythonInterpreter* interp = sys->getScriptInterpreter();
-
-	String scriptPath;
-	String baseScriptFilename;
-	StringUtils::splitFilename(path, baseScriptFilename, scriptPath);
-
-	DataManager* dm = SystemManager::instance()->getDataManager();
-	dm->setCurrentPath(scriptPath);
-	DataInfo cfgInfo = dm->getInfo(baseScriptFilename);
-
-	if(!cfgInfo.isNull())
+	
+	String fullPath;
+	if(DataManager::findFile(path, fullPath))
 	{
-		PyObject* PyFileObject = PyFile_FromString((char*)cfgInfo.path.c_str(), "r");
+		SystemManager* sys = SystemManager::instance();
+		PythonInterpreter* interp = sys->getScriptInterpreter();
+
+		String scriptPath;
+		String baseScriptFilename;
+		StringUtils::splitFilename(fullPath, baseScriptFilename, scriptPath);
+
+		DataManager* dm = SystemManager::instance()->getDataManager();
+		dm->setCurrentPath(scriptPath);
+
+		PyObject* PyFileObject = PyFile_FromString((char*)fullPath.c_str(), "r");
 		PyRun_SimpleFile(PyFile_AsFile(PyFileObject), filename.c_str());
 	}
 	else
