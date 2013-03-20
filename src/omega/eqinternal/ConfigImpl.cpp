@@ -360,7 +360,8 @@ uint32_t ConfigImpl::finishFrame()
 			//Camera* cam = Engine::instance()->getDefaultCamera();
 			eq::fabric::Matrix4f om;
 			const AffineTransform3& ht = cam->getHeadTransform();
-			om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
+			Eigen::Transform<float, 3, 2> floatxform = ht.cast<float>();
+			om.set(floatxform.data(), floatxform.data() + 16 * sizeof(float), false);
 			eqo->setHeadMatrix(om);
 		}
 		else

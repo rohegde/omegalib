@@ -127,7 +127,7 @@ void VtkRenderPass::render(Renderer* mng, const DrawContext& context)
 		// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
 		// stored inside the scene nodes. So, create a new, clean transform on the stack.
 		glPushMatrix();
-		glLoadMatrixf(context.modelview.data());
+		glLoadMatrixd(context.modelview.data());
 
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		glEnable(GL_NORMALIZE);

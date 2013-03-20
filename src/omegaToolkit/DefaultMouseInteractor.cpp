@@ -103,7 +103,7 @@ void DefaultMouseInteractor::updateNode()
 			{
 				// Intersect the ray with the bounding sphere. 
 				// If the point is outside the bounding sphere, perform no rotation.
-				std::pair<bool, float> p = myPointerRay.intersects(myStartBSphere);
+				std::pair<bool, omicron::real> p = myPointerRay.intersects(myStartBSphere);
 				if(p.first)
 				{
 					Vector3f pt = myPointerRay.getPoint(p.second);

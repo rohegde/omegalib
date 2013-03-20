@@ -49,11 +49,11 @@ void DrawInterface::beginDraw3D(const DrawContext& context)
 {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-	glLoadMatrixf(context.modelview.data());
+	glLoadMatrixd(context.modelview.data());
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
-	glLoadMatrixf(context.projection.data());
+	glLoadMatrixd(context.projection.data());
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -116,10 +116,10 @@ void DrawInterface::endDraw()
 void DrawInterface::setGlColor(const Color& col)
 {
 	glColor4f(
-		col[0] * myColor[0], 
-		col[1] * myColor[1],
-		col[2] * myColor[2],
-		col[3] * myColor[3]
+		col[0] * myBrush.color[0], 
+		col[1] * myBrush.color[1],
+		col[2] * myBrush.color[2],
+		col[3] * myBrush.color[3]
 	);
 }
 
@@ -128,7 +128,7 @@ void DrawInterface::pushTransform(const AffineTransform3& transform)
 {
     glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	glMultMatrixf(transform.data());
+	glMultMatrixd(transform.data());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -473,6 +473,7 @@ void DrawInterface::rect(float x, float y, float width, float height)
 {
 	if(!myBrush.texture.isNull())
 	{
+		glColor4f(myBrush.color[0], myBrush.color[1], myBrush.color[2], myBrush.color[3]);
 		drawRectTexture(myBrush.texture,
 			Vector2f(x, y),
 			Vector2f(width, height),

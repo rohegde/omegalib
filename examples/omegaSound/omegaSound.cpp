@@ -45,9 +45,9 @@ public:
 private:
 	HelloApplication* myApplication;
 
-	Vector3f myNormals[6];
+	Vector3s myNormals[6];
 	Vector4i myFaces[6]; 
-	Vector3f myVertices[8];
+	Vector3s myVertices[8];
 	Color myFaceColors[6];
 };
 
@@ -83,7 +83,7 @@ public:
 		//	 stop() - this means this instance is finished and a new
 		//			  sound instance will need to be created to play
 		SoundInstance* musicInst = new SoundInstance(music);
-		musicInst->setVolume(0.2);
+		musicInst->setVolume(0.2f);
 		musicInst->playStereo();
 
 		changeCubeColor = false;
@@ -127,12 +127,12 @@ void HelloRenderPass::initialize()
 	RenderPass::initialize();
 	
 	// Initialize cube normals.
-	myNormals[0] = Vector3f(-1, 0, 0);
-	myNormals[1] = Vector3f(0, 1, 0);
-	myNormals[2] = Vector3f(1, 0, 0);
-	myNormals[3] = Vector3f(0, -1, 0);
-	myNormals[4] = Vector3f(0, 0, 1);
-	myNormals[5] = Vector3f(0, 0, -1);
+	myNormals[0] = Vector3s(-1, 0, 0);
+	myNormals[1] = Vector3s(0, 1, 0);
+	myNormals[2] = Vector3s(1, 0, 0);
+	myNormals[3] = Vector3s(0, -1, 0);
+	myNormals[4] = Vector3s(0, 0, 1);
+	myNormals[5] = Vector3s(0, 0, -1);
 
 	// Initialize cube face indices.
 	myFaces[0] = Vector4i(0, 1, 2, 3);
@@ -175,7 +175,8 @@ void HelloRenderPass::render(Renderer* client, const DrawContext& context)
 		glEnable(GL_LIGHT0);
 		glEnable(GL_COLOR_MATERIAL);
 		glLightfv(GL_LIGHT0, GL_COLOR, Color(1.0, 1.0, 1.0).data());
-		glLightfv(GL_LIGHT0, GL_POSITION, Vector3f(0.0f, 0.0f, 1.0f).data());
+
+		glLightfv(GL_LIGHT0, GL_POSITION, Vector3s(0.0f, 0.0f, 1.0f).data());
 
 		// Draw a rotating box.
 		glTranslatef(myApplication->getXPos(), myApplication->getYPos(), myApplication->getZPos()); 
@@ -230,7 +231,7 @@ void HelloApplication::handleEvent(const Event& evt)
 				//	 stop() - this means this instance is finished and a new
 				//			  sound instance will need to be created to play
 				SoundInstance* musicInst = new SoundInstance(music);
-				musicInst->setVolume(0.2);
+				musicInst->setVolume(0.2f);
 				musicInst->playStereo();
 			}
 			else if( evt.getFlags() == Event::Button5 ) // Wand L1
@@ -262,7 +263,7 @@ void HelloApplication::handleEvent(const Event& evt)
 					soundLoopInst = new SoundInstance(sound1);
 					soundLoopInst->setPosition( evt.getPosition() );
 					soundLoopInst->setLoop(true);
-					soundLoopInst->setVolume(0.2);
+					soundLoopInst->setVolume(0.2f);
 					soundLoopInst->setWidth(3);
 					soundLoopInst->play();
 				}

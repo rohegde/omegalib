@@ -85,11 +85,11 @@ void displayCallback(void)
 	glPushMatrix();
 	AffineTransform3 mat = cam->getViewTransform();
 	glLoadIdentity();
-	glLoadMatrixf(mat.data());
+	glLoadMatrixd(mat.data());
 
 	dc.viewport = Rect(0, 0, glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
-	glGetFloatv( GL_MODELVIEW_MATRIX, dc.modelview.data() );
-	glGetFloatv( GL_PROJECTION_MATRIX, dc.projection.data() );
+	glGetDoublev( GL_MODELVIEW_MATRIX, dc.modelview.data() );
+	glGetDoublev( GL_PROJECTION_MATRIX, dc.projection.data() );
 
 	//dc.drawBuffer = ds->getFrameBuffer();
 
