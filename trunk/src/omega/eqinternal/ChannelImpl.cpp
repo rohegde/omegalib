@@ -143,9 +143,15 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 	}
         
     AffineTransform3 mw;
-    memcpy(mw.data(), getPerspectiveTransform().begin(), 16 * sizeof(float));
-    memcpy(context->projection.data(), getPerspective().compute_matrix().begin(), 16 * sizeof(float));
+	
+	vmml::matrix<4, 4, float> proj = getPerspective().compute_matrix();
+	const eq::fabric::Matrix4f& eqmw = getPerspectiveTransform();
 
+	for(int i = 0; i < 16; i++)
+	{
+		mw.data()[i] = eqmw[i];
+		context->projection.data()[i] = proj.array[i];
+	}
 
 	Camera* cam = Engine::instance()->getDefaultCamera();
 
