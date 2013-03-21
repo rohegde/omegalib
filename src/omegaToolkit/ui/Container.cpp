@@ -157,8 +157,11 @@ Widget* Container::getChildBefore(const Widget* child)
 	Widget* prev = NULL;
 	foreach(Widget* w, myChildren)
 	{
-		if(child == w) return prev;
-		prev = w;
+		if(w->isEnabled())
+		{
+			if(child == w) return prev;
+			prev = w;
+		}
 	}
 	return NULL;
 }
@@ -169,8 +172,11 @@ Widget* Container::getChildAfter(const Widget* child)
 	bool found = false;
 	foreach(Widget* w, myChildren)
 	{
-		if(found) return w;
-		if(child == w) found = true;
+		if(w->isEnabled())
+		{
+			if(found) return w;
+			if(child == w) found = true;
+		}
 	}
 	return NULL;
 }
@@ -254,23 +260,23 @@ void Container::updateChildrenNavigation()
 		{
 			w->setHorizontalNextWidget(getChildAfter(w));
 			w->setHorizontalPrevWidget(getChildBefore(w));
-			Container* parent = getContainer();
-			if(parent != NULL)
-			{
-				w->setVerticalNextWidget(parent->getChildAfter(this));
-				w->setVerticalPrevWidget(parent->getChildBefore(this));
-			}
+			//Container* parent = getContainer();
+			//if(parent != NULL)
+			//{
+			//	w->setVerticalNextWidget(parent->getChildAfter(this));
+			//	w->setVerticalPrevWidget(parent->getChildBefore(this));
+			//}
 		}
 		else
 		{
 			w->setVerticalNextWidget(getChildAfter(w));
 			w->setVerticalPrevWidget(getChildBefore(w));
 			Container* parent = getContainer();
-			if(parent != NULL)
-			{
-				w->setHorizontalNextWidget(parent->getChildAfter(this));
-				w->setHorizontalPrevWidget(parent->getChildBefore(this));
-			}
+			//if(parent != NULL)
+			//{
+			//	w->setHorizontalNextWidget(parent->getChildAfter(this));
+			//	w->setHorizontalPrevWidget(parent->getChildBefore(this));
+			//}
 		}
 	}
 }
@@ -484,6 +490,17 @@ void Container::update(const omega::UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool Container::rayToPointerEvent(const Event& inEvt, Event& outEvt)
 {
+	// Shortcut: if this container is not in 3D mode, just return the original event.
+	if(!my3dSettings.enable3d)
+	{
+		if(isEventInside(inEvt))
+		{
+			outEvt.copyFrom(inEvt);
+			return true;
+		}
+		return false;
+	}
+
 	Ray r;
 	if(!SystemManager::instance()->getDisplaySystem()->getViewRayFromEvent(inEvt, r))
 	{
@@ -533,6 +550,7 @@ bool Container::rayToPointerEvent(const Event& inEvt, Event& outEvt)
 		Vector3f pointerPosition(x / my3dSettings.scale + myPosition[0], getHeight() - (y / my3dSettings.scale) + myPosition[1], 0);
 		outEvt.reset(inEvt.getType(), Service::Pointer);
 		outEvt.setPosition(pointerPosition);
+		outEvt.setFlags(inEvt.getFlags());
 
 		if(isDebugModeEnabled())
 		{
@@ -540,6 +558,27 @@ bool Container::rayToPointerEvent(const Event& inEvt, Event& outEvt)
 		}
 
 		return true;
+	}
+
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool Container::isEventInside(const Event& evt)
+{
+	// Intersection with 3D containers
+	if(my3dSettings.enable3d)
+	{
+		// We will just discard the converted event.
+		Event newEvt;
+		return rayToPointerEvent(evt, newEvt);
+	}
+	
+	// Intersection with 2D containers
+	if(evt.getServiceType() == Event::ServiceTypePointer)
+	{
+		Vector2f pos2d = Vector2f(evt.getPosition().x(), evt.getPosition().y());
+		return hitTest(pos2d);
 	}
 
 	return false;
@@ -581,11 +620,14 @@ void Container::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::activate()
 {
-	// Activate is rerouted by default to first child. If this container has no children,
-	// mark no widget as active.
-	Widget* child = getChildByIndex(0);
-	if(child != NULL) UiModule::instance()->activateWidget(child);
-	else UiModule::instance()->activateWidget(NULL);
+	if(isEnabled())
+	{
+		// Activate is rerouted by default to first child. If this container has no children,
+		// mark no widget as active.
+		Widget* child = getChildByIndex(0);
+		if(child != NULL) UiModule::instance()->activateWidget(child);
+		else UiModule::instance()->activateWidget(NULL);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

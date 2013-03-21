@@ -29,6 +29,7 @@
 
 #include "omega/Engine.h"
 #include "omega/Application.h"
+#include "omega/PythonInterpreter.h"
 #include "omegaToolkit/UiModule.h"
 #include "ui/Container.h"
 #include "ui/Button.h"
@@ -52,7 +53,7 @@ struct OTK_API AppInfo: public ReferenceType
 	// ui stuff.
 	Ref<UiModule> myUi;
 	Ref<ui::Container> myContainer;
-	Ref<ui::Button> myButton;
+	Ref<ui::Label> myLabel;
 	Ref<ui::Image> myImage;
 	Ref<UiScriptCommand> myCommand;
 };
@@ -61,11 +62,14 @@ struct OTK_API AppInfo: public ReferenceType
 class OTK_API AppDrawer: public ReferenceType
 {
 public:
+	AppDrawer(PythonInterpreter* interp, UiModule* ui);
+	virtual ~AppDrawer() {}
 
 	void initialize();
 	ui::Container* getContainer() { return myContainer; }
 	UiModule* getUi() { return myUi; }
 	void update(const UpdateContext& context);
+	void handleEvent(const Event& evt);
 	void show();
 	void hide();
 	bool isVisible() { return myVisible; }
@@ -78,8 +82,10 @@ public:
 private:
 	Ref<UiModule> myUi;
 	List < Ref<AppInfo> > myAppList;
+	AppInfo* mySelectedApp;
 	Ref<ui::Container> myContainer;
 	ui::Container3dSettings my3dSettings;
+	PythonInterpreter* myInterpreter;
 	bool myVisible;
 	float myDrawerScale;
 	int myIconSize;

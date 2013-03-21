@@ -40,29 +40,31 @@ void AppInfo::initialize(AppDrawer* drawer)
 	WidgetFactory* wf = myUi->getWidgetFactory();
 
 	myContainer = wf->createContainer(name, drawer->getContainer(), Container::LayoutVertical);
+	myContainer->setEnabled(false);
+	myContainer->setStyleValue("fill", "#000000a0");
 
 	myImage = wf->createImage(name + "Icon", myContainer);
 	myImage->setData(ImageUtils::loadImage(iconFile));
 	myImage->setSize(Vector2f(myDrawer->getIconSize(), myDrawer->getIconSize()));
 
-	myButton = wf->createButton(name + "Button", myContainer);
-	myButton->setText(label);
+	myLabel = wf->createLabel(name + "Label", myContainer, label);
+}
 
-	// Add an event handler to the button that will run the specified application.
-	// the ':r!' command is handled by the OmegaViewer::handleCommand method.
-	myCommand = new UiScriptCommand(ostr(":r! %1%", %name));
-	myButton->setUIEventHandler(myCommand.get());
+///////////////////////////////////////////////////////////////////////////////////////////////////
+AppDrawer::AppDrawer(PythonInterpreter* interp, UiModule* ui):
+	myUi(ui), myInterpreter(interp)
+{
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void AppDrawer::initialize()
 {
 	myDrawerScale = 1.0f;
-	myIconSize = 128;
-	myUi = UiModule::instance();
+	myIconSize = 16;
 	myContainer = myUi->getWidgetFactory()->createContainer("appDrawer", myUi->getUi(), Container::LayoutHorizontal);
 	myContainer->get3dSettings().enable3d = true;
 	myContainer->get3dSettings().center = true;
+	mySelectedApp = NULL;
 	hide();
 }
 
@@ -105,13 +107,43 @@ void AppDrawer::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void AppDrawer::handleEvent(const Event& evt)
+{
+	// See if this event happens inside the limits of the AppDrawer container, and convert it to a pointer event.
+	Event ne;
+	if(myContainer->rayToPointerEvent(evt, ne))
+	{
+		foreach(AppInfo* ai, myAppList)
+		{
+			if(ai->myContainer->isEventInside(ne))
+			{
+				if(mySelectedApp != ai)
+				{
+					if(mySelectedApp != NULL)
+					{
+						mySelectedApp->myContainer->setStyleValue("fill", "#000000a0");
+					}
+					mySelectedApp = ai;
+					mySelectedApp->myContainer->setStyleValue("fill", "#609060ff");
+				}
+
+				if(ne.isButtonDown(UiModule::getConfirmButton()))
+				{
+					myInterpreter->cleanRun(mySelectedApp->name);
+				}
+			}
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void AppDrawer::show()
 {
 	myVisible = true;
 	myContainer->setEnabled(true);
 
 	myContainer->get3dSettings().alpha = 0.0f;
-	my3dSettings.enable3d = true;
+	myContainer->get3dSettings().enable3d = true;
 	my3dSettings.alpha = 1.0f;
 	my3dSettings.up = Vector3f(0, 1, 0);
 	my3dSettings.normal = Vector3f(0, 0, 1);
@@ -120,10 +152,11 @@ void AppDrawer::show()
 	my3dSettings.scale = myDrawerScale / 1000;
 
 	Camera* cam = Engine::instance()->getDefaultCamera();
-	Vector3f pos = cam->getPosition() + cam->getHeadOffset();
-	pos.z() -= 2.5;
-	ofmsg("App drawer position: %1%", %pos);
-	my3dSettings.position = pos;
+	myContainer->get3dSettings().node = cam;
+	//Vector3f pos = cam->getPosition() + cam->getHeadOffset();
+	//pos.z() -= 2.5;
+	//ofmsg("App drawer position: %1%", %pos);
+	my3dSettings.position = Vector3f(0, 2, -2.5);
 	
 	UiModule::instance()->activateWidget(myContainer);
 }
