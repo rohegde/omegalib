@@ -75,7 +75,7 @@ void UiScriptCommand::handleEvent(const Event& evt)
 				myInterpreter->evalEventCommand(expr, evt);
 			}
 		}
-		else
+		else if(evt.getType() == Event::Click)
 		{
 			myInterpreter->evalEventCommand(myCommand, evt);
 		}

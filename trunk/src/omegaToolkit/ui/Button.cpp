@@ -81,22 +81,25 @@ void Button::handleEvent(const Event& evt)
 {
 	if(isPointerInteractionEnabled())
 	{
-		Vector2f point  = Vector2f(evt.getPosition().x(), evt.getPosition().y());
-		point = transformPoint(point);
-		if(simpleHitTest(point))
+		if(evt.getServiceType() == Event::ServiceTypePointer || evt.getServiceType() == Event::ServiceTypeWand)
 		{
-			if(evt.getType() == Event::Down)		
+			Vector2f point  = Vector2f(evt.getPosition().x(), evt.getPosition().y());
+			point = transformPoint(point);
+			if(simpleHitTest(point))
 			{
-				myPressed = true;
-				myPressedStateChanged = true;
-				evt.setProcessed();
-				playPressedSound();
-			}
-			else if(evt.getType() == Event::Up)
-			{
-				myPressed = false;
-				myPressedStateChanged = true;
-				evt.setProcessed();
+				if(evt.isButtonDown(UiModule::getConfirmButton()))		
+				{
+					myPressed = true;
+					myPressedStateChanged = true;
+					evt.setProcessed();
+					playPressedSound();
+				}
+				else if(evt.isButtonUp(UiModule::getConfirmButton()))
+				{
+					myPressed = false;
+					myPressedStateChanged = true;
+					evt.setProcessed();
+				}
 			}
 		}
 	}

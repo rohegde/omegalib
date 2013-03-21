@@ -118,6 +118,13 @@ namespace omegaToolkit { namespace ui {
 		void setGridColumns(int value);
 		//@}
 
+		//! Returns true if the event happens within the container boundaries. This method
+		//! supports all pointer and ray-generating events, and works with 2D and 3D mode containers.
+		bool isEventInside(const Event& evt);
+		//! For 3D mode containers: converts a ray event to a pointer event with 2D coordintes in the container coordinate space.
+		//! Returns true if the event happens within the container boundaries, and could be converted to a pointer event successfully.
+		bool rayToPointerEvent(const Event& inEvt, Event& outEvt);
+
 		virtual void layout();
 
 		//! Gets the container 3d settings.
@@ -144,7 +151,6 @@ namespace omegaToolkit { namespace ui {
 		void computeLinearLayout(Orientation orientation);
 		void computeGridLayout(Orientation orientation);
 		void updateChildrenNavigation();
-		bool rayToPointerEvent(const Event& inEvt, Event& outEvt);
 
 	private:
 		List< Ref<Widget> > myChildren;

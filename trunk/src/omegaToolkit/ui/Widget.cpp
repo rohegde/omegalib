@@ -144,7 +144,7 @@ void Widget::handleEvent(const Event& evt)
 	{
 		if(myActive)
 		{
-			if(evt.isButtonDown(Event::ButtonDown))
+			if(evt.isButtonDown(Event::ButtonDown) || evt.isKeyDown(KC_DOWN))
 			{
 				evt.setProcessed();
 				if(myVerticalNextWidget != NULL)
@@ -153,7 +153,7 @@ void Widget::handleEvent(const Event& evt)
 					playMenuScrollSound();
 				}
 			}
-			else if(evt.isButtonDown(Event::ButtonUp))
+			else if(evt.isButtonDown(Event::ButtonUp) || evt.isKeyDown(KC_UP))
 			{
 				evt.setProcessed();
 				if(myVerticalPrevWidget != NULL)
@@ -162,7 +162,7 @@ void Widget::handleEvent(const Event& evt)
 					playMenuScrollSound();
 				}
 			}
-			else if(evt.isButtonDown(Event::ButtonLeft))
+			else if(evt.isButtonDown(Event::ButtonLeft) || evt.isKeyDown(KC_LEFT))
 			{
 				evt.setProcessed();
 				if(myHorizontalPrevWidget != NULL)
@@ -171,7 +171,7 @@ void Widget::handleEvent(const Event& evt)
 					playMenuScrollSound();
 				}
 			}
-			else if(evt.isButtonDown(Event::ButtonRight))
+			else if(evt.isButtonDown(Event::ButtonRight)  || evt.isKeyDown(KC_RIGHT))
 			{
 				evt.setProcessed();
 				if(myHorizontalNextWidget != NULL)
@@ -458,6 +458,7 @@ void Widget::setStyleValue(const String& key, const String& value)
 	StringUtils::trim(pk);
 	StringUtils::trim(pv);
 	myStyleDictionary[pk] = pv;
+	updateStyle();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

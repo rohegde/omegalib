@@ -75,8 +75,8 @@ public:
 	Event::Flags getAppDrawerToggleButton() { return myAppDrawerToggleButton; }
 
 private:
-	Ref<UiModule> myUiModule;
 	Ref<AppDrawer> myAppDrawer;
+	Ref<UiModule> myUi;
 	Event::Flags myAppDrawerToggleButton;
 	String myAppStartFunctionCall;
 };
@@ -107,14 +107,13 @@ OmegaViewer::OmegaViewer()
 
 	gViewerInstance = this;
 
-	myUiModule = NULL;
 	// If I create t here, UiModule will be registered as a core module and won't be 
 	// deallocated between application switches.
-	//myUiModule = new UiModule();
-	//ModuleServices::addModule(myUiModule);
+	myUi = new UiModule();
+	ModuleServices::addModule(myUi);
 
-	//myAppDrawer = new AppDrawer();
-	myAppDrawer = NULL;
+	myAppDrawer = new AppDrawer(SystemManager::instance()->getScriptInterpreter(), myUi);
+	//myAppDrawer = NULL;
 }
 
 
@@ -193,6 +192,10 @@ void OmegaViewer::handleEvent(const Event& evt)
 			if(myAppDrawer->isVisible()) myAppDrawer->hide();
 			else  myAppDrawer->show();
 		}
+	}
+	if(myAppDrawer->isVisible())
+	{
+		myAppDrawer->handleEvent(evt);
 	}
 	//if(evt.getServiceType() == Service::UI) 
 	//{
