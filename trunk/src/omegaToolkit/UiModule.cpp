@@ -35,6 +35,7 @@ using namespace omega;
 UiModule* UiModule::mysInstance = NULL;
 Event::Flags UiModule::mysConfirmButton = Event::Button3;
 Event::Flags UiModule::mysCancelButton = Event::Button4;
+Event::Flags UiModule::mysClickButton = Event::Button4;
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 UiModule* UiModule::createAndInitialize()
@@ -91,6 +92,7 @@ void UiModule::initialize()
 		Setting& sUi = SystemManager::settingLookup("config/ui");
 		mysConfirmButton = Event::parseButtonName(Config::getStringValue("confirmButton", sUi, "Button3"));
 		mysCancelButton = Event::parseButtonName(Config::getStringValue("cancelButton", sUi, "Button4"));
+		mysClickButton = Event::parseButtonName(Config::getStringValue("clickButton", sUi, "Button1"));
 		myGamepadInteractionEnabled = Config::getBoolValue("gamepadInteractionEnabled", sUi, myGamepadInteractionEnabled);
 		myPointerInteractionEnabled = Config::getBoolValue("pointerInteractionEnabled", sUi, myPointerInteractionEnabled);
 	}

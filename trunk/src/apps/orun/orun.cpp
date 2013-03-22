@@ -132,13 +132,21 @@ void OmegaViewer::initialize()
 
 	//
 	String orunInitScriptName = "orun_init.py";
-	myAppStartFunctionCall = "_onAppStart()";
+	myAppStartFunctionCall = "from omegaToolkit import *; _onAppStart()";
+
 	Config* cfg = SystemManager::instance()->getAppConfig();
     if(cfg->exists("config/orun"))
     {
         Setting& s = cfg->lookup("config/orun");
 		orunInitScriptName = Config::getStringValue("initScript", s, orunInitScriptName);
 		myAppStartFunctionCall = Config::getStringValue("appStartFunction", s, myAppStartFunctionCall);
+    }
+
+	cfg = SystemManager::instance()->getSystemConfig();
+    if(cfg->exists("config/appDrawer"))
+    {
+        Setting& s = cfg->lookup("config/appDrawer");
+		myAppDrawerToggleButton = Event::parseButtonName(Config::getStringValue("appDrawerToggleButton", s, "Button3"));
     }
 
 	// Initialize the python wrapper module for this class.
@@ -184,8 +192,7 @@ void OmegaViewer::update(const UpdateContext& context)
 void OmegaViewer::handleEvent(const Event& evt)
 {
 	// '`' key toggles app drawer.
-	if(evt.isKeyDown(KC_HOME) || 
-			evt.isButtonDown(myAppDrawerToggleButton))
+	if(evt.isButtonDown(myAppDrawerToggleButton))
 	{
 		if(myAppDrawer != NULL) 
 		{

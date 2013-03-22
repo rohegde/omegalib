@@ -41,8 +41,9 @@ Label::Label(Engine* srv):
 	myAutosizeHorizontalPadding(6),
 	myAutosizeVerticalPadding(6)
 {
-	// By default labels are set to not enabled, so they won't take part in navigation.
+	// By default labels are set to not enabled, and won't take part in navigation.
 	setEnabled(false);
+	setNavigationEnabled(false);
 	// By default labels are autosize widgets - their size is determined by their content.
 	setAutosize(true);
 }

@@ -140,6 +140,10 @@ namespace omegaToolkit { namespace ui {
 		PixelData* getPixels();
 		//@}
 
+		//! Recomputes navigation links for widgets in this container.
+		//! Only enabled widgets take part in navigation.
+		void updateChildrenNavigation();
+
 	protected:
 		virtual void activate();
 
@@ -150,7 +154,6 @@ namespace omegaToolkit { namespace ui {
 		void resetChildrenSize(Orientation orientation);
 		void computeLinearLayout(Orientation orientation);
 		void computeGridLayout(Orientation orientation);
-		void updateChildrenNavigation();
 
 	private:
 		List< Ref<Widget> > myChildren;

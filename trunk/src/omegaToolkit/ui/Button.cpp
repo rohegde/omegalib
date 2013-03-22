@@ -87,14 +87,14 @@ void Button::handleEvent(const Event& evt)
 			point = transformPoint(point);
 			if(simpleHitTest(point))
 			{
-				if(evt.isButtonDown(UiModule::getConfirmButton()))		
+				if(evt.isButtonDown(UiModule::getClickButton()))		
 				{
 					myPressed = true;
 					myPressedStateChanged = true;
 					evt.setProcessed();
 					playPressedSound();
 				}
-				else if(evt.isButtonUp(UiModule::getConfirmButton()))
+				else if(myPressed && evt.getType() == Event::Up) // Need to check buton up like this because mouse service takes away button flag on up button events.
 				{
 					myPressed = false;
 					myPressedStateChanged = true;

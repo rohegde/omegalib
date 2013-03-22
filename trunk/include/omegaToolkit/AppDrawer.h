@@ -78,6 +78,9 @@ public:
 	void setDrawerScale(float value) { myDrawerScale = value; }
 	int getIconSize() { return myIconSize; }
 	void setIconSize(int value) { myIconSize = value; }
+	void setSelectedApp(AppInfo* i);
+	void selectNextApp();
+	void selectPrevApp();
 
 private:
 	Ref<UiModule> myUi;
@@ -89,6 +92,8 @@ private:
 	bool myVisible;
 	float myDrawerScale;
 	int myIconSize;
+
+	bool myPointerInteractionEnabled;
 };
 };
 #endif

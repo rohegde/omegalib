@@ -42,6 +42,7 @@ void AppInfo::initialize(AppDrawer* drawer)
 	myContainer = wf->createContainer(name, drawer->getContainer(), Container::LayoutVertical);
 	myContainer->setEnabled(false);
 	myContainer->setStyleValue("fill", "#000000a0");
+	myContainer->setUserData(this);
 
 	myImage = wf->createImage(name + "Icon", myContainer);
 	myImage->setData(ImageUtils::loadImage(iconFile));
@@ -110,27 +111,41 @@ void AppDrawer::update(const UpdateContext& context)
 void AppDrawer::handleEvent(const Event& evt)
 {
 	// See if this event happens inside the limits of the AppDrawer container, and convert it to a pointer event.
-	Event ne;
-	if(myContainer->rayToPointerEvent(evt, ne))
+	if(myUi->getPointerInteractionEnabled())
 	{
-		foreach(AppInfo* ai, myAppList)
+		Event ne;
+		if(myContainer->rayToPointerEvent(evt, ne))
 		{
-			if(ai->myContainer->isEventInside(ne))
+			foreach(AppInfo* ai, myAppList)
 			{
-				if(mySelectedApp != ai)
+				if(ai->myContainer->isEventInside(ne))
 				{
-					if(mySelectedApp != NULL)
+					if(mySelectedApp != ai) setSelectedApp(ai);
+					if(ne.isButtonDown(UiModule::getClickButton()))
 					{
-						mySelectedApp->myContainer->setStyleValue("fill", "#000000a0");
+						myInterpreter->cleanRun(mySelectedApp->name);
 					}
-					mySelectedApp = ai;
-					mySelectedApp->myContainer->setStyleValue("fill", "#609060ff");
 				}
+			}
+		}
+	}
 
-				if(ne.isButtonDown(UiModule::getConfirmButton()))
-				{
-					myInterpreter->cleanRun(mySelectedApp->name);
-				}
+	if(myUi->getGamepadInteractionEnabled())
+	{
+		// Process navigation keys
+		if(evt.isButtonDown(Event::ButtonLeft))
+		{
+			selectPrevApp();
+		}
+		else if(evt.isButtonDown(Event::ButtonRight))
+		{
+			selectNextApp();
+		}
+		else if(evt.isButtonDown(UiModule::getConfirmButton()))
+		{
+			if(mySelectedApp != NULL)
+			{
+				myInterpreter->cleanRun(mySelectedApp->name);
 			}
 		}
 	}
@@ -174,4 +189,53 @@ void AppDrawer::hide()
 
 	my3dSettings.alpha = 0.0f;
 	my3dSettings.scale = myDrawerScale / 1000;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void AppDrawer::setSelectedApp(AppInfo* ai)
+{
+	if(mySelectedApp != NULL)
+	{
+		mySelectedApp->myContainer->setStyleValue("fill", "#000000a0");
+	}
+	mySelectedApp = ai;
+	mySelectedApp->myContainer->setStyleValue("fill", "#609060ff");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void AppDrawer::selectNextApp()
+{
+	if(mySelectedApp == NULL) setSelectedApp(myAppList.back());
+	else
+	{
+		Widget* w = mySelectedApp->myContainer->getHorizontalNextWidget();
+		if(w) 
+		{
+			AppInfo* ai = (AppInfo*)w->getUserData();
+			setSelectedApp(ai);
+		}
+		else
+		{
+			setSelectedApp(myAppList.front());
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void AppDrawer::selectPrevApp()
+{
+	if(mySelectedApp == NULL) setSelectedApp(myAppList.front());
+	else
+	{
+		Widget* w = mySelectedApp->myContainer->getHorizontalPrevWidget();
+		if(w) 
+		{
+			AppInfo* ai = (AppInfo*)w->getUserData();
+			setSelectedApp(ai);
+		}
+		else
+		{
+			setSelectedApp(myAppList.back());
+		}
+	}
 }

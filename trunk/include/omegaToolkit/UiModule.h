@@ -41,10 +41,13 @@ namespace omegaToolkit
 	public:
 		static UiModule* instance() { return mysInstance; }
 		static UiModule* createAndInitialize();
+
 		static void setConfirmButton(Event::Flags button) { mysConfirmButton = button; }
 		static void setCancelButton(Event::Flags button) { mysCancelButton = button; }
 		static Event::Flags getConfirmButton() { return mysConfirmButton; }
 		static Event::Flags getCancelButton() { return mysCancelButton; }
+		static void setClickButton(Event::Flags button) { mysClickButton = button; }
+		static Event::Flags getClickButton() { return mysClickButton; }
 
 	public:
 		UiModule();
@@ -85,6 +88,7 @@ namespace omegaToolkit
 
 		static Event::Flags mysConfirmButton;
 		static Event::Flags mysCancelButton;
+		static Event::Flags mysClickButton;
 
 		bool myGamepadInteractionEnabled;
 		bool myPointerInteractionEnabled;
