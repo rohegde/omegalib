@@ -24,7 +24,6 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
-include(${CMAKE_SOURCE_DIR}/external/UseFbx.cmake)
 
 ###################################################################################################
 # Compile definitions
@@ -38,16 +37,6 @@ SET( srcs
 		OsgSceneObject.cpp
 		SceneView.cpp
 		ReaderFreeImage.cpp
-		
-		fbx/fbxRAnimation.cpp
-		fbx/fbxRCamera.cpp
-		fbx/fbxRLight.cpp
-		fbx/fbxRMesh.cpp
-		fbx/fbxRNode.cpp
-		fbx/ReaderWriterFBX.cpp
-		fbx/WriterCompareTriangle.cpp
-		fbx/WriterNodeVisitor.cpp
-		fbx/fbxMaterialToOsgStateSet.cpp
 		)
 		
 ###################################################################################################
@@ -60,14 +49,33 @@ SET( headers
 		${CMAKE_SOURCE_DIR}/include/omegaOsg/OsgSceneObject.h
 		${CMAKE_SOURCE_DIR}/include/omegaOsg/SceneView.h
 		${CMAKE_SOURCE_DIR}/include/omegaOsg/ReaderFreeImage.h
-		
-		fbx/fbxMaterialToOsgStateSet.h
-		fbx/fbxReader.h
-		fbx/ReaderWriterFBX.h
-		fbx/WriterCompareTriangle.h
-		fbx/WriterNodeVisitor.h
         ) 
         
+###################################################################################################
+set(OMEGAOSG_USE_FBX true CACHE BOOL "Enables Fbx support for omegaOsg.")
+if(OMEGAOSG_USE_FBX)
+	include(${CMAKE_SOURCE_DIR}/external/UseFbx.cmake)
+	SET( srcs ${srcs}
+			fbx/fbxRAnimation.cpp
+			fbx/fbxRCamera.cpp
+			fbx/fbxRLight.cpp
+			fbx/fbxRMesh.cpp
+			fbx/fbxRNode.cpp
+			fbx/ReaderWriterFBX.cpp
+			fbx/WriterCompareTriangle.cpp
+			fbx/WriterNodeVisitor.cpp
+			fbx/fbxMaterialToOsgStateSet.cpp
+			)
+			
+	SET( headers ${headers}
+			fbx/fbxMaterialToOsgStateSet.h
+			fbx/fbxReader.h
+			fbx/ReaderWriterFBX.h
+			fbx/WriterCompareTriangle.h
+			fbx/WriterNodeVisitor.h
+			) 
+endif()
+
 ###################################################################################################
 set(OMEGAOSG_USE_INVENTOR false CACHE BOOL "Enables Inventor (.vrml, .iv) support for omegaOsg. Needs the Coin3d library installed")
 if(OMEGAOSG_USE_INVENTOR)

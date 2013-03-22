@@ -35,7 +35,8 @@ using namespace omegaToolkit::ui;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Button::Button(Engine* srv):
 	AbstractButton(srv),
-	myLabel(srv)
+	myLabel(srv),
+	myImage(srv)
 {
 	//addChild(&myLabel);
 	//myLabel.setText(name);
@@ -55,8 +56,9 @@ Button::~Button()
 void Button::autosize(Renderer* r)
 {
 	myLabel.autosize(r);
+	myImage.autosize(r);
 	// HACK: we add some default margin to the label.
-	Vector2f size = myLabel.getSize();
+	Vector2f size = myLabel.getSize() + myImage.getSize();
 	if(myCheckable)
 	{
 		size += Vector2f(20, 4);
@@ -74,6 +76,7 @@ void Button::update(const omega::UpdateContext& context)
 {
 	AbstractButton::update(context);
 	myLabel.update(context);
+	myImage.update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

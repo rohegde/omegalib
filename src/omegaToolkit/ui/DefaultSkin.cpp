@@ -76,6 +76,14 @@ void DefaultButtonRenderable::drawContent(const DrawContext& context)
 	{
 		lr->drawContent(context);
 	}
+	if(myOwner->getIcon() != NULL)
+	{
+		ImageRenderable* ir = (ImageRenderable*)myOwner->getImage()->getRenderable(getClient());
+		if(ir)
+		{
+			ir->drawContent(context);
+		}
+	}
 
 	myAnim *= 0.8f;
 	if(myOwner->isPressed()) myAnim = 1.0f;

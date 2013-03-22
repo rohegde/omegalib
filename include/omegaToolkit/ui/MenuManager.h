@@ -92,6 +92,8 @@ namespace omegaToolkit { namespace ui {
 
 		//omegaToolkit::ui::Container* getContainerWidget();
 
+		void setIcon(PixelData* icon);
+
 		omegaToolkit::ui::Widget* getWidget() { return myWidget; }
 
 		Menu* getSubMenu() { return mySubMenu; }

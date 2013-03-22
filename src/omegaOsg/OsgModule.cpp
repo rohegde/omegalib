@@ -38,8 +38,12 @@
 #include <osg/FrameStamp>
 
 #include "omegaOsg/ReaderFreeImage.h"
-#include "fbx/ReaderWriterFBX.h"
+#ifdef OMEGAOSG_USE_INVENTOR
 #include "Inventor/ReaderWriterIV.h"
+#endif
+#ifdef OMEGAOSG_USE_FBX
+#include "fbx/ReaderWriterFBX.h"
+#endif
 
 using namespace omegaOsg;
 
@@ -118,7 +122,9 @@ OsgModule::OsgModule():
 	myUpdateVisitor->setDatabaseRequestHandler(myDatabasePager);
 
     osgDB::Registry::instance()->addReaderWriter(new ReaderFreeImage());
+#ifdef OMEGAOSG_USE_FBX
 	osgDB::Registry::instance()->addReaderWriter(new ReaderWriterFBX());
+#endif
 	//osgDB::Registry::instance()->addReaderWriter(new ReaderWriterIV());
 }
 
