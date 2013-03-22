@@ -72,7 +72,8 @@ Widget::Widget(Engine* server):
 	myPosition(Vector2f::Zero()),
 	myBlendMode(BlendInherit),
 	myAlpha(1.0f),
-	myScale(1.0f)
+	myScale(1.0f),
+	myUserData(NULL)
 {
 	myId = mysNameGenerator.getNext();
 	myName = mysNameGenerator.generate();
@@ -408,6 +409,13 @@ void Widget::setActualSize(int value, Orientation orientation, bool force)
 		}
 		mySize[orientation] = value; 
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::setNavigationEnabled(bool value)
+{
+	myNavigationEnabled = value;
+	if(myContainer != NULL) myContainer->updateChildrenNavigation();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

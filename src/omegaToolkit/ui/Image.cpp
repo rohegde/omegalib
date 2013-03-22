@@ -49,8 +49,9 @@ Image::Image(Engine* srv):
 	myData(NULL),
 	myFlipFlags(DrawInterface::FlipY)
 {
-	// By default labels are set to not enabled, so they won't take part in navigation.
+	// By default images are set to not enabled, and won't take part in navigation.
 	setEnabled(false);
+	setNavigationEnabled(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

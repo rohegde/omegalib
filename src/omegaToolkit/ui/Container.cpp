@@ -129,7 +129,7 @@ void Container::addChild(Widget* child)
 	requestLayoutRefresh();
 	myChildren.push_back(child);
 	child->setContainer(this);
-	if(child->isEnabled()) updateChildrenNavigation();
+	if(child->isNavigationEnabled()) updateChildrenNavigation();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -138,7 +138,7 @@ void Container::removeChild(Widget* child)
 	requestLayoutRefresh();
 	myChildren.remove(child);
 	child->setContainer(NULL);
-	if(child->isEnabled()) updateChildrenNavigation();
+	if(child->isNavigationEnabled())  updateChildrenNavigation();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -157,7 +157,7 @@ Widget* Container::getChildBefore(const Widget* child)
 	Widget* prev = NULL;
 	foreach(Widget* w, myChildren)
 	{
-		if(w->isEnabled())
+		if(w->isNavigationEnabled())
 		{
 			if(child == w) return prev;
 			prev = w;
@@ -172,7 +172,7 @@ Widget* Container::getChildAfter(const Widget* child)
 	bool found = false;
 	foreach(Widget* w, myChildren)
 	{
-		if(w->isEnabled())
+		if(w->isNavigationEnabled())
 		{
 			if(found) return w;
 			if(child == w) found = true;

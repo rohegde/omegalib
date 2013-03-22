@@ -201,6 +201,12 @@ namespace omegaToolkit {
 
 		template<typename W> static W* getSource(const Event& evt);
 
+		void setUserData(void* data) { myUserData = data; }
+		void* getUserData() { return myUserData; }
+
+		bool isNavigationEnabled() { return myNavigationEnabled; }
+		void setNavigationEnabled(bool value);
+
     protected:
         bool simpleHitTest(const omega::Vector2f& point);
         static bool simpleHitTest(const omega::Vector2f& point, const omega::Vector2f& pos, const omega::Vector2f& size);
@@ -246,6 +252,9 @@ namespace omegaToolkit {
 		Widget* myVerticalPrevWidget;
 		Widget* myVerticalNextWidget;
 
+		// User data.
+		void * myUserData;
+
         omega::String myName;
 
 		// We use a raw pointer to our parent in order to avoid reference loops.
@@ -270,6 +279,8 @@ namespace omegaToolkit {
 		bool myEnabled;
 		// When true, the widget has active focus, i.e. it has processing priority over input events.
         bool myActive;
+		// When true, the widget takes part in navigation
+		bool myNavigationEnabled;
 
         // Size constraints.
         omega::Vector2f myMinimumSize;
