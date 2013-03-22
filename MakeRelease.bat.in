@@ -37,7 +37,7 @@ copy "${CMAKE_SOURCE_DIR}\tools\hstart.exe" .\bin /Y
 
 xcopy "${CMAKE_SOURCE_DIR}\examples\python" .\examples\ /S /Y
 
-echo .\bin\orun.exe -s examples/spincube.py > orun.bat
+echo .\bin\orun.exe -s examples/exampleLauncher.py > orun.bat
 
 REM echo bin\oinputserver.exe > oinputserver.bat
 
