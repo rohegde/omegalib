@@ -70,19 +70,20 @@ void DefaultButtonRenderable::drawContent(const DrawContext& context)
 	//myOwner->getLabel()->setPosition(Vector2f::Zero());
 	//myOwner->getLabel()->setSize(size);
 
-	myOwner->getLabel()->setColor(col);
-	LabelRenderable* lr = (LabelRenderable*)myOwner->getLabel()->getRenderable(getClient());
-	if(lr)
-	{
-		lr->drawContent(context);
-	}
 	if(myOwner->getIcon() != NULL)
 	{
 		ImageRenderable* ir = (ImageRenderable*)myOwner->getImage()->getRenderable(getClient());
 		if(ir)
 		{
-			ir->drawContent(context);
+			ir->draw(context);
 		}
+		myOwner->getLabel()->setPosition(Vector2f(myOwner->getImage()->getSize()[0], 0));
+	}
+	myOwner->getLabel()->setColor(col);
+	LabelRenderable* lr = (LabelRenderable*)myOwner->getLabel()->getRenderable(getClient());
+	if(lr)
+	{
+		lr->draw(context);
 	}
 
 	myAnim *= 0.8f;

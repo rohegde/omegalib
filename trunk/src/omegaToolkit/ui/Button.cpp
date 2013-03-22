@@ -58,7 +58,9 @@ void Button::autosize(Renderer* r)
 	myLabel.autosize(r);
 	myImage.autosize(r);
 	// HACK: we add some default margin to the label.
-	Vector2f size = myLabel.getSize() + myImage.getSize();
+	Vector2f size = myLabel.getSize();
+	size[0] += myImage.getSize()[0];
+	size[1] = max(size[1], myImage.getSize()[1]);
 	if(myCheckable)
 	{
 		size += Vector2f(20, 4);
