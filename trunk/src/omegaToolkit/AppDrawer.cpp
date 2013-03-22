@@ -53,7 +53,7 @@ void AppInfo::initialize(AppDrawer* drawer)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 AppDrawer::AppDrawer(PythonInterpreter* interp, UiModule* ui):
-	myUi(ui), myInterpreter(interp)
+	myUi(ui), myInterpreter(interp), myListener(NULL)
 {
 }
 
@@ -123,7 +123,8 @@ void AppDrawer::handleEvent(const Event& evt)
 					if(mySelectedApp != ai) setSelectedApp(ai);
 					if(ne.isButtonDown(UiModule::getClickButton()))
 					{
-						myInterpreter->cleanRun(mySelectedApp->name);
+						if(myListener) myListener->startApp(mySelectedApp);
+						else myInterpreter->cleanRun(mySelectedApp->name);
 					}
 				}
 			}
