@@ -30,7 +30,7 @@ using namespace omega;
 using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Slider::Slider(Engine* srv):
 	Widget(srv),
 	myTicks(100),
@@ -41,66 +41,72 @@ Slider::Slider(Engine* srv):
 	setMaximumHeight(22);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Slider::~Slider()
 {
 
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Slider::handleEvent(const Event& evt)
 {
-	Vector2f point = Vector2f(evt.getPosition().x(), evt.getPosition().y());
+	if(isPointerInteractionEnabled())
+	{
+		Vector2f point = Vector2f(evt.getPosition().x(), evt.getPosition().y());
 	
-	point = transformPoint(point);
+		point = transformPoint(point);
 
-	Vector2f sliderPos = getSliderPosition();
-	Vector2f sliderSize = getSliderSize();
+		Vector2f sliderPos = getSliderPosition();
+		Vector2f sliderSize = getSliderSize();
 
-	if(evt.getType() == Event::Up)
-	{
-		myPressed = false;
-		if(myValueChanged)
+		if(evt.getType() == Event::Up)
 		{
-			Event e;
-			e.reset(Event::ChangeValue, Service::Ui, getId());
-			dispatchUIEvent(e);
-		}
-	}
-
-	if(simpleHitTest(point, sliderPos, sliderSize))
-	{
-		if(evt.getType() == Event::Down)
-		{
-			myPressed = true;
-			myPressPos = evt.getPosition().x();
-		}
-		evt.setProcessed();
-	}
-	if(simpleHitTest(point))
-	{
-		if(myPressed && evt.getType() == Event::Move)
-		{
-			int newValue = (point[0] + sliderSize[0] / 2) * myTicks / mySize[0]; 
-			if(newValue < 0) newValue = 0;
-			if(newValue > (myTicks - 1)) newValue = myTicks - 1;
-
-			if(newValue != myValue)
+			myPressed = false;
+			if(myValueChanged)
 			{
-				myValue = newValue;
-				if(!myDeferUpdate)
-				{
-					Event e;
-					e.reset(Event::ChangeValue, Service::Ui, getId());
-					dispatchUIEvent(evt);
-				}
-				else
-				{
-					myValueChanged = true;
-				}
+				Event e;
+				e.reset(Event::ChangeValue, Service::Ui, getId());
+				dispatchUIEvent(e);
 			}
 		}
-		evt.setProcessed();
+
+		if(simpleHitTest(point, sliderPos, sliderSize))
+		{
+			if(evt.getType() == Event::Down)
+			{
+				myPressed = true;
+				myPressPos = evt.getPosition().x();
+			}
+			evt.setProcessed();
+		}
+		if(simpleHitTest(point))
+		{
+			if(myPressed && evt.getType() == Event::Move)
+			{
+				int newValue = (point[0] + sliderSize[0] / 2) * myTicks / mySize[0]; 
+				if(newValue < 0) newValue = 0;
+				if(newValue > (myTicks - 1)) newValue = myTicks - 1;
+
+				if(newValue != myValue)
+				{
+					myValue = newValue;
+					if(!myDeferUpdate)
+					{
+						Event e;
+						e.reset(Event::ChangeValue, Service::Ui, getId());
+						dispatchUIEvent(evt);
+					}
+					else
+					{
+						myValueChanged = true;
+					}
+				}
+			}
+			evt.setProcessed();
+		}
+	}
+	if(isGamepadInteractionEnabled())
+	{
 	}
 }
 

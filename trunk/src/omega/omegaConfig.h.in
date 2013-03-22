@@ -49,6 +49,10 @@
 #cmakedefine OMEGA_BUILD_VTK_LIB
 #cmakedefine OMEGA_BUILD_OSG_LIB
 
+// Osg Reader / Writers
+#cmakedefine OMEGAOSG_USE_FBX
+#cmakedefine OMEGAOSG_USE_INVENTOR
+
 
 // Visual leak detector support
 #cmakedefine OMEGA_ENABLE_VLD

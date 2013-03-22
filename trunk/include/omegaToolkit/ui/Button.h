@@ -29,6 +29,7 @@
 
 #include "omegaToolkit/ui/AbstractButton.h"
 #include "omegaToolkit/ui/Label.h"
+#include "omegaToolkit/ui/Image.h"
 
 namespace omegaToolkit { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,6 +45,11 @@ namespace omegaToolkit { namespace ui {
 		omega::String getText() { return myLabel.getText(); }
 		void setText(omega::String value) { myLabel.setText(value); }
 
+		void setIcon(PixelData* icon) { myImage.setData(icon); }
+		PixelData* getIcon() { return myImage.getData(); }
+
+		Image* getImage() { return &myImage; }
+
 		// Gets the label subobject used by the button.
 		Label* getLabel() { return &myLabel; }
 
@@ -55,6 +61,7 @@ namespace omegaToolkit { namespace ui {
 		void playPressedSound();
 	protected:
 		Label myLabel;
+		Image myImage;
 		Color myColor;
 	};
 

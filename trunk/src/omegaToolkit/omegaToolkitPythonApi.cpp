@@ -145,6 +145,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(MenuItem, isChecked)
 		PYAPI_METHOD(MenuItem, setUserTag)
 		PYAPI_GETTER(MenuItem, getUserTag)
+		PYAPI_GETTER(MenuItem, setIcon)
 		;
 
 	// Container3dSettings
@@ -229,6 +230,9 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(Button, setCheckable)
 		PYAPI_METHOD(Button, setChecked)
 		PYAPI_METHOD(Button, isChecked)
+		PYAPI_METHOD(Button, setIcon)
+		PYAPI_REF_GETTER(Button, getIcon)
+		PYAPI_REF_GETTER(Button, getImage)
 		;
 
 	// Image
