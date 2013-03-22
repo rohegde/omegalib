@@ -57,7 +57,7 @@ bool sAddScriptDirectoryToData = true;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class OmegaViewer: public EngineModule
+class OmegaViewer: public EngineModule, IAppDrawerListener
 {
 public:
 	OmegaViewer();
@@ -70,6 +70,7 @@ public:
 	virtual bool handleCommand(const String& cmd);
 
 	AppDrawer* getAppDrawer() { return myAppDrawer; }
+	virtual void startApp(AppInfo* app);
 
 	void setAppDrawerToggleButton(Event::Flags value) { myAppDrawerToggleButton = value; }
 	Event::Flags getAppDrawerToggleButton() { return myAppDrawerToggleButton; }
@@ -113,6 +114,7 @@ OmegaViewer::OmegaViewer()
 	ModuleServices::addModule(myUi);
 
 	myAppDrawer = new AppDrawer(SystemManager::instance()->getScriptInterpreter(), myUi);
+	myAppDrawer->setListener(this);
 	//myAppDrawer = NULL;
 }
 
@@ -177,6 +179,15 @@ void OmegaViewer::initialize()
 	omsg("\tType :? ./C [prefix] to list global symbols or object members starting with `prefix`");
 	omsg("\t\texample :? . si");
 	omsg("\t\texample :? SceneNode set");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OmegaViewer::startApp(AppInfo* app)
+{
+	SystemManager* sys = SystemManager::instance();
+	PythonInterpreter* interp = sys->getScriptInterpreter();
+	interp->queueCommand(myAppStartFunctionCall, true);
+	interp->cleanRun(app->name);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

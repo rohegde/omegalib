@@ -59,6 +59,13 @@ struct OTK_API AppInfo: public ReferenceType
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+class IAppDrawerListener
+{
+public:
+	virtual void startApp(AppInfo* app) = 0;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 class OTK_API AppDrawer: public ReferenceType
 {
 public:
@@ -82,6 +89,9 @@ public:
 	void selectNextApp();
 	void selectPrevApp();
 
+	void setListener(IAppDrawerListener* listener) { myListener = listener; }
+	IAppDrawerListener* getListener() { return myListener; }
+
 private:
 	Ref<UiModule> myUi;
 	List < Ref<AppInfo> > myAppList;
@@ -93,7 +103,7 @@ private:
 	float myDrawerScale;
 	int myIconSize;
 
-	bool myPointerInteractionEnabled;
+	IAppDrawerListener* myListener;
 };
 };
 #endif
