@@ -1,7 +1,7 @@
 #summary Python reference: module omegaToolkit
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.4 - 3 March 2013</p>*
+<p>*Last revision:* ver. 3.5.1 - 22 March 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -184,6 +184,8 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `isCheckable()` || `True` if this button is a check box ||
 || `setCheckable(value)` || Sets the button as a check box ||
 || `isChecked()`, `setChecked(value)` || Gets or sets the checked state for checkable buttons ||
+|| `setIcon(icon)`, `getIcon()` || Gets or sets the button icon (as a `PixelData` object) ||
+|| `getImage()` || Gets a reference to the internal `Image` widget used to display the button icon ||
 
 ---------------------------------------------------------------------------------------------------
 ==  `class Image` (extends `Widget`) ==

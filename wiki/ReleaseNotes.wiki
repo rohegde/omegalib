@@ -4,7 +4,11 @@
 <wiki:toc max_depth="1" />
 
 ------------------------------------------------------------------------
-= omegalib v3.5.1 (*current developer version*) =
+= omegalib v3.6 (*current developer version*) =
+== Major Changes ==
+
+------------------------------------------------------------------------
+= omegalib v3.5.1 =
 == Major Changes ==
 	* Reorganized source: all c++ and python examples are now under `/examples`.
 	* (3.5.1) omicron and omegalib use double precision math by default.
@@ -15,11 +19,14 @@ omega
 	* (*3.5.1*) fixes to SceneNode bounding box
 	* NodeComponent API slightly changed to support more functionality for objects attached to scene nodes.
 	* (3.5.1) `ImageUtils::loadImageFromStream()`
+	* (3.5.1) Keyboard service generates button left/right/up/down events when keyboard arrows are used.
+	
 omegaOsg
 	* fixed bounding box generation
 	* fixes to clipping
 	* (*3.5.1*) Added auto near / far Z computation toggle (`:setautonearfar [on|off]`)
 	* (*3.5.1*) Added support for PagedLOD and DatabasePager
+	* (*3.5.1*) FBX support can be optionally disabled
 omegaVtk
 	* re-added support for vtk python scripting
 	* added support for vtk lights.
@@ -33,6 +40,8 @@ orun
 omegaToolkit
 	* (*3.5.1*) added `Container:isEventInside`, other improvements and fixes to ui Container class
 	* (*3.5.1*) improved `AppDrawer`
+	* (*3.5.1*) custom user data can be attached to Widget
+	* (*3.5.1*) Button icons 
 	
 
 ------------------------------------------------------------------------

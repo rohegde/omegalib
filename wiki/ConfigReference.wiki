@@ -1,7 +1,7 @@
 #summary Omegalib configuration file reference
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 4.0 - 13 March 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+<p>*Last revision:* ver. 3.5.1 - 21 March 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
 <wiki:toc max_depth="4" />
 
@@ -118,6 +118,10 @@ Example:
  * `menu3dEnabled` (bool)
  * `menuSuspendNavigation` (bool)
  * `menuToggleButton` (String - button name)
+ * `confirmButton` (String - button name): the name of the button used to confirm actions on a gamepad or wand
+ * `cancelButton` (String - button name): the name of the button used to cancel actions on a gamepad or wand
+ * `clickButton` (String - button name): the name of the button used to confirm actions when the event happens ON the widget (for pointer devices and wands)
+ 
 
 ---------------------------------------------------------------------------------------------------
 === `sound` section ===
@@ -224,6 +228,10 @@ Example:
 	};
 }}}
 
+---------------------------------------------------------------------------------------------------
+=== `appDrawer` section ===
+This section configures the Application Drawer (used by default in orun)
+ * `appDrawerToggleButton` (String - button name): the button used to open / close the app drawer.
 
 ---------------------------------------------------------------------------------------------------
 == Application configuration syntax ==
