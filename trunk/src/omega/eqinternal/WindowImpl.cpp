@@ -78,10 +78,10 @@ bool WindowImpl::processEvent(const eq::Event& event)
         event.type == eq::Event::WINDOW_POINTER_MOTION ||
         event.type == eq::Event::WINDOW_POINTER_WHEEL)
     {
-        const Vector2i& ts = getDisplaySystem()->getDisplayConfig().tileResolution;
+        //const Vector2i& ts = getDisplaySystem()->getDisplayConfig().tileResolution;
         eq::Event newEvt = event;
-        newEvt.pointer.x = event.pointer.x + myTile->offset[0] * ts[0];
-        newEvt.pointer.y = event.pointer.y + myTile->offset[1] * ts[1];
+        newEvt.pointer.x = event.pointer.x + myTile->offset[0];
+        newEvt.pointer.y = event.pointer.y + myTile->offset[1];
         return eq::Window::processEvent(newEvt);
     }
 
