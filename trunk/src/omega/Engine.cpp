@@ -293,30 +293,26 @@ void Engine::handleEvent(const Event& evt)
 
 	getSystemManager()->getScriptInterpreter()->handleEvent(evt);
 
-    if(!evt.isProcessed())
+	if( evt.getServiceType() == Service::Keyboard )
 	{
-		if( evt.getServiceType() == Service::Keyboard )
+		// Tab = toggle on-screen console.
+		if(evt.getSourceId() == 259 && evt.getType() == Event::Down) 
 		{
-			// Tab = toggle on-screen console.
-			if(evt.getSourceId() == 259 && evt.getType() == Event::Down) 
-			{
-				setConsoleEnabled(!isConsoleEnabled());
-			}
+			setConsoleEnabled(!isConsoleEnabled());
 		}
+	}
 
-		// Update pointers.
-		if(myDrawPointers)
+	// Update pointers.
+	if(myDrawPointers)
+	{
+		if(evt.getServiceType() == Service::Pointer) 
 		{
-			if(evt.getServiceType() == Service::Pointer) 
-			{
-				refreshPointer(evt.getSourceId(), evt);
+			refreshPointer(evt.getSourceId(), evt);
 		}
-		}
-
-		if(!evt.isProcessed()) 
-		{
-			myDefaultCamera->handleEvent(evt);
-		}
+	}
+	if(!evt.isProcessed()) 
+	{
+		myDefaultCamera->handleEvent(evt);
 	}
 }
 
