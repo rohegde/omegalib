@@ -214,6 +214,8 @@ void OmegaViewer::handleEvent(const Event& evt)
 	if(myAppDrawer->isVisible())
 	{
 		myAppDrawer->handleEvent(evt);
+		// When the app drawer is open, it consumes all events.
+		evt.setProcessed();
 	}
 	//if(evt.getServiceType() == Service::UI) 
 	//{

@@ -62,18 +62,7 @@ namespace omegaToolkit {
 
 		void setUIEventCommand(const String& command);
 
-        //! Gets the color used when widget debug mode is enabled.
-        Color getDebugColor() { return myDebugModeColor; }
-
-        //! Sets the color used when widget debug mode is enabled.
-        void setDebugColor( omega::Color value ) { myDebugModeColor = value; }
-
-        //! Returns true if debug mode is enabled for this widget.
-        bool isDebugModeEnabled() { return myDebugModeEnabled; }
-
-        //! Enabled or disabled debug mode for this widget.
-        //! When debug mode is enabled, the widget bounding box will be displayed.
-        void setDebugModeEnabled(bool value) { myDebugModeEnabled = value; }
+		Container* getContainer() { return myContainer; }
 
         //! Returns the widget name.
         const String& getName();
@@ -95,11 +84,6 @@ namespace omegaToolkit {
         //! Gets the widget position.
         float getRotation() { return myRotation; }
         //@}
-
-        //! sets the widget scale.
-        //void setScale(float value) { myScale = value; }
-        //! Gets the widget scale.
-        //float getScale() { return myScale; }
 
         //! Size constraints
         //@{
@@ -129,28 +113,17 @@ namespace omegaToolkit {
         bool getAutosize();
         //@}
 
+		//! Flags
+		//@{
         bool isVisible();
         void setVisible(bool value);
-		
 		//! When true, the widget is enabled, i.e. it can receive input events and takes part in navigation (can become active)
 		bool isEnabled() { return myEnabled; }
 		void setEnabled(bool value) { myEnabled = value; }
-
 		bool isActive() { return myActive; }
-		void setActive(bool value) 
-		{
-			myActive = value; 
-			//if(myActive != value)
-			{
-				if(value) activate();
-				else deactivate();
-			}
-			//ofmsg("Widget %1% active: %2%", %myId %value);
-		} 
+		void setActive(bool value);
+		//@}
 
-        //bool isUserMoveEnabled() { return myUserMoveEnabled; }
-        //void setUserMoveEnabled(bool value) { myUserMoveEnabled = value; }
-        
         //! Returns the unique Widget id.
         int getId();
         virtual void layout();
@@ -158,20 +131,21 @@ namespace omegaToolkit {
         void setStereo(bool value) { myStereo = value; }
         bool isStereo() { return myStereo; }
 
-		bool isGamepadInteractionEnabled();
-		bool isPointerInteractionEnabled();
-
+		//! Navigation
+		//@{
 		void setHorizontalNextWidget(Widget* value) { myHorizontalNextWidget = value; }
 		Widget* getHorizontalNextWidget() { return myHorizontalNextWidget; }
-
 		void setHorizontalPrevWidget(Widget* value) { myHorizontalPrevWidget = value; }
 		Widget* getHorizontalPrevWidget() { return myHorizontalPrevWidget; }
-
 		void setVerticalNextWidget(Widget* value) { myVerticalNextWidget = value; }
 		Widget* getVerticalNextWidget() { return myVerticalNextWidget; }
-
 		void setVerticalPrevWidget(Widget* value) { myVerticalPrevWidget = value; }
 		Widget* getVerticalPrevWidget() { return myVerticalPrevWidget; }
+		bool isNavigationEnabled() { return myNavigationEnabled; }
+		void setNavigationEnabled(bool value);
+		bool isGamepadInteractionEnabled();
+		bool isPointerInteractionEnabled();
+		//@}
 
         virtual void autosize(Renderer* r) {}
         virtual void updateSize(Renderer* r);
@@ -204,9 +178,19 @@ namespace omegaToolkit {
 		void setUserData(void* data) { myUserData = data; }
 		void* getUserData() { return myUserData; }
 
-		bool isNavigationEnabled() { return myNavigationEnabled; }
-		void setNavigationEnabled(bool value);
+		//! Debug mode
+		//@{
+        //! Gets the color used when widget debug mode is enabled.
+        Color getDebugColor() { return myDebugModeColor; }
+        //! Sets the color used when widget debug mode is enabled.
+        void setDebugColor( omega::Color value ) { myDebugModeColor = value; }
+        //! Returns true if debug mode is enabled for this widget.
+        bool isDebugModeEnabled() { return myDebugModeEnabled; }
+        //! Enabled or disabled debug mode for this widget.
+        //! When debug mode is enabled, the widget bounding box will be displayed.
+        void setDebugModeEnabled(bool value) { myDebugModeEnabled = value; }
 
+		//@}
     protected:
         bool simpleHitTest(const omega::Vector2f& point);
         static bool simpleHitTest(const omega::Vector2f& point, const omega::Vector2f& pos, const omega::Vector2f& size);
@@ -223,7 +207,6 @@ namespace omegaToolkit {
         //@}
 
         void setContainer(Container* value);
-		Container* getContainer() { return myContainer; }
         void dispatchUIEvent(const Event& evt);
 
 		// Menu Widget Sounds
@@ -485,6 +468,18 @@ namespace omegaToolkit {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     inline void Widget::setVisible(bool value) 
     { myVisible = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Widget::setActive(bool value) 
+	{
+		myActive = value; 
+		//if(myActive != value)
+		{
+			if(value) activate();
+			else deactivate();
+		}
+		//ofmsg("Widget %1% active: %2%", %myId %value);
+	} 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// NOTE: Widget::getSource is only used by UiScriptCommand. See if there is a way to get rid of this.

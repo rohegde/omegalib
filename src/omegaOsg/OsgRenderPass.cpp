@@ -76,7 +76,7 @@ void OsgRenderPass::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 {
-	//sInitLock.lock();
+	sInitLock.lock();
 	if(context.task == DrawContext::SceneDrawTask)
 	{
 		bool getstats = false;
@@ -145,5 +145,5 @@ void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 			myTriangleCountStat->addSample((float)mySceneView->getTriangleCount());
 		}
 	}
-	//sInitLock.unlock();
+	sInitLock.unlock();
 }
