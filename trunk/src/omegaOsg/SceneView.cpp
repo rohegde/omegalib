@@ -181,9 +181,9 @@ void SceneView::initialize()
 	_cullVisitor->setDatabaseRequestHandler(_databasePager);
 	// Disable default computing of near/far plane: Equalizer takes care of this.
 
-	_cullVisitor->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
+	//_cullVisitor->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
 
-	_cullVisitor->setCullingMode(osg::CullSettings::ENABLE_ALL_CULLING);
+	//_cullVisitor->setCullingMode(osg::CullSettings::ENABLE_ALL_CULLING);
 
     _cullVisitor->setStateGraph(_stateGraph.get());
     _cullVisitor->setRenderStage(_renderStage.get());

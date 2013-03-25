@@ -105,9 +105,14 @@ void DefaultSliderRenderable::drawContent(const DrawContext& context)
 	Vector2f sliderPos = myOwner->getSliderPosition();
 	Vector2f sliderSize = myOwner->getSliderSize();
 
-	painter->drawRectOutline(Vector2f::Zero(), myOwner->getSize(), Color::White);
+	Color col = sBaseColor;
+	if(myOwner->isActive())
+	{
+		col = Color::Lime;
+	}
+	painter->drawRectOutline(Vector2f::Zero(), myOwner->getSize(), col);
 	painter->drawRect(sliderPos, sliderSize, Color::Gray);
-	painter->drawRectOutline(sliderPos, sliderSize, Color::White);
+	painter->drawRectOutline(sliderPos, sliderSize, col);
 }
 
 

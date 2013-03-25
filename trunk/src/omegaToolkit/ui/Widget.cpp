@@ -91,7 +91,7 @@ Widget::~Widget()
 	{
 		dispose();
 	}
-	
+	ofmsg("~Widget %1%", %myName);
 	mysWidgets[myId] = NULL;
 }
 
@@ -145,7 +145,7 @@ void Widget::handleEvent(const Event& evt)
 	{
 		if(myActive)
 		{
-			if(evt.isButtonDown(Event::ButtonDown) || evt.isKeyDown(KC_DOWN))
+			if(evt.isButtonDown(Event::ButtonDown))
 			{
 				evt.setProcessed();
 				if(myVerticalNextWidget != NULL)
@@ -154,7 +154,7 @@ void Widget::handleEvent(const Event& evt)
 					playMenuScrollSound();
 				}
 			}
-			else if(evt.isButtonDown(Event::ButtonUp) || evt.isKeyDown(KC_UP))
+			else if(evt.isButtonDown(Event::ButtonUp))
 			{
 				evt.setProcessed();
 				if(myVerticalPrevWidget != NULL)
@@ -163,7 +163,7 @@ void Widget::handleEvent(const Event& evt)
 					playMenuScrollSound();
 				}
 			}
-			else if(evt.isButtonDown(Event::ButtonLeft) || evt.isKeyDown(KC_LEFT))
+			else if(evt.isButtonDown(Event::ButtonLeft))
 			{
 				evt.setProcessed();
 				if(myHorizontalPrevWidget != NULL)
@@ -172,7 +172,7 @@ void Widget::handleEvent(const Event& evt)
 					playMenuScrollSound();
 				}
 			}
-			else if(evt.isButtonDown(Event::ButtonRight)  || evt.isKeyDown(KC_RIGHT))
+			else if(evt.isButtonDown(Event::ButtonRight))
 			{
 				evt.setProcessed();
 				if(myHorizontalNextWidget != NULL)

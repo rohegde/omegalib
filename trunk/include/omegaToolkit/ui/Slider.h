@@ -64,6 +64,11 @@ namespace omegaToolkit { namespace ui {
 
 		int myValue;
 		int myTicks;
+
+		// Gamepad change
+		int myIncrement;
+		float myIncrementTimer;
+		float myIncrementTimeStep;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

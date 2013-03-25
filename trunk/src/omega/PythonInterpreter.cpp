@@ -383,6 +383,8 @@ void PythonInterpreter::clean()
 {
 	// destroy all global variables
 	eval("for uniquevar in [var for var in globals().copy() if var[0] != \"_\" and var != 'clearall']: del globals()[uniquevar]");
+	// Import omega module by default
+	eval("from omega import *");
 
 	// Use this line instead of the previous to get debugging info on variable deletion. Useful in 
 	// case of crashes to know which variable is currently being deleted.

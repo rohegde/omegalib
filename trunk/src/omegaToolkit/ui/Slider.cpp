@@ -36,9 +36,16 @@ Slider::Slider(Engine* srv):
 	myTicks(100),
 	myValue(0),
 	myDeferUpdate(false),
-	myValueChanged(false)
+	myValueChanged(false),
+	myPressed(false),
+	myIncrement(0)
 {
-	setMaximumHeight(22);
+	// Set the default size
+	setHeight(22);
+	setWidth(100);
+
+	setEnabled(true);
+	setNavigationEnabled(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,6 +57,7 @@ Slider::~Slider()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Slider::handleEvent(const Event& evt)
 {
+	Widget::handleEvent(evt);
 	if(isPointerInteractionEnabled())
 	{
 		Vector2f point = Vector2f(evt.getPosition().x(), evt.getPosition().y());
@@ -94,7 +102,7 @@ void Slider::handleEvent(const Event& evt)
 					{
 						Event e;
 						e.reset(Event::ChangeValue, Service::Ui, getId());
-						dispatchUIEvent(evt);
+						dispatchUIEvent(e);
 					}
 					else
 					{
@@ -107,6 +115,28 @@ void Slider::handleEvent(const Event& evt)
 	}
 	if(isGamepadInteractionEnabled())
 	{
+		if(evt.isButtonDown(Event::ButtonLeft))
+		{
+			evt.setProcessed();
+			myIncrement = -1;
+			// Full slider change takes 2 seonds
+			myIncrementTimeStep = 2.0 / myTicks;
+			// Force an immediate change
+			myIncrementTimer = myIncrementTimeStep;
+		}
+		else if(evt.isButtonDown(Event::ButtonRight))
+		{
+			evt.setProcessed();
+			myIncrement = 1;
+			// Full slider change takes 2 seonds
+			myIncrementTimeStep = 2.0 / myTicks;
+			// Force an immediate change
+			myIncrementTimer = myIncrementTimeStep;
+		}
+		else if(evt.getType() == Event::Up)
+		{
+			myIncrement = 0;
+		}
 	}
 }
 
@@ -114,6 +144,27 @@ void Slider::handleEvent(const Event& evt)
 void Slider::update(const omega::UpdateContext& context) 
 {
 	Widget::update(context);
+	if(myIncrement != 0)
+	{
+		myIncrementTimer += context.dt;
+		if(myIncrementTimer > myIncrementTimeStep)
+		{
+			myIncrementTimer = 0;
+			myValue += myIncrement;
+			if(myValue < 0) myValue = 0;
+			else if(myValue >= myTicks) myValue = myTicks - 1;
+			if(!myDeferUpdate)
+			{
+				Event e;
+				e.reset(Event::ChangeValue, Service::Ui, getId());
+				dispatchUIEvent(e);
+			}
+			else
+			{
+				myValueChanged = true;
+			}
+		}
+	}
 	//float slSize = mySize[0] / (float(myMaxValue - myMinValue));
 	//mySliderSize = slSize > 20 ? slSize : 20;
 };
@@ -131,7 +182,7 @@ Vector2f Slider::getSliderPosition()
 	Vector2f position;
 	Vector2f size = getSliderSize();
 
-	position[0] = (myValue * mySize[0] / (myTicks - 1)) - size[0] / 2;
+	position[0] = (myValue * (mySize[0] - 10) / (myTicks - 1)); // - size[0] / 2;
 	position[1] = -(size[1] - mySize[1]) / 2;
 	return position;
 }
