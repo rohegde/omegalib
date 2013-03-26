@@ -239,14 +239,14 @@ bool DefaultModelLoader::load(ModelAsset* asset)
 			}
 			else
 			{
-				ofwarn("loading failed: %1%", %assetPath);
-				// NEED TO CLEAN UP ASSET!
+				//ofwarn("loading failed: %1%", %assetPath);
+				return false;
 			}
 		}
 		else
 		{
-			ofwarn("could not find file: %1%", %filePath);
-			// NEED TO CLEAN UP ASSET!
+			//ofwarn("could not find file: %1%", %filePath);
+			return false;
 		}
 	}
 	return true;
