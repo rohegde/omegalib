@@ -20,7 +20,7 @@ This section explains how to build omegalib on Windows. The basic procedure and 
  * (Optional) Vtk [http://www.vtk.org/VTK/resources/software.html Download here]. You need this only if you want to build *omegaVtk* and add vtk support.
  * (Optional, Recommended) A python distribution (Tested with the standard one, [http://www.python.org/getit/ Download here]
   * *NOTE:* Altough python is not required for building omegalib, a few demo applications included with it won't work without python support. It is recommended to build omegalib with python support enabled.
-  * *IMPORTANT:* omegalib works with *Python 2.7*. As of version 2.1, Trying to build it against Python 3 will fails.
+  * *IMPORTANT:* omegalib works with *Python 2.7*. As of version 3.6, Trying to build it against Python 3 will fail.
   
 === Step 1: download the code ===
  * Follow the instruction of your svn client of choice and checkout:
