@@ -175,17 +175,13 @@ public:
     //EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 public:
     PipeImpl(eq::Node* parent);
-    Renderer* getClient();
     GpuContext* getGpuContext() { return myGpuContext.get(); }
 
 protected:
     virtual ~PipeImpl();
     virtual bool configInit(const uint128_t& initID);
-    virtual void frameStart( const uint128_t& frameID, const uint32_t frameNumber );
-    virtual void frameFinish( const uint128_t& frameID, const uint32_t frameNumber );
 private:
 	NodeImpl* myNode;
-    omicron::Ref<Renderer> myClient;
     omicron::Ref<GpuManager> myGpu;
     omicron::Ref<GpuContext> myGpuContext;
 };
@@ -205,12 +201,17 @@ public:
 	EqualizerDisplaySystem* getDisplaySystem() { return (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem(); }
 
 	DisplayTileConfig* getTileConfig() { return myTile; }
+    Renderer* getRenderer();
 
 protected:
     virtual bool configInit(const uint128_t& initID);
+    virtual void frameStart( const uint128_t& frameID, const uint32_t frameNumber );
+    virtual void frameFinish( const uint128_t& frameID, const uint32_t frameNumber );
 	bool processEvent(const eq::Event& event);
 
 private:
+	PipeImpl* myPipe;
+    omicron::Ref<Renderer> myRenderer;
     DisplayTileConfig* myTile;
 };
 
@@ -237,7 +238,7 @@ protected:
     virtual void frameViewFinish(const uint128_t& spin);
 	//virtual void frameViewStart( const co::base::uint128_t& frameID );
 
-    omega::Renderer* getClient();
+    omega::Renderer* getRenderer();
 
 	void setupStencil(int gliWindowWidth, int gliWindowHeight);
 

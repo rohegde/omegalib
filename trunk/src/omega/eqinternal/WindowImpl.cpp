@@ -36,7 +36,7 @@ using namespace std;
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 WindowImpl::WindowImpl(eq::Pipe* parent): 
-    eq::Window(parent)
+    eq::Window(parent), myPipe((PipeImpl*)parent)
 	//myIndex(Vector2i::Zero())
 {}
 
@@ -60,6 +60,15 @@ bool WindowImpl::configInit(const uint128_t& initID)
 	{
 		myTile = ds->getDisplayConfig().tiles[name];
 	}
+
+	ApplicationBase* app = SystemManager::instance()->getApplication();
+	if(app)
+	{
+		myRenderer = new Renderer(Engine::instance());
+		myRenderer->setGpuContext(myPipe->getGpuContext());
+		myRenderer->initialize();
+	}
+	else return false;
 
 	// Serialize window init execution since we are tinkering with x cursors on linux inside there.
 	sInitLock.lock();
@@ -88,3 +97,41 @@ bool WindowImpl::processEvent(const eq::Event& event)
     // Other events: just send to application node.
     return eq::Window::processEvent(event);
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void WindowImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber )
+{
+	eq::Window::frameStart(frameID, frameNumber);
+
+#ifdef OMEGA_DEBUG_FLOW
+	ofmsg("WindowImpl::frameStart %1%", %frameNumber);
+#endif
+
+	// Activate the glew context for this pipe, so initialize and update client
+	// methods can handle openGL buffers associated with this Pipe.
+	// NOTE: getting the glew context from the first window is correct since all
+	// windows attached to the same pape share the same Glew (and OpenGL) contexts.
+	const GLEWContext* glewc = glewGetContext();
+	glewSetContext(glewc);
+
+	myRenderer->startFrame(FrameInfo(frameID.low(), myPipe->getGpuContext()));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void WindowImpl::frameFinish( const uint128_t& frameID, const uint32_t frameNumber )
+{
+	eq::Window::frameFinish(frameID, frameNumber);
+
+#ifdef OMEGA_DEBUG_FLOW
+	ofmsg("WindowImpl::frameFinish %1%", %frameNumber);
+#endif
+
+	myRenderer->finishFrame(FrameInfo(frameID.low(), myPipe->getGpuContext()));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Renderer* WindowImpl::getRenderer() 
+{ 
+	return myRenderer.get(); 
+}
+

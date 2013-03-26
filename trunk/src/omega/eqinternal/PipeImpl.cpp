@@ -35,13 +35,9 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PipeImpl::PipeImpl(eq::Node* parent): 
-	eq::Pipe(parent), myGpu(NULL), myClient(NULL), myNode((NodeImpl*)parent)
+	eq::Pipe(parent), myGpu(NULL), myNode((NodeImpl*)parent)
 {
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Renderer* PipeImpl::getClient() 
-{ return myClient.get(); }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PipeImpl::~PipeImpl() 
@@ -51,49 +47,8 @@ PipeImpl::~PipeImpl()
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool PipeImpl::configInit(const uint128_t& initID)
 {
-	ApplicationBase* app = SystemManager::instance()->getApplication();
-	if(app)
-	{
-		myClient = new Renderer(Engine::instance());
-		myGpu = new GpuManager();
-		myGpu->initialize();
-		myGpuContext = new GpuContext(myGpu.get());
-		myClient->setGpuContext(myGpuContext.get());
-		myClient->initialize();
-
-		return Pipe::configInit(initID);
-	}
-	// no application: fail initialization.
-	return false;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber )
-{
-	eq::Pipe::frameStart(frameID, frameNumber);
-
-#ifdef OMEGA_DEBUG_FLOW
-	ofmsg("PipeImpl::frameStart %1%", %frameNumber);
-#endif
-
-	// Activate the glew context for this pipe, so initialize and update client
-	// methods can handle openGL buffers associated with this Pipe.
-	// NOTE: getting the glew context from the first window is correct since all
-	// windows attached to the same pape share the same Glew (and OpenGL) contexts.
-	const GLEWContext* glewc = getWindows()[0]->glewGetContext();
-	glewSetContext(glewc);
-
-	myClient->startFrame(FrameInfo(frameID.low(), getGpuContext()));
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void PipeImpl::frameFinish( const uint128_t& frameID, const uint32_t frameNumber )
-{
-	eq::Pipe::frameFinish(frameID, frameNumber);
-
-#ifdef OMEGA_DEBUG_FLOW
-	ofmsg("PipeImpl::frameFinish %1%", %frameNumber);
-#endif
-
-	myClient->finishFrame(FrameInfo(frameID.low(), getGpuContext()));
+	myGpu = new GpuManager();
+	myGpu->initialize();
+	myGpuContext = new GpuContext(myGpu.get());
+	return Pipe::configInit(initID);
 }
