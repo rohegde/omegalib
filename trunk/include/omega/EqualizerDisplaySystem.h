@@ -81,7 +81,7 @@ namespace omega
 		//! Returns a view ray given a global (canvas) pointer position in pixel coordinates
 		virtual Ray getViewRay(Vector2i position);
 		//! Returns a view ray given a local pointer positon and a tile index.
-		Ray	getViewRay(Vector2i position, int tileX, int tileY);
+		Ray	getViewRay(Vector2i position, DisplayTileConfig* dtc);
 		//! Computes a view ray from a pointer or wand event. Returns true if the ray has been generated succesfully, 
 		//! false otherwise (i.e. because the event is not a wand or pointer event)
 		virtual bool getViewRayFromEvent(const Event& evt, Ray& ray, bool normalizedPointerCoords = false);
