@@ -1,15 +1,15 @@
 #summary Building omegalib
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.2 - 25 January 2013</p>
+<p>*Last revision:* ver. 3.6 - 26 March 2013</p>
 
 On most platforms, omegalib is distributed as a source-only project. Users are responsible for creating binaries for their operating system and architecture. The build process is kept as simple as possible and should require very little configuration effort by the user. Omegalib can build out-of-the-box and has no external dependencies, unless the user wants to activate advanced functionalities like vtk support and Python scripting.
 
 == Operating system support ==
 This is the current supported status of omegalib:
- * *Windows XP/Vista/7:* VS2010 32bit builds and is regularly tested. VS2008 32bit deprecated and may not work. 64bit builds not tested regularly.
- * *Linux:* 64bit builds and is regularly tested (SUSE). 32bit should build but is tested less often (Ubuntu).
- * *OSX, Intel:* 64bit currently not supported (builds but fails to link), 32bit not supported
+ * *Windows XP/Vista/7:* VS2010 32bit builds and is regularly tested. VS2008 32bit deprecated and may not work. 64bit builds should work but are not tested regularly.
+ * *Linux:* 64bit builds and is regularly tested (SUSE). 32bit tested and running on Ubuntu.
+ * *OSX, Intel:* 32bit works (experimental), 64bit currently not supported
 
 == Building on Windows ==
 This section explains how to build omegalib on Windows. The basic procedure and requirements are similar for all supported operating systems, so you can use this as a general guideline.
