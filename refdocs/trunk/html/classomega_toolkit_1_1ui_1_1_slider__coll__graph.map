@@ -1,5 +1,5 @@
 <map id="omegaToolkit::ui::Slider" name="omegaToolkit::ui::Slider">
-<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="341,108,483,132"/>
-<area shape="rect" id="node4" href="$classomega_1_1_renderable_factory.html" title="Base class for objects that can create renderables." alt="" coords="5,5,160,29"/>
-<area shape="rect" id="node6" href="$classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="185,5,321,29"/>
+<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="238,113,380,137"/>
+<area shape="rect" id="node4" href="$classomega_1_1_renderable_factory.html" title="Base class for objects that can create renderables." alt="" coords="216,5,371,29"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="395,5,532,29"/>
 </map>

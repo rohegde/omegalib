@@ -1,0 +1,4 @@
+<map id="CustomDepthPeelingPass" name="CustomDepthPeelingPass">
+<area shape="rect" id="node2" href="$classvtk_render_pass.html" title="vtkRenderPass" alt="" coords="470,6,565,30"/>
+<area shape="rect" id="node14" href="$classvtk_depth_peeling_pass_layer_list.html" title="vtkDepthPeelingPassLayerList" alt="" coords="435,444,600,468"/>
+</map>

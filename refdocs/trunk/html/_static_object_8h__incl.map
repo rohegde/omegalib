@@ -1,13 +1,14 @@
 <map id="D:/Workspace/omegalib/core/include/cyclops/StaticObject.h" name="D:/Workspace/omegalib/core/include/cyclops/StaticObject.h">
-<area shape="rect" id="node3" href="$_entity_8h.html" title="cyclops/Entity.h" alt="" coords="372,259,471,283"/>
-<area shape="rect" id="node28" href="$_scene_manager_8h.html" title="cyclops/SceneManager.h" alt="" coords="691,101,833,125"/>
-<area shape="rect" id="node5" href="$cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="147,475,245,499"/>
-<area shape="rect" id="node7" href="$_effect_node_8h.html" title="EffectNode.h" alt="" coords="246,331,332,355"/>
-<area shape="rect" id="node10" href="$_uniforms_8h.html" title="Uniforms.h" alt="" coords="347,403,421,427"/>
-<area shape="rect" id="node13" href="$omega_8h.html" title="omega.h" alt="" coords="460,475,524,499"/>
-<area shape="rect" id="node15" href="$omega_osg_8h.html" title="omegaOsg.h" alt="" coords="309,475,392,499"/>
-<area shape="rect" id="node17" href="$omega_toolkit_8h.html" title="omegaToolkit.h" alt="" coords="625,475,719,499"/>
-<area shape="rect" id="node31" href="$_skybox_8h.html" title="Skybox.h" alt="" coords="496,403,563,427"/>
-<area shape="rect" id="node37" href="$_shapes_8h.html" title="Shapes.h" alt="" coords="460,180,527,204"/>
-<area shape="rect" id="node41" href="$_light_8h.html" title="Light.h" alt="" coords="587,403,641,427"/>
+<area shape="rect" id="node3" href="$_entity_8h.html" title="cyclops/Entity.h" alt="" coords="364,331,463,355"/>
+<area shape="rect" id="node28" href="$_scene_manager_8h.html" title="cyclops/SceneManager.h" alt="" coords="699,101,841,125"/>
+<area shape="rect" id="node5" href="$cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="108,547,207,571"/>
+<area shape="rect" id="node7" href="$_effect_node_8h.html" title="EffectNode.h" alt="" coords="325,403,411,427"/>
+<area shape="rect" id="node10" href="$_uniforms_8h.html" title="Uniforms.h" alt="" coords="448,475,523,499"/>
+<area shape="rect" id="node13" href="$omega_8h.html" title="omega.h" alt="" coords="800,547,864,571"/>
+<area shape="rect" id="node15" href="$omega_osg_8h.html" title="omegaOsg.h" alt="" coords="319,547,401,571"/>
+<area shape="rect" id="node17" href="$omega_toolkit_8h.html" title="omegaToolkit.h" alt="" coords="583,547,677,571"/>
+<area shape="rect" id="node31" href="$_skybox_8h.html" title="Skybox.h" alt="" coords="597,475,664,499"/>
+<area shape="rect" id="node37" href="$_shapes_8h.html" title="Shapes.h" alt="" coords="383,259,449,283"/>
+<area shape="rect" id="node41" href="$_light_8h.html" title="Light.h" alt="" coords="739,475,793,499"/>
+<area shape="rect" id="node49" href="$_model_loader_8h.html" title="ModelLoader.h" alt="" coords="453,180,547,204"/>
 </map>

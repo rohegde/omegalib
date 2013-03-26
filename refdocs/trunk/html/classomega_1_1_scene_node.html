@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.0</span>
+   &#160;<span id="projectnumber">3.6</span>
    </div>
   </td>
  </tr>
@@ -52,6 +52,7 @@
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classomega_1_1_scene_node-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">omega::SceneNode Class Reference</div>  </div>
@@ -69,7 +70,7 @@
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classomega_1_1_scene_node__inherit__graph.png" border="0" usemap="#omega_1_1_scene_node_inherit__map" alt="Inheritance graph"/></div>
 <map name="omega_1_1_scene_node_inherit__map" id="omega_1_1_scene_node_inherit__map">
-<area shape="rect" id="node7" href="classcyclops_1_1_entity.html" title="PYAPI." alt="" coords="499,149,592,173"/><area shape="rect" id="node23" href="classcyclops_1_1_light.html" title="cyclops::Light" alt="" coords="501,197,589,221"/><area shape="rect" id="node25" href="classomega_1_1_camera.html" title="omega::Camera" alt="" coords="496,245,595,269"/><area shape="rect" id="node2" href="classomega_1_1_node.html" title="PYAPI Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="195,197,282,221"/><area shape="rect" id="node4" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,197,147,221"/><area shape="rect" id="node9" href="classcyclops_1_1_animated_object.html" title="#PYAPI Represents an object with embedded animations." alt="" coords="643,5,786,29"/><area shape="rect" id="node11" href="classcyclops_1_1_box_shape.html" title="cyclops::BoxShape" alt="" coords="658,53,771,77"/><area shape="rect" id="node13" href="classcyclops_1_1_cylinder_shape.html" title="cyclops::CylinderShape" alt="" coords="647,101,782,125"/><area shape="rect" id="node15" href="classcyclops_1_1_line_set.html" title="cyclops::LineSet" alt="" coords="665,149,765,173"/><area shape="rect" id="node17" href="classcyclops_1_1_plane_shape.html" title="cyclops::PlaneShape" alt="" coords="654,197,775,221"/><area shape="rect" id="node19" href="classcyclops_1_1_sphere_shape.html" title="PYAPI." alt="" coords="650,245,779,269"/><area shape="rect" id="node21" href="classcyclops_1_1_static_object.html" title="PYAPI." alt="" coords="653,293,777,317"/></map>
+<area shape="rect" id="node7" href="classcyclops_1_1_entity.html" title="Encapsulates an osg node (or nodes) and offers a few additional functionality for them..." alt="" coords="499,149,592,173"/><area shape="rect" id="node23" href="classcyclops_1_1_light.html" title="cyclops::Light" alt="" coords="501,197,589,221"/><area shape="rect" id="node25" href="classomega_1_1_camera.html" title="omega::Camera" alt="" coords="496,245,595,269"/><area shape="rect" id="node2" href="classomega_1_1_node.html" title="PYAPI Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="195,197,282,221"/><area shape="rect" id="node4" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,197,147,221"/><area shape="rect" id="node9" href="classcyclops_1_1_animated_object.html" title="#PYAPI Represents an object with embedded animations." alt="" coords="643,5,786,29"/><area shape="rect" id="node11" href="classcyclops_1_1_box_shape.html" title="cyclops::BoxShape" alt="" coords="658,53,771,77"/><area shape="rect" id="node13" href="classcyclops_1_1_cylinder_shape.html" title="cyclops::CylinderShape" alt="" coords="647,101,782,125"/><area shape="rect" id="node15" href="classcyclops_1_1_line_set.html" title="cyclops::LineSet" alt="" coords="665,149,765,173"/><area shape="rect" id="node17" href="classcyclops_1_1_plane_shape.html" title="cyclops::PlaneShape" alt="" coords="654,197,775,221"/><area shape="rect" id="node19" href="classcyclops_1_1_sphere_shape.html" title="PYAPI." alt="" coords="650,245,779,269"/><area shape="rect" id="node21" href="classcyclops_1_1_static_object.html" title="PYAPI." alt="" coords="653,293,777,317"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for omega::SceneNode:</div>
@@ -102,8 +103,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aae5281702465aa6dfe8cd805a75d937b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_engine.html">Engine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#aae5281702465aa6dfe8cd805a75d937b">getEngine</a> ()</td></tr>
 <tr class="memitem:aff1cf1db475f27e14065e8a9f209b97b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#aff1cf1db475f27e14065e8a9f209b97b">hit</a> (const <a class="el" href="classomicron_1_1_ray.html">Ray</a> &amp;ray, <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> *hitPoint, <a class="el" href="classomega_1_1_scene_node.html#ad5215802413a8141d732b05718bca18f">HitType</a> <a class="el" href="glew_8h.html#a8d78e2e8a676abd547a596dd84811285">type</a>)</td></tr>
 <tr class="memdesc:aff1cf1db475f27e14065e8a9f209b97b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hit test.  <a href="#aff1cf1db475f27e14065e8a9f209b97b"></a><br/></td></tr>
+<tr class="memitem:a3535e482a2e8815960b658ebc19c36f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a3535e482a2e8815960b658ebc19c36f3">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
+<tr class="memdesc:a3535e482a2e8815960b658ebc19c36f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked the update function for all node components on this node and down in the hierarchy.  <a href="#a3535e482a2e8815960b658ebc19c36f3"></a><br/></td></tr>
 <tr class="memitem:aa01f6997768b5007a99630353f114aa6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#aa01f6997768b5007a99630353f114aa6">update</a> (bool updateChildren, bool parentHasChanged)</td></tr>
-<tr class="memdesc:aa01f6997768b5007a99630353f114aa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal method to update the <a class="el" href="classomega_1_1_node.html" title="PYAPI Class representing a general-purpose node in an articulated scene graph.">Node</a>.  <a href="#aa01f6997768b5007a99630353f114aa6"></a><br/></td></tr>
 <tr class="memitem:a5f10a96855a630c9c69cf7faacdae6c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a5f10a96855a630c9c69cf7faacdae6c0">draw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
 <tr class="memitem:ad60a715dd3ac2a892ddcdfa40dcb95a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#ad60a715dd3ac2a892ddcdfa40dcb95a0">setTag</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;<a class="el" href="glew_8h.html#a6a4f8a1a444e9080b297963b3db29fe0">value</a>)</td></tr>
 <tr class="memitem:af9faa5d8d317025c22c9b4e07e7c45c4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#af9faa5d8d317025c22c9b4e07e7c45c4">getTag</a> ()</td></tr>
@@ -264,15 +266,19 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ae17ac6aba1d3a518d02ae379d3273051"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1_scene_node.html">SceneNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#ae17ac6aba1d3a518d02ae379d3273051">create</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_types_classomega_1_1_node"><td colspan="2" onclick="javascript:toggleInherit('pro_types_classomega_1_1_node')"><img src="closed.png" alt="-"/>&nbsp;Protected Types inherited from <a class="el" href="classomega_1_1_node.html">omega::Node</a></td></tr>
-<tr class="memitem:ab0850c08e1d9cafb238135f24185420d inherit pro_types_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">typedef std::set&lt; <a class="el" href="classomega_1_1_node.html">Node</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#ab0850c08e1d9cafb238135f24185420d">ChildUpdateSet</a></td></tr>
+<tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a12f17517af2a229db757e7e2d072f63a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a12f17517af2a229db757e7e2d072f63a">updateTraversal</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
 <tr class="inherit_header pro_methods_classomega_1_1_node"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classomega_1_1_node')"><img src="closed.png" alt="-"/>&nbsp;Protected Member Functions inherited from <a class="el" href="classomega_1_1_node.html">omega::Node</a></td></tr>
 <tr class="memitem:ab5f0786bcb59591c528efb0b776797fc inherit pro_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#ab5f0786bcb59591c528efb0b776797fc">setParent</a> (<a class="el" href="classomega_1_1_node.html">Node</a> *parent)</td></tr>
 <tr class="memdesc:ab5f0786bcb59591c528efb0b776797fc inherit pro_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only available internally - notification of parent.  <a href="#ab5f0786bcb59591c528efb0b776797fc"></a><br/></td></tr>
 <tr class="memitem:a96d6e9970e1330f0c7b3e990ea5b3556 inherit pro_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a96d6e9970e1330f0c7b3e990ea5b3556">updateFromParent</a> (<a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>) const </td></tr>
 <tr class="memdesc:a96d6e9970e1330f0c7b3e990ea5b3556 inherit pro_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class-specific implementation of updateFromParent.  <a href="#a96d6e9970e1330f0c7b3e990ea5b3556"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_types_classomega_1_1_node"><td colspan="2" onclick="javascript:toggleInherit('pro_types_classomega_1_1_node')"><img src="closed.png" alt="-"/>&nbsp;Protected Types inherited from <a class="el" href="classomega_1_1_node.html">omega::Node</a></td></tr>
+<tr class="memitem:ab0850c08e1d9cafb238135f24185420d inherit pro_types_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">typedef std::set&lt; <a class="el" href="classomega_1_1_node.html">Node</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#ab0850c08e1d9cafb238135f24185420d">ChildUpdateSet</a></td></tr>
 <tr class="inherit_header pro_attribs_classomega_1_1_node"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classomega_1_1_node')"><img src="closed.png" alt="-"/>&nbsp;Protected Attributes inherited from <a class="el" href="classomega_1_1_node.html">omega::Node</a></td></tr>
 <tr class="memitem:a57b356ddb1064f676c943fecf0a3aa8a inherit pro_attribs_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a57b356ddb1064f676c943fecf0a3aa8a">mParent</a></td></tr>
 <tr class="memdesc:a57b356ddb1064f676c943fecf0a3aa8a inherit pro_attribs_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Children begin iterator.  <a href="#a57b356ddb1064f676c943fecf0a3aa8a"></a><br/></td></tr>
@@ -1031,6 +1037,26 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a3535e482a2e8815960b658ebc19c36f3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> SceneNode::update </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>context</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Invoked the update function for all node components on this node and down in the hierarchy. </p>
+
+<p>Reimplemented in <a class="el" href="classcyclops_1_1_animated_object.html#ad326feb637e6ea5201a72b16c59e08d8">cyclops::AnimatedObject</a>, and <a class="el" href="classcyclops_1_1_entity.html#aed3b6c33304ff83f95ae402f86922456">cyclops::Entity</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="aa01f6997768b5007a99630353f114aa6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1062,18 +1088,35 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Internal method to update the <a class="el" href="classomega_1_1_node.html" title="PYAPI Class representing a general-purpose node in an articulated scene graph.">Node</a>. </p>
-<dl class="section note"><dt>Note</dt><dd>Updates this node and any relevant children to incorporate transforms etc. Don't call this yourself unless you are writing a SceneManager implementation. </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">updateChildren</td><td>If true, the update cascades down to all children. Specify false if you wish to update children separately, e.g. because of a more selective SceneManager implementation. </td></tr>
-    <tr><td class="paramname">parentHasChanged</td><td>This flag indicates that the parent xform has changed, so the child should retrieve the parent's xform and combine it with its own even if it hasn't changed itself. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Updates all transforms from this node down in the hierarchy. </p>
 
 <p>Reimplemented from <a class="el" href="classomega_1_1_node.html#ae3541d1bf654e3d7788aae3021adba64">omega::Node</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a12f17517af2a229db757e7e2d072f63a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> SceneNode::updateTraversal </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>context</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classomega_1_1_camera.html#ac9252a263e50acdb0050cc887a5752f9">omega::Camera</a>.</p>
 
 </div>
 </div>

@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.0</span>
+   &#160;<span id="projectnumber">3.6</span>
    </div>
   </td>
  </tr>
@@ -56,6 +56,9 @@
 </div><!--header-->
 <div class="contents">
 
+<p>Encapsulates an OpenSceneGraph stateset and offers a quick interface to a few commonly used settings.  
+ <a href="classcyclops_1_1_material.html#details">More...</a></p>
+
 <p><code>#include &lt;EffectNode.h&gt;</code></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for cyclops::Material:</div>
@@ -85,6 +88,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2c01b55190027c735bade7d520ee38a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_material.html#a2c01b55190027c735bade7d520ee38a3">setGloss</a> (float <a class="el" href="glew_8h.html#a6a4f8a1a444e9080b297963b3db29fe0">value</a>)</td></tr>
 <tr class="memitem:a2d61f49cab359c06185ac4e3fce85050"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_material.html#a2d61f49cab359c06185ac4e3fce85050">setTransparent</a> (bool <a class="el" href="glew_8h.html#a6a4f8a1a444e9080b297963b3db29fe0">value</a>)</td></tr>
 <tr class="memitem:ae146db43002d10cf046c4dc16e62cc98"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_material.html#ae146db43002d10cf046c4dc16e62cc98">isTransparent</a> ()</td></tr>
+<tr class="memitem:a6cb104d7beddd6254713df81d0465e79"><td class="memItemLeft" align="right" valign="top">osg::StateSet *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_material.html#a6cb104d7beddd6254713df81d0465e79">getStateSet</a> ()</td></tr>
 <tr class="inherit_header pub_methods_classcyclops_1_1_uniforms"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classcyclops_1_1_uniforms')"><img src="closed.png" alt="-"/>&nbsp;Public Member Functions inherited from <a class="el" href="classcyclops_1_1_uniforms.html">cyclops::Uniforms</a></td></tr>
 <tr class="memitem:ac4c4ae7486adfceacbc926d10abcfacd inherit pub_methods_classcyclops_1_1_uniforms"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_uniforms.html#ac4c4ae7486adfceacbc926d10abcfacd">Uniforms</a> (osg::StateSet *stateset)</td></tr>
 <tr class="memitem:a27212fdb84e27d2e61bb57d89b902e1f inherit pub_methods_classcyclops_1_1_uniforms"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_uniforms.html#a27212fdb84e27d2e61bb57d89b902e1f">~Uniforms</a> ()</td></tr>
@@ -106,7 +110,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_static_attribs_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&nbsp;Static Protected Attributes inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a436dafe8b6a5c62b5f111b644c6ed4b0 inherit pro_static_attribs_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="classomicron_1_1_reference_type.html">ReferenceType</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a436dafe8b6a5c62b5f111b644c6ed4b0">mysObjList</a></td></tr>
 </table>
-<h2>Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p>Encapsulates an OpenSceneGraph stateset and offers a quick interface to a few commonly used settings. </p>
+</div><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aedd399abf2b8e73acb65b3e4529a2731"></a>
 <div class="memitem">
 <div class="memproto">
@@ -124,6 +130,29 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2>Member Function Documentation</h2>
+<a class="anchor" id="a6cb104d7beddd6254713df81d0465e79"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">osg::StateSet* cyclops::Material::getStateSet </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="ae146db43002d10cf046c4dc16e62cc98"></a>
 <div class="memitem">
 <div class="memproto">

@@ -1,19 +1,19 @@
 <map id="D:/Workspace/omegalib/core/include/cyclops/Uniforms.h" name="D:/Workspace/omegalib/core/include/cyclops/Uniforms.h">
-<area shape="rect" id="node3" href="$cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="1053,101,1152,125"/>
-<area shape="rect" id="node27" href="$omega_8h.html" title="omega.h" alt="" coords="715,101,779,125"/>
-<area shape="rect" id="node61" href="$omega_osg_8h.html" title="omegaOsg.h" alt="" coords="1280,101,1363,125"/>
-<area shape="rect" id="node63" href="$omega_toolkit_8h.html" title="omegaToolkit.h" alt="" coords="1387,101,1481,125"/>
-<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="730,389,837,413"/>
-<area shape="rect" id="node9" href="$_application_8h.html" title="omega/Application.h" alt="" coords="1043,173,1163,197"/>
-<area shape="rect" id="node12" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="759,245,901,269"/>
-<area shape="rect" id="node15" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="684,317,793,341"/>
-<area shape="rect" id="node19" href="$_shared_data_services_8h.html" title="omega/SharedDataServices.h" alt="" coords="1028,245,1193,269"/>
-<area shape="rect" id="node22" href="$_event_sharing_module_8h.html" title="omega/EventSharingModule.h" alt="" coords="1269,245,1435,269"/>
-<area shape="rect" id="node32" href="$_async_task_8h.html" title="omega/AsyncTask.h" alt="" coords="565,245,683,269"/>
-<area shape="rect" id="node36" href="$_display_system_8h.html" title="omega/DisplaySystem.h" alt="" coords="810,173,947,197"/>
-<area shape="rect" id="node41" href="$_gpu_buffer_8h.html" title="omega/GpuBuffer.h" alt="" coords="217,245,335,269"/>
-<area shape="rect" id="node44" href="$_gpu_program_8h.html" title="omega/GpuProgram.h" alt="" coords="463,317,589,341"/>
-<area shape="rect" id="node47" href="$_gpu_manager_8h.html" title="omega/GpuManager.h" alt="" coords="359,245,488,269"/>
-<area shape="rect" id="node52" href="$_mission_control_8h.html" title="omega/MissionControl.h" alt="" coords="5,317,141,341"/>
-<area shape="rect" id="node55" href="$_render_target_8h.html" title="omega/RenderTarget.h" alt="" coords="309,173,443,197"/>
+<area shape="rect" id="node3" href="$cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="955,101,1053,125"/>
+<area shape="rect" id="node24" href="$omega_8h.html" title="omega.h" alt="" coords="748,101,812,125"/>
+<area shape="rect" id="node61" href="$omega_osg_8h.html" title="omegaOsg.h" alt="" coords="1181,101,1264,125"/>
+<area shape="rect" id="node63" href="$omega_toolkit_8h.html" title="omegaToolkit.h" alt="" coords="1289,101,1383,125"/>
+<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="595,389,703,413"/>
+<area shape="rect" id="node9" href="$_application_8h.html" title="omega/Application.h" alt="" coords="944,173,1064,197"/>
+<area shape="rect" id="node12" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="531,245,673,269"/>
+<area shape="rect" id="node15" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="847,317,956,341"/>
+<area shape="rect" id="node19" href="$_event_sharing_module_8h.html" title="omega/EventSharingModule.h" alt="" coords="1046,245,1212,269"/>
+<area shape="rect" id="node29" href="$_async_task_8h.html" title="omega/AsyncTask.h" alt="" coords="750,245,868,269"/>
+<area shape="rect" id="node33" href="$_camera_controller_8h.html" title="omega/CameraController.h" alt="" coords="565,173,717,197"/>
+<area shape="rect" id="node37" href="$_display_system_8h.html" title="omega/DisplaySystem.h" alt="" coords="403,173,540,197"/>
+<area shape="rect" id="node42" href="$_gpu_buffer_8h.html" title="omega/GpuBuffer.h" alt="" coords="5,245,123,269"/>
+<area shape="rect" id="node45" href="$_gpu_program_8h.html" title="omega/GpuProgram.h" alt="" coords="145,317,271,341"/>
+<area shape="rect" id="node48" href="$_gpu_manager_8h.html" title="omega/GpuManager.h" alt="" coords="206,245,335,269"/>
+<area shape="rect" id="node53" href="$_mission_control_8h.html" title="omega/MissionControl.h" alt="" coords="634,317,771,341"/>
+<area shape="rect" id="node56" href="$_render_target_8h.html" title="omega/RenderTarget.h" alt="" coords="245,173,379,197"/>
 </map>

@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.0</span>
+   &#160;<span id="projectnumber">3.6</span>
    </div>
   </td>
  </tr>
@@ -59,9 +59,6 @@
 <div class="title">omega::Engine Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>PYAPI.  
- <a href="classomega_1_1_engine.html#details">More...</a></p>
 
 <p><code>#include &lt;Engine.h&gt;</code></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -146,6 +143,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3edd8a0422f09662fa725a4477f8d905"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_sound_manager.html">SoundManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine.html#a3edd8a0422f09662fa725a4477f8d905">getSoundManager</a> ()</td></tr>
 <tr class="memdesc:a3edd8a0422f09662fa725a4477f8d905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sound management.  <a href="#a3edd8a0422f09662fa725a4477f8d905"></a><br/></td></tr>
 <tr class="memitem:a5ac65d4b018d96bb371a6d961af04fe0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_sound_environment.html">SoundEnvironment</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine.html#a5ac65d4b018d96bb371a6d961af04fe0">getSoundEnvironment</a> ()</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:afce1d8c551b5a7aa8bb961b1b86156e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977">Event::Flags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine.html#afce1d8c551b5a7aa8bb961b1b86156e3">getPrimaryButton</a> ()</td></tr>
+<tr class="memdesc:afce1d8c551b5a7aa8bb961b1b86156e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input mappings.  <a href="#afce1d8c551b5a7aa8bb961b1b86156e3"></a><br/></td></tr>
 <tr class="inherit_header pub_methods_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&nbsp;Public Member Functions inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a67ee43bd869da4325f4fc86a74c7dee5 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a67ee43bd869da4325f4fc86a74c7dee5">ReferenceType</a> ()</td></tr>
 <tr class="memitem:a4b8526fb1b60859c3d898d24ab2d78fb inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a4b8526fb1b60859c3d898d24ab2d78fb">~ReferenceType</a> ()</td></tr>
@@ -172,9 +172,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_static_attribs_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&nbsp;Static Protected Attributes inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a436dafe8b6a5c62b5f111b644c6ed4b0 inherit pro_static_attribs_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="classomicron_1_1_reference_type.html">ReferenceType</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a436dafe8b6a5c62b5f111b644c6ed4b0">mysObjList</a></td></tr>
 </table>
-<a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>PYAPI. </p>
-</div><h2>Member Typedef Documentation</h2>
+<h2>Member Typedef Documentation</h2>
 <a class="anchor" id="a4d0f14bcb0eb6521b919b7fb57aab5b8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -568,6 +566,31 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p><a class="el" href="classomega_1_1_pointer.html">Pointer</a> mode management. </p>
+
+</div>
+</div>
+<a class="anchor" id="afce1d8c551b5a7aa8bb961b1b86156e3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977">Event::Flags</a> omega::Engine::getPrimaryButton </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Input mappings. </p>
 
 </div>
 </div>

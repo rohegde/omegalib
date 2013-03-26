@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.0</span>
+   &#160;<span id="projectnumber">3.6</span>
    </div>
   </td>
  </tr>
@@ -112,7 +112,13 @@
 : <a class="el" href="classomega_1_1_scene_query.html#aac1121651bd1461d2dd1f7a9542437c3">omega::SceneQuery</a>
 </li>
 <li>SceneView()
-: <a class="el" href="class_scene_view.html#a20af40d4d061bff374c75bd415e14ab0">SceneView</a>
+: <a class="el" href="class_scene_view.html#af7bc9ef12e5fd74950dfd6a492ccbc61">SceneView</a>
+</li>
+<li>selectNextApp()
+: <a class="el" href="classomega_toolkit_1_1_app_drawer.html#a6584f6522ead10156dfc4d303702e8cd">omegaToolkit::AppDrawer</a>
+</li>
+<li>selectPrevApp()
+: <a class="el" href="classomega_toolkit_1_1_app_drawer.html#a16b6dd3f4ae921464ca0f6cda6501bbc">omegaToolkit::AppDrawer</a>
 </li>
 <li>sendMessage()
 : <a class="el" href="classomega_1_1_mission_control_connection.html#a1f8933bebf979acf0159a0172a8a5dff">omega::MissionControlConnection</a>
@@ -178,6 +184,10 @@
 <li>setAutoAspect()
 : <a class="el" href="classomega_1_1_camera.html#a6f940dc5c04790f75a14afa9c213790f">omega::Camera</a>
 </li>
+<li>setAutoNearFar()
+: <a class="el" href="classomega_osg_1_1_osg_module.html#ad5ea2ff02bf589c4b6a7390782f28e1b">omegaOsg::OsgModule</a>
+, <a class="el" href="class_scene_view.html#ae31b38f2dad9f02cea814b8135734c63">SceneView</a>
+</li>
 <li>setAutosize()
 : <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#af4964b2d1fb92072f93a0d6aad85437c">omegaToolkit::ui::Widget</a>
 </li>
@@ -230,6 +240,9 @@
 : <a class="el" href="classomega_toolkit_1_1ui_1_1_abstract_button.html#a04a8446725dbc6a00976aba0fdc9917b">omegaToolkit::ui::AbstractButton</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_menu_item.html#af4d125a5662f516fd412404fab2ea28b">omegaToolkit::ui::MenuItem</a>
 </li>
+<li>setClickButton()
+: <a class="el" href="classomega_toolkit_1_1_ui_module.html#acd5e87153c38ff1270fc9c79eba25c8e">omegaToolkit::UiModule</a>
+</li>
 <li>setClient()
 : <a class="el" href="classomega_1_1_renderable.html#a7efe7922c0596604464739fe2c882aea">omega::Renderable</a>
 </li>
@@ -237,11 +250,11 @@
 : <a class="el" href="class_scene_view.html#aa44d07eccbfbdb1f151663a722b2f9c9">SceneView</a>
 </li>
 <li>setColor()
-: <a class="el" href="classomega_toolkit_1_1ui_1_1_button.html#a078fe74dfddd89bb58b4fd3c4183fb34">omegaToolkit::ui::Button</a>
-, <a class="el" href="classomega_toolkit_1_1ui_1_1_label.html#a878dc31ddfb80db0e05d2fdded613aa6">omegaToolkit::ui::Label</a>
-, <a class="el" href="classcyclops_1_1_light.html#a1e13448710cca37017906e2e0a63aa36">cyclops::Light</a>
+: <a class="el" href="classcyclops_1_1_light.html#a1e13448710cca37017906e2e0a63aa36">cyclops::Light</a>
 , <a class="el" href="classomega_1_1_draw_interface.html#aa2a91af6a3a89bb11d62db1354c0d97c">omega::DrawInterface</a>
 , <a class="el" href="classomega_1_1_pointer.html#a4095d4fd8eb97af23b31c793ab03fe8d">omega::Pointer</a>
+, <a class="el" href="classomega_toolkit_1_1ui_1_1_button.html#a078fe74dfddd89bb58b4fd3c4183fb34">omegaToolkit::ui::Button</a>
+, <a class="el" href="classomega_toolkit_1_1ui_1_1_label.html#a878dc31ddfb80db0e05d2fdded613aa6">omegaToolkit::ui::Label</a>
 </li>
 <li>setCommand()
 : <a class="el" href="classomega_toolkit_1_1ui_1_1_menu_item.html#a77dd90fba6c72886bbe78c54ec7dcdec">omegaToolkit::ui::MenuItem</a>
@@ -495,6 +508,10 @@
 <li>setHorizontalPrevWidget()
 : <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#ab74c8a65e441d54498cf2caa1876bf79">omegaToolkit::ui::Widget</a>
 </li>
+<li>setIcon()
+: <a class="el" href="classomega_toolkit_1_1ui_1_1_button.html#af5b6a5d39bd54041a6b5d3ff48537cbb">omegaToolkit::ui::Button</a>
+, <a class="el" href="classomega_toolkit_1_1ui_1_1_menu_item.html#a9ccc8e0e2a1fb58686207a4c1553234e">omegaToolkit::ui::MenuItem</a>
+</li>
 <li>setIconSize()
 : <a class="el" href="classomega_toolkit_1_1_app_drawer.html#a12758b6037fde70750722b4c10d93088">omegaToolkit::AppDrawer</a>
 </li>
@@ -525,11 +542,11 @@
 <li>setInteractor()
 : <a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a6d8d3914b0ec65df2d23d794c1998ab0">omegaToolkit::SceneEditorModule</a>
 </li>
-<li>SetIntValue()
-: <a class="el" href="classomega_1_1xml_1_1_ti_xml_attribute.html#aca302ec36491360832bd68760f57d0be">omega::xml::TiXmlAttribute</a>
-</li>
 <li>setIntValue()
 : <a class="el" href="classomega_1_1_gpu_constant.html#aeae2f166314cd49320cb3b21af20978f">omega::GpuConstant</a>
+</li>
+<li>SetIntValue()
+: <a class="el" href="classomega_1_1xml_1_1_ti_xml_attribute.html#aca302ec36491360832bd68760f57d0be">omega::xml::TiXmlAttribute</a>
 </li>
 <li>setLabel()
 : <a class="el" href="classomega_toolkit_1_1ui_1_1_menu.html#a0aecc2ab87d0665510ea9ed242382f8d">omegaToolkit::ui::Menu</a>
@@ -558,6 +575,7 @@
 </li>
 <li>setListener()
 : <a class="el" href="classcyclops_1_1_scene_manager.html#a1d8f1f6b05089ba159b28b6ebca1a909">cyclops::SceneManager</a>
+, <a class="el" href="classomega_toolkit_1_1_app_drawer.html#af27cdb19b834fb6050afb76aecc116f3">omegaToolkit::AppDrawer</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_menu_item.html#a8d4e65fe90b6efa9eedbe46d2d343c4c">omegaToolkit::ui::MenuItem</a>
 , <a class="el" href="classomicron_1_1_sound_environment.html#aa59477c7a820ba578cc219aa45b0eaf3">omicron::SoundEnvironment</a>
 </li>
@@ -658,6 +676,9 @@
 , <a class="el" href="classomega_1_1_node.html#adaf087e0fe6ec5c2241e57b89e1d3c22">omega::Node</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a05c8c2d3c5637f6243388e963a22def2">omegaToolkit::ui::Widget</a>
 </li>
+<li>setNavigationEnabled()
+: <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#af7440a61f052ff1123503a644986da6b">omegaToolkit::ui::Widget</a>
+</li>
 <li>setNavigationSuspended()
 : <a class="el" href="classomega_toolkit_1_1ui_1_1_menu_manager.html#af7d6129c32a1569776ce7df1f8c5a899">omegaToolkit::ui::MenuManager</a>
 </li>
@@ -733,13 +754,13 @@
 : <a class="el" href="classomega_1_1_porthole_g_u_i.html#a5c1175075ff383295e56e9a3c66e42cc">omega::PortholeGUI</a>
 </li>
 <li>setPosition()
-: <a class="el" href="classomega_1_1_node.html#ad9899110e543c6b16997512e47c142c9">omega::Node</a>
+: <a class="el" href="classomega_1_1_node.html#ac1003c7557c52ec7577a83f582bd493d">omega::Node</a>
 , <a class="el" href="classomega_1_1_pointer.html#addb638ed4e8b5a3edcf91faf60e32e22">omega::Pointer</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a6721137dae10428e904c3de87456c3ba">omegaToolkit::ui::Widget</a>
 , <a class="el" href="classomicron_1_1_event.html#a02a84d61d1a0d9165875792ed1c76e1b">omicron::Event</a>
 , <a class="el" href="classomicron_1_1_sound_instance.html#a485a34c1edaf2e23513721b1acf4a137">omicron::SoundInstance</a>
-, <a class="el" href="classomicron_1_1_event.html#a748e6c9e7cdb1542c738385aa9612023">omicron::Event</a>
-, <a class="el" href="classomega_1_1_node.html#ac1003c7557c52ec7577a83f582bd493d">omega::Node</a>
+, <a class="el" href="classomicron_1_1_event.html#af0952b97c64fcba37d9341360c81aa3a">omicron::Event</a>
+, <a class="el" href="classomega_1_1_pointer.html#a27dfa5e1ab78370b11b74f7d989a3e00">omega::Pointer</a>
 </li>
 <li>setPositionTrackingEnabled()
 : <a class="el" href="classomega_1_1_tracked_object.html#a62caf783f0a01583cd4847724c38d2ab">omega::TrackedObject</a>
@@ -769,8 +790,9 @@
 : <a class="el" href="classomega_1_1_ray_scene_query.html#aa1d6f083d50df0bfc82b5a5456e59de6">omega::RaySceneQuery</a>
 </li>
 <li>setReadbackTarget()
-: <a class="el" href="classomega_1_1_camera_output.html#aa0a6e8ca97cd38b193c0111e4600f8fb">omega::CameraOutput</a>
+: <a class="el" href="classomega_1_1_camera_output.html#a837a79599dd8c07a905c71c41ca05666">omega::CameraOutput</a>
 , <a class="el" href="classomega_1_1_render_target.html#a44a7dfa91eff8c6f0372389e4bf3df41">omega::RenderTarget</a>
+, <a class="el" href="classomega_1_1_camera_output.html#aa0a6e8ca97cd38b193c0111e4600f8fb">omega::CameraOutput</a>
 </li>
 <li>setRed()
 : <a class="el" href="classomicron_1_1_color.html#a8d7cd9b0742a8d4e3b6068846b4413e0">omicron::Color</a>
@@ -795,8 +817,8 @@
 </li>
 <li>setRotateButtonFlag()
 : <a class="el" href="classomega_toolkit_1_1_default_mouse_interactor.html#a485429546a5fcb2450150e00657c7e92">omegaToolkit::DefaultMouseInteractor</a>
-, <a class="el" href="classomega_toolkit_1_1_mouse_manipulator.html#a4db4e5ccee3be37c39dec5f9a2dc4594">omegaToolkit::MouseManipulator</a>
 , <a class="el" href="classomega_toolkit_1_1_wand_manipulator.html#a9131ae6d4dbf3ce90a6c4218b5fefe0d">omegaToolkit::WandManipulator</a>
+, <a class="el" href="classomega_toolkit_1_1_mouse_manipulator.html#a4db4e5ccee3be37c39dec5f9a2dc4594">omegaToolkit::MouseManipulator</a>
 </li>
 <li>setRotation()
 : <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a3be49a2749102a7b941dcd214744eb9b">omegaToolkit::ui::Widget</a>
@@ -805,15 +827,16 @@
 : <a class="el" href="classwiimote.html#abc59b87593cf662f5a0a7172390d9fda">wiimote</a>
 </li>
 <li>setScale()
-: <a class="el" href="classomega_1_1_node.html#a6769cc1b09a34b9b8ab7b49b2232b1cb">omega::Node</a>
+: <a class="el" href="classomega_1_1_node.html#a125dcc8deb6d08a2f7b6794453c47e9a">omega::Node</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a3d0fa2ad0738c9aa12305f72d2b8aa86">omegaToolkit::ui::Widget</a>
+, <a class="el" href="classomega_1_1_node.html#a6769cc1b09a34b9b8ab7b49b2232b1cb">omega::Node</a>
 </li>
 <li>setSceneData()
 : <a class="el" href="class_scene_view.html#a69a186aa24e66af4ff643804997b4166">SceneView</a>
 </li>
 <li>setSceneNode()
-: <a class="el" href="classomega_1_1_actor.html#ab4c4ec5380afb18f24e0e12b9e6e7b65">omega::Actor</a>
-, <a class="el" href="classomega_1_1_scene_query.html#a60f812e46f188dc254e0ff2e56609750">omega::SceneQuery</a>
+: <a class="el" href="classomega_1_1_scene_query.html#a60f812e46f188dc254e0ff2e56609750">omega::SceneQuery</a>
+, <a class="el" href="classomega_1_1_actor.html#ab4c4ec5380afb18f24e0e12b9e6e7b65">omega::Actor</a>
 </li>
 <li>setScreenResolution()
 : <a class="el" href="classomicron_1_1_legacy_net_service.html#abaf3707cf77fc6f4fb4a04de681d9d46">omicron::LegacyNetService</a>
@@ -826,6 +849,9 @@
 </li>
 <li>setSelected()
 : <a class="el" href="classomega_1_1_scene_node.html#a364d1a2ca7e4cdeb6de1aaa5c0794019">omega::SceneNode</a>
+</li>
+<li>setSelectedApp()
+: <a class="el" href="classomega_toolkit_1_1_app_drawer.html#a5db669dcb30a12295243d42a4fbea4d1">omegaToolkit::AppDrawer</a>
 </li>
 <li>setServer()
 : <a class="el" href="classomicron_1_1_legacy_net_service.html#a02d081b0bf9398cc877a87617cc57ecf">omicron::LegacyNetService</a>
@@ -944,6 +970,9 @@
 <li>setTrackingEnabled()
 : <a class="el" href="classomega_1_1_camera.html#af0ccf0158b1f040cf7cd1cf5a0aca549">omega::Camera</a>
 </li>
+<li>SetTranslucentPass()
+: <a class="el" href="class_custom_depth_peeling_pass.html#a667fbac85cbc1513a1da6e949dbceeb5">CustomDepthPeelingPass</a>
+</li>
 <li>setTransparent()
 : <a class="el" href="classcyclops_1_1_material.html#a2d61f49cab359c06185ac4e3fce85050">cyclops::Material</a>
 </li>
@@ -960,37 +989,37 @@
 : <a class="el" href="classomega_toolkit_1_1_ui_render_pass.html#a9dcc344ac74c56fdf80eceaf2722474b">omegaToolkit::UiRenderPass</a>
 </li>
 <li>setup()
-: <a class="el" href="classomicron_1_1_service_manager.html#a86eb25b6e9a9cf43a2307c06c4fd0826">omicron::ServiceManager</a>
-, <a class="el" href="classomicron_1_1_m_s_kinect_service.html#a61f6f3dcdeb0c0b66491148fb5c3eac2">omicron::MSKinectService</a>
-, <a class="el" href="classomicron_1_1_mocap_gesture_manager.html#a975e7ad3d3758fca8d1b29048cb3a5ad">omicron::MocapGestureManager</a>
-, <a class="el" href="classomicron_1_1_p_q_service.html#a852d57b510a22d55286a8e694c915f7a">omicron::PQService</a>
-, <a class="el" href="classomega_1_1_python_interpreter.html#a08076e3c751f9f0e81ff0b4b81b78146">omega::PythonInterpreter</a>
-, <a class="el" href="classomega_1_1_display_system.html#ac703e8260a19f6bbb34d7e52707ce9c8">omega::DisplaySystem</a>
-, <a class="el" href="classomega_1_1_camera_controller.html#a99c09e66727f8e5d0f5fc7ba2d749357">omega::CameraController</a>
-, <a class="el" href="classomega_1_1_system_manager.html#aec783a00a03e4674d792cdee920e9326">omega::SystemManager</a>
-, <a class="el" href="classomega_1_1_camera.html#a9a996a54d7e942cdbc060fe4e45cefea">omega::Camera</a>
-, <a class="el" href="classomega_1_1_equalizer_display_system.html#a34fd14c822dd93a3f3ffdb065844f130">omega::EqualizerDisplaySystem</a>
-, <a class="el" href="classomega_1_1_glut_display_system.html#aec703a1272ad05710fa204a3f364635d">omega::GlutDisplaySystem</a>
-, <a class="el" href="classomega_1_1_mouse_service.html#aaae9de51fd6ccc33e3b48602cf9cdb80">omega::MouseService</a>
-, <a class="el" href="classomega_1_1_porthole_service.html#a317b272eea5278a5430069a3c2dec815">omega::PortholeService</a>
-, <a class="el" href="classomicron_1_1_direct_input_service.html#a826b76d703ee832fb90664f3b67c692f">omicron::DirectInputService</a>
-, <a class="el" href="classomicron_1_1_heartbeat_service.html#ae9e513ac7992240e64a590a3e25d5146">omicron::HeartbeatService</a>
-, <a class="el" href="classomicron_1_1_legacy_net_service.html#a68f91ff328f0fbc730f60b2bc7185827">omicron::LegacyNetService</a>
-, <a class="el" href="classomicron_1_1_net_service.html#ae721b0724e8727a4d45cf9406961c4da">omicron::NetService</a>
-, <a class="el" href="classomicron_1_1_open_n_i_service.html#ab91b2452b9e633e0c581357409681a90">omicron::OpenNIService</a>
+: <a class="el" href="classomicron_1_1_legacy_direct_input_service.html#a95c04a7c366093577204250cee164e2c">omicron::LegacyDirectInputService</a>
 , <a class="el" href="classomicron_1_1_service.html#a96d1969a9a2864827028533e7c14760c">omicron::Service</a>
 , <a class="el" href="classomicron_1_1_wand_service.html#a442f75fbced9613b672bef328fc60eb6">omicron::WandService</a>
-, <a class="el" href="classomicron_1_1_x_input_service.html#a39ff1376cfa7f3affbc7cda164f55d89">omicron::XInputService</a>
-, <a class="el" href="classomicron_1_1_think_gear_service.html#a26dd993486777c9a2ea93d5261241360">omicron::ThinkGearService</a>
+, <a class="el" href="classomicron_1_1_net_service.html#ae721b0724e8727a4d45cf9406961c4da">omicron::NetService</a>
+, <a class="el" href="classomega_1_1_porthole_service.html#a317b272eea5278a5430069a3c2dec815">omega::PortholeService</a>
+, <a class="el" href="classomicron_1_1_direct_input_service.html#a826b76d703ee832fb90664f3b67c692f">omicron::DirectInputService</a>
+, <a class="el" href="classomega_1_1_equalizer_display_system.html#a34fd14c822dd93a3f3ffdb065844f130">omega::EqualizerDisplaySystem</a>
+, <a class="el" href="classomega_1_1_camera_controller.html#a99c09e66727f8e5d0f5fc7ba2d749357">omega::CameraController</a>
 , <a class="el" href="classomega_1_1_equalizer_display_system.html#a67484e80ae2b297e0bd9cced900f35a1">omega::EqualizerDisplaySystem</a>
-, <a class="el" href="classomega_1_1_observer_update_service_ext.html#a270f9a06d3966932989c29dc941aa5d6">omega::ObserverUpdateServiceExt</a>
+, <a class="el" href="classomega_1_1_glut_display_system.html#aec703a1272ad05710fa204a3f364635d">omega::GlutDisplaySystem</a>
+, <a class="el" href="classomega_1_1_python_interpreter.html#a08076e3c751f9f0e81ff0b4b81b78146">omega::PythonInterpreter</a>
+, <a class="el" href="classomega_1_1_system_manager.html#aec783a00a03e4674d792cdee920e9326">omega::SystemManager</a>
 , <a class="el" href="classomega_1_1_view_ray_service.html#a494382ce3f2a67f97c84fd0277170dff">omega::ViewRayService</a>
-, <a class="el" href="classomicron_1_1_legacy_direct_input_service.html#a95c04a7c366093577204250cee164e2c">omicron::LegacyDirectInputService</a>
-, <a class="el" href="classomicron_1_1_v_r_p_n_service.html#a09d09e3dd953d55324615cbed482c71a">omicron::VRPNService</a>
-, <a class="el" href="classomicron_1_1_natural_point_service.html#af68a40eab96847ed7eaf7180acda216d">omicron::NaturalPointService</a>
 , <a class="el" href="classomicron_1_1_gesture_service.html#a96915c1c252f8707160e2c7522fa052c">omicron::GestureService</a>
-, <a class="el" href="classomicron_1_1_sage_pointer_service.html#ad4b9db816e109dd183e73893c6f84b87">omicron::SagePointerService</a>
+, <a class="el" href="classomicron_1_1_mocap_gesture_manager.html#a975e7ad3d3758fca8d1b29048cb3a5ad">omicron::MocapGestureManager</a>
+, <a class="el" href="classomicron_1_1_natural_point_service.html#af68a40eab96847ed7eaf7180acda216d">omicron::NaturalPointService</a>
+, <a class="el" href="classomicron_1_1_open_n_i_service.html#ab91b2452b9e633e0c581357409681a90">omicron::OpenNIService</a>
+, <a class="el" href="classomicron_1_1_service_manager.html#a86eb25b6e9a9cf43a2307c06c4fd0826">omicron::ServiceManager</a>
+, <a class="el" href="classomicron_1_1_think_gear_service.html#a26dd993486777c9a2ea93d5261241360">omicron::ThinkGearService</a>
+, <a class="el" href="classomicron_1_1_v_r_p_n_service.html#a09d09e3dd953d55324615cbed482c71a">omicron::VRPNService</a>
 , <a class="el" href="classomicron_1_1_wiimote_service.html#a5d6cc553604d76884665fd0a43e3479b">omicron::WiimoteService</a>
+, <a class="el" href="classomicron_1_1_x_input_service.html#a39ff1376cfa7f3affbc7cda164f55d89">omicron::XInputService</a>
+, <a class="el" href="classomega_1_1_display_system.html#ac703e8260a19f6bbb34d7e52707ce9c8">omega::DisplaySystem</a>
+, <a class="el" href="classomega_1_1_observer_update_service_ext.html#a270f9a06d3966932989c29dc941aa5d6">omega::ObserverUpdateServiceExt</a>
+, <a class="el" href="classomega_1_1_mouse_service.html#aaae9de51fd6ccc33e3b48602cf9cdb80">omega::MouseService</a>
+, <a class="el" href="classomega_1_1_camera.html#a9a996a54d7e942cdbc060fe4e45cefea">omega::Camera</a>
+, <a class="el" href="classomicron_1_1_heartbeat_service.html#ae9e513ac7992240e64a590a3e25d5146">omicron::HeartbeatService</a>
+, <a class="el" href="classomicron_1_1_m_s_kinect_service.html#a61f6f3dcdeb0c0b66491148fb5c3eac2">omicron::MSKinectService</a>
+, <a class="el" href="classomicron_1_1_sage_pointer_service.html#ad4b9db816e109dd183e73893c6f84b87">omicron::SagePointerService</a>
+, <a class="el" href="classomicron_1_1_p_q_service.html#a852d57b510a22d55286a8e694c915f7a">omicron::PQService</a>
+, <a class="el" href="classomicron_1_1_legacy_net_service.html#a68f91ff328f0fbc730f60b2bc7185827">omicron::LegacyNetService</a>
 </li>
 <li>setupAndStart()
 : <a class="el" href="classomicron_1_1_service_manager.html#ad04472f28f69c13741f15f7fef477b8d">omicron::ServiceManager</a>
@@ -1005,14 +1034,11 @@
 : <a class="el" href="classomega_1_1_shared_data.html#a2d4a7bbdc8c4dd8a76f0e142490ca075">omega::SharedData</a>
 </li>
 <li>setUpdateInterval()
-: <a class="el" href="classomicron_1_1_legacy_direct_input_service.html#ab3934cb9732b0e4bede52d8ff1cb41a5">omicron::LegacyDirectInputService</a>
+: <a class="el" href="classomicron_1_1_direct_input_service.html#a79032a91c1ae1865dee82706556ab34e">omicron::DirectInputService</a>
 , <a class="el" href="classomicron_1_1_v_r_p_n_service.html#ad37ebfaf3cf9e82fd27fcdcb99bc3607">omicron::VRPNService</a>
-, <a class="el" href="classomicron_1_1_wiimote_service.html#a383f020c3e3a9f2e2d1b13396de76732">omicron::WiimoteService</a>
 , <a class="el" href="classomicron_1_1_x_input_service.html#adb5bf06e6c88347fa40520ab8f9990fa">omicron::XInputService</a>
-, <a class="el" href="classomicron_1_1_direct_input_service.html#a79032a91c1ae1865dee82706556ab34e">omicron::DirectInputService</a>
-</li>
-<li>setUpdateVisitor()
-: <a class="el" href="class_scene_view.html#a2b95bc58a61629ad18424bbf6d6c4136">SceneView</a>
+, <a class="el" href="classomicron_1_1_legacy_direct_input_service.html#ab3934cb9732b0e4bede52d8ff1cb41a5">omicron::LegacyDirectInputService</a>
+, <a class="el" href="classomicron_1_1_wiimote_service.html#a383f020c3e3a9f2e2d1b13396de76732">omicron::WiimoteService</a>
 </li>
 <li>setupDisplaySystem()
 : <a class="el" href="classomega_1_1_system_manager.html#af0aa57cb40bcf5b6906741a91e08f95b">omega::SystemManager</a>
@@ -1033,12 +1059,15 @@
 : <a class="el" href="classomega_1_1_channel_impl.html#a2d22f85fd2db555573dfddd30de564c7">omega::ChannelImpl</a>
 </li>
 <li>setUserData()
-: <a class="el" href="classomega_1_1_node.html#a195d4b1f839473b73c3b9d60f05168f9">omega::Node</a>
+: <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a379b2ba8e0ce7c140c7d112682712fc6">omegaToolkit::ui::Widget</a>
 , <a class="el" href="classomega_1_1_render_pass.html#a713e3f69ae203a99cf0d5f73c61a1bf3">omega::RenderPass</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_menu_item.html#ae9641b37b2bf61f8ded34bce6aabdf6c">omegaToolkit::ui::MenuItem</a>
 </li>
 <li>SetUserData()
 : <a class="el" href="classomega_1_1xml_1_1_ti_xml_base.html#a0813caf36148511e6af2671b1696789e">omega::xml::TiXmlBase</a>
+</li>
+<li>setUserData()
+: <a class="el" href="classomega_1_1_node.html#a195d4b1f839473b73c3b9d60f05168f9">omega::Node</a>
 </li>
 <li>setUserOrientation()
 : <a class="el" href="classomicron_1_1_sound_environment.html#ae09e70ce60e3afed6909fd8b6acdd39c">omicron::SoundEnvironment</a>
@@ -1074,8 +1103,8 @@
 : <a class="el" href="classomega_1_1_gpu_program.html#a99b842141ff9a543d1466b35ae09c9d6">omega::GpuProgram</a>
 </li>
 <li>setVerticalAlign()
-: <a class="el" href="classomega_toolkit_1_1ui_1_1_label.html#a99e8c6329caa760d32794d06b914c511">omegaToolkit::ui::Label</a>
-, <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#ab379abc028fbd42ce1949e4ee4775a14">omegaToolkit::ui::Container</a>
+: <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#ab379abc028fbd42ce1949e4ee4775a14">omegaToolkit::ui::Container</a>
+, <a class="el" href="classomega_toolkit_1_1ui_1_1_label.html#a99e8c6329caa760d32794d06b914c511">omegaToolkit::ui::Label</a>
 </li>
 <li>setVerticalNextWidget()
 : <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a73bedf4d095debc7a4845a867e2aa459">omegaToolkit::ui::Widget</a>
@@ -1093,9 +1122,9 @@
 : <a class="el" href="class_scene_view.html#a0e59c64d2754d05771ee0ef843564364">SceneView</a>
 </li>
 <li>setVisible()
-: <a class="el" href="classomega_1_1_scene_node.html#ad859ebcb8dc5f8ab39ff6d60e8d3584a">omega::SceneNode</a>
+: <a class="el" href="classomega_1_1_pointer.html#a3d817f048a0f9e22a0a083e621e0449d">omega::Pointer</a>
+, <a class="el" href="classomega_1_1_scene_node.html#ad859ebcb8dc5f8ab39ff6d60e8d3584a">omega::SceneNode</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#ad2397c68ea62595ad0dea9fed369c865">omegaToolkit::ui::Widget</a>
-, <a class="el" href="classomega_1_1_pointer.html#a3d817f048a0f9e22a0a083e621e0449d">omega::Pointer</a>
 </li>
 <li>setVolume()
 : <a class="el" href="classomicron_1_1_sound_instance.html#acb617a50fa0f5ebfd7e33a4e1828d3a9">omicron::SoundInstance</a>
@@ -1139,7 +1168,7 @@
 : <a class="el" href="classomicron_1_1_math.html#a27bfd69ddc6e841b1a75f67db62ec87a">omicron::Math</a>
 </li>
 <li>simpleHitTest()
-: <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#ad0147cf6969b1f7047508b6b0cc75801">omegaToolkit::ui::Widget</a>
+: <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#ae5e7a0d7dcede5600e22bce1158df98d">omegaToolkit::ui::Widget</a>
 </li>
 <li>sin()
 : <a class="el" href="classomicron_1_1_math.html#a73b197d258892f8244c37e0f9360e303">omicron::Math</a>
@@ -1175,7 +1204,7 @@
 : <a class="el" href="classomicron_1_1_sound_manager.html#aca8520342013316725f4d872cdd5b74f">omicron::SoundManager</a>
 </li>
 <li>Sphere()
-: <a class="el" href="classomicron_1_1_sphere.html#aad3782f73e2de31887bcbb2ec29b8e88">omicron::Sphere</a>
+: <a class="el" href="classomicron_1_1_sphere.html#a0f3f0fd4113809587428e0ea42697627">omicron::Sphere</a>
 </li>
 <li>SphereShape()
 : <a class="el" href="classcyclops_1_1_sphere_shape.html#ab05bdebf9e37d43541935f19144edb1a">cyclops::SphereShape</a>
@@ -1205,15 +1234,18 @@
 : <a class="el" href="classomicron_1_1_string_utils.html#a1d9f2e182e4381bead27afdf7d879188">omicron::StringUtils</a>
 </li>
 <li>start()
-: <a class="el" href="classomicron_1_1_opti_track_service.html#af419accd8f435cb13aef30527a7239d4">omicron::OptiTrackService</a>
-, <a class="el" href="classomicron_1_1_service.html#abd2a1def1f23956a917c35cce7afdc20">omicron::Service</a>
-, <a class="el" href="classomicron_1_1_timer.html#a37b5fb3c558a8e0dfad1057a0a40c6e2">omicron::Timer</a>
+: <a class="el" href="classomicron_1_1_tcp_server.html#a2719f94764ffb0d71c389ce4629f08d0">omicron::TcpServer</a>
 , <a class="el" href="classomega_1_1_porthole_service.html#a1a8dfcc652d6b82164668c9039470a4b">omega::PortholeService</a>
-, <a class="el" href="classomicron_1_1_open_n_i_service.html#acfbeebc850dca956f710fd559665f732">omicron::OpenNIService</a>
-, <a class="el" href="classomicron_1_1_thread.html#a108638f7c599bc40d8455e787ed6c88b">omicron::Thread</a>
-, <a class="el" href="classomicron_1_1_tcp_server.html#a2719f94764ffb0d71c389ce4629f08d0">omicron::TcpServer</a>
-, <a class="el" href="classomicron_1_1_service_manager.html#ac8323a1c20fefb84c5bf7fb40db3cb0f">omicron::ServiceManager</a>
 , <a class="el" href="classomicron_1_1_natural_point_service.html#aae86abbe98fd9299670b5b3fb937b0a1">omicron::NaturalPointService</a>
+, <a class="el" href="classomicron_1_1_open_n_i_service.html#acfbeebc850dca956f710fd559665f732">omicron::OpenNIService</a>
+, <a class="el" href="classomicron_1_1_service.html#abd2a1def1f23956a917c35cce7afdc20">omicron::Service</a>
+, <a class="el" href="classomicron_1_1_service_manager.html#ac8323a1c20fefb84c5bf7fb40db3cb0f">omicron::ServiceManager</a>
+, <a class="el" href="classomicron_1_1_timer.html#a37b5fb3c558a8e0dfad1057a0a40c6e2">omicron::Timer</a>
+, <a class="el" href="classomicron_1_1_opti_track_service.html#af419accd8f435cb13aef30527a7239d4">omicron::OptiTrackService</a>
+, <a class="el" href="classomicron_1_1_thread.html#a108638f7c599bc40d8455e787ed6c88b">omicron::Thread</a>
+</li>
+<li>startApp()
+: <a class="el" href="classomega_toolkit_1_1_i_app_drawer_listener.html#af6cb09d6e0bd0fc86bd7d7d845fc361e">omegaToolkit::IAppDrawerListener</a>
 </li>
 <li>startFrame()
 : <a class="el" href="classomega_1_1_renderer.html#a49eef567846673a1f04a75cd0fe5a332">omega::Renderer</a>
@@ -1241,14 +1273,14 @@
 </li>
 <li>stop()
 : <a class="el" href="classomicron_1_1_tcp_server.html#a72c2b40b74b7c5b5cd7ca4cc8f868f5c">omicron::TcpServer</a>
-, <a class="el" href="classomicron_1_1_timer.html#ab81049a716f194180d283c3000c4ef76">omicron::Timer</a>
-, <a class="el" href="classomicron_1_1_service.html#a87ea8469547ec33f2fa98aefd4b03ea9">omicron::Service</a>
-, <a class="el" href="classomicron_1_1_thread.html#a2a0b88108dd3944333ffa67010b0cc83">omicron::Thread</a>
-, <a class="el" href="classomicron_1_1_natural_point_service.html#a081911d4e56a64a2fde4d63d0d2c4550">omicron::NaturalPointService</a>
-, <a class="el" href="classomicron_1_1_sound_instance.html#ad5d4bd363b321f83fe382eb831453587">omicron::SoundInstance</a>
+, <a class="el" href="classomicron_1_1_open_n_i_service.html#abe5d5c82ba81300d70f1b4cf0aba40cb">omicron::OpenNIService</a>
 , <a class="el" href="classomicron_1_1_service_manager.html#a0a0f12f3ddec87f34f996eaae86c3eb0">omicron::ServiceManager</a>
 , <a class="el" href="classomicron_1_1_opti_track_service.html#af2e7d59978987ad90454029052bec4c2">omicron::OptiTrackService</a>
-, <a class="el" href="classomicron_1_1_open_n_i_service.html#abe5d5c82ba81300d70f1b4cf0aba40cb">omicron::OpenNIService</a>
+, <a class="el" href="classomicron_1_1_thread.html#a2a0b88108dd3944333ffa67010b0cc83">omicron::Thread</a>
+, <a class="el" href="classomicron_1_1_service.html#a87ea8469547ec33f2fa98aefd4b03ea9">omicron::Service</a>
+, <a class="el" href="classomicron_1_1_natural_point_service.html#a081911d4e56a64a2fde4d63d0d2c4550">omicron::NaturalPointService</a>
+, <a class="el" href="classomicron_1_1_timer.html#ab81049a716f194180d283c3000c4ef76">omicron::Timer</a>
+, <a class="el" href="classomicron_1_1_sound_instance.html#ad5d4bd363b321f83fe382eb831453587">omicron::SoundInstance</a>
 </li>
 <li>stopAllAnimations()
 : <a class="el" href="classcyclops_1_1_animated_object.html#acdb69a690c2c497d8c35871e0c3ed08f">cyclops::AnimatedObject</a>
@@ -1265,10 +1297,14 @@
 <li>StringEqual()
 : <a class="el" href="classomega_1_1xml_1_1_ti_xml_base.html#aaaf0023c6a27eda563b6fe39d718f2bd">omega::xml::TiXmlBase</a>
 </li>
+<li>supportsExtension()
+: <a class="el" href="structcyclops_1_1_default_model_loader.html#afbc6ca05ec3e3101025d4b47d4468efc">cyclops::DefaultModelLoader</a>
+, <a class="el" href="structcyclops_1_1_model_loader.html#a74aa861ce52827ee2ddb08f0aca6b50e">cyclops::ModelLoader</a>
+</li>
 <li>swap()
 : <a class="el" href="classomicron_1_1_ref.html#a5dd5fd2316d5cffee174a24fc72b5538">omicron::Ref&lt; T &gt;</a>
-, <a class="el" href="classomega_1_1xml_1_1_ti_xml_string.html#a802c0576cdae52ec5c05508af535f725">omega::xml::TiXmlString</a>
 , <a class="el" href="classblock__allocator.html#a065463b2344048cc20db48b8167b75f8">block_allocator</a>
+, <a class="el" href="classomega_1_1xml_1_1_ti_xml_string.html#a802c0576cdae52ec5c05508af535f725">omega::xml::TiXmlString</a>
 </li>
 <li>swapMinMax()
 : <a class="el" href="classomicron_1_1_math.html#a92aac6867ed99a723621da2e3e3cab6e">omicron::Math</a>

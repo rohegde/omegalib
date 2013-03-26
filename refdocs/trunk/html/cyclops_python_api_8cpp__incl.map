@@ -1,17 +1,18 @@
 <map id="D:/Workspace/omegalib/core/src/cyclops/cyclopsPythonApi.cpp" name="D:/Workspace/omegalib/core/src/cyclops/cyclopsPythonApi.cpp">
-<area shape="rect" id="node3" href="$_python_interpreter_8h.html" title="omega/PythonInterpreter.h" alt="" coords="273,245,428,269"/>
-<area shape="rect" id="node20" href="$_scene_manager_8h.html" title="cyclops/SceneManager.h" alt="" coords="790,245,932,269"/>
-<area shape="rect" id="node45" href="$_animated_object_8h.html" title="cyclops/AnimatedObject.h" alt="" coords="897,173,1044,197"/>
-<area shape="rect" id="node54" href="$_scene_loader_8h.html" title="cyclops/SceneLoader.h" alt="" coords="655,101,788,125"/>
-<area shape="rect" id="node61" href="$_line_set_8h.html" title="cyclops/LineSet.h" alt="" coords="934,101,1040,125"/>
-<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="312,461,419,485"/>
-<area shape="rect" id="node7" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="464,389,606,413"/>
-<area shape="rect" id="node10" href="$_i_renderer_command_8h.html" title="omega/IRendererCommand.h" alt="" coords="34,389,198,413"/>
-<area shape="rect" id="node13" href="$_shared_data_services_8h.html" title="omega/SharedDataServices.h" alt="" coords="223,389,388,413"/>
-<area shape="rect" id="node16" href="$_camera_8h.html" title="omega/Camera.h" alt="" coords="344,317,448,341"/>
-<area shape="rect" id="node22" href="$cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="800,389,899,413"/>
-<area shape="rect" id="node25" href="$_skybox_8h.html" title="Skybox.h" alt="" coords="911,317,978,341"/>
-<area shape="rect" id="node28" href="$_shapes_8h.html" title="Shapes.h" alt="" coords="575,317,642,341"/>
-<area shape="rect" id="node30" href="$_uniforms_8h.html" title="Uniforms.h" alt="" coords="812,317,887,341"/>
-<area shape="rect" id="node33" href="$_light_8h.html" title="Light.h" alt="" coords="1002,317,1056,341"/>
+<area shape="rect" id="node3" href="$_python_interpreter_8h.html" title="omega/PythonInterpreter.h" alt="" coords="190,317,345,341"/>
+<area shape="rect" id="node20" href="$_scene_manager_8h.html" title="cyclops/SceneManager.h" alt="" coords="743,245,885,269"/>
+<area shape="rect" id="node49" href="$_animated_object_8h.html" title="cyclops/AnimatedObject.h" alt="" coords="994,173,1141,197"/>
+<area shape="rect" id="node57" href="$_scene_loader_8h.html" title="cyclops/SceneLoader.h" alt="" coords="683,101,816,125"/>
+<area shape="rect" id="node64" href="$_line_set_8h.html" title="cyclops/LineSet.h" alt="" coords="941,101,1048,125"/>
+<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="234,533,341,557"/>
+<area shape="rect" id="node7" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="271,461,413,485"/>
+<area shape="rect" id="node10" href="$_i_renderer_command_8h.html" title="omega/IRendererCommand.h" alt="" coords="31,461,195,485"/>
+<area shape="rect" id="node13" href="$_shared_data_services_8h.html" title="omega/SharedDataServices.h" alt="" coords="439,461,604,485"/>
+<area shape="rect" id="node16" href="$_camera_8h.html" title="omega/Camera.h" alt="" coords="181,389,285,413"/>
+<area shape="rect" id="node22" href="$cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="647,461,745,485"/>
+<area shape="rect" id="node25" href="$_skybox_8h.html" title="Skybox.h" alt="" coords="753,389,820,413"/>
+<area shape="rect" id="node28" href="$_shapes_8h.html" title="Shapes.h" alt="" coords="513,389,580,413"/>
+<area shape="rect" id="node30" href="$_uniforms_8h.html" title="Uniforms.h" alt="" coords="604,389,679,413"/>
+<area shape="rect" id="node33" href="$_light_8h.html" title="Light.h" alt="" coords="834,317,888,341"/>
+<area shape="rect" id="node38" href="$_model_loader_8h.html" title="ModelLoader.h" alt="" coords="665,317,759,341"/>
 </map>

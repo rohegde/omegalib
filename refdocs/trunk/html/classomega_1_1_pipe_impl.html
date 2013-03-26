@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.0</span>
+   &#160;<span id="projectnumber">3.6</span>
    </div>
   </td>
  </tr>
@@ -80,15 +80,12 @@
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8c1343c2d5a9cebe5ad74bb368758d7f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pipe_impl.html#a8c1343c2d5a9cebe5ad74bb368758d7f">PipeImpl</a> (eq::Node *parent)</td></tr>
-<tr class="memitem:a2dea2a875c45122b92798e281af62cdb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_renderer.html">Renderer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pipe_impl.html#a2dea2a875c45122b92798e281af62cdb">getClient</a> ()</td></tr>
 <tr class="memitem:a9d5a2ec3a8fda0590eacd0aa3b23652c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_gpu_context.html">GpuContext</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pipe_impl.html#a9d5a2ec3a8fda0590eacd0aa3b23652c">getGpuContext</a> ()</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:ac34c63ba3fefa9e10b26d9b63c7f598a"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pipe_impl.html#ac34c63ba3fefa9e10b26d9b63c7f598a">~PipeImpl</a> ()</td></tr>
 <tr class="memitem:a1ccc14200f3ac45aa83820a5dd66a46a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pipe_impl.html#a1ccc14200f3ac45aa83820a5dd66a46a">configInit</a> (const uint128_t &amp;initID)</td></tr>
-<tr class="memitem:af1461ab2c6343977950282affd7e942d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pipe_impl.html#af1461ab2c6343977950282affd7e942d">frameStart</a> (const uint128_t &amp;frameID, const uint32_t frameNumber)</td></tr>
-<tr class="memitem:acbfe5a351ac5df50452bdc032ec25fd8"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_pipe_impl.html#acbfe5a351ac5df50452bdc032ec25fd8">frameFinish</a> (const uint128_t &amp;frameID, const uint32_t frameNumber)</td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"></div><h2>Constructor &amp; Destructor Documentation</h2>
@@ -152,89 +149,6 @@ Protected Member Functions</h2></td></tr>
 <span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="acbfe5a351ac5df50452bdc032ec25fd8"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PipeImpl::frameFinish </td>
-          <td>(</td>
-          <td class="paramtype">const uint128_t &amp;&#160;</td>
-          <td class="paramname"><em>frameID</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const uint32_t&#160;</td>
-          <td class="paramname"><em>frameNumber</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="af1461ab2c6343977950282affd7e942d"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PipeImpl::frameStart </td>
-          <td>(</td>
-          <td class="paramtype">const uint128_t &amp;&#160;</td>
-          <td class="paramname"><em>frameID</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const uint32_t&#160;</td>
-          <td class="paramname"><em>frameNumber</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a2dea2a875c45122b92798e281af62cdb"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classomega_1_1_renderer.html">Renderer</a> * PipeImpl::getClient </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
 </div><div class="memdoc">
 
 </div>

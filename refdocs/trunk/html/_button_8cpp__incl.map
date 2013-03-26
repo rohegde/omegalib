@@ -1,10 +1,11 @@
 <map id="D:/Workspace/omegalib/core/src/omegaToolkit/ui/Button.cpp" name="D:/Workspace/omegalib/core/src/omegaToolkit/ui/Button.cpp">
-<area shape="rect" id="node3" href="$_button_8h.html" title="omegaToolkit/ui/Button.h" alt="" coords="86,245,228,269"/>
-<area shape="rect" id="node9" href="$_ui_module_8h.html" title="omegaToolkit/UiModule.h" alt="" coords="131,101,273,125"/>
-<area shape="rect" id="node5" href="$_abstract_button_8h.html" title="omegaToolkit/ui/Abstract\lButton.h" alt="" coords="5,318,147,354"/>
-<area shape="rect" id="node7" href="$_label_8h.html" title="omegaToolkit/ui/Label.h" alt="" coords="172,324,308,348"/>
-<area shape="rect" id="node11" href="$_engine_8h.html" title="Engine.h" alt="" coords="55,173,119,197"/>
-<area shape="rect" id="node13" href="$_application_8h.html" title="omega/Application.h" alt="" coords="143,173,263,197"/>
-<area shape="rect" id="node15" href="$_container_8h.html" title="ui/Container.h" alt="" coords="345,245,436,269"/>
-<area shape="rect" id="node17" href="$_widget_factory_8h.html" title="ui/WidgetFactory.h" alt="" coords="287,173,401,197"/>
+<area shape="rect" id="node3" href="$_button_8h.html" title="omegaToolkit/ui/Button.h" alt="" coords="166,245,308,269"/>
+<area shape="rect" id="node11" href="$_ui_module_8h.html" title="omegaToolkit/UiModule.h" alt="" coords="333,101,475,125"/>
+<area shape="rect" id="node5" href="$_abstract_button_8h.html" title="omegaToolkit/ui/Abstract\lButton.h" alt="" coords="166,318,308,354"/>
+<area shape="rect" id="node7" href="$_label_8h.html" title="omegaToolkit/ui/Label.h" alt="" coords="5,324,141,348"/>
+<area shape="rect" id="node9" href="$include_2omega_toolkit_2ui_2image_8h.html" title="omegaToolkit/ui/Image.h" alt="" coords="333,324,475,348"/>
+<area shape="rect" id="node13" href="$_engine_8h.html" title="Engine.h" alt="" coords="536,173,600,197"/>
+<area shape="rect" id="node15" href="$_application_8h.html" title="omega/Application.h" alt="" coords="203,173,323,197"/>
+<area shape="rect" id="node17" href="$_container_8h.html" title="ui/Container.h" alt="" coords="447,245,537,269"/>
+<area shape="rect" id="node19" href="$_widget_factory_8h.html" title="ui/WidgetFactory.h" alt="" coords="347,173,461,197"/>
 </map>

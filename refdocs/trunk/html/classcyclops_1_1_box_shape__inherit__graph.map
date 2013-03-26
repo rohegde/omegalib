@@ -1,4 +1,4 @@
 <map id="cyclops::BoxShape" name="cyclops::BoxShape">
-<area shape="rect" id="node2" href="$classcyclops_1_1_entity.html" title="PYAPI." alt="" coords="16,77,109,101"/>
+<area shape="rect" id="node2" href="$classcyclops_1_1_entity.html" title="Encapsulates an osg node (or nodes) and offers a few additional functionality for them..." alt="" coords="16,77,109,101"/>
 <area shape="rect" id="node4" href="$classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph." alt="" coords="5,5,120,29"/>
 </map>

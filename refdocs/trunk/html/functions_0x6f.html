@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.0</span>
+   &#160;<span id="projectnumber">3.6</span>
    </div>
   </td>
  </tr>
@@ -108,11 +108,14 @@
 <li>ObserverUpdateServiceExt()
 : <a class="el" href="classomega_1_1_observer_update_service_ext.html#a45282752e9627ed8021f416cb4a06bf8">omega::ObserverUpdateServiceExt</a>
 </li>
-<li>offscreen
-: <a class="el" href="structomega_1_1_display_tile_config.html#adcb929406e73f8c612ad2fc4e8ce3252">omega::DisplayTileConfig</a>
+<li>OcclusionRatio
+: <a class="el" href="class_custom_depth_peeling_pass.html#ae39f4764534736aec7540ab743d2f15f">CustomDepthPeelingPass</a>
 </li>
 <li>Offscreen
 : <a class="el" href="classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5a5bbb7425a5dc1bef5b8e1d8e7e242279">omega::Camera</a>
+</li>
+<li>offscreen
+: <a class="el" href="structomega_1_1_display_tile_config.html#adcb929406e73f8c612ad2fc4e8ce3252">omega::DisplayTileConfig</a>
 </li>
 <li>offset
 : <a class="el" href="structomega_1_1_display_tile_config.html#ae6089a318e1e11b5b95a219751dc9b15">omega::DisplayTileConfig</a>
@@ -232,8 +235,16 @@
 <li>OmicronSkeletonJoint
 : <a class="el" href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6">omicron::EventBase</a>
 </li>
+<li>onAttached()
+: <a class="el" href="classomega_1_1_node_component.html#a5dba940239539b61b4c80ed664f53a46">omega::NodeComponent</a>
+, <a class="el" href="classomega_osg_1_1_osg_scene_object.html#aa743c8284dd1067cb64fcb1644379243">omegaOsg::OsgSceneObject</a>
+</li>
 <li>onDataReceived()
 : <a class="el" href="classomicron_1_1_i_http_request_listener.html#a1583a3445615d80a987d2bdea99b5f2f">omicron::IHttpRequestListener</a>
+</li>
+<li>onDetached()
+: <a class="el" href="classomega_1_1_node_component.html#a202f079bcd6c358b17ded560598c0dcf">omega::NodeComponent</a>
+, <a class="el" href="classomega_osg_1_1_osg_scene_object.html#a3328c9332c203d1fd611816ca3b7a39d">omegaOsg::OsgSceneObject</a>
 </li>
 <li>onEvent()
 : <a class="el" href="classomicron_connector_1_1_i_omicron_connector_client_listener.html#a9227eb090402b9fe469ddd9d4912061b">omicronConnector::IOmicronConnectorClientListener</a>
@@ -254,8 +265,8 @@
 : <a class="el" href="classomega_1_1_async_task_1_1_i_async_task_handler.html#ab48671e0af6fd35d381d51aa6de7b12c">omega::AsyncTask&lt; T &gt;::IAsyncTaskHandler</a>
 </li>
 <li>onVisibleChanged()
-: <a class="el" href="classomega_1_1_scene_node_listener.html#a7ffda4d7c1adb481ab56774f3a6658c4">omega::SceneNodeListener</a>
-, <a class="el" href="classomega_osg_1_1_osg_scene_object.html#a6dc2ab8d8bf94ee2217b6cd7a7266b75">omegaOsg::OsgSceneObject</a>
+: <a class="el" href="classomega_osg_1_1_osg_scene_object.html#a6dc2ab8d8bf94ee2217b6cd7a7266b75">omegaOsg::OsgSceneObject</a>
+, <a class="el" href="classomega_1_1_scene_node_listener.html#a7ffda4d7c1adb481ab56774f3a6658c4">omega::SceneNodeListener</a>
 </li>
 <li>OPACITY_TEXTURE_UNIT
 : <a class="el" href="struct_state_set_content.html#a5aaef035fe01d01d257aa15a2f2eb610a79e59fd00f8f0e091191b53c7d54903a">StateSetContent</a>
@@ -271,6 +282,12 @@
 </li>
 <li>opacityTexture
 : <a class="el" href="struct_state_set_content.html#a99e78a38cf63c7c6b443f3f6becb78fb">StateSetContent</a>
+</li>
+<li>OpaqueLayerZ
+: <a class="el" href="class_custom_depth_peeling_pass.html#a6ceb7153e92217a23e5afe6ff478f309">CustomDepthPeelingPass</a>
+</li>
+<li>OpaqueShadowTexUnit
+: <a class="el" href="class_custom_depth_peeling_pass.html#a0dced230501f01401999b9d897d46d8c">CustomDepthPeelingPass</a>
 </li>
 <li>opcode
 : <a class="el" href="structlibwebsocket.html#a85b9bd2dc2be7b1e1a69e59a4d6f9b05">libwebsocket</a>
@@ -309,47 +326,50 @@
 : <a class="el" href="classomega_1_1xml_1_1_ti_xml_string.html#a0283088d128ae6ae6b98491d7329d3c2">omega::xml::TiXmlString</a>
 </li>
 <li>operator-&gt;()
-: <a class="el" href="classomicron_1_1_key_value.html#a56db60eb6d36a62c52df161bce2963c8">omicron::KeyValue&lt; K, T &gt;</a>
-, <a class="el" href="classomicron_1_1_ref.html#a70003d05819e3211bfe75f9cdcd056a7">omicron::Ref&lt; T &gt;</a>
+: <a class="el" href="classomicron_1_1_ref.html#a70003d05819e3211bfe75f9cdcd056a7">omicron::Ref&lt; T &gt;</a>
+, <a class="el" href="classomicron_1_1_key_value.html#a56db60eb6d36a62c52df161bce2963c8">omicron::KeyValue&lt; K, T &gt;</a>
 </li>
 <li>operator&lt;()
 : <a class="el" href="struct_vertex_index.html#a7eff9cef70cac0dced40c05ee972e39a">VertexIndex</a>
 , <a class="el" href="classomega_1_1xml_1_1_ti_xml_attribute.html#aa14583bdfdf23b44b8139c7653a0a311">omega::xml::TiXmlAttribute</a>
 </li>
 <li>operator&lt;&lt;()
-: <a class="el" href="classomega_1_1_shared_o_stream.html#a89e4313bd46e889ad5f994b3de9b3af1">omega::SharedOStream</a>
+: <a class="el" href="classomega_1_1_shared_o_stream.html#afb7ae66b3cdd6bf5b1c2a36e54ef32ba">omega::SharedOStream</a>
 , <a class="el" href="classomega_1_1xml_1_1_ti_xml_out_stream.html#a6730ca8a0635dd0185ed3bd79641a8ec">omega::xml::TiXmlOutStream</a>
 </li>
 <li>operator=()
-: <a class="el" href="classomicron_1_1_ref.html#a8445eb90cc809315e968ee3edded6aa3">omicron::Ref&lt; T &gt;</a>
+: <a class="el" href="classomega_1_1xml_1_1_ti_xml_declaration.html#af3043ad984408b4437259e187daa5332">omega::xml::TiXmlDeclaration</a>
 , <a class="el" href="classomicron_1_1_aligned_box3.html#abca9d587f6ff68293e1c0c2f7378edd9">omicron::AlignedBox3</a>
-, <a class="el" href="classomega_1_1xml_1_1_ti_xml_string.html#a7dd3bb08d14972a332a62c227af97ba8">omega::xml::TiXmlString</a>
+, <a class="el" href="classomicron_1_1_ref.html#af1129817bdbdf9920b3df7a25a15f2c5">omicron::Ref&lt; T &gt;</a>
+, <a class="el" href="classomega_1_1xml_1_1_ti_xml_string.html#abb78a7c0df8fe40c04eb99e833b8f6ec">omega::xml::TiXmlString</a>
 , <a class="el" href="classomega_1_1xml_1_1_ti_xml_element.html#ae3501f8742aa8362c77e5bee2b92e152">omega::xml::TiXmlElement</a>
 , <a class="el" href="classomega_1_1xml_1_1_ti_xml_comment.html#a7bf235348f2324d91b9e919a33f46dcf">omega::xml::TiXmlComment</a>
 , <a class="el" href="classomega_1_1xml_1_1_ti_xml_text.html#ac611ab56bde13d6e4a03e8b31d75300a">omega::xml::TiXmlText</a>
-, <a class="el" href="classomega_1_1xml_1_1_ti_xml_declaration.html#af3043ad984408b4437259e187daa5332">omega::xml::TiXmlDeclaration</a>
-, <a class="el" href="classomega_1_1xml_1_1_ti_xml_unknown.html#ad21c2819b7136b86abb5835ed3686dfe">omega::xml::TiXmlUnknown</a>
 , <a class="el" href="classomega_1_1xml_1_1_ti_xml_document.html#a8415c64332b2d62bc7fe14d1481264ab">omega::xml::TiXmlDocument</a>
+, <a class="el" href="classomega_1_1xml_1_1_ti_xml_unknown.html#ad21c2819b7136b86abb5835ed3686dfe">omega::xml::TiXmlUnknown</a>
 , <a class="el" href="classomega_1_1xml_1_1_ti_xml_handle.html#a19b39488c8e98cd12f33869a2983dcdc">omega::xml::TiXmlHandle</a>
-, <a class="el" href="classomega_1_1xml_1_1_ti_xml_string.html#abb78a7c0df8fe40c04eb99e833b8f6ec">omega::xml::TiXmlString</a>
+, <a class="el" href="classomicron_1_1_ref.html#a8445eb90cc809315e968ee3edded6aa3">omicron::Ref&lt; T &gt;</a>
+, <a class="el" href="classomega_1_1xml_1_1_ti_xml_string.html#a7dd3bb08d14972a332a62c227af97ba8">omega::xml::TiXmlString</a>
 </li>
 <li>operator==()
-: <a class="el" href="classomega_1_1xml_1_1_ti_xml_attribute.html#a3e4e080d0332091f10183ff06d7f33b3">omega::xml::TiXmlAttribute</a>
+: <a class="el" href="classomicron_1_1_aligned_box3.html#a0fefeb7466c4418595f8bd6314a45b72">omicron::AlignedBox3</a>
+, <a class="el" href="classomega_1_1xml_1_1_ti_xml_attribute.html#a3e4e080d0332091f10183ff06d7f33b3">omega::xml::TiXmlAttribute</a>
 , <a class="el" href="classomicron_1_1_plane.html#ac084963fcdb504b10f6bd88eb7e40683">omicron::Plane</a>
-, <a class="el" href="classomicron_1_1_aligned_box3.html#a0fefeb7466c4418595f8bd6314a45b72">omicron::AlignedBox3</a>
 , <a class="el" href="classwiimote.html#acf277920e2c55d26c79b1cfd7e64e70b">wiimote</a>
 </li>
 <li>operator&gt;()
 : <a class="el" href="classomega_1_1xml_1_1_ti_xml_attribute.html#a4c9409cb3170c91e55a57180b3badf05">omega::xml::TiXmlAttribute</a>
 </li>
 <li>operator&gt;&gt;()
-: <a class="el" href="classomega_1_1_shared_i_stream.html#a82cdf22b672ab7f767b818b876cecc08">omega::SharedIStream</a>
+: <a class="el" href="classomega_1_1_shared_i_stream.html#a418fc3a5907e024a53cfbf5b043409f6">omega::SharedIStream</a>
 </li>
 <li>operator[]()
-: <a class="el" href="classomicron_1_1_aligned_box3.html#a2b2c9a9526b089cafd5bbf954571beaf">omicron::AlignedBox3</a>
-, <a class="el" href="classomicron_1_1_color.html#a76a64ca10347268778fac9ad30fb84cd">omicron::Color</a>
-, <a class="el" href="classomega_1_1xml_1_1_ti_xml_string.html#a334938af423dbfa574f00118469b8a21">omega::xml::TiXmlString</a>
+: <a class="el" href="classomega_1_1xml_1_1_ti_xml_string.html#a334938af423dbfa574f00118469b8a21">omega::xml::TiXmlString</a>
 , <a class="el" href="classomega_1_1_renderer_object.html#ad97fd2297c0b2554f644b3c5c4a4d655">omega::RendererObject&lt; T &gt;</a>
+, <a class="el" href="classomicron_1_1_aligned_box3.html#ad222eec399e706c23924dbf4fa38be79">omicron::AlignedBox3</a>
+, <a class="el" href="classomicron_1_1_color.html#a76a64ca10347268778fac9ad30fb84cd">omicron::Color</a>
+, <a class="el" href="classomicron_1_1_aligned_box3.html#a2b2c9a9526b089cafd5bbf954571beaf">omicron::AlignedBox3</a>
+, <a class="el" href="classomicron_1_1_color.html#ae33065a4393749ff2255284f11000137">omicron::Color</a>
 </li>
 <li>optimize
 : <a class="el" href="structcyclops_1_1_model_info.html#a36f8afdb24d1460ef9953d9dd696c6bc">cyclops::ModelInfo</a>
@@ -362,10 +382,10 @@
 : <a class="el" href="classomicron_1_1_color.html#a8f0c4161dfd7a448fbed4ad06f13441b">omicron::Color</a>
 </li>
 <li>orientation
-: <a class="el" href="struct_porthole_interface_type.html#aeb766356f7a12b6b2933449dabd809bc">PortholeInterfaceType</a>
-, <a class="el" href="structrecv__message.html#ad5ea9399304e244387a5e27590cf7ec7">recv_message</a>
-, <a class="el" href="structomicron_1_1_mocap_user.html#a78022170520fd5a97b9543ff0f66954b">omicron::MocapUser</a>
+: <a class="el" href="structrecv__message.html#ad5ea9399304e244387a5e27590cf7ec7">recv_message</a>
 , <a class="el" href="structomicron_1_1_joint.html#ab9dcfe510d493623e0e05afc24ff4b39">omicron::Joint</a>
+, <a class="el" href="struct_porthole_interface_type.html#aeb766356f7a12b6b2933449dabd809bc">PortholeInterfaceType</a>
+, <a class="el" href="structomicron_1_1_mocap_user.html#a78022170520fd5a97b9543ff0f66954b">omicron::MocapUser</a>
 </li>
 <li>original_ch1_closed
 : <a class="el" href="structlws__ext__x__google__mux__conn.html#a4690c68220dbfccc998b63048078a9ac">lws_ext_x_google_mux_conn</a>

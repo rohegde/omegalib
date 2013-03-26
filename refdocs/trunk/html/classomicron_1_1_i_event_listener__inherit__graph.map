@@ -1,5 +1,5 @@
 <map id="omicron::IEventListener" name="omicron::IEventListener">
-<area shape="rect" id="node3" href="$classomega_1_1_engine.html" title="PYAPI." alt="" coords="233,17,327,41"/>
+<area shape="rect" id="node3" href="$classomega_1_1_engine.html" title="omega::Engine" alt="" coords="233,17,327,41"/>
 <area shape="rect" id="node5" href="$classomega_toolkit_1_1ui_1_1_menu_item.html" title="omegaToolkit::ui::MenuItem" alt="" coords="201,65,359,89"/>
 <area shape="rect" id="node7" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="209,113,351,137"/>
 <area shape="rect" id="node19" href="$classomega_toolkit_1_1_ui_script_command.html" title="omegaToolkit::UiScriptCommand" alt="" coords="192,161,368,185"/>

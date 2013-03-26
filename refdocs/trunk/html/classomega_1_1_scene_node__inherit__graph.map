@@ -1,5 +1,5 @@
 <map id="omega::SceneNode" name="omega::SceneNode">
-<area shape="rect" id="node7" href="$classcyclops_1_1_entity.html" title="PYAPI." alt="" coords="499,149,592,173"/>
+<area shape="rect" id="node7" href="$classcyclops_1_1_entity.html" title="Encapsulates an osg node (or nodes) and offers a few additional functionality for them..." alt="" coords="499,149,592,173"/>
 <area shape="rect" id="node23" href="$classcyclops_1_1_light.html" title="cyclops::Light" alt="" coords="501,197,589,221"/>
 <area shape="rect" id="node25" href="$classomega_1_1_camera.html" title="omega::Camera" alt="" coords="496,245,595,269"/>
 <area shape="rect" id="node2" href="$classomega_1_1_node.html" title="PYAPI Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="195,197,282,221"/>

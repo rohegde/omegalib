@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.0</span>
+   &#160;<span id="projectnumber">3.6</span>
    </div>
   </td>
  </tr>
@@ -57,7 +57,7 @@
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;MenuManager.h&gt;</code></p>
+<p><code>#include &lt;Menu.h&gt;</code></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for omegaToolkit::ui::Menu:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -79,10 +79,15 @@
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a831387f51358cfb88cd018e1777bc980"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu.html#a831387f51358cfb88cd018e1777bc980">~Menu</a> ()</td></tr>
 <tr class="memitem:ab1556c75ea6481aa7c0282eecb051cd4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu_manager.html">MenuManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu.html#ab1556c75ea6481aa7c0282eecb051cd4">getManager</a> ()</td></tr>
 <tr class="memitem:aab684612d2df4508686b756920537ef9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu_item.html">MenuItem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu.html#aab684612d2df4508686b756920537ef9">addItem</a> (<a class="el" href="classomega_toolkit_1_1ui_1_1_menu_item.html#ae3f2271d031d040784adbf9ee9045bfe">MenuItem::Type</a> <a class="el" href="glew_8h.html#a8d78e2e8a676abd547a596dd84811285">type</a>)</td></tr>
 <tr class="memitem:ac8a310ae6b5d62d67be10b5930d7ceb9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu_item.html">MenuItem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu.html#ac8a310ae6b5d62d67be10b5930d7ceb9">addButton</a> (const String &amp;label, const String &amp;command)</td></tr>
 <tr class="memdesc:ac8a310ae6b5d62d67be10b5930d7ceb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility method to create a button.  <a href="#ac8a310ae6b5d62d67be10b5930d7ceb9"></a><br/></td></tr>
+<tr class="memitem:a1a595c553b02e55c8747589a419cb193"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu_item.html">MenuItem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu.html#a1a595c553b02e55c8747589a419cb193">addLabel</a> (const String &amp;text)</td></tr>
+<tr class="memdesc:a1a595c553b02e55c8747589a419cb193"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility method to create a label.  <a href="#a1a595c553b02e55c8747589a419cb193"></a><br/></td></tr>
+<tr class="memitem:a1c0a2199b921d73d7c48320ed584e5aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu_item.html">MenuItem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu.html#a1c0a2199b921d73d7c48320ed584e5aa">addSlider</a> (const String &amp;text, const String &amp;command)</td></tr>
+<tr class="memdesc:a1c0a2199b921d73d7c48320ed584e5aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility method to create a slider.  <a href="#a1c0a2199b921d73d7c48320ed584e5aa"></a><br/></td></tr>
 <tr class="memitem:afc9d0bf7627383d49cbd10657b57604e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu.html">Menu</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu.html#afc9d0bf7627383d49cbd10657b57604e">addSubMenu</a> (const String &amp;label)</td></tr>
 <tr class="memdesc:afc9d0bf7627383d49cbd10657b57604e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility method to create a sub-menu.  <a href="#afc9d0bf7627383d49cbd10657b57604e"></a><br/></td></tr>
 <tr class="memitem:af463058353fef8098c2de04ea265805c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu.html#af463058353fef8098c2de04ea265805c">focus</a> ()</td></tr>
@@ -118,6 +123,30 @@ Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_static_attribs_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&nbsp;Static Protected Attributes inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a436dafe8b6a5c62b5f111b644c6ed4b0 inherit pro_static_attribs_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="classomicron_1_1_reference_type.html">ReferenceType</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a436dafe8b6a5c62b5f111b644c6ed4b0">mysObjList</a></td></tr>
 </table>
+<h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a831387f51358cfb88cd018e1777bc980"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Menu::~Menu </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2>Member Function Documentation</h2>
 <a class="anchor" id="ac8a310ae6b5d62d67be10b5930d7ceb9"></a>
 <div class="memitem">
@@ -160,6 +189,52 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1a595c553b02e55c8747589a419cb193"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu_item.html">MenuItem</a> * Menu::addLabel </td>
+          <td>(</td>
+          <td class="paramtype">const String &amp;&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Utility method to create a label. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1c0a2199b921d73d7c48320ed584e5aa"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_toolkit_1_1ui_1_1_menu_item.html">MenuItem</a> * Menu::addSlider </td>
+          <td>(</td>
+          <td class="paramtype">const String &amp;&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const String &amp;&#160;</td>
+          <td class="paramname"><em>command</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Utility method to create a slider. </p>
 
 </div>
 </div>
@@ -484,8 +559,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>D:/Workspace/omegalib/core/include/omegaToolkit/ui/<a class="el" href="_menu_manager_8h.html">MenuManager.h</a></li>
-<li>D:/Workspace/omegalib/core/src/omegaToolkit/ui/<a class="el" href="_menu_manager_8cpp.html">MenuManager.cpp</a></li>
+<li>D:/Workspace/omegalib/core/include/omegaToolkit/ui/<a class="el" href="_menu_8h.html">Menu.h</a></li>
+<li>D:/Workspace/omegalib/core/src/omegaToolkit/ui/<a class="el" href="_menu_8cpp.html">Menu.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
