@@ -618,25 +618,49 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position)
 	int x = position[0] % channelWidth;
 	int y = position[1] % channelHeight;
 
-	return getViewRay(Vector2i(x, y), channelX, channelY);
+	DisplayTileConfig* dtc = myDisplayConfig.tileGrid[channelX][channelY];
+	if(dtc != NULL && !dtc->disableMouse)
+	{
+		// We found a tile in the grid that contains this mouse pointer event, and the tile mouse processing is active.
+		return getViewRay(Vector2i(x, y), dtc);
+	}
+
+	// No luck using the grid: go with the slower but generic method. Loop through the tiles until you find one that
+	// contains the pointer event.
+	typedef pair<String, DisplayTileConfig*> TileItem;
+	foreach(TileItem ti, myDisplayConfig.tiles)
+	{
+		if(!ti.second->disableMouse)
+		{
+			if(position[0] > ti.second->offset[0] &&
+				position[1] > ti.second->offset[1] &&
+				position[0] < ti.second->offset[0] + ti.second->pixelSize[0] &&
+				position[1] < ti.second->offset[1] + ti.second->pixelSize[1])
+			{
+				Vector2i pos = position - ti.second->offset;
+				return getViewRay(pos, ti.second);
+			}
+		}
+	}
+
+	// Suitable tile to process mouse pointer not found. return empty ray.
+	return Ray();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int channelY)
+Ray EqualizerDisplaySystem::getViewRay(Vector2i position, DisplayTileConfig* dtc)
 {
 	int x = position[0];
 	int y = position[1];
 
-	DisplayTileConfig* dtc = myDisplayConfig.tileGrid[channelX][channelY];
-	if(dtc == NULL)
-	{
-		ofwarn("EqualizerDisplaySystem:getViewRay: could not find channel %1% %2%", %channelX %channelY);
-		return Ray();
-	}
-
 	// Try to use the camera attached to the tile first. If the camera is not set, switch to the default camera.
 	Camera* camera = dtc->camera;
-	camera = Engine::instance()->getDefaultCamera();
+	if(camera == NULL)
+	{
+		camera = Engine::instance()->getDefaultCamera();
+	}
+
+	oassert(camera != NULL);
 
 	Vector3f head = camera->getHeadOffset();
 

@@ -138,6 +138,8 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 
 				tc->offscreen = Config::getBoolValue("offscreen", sTile, false);
 
+				tc->disableMouse = Config::getBoolValue("disableMouse", sTile, false);
+
 				//tc->viewport = Config::getVector4fValue("viewport", sTile, tc->viewport);
 
 				// If the tile config contains a size entry use it, oterwise use the default tile and bezel size data
@@ -178,6 +180,7 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 				cfg.computeTileCorners(tc);
 
 				ncfg.tiles[ncfg.numTiles] = tc;
+				tc->id = ncfg.numTiles;
 				ncfg.numTiles++;
 				cfg.numTiles++;
 			}
