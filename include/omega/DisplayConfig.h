@@ -54,12 +54,14 @@ namespace omega
 			disableScene(false), 
 			disableOverlay(false), 
 			stereoMode(Mono),
-			enabled(false)
+			enabled(false),
+			id(0)
 			 {}
 
 		StereoMode stereoMode;
 
 		String name;
+		int id;
 
 		//Vector2i index;
 		//Vector2i resolution;
@@ -83,6 +85,9 @@ namespace omega
 		bool drawStats;
 		bool disableScene;
 		bool disableOverlay;
+
+		// Disable mouse event processing for this tile
+		bool disableMouse;
 
 		bool enabled;
 
@@ -125,7 +130,7 @@ namespace omega
 		// UGLY CONSTANTS.
 		static const int MaxNodes = 64;
 		
-		DisplayConfig(): disableConfigGenerator(false), latency(1), enableSwapSync(true), forceMono(false) 
+		DisplayConfig(): disableConfigGenerator(false), latency(1), enableSwapSync(true), forceMono(false)
 		{
 			memset(tileGrid, 0, sizeof(tileGrid));
 		}		
