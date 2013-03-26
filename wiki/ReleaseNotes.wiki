@@ -6,6 +6,12 @@
 ------------------------------------------------------------------------
 = omegalib v3.6 (*current developer version*) =
 == Major Changes ==
+	* A few fixes and improvements to multipipe rendering and to mouse pointer - ray conversion. 
+	* (internal) Render pass management moved from Pipe to Window
+omegaToolkit
+	* New menu widgets: label and slider.
+	* `Slider` class accessible from Python API
+	* fixed menu deallocation when switching applications at runtime
 
 ------------------------------------------------------------------------
 = omegalib v3.5.1 =

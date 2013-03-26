@@ -1,7 +1,7 @@
 #summary Python reference: module omegaToolkit
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.5.1 - 22 March 2013</p>*
+<p>*Last revision:* ver. 3.6 - 22 March 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -62,9 +62,10 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 
 === Methods ===
 || Method(s) || Description ||
-|| `addItem(type)` || Adds an item to the menu. Type can be one of `MenuItem.Button`, `MenuItem.Checkbox`, `MenuItem.Slider`, `MenuItem.SubMenu` ||
+|| `addItem(type)` || Adds an item to the menu. Type can be one of `MenuItem.Button`, `MenuItem.Checkbox`, `MenuItem.Slider`, `MenuItem.SubMenu`, `MenuItem.Label` ||
 || `addButton(label, command)` || Convenience method for adding a button item and associating a command to it. Returns a reference to the created `MenuItem` ||
 || `addSubMenu(label)` || Convenience method for adding a sub menu. Returns a reference to the created `Menu` ||
+|| `addLabel(text)` || Convenience method for adding a label. Returns a reference to the created `MenuItem` ||
 || `show()` || Displays the menu ||
 || `hide()` || Hides the menu ||
 || `placeOnWand(event)` || Places the menu along the wand ray contained in the passed event ||
@@ -88,6 +89,8 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `isChecked()`, `setChecked(value)` || Gets or sets the checked status for checkbox menu items ||
 || `getUserTag()`, `setUserTag(value)` || Gets or sets a string user tag associated to this menu item ||
 || `getSubMenu()` || Returns the sub menu attached to this menu item. Valid only for `MenuItem.SubMenu` item types ||
+|| `getWidget()` || Returns the a reference to the widget representing this menu item ||
+|| `getSlider()` || Returns a reference to a widget slider if this menu item is a slider. Returns `None` otherwise ||
 
 -------------------------------------------------------------------------------
 ==  `class Container3dSettings` ==
@@ -138,6 +141,8 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `setVisible(visible)`, `isVisible()` || Gets or sets the visibility for the widget ||
 || `setPosition(position)`, `getPosition()` || Gets or sets the widget position in pixels as a `Vector2` value ||
 || `getSize()`, `'getSize(size)` || Gets or sets the size of the widget in pixels as a `Vector2` value ||
+|| `getWidth()`, `'setWidth(value)` || Gets or sets the widget width ||
+|| `getHeight()`, `'setHeight(value)` || Gets or sets the widget height ||
 || `setName(name)`, `getName()` || Gets or sets the widget name ||
 || `setStyle(style)` || Sets one or more widget styles as `key: value` pairs ||
 || `refresh()` || Forces a widget refresh ||
@@ -200,6 +205,14 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 === Methods ===
 || Method(s) || Description ||
 || `getText()`, `setText(name)` || Gets or sets the label for the label||
+|| `setColor(color)` || Sets the label color. Exaample: `label.setColor(Color('white'))` ||
+|| `setFont(fontName)` || Sets the label font using a `<font> <size>` string. Example: `label.setFont('fonts/arial.ttf 20'')` ||
+
+---------------------------------------------------------------------------------------------------
+==  `class Slider` (extends `Widget`) ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_slider.html omegaTookit::ui::Slider] C++ class. 
+=== Methods ===
+|| Method(s) || Description ||
 || `setColor(color)` || Sets the label color. Exaample: `label.setColor(Color('white'))` ||
 || `setFont(fontName)` || Sets the label font using a `<font> <size>` string. Example: `label.setFont('fonts/arial.ttf 20'')` ||
 
