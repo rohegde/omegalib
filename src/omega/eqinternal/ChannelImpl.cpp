@@ -80,8 +80,8 @@ bool ChannelImpl::configInit(const eq::uint128_t& initID)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128_t& spin)
 {
-    PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-    Renderer* client = pipe->getClient();
+    WindowImpl* window = static_cast<WindowImpl*>(getWindow());
+    Renderer* client = window->getRenderer();
 
 	EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
 	const DisplayConfig& dcfg = ds->getDisplayConfig();
@@ -92,7 +92,7 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 
     eq::PixelViewport pvp = getPixelViewport();
 
-    context->gpuContext = pipe->getGpuContext();
+    context->gpuContext = client->getGpuContext();
 	context->renderer = (Renderer*)client;
 
     // setup the context viewport.
@@ -191,8 +191,8 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 	if(ds->getDisplayConfig().forceMono && getEye() != eq::fabric::EYE_LAST) return;
 
     //ofmsg("frameDraw: channel %1% frame %2%", %this %frameID);
-    PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-    Renderer* client = pipe->getClient();
+    //PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+    //Renderer* client = pipe->getClient();
 
     setupDrawContext(&myDC, frameID);
 
@@ -219,14 +219,14 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 
 	// Draw scene
 	myDC.task = DrawContext::SceneDrawTask;
-	client->draw(myDC);
+	myDC.renderer->draw(myDC);
 
 	// Draw overlay when drawing stereo, otherwise we will do a single overlay drawing pass in
 	// frameViewFinish
     if(getEye() != eq::fabric::EYE_CYCLOP)
     {
         myDC.task = DrawContext::OverlayDrawTask;
-        getClient()->draw(myDC);
+        myDC.renderer->draw(myDC);
     }
 }
 
@@ -244,9 +244,9 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
     EQ_GL_CALL( applyViewport( ));
     EQ_GL_CALL( setupAssemblyState( ));
 
-    getClient()->draw(myDC);
+    myDC.renderer->draw(myDC);
 
-	EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)getClient()->getDisplaySystem();
+	EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)myDC.renderer->getDisplaySystem();
 
 	if(myDC.tile->drawStats)
     {
@@ -267,7 +267,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 		{
 			if(myStatsTexture != NULL)
 			{
-				Renderer* r = (Renderer*)getClient();
+				Renderer* r = myDC.renderer;
 				DrawInterface* di = r->getRenderer();
 				di->beginDraw2D(myDC);
 				di->drawRectTexture(myStatsTexture, omicron::Vector2f::Zero(), omicron::Vector2f(myDC.tile->pixelSize[0], myDC.tile->pixelSize[1]), DrawInterface::FlipY);
@@ -300,10 +300,10 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-omega::Renderer* ChannelImpl::getClient()
+omega::Renderer* ChannelImpl::getRenderer()
 {
-    PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-    return pipe->getClient();
+    WindowImpl* window = static_cast<WindowImpl*>(getWindow());
+    return window->getRenderer();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -457,7 +457,7 @@ const Color& StatisticGetColor( const Statistic::Type type )
 
 void ChannelImpl::drawStats()
 {
-	EqualizerDisplaySystem* eqds = dynamic_cast<EqualizerDisplaySystem*>(getClient()->getDisplaySystem());
+	EqualizerDisplaySystem* eqds = dynamic_cast<EqualizerDisplaySystem*>(myDC.renderer->getDisplaySystem());
 
 	bool allStats = eqds->isStatEnabled("all");
 	bool compact = eqds->isStatEnabled("compact");
@@ -476,7 +476,7 @@ void ChannelImpl::drawStats()
     if( statistics.empty( )) 
         return;
 
-	Renderer* r = (Renderer*)getClient();
+	Renderer* r = myDC.renderer;
 	DrawInterface* di = r->getRenderer();
 
 	di->beginDraw2D(myDC);

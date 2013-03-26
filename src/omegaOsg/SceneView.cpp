@@ -153,6 +153,24 @@ void SceneView::setSceneData(osg::Node* node)
     
     // add the new one in.
     _camera->addChild(node);
+
+    if (_camera.valid() && _initVisitor.valid())
+    {
+        _initVisitor->reset();
+		_initVisitor->setDatabaseRequestHandler(_databasePager);
+        _initVisitor->setFrameStamp(_frameStamp.get());
+        
+        GLObjectsVisitor* dlv = dynamic_cast<GLObjectsVisitor*>(_initVisitor.get());
+        if (dlv) dlv->setState(_renderInfo.getState());
+        
+        if (_frameStamp.valid())
+        {
+             _initVisitor->setTraversalNumber(_frameStamp->getFrameNumber());
+        }
+        
+        _camera->accept(*_initVisitor.get());
+        
+    } 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,9 +199,8 @@ void SceneView::initialize()
 	_cullVisitor->setDatabaseRequestHandler(_databasePager);
 	// Disable default computing of near/far plane: Equalizer takes care of this.
 
-	//_cullVisitor->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
-
-	//_cullVisitor->setCullingMode(osg::CullSettings::ENABLE_ALL_CULLING);
+	_cullVisitor->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
+	_cullVisitor->setCullingMode(osg::CullSettings::ENABLE_ALL_CULLING);
 
     _cullVisitor->setStateGraph(_stateGraph.get());
     _cullVisitor->setRenderStage(_renderStage.get());
@@ -192,24 +209,6 @@ void SceneView::initialize()
 
     // Do not clear the frame buffer - the omegalib engine takes care of this.
 	_camera->setClearMask(0);
-
-    if (_camera.valid() && _initVisitor.valid())
-    {
-        _initVisitor->reset();
-		_initVisitor->setDatabaseRequestHandler(_databasePager);
-        _initVisitor->setFrameStamp(_frameStamp.get());
-        
-        GLObjectsVisitor* dlv = dynamic_cast<GLObjectsVisitor*>(_initVisitor.get());
-        if (dlv) dlv->setState(_renderInfo.getState());
-        
-        if (_frameStamp.valid())
-        {
-             _initVisitor->setTraversalNumber(_frameStamp->getFrameNumber());
-        }
-        
-        _camera->accept(*_initVisitor.get());
-        
-    } 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -85,13 +85,14 @@ void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		mySceneView->getState()->setContextID(context.tile->id);
 		mySceneView->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
 		mySceneView->setProjectionMatrix(buildOsgMatrix(context.projection.matrix()));
 		mySceneView->setViewMatrix(buildOsgMatrix(context.modelview.matrix()));
 		mySceneView->setAutoNearFar(myModule->getAutoNearFar());
 		//mySceneView->setDrawBufferValue(context.drawBuffer->getContext()->getId());
 
-		if(mySceneView->getSceneData() == NULL)
+		if(mySceneView->getSceneData() == NULL || mySceneView->getSceneData() != myModule->getRootNode())
 		{
 			osg::Node* root = myModule->getRootNode();
 			mySceneView->setSceneData(root);
@@ -101,7 +102,9 @@ void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 		myModule->getDatabasePager()->signalBeginFrame(myModule->getFrameStamp());
 
 		if(getstats) myTimer.start();
+
 		mySceneView->cull(context.eye);
+
 		if(getstats)
 		{
 			myTimer.stop();
