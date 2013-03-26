@@ -56,6 +56,8 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def_readwrite("fragmentShaderSource", &ProgramAsset::fragmentShaderSource)
 		.def_readwrite("embedded", &ProgramAsset::embedded);
 
+	PYAPI_REF_BASE_CLASS(ModelLoader);
+
 	// SceneManager
 	void (SceneManager::*loadModelAsync1)(ModelInfo*, const String&) = &SceneManager::loadModelAsync;
 	PYAPI_REF_BASE_CLASS(SceneManager)
@@ -65,6 +67,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def("loadModelAsync", loadModelAsync1)
 		PYAPI_METHOD(SceneManager, setBackgroundColor)
 		PYAPI_METHOD(SceneManager, loadScene)
+		PYAPI_METHOD(SceneManager, addLoader)
 		PYAPI_METHOD(SceneManager, unload)
 		PYAPI_METHOD(SceneManager, setSkyBox)
 		PYAPI_METHOD(SceneManager, displayWand)
