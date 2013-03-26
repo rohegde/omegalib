@@ -987,10 +987,10 @@ void SceneManager::recompileShaders()
 	{
 		lightFunc.append(l->getLightFunction());
 	}
-#ifdef OMEGA_OS_LINUX
-	std::tr1::hash<String> hashFx;
-#else
+#ifdef OMEGA_OS_WIN
 	std::hash<String> hashFx;
+#else
+	std::tr1::hash<String> hashFx;
 #endif
 	size_t lightFuncHash = hashFx(lightFunc);
 
