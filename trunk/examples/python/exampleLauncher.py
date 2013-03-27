@@ -16,31 +16,31 @@ def _onLauncherStart():
 	# billboard app
 	mi = sysmnu.addButton("Billboard", "_startApp('./billboard.py')")
 	i = loadImage("app.png")
-	mi.setIcon(i)
+	mi.setImage(i)
 	mi.getButton().getImage().setSize(ics)
 
 	# multilight app
 	mi = sysmnu.addButton("Multilight", "_startApp('./multilight.py')")
 	i = loadImage("app.png")
-	mi.setIcon(i)
+	mi.setImage(i)
 	mi.getButton().getImage().setSize(ics)
 
 	# embedded shader app
 	mi = sysmnu.addButton("Embedded Shader", "_startApp('./embeddedShader.py')")
 	i = loadImage("app.png")
-	mi.setIcon(i)
+	mi.setImage(i)
 	mi.getButton().getImage().setSize(ics)
 	
 	# fxdemo app
 	mi = sysmnu.addButton("Effects", "_startApp('./fxdemo.py')")
 	i = loadImage("app.png")
-	mi.setIcon(i)
+	mi.setImage(i)
 	mi.getButton().getImage().setSize(ics)
 	
 	# loadModel app
 	mi = sysmnu.addButton("Model Loader", "_startApp('./loadModel.py')")
 	i = loadImage("app.png")
-	mi.setIcon(i)
+	mi.setImage(i)
 	mi.getButton().getImage().setSize(ics)
 	
 def _startApp(appScript):

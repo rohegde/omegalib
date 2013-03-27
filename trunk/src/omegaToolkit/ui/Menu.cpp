@@ -77,6 +77,13 @@ MenuItem::MenuItem(Type type, Menu* owner):
 		myLabel->setText("Label");
 		myWidget = myLabel;
 	}
+	else if(type == MenuItem::Image)
+	{
+		myImage = wf->createImage("img", myMenu->myContainer);
+		myWidget = myImage;
+	}
+
+	//myWidget->setStyleValue("fill", "#00000090");
 
 	myWidget->setAutosize(true);
 }
@@ -113,9 +120,10 @@ void MenuItem::setDescription(const String& value)
 }
 		
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MenuItem::setIcon(PixelData* icon)
+void MenuItem::setImage(PixelData* image)
 {
-	if(myButton != NULL) myButton->setIcon(icon);
+	if(myButton != NULL) myButton->setIcon(image);
+	else if(myImage != NULL) myImage->setData(image);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -196,16 +204,14 @@ Menu::Menu(const String& name, MenuManager* manager):
 {
 	UiModule* ui = UiModule::instance();
 	WidgetFactory* wf = ui->getWidgetFactory();
-	myContainer = wf->createPanel("container", ui->getUi());
+	myContainer = wf->createContainer("container", ui->getUi(), Container::LayoutVertical);
 	myContainer->setPosition(Vector2f(10, 10));
-
-	myLabelWidget = wf->createLabel("menuLabel", myContainer, "Omegalib " + String(OMEGA_VERSION));
-	myLabelWidget->setStyle("border-bottom: 2 white");
+	myContainer->setStyleValue("fill", "#00000090");
+	//myContainer->setLayout(Container::LayoutHorizontal);
 
 	my3dSettings.enable3d = MenuManager::instance()->is3dMenuEnabled();
 	myContainer->setAutosize(true);
 	myContainer->setHorizontalAlign(Container::AlignLeft);
-	//myContainer->setMargin(30);
 
 	// By default menus are attached to the default camera.
 	my3dSettings.node = manager->getEngine()->getDefaultCamera();
@@ -216,20 +222,6 @@ Menu::~Menu()
 {
 	ofmsg("~Menu %1%", %myName);
 	myContainer->getContainer()->removeChild(myContainer);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Menu::setLabel(const String& label)
-{
-	myLabelWidget->setText(label);
-	if(label != "") myLabelWidget->setVisible(true);
-	else myLabelWidget->setVisible(false);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-String Menu::getLabel() 
-{ 
-	return 	myLabelWidget->getText();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -258,11 +250,19 @@ MenuItem* Menu::addLabel(const String& text)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-MenuItem* Menu::addSlider(const String& text, const String& command)
+MenuItem* Menu::addSlider(int ticks, const String& command)
 {
 	MenuItem* item = addItem(MenuItem::Slider);
-	item->setText(text);
+	item->getSlider()->setTicks(ticks);
 	item->setCommand(command);
+	return item;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+MenuItem* Menu::addImage(PixelData* image)
+{
+	MenuItem* item = addItem(MenuItem::Image);
+	item->setImage(image);
 	return item;
 }
 

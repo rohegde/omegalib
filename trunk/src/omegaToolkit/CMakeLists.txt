@@ -47,7 +47,6 @@ set( srcs
 		
 		# omega::ui
 		ui/AbstractButton.cpp
-		ui/BareboneSkin.cpp
 		ui/Button.cpp
 		ui/Container.cpp
 		ui/Image.cpp
@@ -78,7 +77,6 @@ set( headers
 		
 		# omega::ui
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/AbstractButton.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/BareboneSkin.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Button.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Container.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Image.h

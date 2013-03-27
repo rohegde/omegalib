@@ -53,7 +53,7 @@ namespace omegaToolkit { namespace ui {
 	{
 	friend class Menu;
 	public:
-		enum Type { Button, Checkbox, Slider, Label, SubMenu };
+		enum Type { Button, Checkbox, Slider, Label, SubMenu, Image };
 
 	public:
 		MenuItem(Type type, Menu* owner);
@@ -93,12 +93,14 @@ namespace omegaToolkit { namespace ui {
 
 		//omegaToolkit::ui::Container* getContainerWidget();
 
-		void setIcon(PixelData* icon);
+		//! Sets the image for this menu item. Image and Button menu items support images
+		void setImage(PixelData* image);
 
 		omegaToolkit::ui::Widget* getWidget() { return myWidget; }
 		omegaToolkit::ui::Slider* getSlider() { return mySlider; }
 		omegaToolkit::ui::Label* getLabel() { return myLabel; }
 		omegaToolkit::ui::Button* getButton() { return myButton; }
+		omegaToolkit::ui::Image* getImage() { return myImage; }
 
 		Menu* getSubMenu() { return mySubMenu; }
 
@@ -125,6 +127,7 @@ namespace omegaToolkit { namespace ui {
 		Ref<omegaToolkit::ui::Button> myButton;
 		Ref<omegaToolkit::ui::Label> myLabel;
 		Ref<omegaToolkit::ui::Slider> mySlider;
+		Ref<omegaToolkit::ui::Image> myImage;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,7 +146,9 @@ namespace omegaToolkit { namespace ui {
 		//! Utility method to create a label
 		MenuItem* addLabel(const String& text);
 		//! Utility method to create a slider
-		MenuItem* addSlider(const String& text, const String& command);
+		MenuItem* addSlider(int ticks, const String& command);
+		//! Utility method to create an image
+		MenuItem* addImage(PixelData* image);
 		//! Utility method to create a sub-menu
 		Menu* addSubMenu(const String& label);
 
@@ -164,8 +169,8 @@ namespace omegaToolkit { namespace ui {
 		omegaToolkit::ui::Container* getContainer() { return myContainer; }
 		omegaToolkit::ui::Container3dSettings& get3dSettings() { return my3dSettings; }
 
-		void setLabel(const String& label);
-		String getLabel();
+		//void setLabel(const String& label);
+		//String getLabel();
 
 	private:
 		Menu(const String& name, MenuManager* manager);
@@ -187,7 +192,7 @@ namespace omegaToolkit { namespace ui {
 
 		bool myVisible;
 
-		Ref<omegaToolkit::ui::Label> myLabelWidget;
+		//Ref<omegaToolkit::ui::Label> myLabelWidget;
 		Ref<omegaToolkit::ui::Container> myContainer;
 		omegaToolkit::ui::Container3dSettings my3dSettings;
 	};
