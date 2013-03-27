@@ -57,7 +57,7 @@ bool sAddScriptDirectoryToData = true;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class OmegaViewer: public EngineModule, IAppDrawerListener
+class OmegaViewer: public EngineModule
 {
 public:
 	OmegaViewer();
@@ -65,24 +65,13 @@ public:
 	{}
 
 	virtual void initialize();
-	void update(const UpdateContext& context);
-	virtual void handleEvent(const Event& evt);
 	virtual bool handleCommand(const String& cmd);
 
 	String getAppStartCommand() { return myAppStartFunctionCall; }
 	void setAppStartCommand(const String cmd) { myAppStartFunctionCall = cmd; }
 
-
-	AppDrawer* getAppDrawer() { return myAppDrawer; }
-	virtual void startApp(AppInfo* app);
-
-	void setAppDrawerToggleButton(Event::Flags value) { myAppDrawerToggleButton = value; }
-	Event::Flags getAppDrawerToggleButton() { return myAppDrawerToggleButton; }
-
 private:
-	Ref<AppDrawer> myAppDrawer;
-	Ref<UiModule> myUi;
-	Event::Flags myAppDrawerToggleButton;
+	//Ref<UiModule> myUi;
 	String myAppStartFunctionCall;
 };
 
@@ -97,11 +86,8 @@ BOOST_PYTHON_MODULE(omegaViewer)
 {
 	// OmegaViewer
 	PYAPI_REF_BASE_CLASS(OmegaViewer)
-		PYAPI_METHOD(OmegaViewer, getAppDrawerToggleButton)
-		PYAPI_METHOD(OmegaViewer, setAppDrawerToggleButton)
 		PYAPI_METHOD(OmegaViewer, getAppStartCommand)
 		PYAPI_METHOD(OmegaViewer, setAppStartCommand)
-		PYAPI_REF_GETTER(OmegaViewer, getAppDrawer)
 		;
 
 	def("getViewer", getViewer, PYAPI_RETURN_REF);
@@ -110,18 +96,12 @@ BOOST_PYTHON_MODULE(omegaViewer)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OmegaViewer::OmegaViewer()
 {
-	myAppDrawerToggleButton = Event::Button3;
-
 	gViewerInstance = this;
 
 	// If I create t here, UiModule will be registered as a core module and won't be 
 	// deallocated between application switches.
-	myUi = new UiModule();
-	ModuleServices::addModule(myUi);
-
-	myAppDrawer = new AppDrawer(SystemManager::instance()->getScriptInterpreter(), myUi);
-	myAppDrawer->setListener(this);
-	//myAppDrawer = NULL;
+	//myUi = new UiModule();
+	//ModuleServices::addModule(myUi);
 }
 
 
@@ -150,13 +130,6 @@ void OmegaViewer::initialize()
 		myAppStartFunctionCall = Config::getStringValue("appStartFunction", s, myAppStartFunctionCall);
     }
 
-	cfg = SystemManager::instance()->getSystemConfig();
-    if(cfg->exists("config/appDrawer"))
-    {
-        Setting& s = cfg->lookup("config/appDrawer");
-		myAppDrawerToggleButton = Event::parseButtonName(Config::getStringValue("appDrawerToggleButton", s, "Button3"));
-    }
-
 	// Initialize the python wrapper module for this class.
 	initomegaViewer();
 
@@ -173,8 +146,6 @@ void OmegaViewer::initialize()
 		interp->queueCommand(ostr(":r %1%", %sDefaultScript));
 	}
 
-	if(myAppDrawer != NULL)	myAppDrawer->initialize();
-
 	omsg("---------------------------------------------------------------------");
 	omsg("Welcome to orun!");
 	omsg("\tomegalib version " OMEGA_VERSION);
@@ -185,52 +156,6 @@ void OmegaViewer::initialize()
 	omsg("\tType :? ./C [prefix] to list global symbols or object members starting with `prefix`");
 	omsg("\t\texample :? . si");
 	omsg("\t\texample :? SceneNode set");
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void OmegaViewer::startApp(AppInfo* app)
-{
-	SystemManager* sys = SystemManager::instance();
-	PythonInterpreter* interp = sys->getScriptInterpreter();
-	interp->queueCommand(myAppStartFunctionCall, true);
-	interp->cleanRun(app->name);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void OmegaViewer::update(const UpdateContext& context)
-{
-	if(myAppDrawer != NULL) 
-	{
-		myAppDrawer->update(context);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void OmegaViewer::handleEvent(const Event& evt)
-{
-	// '`' key toggles app drawer.
-	if(evt.isButtonDown(myAppDrawerToggleButton))
-	{
-		if(myAppDrawer != NULL) 
-		{
-			if(myAppDrawer->isVisible()) myAppDrawer->hide();
-			else  myAppDrawer->show();
-		}
-	}
-	if(myAppDrawer->isVisible())
-	{
-		myAppDrawer->handleEvent(evt);
-		// When the app drawer is open, it consumes all events.
-		evt.setProcessed();
-	}
-	//if(evt.getServiceType() == Service::UI) 
-	//{
-	//	handleUIEvent(evt);
-	//}
-	//else
-	//{
-	//	EngineClient::handleEvent(evt);
-	//}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
