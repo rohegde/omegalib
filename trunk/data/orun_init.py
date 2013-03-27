@@ -15,14 +15,18 @@ def _onAppStart():
     # mm = getViewer().getMenuManager()
 	mm = MenuManager.createAndInitialize()
 	mainmnu = mm.createMenu("Main Menu")
+	
+	mi = mainmnu.addImage(loadImage("omegalib-transparent-white.png"))
+	ics = mi.getImage().getSize() * 0.1
+	mi.getImage().setSize(ics)
+	
 	mm.setMainMenu(mainmnu)
 	sysmnu = mainmnu.addSubMenu("System")
 	mi = sysmnu.addButton("Toggle freefly", ":freefly")
 	global speedLabel
 	speedLabel = sysmnu.addLabel("sd")
 	_setCamSpeed(4)
-	ss = sysmnu.addSlider("speed", "_setCamSpeed(%value%)")
-	ss.getSlider().setTicks(10)
+	ss = sysmnu.addSlider(10, "_setCamSpeed(%value%)")
 	ss.getSlider().setValue(4)
 	ss.getWidget().setWidth(200)
 	
