@@ -35,7 +35,6 @@
 #include "omegaToolkit/UiModule.h"
 #include "omegaToolkit/ui/MenuManager.h"
 #include "omegaToolkit/ToolkitUtils.h"
-#include "omegaToolkit/AppDrawer.h"
 
 #ifdef OMEGA_USE_PYTHON
 
@@ -269,26 +268,6 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(Label, setColor)
 		PYAPI_METHOD(Label, setFont)
 		PYAPI_METHOD(Label, getFont)
-		;
-		
-	// App drawer
-	PYAPI_REF_BASE_CLASS(AppDrawer)
-		PYAPI_METHOD(AppDrawer, show)
-		PYAPI_METHOD(AppDrawer, hide)
-		PYAPI_METHOD(AppDrawer, isVisible)
-		PYAPI_METHOD(AppDrawer, addApp)
-		PYAPI_METHOD(AppDrawer, setDrawerScale)
-		PYAPI_METHOD(AppDrawer, getDrawerScale)
-		PYAPI_METHOD(AppDrawer, getIconSize)
-		PYAPI_METHOD(AppDrawer, setIconSize)
-		PYAPI_REF_GETTER(AppDrawer, getContainer)
-		;
-
-	// AppInfo
-	PYAPI_REF_BASE_CLASS_WITH_CTOR(AppInfo)
-		PYAPI_PROPERTY(AppInfo, name)
-		PYAPI_PROPERTY(AppInfo, label)
-		PYAPI_PROPERTY(AppInfo, iconFile)
 		;
 }
 
