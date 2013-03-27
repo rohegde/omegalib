@@ -88,11 +88,6 @@ namespace omegaToolkit { namespace ui
 			return c;
 		}
 
-		virtual Container* createPanel(String name, Container* container)
-		{
-			return createContainer(name, container);
-		}
-
 	private:
 		Engine* myServer;
 	};

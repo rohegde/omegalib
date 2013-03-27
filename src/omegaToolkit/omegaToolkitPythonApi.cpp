@@ -127,11 +127,12 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_REF_GETTER(Menu, addSubMenu)
 		PYAPI_REF_GETTER(Menu, addLabel)
 		PYAPI_REF_GETTER(Menu, addSlider)
+		PYAPI_REF_GETTER(Menu, addImage)
 		PYAPI_METHOD(Menu, show)
 		PYAPI_METHOD(Menu, hide)
 		PYAPI_METHOD(Menu, isVisible)
-		PYAPI_METHOD(Menu, setLabel)
-		PYAPI_METHOD(Menu, getLabel)
+		//PYAPI_METHOD(Menu, setLabel)
+		//PYAPI_METHOD(Menu, getLabel)
 		PYAPI_METHOD(Menu, placeOnWand)
 		;
 
@@ -142,6 +143,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_REF_GETTER(MenuItem, getButton)
 		PYAPI_REF_GETTER(MenuItem, getLabel)
 		PYAPI_REF_GETTER(MenuItem, getSlider)
+		PYAPI_REF_GETTER(MenuItem, getImage)
 		PYAPI_GETTER(MenuItem, getText)
 		PYAPI_METHOD(MenuItem, setText)
 		PYAPI_GETTER(MenuItem, getDescription)
@@ -152,7 +154,7 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(MenuItem, isChecked)
 		PYAPI_METHOD(MenuItem, setUserTag)
 		PYAPI_GETTER(MenuItem, getUserTag)
-		PYAPI_GETTER(MenuItem, setIcon)
+		PYAPI_GETTER(MenuItem, setImage)
 		;
 
 	// Container3dSettings
@@ -182,7 +184,6 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_REF_GETTER(WidgetFactory, createImage)
 		PYAPI_REF_GETTER(WidgetFactory, createLabel)
 		PYAPI_REF_GETTER(WidgetFactory, createContainer)
-		PYAPI_REF_GETTER(WidgetFactory, createPanel)
 		;
 
 	// Widget

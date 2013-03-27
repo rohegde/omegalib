@@ -89,16 +89,6 @@ namespace omegaToolkit { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class DefaultPanel: public Container
-	{
-	friend class DefaultPanelRenderable;
-	public:
-		DefaultPanel(Engine* srv): Container(srv) {}
-		virtual ~DefaultPanel() {}
-		virtual Renderable* createRenderable() { return new DefaultPanelRenderable(this); }
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	class DefaultWidgetFactory: public WidgetFactory
 	{
 	public:
@@ -118,14 +108,6 @@ namespace omegaToolkit { namespace ui {
 			Slider* slider = new DefaultSlider(getEngine());
 			container->addChild(slider);
 			return slider;
-		}
-
-		virtual Container* createPanel(String name, Container* container)
-		{
-			Container* panel = new DefaultPanel(getEngine());
-			panel->setLayout(Container::LayoutVertical);
-			container->addChild(panel);
-			return panel;
 		}
 	};
 };};
