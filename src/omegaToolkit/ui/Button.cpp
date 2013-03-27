@@ -38,6 +38,8 @@ Button::Button(Engine* srv):
 	myLabel(srv),
 	myImage(srv)
 {
+	myLabel.ref();
+	myImage.ref();
 	//addChild(&myLabel);
 	//myLabel.setText(name);
 	setMaximumHeight(22);
@@ -61,6 +63,8 @@ void Button::autosize(Renderer* r)
 	Vector2f size = myLabel.getSize();
 	size[0] += myImage.getSize()[0];
 	size[1] = max(size[1], myImage.getSize()[1]);
+	myLabel.setHeight(size[1]);
+	myImage.setHeight(size[1]);
 	if(myCheckable)
 	{
 		size += Vector2f(20, 4);

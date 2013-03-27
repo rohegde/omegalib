@@ -238,7 +238,7 @@ void Container::autosize(Renderer* r)
 		width = maxwidth;
 		foreach(Widget* w, myChildren)
 		{
-			//w->setActualSize(maxwidth, Horizontal);
+			w->setActualSize(maxwidth, Horizontal);
 		}
 	}
 
@@ -305,13 +305,13 @@ void Container::updateChildrenLayoutPosition(Orientation orientation)
 	if((orientation == Horizontal && myHorizontalAlign == AlignLeft) ||
 		(orientation == Vertical && myVerticalAlign == AlignTop))
 	{
-		p = myPadding;
+		p = myMargin;
 	}
 	else if((orientation == Horizontal && myHorizontalAlign == AlignRight) ||
 		(orientation == Vertical && myVerticalAlign == AlignBottom))
 	{
 		float size = (orientation == Horizontal ? getWidth(): getHeight());
-		p = size - myPadding;
+		p = size - myMargin;
 		foreach(Widget* w, myChildren)
 		{
 			float csize = (orientation == Horizontal ? w->getWidth(): w->getHeight());
@@ -321,12 +321,12 @@ void Container::updateChildrenLayoutPosition(Orientation orientation)
 	else
 	{
 		// TODO: Compute center align start position
-		p = myPadding;
+		p = myMargin;
 	}
 	foreach(Widget* w, myChildren)
 	{
 		w->setPosition(p, orientation);
-		p += w->getSize()[orientation] + myMargin;
+		p += w->getSize()[orientation] + myPadding;
 	}
 }
 
@@ -347,7 +347,7 @@ void Container::updateChildrenFreeBounds(Orientation orientation)
 		if((orientation == Horizontal && myHorizontalAlign == AlignLeft) ||
 			(orientation == Vertical && myVerticalAlign == AlignTop))
 		{
-			pos = 0;
+			pos = myMargin;
 		}
 		else if((orientation == Horizontal && myHorizontalAlign == AlignRight) ||
 			(orientation == Vertical && myVerticalAlign == AlignBottom))

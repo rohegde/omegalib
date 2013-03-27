@@ -199,11 +199,13 @@ Menu::Menu(const String& name, MenuManager* manager):
 	myContainer = wf->createPanel("container", ui->getUi());
 	myContainer->setPosition(Vector2f(10, 10));
 
-	myLabelWidget = wf->createLabel("menuLabel", myContainer, "Menu");
+	myLabelWidget = wf->createLabel("menuLabel", myContainer, "Omegalib " + String(OMEGA_VERSION));
 	myLabelWidget->setStyle("border-bottom: 2 white");
 
 	my3dSettings.enable3d = MenuManager::instance()->is3dMenuEnabled();
 	myContainer->setAutosize(true);
+	myContainer->setHorizontalAlign(Container::AlignLeft);
+	//myContainer->setMargin(30);
 
 	// By default menus are attached to the default camera.
 	my3dSettings.node = manager->getEngine()->getDefaultCamera();

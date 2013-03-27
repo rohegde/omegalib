@@ -212,6 +212,7 @@ void PythonInterpreter::initialize(const char* programName)
 	Py_DECREF(wrapperErr);
 
 	addPythonPath("./");
+	addPythonPath(OMEGA_DATA_PATH);
 
 #ifdef OMEGA_APPROOT_DIRECTORY
 	addPythonPath(OMEGA_APPROOT_DIRECTORY);

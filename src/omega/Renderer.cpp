@@ -145,10 +145,12 @@ void Renderer::finishFrame(const FrameInfo& frame)
 	}
 
 	// Dispose of unused textures
+	List<Texture*> txlist;
 	foreach(Texture* tex, myTextures)
 	{
-		if(tex->refCount() == 1) myTextures.remove(tex);
+		if(tex->refCount() == 1) txlist.push_back(tex);
 	}
+	foreach(Texture* tex, txlist) myTextures.remove(tex);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

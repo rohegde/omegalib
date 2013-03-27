@@ -69,6 +69,10 @@ public:
 	virtual void handleEvent(const Event& evt);
 	virtual bool handleCommand(const String& cmd);
 
+	String getAppStartCommand() { return myAppStartFunctionCall; }
+	void setAppStartCommand(const String cmd) { myAppStartFunctionCall = cmd; }
+
+
 	AppDrawer* getAppDrawer() { return myAppDrawer; }
 	virtual void startApp(AppInfo* app);
 
@@ -95,6 +99,8 @@ BOOST_PYTHON_MODULE(omegaViewer)
 	PYAPI_REF_BASE_CLASS(OmegaViewer)
 		PYAPI_METHOD(OmegaViewer, getAppDrawerToggleButton)
 		PYAPI_METHOD(OmegaViewer, setAppDrawerToggleButton)
+		PYAPI_METHOD(OmegaViewer, getAppStartCommand)
+		PYAPI_METHOD(OmegaViewer, setAppStartCommand)
 		PYAPI_REF_GETTER(OmegaViewer, getAppDrawer)
 		;
 

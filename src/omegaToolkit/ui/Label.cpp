@@ -67,6 +67,7 @@ void Label::autosize(Renderer* r)
 		{
 			Vector2f size = font->computeSize(myText);
 			size += Vector2f(myAutosizeHorizontalPadding, myAutosizeVerticalPadding);
+			//if(size[0] > mySize[0] || size[1] > mySize[1])	
 			setSize(size);
 
 			//ofmsg("Label size %1%", %size);
