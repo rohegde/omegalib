@@ -12,20 +12,22 @@ def _setCamSpeed(speedLevel):
 		cc.setSpeed(s)
 
 def _onAppStart():
+    # mm = getViewer().getMenuManager()
 	mm = MenuManager.createAndInitialize()
 	mainmnu = mm.createMenu("Main Menu")
 	mm.setMainMenu(mainmnu)
-
 	sysmnu = mainmnu.addSubMenu("System")
 	mi = sysmnu.addButton("Toggle freefly", ":freefly")
-
 	global speedLabel
 	speedLabel = sysmnu.addLabel("sd")
-	_setCamSpeed(1)
+	_setCamSpeed(4)
 	ss = sysmnu.addSlider("speed", "_setCamSpeed(%value%)")
 	ss.getSlider().setTicks(10)
-	ss.getSlider().setValue(5)
+	ss.getSlider().setValue(4)
 	ss.getWidget().setWidth(200)
+	
+	mi = sysmnu.addButton("Exit omegalib", "oexit()")
+	
 
 # If config says to start mission control server, do it now.
 if(getBoolSetting("config/missionControl", "serverEnabled", False)): mcstart()
