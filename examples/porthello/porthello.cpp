@@ -29,6 +29,7 @@
  *********************************************************************************************************************/
 #include <omega.h>
 #include <omegaGl.h>
+#include <omegaToolkit.h>
 #include <iostream>
 
 using namespace omega;

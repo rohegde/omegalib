@@ -40,6 +40,6 @@ SET( headers
 add_executable(portholeCustomDraw ${srcs} ${headers})
 set_target_properties(portholeCustomDraw PROPERTIES FOLDER examples)
 target_link_libraries(portholeCustomDraw
-	omega omegaOsg cyclops)
+	omega omegaToolkit omegaOsg cyclops)
 
 

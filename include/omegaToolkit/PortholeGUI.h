@@ -28,6 +28,7 @@
 #ifndef __PORTHOLE_GUI_H__
 #define __PORTHOLE_GUI_H__
 
+#include "omegaToolkitConfig.h"
 #include "omega/Camera.h"
 #include "omega/Application.h"
 #include "omega/PythonInterpreter.h"
@@ -209,7 +210,7 @@ namespace omega {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements the HTML GUI Manager for Porthole Service
-	class OMEGA_API PortholeGUI: ReferenceType{
+	class OTK_API PortholeGUI: ReferenceType{
 
 	public:
 

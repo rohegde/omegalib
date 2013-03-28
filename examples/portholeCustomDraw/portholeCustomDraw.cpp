@@ -30,6 +30,7 @@
 #include <omega.h>
 #include <cyclops.h>
 #include <iostream>
+#include <omegaToolkit.h>
 
 using namespace omega;
 using namespace cyclops;

@@ -33,9 +33,6 @@
 #include "omega/ImageUtils.h"
 #include "omega/CameraController.h"
 #include "omega/MissionControl.h"
-#ifdef OMEGA_USE_PORTHOLE
-	#include "omega/PortholeService.h"
-#endif
 
 #ifdef OMEGA_USE_PYTHON
 
@@ -537,17 +534,6 @@ Camera* getOrCreateCamera(const String& name)
 	return cam;
 }
 
-#ifdef OMEGA_USE_PORTHOLE
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Camera* getCameraById(int id)
-{
-	if(SystemManager::instance()->isMaster())
-	{
-		return PortholeGUI::CamerasMap[id]->camera;
-	}
-	return NULL;
-}
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool isMaster()
@@ -982,13 +968,6 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_REF_GETTER(Actor, getSceneNode)
 		;
 
-#ifdef OMEGA_USE_PORTHOLE
-	// PortholeService
-	PYAPI_REF_BASE_CLASS(PortholeService)
-		PYAPI_STATIC_REF_GETTER(PortholeService, createAndInitialize)
-		;
-#endif
-
 	// DrawInterface
 	PYAPI_REF_BASE_CLASS(DrawInterface)
 		PYAPI_METHOD(DrawInterface, drawRectGradient)
@@ -1065,9 +1044,6 @@ BOOST_PYTHON_MODULE(omega)
 	def("getDefaultCamera", getDefaultCamera, PYAPI_RETURN_REF);
 	def("getCamera", getCamera, PYAPI_RETURN_REF);
 	def("getOrCreateCamera", getOrCreateCamera, PYAPI_RETURN_REF);
-#ifdef OMEGA_USE_PORTHOLE
-	def("getCameraById", getCameraById, PYAPI_RETURN_REF);
-#endif
 	def("getScene", getScene, PYAPI_RETURN_REF);
 	def("getSoundEnvironment", getSoundEnvironment, PYAPI_RETURN_REF);
 	def("isSoundEnabled", isSoundEnabled);
