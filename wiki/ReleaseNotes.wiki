@@ -20,6 +20,8 @@ omegaToolkit
 	* fixed menu deallocation when switching applications at runtime
 	* some fixes to container layout code
 	* removed Panel container type (it can be replicated using Container styles)
+cyclops
+	* Added support for *geometry shaders* in C++ and python API through the `ProgramAsset` class.
 
 ------------------------------------------------------------------------
 = omegalib v3.5.1 =

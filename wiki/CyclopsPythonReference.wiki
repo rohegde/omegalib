@@ -25,9 +25,20 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 || `name` || ||
 || `vertexShaderName` || ||
 || `fragmentShaderName` || ||
+|| `geometryShaderName` || ||
 || `embedded` || ||
 || `vertexShaderSource` || ||
 || `fragmentShaderSource` || ||
+|| `geometryShaderSource` || ||
+|| `geometryOutVertices` || ||
+|| `geometryInput` || The primitive type of input elements to the geometry shader. Use the `PrimitiveType` enumeration ||
+|| `geometryOutput` || The primitive type of output elements to the geometry shader. Use the `PrimitiveType` enumeration ||
+
+=== Notes ===
+The `PrimitiveType` enumeration supports the following values:
+ * `Points`
+ * `Triangles`
+ * `TriangleStrip`
 
 -------------------------------------------------------------------------------
 ==  `class SceneManager` ==
