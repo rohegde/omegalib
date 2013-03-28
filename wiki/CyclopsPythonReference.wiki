@@ -1,7 +1,7 @@
 #summary Python reference: module cyclops
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 4.0 - 14 March 2013</p>*
+<p>*Last revision:* ver. 3.6 - 26 March 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -31,6 +31,11 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 
 -------------------------------------------------------------------------------
 ==  `class SceneManager` ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_model_loader.html cyclops::ModelLoader] C++ class. 
+Classes derive from `ModelLoader` to implement custom file readers
+
+-------------------------------------------------------------------------------
+==  `class SceneManager` ==
 Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_scene_manager.html cyclops::SceneManager] C++ class. Manages a cyclops scene and its associated resources.
 
 === Methods ===
@@ -43,6 +48,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 || `loadModelAsync(modelInfo, command)` || Queues a model for loading. Call the command in the `command` string when loading is done (successful or not) ||
 || `loadScene(path)` || Loads a cyclops xml scene file ||
 || `unload()` || Cleans the scene and releases all associated resources ||
+|| `addLoader(loader)` || Registers a new model loader. loader must be an object of `ModelLoader` type ||
 || *Wand* || ||
 || `displayWand(wandId, trackableId)` || Displays a wand (identified by `wandId`) and attaches it to a trackable object `trackableId` ||
 || `setWandEffect(wandId, effect)` || Sets the render effect for wand `wandId` ||

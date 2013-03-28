@@ -1,7 +1,7 @@
 #summary Python reference: module omega
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 4.0 - 6 March 2013</p>*
+<p>*Last revision:* ver. 3.6 - 27 March 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -19,9 +19,6 @@ Finds a camera by name
 
 === `getOrCreateCamera(name)` ===
 Finds a camera by name or creates a new one if a camera with the specified name has not been found
-
-=== `getCameraById(id)` ===
-Retrieves a camera based on its id (*currently supported by Porthole service only*)
 
 === `setNearFarZ(near, far)` ===
 Sets the near and far clip planes for the default camera
@@ -421,20 +418,3 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/structomega_1_1
 || Method(s) || Description ||
 || `getWidth()`, `getHeight()` || Returns the width and height in pixels of the specified image ||
   
--------------------------------------------------------------------------------
-==  `class PortholeService` ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_camera.html omega::PortholeService] class. Manages the Porthole, a web-based interaction and display service for omegalib applications.
-
-=== Methods ===
-|| Method(s) || Description ||
-|| `createAndInitialize(port, xmlPath, cssPath)` *static* || Creates a new instance of the porthole service ||
-
-=== Examples ===
-==== Initialization ====
-{{{
-	# Starts up the porthole service. 
-	# The service will accept web requests on port 4480
-	# app/app.xml contains the web interface definition (gui elements, output windows etc)
-	# app/app.css defines the style of the interface. Can be left empty
-	svc = PortholeService.createAndInitialize(4480, 'app/app.xml', 'app/app.css')
-}}}

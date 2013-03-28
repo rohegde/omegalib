@@ -1,7 +1,7 @@
 #summary Python reference: module omegaToolkit
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.6 - 22 March 2013</p>*
+<p>*Last revision:* ver. 3.6 - 27 March 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -10,6 +10,12 @@ omegaToolkit is a utility module for omegalib. It exposes some non-core function
  * a 2D / 3D graphical user interface
  * a set of object manipulator techniques based on mouse / touch, 3d wands and kinect tracking
  
+-------------------------------------------------------------------------------
+== General Functions ==
+
+=== `getCameraById(id)` ===
+Retrieves a camera based on its id (*currently supported by Porthole service only*)
+
 -------------------------------------------------------------------------------
 ==  `class ToolkitUtils` ==
 Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1_toolkit_utils.html omegaTookit::ToolkitUtils] C++ class. Offers some generic utility static functions.
@@ -62,15 +68,16 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 
 === Methods ===
 || Method(s) || Description ||
-|| `addItem(type)` || Adds an item to the menu. Type can be one of `MenuItem.Button`, `MenuItem.Checkbox`, `MenuItem.Slider`, `MenuItem.SubMenu`, `MenuItem.Label` ||
+|| `addItem(type)` || Adds an item to the menu. Type can be one of `MenuItem.Button`, `MenuItem.Checkbox`, `MenuItem.Slider`, `MenuItem.SubMenu`, `MenuItem.Label`, `MenuItem.Image` ||
 || `addButton(label, command)` || Convenience method for adding a button item and associating a command to it. Returns a reference to the created `MenuItem` ||
 || `addSubMenu(label)` || Convenience method for adding a sub menu. Returns a reference to the created `Menu` ||
 || `addLabel(text)` || Convenience method for adding a label. Returns a reference to the created `MenuItem` ||
+|| `addImage(image)` || Convenience method for adding an image. Returns a reference to the created `MenuItem`. the image is a `PixelData` object ||
+|| `addSlider(ticks, command)` || Convenience method for adding a slider. Returns a reference to the created `MenuItem` ||
 || `show()` || Displays the menu ||
 || `hide()` || Hides the menu ||
 || `placeOnWand(event)` || Places the menu along the wand ray contained in the passed event ||
 || `isVisible()` || Returns `True` if this menu is currently visible ||
-|| `setLabel(string)`, `getLabel()` || Gets or sets the title for the menu ||
 || `placeOnWand(event)` || When 3d menus are enabled, places the menu on the wand ray. The argument must be an event containing ray information, like a `Wand` or `Pointer` event. ||
 
 === Examples ===
@@ -90,7 +97,10 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `getUserTag()`, `setUserTag(value)` || Gets or sets a string user tag associated to this menu item ||
 || `getSubMenu()` || Returns the sub menu attached to this menu item. Valid only for `MenuItem.SubMenu` item types ||
 || `getWidget()` || Returns the a reference to the widget representing this menu item ||
-|| `getSlider()` || Returns a reference to a widget slider if this menu item is a slider. Returns `None` otherwise ||
+|| `getSlider()` || Returns a reference to a `Slider` widget if this menu item is a slider. Returns `None` otherwise ||
+|| `getImage()` || Returns a reference to an `Image` widget if this menu item is an image. Returns `None` otherwise ||
+|| `getButton()` || Returns a reference to a `Button` widget if this menu item is a button. Returns `None` otherwise ||
+|| `setImage(image)` || Sets the image for this menu item. Image and Button menu items support images ||
 
 -------------------------------------------------------------------------------
 ==  `class Container3dSettings` ==
@@ -128,7 +138,6 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `createImage(name, container)` || Creates an image widget ||
 || `createLabel(name, container, text)` || Creates a label widget ||
 || `createContainer(name, container, layout)` || Creates an container widget with the specified layout ||
-|| `createPanel(name, container)` || Creates a panel widget ||
 
 === Container layouts ===
 The method `createContainer()` can specify a layout for containers. The layout is a value from the `ContainerLayout` enumeration. The `ContainerLayout` enumeration contains the following values: `LayoutFree`, `LayoutHorizontal`, `LayoutVertical`, `LayoutGrid`
@@ -216,22 +225,20 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `setColor(color)` || Sets the label color. Exaample: `label.setColor(Color('white'))` ||
 || `setFont(fontName)` || Sets the label font using a `<font> <size>` string. Example: `label.setFont('fonts/arial.ttf 20'')` ||
 
----------------------------------------------------------------------------------------------------
-==  `class AppDrawer`  ==
+-------------------------------------------------------------------------------
+==  `class PortholeService` ==
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_camera.html omega::PortholeService] class. Manages the Porthole, a web-based interaction and display service for omegalib applications.
+
 === Methods ===
 || Method(s) || Description ||
-|| `show()` || ||
-|| `hide()` || ||
-|| `isVisible()` || ||
-|| `addApp(appInfo)` || ||
-|| `setDrawerScale(scale)`, `getDrawerScale()` || ||
-|| `setIconSize(scale)`, `getIconSize()` || ||
-|| `getContainer()` || ||
+|| `createAndInitialize(port, xmlPath, cssPath)` *static* || Creates a new instance of the porthole service ||
 
----------------------------------------------------------------------------------------------------
-==  `class AppInfo`  ==
-=== Methods ===
-|| Property || Description ||
-|| `name` || ||
-|| `label` || ||
-|| `iconFile` || ||
+=== Examples ===
+==== Initialization ====
+{{{
+	# Starts up the porthole service. 
+	# The service will accept web requests on port 4480
+	# app/app.xml contains the web interface definition (gui elements, output windows etc)
+	# app/app.css defines the style of the interface. Can be left empty
+	svc = PortholeService.createAndInitialize(4480, 'app/app.xml', 'app/app.css')
+}}}
