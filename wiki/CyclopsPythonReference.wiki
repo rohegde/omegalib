@@ -52,7 +52,7 @@ Example:
 	
 	# Set some options for the geometry shader.
 	program.geometryOutVertices = 4
-	program.geometryInput = PrimitiveType.Points
+	program.geometryInput = PrimitiveType.TriangleStrip
 	program.geometryOutput = PrimitiveType.TriangleStrip
 	
 	# Load and compile the program. 
