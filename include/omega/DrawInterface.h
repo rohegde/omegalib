@@ -33,7 +33,7 @@
 
 #include "omega/Texture.h"
 #include "omega/TextureSource.h"
-#include "omega/GpuBuffer.h"
+//#include "omega/GpuBuffer.h"
 
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,8 +59,7 @@ namespace omega {
 	{
 	public:
 		enum FlipFlags { FlipX = 1 << 1, FlipY = 1 << 2 };
-		enum DrawType { DrawTriangles, DrawLines, DrawPoints, DrawTriangleStrip };
-
+		//enum DrawType { DrawTriangles, DrawLines, DrawPoints, DrawTriangleStrip };
 	public:
 		DrawInterface();
 
@@ -107,7 +106,7 @@ namespace omega {
 		void drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size, uint flipFlags = 0, const Vector2f& minUV = Vector2f::Zero(), const Vector2f& maxUV = Vector2f::Ones());
 		void drawCircleOutline(Vector2f position, float radius, const Color& color, int segments);
 		void drawWireSphere(const Color& color, int segments, int slices);
-		void drawPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type);
+		//void drawPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type);
 		//@}
 
 	private:

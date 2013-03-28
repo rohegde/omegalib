@@ -200,9 +200,7 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 
 	glutDisplayFunc(displayCallback); 
 
-	myGpu = new GpuManager();
-	myGpu->initialize();
-	myGpuContext = new GpuContext(myGpu);
+	myGpuContext = new GpuContext();
 
 	// Setup and initialize the application server and client.
 	ApplicationBase* app = SystemManager::instance()->getApplication();

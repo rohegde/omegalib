@@ -40,7 +40,6 @@ namespace omega
 	class RenderTarget;
 	class ApplicationBase;
 	class ChannelImpl;
-	class GpuContext;
 	class Renderer;
 	class Camera;
 

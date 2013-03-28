@@ -688,7 +688,7 @@ void ContainerRenderable::draw3d(const DrawContext& context)
 		glDisable(GL_COLOR_MATERIAL);
 		glDisable(GL_LIGHTING);
 		glEnable(GL_TEXTURE_2D);
-		myTexture->bind(GpuManager::TextureUnit0);
+		myTexture->bind(GpuContext::TextureUnit0);
 		glEnable (GL_BLEND);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

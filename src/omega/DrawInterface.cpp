@@ -246,7 +246,7 @@ void DrawInterface::drawText(const String& text, Font* font, const Vector2f& pos
 void DrawInterface::drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size, uint flipFlags, const Vector2f& minUV, const Vector2f& maxUV)
 {
 	glEnable(GL_TEXTURE_2D);
-	texture->bind(GpuManager::TextureUnit0);
+	texture->bind(GpuContext::TextureUnit0);
 
 	glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_MODULATE);
 
@@ -349,47 +349,6 @@ void DrawInterface::drawWireSphere(const Color& color, int segments, int slices)
 	}
 
 	glPopAttrib();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void DrawInterface::drawPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type)
-{
-	if(vertices == NULL) 
-	{
-		oerror("DrawInterface::drawPrimitives: NULL vertex buffer specified");
-		return;
-	}
-	
-	GLenum mode = GL_POINTS;
-	switch(type)
-	{
-	case DrawPoints: mode = GL_POINTS; break;
-	case DrawTriangles: mode = GL_TRIANGLES; break;
-	case DrawTriangleStrip: mode = GL_TRIANGLE_STRIP; break;
-	case DrawLines: mode = GL_LINES; break;
-	}
-
-		//omsg("vertices->bind()");
-	vertices->bind();
-
-	// HACK: vertex buffer may reset the color array flag, so make sure we override it
-	// if forced diffuse color is enabled.
-	//if(myForceDiffuseColor)
-	//{
-	//	glDisableClientState(GL_COLOR_ARRAY);
-	//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	//}
-	if(indices != NULL)
-	{
-		//ofmsg("glDrawElements %1%", %size);
-		glDrawElements(mode, size, GL_UNSIGNED_INT, indices);
-	}
-	else
-	{
-		glDrawArrays(mode, 0, size);
-	}
-		//omsg("vertices->unbind()");
-	vertices->unbind();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
