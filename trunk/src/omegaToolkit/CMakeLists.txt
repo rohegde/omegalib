@@ -87,9 +87,27 @@ set( headers
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/WidgetFactory.h
         ) 
 
+# Porthole Module
+if(OMEGA_USE_PORTHOLE)
+	SET( srcs ${srcs}
+			PortholeService.cpp
+			PortholeGUI.cpp
+			# A tiny JSON library
+			vjson/block_allocator.cpp
+			vjson/json.cpp
+			)
+	SET( headers ${headers}
+			${OmegaLib_SOURCE_DIR}/include/omegaToolkit/PortholeService.h
+			${OmegaLib_SOURCE_DIR}/include/omegaToolkit/PortholeGUI.h
+			vjson/block_allocator.h
+			vjson/json.h
+			)
+endif()
+
 ###################################################################################################
 source_group(omegaToolkit REGULAR_EXPRESSION omegaToolkit/)		
 source_group(omegaToolkit::ui REGULAR_EXPRESSION omegaToolkit/ui/)		
+source_group(vjson REGULAR_EXPRESSION vjson/)
 
 ###################################################################################################
 # Setup compile info
@@ -99,6 +117,22 @@ add_library( omegaToolkit SHARED ${srcs} ${headers})
 ###################################################################################################
 # Setup link info.
 target_link_libraries( omegaToolkit omega)
+
+
+###################################################################################################
+#
+# PORTHOLE
+#
+if(OMEGA_USE_PORTHOLE)
+	# Link against websockets library
+	target_link_libraries(omegaToolkit websockets)
+	include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/websockets/include)
+	if (OMEGA_OS_WIN)
+		include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/websockets/win32helpers)
+		target_link_libraries(omegaToolkit zlib)
+		include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/zlib)
+	endif()
+endif()
 
 ###################################################################################################
 # configure include header

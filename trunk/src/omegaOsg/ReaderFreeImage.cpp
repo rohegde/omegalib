@@ -6,10 +6,14 @@
 //#include <osgDB/Registry>
 #include <osgDB/FileNameUtils>
 #include <osgDB/FileUtils>
+#include <string.h>
+
 //#include <osgDB/fstream>
 
 #include "omegaOsg/ReaderFreeImage.h"
 #include "omegaOsg/OsgModule.h"
+
+using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ReaderFreeImage::ReaderFreeImage()

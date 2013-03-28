@@ -37,8 +37,7 @@
 //#define PORTHOLE_TEST_TIME_WEBSOCKET 
 //#define PORTHOLE_TEST_TIME_GLOBAL
 
-#include "osystem.h"
-#include <string.h>
+#include "omegaToolkitConfig.h"
 #include "websockets/libwebsockets.h"
 #include "omega/Engine.h"
 #include "omicron/xml/tinyxml.h"
@@ -59,7 +58,7 @@ namespace omega {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements, in a separate thread, the HTTP server for Porthole Service
-	class OMEGA_API ServerThread: public Thread{
+	class OTK_API ServerThread: public Thread{
 
 	public:
 
@@ -117,7 +116,7 @@ namespace omega {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements an interface to handled device applications
-	class OMEGA_API PortholeService: public Service
+	class OTK_API PortholeService: public Service
 	{
 	public:
 		// Wrapper for creation and start of the service

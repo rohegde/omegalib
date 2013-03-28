@@ -39,6 +39,6 @@ SET( headers
 add_executable(porthello ${srcs} ${headers})
 set_target_properties(porthello PROPERTIES FOLDER examples)
 target_link_libraries(porthello
-	omega)
+	omega omegaToolkit)
 
 

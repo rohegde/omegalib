@@ -96,7 +96,6 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/WandCameraController.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CameraOutput.h
 		${OmegaLib_SOURCE_DIR}/include/omega/EventSharingModule.h
-		${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Console.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CylindricalDisplayConfig.h
@@ -191,23 +190,6 @@ if(OMEGA_USE_DISPLAY_EQUALIZER)
 		${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
-# Porthole Module
-if(OMEGA_USE_PORTHOLE)
-	SET( srcs ${srcs}
-			PortholeService.cpp
-			PortholeGUI.cpp
-			# A tiny JSON library
-			vjson/block_allocator.cpp
-			vjson/json.cpp
-			)
-	SET( headers ${headers}
-			${OmegaLib_SOURCE_DIR}/include/omega/PortholeService.h
-			${OmegaLib_SOURCE_DIR}/include/omega/PortholeGUI.h
-			vjson/block_allocator.h
-			vjson/json.h
-			)
-endif()
-
 # SAGE Module
 #set(OMEGA_USE_SAGE false CACHE BOOL "Enable SAGE output support")
 # if the SAGE_DIRECTORY evn variable exists, enable SAGE support by default
@@ -251,15 +233,6 @@ if( WIN32 )
 	endif(OMEGA_USE_DISPLAY_GLUT)
 	set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
 endif( WIN32 )
-	
-# OpenCL Module
-set(OMEGA_USE_OPENCL false CACHE BOOL "Enable OpenCL support for GPU programs")
-if(OMEGA_USE_OPENCL)
-	if(NOT WIN32)
-		find_package(OpenCL REQUIRED)
-	endif(NOT WIN32)
-	set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h )
-endif(OMEGA_USE_OPENCL)
 
 # Fast image loading library
 if(NOT WIN32)
@@ -275,7 +248,6 @@ endif()
 source_group(omega REGULAR_EXPRESSION omega/)		
 source_group(eqinternal REGULAR_EXPRESSION eqinternal/)		
 source_group(boostPython REGULAR_EXPRESSION boostPython/)		
-source_group(vjson REGULAR_EXPRESSION vjson/)
 
 ###################################################################################################
 # Create the library with the provided sources and headers
@@ -308,15 +280,6 @@ if(OMEGA_USE_DISPLAY_GLUT)
 	    include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/freeglut/include)
     endif( WIN32 )
 endif(OMEGA_USE_DISPLAY_GLUT)
-
-if(OMEGA_USE_OPENCL)
-	if(WIN32)
-		target_link_libraries( omega ${EXT_LIB_DIR}/OpenCL.lib)
-	else()
-		include_directories(${OPENCL_INCLUDE_DIR})
-		target_link_libraries( omega ${OPENCL_LIBRARIES})
-	endif()
-endif()
 
 if(OMEGA_USE_SAGE)
 	include_directories(${SAGE_INCLUDE_DIR})
@@ -358,21 +321,6 @@ if(OMEGA_USE_PYTHON)
 			  message(FATAL_ERROR "Could not find GNU readline")
 		   endif(Readline_FIND_REQUIRED)
 		endif(READLINE_FOUND)
-	endif()
-endif()
-
-###################################################################################################
-#
-# PORTHOLE
-#
-if(OMEGA_USE_PORTHOLE)
-	# Link against websockets library
-	target_link_libraries(omega websockets)
-	include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/websockets/include)
-	if (OMEGA_OS_WIN)
-		include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/websockets/win32helpers)
-		target_link_libraries(omega zlib)
-		include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/zlib)
 	endif()
 endif()
 

@@ -27,7 +27,7 @@
 
 // Implementation of the HTML5 based interfaces
 
-#include "omega/PortholeService.h"
+#include "omegaToolkit/PortholeService.h"
 #include "omega/Camera.h"
 #include "omega/Application.h"
 #include "omega/ImageUtils.h"

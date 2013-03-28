@@ -43,8 +43,5 @@
 #include "omega/ImageUtils.h"
 #include "omega/SageManager.h"
 #include "omega/TrackedObject.h"
-#ifdef OMEGA_USE_PORTHOLE
-	#include "omega/PortholeService.h"
-#endif
 
 #endif
