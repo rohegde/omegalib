@@ -47,13 +47,24 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_STATIC_REF_GETTER(SceneLoader, getLastLoadedEntity)
 		;
 
+	// PrimitiveType
+	PYAPI_ENUM(ProgramAsset::PrimitiveType, PrimitiveType)
+		PYAPI_ENUM_VALUE(ProgramAsset, Points)
+		PYAPI_ENUM_VALUE(ProgramAsset, Triangles)
+		PYAPI_ENUM_VALUE(ProgramAsset, TriangleStrip);
+
 	// ProgramAsset
 	PYAPI_REF_BASE_CLASS_WITH_CTOR(ProgramAsset)
 		.def_readwrite("name", &ProgramAsset::name)
 		.def_readwrite("vertexShaderName", &ProgramAsset::vertexShaderName)
 		.def_readwrite("fragmentShaderName", &ProgramAsset::fragmentShaderName)
+		.def_readwrite("geometryShaderName", &ProgramAsset::geometryShaderName)
 		.def_readwrite("vertexShaderSource", &ProgramAsset::vertexShaderSource)
 		.def_readwrite("fragmentShaderSource", &ProgramAsset::fragmentShaderSource)
+		.def_readwrite("geometryShaderSource", &ProgramAsset::geometryShaderSource)
+		.def_readwrite("geometryOutVertices", &ProgramAsset::geometryOutVertices)
+		.def_readwrite("geometryInput", &ProgramAsset::geometryInput)
+		.def_readwrite("geometryOutput", &ProgramAsset::geometryOutput)
 		.def_readwrite("embedded", &ProgramAsset::embedded);
 
 	PYAPI_REF_BASE_CLASS(ModelLoader);

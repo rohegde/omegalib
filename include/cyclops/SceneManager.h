@@ -67,21 +67,42 @@ namespace cyclops {
 	class ProgramAsset: public ReferenceType
 	{
 	public:
+		enum PrimitiveType
+		{
+			Points = GL_POINTS,
+			Triangles = GL_TRIANGLES,
+			TriangleStrip = GL_TRIANGLE_STRIP
+		};
+
+	public:
 		ProgramAsset():
-			program(NULL), vertexShaderBinary(NULL), fragmentShaderBinary(NULL), embedded(false)
+			program(NULL), 
+			vertexShaderBinary(NULL), 
+			fragmentShaderBinary(NULL),
+			geometryShaderBinary(NULL), 
+			geometryOutVertices(0), 
+			embedded(false)
 		{}
 	
 		String name;
 		String vertexShaderName;
 		String fragmentShaderName;
+		String geometryShaderName;
 
 		bool embedded;
 		String vertexShaderSource;
 		String fragmentShaderSource;
+		String geometryShaderSource;
 
 		Ref<osg::Program> program;
 		Ref<osg::Shader> vertexShaderBinary;
 		Ref<osg::Shader> fragmentShaderBinary;
+		Ref<osg::Shader> geometryShaderBinary;
+
+		// Geometry shader parameters
+		int geometryOutVertices;
+		PrimitiveType geometryInput;
+		PrimitiveType geometryOutput;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,6 +216,7 @@ namespace cyclops {
 		void setShaderMacroToString(const String& macroName, const String& macroString);
 		void setShaderMacroToFile(const String& macroName, const String& path);
 		void reloadAndRecompileShaders();
+		void recompileShaders(ProgramAsset* program, const String& variationName = "");
 		//@}
 
 
@@ -213,7 +235,6 @@ namespace cyclops {
 		void loadConfiguration();
 		void loadShader(osg::Shader* shader, const String& name);
 		void compileShader(osg::Shader* shader, const String& source);
-		void recompileShaders(ProgramAsset* program, const String& variationName);
 		void recompileShaders();
 
 	private:
