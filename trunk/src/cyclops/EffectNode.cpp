@@ -34,7 +34,7 @@
 using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Material::Material(osg::StateSet* ss): Uniforms(ss), myStateSet(ss), myTransparent(false)
+Material::Material(osg::StateSet* ss, SceneManager* sm): Uniforms(ss), myStateSet(ss), myTransparent(false), mySceneManager(sm)
 {
 	ss->setNestRenderBins(false);
 }
@@ -591,7 +591,8 @@ EffectNode::~EffectNode()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Material* EffectNode::getMaterial()
 {
-	if(myMaterial == NULL) myMaterial = new Material(getOrCreateStateSet());
+	SceneManager* sm = SceneManager::instance();
+	if(myMaterial == NULL) myMaterial = new Material(getOrCreateStateSet(), sm);
 	return myMaterial;
 }
 

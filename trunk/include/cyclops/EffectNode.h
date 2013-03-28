@@ -43,6 +43,7 @@
 namespace cyclops {
 	using namespace omega;
 	using namespace omegaOsg;
+	class SceneManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Encapsulates an OpenSceneGraph stateset and offers a quick interface to a few commonly
@@ -50,7 +51,7 @@ namespace cyclops {
 	class CY_API Material: public Uniforms
 	{
 	public:
-		Material(osg::StateSet* ss);
+		Material(osg::StateSet* ss, SceneManager* sm);
 
 		void setDiffuseColor(const Color& color);
 		void setEmissiveColor(const Color& color);
@@ -60,14 +61,21 @@ namespace cyclops {
 		void setTransparent(bool value);
 		bool isTransparent() { return myTransparent; }
 
+		//void setProgram(const String& program) { myProgramName = program; }
+		//String getProgram() { return myProgramName; }
+
 		osg::StateSet* getStateSet() { return myStateSet; }
 
 	private:
+		Ref<SceneManager> mySceneManager;
 		Ref<osg::StateSet> myStateSet;
 		Ref<osg::Material> myMaterial;
 		Ref<osg::Uniform> myShininess;
 		Ref<osg::Uniform> myGloss;
 		bool myTransparent;
+
+		//String myProgramName;
+		//Ref<ProgramAsset> myProgram;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

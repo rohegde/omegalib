@@ -706,6 +706,7 @@ void SceneManager::addProgram(ProgramAsset* program)
 {
 	myPrograms[program->name] = program;
 	program->program = new osg::Program();
+	program->program->setName(program->name);
 	recompileShaders(program, myShaderVariationName);
 }
 
@@ -728,16 +729,20 @@ void SceneManager::updateProgram(ProgramAsset* program)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::recompileShaders(ProgramAsset* program, const String& variationName)
+void SceneManager::recompileShaders(ProgramAsset* program, const String& svariationName)
 {
+	String var = myShaderVariationName;
+	if(svariationName != "") var = svariationName;
+
 	osg::Program* osgProg = program->program;
 
 	// Remove current shaders from program
 	osgProg->removeShader(program->vertexShaderBinary);
 	osgProg->removeShader(program->fragmentShaderBinary);
+	osgProg->removeShader(program->geometryShaderBinary);
 	//osgProg->releaseGLObjects();
 
-	String fullVertexShaderName = program->vertexShaderName + variationName;
+	String fullVertexShaderName = program->vertexShaderName + var;
 	osg::Shader* vertexShader = myShaders[fullVertexShaderName];
 	// If the shader does not exist in the shader registry, we need to create it now.
 	if(vertexShader == NULL)
@@ -762,7 +767,7 @@ void SceneManager::recompileShaders(ProgramAsset* program, const String& variati
 	program->vertexShaderBinary = vertexShader;
 	osgProg->addShader(vertexShader);
 
-	String fullFragmentShaderName = program->fragmentShaderName + variationName;
+	String fullFragmentShaderName = program->fragmentShaderName + var;
 	osg::Shader* fragmentShader = myShaders[fullFragmentShaderName];
 	// If the shader does not exist in the shader registry, we need to create it now.
 	if(fragmentShader == NULL)
@@ -785,6 +790,38 @@ void SceneManager::recompileShaders(ProgramAsset* program, const String& variati
 	}
 	program->fragmentShaderBinary = fragmentShader;
 	osgProg->addShader(fragmentShader);
+
+	// OPTIONAL geometry shader
+	if(program->geometryShaderName != "")
+	{
+		String fullGeometryShaderName = program->geometryShaderName + var;
+		osg::Shader* geometryShader = myShaders[fullGeometryShaderName];
+		// If the shader does not exist in the shader registry, we need to create it now.
+		if(geometryShader == NULL)
+		{
+			ofmsg("Creating geometry shader %1%", %fullGeometryShaderName);
+
+			geometryShader = new osg::Shader( osg::Shader::GEOMETRY );
+			// increase reference count to avoid being deallocated by osg program when deattached.
+			geometryShader->ref();
+			// If the program asset has embedded code, use the code from the asset instead of looking up a file.
+			if(program->embedded)
+			{
+				compileShader(geometryShader, program->geometryShaderSource);
+			}
+			else
+			{
+				loadShader(geometryShader, program->geometryShaderName);
+			}
+			myShaders[fullGeometryShaderName] = geometryShader;
+		}
+		program->geometryShaderBinary = geometryShader;
+		osgProg->addShader(geometryShader);
+		// Set geometry shader parameters.
+		osgProg->setParameter( GL_GEOMETRY_VERTICES_OUT_EXT, program->geometryOutVertices );
+		osgProg->setParameter( GL_GEOMETRY_INPUT_TYPE_EXT, program->geometryInput );
+		osgProg->setParameter( GL_GEOMETRY_OUTPUT_TYPE_EXT, program->geometryOutput );
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
