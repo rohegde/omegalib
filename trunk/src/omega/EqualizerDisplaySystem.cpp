@@ -31,7 +31,6 @@
 #include "omega/EqualizerDisplaySystem.h"
 #include "omega/SystemManager.h"
 #include "omega/MouseService.h"
-#include "omega/GpuManager.h"
 
 using namespace omega;
 using namespace co::base;

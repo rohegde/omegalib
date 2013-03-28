@@ -27,7 +27,6 @@
 
 #include "DisplaySystem.h"
 #include "RenderTarget.h"
-#include "GpuManager.h"
 
 namespace omega
 {
@@ -75,7 +74,6 @@ namespace omega
 		Engine* myAppServer;
 		RenderTarget* myFrameBuffer;
 
-		GpuManager* myGpu;
 		GpuContext* myGpuContext;
 	};
 }; // namespace omega

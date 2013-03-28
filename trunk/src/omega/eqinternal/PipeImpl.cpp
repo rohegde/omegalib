@@ -35,7 +35,7 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PipeImpl::PipeImpl(eq::Node* parent): 
-	eq::Pipe(parent), myGpu(NULL), myNode((NodeImpl*)parent)
+	eq::Pipe(parent), myNode((NodeImpl*)parent)
 {
 }
 
@@ -47,8 +47,6 @@ PipeImpl::~PipeImpl()
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool PipeImpl::configInit(const uint128_t& initID)
 {
-	myGpu = new GpuManager();
-	myGpu->initialize();
-	myGpuContext = new GpuContext(myGpu.get());
+	myGpuContext = new GpuContext();
 	return Pipe::configInit(initID);
 }

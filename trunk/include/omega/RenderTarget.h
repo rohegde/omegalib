@@ -28,7 +28,7 @@
 #define __RENDER_TARGET_H__
 
 #include "osystem.h"
-#include "GpuManager.h"
+//#include "GpuManager.h"
 #include "Texture.h"
 
 namespace omega

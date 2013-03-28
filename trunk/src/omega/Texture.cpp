@@ -36,7 +36,7 @@ bool Texture::sUsePbo = false;
 Texture::Texture(GpuContext* context): 
 	GpuResource(context),
 	myInitialized(false),
-	myTextureUnit(GpuManager::TextureUnitInvalid) 
+	myTextureUnit(GpuContext::TextureUnitInvalid) 
 {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ void Texture::writePixels(PixelData* data)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Texture::bind(GpuManager::TextureUnit unit)
+void Texture::bind(GpuContext::TextureUnit unit)
 {
 	myTextureUnit = unit;
 	glActiveTexture(myTextureUnit);
@@ -122,5 +122,5 @@ void Texture::bind(GpuManager::TextureUnit unit)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Texture::unbind()
 {
-	myTextureUnit = GpuManager::TextureUnitInvalid;
+	myTextureUnit = GpuContext::TextureUnitInvalid;
 }

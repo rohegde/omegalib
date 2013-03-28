@@ -27,7 +27,6 @@
 #include "omega/Renderer.h"
 #include "omega/Engine.h"
 #include "omega/DisplaySystem.h"
-#include "omega/GpuManager.h"
 #include "omega/Texture.h"
 #include "omega/PythonInterpreter.h"
 #include "omega/glheaders.h"

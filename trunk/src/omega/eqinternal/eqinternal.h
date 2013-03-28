@@ -182,7 +182,6 @@ protected:
     virtual bool configInit(const uint128_t& initID);
 private:
 	NodeImpl* myNode;
-    omicron::Ref<GpuManager> myGpu;
     omicron::Ref<GpuContext> myGpuContext;
 };
 

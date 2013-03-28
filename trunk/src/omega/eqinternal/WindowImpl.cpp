@@ -25,7 +25,6 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/RenderTarget.h"
-#include "omega/GpuManager.h"
 #include "omega/EqualizerDisplaySystem.h"
 
 #include "eqinternal.h"

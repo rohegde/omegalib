@@ -24,83 +24,15 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __TEXTURE_H__
-#define __TEXTURE_H__
-
-#include "osystem.h"
-#include "omega/ApplicationBase.h"
 #include "omega/GpuResource.h"
+using namespace omega;
 
-namespace omega
+uint GpuContext::mysNumContexts = 0;
+Lock GpuContext::mysContextLock = Lock();
+
+GpuContext::GpuContext()
 {
-	class PixelData;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Texture: public GpuResource
-	{
-	public:
-		static void enablePboTransfers(bool value) { sUsePbo = value; }
-
-	public:
-		Texture(GpuContext* context);
-
-		//! Initializes this texture object
-		void initialize(int width, int height); 
-		bool isInitialized() { return myInitialized; }
-
-		void writePixels(PixelData* data);
-		void readPixels(PixelData* data);
-
-		int getWidth();
-		int getHeight();
-
-		//! Texture operations
-		//@{
-		GLuint getGLTexture();
-		void bind(GpuContext::TextureUnit unit);
-		void unbind();
-		void refresh();
-		bool isBound();
-		GpuContext::TextureUnit getTextureUnit();
-		//@}
-
-	private:
-		static bool sUsePbo;
-
-		bool myInitialized;
-		GLuint myId;
-		int myWidth;
-		int myHeight;
-
-		GLuint myPboId;
-
-		GpuContext::TextureUnit myTextureUnit;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline int Texture::getWidth() 
-	{ return myWidth; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline int Texture::getHeight() 
-	{ return myHeight; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline GLuint Texture::getGLTexture() 
-	{
-		oassert(myInitialized);
-		return myId; 
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool Texture::isBound()
-	{
-		return (myTextureUnit != GpuContext::TextureUnitInvalid ? true : false);
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline GpuContext::TextureUnit Texture::getTextureUnit()
-	{ return myTextureUnit; }
-}; // namespace omega
-
-#endif
+	mysContextLock.lock();
+	myId = mysNumContexts++;
+	mysContextLock.unlock();
+}
