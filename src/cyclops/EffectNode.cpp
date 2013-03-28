@@ -488,6 +488,7 @@ protected:
 		bool additive = false;
 		bool disableDepth = false;
 		bool disableCull = false;
+		bool drawPoints = false;
 		libconfig::ArgumentHelper ah;
 		ah.newString("effectName", "the effect name", effectName);
 		ah.newNamedString('d', "diffuse", "diffuse material", "diffuse material color", diffuse);
@@ -498,6 +499,7 @@ protected:
 		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
 		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
 		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
+		ah.newFlag('p', "points", "draw points", drawPoints);
 		bool help = false;
 		ah.newFlag('?', "help", "prints help", help);
 		ah.process(def.c_str());
@@ -547,6 +549,10 @@ protected:
 		else
 		{
 			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
+		}
+		if(drawPoints)
+		{
+			ss->setAttribute(new osg::PolygonMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::POINT));
 		}
 
 		// If we have colors, add material attribute
