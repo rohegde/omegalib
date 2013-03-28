@@ -39,6 +39,29 @@ The `PrimitiveType` enumeration supports the following values:
  * `Points`
  * `Triangles`
  * `TriangleStrip`
+ 
+Example:
+{{{
+	# Create a program asset from vertex, fragment and geometry shader files.
+	shaderPath = "modules/PointCloud/shaders";
+	program = ProgramAsset()
+	program.name = "points"
+	program.vertexShaderName = shaderPath + "/Sphere.vert"
+	program.fragmentShaderName = shaderPath + "/Sphere.frag"
+	program.geometryShaderName = shaderPath + "/Sphere.geom"
+	
+	# Set some options for the geometry shader.
+	program.geometryOutVertices = 4
+	program.geometryInput = PrimitiveType.Points
+	program.geometryOutput = PrimitiveType.TriangleStrip
+	
+	# Load and compile the program. 
+	scene.addProgram(program)
+
+	# Create a sphere and apply the program
+	sphere = SphereShape.create(1, 4)
+	sphere.setEffect("points") # We use the same name as the program.
+}}}
 
 -------------------------------------------------------------------------------
 ==  `class SceneManager` ==
