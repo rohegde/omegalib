@@ -147,7 +147,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 		// If enabled, create stats window on master node.
 		if(eqcfg.displayStatsOnMaster && !nc.isRemote)
 		{
-			String tileCfg = buildTileConfig(indent, "stats", 20, 20, eqcfg.statsTile.pixelSize[0], eqcfg.statsTile.pixelSize[1], 0, curDevice, false);
+			String tileCfg = buildTileConfig(indent, "stats", 20, 20, eqcfg.statsTile.pixelSize[0], eqcfg.statsTile.pixelSize[1], 0, curDevice, false, false);
 			result += tileCfg;
 		}
 
