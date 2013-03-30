@@ -94,6 +94,9 @@ namespace omega
 		//! When set to true render this tile offscreen.
 		bool offscreen;
 
+		//! Disable window borders for this tile only.
+		bool borderless;
+
 		//! Name of camera attached to this tile. Can be empty or 'default' for default camera
 		String cameraName;
 		//! Reference to camera attached to this tile. Set during display system initialization
@@ -178,6 +181,9 @@ namespace omega
 
 		//! Enable fullscreen rendering.
 		bool fullscreen;
+
+		//! Disable window borders
+		bool borderless;
 
 		// Display fps on each tile.
 		bool drawFps;

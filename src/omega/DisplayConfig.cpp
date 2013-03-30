@@ -60,6 +60,7 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 	else if(sm == "sidebyside") cfg.stereoMode = DisplayTileConfig::SideBySide;
 
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
+	cfg.borderless = Config::getBoolValue("borderless", scfg, false);
 
 	// deprecated
 	cfg.panopticStereoEnabled = Config::getBoolValue("panopticStereoEnabled", scfg);
@@ -137,6 +138,7 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 				tc->disableScene = Config::getBoolValue("disableScene", sTile);
 
 				tc->offscreen = Config::getBoolValue("offscreen", sTile, false);
+				tc->borderless = Config::getBoolValue("borderless", sTile, cfg.borderless);
 
 				tc->disableMouse = Config::getBoolValue("disableMouse", sTile, false);
 
