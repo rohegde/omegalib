@@ -138,7 +138,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 			//}
 			
 			String tileName = tc.name;
-			String tileCfg = buildTileConfig(indent, tileName, winX, winY, tc.pixelSize[0], tc.pixelSize[1], tc.device, curDevice, eqcfg.fullscreen);
+			String tileCfg = buildTileConfig(indent, tileName, winX, winY, tc.pixelSize[0], tc.pixelSize[1], tc.device, curDevice, eqcfg.fullscreen, tc.borderless);
 			result += tileCfg;
 
 			curDevice = tc.device;
@@ -361,7 +361,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-String EqualizerDisplaySystem::buildTileConfig(String& indent, const String tileName, int x, int y, int width, int height, int device, int curdevice, bool fullscreen)
+String EqualizerDisplaySystem::buildTileConfig(String& indent, const String tileName, int x, int y, int width, int height, int device, int curdevice, bool fullscreen, bool borderless)
 {
 	String viewport = ostr("viewport [%1% %2% %3% %4%]", %x %y %width %height);
 
@@ -387,6 +387,13 @@ String EqualizerDisplaySystem::buildTileConfig(String& indent, const String tile
 		START_BLOCK(tileCfg, "attributes");
 		tileCfg +=
 			L("hint_fullscreen ON") +
+			L("hint_decoration OFF");
+		END_BLOCK(tileCfg);
+	}
+	else if(borderless)
+	{
+		START_BLOCK(tileCfg, "attributes");
+		tileCfg +=
 			L("hint_decoration OFF");
 		END_BLOCK(tileCfg);
 	}
