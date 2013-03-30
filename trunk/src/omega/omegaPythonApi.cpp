@@ -524,15 +524,15 @@ Camera* getCamera(const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Camera* getOrCreateCamera(const String& name)
-{
-	Camera* cam = Engine::instance()->getCamera(name);
-	if(cam == NULL)
-	{
-		cam = Engine::instance()->createCamera(name);
-	}
-	return cam;
-}
+//Camera* getOrCreateCamera(const String& name)
+//{
+//	Camera* cam = Engine::instance()->getCamera(name);
+//	if(cam == NULL)
+//	{
+//		cam = Engine::instance()->createCamera(name);
+//	}
+//	return cam;
+//}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1043,7 +1043,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("getEngine", getEngine, PYAPI_RETURN_REF);
 	def("getDefaultCamera", getDefaultCamera, PYAPI_RETURN_REF);
 	def("getCamera", getCamera, PYAPI_RETURN_REF);
-	def("getOrCreateCamera", getOrCreateCamera, PYAPI_RETURN_REF);
+	//def("getOrCreateCamera", getOrCreateCamera, PYAPI_RETURN_REF);
 	def("getScene", getScene, PYAPI_RETURN_REF);
 	def("getSoundEnvironment", getSoundEnvironment, PYAPI_RETURN_REF);
 	def("isSoundEnabled", isSoundEnabled);
