@@ -1,7 +1,7 @@
 #summary Omegalib configuration file reference
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.6 - 27 March 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+<p>*Last revision:* ver. 3.6 - 29 March 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
 <wiki:toc max_depth="4" />
 
@@ -60,7 +60,8 @@ The display configuration section describes the display system geometry, resourc
  * `windowOffset`
  * `latency`
  * `stereoMode`
- * `fullscreen`
+ * `fullscreen` (Boolean) - enable fullscreen for all tiles. When set to true also disables window borders.
+ * `borderless` (Boolean) - Disable window borders for all tiles (unless specified in tile configuration)
  * `disableConfigGenerator`
  * `nodeLauncher`
  * `nodeKiller`
@@ -95,9 +96,11 @@ Example:
  * `position`
  * `resolution`
  * `offset`
+ * `offscreen` (Boolean) - Render this tile offscreen.
  * `cameraName`
  * `disableMouse` (Boolean) - When set to true, disables mouse event generation for this tile.
- 
+ * `borderless` (Boolean) - Disable window borders for this tile.
+
 Example:
 {{{
 	headTile:

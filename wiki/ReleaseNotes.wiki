@@ -13,7 +13,8 @@ omega
 	* Python interpreter adds data root to module seearch path
 	* A few fixes and improvements to multipipe rendering and to mouse pointer - ray conversion. 
 	* (internal) Render pass management moved from Pipe to Window
-	removed obsolete Gpu classes. They may be placed in a separate module in the future.
+	* removed obsolete Gpu classes. They may be placed in a separate module in the future.
+	* added `borderless` option to display and tile configuration.
 omegaToolkit
 	* New menu widgets: label, slider, image
 	* `Slider` class accessible from Python API

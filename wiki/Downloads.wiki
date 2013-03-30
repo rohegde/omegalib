@@ -14,6 +14,7 @@ The current developer version is the most up to date, but the binaries may NOT c
 	* Omegalib 3.5 [https://dl.dropbox.com/shz/gyjexun0it6fjmn/vHsKby16ix/omegalib?token_hash=AAHUnCvOmseAKoHcdkMTOFpZZQvMnwwLIe_Uhruf_pSPwA&top_level_offset=0 [Download Zip]]
 	* Omegalib 3.4 [https://omegalib.googlecode.com/files/omegalib-3.4-win32.zip [Download Zip]]
 
-=== Auto-update releases ===
-To get higher frequency updates and alpha version binaries of the current developer version, go to [https://www.dropbox.com/sh/gyjexun0it6fjmn/vHsKby16ix this Dropbox page]. If you add a dropbox omegalib release to your own dropbox account, you will receive updated versions automatically.
-
+=== Additional precompiled libraries ===
+=== osgEarth ===
+Download this binary package to open .earth files in omegalib. The binary package is offered for Windows only. On other platforms, manually download and build GDAL and osgEarth.
+	* osgEarth + GDAL (Windows 32bit) [https://dl.dropbox.com/shz/tkp9j5rmb7f0pvu/ntz_6dW2C4/osgEarth-win32?token_hash=AAGQ6Ez1UOs5FrImDm7E7XtgZN0r2tP1JyMSvBqxnQwgbQ&top_level_offset=9 [Download Zip]]
