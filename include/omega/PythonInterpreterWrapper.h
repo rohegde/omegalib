@@ -166,7 +166,15 @@ namespace omega
 		void Write(const char* string)
 		{
 			ologaddnewline(false);
-			omsg(string);
+			if(!strncmp(string, "Traceback", 9))
+			{
+				omsg("\n>>>>> PYTHON ERROR");
+				owarn(string);
+			}
+			else
+			{
+				omsg(string);
+			}
 			ologaddnewline(true);
 		}
 

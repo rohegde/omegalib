@@ -146,7 +146,7 @@ void OmegaViewer::initialize()
 		interp->queueCommand(ostr(":r %1%", %sDefaultScript));
 	}
 
-	omsg("---------------------------------------------------------------------");
+	omsg("\n\n\n---------------------------------------------------------------------");
 	omsg("Welcome to orun!");
 	omsg("\tomegalib version " OMEGA_VERSION);
 	omsg("\tTo get a list of quick commands type :?");
@@ -156,6 +156,7 @@ void OmegaViewer::initialize()
 	omsg("\tType :? ./C [prefix] to list global symbols or object members starting with `prefix`");
 	omsg("\t\texample :? . si");
 	omsg("\t\texample :? SceneNode set");
+	omsg("\n\n\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
