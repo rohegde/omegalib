@@ -17,9 +17,6 @@ Returns the main omegalib camera instance
 === `getCamera(name)` ===
 Finds a camera by name
 
-=== `getOrCreateCamera(name)` ===
-Finds a camera by name or creates a new one if a camera with the specified name has not been found
-
 === `setNearFarZ(near, far)` ===
 Sets the near and far clip planes for the default camera
 
