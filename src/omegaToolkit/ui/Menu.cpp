@@ -206,7 +206,7 @@ Menu::Menu(const String& name, MenuManager* manager):
 	WidgetFactory* wf = ui->getWidgetFactory();
 	myContainer = wf->createContainer("container", ui->getUi(), Container::LayoutVertical);
 	myContainer->setPosition(Vector2f(10, 10));
-	myContainer->setStyleValue("fill", "#00000090");
+	myContainer->setStyleValue("fill", "#000000d0");
 	//myContainer->setLayout(Container::LayoutHorizontal);
 
 	my3dSettings.enable3d = MenuManager::instance()->is3dMenuEnabled();
@@ -475,11 +475,11 @@ void Menu::placeOnWand(const Event& evt)
 		//ofmsg("menu position: %1%", %pos);
 		Container3dSettings& c3ds = get3dSettings();
 		Widget* menuWidget = myContainer;
-		Vector3f offset = Vector3f(0, menuWidget->getHeight() * c3ds.scale, 0);
+		Vector3f offset = Vector3f(0, 0, 0); //-menuWidget->getHeight() * c3ds.scale, 0);
 		c3ds.position = pos - offset;
 		c3ds.normal = -dir;
 		
-		// If the menu widget is not attached to a node, set the up vector sing the default camera orientation.
+		// If the menu widget is not attached to a node, set the up vector using the default camera orientation.
 		if(my3dSettings.node == NULL)
 		{
 			DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();

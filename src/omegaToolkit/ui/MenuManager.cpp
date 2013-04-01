@@ -201,7 +201,7 @@ void MenuManager::handleEvent(const Event& evt)
 			{
 				bool hideMenuButtonPressed = 
 					(myUseMenuToggleButton && evt.isButtonDown(myMenuToggleButton)) ||
-					(!myUseMenuToggleButton && evt.isButtonDown(UiModule::getCancelButton()));
+					evt.isButtonDown(UiModule::getCancelButton());
 
 				if(hideMenuButtonPressed)
 				{

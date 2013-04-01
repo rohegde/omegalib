@@ -35,7 +35,7 @@ struct FIBITMAP;
 
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Loads and manages image data.
+	//! ImageUtils is a container of functions for synchronous and asyncronous image loading.
 	class OMEGA_API ImageUtils
 	{
 	public:
@@ -78,7 +78,7 @@ namespace omega {
 		static Ref<PixelData> loadImageFromStream(std::istream& fin, const String& streamName);
 		//! Load image from a file (async)
 		static LoadImageAsyncTask* loadImageAsync(const String& filename, bool hasFullPath = false);
-
+		//! Encodes an image using the specified format. Returns a byte array containing the encoded image data.
 		static ByteArray* encode(PixelData* data, ImageFormat format);
 
 		static void internalInitialize();
@@ -88,6 +88,7 @@ namespace omega {
 
 		//! Sets the number if image loading threads. Must be called before the fist call to loadImageAsync.
 		static void setImageLoaderThreads(int num) { sNumLoaderThreads = num; }
+		//! Gets the number of image loading threads
 		static int getImageLoaderThreads() { return sNumLoaderThreads; }
 		
 	private:

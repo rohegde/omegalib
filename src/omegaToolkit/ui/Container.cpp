@@ -622,11 +622,19 @@ void Container::activate()
 {
 	if(isEnabled())
 	{
-		// Activate is rerouted by default to first child. If this container has no children,
+		// Activate is rerouted by default to first enabled child. If this container has no children,
 		// mark no widget as active.
-		Widget* child = getChildByIndex(0);
-		if(child != NULL) UiModule::instance()->activateWidget(child);
-		else UiModule::instance()->activateWidget(NULL);
+		foreach(Widget* child, myChildren)
+		{
+			if(child->isEnabled())
+			{
+					UiModule::instance()->activateWidget(child);
+					return;
+			}
+		}
+
+		// No children was enabled, or contained has no children. No widget is active.
+		UiModule::instance()->activateWidget(NULL);
 	}
 }
 
@@ -707,7 +715,7 @@ void ContainerRenderable::draw3d(const DrawContext& context)
 
 		if(!c3ds.center)
 		{
-			glTranslatef(c3ds.position[0], c3ds.position[1], c3ds.position[2]);
+			glTranslatef(c3ds.position[0], c3ds.position[1] - height, c3ds.position[2]);
 		}
 		else
 		{
