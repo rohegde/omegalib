@@ -527,6 +527,11 @@ bool Container::rayToPointerEvent(const Event& inEvt, Event& outEvt)
 		float height = getHeight() * my3dSettings.scale;
 		pos -= Vector3f(width / 2, height / 2, 0);
 	}
+	else
+	{
+		float height = getHeight() * my3dSettings.scale;
+		pos.y() -= height;
+	}
 
 	Plane plane(normal, pos);
 	std::pair<bool, float> result = Math::intersects(r, plane);
