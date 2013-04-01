@@ -36,7 +36,7 @@ namespace omega {
 	{
 	public:
 		enum Format { FormatRgb, FormatRgba, FormatMonochrome};
-		enum UsageFlags { RenderTexture = 1 << 0 , PixelBufferObject = 1 << 1 };
+		enum UsageFlags { /*RenderTexture = 1 << 0 ,*/ PixelBufferObject = 1 << 1 };
 	public:
 		PixelData(Format fmt, int width, int height, byte* data = NULL, uint usageFlags = 0);
 		virtual ~PixelData();
