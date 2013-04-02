@@ -55,6 +55,7 @@ MenuManager* MenuManager::createAndInitialize()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 MenuManager::MenuManager():
+	EngineModule("MenuManager"),
 	myMainMenu(NULL),
 	myDefaultMenuPosition(-1.0, -0.5, -2.0),
 	myDefaultMenuScale(1.0f),

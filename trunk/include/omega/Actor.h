@@ -39,7 +39,7 @@ namespace omega {
 	{
 	public:
 		Actor(const String& name): EngineModule(name), myNode(NULL)  {}
-		Actor(): EngineModule(), myNode(NULL) {}
+		//Actor(): EngineModule(), myNode(NULL) {}
 
 		void setSceneNode(SceneNode* node);
 		SceneNode* getSceneNode();

@@ -30,7 +30,8 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-CameraController::CameraController(): 
+CameraController::CameraController(const String& name): 
+	EngineModule(name),
 	myCamera(NULL), 
 	//myOriginalOrientation( Quaternion::Identity() ), 
 	mySpeed(2.0f) 

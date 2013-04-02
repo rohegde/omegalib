@@ -28,9 +28,11 @@
 
 using namespace omega;
 
+NameGenerator sTrackedObjectName("TrackedObject");
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 TrackedObject::TrackedObject(): 
-	Actor(),
+		Actor(sTrackedObjectName.generate()),
 		myTrackableServiceType(Event::ServiceTypeMocap),
 		myTrackableSourceId(-1),
 		myOrientationTrackingEnabled(true),

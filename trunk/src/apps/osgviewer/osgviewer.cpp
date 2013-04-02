@@ -48,7 +48,7 @@ float sModelSize = 1.0f;
 class OsgViewer: public EngineModule
 {
 public:
-	OsgViewer()
+	OsgViewer(): EngineModule("OsgViewer")
 	{
 		myOsg = new OsgModule();
 		ModuleServices::addModule(myOsg); 

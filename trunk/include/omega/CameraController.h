@@ -49,7 +49,7 @@ namespace omega {
 			};
 
 	public:
-		CameraController();
+		CameraController(const String& name = "CameraController");
 
 		bool isEnabled();
 

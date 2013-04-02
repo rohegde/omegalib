@@ -101,6 +101,9 @@ namespace omega {
 	class OMEGA_API MissionControlClient: public EngineModule
 	{
 	public:
+		MissionControlClient(): EngineModule("MissionControlClient") {}
+		virtual ~MissionControlClient() {}
+
 		virtual void dispose();
 		virtual void initialize();
 		virtual void update(const UpdateContext& context);

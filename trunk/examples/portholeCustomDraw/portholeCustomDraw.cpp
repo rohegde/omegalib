@@ -55,7 +55,8 @@ private:
 class PortholeCustomDrawApplication: public EngineModule
 {
 public:
-	PortholeCustomDrawApplication() { enableSharedData(); }
+	PortholeCustomDrawApplication(): EngineModule("PortholeCustomDrawApplication")
+	{ enableSharedData(); }
 
 	virtual void initialize();
 	virtual void initializeRenderer(Renderer* r);
