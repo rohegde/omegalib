@@ -279,8 +279,8 @@ void HelloApplication::handleEvent(const Event& evt)
 			{
 				SoundInstance* soundInst = new SoundInstance(sound);
 				soundInst->setPosition( evt.getPosition() );
-				soundInst->setReverb(1.0);
-				soundInst->setMix(1.0);
+				soundInst->setRoomSize(1.0);
+				soundInst->setWetness(1.0);
 				//soundInst->setVolume(0.5);
 				soundInst->play();
 				changeCubeColor = true;
