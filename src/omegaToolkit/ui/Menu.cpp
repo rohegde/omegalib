@@ -278,6 +278,7 @@ Menu* Menu::addSubMenu(const String& label)
 void Menu::update(const UpdateContext& context)
 {
 	float speed = context.dt * 10;
+	if(speed > 1.0f) speed = 1.0f; 
 
 	ui::Container3dSettings& c3ds = myContainer->get3dSettings();
 	c3ds.enable3d = my3dSettings.enable3d;
