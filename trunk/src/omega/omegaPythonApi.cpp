@@ -857,6 +857,7 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(Event, isKeyDown)
 		PYAPI_METHOD(Event, isKeyUp)
 		PYAPI_METHOD(Event, isButtonDown)
+		PYAPI_METHOD(Event, isButtonUp)
 		PYAPI_METHOD(Event, getAxis)
 		PYAPI_METHOD(Event, getSourceId)
 		PYAPI_METHOD(Event, getType)
@@ -1003,6 +1004,10 @@ BOOST_PYTHON_MODULE(omega)
 	PYAPI_REF_BASE_CLASS(SoundEnvironment)
 		PYAPI_REF_GETTER(SoundEnvironment, loadSoundFromFile)
 		PYAPI_REF_GETTER(SoundEnvironment, setAssetDirectory)
+		PYAPI_METHOD(SoundEnvironment, setWetness)
+		PYAPI_METHOD(SoundEnvironment, getWetness)
+		PYAPI_METHOD(SoundEnvironment, setRoomSize)
+		PYAPI_METHOD(SoundEnvironment, getRoomSize)
 		;
 
 	// Sound
@@ -1010,6 +1015,8 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(Sound, getDuration)
 		PYAPI_METHOD(Sound, getVolumeScale)
 		PYAPI_METHOD(Sound, setVolumeScale)
+		PYAPI_METHOD(Sound, resetToEnvironmentParameters)
+		PYAPI_METHOD(Sound, isUsingEnvironmentParameters)
 		;
 
 	// SoundInstance
@@ -1031,10 +1038,10 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(SoundInstance, getVolume)
 		PYAPI_METHOD(SoundInstance, setWidth)
 		PYAPI_METHOD(SoundInstance, getWidth)
-		PYAPI_METHOD(SoundInstance, setMix)
-		PYAPI_METHOD(SoundInstance, getMix)
-		PYAPI_METHOD(SoundInstance, setReverb)
-		PYAPI_METHOD(SoundInstance, getReverb)
+		PYAPI_METHOD(SoundInstance, setWetness)
+		PYAPI_METHOD(SoundInstance, getWetness)
+		PYAPI_METHOD(SoundInstance, setRoomSize)
+		PYAPI_METHOD(SoundInstance, getRoomSize)
 		PYAPI_METHOD(SoundInstance, fade)
 		;
 
