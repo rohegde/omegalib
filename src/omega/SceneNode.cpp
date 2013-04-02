@@ -147,12 +147,6 @@ void SceneNode::draw(const DrawContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::update(bool updateChildren, bool parentHasChanged)
 {
-	// Reorient the node if a facing camera is set
-	if(myFacingCamera != NULL)
-	{
-		lookAt(myFacingCamera->getPosition() + myFacingCamera->getHeadOffset(), Vector3f::UnitY());
-	}
-
     // Short circuit the off case
     if (!updateChildren && !mNeedParentUpdate && !mNeedChildUpdate && !parentHasChanged)
     {
@@ -178,6 +172,12 @@ void SceneNode::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::updateTraversal(const UpdateContext& context)
 {
+	// Reorient the node if a facing camera is set
+	if(myFacingCamera != NULL)
+	{
+		lookAt(myFacingCamera->getPosition() + myFacingCamera->getHeadOffset(), Vector3f::UnitY());
+	}
+
 	// Update attached components
 	foreach(NodeComponent* d, myObjects)
 	{
