@@ -364,7 +364,7 @@ String SystemManager::getHostname()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-String SystemManager::getHostnameAndPort() 
+const String& SystemManager::getHostnameAndPort() 
 { 
 	return myHostname;
 }
