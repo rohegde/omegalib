@@ -59,7 +59,7 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkScene::VtkScene() 
+VtkScene::VtkScene(): EngineModule("VtkScene")
 {
 	// Create and register the omegalib vtk module.
 	myVtkModule = new VtkModule();

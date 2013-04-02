@@ -50,7 +50,7 @@ private:
 class HelloApplication: public EngineModule
 {
 public:
-	HelloApplication() {}
+	HelloApplication(): EngineModule("HelloApplication") {}
 
 	virtual void initializeRenderer(Renderer* r) 
 	{ 

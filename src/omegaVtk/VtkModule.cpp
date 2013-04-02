@@ -59,7 +59,7 @@ VtkModule* VtkModule::createAndInitialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkModule::VtkModule()
+VtkModule::VtkModule(): EngineModule("VtkModule")
 {
 	myInstance = this;
 	myActiveClient = NULL;

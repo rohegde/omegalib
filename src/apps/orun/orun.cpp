@@ -94,7 +94,8 @@ BOOST_PYTHON_MODULE(omegaViewer)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OmegaViewer::OmegaViewer()
+OmegaViewer::OmegaViewer():
+	EngineModule("OmegaViewer")
 {
 	gViewerInstance = this;
 
