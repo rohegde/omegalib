@@ -248,7 +248,6 @@ void PixelData::copyFrom(PixelData* other)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PixelData::refreshTexture(Texture* texture, const DrawContext& context)
 {
-omsg("REFRESH TEXTURE");
 	if(!texture->isInitialized()) texture->initialize(myWidth, myHeight);
 	texture->writePixels(this);
 }
