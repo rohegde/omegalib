@@ -71,6 +71,7 @@ void UiModule::initialize()
 	myUi = new ui::Container(getEngine());
 	myUi->setAutosize(false);
 	myUi->setLayout(ui::Container::LayoutFree);
+	myUi->setBlendMode(ui::Widget::BlendNormal);
 	
 	// If we let the engine act as the default event handler we end up having infinite loops.
 	// The engine shouldn't really be acting as a default handler. Only user code should.
