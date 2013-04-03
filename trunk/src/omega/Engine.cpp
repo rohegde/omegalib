@@ -225,6 +225,12 @@ void Engine::reset()
 	myDefaultCamera->setPosition(Vector3f::Zero());
 	myDefaultCamera->getController()->reset();
 	myDefaultCamera->removeAllChildren();
+	
+	if(soundEnv != NULL)
+	{
+		soundEnv->stopAllSounds();
+		soundEnv->cleanupAllSounds();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
