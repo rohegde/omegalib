@@ -36,6 +36,7 @@ Texture* TextureSource::getTexture(const DrawContext& context)
 	uint id = context.gpuContext->getId();
 	if(myTextures[id].isNull())
 	{
+	ofmsg("CREATE TEXTURE ctxid = %1%",  %id);
 		myTextures[id] = context.renderer->createTexture();
 		myTextureUpdateFlags |= 1 << id;
 	}
@@ -43,6 +44,7 @@ Texture* TextureSource::getTexture(const DrawContext& context)
 	// See if the texture needs refreshing
 	if(myDirty && (myTextureUpdateFlags & (1 << id)))
 	{
+	omsg("REFRESH TEXTURE");
 		refreshTexture(myTextures[id], context);
 		myTextureUpdateFlags &= ~(1 << id);
 
