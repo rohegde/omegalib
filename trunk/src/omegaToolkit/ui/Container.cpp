@@ -698,6 +698,7 @@ void ContainerRenderable::draw3d(const DrawContext& context)
 {
 	if(myTexture != NULL)
 	{
+		glPushAttrib(GL_ENABLE_BIT);
 		glDisable(GL_COLOR_MATERIAL);
 		glDisable(GL_LIGHTING);
 		glEnable(GL_TEXTURE_2D);
@@ -754,6 +755,7 @@ void ContainerRenderable::draw3d(const DrawContext& context)
 		{
 			getRenderer()->popTransform();
 		}
+		glPopAttrib();
 		glPopMatrix();
 
 		myTexture->unbind();
