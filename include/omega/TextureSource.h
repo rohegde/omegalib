@@ -37,6 +37,7 @@ namespace omega {
 	class OMEGA_API TextureSource: public ReferenceType
 	{
 	public:
+		TextureSource(): myTextureUpdateFlags(0), myDirty(false) {}
 		virtual ~TextureSource() {}
 
 		virtual Texture* getTexture(const DrawContext& context);

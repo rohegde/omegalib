@@ -65,8 +65,8 @@ namespace omega {
 		void setDeleteDisabled(bool value) { myDeleteDisabled = value; }
 		bool isDeleteDisabled() { return myDeleteDisabled; }
 
-		bool isDirty() { return myDirty; }
-		void setDirty(bool value) { myDirty = value; }
+		//bool isDirty() { return myDirty; }
+		//void setDirty(bool value) { myDirty = value; }
 
 		bool checkUsage(UsageFlags flag) { return (myUsageFlags & flag) == flag; }
 
@@ -88,7 +88,6 @@ namespace omega {
 		int myHeight;
 		size_t mySize;
 		bool myDeleteDisabled;
-		bool myDirty;
 
 		// PBO stuff
 		GLuint myPBOId;
