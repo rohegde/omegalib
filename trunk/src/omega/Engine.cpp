@@ -224,6 +224,7 @@ void Engine::reset()
 	myDefaultCamera->resetOrientation();
 	myDefaultCamera->setPosition(Vector3f::Zero());
 	myDefaultCamera->getController()->reset();
+	myDefaultCamera->removeAllChildren();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
