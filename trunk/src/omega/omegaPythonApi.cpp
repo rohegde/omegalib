@@ -1008,6 +1008,7 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(SoundEnvironment, getWetness)
 		PYAPI_METHOD(SoundEnvironment, setRoomSize)
 		PYAPI_METHOD(SoundEnvironment, getRoomSize)
+		PYAPI_METHOD(SoundEnvironment, showDebugInfo)
 		;
 
 	// Sound
