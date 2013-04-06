@@ -270,7 +270,8 @@ protected:
 			if(emissive != "")
 			{
 				Color emissiveColor(emissive);
-				mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(emissiveColor));
+				mat->setColorMode(osg::Material::EMISSION);
+				//mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(emissiveColor));
 			}
 			mat->setSpecular(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
 			ss->setAttributeAndModes(mat, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);

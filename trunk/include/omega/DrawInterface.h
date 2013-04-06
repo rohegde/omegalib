@@ -105,6 +105,7 @@ namespace omega {
 		void drawText(const String& text, Font* font, const Vector2f& position, unsigned int align, Color color);
 		void drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size, uint flipFlags = 0, const Vector2f& minUV = Vector2f::Zero(), const Vector2f& maxUV = Vector2f::Ones());
 		void drawCircleOutline(Vector2f position, float radius, const Color& color, int segments);
+		void drawCircle(Vector2f position, float radius, const Color& color, int segments);
 		void drawWireSphere(const Color& color, int segments, int slices);
 		//void drawPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type);
 		//@}

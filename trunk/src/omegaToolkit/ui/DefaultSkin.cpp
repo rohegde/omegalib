@@ -54,17 +54,34 @@ void DefaultButtonRenderable::drawContent(const DrawContext& context)
 	// If button is checkable, draw check box.
 	if(myOwner->isCheckable())
 	{
-		size[0] -= 18;
-		Vector2f checkBoxSize = Vector2f(14, 14);
-		Vector2f checkBoxPosition = Vector2f(size[0], 4);
-		painter->drawRectOutline(checkBoxPosition, checkBoxSize, sBaseColor);
-
-		if(myOwner->isChecked())
+		if(myOwner->isRadio())
 		{
-			checkBoxSize -= Vector2f(5, 5);
-			checkBoxPosition += Vector2f(2, 2);
-			painter->drawRect(checkBoxPosition, checkBoxSize, Color::Lime);
+			size[0] -= (size[1] + 4);
+			Vector2f radioBoxPosition = Vector2f(size[1] / 2, size[1] / 2);
+			painter->drawCircleOutline(radioBoxPosition, (size[1] - 4) / 2, Color::White, 16);
+
+			//if(myOwner->isChecked())
+			//{
+			//	checkBoxSize -= Vector2f(5, 5);
+			//	checkBoxPosition += Vector2f(2, 2);
+			//	painter->drawRect(checkBoxPosition, checkBoxSize, Color::Lime);
+			//}
 		}
+		else
+		{
+			size[0] -= (size[1] + 4);
+			Vector2f checkBoxSize = Vector2f(size[1] - 4, size[1] - 4);
+			Vector2f checkBoxPosition = Vector2f(0, 4);
+			painter->drawRectOutline(checkBoxPosition, checkBoxSize, sBaseColor);
+
+			if(myOwner->isChecked())
+			{
+				checkBoxSize -= Vector2f(5, 5);
+				checkBoxPosition += Vector2f(2, 2);
+				painter->drawRect(checkBoxPosition, checkBoxSize, Color::Lime);
+			}
+		}
+		myOwner->getLabel()->setPosition(Vector2f(size[1] + 4, 0));
 	}
 
 	//myOwner->getLabel()->setPosition(Vector2f::Zero());

@@ -35,6 +35,7 @@ AbstractButton::AbstractButton(Engine* server):
 	Widget(server),
 	myCheckable(false),
 	myChecked(false),
+	myRadio(false),
 	myPressed(false),
 	myPressedStateChanged(false)
 {
