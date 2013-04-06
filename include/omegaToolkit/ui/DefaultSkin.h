@@ -57,18 +57,6 @@ namespace omegaToolkit { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class OTK_API DefaultPanelRenderable: public ContainerRenderable
-	{
-	public:
-		DefaultPanelRenderable(Container* owner): ContainerRenderable(owner), myOwner(owner) {}
-		virtual ~DefaultPanelRenderable() {}
-	protected:
-		virtual void drawContent(const DrawContext& context);
-	private:
-		Container* myOwner;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	class DefaultButton: public Button
 	{
 	friend class DefaultButtonRenderable;

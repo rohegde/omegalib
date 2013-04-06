@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/ui/AbstractButton.h"
+#include "omegaToolkit/ui/Container.h"
 
 using namespace omega;
 using namespace omegaToolkit;
@@ -59,10 +60,39 @@ void AbstractButton::update(const omega::UpdateContext& context)
 			// If button is checkable, toggle check state.
 			if(myCheckable)
 			{
-				myChecked = !myChecked;
-				Event evt;
-				evt.reset(Event::Toggle, Service::Ui, getId());
-				dispatchUIEvent(evt);
+				// If this button is a radio button that switched to checked state, uncheck all 
+				// other radio buttons in the same container.
+				// NOTE: For radio buttons, only the button that is being switched will dispatch an event.
+				if(myRadio)
+				{
+					if(!myChecked)
+					{
+						myChecked = true;
+						Container* c = getContainer();
+						if(c != NULL)
+						{
+							int nc = c->getNumChildren();
+							for(int i = 0; i < nc; i++)
+							{
+								AbstractButton* btn = dynamic_cast<AbstractButton*>(c->getChildByIndex(i));
+								if(btn != NULL && btn != this && btn->isRadio())
+								{
+									btn->myChecked = false;
+								}
+							}
+						}
+						Event evt;
+						evt.reset(Event::Toggle, Service::Ui, getId());
+						dispatchUIEvent(evt);
+					}
+				}
+				else
+				{
+					myChecked = !myChecked;
+					Event evt;
+					evt.reset(Event::Toggle, Service::Ui, getId());
+					dispatchUIEvent(evt);
+				}
 			}
 			else
 			{
