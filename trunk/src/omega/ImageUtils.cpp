@@ -181,7 +181,7 @@ ImageUtils::LoadImageAsyncTask* ImageUtils::loadImageAsync(const String& filenam
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Ref<PixelData> ImageUtils::ffbmpToPixelData(FIBITMAP* image, const String& filename)
+Ref<PixelData> ImageUtils::ffbmpToPixelData(FIBITMAP*& image, const String& filename)
 {
 	int bpp = FreeImage_GetBPP(image);
 	int width = FreeImage_GetWidth(image);

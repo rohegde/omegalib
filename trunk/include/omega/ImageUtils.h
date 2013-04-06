@@ -92,7 +92,7 @@ namespace omega {
 		static int getImageLoaderThreads() { return sNumLoaderThreads; }
 		
 	private:
-		static Ref<PixelData> ffbmpToPixelData(FIBITMAP* image, const String& filename);
+		static Ref<PixelData> ffbmpToPixelData(FIBITMAP*& image, const String& filename);
 
 	private:
 		static Vector<void*> sPreallocBlocks;
