@@ -325,7 +325,8 @@ void DrawInterface::drawCircle(Vector2f position, float radius, const Color& col
 	setGlColor(color);
 
 	float stp = Math::Pi * 2 / segments;
-	glBegin(GL_LINE_LOOP);
+	glBegin(GL_TRIANGLE_FAN);
+	glVertex2f(position[0], position[1]);
 	for(float t = 0; t < 2 * Math::Pi; t+= stp)
 	{
 		float ptx = Math::sin(t) * radius + position[0];
