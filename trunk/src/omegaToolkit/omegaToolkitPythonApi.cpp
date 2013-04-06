@@ -47,29 +47,6 @@ using namespace omega;
 using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
-//#define PYCAP_GET(pyobj, className) pyobj != NULL ? (className*)PyCapsule_GetPointer(pyobj, #className) : NULL
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//PyObject* uiImageLoad(PyObject* self, PyObject* args)
-//{
-//	// Create a mouse interactor and associate it with our scene node.
-//	Actor* actor = new DefaultMouseInteractor();
-//	ModuleServices::addModule(actor);
-//
-//	ui::Image* img = myWidgetFactory->createImage("img", UiModule::instance()->getUi());
-//
-//	bool stereo = Config::getBoolValue("stereo", imageSetting, false);
-//
-//	img->setStereo(stereo);
-//	ImageData* imgData = ImageUtils::loadImage(fileName);
-//	img->setData(imgData->getPixels());
-//
-//	PyObject* pyImage = PyCapsule_New(actor, "Widget", NULL);
-//	return Py_BuildValue("O", pyImage);
-//}
-
-SceneEditorModule* sEditor = NULL;
-
 #define BOOST_PYTHON_NO_LIB
 #include <boost/python.hpp>
 using namespace boost::python;
@@ -234,6 +211,8 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(Widget, getScale)
 		PYAPI_METHOD(Widget, setUpdateCommand)
 		PYAPI_GETTER(Widget, getUpdateCommand)
+		PYAPI_METHOD(Widget, isStereo)
+		PYAPI_METHOD(Widget, setStereo)
 		;
 
 	// Container
@@ -256,6 +235,8 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(Button, setCheckable)
 		PYAPI_METHOD(Button, setChecked)
 		PYAPI_METHOD(Button, isChecked)
+		PYAPI_METHOD(Button, setRadio)
+		PYAPI_METHOD(Button, isRadio)
 		PYAPI_METHOD(Button, setIcon)
 		PYAPI_REF_GETTER(Button, getIcon)
 		PYAPI_REF_GETTER(Button, getImage)
