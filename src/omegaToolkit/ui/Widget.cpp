@@ -148,23 +148,19 @@ void Widget::handleEvent(const Event& evt)
 		{
 			if(evt.isButtonDown(Event::ButtonDown))
 			{
-			omsg("DOWN");
 				evt.setProcessed();
 				if(myVerticalNextWidget != NULL)
 				{
 					ui->activateWidget(myVerticalNextWidget);
-			omsg("ACTIVATE");
 					playMenuScrollSound();
 				}
 			}
 			else if(evt.isButtonDown(Event::ButtonUp))
 			{
-			omsg("UP");
 				evt.setProcessed();
 				if(myVerticalPrevWidget != NULL)
 				{
 					ui->activateWidget(myVerticalPrevWidget);
-			omsg("ACTIVATE");
 					playMenuScrollSound();
 				}
 			}

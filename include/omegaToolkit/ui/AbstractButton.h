@@ -42,6 +42,9 @@ namespace omegaToolkit { namespace ui {
 		bool isCheckable() { return myCheckable; }
 		void setCheckable(bool value) { myCheckable = value; }
 
+		bool isRadio() { return myRadio; }
+		void setRadio(bool value)  { myRadio = value; }
+
 		bool isChecked() { return myChecked; }
 		void setChecked(bool value) { myChecked = value; }
 
@@ -50,6 +53,7 @@ namespace omegaToolkit { namespace ui {
 	protected:
 		bool myCheckable;
 		bool myChecked;
+		bool myRadio;
 		bool myPressed;
 		bool myPressedStateChanged;
 	};
