@@ -7,6 +7,7 @@
 = omegalib v3.6 (*current developer version*) =
 == Major Changes ==
 	* moved Porthole code from omega to omegaToolkit
+	* (*3.6.1*) additional improvements and fixes to runtime application switching.
 orun
 	* control of application start command
 omega
@@ -16,12 +17,15 @@ omega
 	* removed obsolete Gpu classes. They may be placed in a separate module in the future.
 	* added `borderless` option to display and tile configuration.
 	* (*3.6.1*) reformatted python errors to make them easier to spot in the log. 
+	* (*3.6.1, Windows 32bit*) build process uses an internal copy of python instead of an external, so omegalib builds out-of-the-box even with python suppor enabled.
+	* (*3.6.2*) Fixed regression on loading of 8bit png images.
 omegaToolkit
 	* New menu widgets: label, slider, image
 	* `Slider` class accessible from Python API
 	* fixed menu deallocation when switching applications at runtime
 	* some fixes to container layout code
 	* removed Panel container type (it can be replicated using Container styles)
+	* (*3.6.2*) added radio buttons.
 cyclops
 	* Added support for *geometry shaders* in C++ and python API through the `ProgramAsset` class.
 
