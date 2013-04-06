@@ -373,7 +373,8 @@ void Menu::onPushMenuStack()
 
 		const Container3dSettings& subc3ds = myActiveSubMenu->get3dSettings();
 
-		my3dSettings.position += subc3ds.normal * (-0.3f);
+		Vector3f dir = subc3ds.normal.cross(subc3ds.up);
+		my3dSettings.position += subc3ds.normal * (-0.3f) + dir * (subc3ds.scale * myContainer->getWidth());
 		my3dSettings.alpha = myActiveSubMenu->get3dSettings().alpha / 3;
 	}
 }
