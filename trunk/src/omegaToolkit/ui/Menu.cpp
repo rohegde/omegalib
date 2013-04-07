@@ -82,6 +82,11 @@ MenuItem::MenuItem(Type type, Menu* owner):
 		myImage = wf->createImage("img", myMenu->myContainer);
 		myWidget = myImage;
 	}
+	else if(type == MenuItem::Container)
+	{
+		myContainer = wf->createContainer("container", myMenu->myContainer);
+		myWidget = myContainer;
+	}
 
 	//myWidget->setStyleValue("fill", "#00000090");
 
@@ -263,6 +268,14 @@ MenuItem* Menu::addImage(PixelData* image)
 {
 	MenuItem* item = addItem(MenuItem::Image);
 	item->setImage(image);
+	return item;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+MenuItem* Menu::addContainer()
+{
+	MenuItem* item = addItem(MenuItem::Container);
 	return item;
 }
 

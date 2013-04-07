@@ -53,7 +53,7 @@ namespace omegaToolkit { namespace ui {
 	{
 	friend class Menu;
 	public:
-		enum Type { Button, Checkbox, Slider, Label, SubMenu, Image };
+		enum Type { Button, Checkbox, Slider, Label, SubMenu, Image, Container };
 
 	public:
 		MenuItem(Type type, Menu* owner);
@@ -101,6 +101,7 @@ namespace omegaToolkit { namespace ui {
 		omegaToolkit::ui::Label* getLabel() { return myLabel; }
 		omegaToolkit::ui::Button* getButton() { return myButton; }
 		omegaToolkit::ui::Image* getImage() { return myImage; }
+		omegaToolkit::ui::Container* getContainer() { return myContainer; }
 
 		Menu* getSubMenu() { return mySubMenu; }
 
@@ -128,6 +129,7 @@ namespace omegaToolkit { namespace ui {
 		Ref<omegaToolkit::ui::Label> myLabel;
 		Ref<omegaToolkit::ui::Slider> mySlider;
 		Ref<omegaToolkit::ui::Image> myImage;
+		Ref<omegaToolkit::ui::Container> myContainer;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,6 +151,8 @@ namespace omegaToolkit { namespace ui {
 		MenuItem* addSlider(int ticks, const String& command);
 		//! Utility method to create an image
 		MenuItem* addImage(PixelData* image);
+		//! Utility method to create a container
+		MenuItem* addContainer();
 		//! Utility method to create a sub-menu
 		Menu* addSubMenu(const String& label);
 
