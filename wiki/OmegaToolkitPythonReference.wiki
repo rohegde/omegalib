@@ -1,7 +1,7 @@
 #summary Python reference: module omegaToolkit
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.6.2 - 3 April 2013</p>*
+<p>*Last revision:* ver. 3.6.3 - 7 April 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -68,12 +68,13 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 
 === Methods ===
 || Method(s) || Description ||
-|| `addItem(type)` || Adds an item to the menu. Type can be one of `MenuItem.Button`, `MenuItem.Checkbox`, `MenuItem.Slider`, `MenuItem.SubMenu`, `MenuItem.Label`, `MenuItem.Image` ||
+|| `addItem(type)` || Adds an item to the menu. Type can be one of `MenuItem.Button`, `MenuItem.Checkbox`, `MenuItem.Slider`, `MenuItem.SubMenu`, `MenuItem.Label`, `MenuItem.Image`, `MenuItem.Container` ||
 || `addButton(label, command)` || Convenience method for adding a button item and associating a command to it. Returns a reference to the created `MenuItem` ||
 || `addSubMenu(label)` || Convenience method for adding a sub menu. Returns a reference to the created `Menu` ||
 || `addLabel(text)` || Convenience method for adding a label. Returns a reference to the created `MenuItem` ||
 || `addImage(image)` || Convenience method for adding an image. Returns a reference to the created `MenuItem`. the image is a `PixelData` object ||
 || `addSlider(ticks, command)` || Convenience method for adding a slider. Returns a reference to the created `MenuItem` ||
+|| `addContainer()` || Convenience method for adding a container. Returns a reference to the created `MenuItem` ||
 || `show()` || Displays the menu ||
 || `hide()` || Hides the menu ||
 || `placeOnWand(event)` || Places the menu along the wand ray contained in the passed event ||
@@ -99,6 +100,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `getWidget()` || Returns the a reference to the widget representing this menu item ||
 || `getSlider()` || Returns a reference to a `Slider` widget if this menu item is a slider. Returns `None` otherwise ||
 || `getImage()` || Returns a reference to an `Image` widget if this menu item is an image. Returns `None` otherwise ||
+|| `getContainer()` || Returns a reference to a `Container` widget if this menu item is a container. Returns `None` otherwise ||
 || `getButton()` || Returns a reference to a `Button` widget if this menu item is a button. Returns `None` otherwise ||
 || `setImage(image)` || Sets the image for this menu item. Image and Button menu items support images ||
 
@@ -154,6 +156,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `getHeight()`, `'setHeight(value)` || Gets or sets the widget height ||
 || `setName(name)`, `getName()` || Gets or sets the widget name ||
 || `setStyle(style)` || Sets one or more widget styles as `key: value` pairs ||
+|| `setStyleValue(style, value)` || Sets the value for a single style key ||
 || `refresh()` || Forces a widget refresh ||
 || `hitTest(position)` || Checks if the specified pixel position (as a `Vector2` value) lies within the widget area ||
 || `setUiEventCommand(command)` || Sets the command to be invoked when events happen in the widget area (like clicks or value changes) ||
@@ -175,7 +178,10 @@ The method `getLayer()` returns a value from the `WidgetBlendMode` enumeration. 
 	* `BlendAdditive` sets the blend mode to additive blending
 
 === Styles ===
-*TODO*
+The methods `setStyle` and `setStyleValue` accept the following style keys:
+	* `fill`: sets the widget fill color. Example: <code> widget.setStyleValue('fill', '#ff0000') </code>
+	* `border`: sets the border style for all borders. widget fill color. Border style is a border width followed by a borer color. Example: <code> widget.setStyleValue('border', '2 #ffff00') </code>
+	* `border-top`, `border-bottom`, `border-left`, `border-right`: sets each border side style separately
 
 ---------------------------------------------------------------------------------------------------
 ==  `class Container` (extends `Widget`) ==
@@ -217,7 +223,13 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || Method(s) || Description ||
 || `getText()`, `setText(name)` || Gets or sets the label for the label||
 || `setColor(color)` || Sets the label color. Exaample: `label.setColor(Color('white'))` ||
-|| `setFont(fontName)` || Sets the label font using a `<font> <size>` string. Example: `label.setFont('fonts/arial.ttf 20'')` ||
+|| `setFont(fontName)` || Sets the label font using a `<font> <size>` string. Example: `label.setFont('fonts/arial.ttf 20')` ||
+
+=== Styles ===
+In addition to widget style, `Label` supports the following additional styles:
+	* `font`: sets the font used by the label. The style is a font name followed by a font size. Example: <code> label.setStyleValue('font', 'fonts/arial.ttf 20') </code>
+	* `color`: sets the font color used by the label. Example: <code> label.setStyleValue('color', 'red') </code>
+	* `align`: sets the font alignment used by the label. Alignment format is `<vertical>-<horizontal>`, where vertical is one of `top`, `middle`, `bottom` and horizontal is one of `left`, `center`, `right`. Example: <code> label.setStyleValue('align', 'middle-left') </code>
 
 ---------------------------------------------------------------------------------------------------
 ==  `class Slider` (extends `Widget`) ==

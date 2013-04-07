@@ -26,11 +26,12 @@ omegaToolkit
 	* some fixes to container layout code
 	* removed Panel container type (it can be replicated using Container styles)
 	* (*3.6.2*) added radio buttons.
+	* (*3.6.3*) custom uis can be added to a menu through Menu.addContainer
 cyclops
 	* Added support for *geometry shaders* in C++ and python API through the `ProgramAsset` class.
 
 ------------------------------------------------------------------------
-= omegalib v3.5.1 =
+= omegalib v3.5 =
 == Major Changes ==
 	* Reorganized source: all c++ and python examples are now under `/examples`.
 	* (3.5.1) omicron and omegalib use double precision math by default.
