@@ -1,13 +1,11 @@
 <map id="omega::Renderable" name="omega::Renderable">
-<area shape="rect" id="node5" href="$classomega_1_1_console_renderable.html" title="omega::ConsoleRenderable" alt="" coords="360,88,515,112"/>
-<area shape="rect" id="node7" href="$classomega_1_1_pointer_renderable.html" title="omega::PointerRenderable" alt="" coords="362,136,513,160"/>
-<area shape="rect" id="node9" href="$classomega_toolkit_1_1ui_1_1_widget_renderable.html" title="omegaToolkit::ui::Widget\lRenderable" alt="" coords="366,185,509,221"/>
-<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,136,147,160"/>
-<area shape="rect" id="node11" href="$classomega_toolkit_1_1ui_1_1_barebone_button_renderable.html" title="omegaToolkit::ui::Barebone\lButtonRenderable" alt="" coords="583,5,737,41"/>
-<area shape="rect" id="node13" href="$classomega_toolkit_1_1ui_1_1_barebone_slider_renderable.html" title="omegaToolkit::ui::Barebone\lSliderRenderable" alt="" coords="583,65,737,101"/>
-<area shape="rect" id="node15" href="$classomega_toolkit_1_1ui_1_1_container_renderable.html" title="omegaToolkit::ui::Container\lRenderable" alt="" coords="582,125,738,161"/>
-<area shape="rect" id="node17" href="$classomega_toolkit_1_1ui_1_1_default_button_renderable.html" title="omegaToolkit::ui::Default\lButtonRenderable" alt="" coords="588,185,732,221"/>
-<area shape="rect" id="node19" href="$classomega_toolkit_1_1ui_1_1_default_slider_renderable.html" title="omegaToolkit::ui::Default\lSliderRenderable" alt="" coords="588,245,732,281"/>
-<area shape="rect" id="node21" href="$classomega_toolkit_1_1ui_1_1_image_renderable.html" title="omegaToolkit::ui::ImageRenderable" alt="" coords="563,305,757,329"/>
-<area shape="rect" id="node23" href="$classomega_toolkit_1_1ui_1_1_label_renderable.html" title="omegaToolkit::ui::LabelRenderable" alt="" coords="565,353,755,377"/>
+<area shape="rect" id="node5" href="$classomega_1_1_console_renderable.html" title="omega::ConsoleRenderable" alt="" coords="360,28,515,52"/>
+<area shape="rect" id="node7" href="$classomega_1_1_pointer_renderable.html" title="omega::PointerRenderable" alt="" coords="362,76,513,100"/>
+<area shape="rect" id="node9" href="$classomega_toolkit_1_1ui_1_1_widget_renderable.html" title="omegaToolkit::ui::Widget\lRenderable" alt="" coords="366,125,509,161"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,76,147,100"/>
+<area shape="rect" id="node11" href="$classomega_toolkit_1_1ui_1_1_container_renderable.html" title="omegaToolkit::ui::Container\lRenderable" alt="" coords="582,5,738,41"/>
+<area shape="rect" id="node13" href="$classomega_toolkit_1_1ui_1_1_default_button_renderable.html" title="omegaToolkit::ui::Default\lButtonRenderable" alt="" coords="588,65,732,101"/>
+<area shape="rect" id="node15" href="$classomega_toolkit_1_1ui_1_1_default_slider_renderable.html" title="omegaToolkit::ui::Default\lSliderRenderable" alt="" coords="588,125,732,161"/>
+<area shape="rect" id="node17" href="$classomega_toolkit_1_1ui_1_1_image_renderable.html" title="omegaToolkit::ui::ImageRenderable" alt="" coords="563,185,757,209"/>
+<area shape="rect" id="node19" href="$classomega_toolkit_1_1ui_1_1_label_renderable.html" title="omegaToolkit::ui::LabelRenderable" alt="" coords="565,233,755,257"/>
 </map>

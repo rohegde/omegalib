@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classomicron_1_1_math.html" title="Class to provide access to common mathematical functions." alt="" coords="5,5,96,29"/>
+<area shape="rect" id="node1" href="$classomicron_1_1_thread.html" title="omicron::Thread" alt="" coords="5,5,107,29"/>
+<area shape="rect" id="node3" href="$classomega_1_1_server_thread.html" title="Implements, in a separate thread, the HTTP server for Porthole Service." alt="" coords="155,5,283,29"/>
 </map>

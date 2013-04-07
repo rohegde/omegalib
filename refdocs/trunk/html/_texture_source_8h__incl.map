@@ -1,6 +1,7 @@
 <map id="D:/Workspace/omegalib/core/include/omega/TextureSource.h" name="D:/Workspace/omegalib/core/include/omega/TextureSource.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="56,245,128,269"/>
-<area shape="rect" id="node10" href="$_texture_8h.html" title="omega/Texture.h" alt="" coords="79,101,185,125"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="95,317,160,341"/>
-<area shape="rect" id="node13" href="$_gpu_manager_8h.html" title="omega/GpuManager.h" alt="" coords="130,173,259,197"/>
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="93,245,165,269"/>
+<area shape="rect" id="node10" href="$_texture_8h.html" title="omega/Texture.h" alt="" coords="96,101,203,125"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="133,317,197,341"/>
+<area shape="rect" id="node13" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="113,173,255,197"/>
+<area shape="rect" id="node16" href="$_gpu_resource_8h.html" title="omega/GpuResource.h" alt="" coords="279,173,411,197"/>
 </map>

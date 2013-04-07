@@ -1,11 +1,10 @@
 <map id="D:/Workspace/omegalib/core/src/omega/eqinternal/WindowImpl.cpp" name="D:/Workspace/omegalib/core/src/omega/eqinternal/WindowImpl.cpp">
-<area shape="rect" id="node3" href="$_render_target_8h.html" title="omega/RenderTarget.h" alt="" coords="54,173,188,197"/>
-<area shape="rect" id="node7" href="$_gpu_manager_8h.html" title="GpuManager.h" alt="" coords="5,317,99,341"/>
-<area shape="rect" id="node15" href="$_equalizer_display_system_8h.html" title="omega/EqualizerDisplaySystem.h" alt="" coords="213,173,392,197"/>
-<area shape="rect" id="node24" href="$eqinternal_8h.html" title="eqinternal.h" alt="" coords="407,101,487,125"/>
-<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="244,389,316,413"/>
-<area shape="rect" id="node10" href="$_texture_8h.html" title="Texture.h" alt="" coords="86,245,156,269"/>
-<area shape="rect" id="node17" href="$_display_system_8h.html" title="DisplaySystem.h" alt="" coords="232,245,333,269"/>
-<area shape="rect" id="node20" href="$_application_base_8h.html" title="ApplicationBase.h" alt="" coords="317,317,424,341"/>
-<area shape="rect" id="node27" href="$_application_8h.html" title="omega/Application.h" alt="" coords="408,245,528,269"/>
+<area shape="rect" id="node3" href="$_render_target_8h.html" title="omega/RenderTarget.h" alt="" coords="5,173,139,197"/>
+<area shape="rect" id="node13" href="$_equalizer_display_system_8h.html" title="omega/EqualizerDisplaySystem.h" alt="" coords="163,173,343,197"/>
+<area shape="rect" id="node20" href="$eqinternal_8h.html" title="eqinternal.h" alt="" coords="357,101,437,125"/>
+<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="283,389,355,413"/>
+<area shape="rect" id="node7" href="$_texture_8h.html" title="Texture.h" alt="" coords="119,245,189,269"/>
+<area shape="rect" id="node10" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="193,317,335,341"/>
+<area shape="rect" id="node15" href="$_display_system_8h.html" title="DisplaySystem.h" alt="" coords="273,245,375,269"/>
+<area shape="rect" id="node23" href="$_application_8h.html" title="omega/Application.h" alt="" coords="399,245,519,269"/>
 </map>

@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.6</span>
+   &#160;<span id="projectnumber">3.6.2</span>
    </div>
   </td>
  </tr>
@@ -58,7 +58,7 @@
 </div><!--header-->
 <div class="contents">
 
-<p>Loads and manages image data.  
+<p><a class="el" href="classomega_1_1_image_utils.html" title="ImageUtils is a container of functions for synchronous and asyncronous image loading.">ImageUtils</a> is a container of functions for synchronous and asyncronous image loading.  
  <a href="classomega_1_1_image_utils.html#details">More...</a></p>
 
 <p><code>#include &lt;ImageUtils.h&gt;</code></p>
@@ -84,12 +84,14 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a386b9c6734e07212ca5b90c6b6734b2c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1_image_utils.html#a7d4ba2105bb9584f509346fef33e2ea2">LoadImageAsyncTask</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a386b9c6734e07212ca5b90c6b6734b2c">loadImageAsync</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;filename, bool hasFullPath=false)</td></tr>
 <tr class="memdesc:a386b9c6734e07212ca5b90c6b6734b2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load image from a file (async)  <a href="#a386b9c6734e07212ca5b90c6b6734b2c"></a><br/></td></tr>
 <tr class="memitem:abf0dee73ad2ee17169c11fb1797b31af"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structomicron_1_1_byte_array.html">ByteArray</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#abf0dee73ad2ee17169c11fb1797b31af">encode</a> (<a class="el" href="classomega_1_1_pixel_data.html">PixelData</a> *<a class="el" href="glew_8h.html#a42c2b1d86fa71a425e73a882cb0a72c8">data</a>, <a class="el" href="classomega_1_1_image_utils.html#a3adea18d896812a9499e62290793f35c">ImageFormat</a> <a class="el" href="glew_8h.html#a1e3b09934060e9d373139c3557730d37">format</a>)</td></tr>
+<tr class="memdesc:abf0dee73ad2ee17169c11fb1797b31af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes an image using the specified format. Returns a byte array containing the encoded image data.  <a href="#abf0dee73ad2ee17169c11fb1797b31af"></a><br/></td></tr>
 <tr class="memitem:a2fa94e6047770e5383a8e47783b70bbb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a2fa94e6047770e5383a8e47783b70bbb">internalInitialize</a> ()</td></tr>
 <tr class="memitem:aff53aa5f29908ae61515349430562917"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#aff53aa5f29908ae61515349430562917">internalDispose</a> ()</td></tr>
 <tr class="memitem:a156a3d3faf3a11cda9089c480e8c4c96"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a156a3d3faf3a11cda9089c480e8c4c96">setVerbose</a> (bool <a class="el" href="glew_8h.html#a6a4f8a1a444e9080b297963b3db29fe0">value</a>)</td></tr>
 <tr class="memitem:aff1b8cac1f0d71f44eefd35c66c0609d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#aff1b8cac1f0d71f44eefd35c66c0609d">setImageLoaderThreads</a> (int <a class="el" href="glew_8h.html#a85149b1510a8c7b78a603f657799ec2d">num</a>)</td></tr>
 <tr class="memdesc:aff1b8cac1f0d71f44eefd35c66c0609d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the number if image loading threads. Must be called before the fist call to loadImageAsync.  <a href="#aff1b8cac1f0d71f44eefd35c66c0609d"></a><br/></td></tr>
 <tr class="memitem:aa87156f1020df5b76753e872efbe59ed"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#aa87156f1020df5b76753e872efbe59ed">getImageLoaderThreads</a> ()</td></tr>
+<tr class="memdesc:aa87156f1020df5b76753e872efbe59ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of image loading threads.  <a href="#aa87156f1020df5b76753e872efbe59ed"></a><br/></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ad8622dcca54636ecd6e5fa95898e1602"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#ad8622dcca54636ecd6e5fa95898e1602">preallocateBlocks</a> (size_t <a class="el" href="glew_8h.html#a3d1e3edfcf61ca2d831883e1afbad89e">size</a>, int numBlocks)</td></tr>
 <tr class="memdesc:ad8622dcca54636ecd6e5fa95898e1602"><td class="mdescLeft">&#160;</td><td class="mdescRight">Preallocated memory management.  <a href="#ad8622dcca54636ecd6e5fa95898e1602"></a><br/></td></tr>
@@ -101,7 +103,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a25b511efee77b664637e955bcfbceb3b"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a25b511efee77b664637e955bcfbceb3b">getLoadPreallocatedBlock</a> ()</td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>Loads and manages image data. </p>
+<div class="textblock"><p><a class="el" href="classomega_1_1_image_utils.html" title="ImageUtils is a container of functions for synchronous and asyncronous image loading.">ImageUtils</a> is a container of functions for synchronous and asyncronous image loading. </p>
 </div><h2>Member Typedef Documentation</h2>
 <a class="anchor" id="a7d4ba2105bb9584f509346fef33e2ea2"></a>
 <div class="memitem">
@@ -169,6 +171,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Encodes an image using the specified format. Returns a byte array containing the encoded image data. </p>
+
 </div>
 </div>
 <a class="anchor" id="aa87156f1020df5b76753e872efbe59ed"></a>
@@ -191,6 +195,8 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Gets the number of image loading threads. </p>
 
 </div>
 </div>

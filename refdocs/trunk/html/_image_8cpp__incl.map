@@ -1,16 +1,14 @@
 <map id="D:/Workspace/omegalib/core/src/omegaToolkit/ui/Image.cpp" name="D:/Workspace/omegalib/core/src/omegaToolkit/ui/Image.cpp">
-<area shape="rect" id="node3" href="$_gpu_manager_8h.html" title="omega/GpuManager.h" alt="" coords="22,331,150,355"/>
-<area shape="rect" id="node10" href="$_renderer_8h.html" title="omega/Renderer.h" alt="" coords="183,252,296,276"/>
-<area shape="rect" id="node23" href="$include_2omega_toolkit_2ui_2image_8h.html" title="omegaToolkit/ui/Image.h" alt="" coords="557,101,698,125"/>
-<area shape="rect" id="node34" href="$_draw_interface_8h.html" title="DrawInterface.h" alt="" coords="344,252,446,276"/>
-<area shape="rect" id="node40" href="$_container_8h.html" title="omegaToolkit/ui/Container.h" alt="" coords="314,101,472,125"/>
-<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="354,475,426,499"/>
-<area shape="rect" id="node7" href="$_gpu_program_8h.html" title="omega/GpuProgram.h" alt="" coords="24,403,150,427"/>
-<area shape="rect" id="node13" href="$_renderable_8h.html" title="Renderable.h" alt="" coords="496,331,582,355"/>
-<area shape="rect" id="node16" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="278,331,420,355"/>
-<area shape="rect" id="node19" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="244,403,353,427"/>
-<area shape="rect" id="node25" href="$omega_toolkit_config_8h.html" title="omegaToolkit/omegaToolkit\lConfig.h" alt="" coords="545,246,697,282"/>
-<area shape="rect" id="node28" href="$_image_utils_8h.html" title="omega/ImageUtils.h" alt="" coords="667,403,785,427"/>
-<area shape="rect" id="node31" href="$_widget_8h.html" title="omegaToolkit/ui/Widget.h" alt="" coords="500,173,645,197"/>
-<area shape="rect" id="node43" href="$_ui_render_pass_8h.html" title="omegaToolkit/UiRenderPass.h" alt="" coords="310,173,476,197"/>
+<area shape="rect" id="node3" href="$_renderer_8h.html" title="omega/Renderer.h" alt="" coords="5,252,117,276"/>
+<area shape="rect" id="node17" href="$include_2omega_toolkit_2ui_2image_8h.html" title="omegaToolkit/ui/Image.h" alt="" coords="287,101,428,125"/>
+<area shape="rect" id="node28" href="$_draw_interface_8h.html" title="DrawInterface.h" alt="" coords="142,252,244,276"/>
+<area shape="rect" id="node34" href="$_container_8h.html" title="omegaToolkit/ui/Container.h" alt="" coords="502,101,660,125"/>
+<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="252,475,324,499"/>
+<area shape="rect" id="node7" href="$_renderable_8h.html" title="Renderable.h" alt="" coords="321,331,407,355"/>
+<area shape="rect" id="node10" href="$_application_base_8h.html" title="omega/ApplicationBase.h" alt="" coords="102,331,244,355"/>
+<area shape="rect" id="node13" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="44,403,153,427"/>
+<area shape="rect" id="node19" href="$omega_toolkit_config_8h.html" title="omegaToolkit/omegaToolkit\lConfig.h" alt="" coords="420,246,572,282"/>
+<area shape="rect" id="node22" href="$_image_utils_8h.html" title="omega/ImageUtils.h" alt="" coords="229,403,347,427"/>
+<area shape="rect" id="node25" href="$_widget_8h.html" title="omegaToolkit/ui/Widget.h" alt="" coords="313,173,457,197"/>
+<area shape="rect" id="node37" href="$_ui_render_pass_8h.html" title="omegaToolkit/UiRenderPass.h" alt="" coords="533,173,699,197"/>
 </map>

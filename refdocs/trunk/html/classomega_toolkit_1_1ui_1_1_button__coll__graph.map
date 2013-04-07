@@ -1,7 +1,7 @@
 <map id="omegaToolkit::ui::Button" name="omegaToolkit::ui::Button">
-<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_abstract_button.html" title="omegaToolkit::ui::Abstract\lButton" alt="" coords="331,203,482,239"/>
-<area shape="rect" id="node4" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="10,213,153,237"/>
+<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_abstract_button.html" title="omegaToolkit::ui::Abstract\lButton" alt="" coords="331,215,482,251"/>
+<area shape="rect" id="node4" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="10,225,153,249"/>
 <area shape="rect" id="node8" href="$classomega_toolkit_1_1ui_1_1_image.html" title="omegaToolkit::ui::Image" alt="" coords="337,76,476,100"/>
-<area shape="rect" id="node15" href="$classomega_toolkit_1_1ui_1_1_label.html" title="omegaToolkit::ui::Label" alt="" coords="339,308,474,332"/>
+<area shape="rect" id="node15" href="$classomega_toolkit_1_1ui_1_1_label.html" title="omegaToolkit::ui::Label" alt="" coords="339,320,474,344"/>
 <area shape="rect" id="node13" href="$classomicron_1_1_ref.html" title="omicron::Ref\&lt; PixelData \&gt;" alt="" coords="6,53,157,77"/>
 </map>

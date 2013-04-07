@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">3.6</span>
+   &#160;<span id="projectnumber">3.6.2</span>
    </div>
   </td>
  </tr>
@@ -100,6 +100,8 @@ Macros</h2></td></tr>
 <tr class="memdesc:aba9add631890a00a83a5e7e5bbc373e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a new class with by-reference semantics and that supports reference counting.  <a href="#aba9add631890a00a83a5e7e5bbc373e8"></a><br/></td></tr>
 <tr class="memitem:a5591d7f6c4de3edb014d3559b2840277"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a5591d7f6c4de3edb014d3559b2840277">PYAPI_REF_BASE_CLASS_WITH_CTOR</a>(className)&#160;&#160;&#160;class_&lt;className, boost::noncopyable, Ref&lt;className&gt; &gt;(#className)</td></tr>
 <tr class="memdesc:a5591d7f6c4de3edb014d3559b2840277"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a new class with by-reference semantics and that supports reference counting. The class has an empty constuctor.  <a href="#a5591d7f6c4de3edb014d3559b2840277"></a><br/></td></tr>
+<tr class="memitem:a26639356485d1b50deb7775ccc985301"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a26639356485d1b50deb7775ccc985301">PYAPI_REF_CLASS_WITH_CTOR</a>(className, baseName)&#160;&#160;&#160;class_&lt;className, bases&lt;baseName&gt;, boost::noncopyable, Ref&lt;className&gt; &gt;(#className)</td></tr>
+<tr class="memdesc:a26639356485d1b50deb7775ccc985301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a new class with by-reference semantics and that supports reference counting. The class has an empty constuctor.  <a href="#a26639356485d1b50deb7775ccc985301"></a><br/></td></tr>
 <tr class="memitem:a9629d4fa41774f39061296f19ed1ac48"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a9629d4fa41774f39061296f19ed1ac48">PYAPI_METHOD</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName)</td></tr>
 <tr class="memdesc:a9629d4fa41774f39061296f19ed1ac48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a method. Can be used for methods returning void, or returning simple plain types like int, float, bool etc.  <a href="#a9629d4fa41774f39061296f19ed1ac48"></a><br/></td></tr>
 <tr class="memitem:a5e6297873b1d86758d49244cd4018111"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_python_interpreter_wrapper_8h.html#a5e6297873b1d86758d49244cd4018111">PYAPI_GETTER</a>(className, methodName)&#160;&#160;&#160;.def(#methodName, &amp;className::methodName, return_value_policy&lt;return_by_value&gt;())</td></tr>
@@ -392,6 +394,34 @@ Functions</h2></td></tr>
 
 <p>Declare a new class with by-reference semantics and that supports reference counting. </p>
 <p>baseName is the id of the base for this class </p>
+
+</div>
+</div>
+<a class="anchor" id="a26639356485d1b50deb7775ccc985301"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PYAPI_REF_CLASS_WITH_CTOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">className, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">baseName&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;class_&lt;className, bases&lt;baseName&gt;, boost::noncopyable, Ref&lt;className&gt; &gt;(#className)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare a new class with by-reference semantics and that supports reference counting. The class has an empty constuctor. </p>
 
 </div>
 </div>
