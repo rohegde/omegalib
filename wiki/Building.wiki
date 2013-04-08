@@ -9,7 +9,7 @@ On most platforms, omegalib is distributed as a source-only project. Users are r
 This is the current supported status of omegalib:
  * *Windows XP/Vista/7:* VS2010 32bit builds and is regularly tested. VS2008 32bit deprecated and may not work. 64bit builds should work but are not tested regularly.
  * *Linux:* 64bit builds and is regularly tested (SUSE). 32bit tested and running on Ubuntu.
- * *OSX, Intel:* Works only on Mac OSX 10.7 and bigger
+ * *OSX, Intel:* Works only on Mac OSX 10.7 and higher
 
 == Building on Windows ==
 This section explains how to build omegalib on Windows. The basic procedure and requirements are similar for all supported operating systems, so you can use this as a general guideline.
