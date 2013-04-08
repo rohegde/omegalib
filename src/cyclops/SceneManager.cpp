@@ -122,7 +122,6 @@ SceneManager::SceneManager():
 	myShadowedScene(NULL),
 	mySoftShadowMap(NULL),
 	mySkyBox(NULL),
-	myListener(NULL),
 	myNumActiveLights(0),
 	myWandTracker(NULL),
 	myWandEntity(NULL)
@@ -251,50 +250,11 @@ void SceneManager::unload()
 	myMainLight = NULL;
 	myNumActiveLights = 0;
 
-	ofmsg("SceneManager::unload: releasing %1% objects", %myObjectVector.size());
-	foreach(Entity* e, myObjectVector)
-	{
-		e->getParent()->removeChild(e);
-	}
-	myObjectVector.clear();
-	
 	ofmsg("SceneManager::unload: releasing %1% programs", %myPrograms.size());
 	myPrograms.clear();
 
 	ofmsg("SceneManager::unload: releasing %1% programs", %myTextures.size());
 	myTextures.clear();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::addEntity(Entity* obj)
-{
-	oassert(obj);
-
-	myObjectVector.push_back(obj);
-
-	osg::Node* objNode = obj->getOsgNode();
-	// if we have a listener, invoke the add object callback and use its return
-	// value as the osg node.
-	if(myListener != NULL)
-	{
-		objNode = myListener->onObjectAdded(obj);
-	}
-	
-	myEntityNodeMap[obj] = objNode;
-
-	myScene->addChild(objNode);
-
-	// Attach SceneManager as node listener for the entity, so we can be notified of parent changed
-	// events (and add / remove the entity osg node from the osg scene graph)
-	obj->addListener(this);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::removeEntity(Entity* obj)
-{
-	osg::Node* child = myEntityNodeMap[obj];
-	myScene->removeChild(child);
-	myEntityNodeMap.erase(obj);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -314,6 +274,23 @@ void SceneManager::update(const UpdateContext& context)
 			texture->setImage(img);
 
 			item.second->setDirty(false);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::onParentChanged(SceneNode* source, SceneNode* newParent)
+{
+	Entity* e = dynamic_cast<Entity*>(source);
+	if(e != NULL)
+	{
+		if(newParent == NULL)
+		{
+			myScene->removeChild(e->getOsgNode());
+		}
+		else
+		{
+			myScene->addChild(e->getOsgNode());
 		}
 	}
 }
@@ -1101,16 +1078,6 @@ void SceneManager::setWandSize(float width, float length)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-Entity* SceneManager::getEntityByName(const String& name)
-{
-	foreach(Entity* e, myObjectVector)
-	{
-		if(e->getName() == name) return e;
-	}
-	return NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////
 bool SceneManager::handleCommand(const String& cmd)
 {
 	Vector<String> args = StringUtils::split(cmd);
@@ -1144,21 +1111,3 @@ void SceneManager::deleteContextMenu(Entity* entity)
 	myEntitiesWithMenu.remove(entity);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::onParentChanged(SceneNode* source, SceneNode* newParent)
-{
-	Entity* e = dynamic_cast<Entity*>(source);
-	if(e != NULL)
-	{
-		if(newParent == NULL)
-		{
-			osg::Node* child = myEntityNodeMap[e];
-			myScene->removeChild(child);
-		}
-		else
-		{
-			osg::Node* child = myEntityNodeMap[e];
-			myScene->addChild(child);
-		}
-	}
-}

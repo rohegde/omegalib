@@ -106,20 +106,6 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Interface for scene manager listeners
-	class SceneManagerListener
-	{
-	public: 
-		//! Called when an object is added to the scene manager. By reimplementing this method, 
-		//! users can modify the object before insertion in the scenegraph or insert intermediate osg
-		//! nodes.
-		virtual osg::Node* onObjectAdded(Entity* obj)
-		{
-			return obj->getOsgNode();
-		}
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	class CY_API SceneManager: public EngineModule, SceneNodeListener
 	{
 	friend class Entity;
@@ -143,11 +129,6 @@ namespace cyclops {
 		//! Returns an instance of the SceneManager singleton instance If no
 		// Scene manager exists before this call, createAndInitialize will be called internally.
 		static SceneManager* instance();
-
-		//! Sets the scene manager listener
-		void setListener(SceneManagerListener* listener);
-		//! Gets the scene manager listener
-		SceneManagerListener* getListener();
 
 		virtual void initialize();
 		virtual void dispose();
@@ -195,13 +176,6 @@ namespace cyclops {
 		int getNumActiveLights();
 		//@}
 
-		//! Object management
-		//@{
-		Entity* getEntityByName(const String& name);
-		Entity* getEntityByIndex(int index);
-		int getNumEntities();
-		//@}
-
 		osg::Group* getOsgRoot() { return myScene; }
 		osg::Texture2D* getTexture(const String& name);
 		osg::Texture2D* createTexture(const String& name, PixelData* pixels);
@@ -232,8 +206,6 @@ namespace cyclops {
 
 		void addLight(Light* l);
 		void removeLight(Light* l);
-		void addEntity(Entity* obj);
-		void removeEntity(Entity* obj);
 		void updateLights();
 		void loadConfiguration();
 		void loadShader(osg::Shader* shader, const String& name);
@@ -243,9 +215,6 @@ namespace cyclops {
 	private:
 		static SceneManager* mysInstance;
 		Ref<OsgModule> myOsg;
-
-		// Scene manager listener
-		SceneManagerListener* myListener;
 
 		// The scene root. This may be linked directly to myRoot or have some intermediate nodes inbetween
 		// (i.e. for shadow map management)
@@ -264,9 +233,6 @@ namespace cyclops {
 		ShaderMacroDictionary myShaderMacros;
 		ShaderCache myShaderCache;
 
-		Vector< Entity* > myObjectVector;
-		Dictionary<Entity*, osg::Node*> myEntityNodeMap;
-		
 		Ref<Skybox> mySkyBox;
 
 		// Lights and shadows
@@ -291,26 +257,6 @@ namespace cyclops {
 		// Model loaders
 		Dictionary< String, Ref<ModelLoader> > myLoaderDictionary;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline  Entity* SceneManager::getEntityByIndex(int index)
-	{ return myObjectVector[index]; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline int SceneManager::getNumEntities()
-	{ return myObjectVector.size(); }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void SceneManager::setListener(SceneManagerListener* listener)
-	{
-		myListener = listener;
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneManagerListener* SceneManager::getListener()
-	{
-		return myListener;
-	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline int SceneManager::getNumActiveLights()
