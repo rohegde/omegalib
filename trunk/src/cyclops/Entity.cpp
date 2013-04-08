@@ -47,13 +47,13 @@ Entity::Entity(SceneManager* scene):
 	// By default attach new entities to the root node of the scene.
 	myEffect = new EffectNode();
 	Engine* engine = mySceneManager->getEngine();
-	engine->getScene()->addChild(this);
+	//engine->getScene()->addChild(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Entity::~Entity()
 {
-	mySceneManager->removeEntity(this);
+	removeListener(mySceneManager);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +78,8 @@ void Entity::initialize(osg::Node* node)
 	addComponent(myOsgSceneObject);
 
 	// Now add this drawable object to the scene.
-	mySceneManager->addEntity(this);
+	addListener(mySceneManager);
+	getEngine()->getScene()->addChild(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -74,7 +74,7 @@ namespace cyclops {
 		void initialize(osg::Node* node);
 
 	private:
-		SceneManager* mySceneManager;
+		Ref<SceneManager> mySceneManager;
 
 		Ref<osg::Node> myOsgNode;
 		//SceneNode* mySceneNode;
