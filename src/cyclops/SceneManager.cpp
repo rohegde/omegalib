@@ -197,7 +197,11 @@ void SceneManager::initialize()
 
 
 	// Standard shaders
+#ifdef APPLE
+	setShaderMacroToFile("surfaceShader", "cyclops/common/forward/default_osx.frag");
+#else 
 	setShaderMacroToFile("surfaceShader", "cyclops/common/forward/default.frag");
+#endif
 	setShaderMacroToFile("vertexShader", "cyclops/common/forward/default.vert");
 
 	// Standard shaders

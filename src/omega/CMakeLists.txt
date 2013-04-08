@@ -27,7 +27,7 @@
 
 ###################################################################################################
 # Find required packages
-find_package(OpenGL)
+find_package(OpenGL REQUIRED)
 
 ###################################################################################################
 # Compile definitions
@@ -177,6 +177,11 @@ set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system
 if(OMEGA_USE_DISPLAY_EQUALIZER)
 	include(${CMAKE_SOURCE_DIR}/external/UseEqualizer.cmake)
 	include_directories(${EQUALIZER_INCLUDES})
+	
+	if(APPLE)
+		include_directories(SYSTEM /usr/X11R6/include)
+	endif()
+
 	set( srcs ${srcs} 
 		EqualizerDisplaySystem.cpp
 		eqinternal/ChannelImpl.cpp
