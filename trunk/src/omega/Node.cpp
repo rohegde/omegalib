@@ -283,8 +283,8 @@ void Node::removeChild(unsigned short index)
         // cancel any pending update
         cancelUpdate(ret);
 
-        mChildren.erase(i);
 		mChildrenList.remove(i->second.get());
+        mChildren.erase(i);
         ret->setParent(NULL);
     }
     else

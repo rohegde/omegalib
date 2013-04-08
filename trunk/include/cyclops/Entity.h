@@ -53,9 +53,6 @@ namespace cyclops {
 		Entity(SceneManager* scene);
 		virtual ~Entity();
 
-		// Function called each frame to update the entity state.
-		virtual void update(const UpdateContext& context) {}
-
 		osg::Node* getOsgNode() { return myEffect; }
 		//SceneNode* getSceneNode() { return mySceneNode; }
 

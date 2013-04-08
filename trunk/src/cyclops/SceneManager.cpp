@@ -268,6 +268,8 @@ void SceneManager::unload()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::addEntity(Entity* obj)
 {
+	oassert(obj);
+
 	myObjectVector.push_back(obj);
 
 	osg::Node* objNode = obj->getOsgNode();
@@ -281,6 +283,10 @@ void SceneManager::addEntity(Entity* obj)
 	myEntityNodeMap[obj] = objNode;
 
 	myScene->addChild(objNode);
+
+	// Attach SceneManager as node listener for the entity, so we can be notified of parent changed
+	// events (and add / remove the entity osg node from the osg scene graph)
+	obj->addListener(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -295,10 +301,6 @@ void SceneManager::removeEntity(Entity* obj)
 void SceneManager::update(const UpdateContext& context) 
 {
 	updateLights();
-	foreach(Entity* e, myObjectVector)
-	{
-		e->update(context);
-	}
 
 	// Loop through pixel buffers associated to textures. If a texture pixel buffer is dirty, 
 	// update the relative texture.
@@ -1142,3 +1144,21 @@ void SceneManager::deleteContextMenu(Entity* entity)
 	myEntitiesWithMenu.remove(entity);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::onParentChanged(SceneNode* source, SceneNode* newParent)
+{
+	Entity* e = dynamic_cast<Entity*>(source);
+	if(e != NULL)
+	{
+		if(newParent == NULL)
+		{
+			osg::Node* child = myEntityNodeMap[e];
+			myScene->removeChild(child);
+		}
+		else
+		{
+			osg::Node* child = myEntityNodeMap[e];
+			myScene->addChild(child);
+		}
+	}
+}

@@ -45,6 +45,7 @@ namespace omega {
 	public:
 		virtual void onVisibleChanged(SceneNode* source, bool value) {}
 		virtual void onSelectedChanged(SceneNode* source, bool value) {}
+		virtual void onParentChanged(SceneNode* source, SceneNode* newParent) {}
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -160,6 +161,8 @@ namespace omega {
 
 	protected:
 		virtual void updateTraversal(const UpdateContext& context);
+        /// Only available internally - notification of parent.
+        virtual void setParent(Node* parent);
 	
 	private:
 		void drawBoundingBox();
