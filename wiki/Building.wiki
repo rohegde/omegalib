@@ -9,7 +9,7 @@ On most platforms, omegalib is distributed as a source-only project. Users are r
 This is the current supported status of omegalib:
  * *Windows XP/Vista/7:* VS2010 32bit builds and is regularly tested. VS2008 32bit deprecated and may not work. 64bit builds should work but are not tested regularly.
  * *Linux:* 64bit builds and is regularly tested (SUSE). 32bit tested and running on Ubuntu.
- * *OSX, Intel:* 32bit works (experimental), 64bit currently not supported
+ * *OSX, Intel:* Works only on Mac OSX 10.7 and bigger
 
 == Building on Windows ==
 This section explains how to build omegalib on Windows. The basic procedure and requirements are similar for all supported operating systems, so you can use this as a general guideline.
@@ -55,7 +55,7 @@ _^If you see this, you have succesfully built omegalib. You deserve ice cream!^_
 Another way to run an application is to right click on it inside visual studio (all applications are in the `apps` solution folder), select *Set as StartUp Project* and click on the run button.
 
 ---------------------------------------------------------------------------------------------------
-== Building on Linux ==
+== Building on Mac / Linux ==
 The basic instructions are the same as for the Windows guide. Under linux, you will use make as your build system. To summarize, the process will be:
  * create a new directory for omegalib:
    * `mkdir omegalib`
