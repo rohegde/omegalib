@@ -76,6 +76,26 @@ void SceneNode::setVisible(bool value)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneNode::setParent(Node* parent)
+{
+	// If changed parent is a scene node, call listeners.
+	// NOTE: We call listeners only for SceneNode parents since in the future Node & ScneNode classes
+	// should be unified, and this simplifies the API.
+	SceneNode* snparent = dynamic_cast<SceneNode*>(parent);
+	if(snparent != NULL || parent == NULL)
+	{
+		if(myListeners.size() != 0)
+		{
+			foreach(SceneNodeListener* l, myListeners)
+			{
+				l->onParentChanged(this, snparent);
+			}
+		}
+	}
+	Node::setParent(parent);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::setSelected(bool value)
 {
 	mySelected = value;

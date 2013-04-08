@@ -120,7 +120,7 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API SceneManager: public EngineModule
+	class CY_API SceneManager: public EngineModule, SceneNodeListener
 	{
 	friend class Entity;
 	friend class Light;
@@ -219,6 +219,9 @@ namespace cyclops {
 		void recompileShaders(ProgramAsset* program, const String& variationName = "");
 		//@}
 
+		//! SceneNodeListener override
+		virtual void onParentChanged(SceneNode* source, SceneNode* newParent);
+		
 
 		omegaToolkit::ui::Menu* createContextMenu(Entity* entity);
 		void deleteContextMenu(Entity* entity);
