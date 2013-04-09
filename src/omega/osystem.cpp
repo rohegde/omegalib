@@ -104,6 +104,45 @@ namespace omega
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void editMultiappDisplayConfig(DisplayConfig* dc, int tilex, int tiley, int tilew, int tileh, int portPool)
+	{
+		// By default set all tiles to disabled.
+		typedef Dictionary<String, DisplayTileConfig*> DisplayTileDictionary;
+		foreach(DisplayTileDictionary::Item dtc, dc->tiles) dtc->enabled = false;
+
+		// Enable tiles in the active viewport
+		for(int y = tiley; y < tiley + tileh; y++)
+		{
+			for(int x = tilex; x < tilex + tilew; x++)
+			{
+				DisplayTileConfig* dtc = dc->tileGrid[x][y];
+				if(dtc != NULL) dtc->enabled = true;
+				else ofwarn("editMultiappDisplayConfig: cold not find tile %1% %2%", %x %y);
+			}
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void setupMultiapp(SystemManager* sys, const String& multiAppString)
+	{
+		DisplayConfig* dc = &sys->getDisplaySystem()->getDisplayConfig();
+		Vector<String> args = StringUtils::split(multiAppString, ",");
+		if(args.size() != 5)
+		{
+			ofwarn("Invalid number of arguments for -M option '%1%'. 5 expected: <tilex>,<tiley>,<tilewidth>,<tileHeight>,<portPool>", %multiAppString);
+		}
+		else
+		{
+			int tilex = boost::lexical_cast<int>(args[0]);
+			int tiley = boost::lexical_cast<int>(args[1]);
+			int tileWidth = boost::lexical_cast<int>(args[2]);
+			int tileHeight = boost::lexical_cast<int>(args[3]);
+			int portPool = boost::lexical_cast<int>(args[4]);
+			editMultiappDisplayConfig(dc, tilex, tiley, tileWidth, tileHeight, portPool);
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
 	int omain(omega::ApplicationBase& app, int argc, char** argv)
 	{
 		// register the abort handler.
@@ -119,6 +158,7 @@ namespace omega
 			bool remote = false;
 			String masterHostname;
 			String configFilename = ostr("%1%.cfg", %app.getName());
+			String multiAppString = "";
 #ifdef OMEGA_APPROOT_DIRECTORY
 			String dataPath = OMEGA_APPROOT_DIRECTORY;
 #else
@@ -166,6 +206,12 @@ namespace omega
 				"log",
 				ostr("log file to use with this application (default: %1%)", %logFilename).c_str(), "",
 				logFilename);
+
+			sArgs.newNamedString(
+				'M',
+				"multiapp",
+				"Enable multi application mode and set global viewport and port pool as a string <tilex>,<tiley>,<tilewidth>,<tileHeight>,<portPool>", "",
+				multiAppString);
 
 			sArgs.setName("omegalib");
 			sArgs.setAuthor("The Electronic Visualization Lab, UIC");
@@ -278,6 +324,12 @@ namespace omega
 				{
 					sys->setup(cfg);
 				}
+
+				// If multiApp string is set, setup multi-application mode.
+				// In multi-app mode, this instance will output to a subset of the available tiles, and will choose a
+				// communication port using a port interval starting at the configuration base port plus and dependent on a port pool.
+				if(multiAppString != "") setupMultiapp(sys, multiAppString);
+
 				sys->initialize();
 				omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< OMEGALIB BOOT\n\n");
 
