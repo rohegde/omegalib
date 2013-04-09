@@ -244,6 +244,11 @@ const Sphere& SceneNode::getBoundingSphere()
 const Vector3f& SceneNode::getBoundMinimum()
 {
 	updateBoundingBox();
+	if(!myBBox.isFinite())
+	{
+		ofwarn("SceneNode::getBoundMinimum: non-finite bounds for scene node %1%", %getName());
+		return Vector3f::Zero();
+	}
 	return myBBox.getMinimum();
 }
 
@@ -251,6 +256,11 @@ const Vector3f& SceneNode::getBoundMinimum()
 const Vector3f& SceneNode::getBoundMaximum()
 {
 	updateBoundingBox();
+	if(!myBBox.isFinite())
+	{
+		ofwarn("SceneNode::getBoundMaximum: non-finite bounds for scene node %1%", %getName());
+		return Vector3f::Zero();
+	}
 	return myBBox.getMaximum();
 }
 
@@ -258,6 +268,11 @@ const Vector3f& SceneNode::getBoundMaximum()
 const Vector3f SceneNode::getBoundCenter()
 {
 	updateBoundingBox();
+	if(!myBBox.isFinite())
+	{
+		ofwarn("SceneNode::getBoundCenter: non-finite bounds for scene node %1%", %getName());
+		return Vector3f::Zero();
+	}
 	return myBBox.getCenter();
 }
 
@@ -265,6 +280,11 @@ const Vector3f SceneNode::getBoundCenter()
 float SceneNode::getBoundRadius()
 {
 	updateBoundingBox();
+	if(!myBBox.isFinite())
+	{
+		ofwarn("SceneNode::getBoundRadius: non-finite bounds for scene node %1%", %getName());
+		return 0.0f;
+	}
 	return myBSphere.getRadius();
 }
 

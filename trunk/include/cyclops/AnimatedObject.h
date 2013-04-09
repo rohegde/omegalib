@@ -64,7 +64,7 @@ namespace cyclops {
 		AnimatedObject(SceneManager* mng, const String& modelName);
 		virtual ~AnimatedObject() {}
 
-		virtual void update(const UpdateContext& context);
+		virtual void updateTraversal(const UpdateContext& context);
 
 		ModelAsset* getModel();
 
