@@ -61,7 +61,7 @@ void Entity::initialize(osg::Node* node)
 {
 	myOsgNode = node;
 
-	// Make sure the shado caster flags are up to date.
+	// Make sure the shadow caster flags are up to date.
 	castShadow(myCastShadow);
 
 	// Create an omegalib scene node. The scene node will be used to manipulate some of this drawable object basic

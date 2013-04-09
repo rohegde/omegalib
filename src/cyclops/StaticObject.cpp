@@ -43,4 +43,8 @@ StaticObject::StaticObject(SceneManager* scene, const String& modelName):
 	{
 		initialize(myModel->nodes[0]);
 	}
+	else
+	{
+		ofwarn("StaticObject::StaticObject: could not create static object: model not found - %1%", %modelName);
+	}
 }

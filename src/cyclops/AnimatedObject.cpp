@@ -99,24 +99,28 @@ AnimatedObject::AnimatedObject(SceneManager* scene, const String& modelName):
 		}
 
 		initialize(osgRoot);
+
+		// Traverse this entity hierarchy to find animations.
+		AnimationManagerFinder amf;
+		osgRoot->accept(amf);
+		if(amf.am != NULL)
+		{
+			myAnimationManager = amf.am;
+			myAnimations = &myAnimationManager->getAnimationList();
+			ofmsg("AnimatedObject %1%: found %2% animations.", %getName() %getNumAnimations());
+
+			// DO not play an anymation by default anymore.
+			//loopAnimation(0);
+		}
 	}
-
-	// Traverse this entity hierarchy to find animations.
-	AnimationManagerFinder amf;
-	osgRoot->accept(amf);
-	if(amf.am != NULL)
+	else
 	{
-		myAnimationManager = amf.am;
-		myAnimations = &myAnimationManager->getAnimationList();
-		ofmsg("AnimatedObject %1%: found %2% animations.", %getName() %getNumAnimations());
-
-		// DO not play an anymation by default anymore.
-		//loopAnimation(0);
+		ofwarn("AnimatedObject::AnimatedObject: could not create static object: model not found - %1%", %modelName);
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void AnimatedObject::update(const UpdateContext& context)
+void AnimatedObject::updateTraversal(const UpdateContext& context)
 {
 	myCurTime = context.time;
 	if(myCurAnimation != NULL)
@@ -139,6 +143,7 @@ void AnimatedObject::update(const UpdateContext& context)
 			}
 		}
 	}
+	SceneNode::updateTraversal(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
