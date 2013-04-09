@@ -83,6 +83,8 @@ On some linux distributions, the build may fail due to a missing `eq/eq.h` inclu
 
 run `make equalizer` and wait for equalizer to build, then run `make`.
 
+=== Running on Mac ===
+To run any omegalib app, you initially need to have X11 running. Go to /Applications/Utilities/ and run X11. If X11 is not running, you will get an error that the display cannot be initialized and see nothing!
 ---------------------------------------------------------------------------------------------------
 == CMake options ==
 This section is a quick guide to some build options ofered in cmake.
