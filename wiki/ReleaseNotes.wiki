@@ -19,6 +19,7 @@ omega
 	* (*3.6.1*) reformatted python errors to make them easier to spot in the log. 
 	* (*3.6.1, Windows 32bit*) build process uses an internal copy of python instead of an external, so omegalib builds out-of-the-box even with python suppor enabled.
 	* (*3.6.2*) Fixed regression on loading of 8bit png images.
+	* (*3.6.3*) added onParentChanged to SceneNodeListener
 omegaToolkit
 	* New menu widgets: label, slider, image
 	* `Slider` class accessible from Python API
@@ -29,6 +30,8 @@ omegaToolkit
 	* (*3.6.3*) custom uis can be added to a menu through Menu.addContainer
 cyclops
 	* Added support for *geometry shaders* in C++ and python API through the `ProgramAsset` class.
+	* (*3.6.3*) fixed node remove errors
+	* (*3.6.3*) Simplified entity management and removed obsolete entity functions from SceneManager
 
 ------------------------------------------------------------------------
 = omegalib v3.5 =

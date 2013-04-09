@@ -1,13 +1,18 @@
 #summary Python omegalib developement
 #sidebar Sidebar
 = Python omegalib developement =
-<p>*Last revision:* ver. 3.2 - 4 December 2012
+<p>*Last revision:* ver. 3.6 - 9 April 2012
 </p>
 
-omegalib offers a python interface for many of its core functionalities, and it covers the cyclops and omegaToolkit APIs as well. You can find an example of a python omegalib/cyclops program in the [BasicCyclops cyclops programming page]
+omegalib exposes most of its API to Python, so the vast majority of omegalib applications are developed as python scripts. Using python instead of C++ to develop your omegalib application offers several advantages:
+ * You can port your application to different systems without recompiling. For instance you can develop a script on your laptop, then copy it to CAVE2 and just launch it. Configuration files will do the rest.
+ * You can modify your application at runtime using the interactive python console
+ * If you need integration with C++ or need access to advanced omegalib functionality, you can write C++ code as an *omegalib module* and import it into your python script.
+ 
+omegalib uses its own python interpreter to run python scripts. The interpreter executable is called `orun`, and is built with omegalib when you enable python support.
 
 == Running python omegalib programs: orun ==
-To run python omegalib programs, yo need the `orun` application. orun is part of the standard omegalib distribution.
+To run python omegalib programs, you need the `orun` application. orun is part of the standard omegalib distribution.
 You have two ways to start a script using orun
 
 Though the command line using a command in the form:
@@ -48,6 +53,6 @@ omegalib exposes 4 main python modules:
  * [OmegaPythonReference `omega`] the core omegalib module
  * [OmegaToolkitPythonReference `omegaToolkit`] a module with a few utility classes
  * [CyclopsPythonReference `cyclops`] a simple osg-based graphic engine
- * [http://code.google.com/p/pyeuclid/source/browse/trunk/euclid.txt `euclid`] a 3d geometry module
+ * [http://code.google.com/p/pyeuclid/source/browse/trunk/euclid.txt `euclid`] a 3d math module
  
  

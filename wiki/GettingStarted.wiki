@@ -6,24 +6,32 @@ This page offers extended information on how to develop applications for omegali
 
 == Basic Topics ==
  * [Building Building omegalib].
- * [NewApplication Setting up a new omegalib application].
+ * [CommandLine Using the command line]
+ * [HowTos Troubleshooting Builds and FAQ]
+ 
+== Python Programming ==
+ * [BasicPython Python omegalib developement].
+ * [PythonExamples Python examples]
+ * [ExtendingOmegalib Mixing Python and C++] 
+ 
+=== Python Reference ===
+ * [OmegaPythonReference `omega`] the core omegalib module
+ * [OmegaToolkitPythonReference `omegaToolkit`] a module with a few utility classes
+ * [CyclopsPythonReference `cyclops`] a simple osg-based graphic engine
+ * [http://code.google.com/p/pyeuclid/source/browse/trunk/euclid.txt `euclid`] a 3d math module
+
+== C++ Programming ==
+ * [NewApplication Setting up a new omegalib C++ application].
  * [BasicOpenGL OpenGL programming in omegalib].
  * [BasicOSG OpenSceneGraph programming in omegalib].
  * [BasicCyclops Cyclops programming in omegalib].
  * [BasicVtk Vtk programming in omegalib].
- * [BasicPython Python omegalib developement].
- * [PythonExamples python examples]
+
+== Reference ==
+ * [ConfigReference Configuration file reference]
+ * [Filesystem File management in omegalib]
+ * [AppFlow Application and Initialization Flow]
  * [PortholeReference Porthole development]
 
-== Intermediate topics ==
- * [Filesystem File management in omegalib]
- * [CommandLine Using the command line]
- * [ExtendingOmegalib Extending omegalib]
- * [AppFlow Application and Initialization Flow]
-
-== Configuring hardware systems ==
-Omegalib uses configuration files to describe system display and input capabilities.
- * [ConfigReference Configuration file reference]
- 
 == Special Topics ==
  * [CAVE2HowTo How to run python scripts in CAVE2]
