@@ -13,13 +13,13 @@ This page offers extended information on how to develop applications for omegali
  * [BasicPython Python omegalib developement].
  * [PythonExamples Python examples]
  * [ExtendingOmegalib Mixing Python and C++] 
+ * *Python Reference*
+	 * [OmegaPythonReference `omega`] the core omegalib module
+	 * [OmegaToolkitPythonReference `omegaToolkit`] a module with a few utility classes
+	 * [CyclopsPythonReference `cyclops`] a simple osg-based graphic engine
+	 * [http://code.google.com/p/pyeuclid/source/browse/trunk/euclid.txt `euclid`] a 3d math module
+	
  
-=== Python Reference ===
- * [OmegaPythonReference `omega`] the core omegalib module
- * [OmegaToolkitPythonReference `omegaToolkit`] a module with a few utility classes
- * [CyclopsPythonReference `cyclops`] a simple osg-based graphic engine
- * [http://code.google.com/p/pyeuclid/source/browse/trunk/euclid.txt `euclid`] a 3d math module
-
 == C++ Programming ==
  * [NewApplication Setting up a new omegalib C++ application].
  * [BasicOpenGL OpenGL programming in omegalib].
