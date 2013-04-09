@@ -96,6 +96,11 @@ void EqualizerDisplaySystem::generateEqConfig()
 	for(int n = 0; n < eqcfg.numNodes; n++)
 	{
 		DisplayNodeConfig& nc = eqcfg.nodes[n];
+		// If all tiles are disabled for this node, skip it.
+		bool enabled = false;
+		for(int i = 0; i < nc.numTiles; i++) enabled |= nc.tiles[i]->enabled;
+		if(!enabled) continue;
+
 		if(nc.isRemote)
 		{
 			int port = eqcfg.basePort + nc.port;
@@ -126,22 +131,25 @@ void EqualizerDisplaySystem::generateEqConfig()
 		for(int i = 0; i < nc.numTiles; i++)
 		{
 			DisplayTileConfig& tc = *nc.tiles[i];
-			//if(eqcfg.autoOffsetWindows)
-			//{
-			//	winX = tc.index[0] * eqcfg.tileResolution[0] + eqcfg.windowOffset[0];
-			//	winY = tc.index[1] * eqcfg.tileResolution[1] + eqcfg.windowOffset[1];
-			//}
-			//else
-			//{
-				winX = tc.position[0] + eqcfg.windowOffset[0];
-				winY = tc.position[1] + eqcfg.windowOffset[0];
-			//}
+			if(tc.enabled)
+			{
+				//if(eqcfg.autoOffsetWindows)
+				//{
+				//	winX = tc.index[0] * eqcfg.tileResolution[0] + eqcfg.windowOffset[0];
+				//	winY = tc.index[1] * eqcfg.tileResolution[1] + eqcfg.windowOffset[1];
+				//}
+				//else
+				//{
+					winX = tc.position[0] + eqcfg.windowOffset[0];
+					winY = tc.position[1] + eqcfg.windowOffset[0];
+				//}
 			
-			String tileName = tc.name;
-			String tileCfg = buildTileConfig(indent, tileName, winX, winY, tc.pixelSize[0], tc.pixelSize[1], tc.device, curDevice, eqcfg.fullscreen, tc.borderless);
-			result += tileCfg;
+				String tileName = tc.name;
+				String tileCfg = buildTileConfig(indent, tileName, winX, winY, tc.pixelSize[0], tc.pixelSize[1], tc.device, curDevice, eqcfg.fullscreen, tc.borderless);
+				result += tileCfg;
 
-			curDevice = tc.device;
+				curDevice = tc.device;
+			}
 		}
 
 		// If enabled, create stats window on master node.
@@ -461,18 +469,18 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 				
 				if(enabled)
 				{
-				String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getExecutableName());
-				executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
+					String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getExecutableName());
+					executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
 				
-				// Substitute %d with current working directory
-				String cCurrentPath = ogetcwd();
-				executable = StringUtils::replaceAll(executable, "%d", cCurrentPath);
+					// Substitute %d with current working directory
+					String cCurrentPath = ogetcwd();
+					executable = StringUtils::replaceAll(executable, "%d", cCurrentPath);
 				
-				int port = myDisplayConfig.basePort + nc.port;
-				String cmd = ostr("%1% -c %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
-				olaunch(cmd);
+					int port = myDisplayConfig.basePort + nc.port;
+					String cmd = ostr("%1% -c %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
+					olaunch(cmd);
+				}
 			}
-		}
 		}
 		osleep(myDisplayConfig.launcherInterval);
 	}

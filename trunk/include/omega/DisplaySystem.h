@@ -69,6 +69,8 @@ public:
 	//! false otherwise (i.e. because the event is not a wand or pointer event)
 	virtual bool getViewRayFromEvent(const Event& evt, Ray& ray, bool normalizedPointerCoords = false) { return false; }
 
+	virtual DisplayConfig& getDisplayConfig() { return myDisplayConfig; }
+
 	const Color& getBackgroundColor() { return myBackgroundColor; }
 	void setBackgroundColor(const Color& value) { myBackgroundColor = value; }
 
@@ -81,6 +83,8 @@ public:
 
 protected:
 	DisplaySystem(): myBackgroundColor(0.2f, 0.2f, 0.2f), myNearZ(0), myFarZ(0), myDrawFps(false) {}
+
+	DisplayConfig myDisplayConfig;
 
 private:
 	Color myBackgroundColor;
