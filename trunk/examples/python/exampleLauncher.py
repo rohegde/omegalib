@@ -43,6 +43,12 @@ def _onLauncherStart():
 	mi.setImage(i)
 	mi.getButton().getImage().setSize(ics)
 	
+	# endurance app
+	mi = sysmnu.addButton("ENDURANCE", "_startApp('OMEGA_APP_ROOT/endurance/endurancePoints.py')")
+	i = loadImage("app.png")
+	mi.setImage(i)
+	mi.getButton().getImage().setSize(ics)
+	
 def _startApp(appScript):
 	queueCommand(':r! ' + appScript)
 	
