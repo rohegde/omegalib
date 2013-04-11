@@ -71,7 +71,10 @@ set(OMEGA_USE_PORTHOLE true CACHE BOOL "Enable Porthole support")
 
 ###################################################################################################
 # Options
-set(OMEGA_BUILD_OSG_LIB false CACHE BOOL "Enable build of OpenSceneGraph integration library")
+set(OMEGA_BUILD_OSG_LIB true CACHE BOOL "Enable build of OpenSceneGraph integration library")
+# Shi
+set(OMEGA_USE_OSGBULLET true CACHE BOOL "Enable osgBullet support")
+# Yin
 set(OMEGA_BUILD_VTK_LIB false CACHE BOOL "Enable build of vtk integration library (Vtk has to be compiled with Python support)")
 
 ###################################################################################################
@@ -143,6 +146,79 @@ if(OMEGA_BUILD_OSG_LIB)
 	add_subdirectory(${CMAKE_SOURCE_DIR}/examples/cyhello ${CMAKE_BINARY_DIR}/examples/cyhello)
 	add_subdirectory(${CMAKE_SOURCE_DIR}/examples/cyhello2 ${CMAKE_BINARY_DIR}/examples/cyhello2)
 	add_subdirectory(apps/osgviewer)
+	# Shi
+	if(OMEGA_USE_OSGBULLET)
+		include(FindBulletHelper)
+		#include bullet
+		include_directories(
+			${BULLET_INCLUDE_DIRS}
+    		${BULLET_EXTRAS_INCLUDE_DIR}
+    	)
+    	#add osgBullet into include
+		include_directories(${CMAKE_BINARY_DIR}/osgBullet/include)
+
+		set(OSGBULLET_LIB_DIR ${CMAKE_BINARY_DIR}/osgBullet/lib)
+		set(OSGBULLET_COMPONENTS osgbCollision osgbDynamics osgbInteraction)
+		if(OMEGA_OS_WIN)
+			foreach( C ${OSGBULLET_COMPONENTS})
+				set(${C}_LIBRARY ${OSGBULLET_LIB_DIR}/${C}.lib)
+				set(${C}_LIBRARY_DEBUG ${OSGBULLET_LIB_DIR}/${C}d.lib)
+				set(OSGBULLET_LIBS ${OSGBULLET_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
+			endforeach()
+		elseif(OMEGA_OS_LINUX)
+		    foreach( C ${OSGBULLET_COMPONENTS} )
+				set(${C}_LIBRARY ${OSGBULLET_LIB_DIR}/lib${C}.a)
+				set(${C}_LIBRARY_DEBUG ${OSGBULLET_LIB_DIR}/lib${C}.a)
+				set(OSGBULLET_LIBS ${OSGBULLET_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
+			endforeach()
+		elseif(APPLE)
+			foreach( C ${OSGBULLET_COMPONENTS} )
+				set(${C}_LIBRARY ${OSGBULLET_LIB_DIR}/lib${C}.a)
+				set(${C}_LIBRARY_DEBUG ${OSGBULLET_LIB_DIR}/lib${C}.a)
+				set(OSGBULLET_LIBS ${OSGBULLET_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
+			endforeach()
+		endif(OMEGA_OS_WIN)
+
+		#add osgWOrks into include
+		#include_directories(${CMAKE_BINARY_DIR}/osgWorks/include)
+
+		# below is copied from UseOsgWorks.cmake
+		# goal is to link osgWorks lib files
+		#set(OSGWORKS_BINARY_DIR ${CMAKE_BINARY_DIR}/osgWorks/lib)
+		#set(OSGWORKS_COMPONENTS osgwTools osgwQuery)
+
+		#if(OMEGA_OS_WIN)
+		#    foreach( C ${OSGWORKS_COMPONENTS} )
+		#		set(${C}_LIBRARY ${OSGWORKS_BINARY_DIR}/${C}.lib)
+		#		set(${C}_LIBRARY_DEBUG ${OSGWORKS_BINARY_DIR}/${C}d.lib)
+		#		set(OSGWORKS_LIBS ${OSGWORKS_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
+		#	endforeach()
+		#elseif(OMEGA_OS_LINUX)
+		#    foreach( C ${OSGWORKS_COMPONENTS} )
+		#		set(${C}_LIBRARY ${OSGWORKS_BINARY_DIR}/lib${C}.a)
+		#		set(${C}_LIBRARY_DEBUG ${OSGWORKS_BINARY_DIR}/lib${C}.a)
+		#		set(OSGWORKS_LIBS ${OSGWORKS_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
+		#	endforeach()
+		#elseif(APPLE)
+		#	foreach( C ${OSGWORKS_COMPONENTS} )
+		#		set(${C}_LIBRARY ${OSGWORKS_BINARY_DIR}/lib${C}.a)
+		#		set(${C}_LIBRARY_DEBUG ${OSGWORKS_BINARY_DIR}/lib${C}.a)
+		#		set(OSGWORKS_LIBS ${OSGWORKS_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
+		#	endforeach()
+		#endif(OMEGA_OS_WIN)
+
+		# end of copied from UserOsgWorks.cmake
+
+		# unfortunately it's not working. NEED TO DO SOMETHING TO OSGWORKS_LIBS
+
+		add_subdirectory(apps/osgbCollision)
+		add_subdirectory(apps/osgbBCC)
+		add_subdirectory(apps/osgbCollisionWithoutOmega)
+		add_subdirectory(apps/osgbBasicDemo)
+		add_subdirectory(apps/osgbDice)
+	endif()
+	# Yin
+
 	if(OMEGA_USE_PORTHOLE)
 		add_subdirectory(${CMAKE_SOURCE_DIR}/examples/portholeCustomDraw ${CMAKE_BINARY_DIR}/examples/portholeCustomDraw)
 	endif()
