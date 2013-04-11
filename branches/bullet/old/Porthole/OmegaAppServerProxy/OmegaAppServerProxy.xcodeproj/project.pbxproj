@@ -1,0 +1,213 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2BF445F61472420C004FCF5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2BF445F51472420C004FCF5E /* main.cpp */; };
+		2BF445F81472420C004FCF5E /* OmegaAppServerProxy.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2BF445F71472420C004FCF5E /* OmegaAppServerProxy.1 */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2BF445EF1472420C004FCF5E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				2BF445F81472420C004FCF5E /* OmegaAppServerProxy.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2BF445F11472420C004FCF5E /* OmegaAppServerProxy */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OmegaAppServerProxy; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BF445F51472420C004FCF5E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		2BF445F71472420C004FCF5E /* OmegaAppServerProxy.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = OmegaAppServerProxy.1; sourceTree = "<group>"; };
+		2BF445FE14724244004FCF5E /* utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2BF445EE1472420C004FCF5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2BF445E61472420C004FCF5E = {
+			isa = PBXGroup;
+			children = (
+				2BF445F41472420C004FCF5E /* OmegaAppServerProxy */,
+				2BF445F21472420C004FCF5E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2BF445F21472420C004FCF5E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2BF445F11472420C004FCF5E /* OmegaAppServerProxy */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2BF445F41472420C004FCF5E /* OmegaAppServerProxy */ = {
+			isa = PBXGroup;
+			children = (
+				2BF445FE14724244004FCF5E /* utility.h */,
+				2BF445F51472420C004FCF5E /* main.cpp */,
+				2BF445F71472420C004FCF5E /* OmegaAppServerProxy.1 */,
+			);
+			path = OmegaAppServerProxy;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2BF445F01472420C004FCF5E /* OmegaAppServerProxy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2BF445FB1472420C004FCF5E /* Build configuration list for PBXNativeTarget "OmegaAppServerProxy" */;
+			buildPhases = (
+				2BF445ED1472420C004FCF5E /* Sources */,
+				2BF445EE1472420C004FCF5E /* Frameworks */,
+				2BF445EF1472420C004FCF5E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OmegaAppServerProxy;
+			productName = OmegaAppServerProxy;
+			productReference = 2BF445F11472420C004FCF5E /* OmegaAppServerProxy */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2BF445E81472420C004FCF5E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Univeristy of Illinois at Chicago";
+			};
+			buildConfigurationList = 2BF445EB1472420C004FCF5E /* Build configuration list for PBXProject "OmegaAppServerProxy" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2BF445E61472420C004FCF5E;
+			productRefGroup = 2BF445F21472420C004FCF5E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2BF445F01472420C004FCF5E /* OmegaAppServerProxy */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2BF445ED1472420C004FCF5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2BF445F61472420C004FCF5E /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2BF445F91472420C004FCF5E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		2BF445FA1472420C004FCF5E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		2BF445FC1472420C004FCF5E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2BF445FD1472420C004FCF5E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2BF445EB1472420C004FCF5E /* Build configuration list for PBXProject "OmegaAppServerProxy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2BF445F91472420C004FCF5E /* Debug */,
+				2BF445FA1472420C004FCF5E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2BF445FB1472420C004FCF5E /* Build configuration list for PBXNativeTarget "OmegaAppServerProxy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2BF445FC1472420C004FCF5E /* Debug */,
+				2BF445FD1472420C004FCF5E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2BF445E81472420C004FCF5E /* Project object */;
+}
