@@ -54,6 +54,7 @@ namespace omega {
 		float myYaw;
 		float myPitch;
 		Vector3f myMoveDir;
+		Quaternion myTorque;
 	};
 }; // namespace omega
 
