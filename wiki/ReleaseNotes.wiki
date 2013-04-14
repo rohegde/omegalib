@@ -8,6 +8,7 @@
 == Major Changes ==
 	* moved Porthole code from omega to omegaToolkit
 	* (*3.6.1*) additional improvements and fixes to runtime application switching.
+	* (*3.6.3*) added `modules` directory for modules that are shipped as part of omegalib but are not part of the core libraries. Modules also provide a good source of examples on how to extend omegalib.
 orun
 	* control of application start command
 omega

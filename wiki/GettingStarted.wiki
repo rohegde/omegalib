@@ -27,6 +27,9 @@ This page offers extended information on how to develop applications for omegali
  * [BasicCyclops Cyclops programming in omegalib].
  * [BasicVtk Vtk programming in omegalib].
 
+== Feature Guides ==
+ * [MultiInstance Running multiple omegalib instances (3.6.3)]
+
 == Reference ==
  * [ConfigReference Configuration file reference]
  * [Filesystem File management in omegalib]
