@@ -29,6 +29,7 @@ This page offers extended information on how to develop applications for omegali
 
 == Feature Guides ==
  * [MultiInstance Running multiple omegalib instances (3.6.3)]
+ * [CameraController Camera Controllers: customizing navigation and camera movement (2.0)]
 
 == Reference ==
  * [ConfigReference Configuration file reference]
