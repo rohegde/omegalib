@@ -1,30 +1,22 @@
 if(WIN32)
 	set(EXTLIB_NAME fbxsdk_win)
-	set(EXTLIB_TGZ ${CMAKE_SOURCE_DIR}/external/${EXTLIB_NAME}.tar.gz)
-	set(EXTLIB_DIR ${CMAKE_BINARY_DIR}/${EXTLIB_NAME})
-
-	if(NOT EXISTS ${EXTLIB_DIR})
-	  execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf
-		${EXTLIB_TGZ} WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-	endif(NOT EXISTS ${EXTLIB_DIR})
-
-	set(FBX_DEFAULT_ROOT ${CMAKE_BINARY_DIR}/${EXTLIB_NAME})
 elseif(UNIX)
 	if(APPLE)
 		set(EXTLIB_NAME fbxsdk_macosx)
 	else(APPLE)
 		set(EXTLIB_NAME fbxsdk_linux)
 	endif(APPLE)
-	set(EXTLIB_TGZ ${CMAKE_SOURCE_DIR}/external/${EXTLIB_NAME}.tar.gz)
-	set(EXTLIB_DIR ${CMAKE_BINARY_DIR}/${EXTLIB_NAME})
-
-	if(NOT EXISTS ${EXTLIB_DIR})
-	  execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf
-		${EXTLIB_TGZ} WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-	endif(NOT EXISTS ${EXTLIB_DIR})
-
-	set(FBX_DEFAULT_ROOT ${CMAKE_BINARY_DIR}/${EXTLIB_NAME})
 endif()
+
+set(EXTLIB_TGZ ${CMAKE_BINARY_DIR}/${EXTLIB_NAME}.tar.gz)
+set(EXTLIB_DIR ${CMAKE_BINARY_DIR}/${EXTLIB_NAME})
+if(NOT EXISTS ${EXTLIB_DIR})
+	message(STATUS "Downloading FBX SDK binary archive...")
+	file(DOWNLOAD http://omegalib.googlecode.com/files/${EXTLIB_NAME}.tar.gz ${EXTLIB_TGZ} SHOW_PROGRESS)
+	execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${EXTLIB_TGZ} WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+endif()
+
+set(FBX_DEFAULT_ROOT ${CMAKE_BINARY_DIR}/${EXTLIB_NAME})
 
 # Setup the Fbx Sdk
 set(FBX_ROOT ${FBX_DEFAULT_ROOT} CACHE PATH "The Fbx SDK Root Directory")
