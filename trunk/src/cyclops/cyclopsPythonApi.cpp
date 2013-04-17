@@ -89,6 +89,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_METHOD(SceneManager, resetShadowSettings)
 		PYAPI_METHOD(SceneManager, setShaderMacroToFile)
 		PYAPI_METHOD(SceneManager, setShaderMacroToString)
+		PYAPI_REF_GETTER(SceneManager, getGlobalUniforms)
 		PYAPI_METHOD(SceneManager, addProgram)
 		PYAPI_METHOD(SceneManager, updateProgram)
 		PYAPI_REF_GETTER(SceneManager, createProgramFromString)
@@ -104,7 +105,7 @@ BOOST_PYTHON_MODULE(cyclops)
 	PYAPI_ENUM(Uniform::Type, UniformType)
 		PYAPI_ENUM_VALUE(Uniform, Vector2f)
 		PYAPI_ENUM_VALUE(Uniform, Vector3f)
-		PYAPI_ENUM_VALUE(Uniform, Vector4f)
+		PYAPI_ENUM_VALUE(Uniform, Color)
 		PYAPI_ENUM_VALUE(Uniform, Float)
 		PYAPI_ENUM_VALUE(Uniform, Int);
 
@@ -119,8 +120,8 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_GETTER(Uniform, getVector2f)
 		PYAPI_METHOD(Uniform, setVector3f)
 		PYAPI_GETTER(Uniform, getVector3f)
-		PYAPI_METHOD(Uniform, setVector4f)
-		PYAPI_GETTER(Uniform, getVector4f);
+		PYAPI_METHOD(Uniform, setColor)
+		PYAPI_GETTER(Uniform, getColor);
 
 	// Uniforms
 	PYAPI_REF_BASE_CLASS(Uniforms)
@@ -134,7 +135,10 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_METHOD(Material, setDiffuseColor)
 		PYAPI_METHOD(Material, setEmissiveColor)
 		PYAPI_METHOD(Material, setTransparent)
-		PYAPI_METHOD(Material, isTransparent);
+		PYAPI_METHOD(Material, isTransparent)
+		PYAPI_METHOD(Material, reset)
+		PYAPI_METHOD(Material, setAlpha)
+		PYAPI_METHOD(Material, getAlpha);
 
 	// Entity
 	PYAPI_REF_CLASS(Entity, SceneNode)

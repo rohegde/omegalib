@@ -138,6 +138,8 @@ namespace cyclops {
 
 		//! Sets the background color
 		void setBackgroundColor(const Color& color);
+		//! Returns the global uniforms object. Can be used to set uniforms that will apply to all entities.
+		Uniforms* getGlobalUniforms();
 
 		//! Model Management
 		//@{
@@ -219,6 +221,8 @@ namespace cyclops {
 		// The scene root. This may be linked directly to myRoot or have some intermediate nodes inbetween
 		// (i.e. for shadow map management)
 		Ref<osg::Group> myScene;
+		// The scene global uniforms.
+		Ref<Uniforms> myGlobalUniforms;
 
 		// Model data (stored as dictionary and list for convenience)
 		Dictionary<String, Ref<ModelAsset> > myModelDictionary;
