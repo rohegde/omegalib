@@ -1,7 +1,7 @@
 #summary Python reference: module cyclops
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.6 - 26 March 2013</p>*
+<p>*Last revision:* ver. 3.6.3 - 17 April 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -98,8 +98,25 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 || `addProgram(program)` || Adds a `ProgramAsset` to the gpu programs library ||
 || `updateProgram(program)` || Updates a `ProgramAsset`, forcing reloading and recompiling of the associated shaders. ||
 || `reloadAndRecompileShaders()` || Forces the shaders to be reloaded and recompiled from source ||
+|| `getGlobalUniforms()` || Returns the global uniforms object. Can be used to set uniforms that will apply to all entities. See the `Uniforms` class. ||
 || *Textures* || ||
 || `createTexture(name, pixels)` || Creates a texture with the specified name using the passed `PixelData` object. The texture can then be referenced in effect definitions. ||
+
+=== Examples ===
+==== Global Uniforms ====
+{{{
+	scene = getSceneManager()
+	
+	# Use the customFragmentDefs section to inject a custom uniform into all shaders
+	scene.setShaderMacroToString('customFragmentDefs', '''
+		uniform float unif_CustomFloat;
+	''')
+
+	# set the global float uniform to 0.5
+	customFloat = scene.getGlobalUniforms().addUniform("unif_CustomFloat", UniformType.Float)
+	customFloat.setFloat(0.5)
+}}}
+
 
 -------------------------------------------------------------------------------
 ==  `class Uniform` ==
@@ -110,7 +127,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 || `setFloat(value)`, `getFloat()` || ||
 || `setVector2f(value)`, `getVector2f()` || ||
 || `setVector3f(value)`, `getVector3f()` || ||
-|| `setVector4f(value)`, `getVector4f()` || ||
+|| `setColor(value)`, `getColor()` || ||
 
 === Uniform Types ===
 Currently supported uniform types are listed in the `UniformType` enumeration:
@@ -118,7 +135,10 @@ Currently supported uniform types are listed in the `UniformType` enumeration:
 	* `Int`
 	* `Vector2f`
 	* `Vector3f`
-	* `Vector4f`
+	* `Color`
+
+{{style='background-color: blue'}}
+Note: The Color uniform type is used to write blah
 
 -------------------------------------------------------------------------------
 ==  `class Uniforms` ==

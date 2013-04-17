@@ -33,6 +33,8 @@ cyclops
 	* Added support for *geometry shaders* in C++ and python API through the `ProgramAsset` class.
 	* (*3.6.3*) fixed node remove errors
 	* (*3.6.3*) Simplified entity management and removed obsolete entity functions from SceneManager
+	* (*3.6.3*) Improvements to `Material` (alpha set and get, material reset)
+	* (*3.6.3*) Added support for post-lighting custom shader code (`@postLightingSection` macro)
 
 ------------------------------------------------------------------------
 = omegalib v3.5 =
