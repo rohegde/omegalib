@@ -154,6 +154,8 @@ Currently supported uniform types are listed in the `UniformType` enumeration:
 || `setDiffuseColor(color)` ||  ||
 || `setEmissiveColor(color)` ||  ||
 || `setTransparent(value)` `isTransparent()` ||  ||
+|| `reset()` || Resets all material properties to their default values. ||
+|| `setAlpha(value)`, `getAlpha()` || Sets or gets the material alpha value. `setAlpha` only sets the value of the unif_Alpha uniform. By default, cyclops shaders use this uniform to modulate fragment alpha values after lighting (see `postLightingSection/default.frag`). This behavior can be modified by the user, redefining the @postLightingSection shader macro.||
 
 -------------------------------------------------------------------------------
 ==  `class Entity` (extends `SceneNode`) ==
