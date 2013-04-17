@@ -217,8 +217,12 @@ namespace omega
 		//! Default port used to connect to nodes
 		int basePort;
 
-		//! The tile grid is needed for 2d interaction with tiles. Configuration generators fill this up.
+		//! The tile grid is needed for 2d interaction with tiles. and for applications running on tile subsets.
+		//! Configuration generators fill this up.
 		DisplayTileConfig* tileGrid[128][128];
+		//! The number of horizontal and vertical tiles in the tile grid.
+		//! Configuration generators fill this up together with tileGrid;
+		Vector2i tileGridSize;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
