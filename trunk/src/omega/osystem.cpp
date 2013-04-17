@@ -126,7 +126,7 @@ namespace omega
 		dc->basePort + offs;
 
 		ofmsg("Multi-Instance mode: instance id = %1% tile viewport (%2% %3% - %4% %5%) port %6%", 
-			%offs, %tilex %tiley %(tilex + tilew) %(tiley + tileh) %dc->basePort);
+			%offs %tilex %tiley %(tilex + tilew) %(tiley + tileh) %dc->basePort);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
