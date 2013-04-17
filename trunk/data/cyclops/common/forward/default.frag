@@ -2,6 +2,8 @@
 
 varying vec3 var_EyeVector;
 
+uniform float unif_Alpha;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 struct SurfaceData
 {
@@ -37,7 +39,7 @@ struct LitSurfaceData
 };
 
 @fsinclude lightFunctions
-@customFragmentFunctions
+@customFragmentDefs
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 $@fragmentLightSection
@@ -87,6 +89,9 @@ LitSurfaceData computeLighting(SurfaceData surf)
 	// Add emissive surface component to final luminance.
 	litSurfData.luminance.rgb += surf.emissive.rgb;
 	litSurfData.luminance.a *= surf.emissive.a;
+	
+	// can be used to implement global alpha, fog, fading.
+	@postLightingSection
 	
 	return litSurfData;
 }

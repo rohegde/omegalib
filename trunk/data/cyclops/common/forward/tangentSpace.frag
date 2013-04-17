@@ -39,7 +39,7 @@ struct LitSurfaceData
 };
 
 @fsinclude lightFunctions
-@customFragmentFunctions
+@customFragmentDefs
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 $@fragmentLightSection
