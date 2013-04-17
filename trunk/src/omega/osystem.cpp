@@ -104,7 +104,7 @@ namespace omega
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void editMultiappDisplayConfig(DisplayConfig* dc, int tilex, int tiley, int tilew, int tileh, int portPool)
+	void editMultiInstanceDisplayConfig(DisplayConfig* dc, int tilex, int tiley, int tilew, int tileh, int portPool)
 	{
 		// By default set all tiles to disabled.
 		typedef Dictionary<String, DisplayTileConfig*> DisplayTileDictionary;
@@ -120,10 +120,17 @@ namespace omega
 				else ofwarn("editMultiappDisplayConfig: cold not find tile %1% %2%", %x %y);
 			}
 		}
+
+		// Compute an offset to the base port based on the port pool and tile viewport
+		int offs = (tiley * dc->tileGridSize[0] + tilex) * portPool / dc->numTiles;
+		dc->basePort + offs;
+
+		ofmsg("Multi-Instance mode: instance id = %1% tile viewport (%2% %3% - %4% %5%) port %6%", 
+			%offs, %tilex %tiley %(tilex + tilew) %(tiley + tileh) %dc->basePort);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void setupMultiapp(SystemManager* sys, const String& multiAppString)
+	void setupMultiInstance(SystemManager* sys, const String& multiAppString)
 	{
 		DisplayConfig* dc = &sys->getDisplaySystem()->getDisplayConfig();
 		Vector<String> args = StringUtils::split(multiAppString, ",");
@@ -138,7 +145,7 @@ namespace omega
 			int tileWidth = boost::lexical_cast<int>(args[2]);
 			int tileHeight = boost::lexical_cast<int>(args[3]);
 			int portPool = boost::lexical_cast<int>(args[4]);
-			editMultiappDisplayConfig(dc, tilex, tiley, tileWidth, tileHeight, portPool);
+			editMultiInstanceDisplayConfig(dc, tilex, tiley, tileWidth, tileHeight, portPool);
 		}
 	}
 
@@ -208,9 +215,9 @@ namespace omega
 				logFilename);
 
 			sArgs.newNamedString(
-				'M',
-				"multiapp",
-				"Enable multi application mode and set global viewport and port pool as a string <tilex>,<tiley>,<tilewidth>,<tileHeight>,<portPool>", "",
+				'I',
+				"instance",
+				"Enable multi-instance mode and set global viewport and port pool as a string <tilex>,<tiley>,<tilewidth>,<tileHeight>,<portPool>", "",
 				multiAppString);
 
 			sArgs.setName("omegalib");
@@ -328,7 +335,7 @@ namespace omega
 				// If multiApp string is set, setup multi-application mode.
 				// In multi-app mode, this instance will output to a subset of the available tiles, and will choose a
 				// communication port using a port interval starting at the configuration base port plus and dependent on a port pool.
-				if(multiAppString != "") setupMultiapp(sys, multiAppString);
+				if(multiAppString != "") setupMultiInstance(sys, multiAppString);
 
 				sys->initialize();
 				omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< OMEGALIB BOOT\n\n");
