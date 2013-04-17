@@ -136,9 +136,7 @@ Currently supported uniform types are listed in the `UniformType` enumeration:
 	* `Vector2f`
 	* `Vector3f`
 	* `Color`
-
-{{style='background-color: blue'}}
-Note: The Color uniform type is used to write blah
+*NOTE:* The color uniform type maps to a `vec4` type in the GL shading language. The use of `Color` here is due to lack of a Vector4 type in the used python math library (euclid).
 
 -------------------------------------------------------------------------------
 ==  `class Uniforms` ==
