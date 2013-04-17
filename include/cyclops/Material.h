@@ -24,12 +24,14 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __CY_UNIFORM__
-#define __CY_UNIFORM__
+#ifndef __CY_MATERIAL__
+#define __CY_MATERIAL__
 
 #include "cyclopsConfig.h"
+#include "Uniforms.h"
 
-#include <osg/Uniform>
+#include <osg/Material>
+#include <osg/StateSet>
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
@@ -39,68 +41,53 @@
 namespace cyclops {
 	using namespace omega;
 	using namespace omegaOsg;
+	class SceneManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API Uniform: public ReferenceType
+	//! Encapsulates an OpenSceneGraph stateset and offers a quick interface to a few commonly
+	//! used settings.
+	class CY_API Material: public Uniforms
 	{
 	public:
-		enum Type { Int, Float, Vector2f, Vector3f, Color };
+		Material(osg::StateSet* ss, SceneManager* sm);
 
-	public:
-		Uniform(osg::Uniform* uniform, Type type, uint elements = 1);
-		virtual ~Uniform();
+		void setDiffuseColor(const Color& color);
+		void setEmissiveColor(const Color& color);
+		void setShininess(float value);
+		void setGloss(float value);
 
-		bool isArray() { return myNumElements != 1; }
-		Type getType() { return myType; }
-		uint getNumElements() { return myNumElements; }
-
-		//! Setters / getters
+		//! Transparency control
 		//@{
-		void setFloat(float value);
-		float getFloat();
-		void setInt(int value);
-		int getInt();
-		void setVector2f(const omega::Vector2f& value);
-		omega::Vector2f getVector2f();
-		void setVector3f(const omega::Vector3f& value);
-		omega::Vector3f getVector3f();
-		//void setVector4f(const omega::Vector4f& value);
-		//omega::Vector4f getVector4f();
-		void setColor(const omega::Color& value);
-		omega::Color getColor();
+		void setTransparent(bool value);
+		bool isTransparent() { return myTransparent; }
+		//! Sets the material alpha value.
+		//! @remarks setAlpha only sets the value of the unif_Alpha uniform. By default, cyclops shaders use this 
+		//! uniform to modulate fragment alpha values after lighting (see postLightingSection/default.frag).
+		//! This behavior can be modified by the user, redefining the @postLightingSection shader macro.
+		void setAlpha(float value);
+		//! Gets the material alpha value.
+		float getAlpha();
 		//@}
 
-		//! @internal
-		osg::Uniform* getOsgUniform() { return myOsgUniform; }
+		//void setProgram(const String& program) { myProgramName = program; }
+		//String getProgram() { return myProgramName; }
+
+		osg::StateSet* getStateSet() { return myStateSet; }
+
+		//! Resets all material properties to their default values.
+		void reset();
 
 	private:
-		Ref<osg::Uniform> myOsgUniform;
-		Type myType;
-		uint myNumElements;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API Uniforms: public ReferenceType
-	{
-	public:
-
-	public:
-		Uniforms(osg::StateSet* stateset);
-		virtual ~Uniforms();
-
-		Uniform* addUniform(const String& name, Uniform::Type type);
-		Uniform* addUniformArray(const String& name, Uniform::Type type, uint elements);
-		Uniform* getUniform(const String& name);
-		void removeAllUniforms();
-
-	private:
-		osg::Uniform::Type toOsgUniformType(Uniform::Type Type);
-
-	private:
+		Ref<SceneManager> mySceneManager;
 		Ref<osg::StateSet> myStateSet;
+		Ref<osg::Material> myMaterial;
+		Ref<osg::Uniform> myShininess;
+		Ref<osg::Uniform> myGloss;
+		Ref<cyclops::Uniform> myAlpha;
+		bool myTransparent;
 
-		typedef Dictionary<String, Ref< Uniform > > UniformDictionary;
-		UniformDictionary myUniformDictionary;
+		//String myProgramName;
+		//Ref<ProgramAsset> myProgram;
 	};
 };
 

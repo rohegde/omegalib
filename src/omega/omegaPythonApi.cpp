@@ -684,28 +684,6 @@ void ocleanrun(const String& script)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//! Class wrapping a PixelData object and a filename, used by the python wrapper
-//class ImageFile
-//{
-//public:
-//	ImageFile(const ImageFile& rhs):
-//	  myFilename(rhs.myFilename), myPixels(rhs.myPixels)
-//	  {}
-//
-//	ImageFile(const String filename, PixelData* pixels):
-//	  myFilename(filename), myPixels(pixels)
-//	  {}
-//
-//	const String& getFilename() { return myFilename; }
-//	PixelData* getPixels() { return myPixels; }
-//	bool isLoaded() { return myPixels != NULL; }
-//
-//private:
-//	String myFilename;
-//	Ref<PixelData> myPixels;
-//};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 PixelData* loadImage(const String& filename)
 {
 	Ref<PixelData> data = ImageUtils::loadImage(filename);
@@ -992,13 +970,6 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(PixelData, getWidth)
 		PYAPI_METHOD(PixelData, getHeight)
 		;
-
-	// ImageFile
-	//PYAPI_BASE_CLASS(ImageFile)
-	//	PYAPI_METHOD(ImageFile, isLoaded)
-	//	PYAPI_GETTER(ImageFile, getFilename)
-	//	PYAPI_REF_GETTER(ImageFile, getPixels)
-	//	;
 
 	// SoundEnvironment
 	PYAPI_REF_BASE_CLASS(SoundEnvironment)
