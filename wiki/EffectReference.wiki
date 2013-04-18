@@ -40,26 +40,26 @@ The co-existence of `Material` and `setEffect` turned out to have a few advantag
 
 Effects are naturally used to define what shader program to use for object rendering. Omegalib provides a few default shaders ('colored', 'textured', 'bump'), but users can add their own:
 {{{
-	# Create a new program called fancyEffect, using fancy.vert and fancy.frag as shaders.
+	# Create a new program called 'fancy', using fancy.vert and fancy.frag as shaders.
 	# we assume this program uses a float uniform value called 'fanciness'
 	program = ProgramAsset()
-	program.name = "fancyEffect"
+	program.name = "fancy"
 	program.vertexShaderName = "./fancy.vert"
 	program.fragmentShaderName = "./fancy.frag"
 	getSceneManager().addProgram(program)
 
 	# Apply effect to box1 and make it really fancy
-	box1.setEffect('fancyEffect')
+	box1.setEffect('fancy')
 	box1Fanciness = box1.getMaterial().addUniform('fanciness', UniformType.Float)
 	box1Fanciness.setFloat(100)
 	
 	# Box2 is not as fancy as box1.
-	box2.setEffect('fancyEffect')
+	box2.setEffect('fancy')
 	box2Fanciness = box2.getMaterial().addUniform('fanciness', UniformType.Float)
 	box2Fanciness.setFloat(0.1)
 	
 	# Box3 is fancy AND colored blue (will be drawn twice)
-	box3.setEffect('fancyEffect | colored -d blue')
+	box3.setEffect('fancy | colored -d blue')
 }}}
 Using Effects and Materials together gives users a lot of creative flexibility, and altough a few things can be done with either of them, here are a few quidelines to help you choose one or the other:
 	* You need to specify which shader you want to use with an entity: *use setEffect*
