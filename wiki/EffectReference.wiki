@@ -29,7 +29,7 @@ For instance, you can set the diffuse color of an object using both:
 	box.getMaterial().setDiffuseColor(Color(0,0,1,0))
 }}}
 In general, the `setEffect` function exists for historical reasons: before a simpler way to wrap the API to python was available, it was quicker to expose a simple function accepting a string definition of a visual effect instead of implementing a full material class. When the Material class was introduced, removal of `setEffect` was considered but ultimately this way of setting visual properties was kept for a few practical reasons:
-	* using a single `setEffect` call instead of multiple longer material property sets keeps core shorter and more readable for simple effects. It is also very practical for runtime debugging of graphics (i.e. Its easier to type `box.setEffect('colored -e #ffffff80 -t')` than `box.getMaterial().setDiffuseColor(Color('#ffffff80')); box.getMaterial().getTransparent(True)`)
+	* using a single `setEffect` call instead of multiple longer material property sets keeps code shorter and more readable for simple effects. It is also very practical for runtime debugging of graphics (i.e. Its easier to type `box.setEffect('colored -e #ffffff80 -t')` than `box.getMaterial().setDiffuseColor(Color('#ffffff80')); box.getMaterial().getTransparent(True)`)
 	* `setEffect` can be used to easily specify *multipass effects* using the pipe operator `|`. 
 	* effect definitions are easier to serialize / deserialize
 On the other hand, introducing the `Material` class is useful for the following reasons:
