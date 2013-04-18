@@ -121,24 +121,28 @@ void MenuManager::initialize()
 				myShowMenuSound = se->createSound("showMenuSound");
 				myShowMenuSound->loadFromFile( Config::getStringValue("showMenuSound", sUi ) );
 				myShowMenuSound->setDefaultParameters(volume, width, mix, reverb, false, false);
+				// Played from Menu class
 			}
 
 			if( sUi.exists("hideMenuSound") ){
 				myHideSoundMenu = se->createSound("hideMenuSound");
 				myHideSoundMenu->loadFromFile( Config::getStringValue("hideMenuSound", sUi ) );
 				myHideSoundMenu->setDefaultParameters(volume, width, mix, reverb, false, false);
+				// Played from Menu class
 			}
 
 			if( sUi.exists("selectMenuSound") ){
 				selectMenuSound = se->createSound("selectMenuSound");
 				selectMenuSound->loadFromFile( Config::getStringValue("selectMenuSound", sUi ) );
 				selectMenuSound->setDefaultParameters(volume, width, mix, reverb, false, false);
+				// Played from Button class
 			}
 
 			if( sUi.exists("scrollMenuSound") ){
 				scrollMenuSound = se->createSound("scrollMenuSound");
 				scrollMenuSound->loadFromFile( Config::getStringValue("scrollMenuSound", sUi ) );
 				scrollMenuSound->setDefaultParameters(volume, width, mix, reverb, false, false);
+				// Played from Widget class
 			}
 			
 		}

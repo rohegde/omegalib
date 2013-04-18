@@ -365,7 +365,7 @@ void Widget::playMenuScrollSound()
 		if( sound != NULL )
 		{
 			SoundInstance* inst = new SoundInstance(sound);
-			inst->setPosition( getContainer()->get3dSettings().position );
+			inst->setLocalPosition( getContainer()->get3dSettings().position );
 			inst->play();
 		}
 	}
