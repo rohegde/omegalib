@@ -1,11 +1,11 @@
 #summary Cyclops Effects and Shaders
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.2 - 4 December 2012<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+<p>*Last revision:* ver. 3.6.3 - 18 April 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
 <wiki:toc max_depth="4" />
 
-= Cyclops Effects and Shaders =
+= Cyclops Effects and Materials =
 The cyclops library offers some helper functionality to add vertex and fragment shaders to cyclops objects (that is, everything derived from the `Entity` class).
 Shaders are attached to entities using *effects*. Effects simplify support of several shading features like per-pixel lighting with multiple lights, shadow maps and multipass shading support.
 Effects can be applied using the `Entity.setEffect` method. `setEffect` takes a string *effect definition*, containing the effect type, custom shaders and optional arguments
@@ -19,6 +19,57 @@ An example of applying effects in python follows:
 
 In general the effect string definition will look like `<effect-type> [-option [value]]+`
 
+==  Effects and Materials, Some Background ==
+In version 3.5 and higher of omegalib, Entities offer a new material API (`Entity.getMaterial` and the `Material` and `Uniforms` class). Materials and effects share a few common functionalities.
+For instance, you can set the diffuse color of an object using both:
+{{{
+	# do this...
+	box.setEffect('colored -d blue')
+	# or this
+	box.getMaterial().setDiffuseColor(Color(0,0,1,0))
+}}}
+In general, the `setEffect` function exists for historical reasons: before a simpler way to wrap the API to python was available, it was quicker to expose a simple function accepting a string definition of a visual effect instead of implementing a full material class. When the Material class was introduced, removal of `setEffect` was considered but ultimately this way of setting visual properties was kept for a few practical reasons:
+	* using a single `setEffect` call instead of multiple longer material property sets keeps core shorter and more readable for simple effects. It is also very practical for runtime debugging of graphics (i.e. Its easier to type `box.setEffect('colored -e #ffffff80 -t')` than `box.getMaterial().setDiffuseColor(Color('#ffffff80')); box.getMaterial().getTransparent(True)`)
+	* `setEffect` can be used to easily specify *multipass effects* using the pipe operator `|`. 
+	* effect definitions are easier to serialize / deserialize
+On the other hand, introducing the `Material` class is useful for the following reasons:
+	* For dynamically changing properties (i.e. a diffuse color or alpha value changing every frame). the Material API is much more efficient, since it does not require string parsing and can also skip some internal OpenSceneGraph logic.
+	* Materials let users specify shader uniforms (see the cyclops `Uniforms` class, from which `Material` derives).
+
+The co-existence of `Material` and `setEffect` turned out to have a few advantages for applications. one can think of effects as *material templates* that define what shader to use, textures and a few other basic properties of a material. The effect can be applied to multiple entities that can then *personalize* the way the effect looks on them, using their own Material properties like colors and shader uniforms. Changes to an Entity material will show only on that specific entity, and not on other entities using the same effect.
+
+Effects are naturally used to define what shader program to use for object rendering. Omegalib provides a few default shaders ('colored', 'textured', 'bump'), but users can add their own:
+{{{
+	# Create a new program called fancyEffect, using fancy.vert and fancy.frag as shaders.
+	# we assume this program uses a float uniform value called 'fanciness'
+	program = ProgramAsset()
+	program.name = "fancyEffect"
+	program.vertexShaderName = "./fancy.vert"
+	program.fragmentShaderName = "./fancy.frag"
+	getSceneManager().addProgram(program)
+
+	# Apply effect to box1 and make it really fancy
+	box1.setEffect('fancyEffect')
+	box1Fanciness = box1.getMaterial().addUniform('fanciness', UniformType.Float)
+	box1Fanciness.setFloat(100)
+	
+	# Box2 is not as fancy as box1.
+	box2.setEffect('fancyEffect')
+	box2Fanciness = box2.getMaterial().addUniform('fanciness', UniformType.Float)
+	box2Fanciness.setFloat(0.1)
+	
+	# Box3 is fancy AND colored blue (will be drawn twice)
+	box3.setEffect('fancyEffect | colored -d blue')
+}}}
+Using Effects and Materials together gives users a lot of creative flexibility, and altough a few things can be done with either of them, here are a few quidelines to help you choose one or the other:
+	* You need to specify which shader you want to use with an entity: *use setEffect*
+	* You want to quickly test visual variations of an object at runtime: *use setEffect*
+	* You want to do multipass rendering for an object: *use setEffect*
+	* You have a shader with custom uniforms and want to set them at runtime: *use Material*
+	* You want to change an object color or alpha value at each frame: *use Material*
+
+The rest of this document will explain how to use effect definitions. For more information about the Material API, check the [CyclopsPythonReference Cyclops Python Reference Page].
+	
 -------------------------------------------------------------------------------
 ==  Common Options ==
 || *Option* || *Meaning* ||

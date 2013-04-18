@@ -6,9 +6,11 @@
 ------------------------------------------------------------------------
 = omegalib v3.6 (*current developer version*) =
 == Major Changes ==
+general
 	* moved Porthole code from omega to omegaToolkit
 	* (*3.6.1*) additional improvements and fixes to runtime application switching.
 	* (*3.6.3*) added `modules` directory for modules that are shipped as part of omegalib but are not part of the core libraries. Modules also provide a good source of examples on how to extend omegalib.
+	* (*3.6.3*) fbx sdk packages are downloaded on demand from omegalib website instead of being part of the repository.
 orun
 	* control of application start command
 omega
