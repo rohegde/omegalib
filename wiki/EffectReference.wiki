@@ -61,7 +61,7 @@ Effects are naturally used to define what shader program to use for object rende
 	# Box3 is fancy AND colored blue (will be drawn twice)
 	box3.setEffect('fancy | colored -d blue')
 }}}
-Using Effects and Materials together gives users a lot of creative flexibility, and altough a few things can be done with either of them, here are a few quidelines to help you choose one or the other:
+Using Effects and Materials together gives users a lot of creative flexibility, and altough a few things can be done with either of them, you can follow these quidelines to help you choose:
 	* You need to specify which shader you want to use with an entity: *use setEffect*
 	* You want to quickly test visual variations of an object at runtime: *use setEffect*
 	* You want to do multipass rendering for an object: *use setEffect*
