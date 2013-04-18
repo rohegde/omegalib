@@ -1,7 +1,7 @@
 #summary Cyclops Effects and Shaders
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.6.3 - 18 April 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+<p>*Last revision:* ver. 3.6.3 - 18 April 2013*
 
 <wiki:toc max_depth="4" />
 
@@ -79,8 +79,8 @@ The rest of this document will explain how to use effect definitions. For more i
 || `-C`		|| Disable backface culling ||
 || `-g <value>`		|| Sets the specular gloss value (usually between 0 and 1). This parameter sets the `unif_Gloss` uniform in the fragment shader ||
 || `-s <value>`		|| Sets the specular shininess value (usually between 0 and 100+). This parameter sets the `unif_Shininess` uniform in the fragment shader ||
-|| `-v <variation>`		|| Sets a custom fragment shader (more on this follows) ||
-|| `-V`		|| Enables a custom vertex and fragment shader (more on this follows) ||
+
+The common options are available on all effects, both builtin (`colored`, `textured`, `bump`) or user-defined.
 
 ===  Custom shaders ===
 
@@ -101,15 +101,3 @@ The rest of this document will explain how to use effect definitions. For more i
 
 -------------------------------------------------------------------------------
 ==  Bump shading ==
-
--------------------------------------------------------------------------------
-==  Custom shading ==
-|| *Effect Definition* || *Result* ||
-|| `textured -v fxdemo/custom2 -d cyclops/test/checker.jpg -t` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/custom2.png" width="150"/> ||
-|| `colored -v fxdemo/wire -V -d yellow -g 1.0 -s 10 -t` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/wire.png" width="150"/> ||
-
-
--------------------------------------------------------------------------------
-==  Multipass shading ==
-|| *Effect Definition* || *Result* ||
-|| `textured -d cyclops/test/checker.jpg | colored -v fxdemo/wire -V -d yellow -g 1.0 -s 10 -t -D` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/multipass.png" width="150"/> ||
