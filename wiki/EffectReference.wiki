@@ -80,7 +80,7 @@ The rest of this document will explain how to use effect definitions. For more i
 || `-g <value>`		|| Sets the specular gloss value (usually between 0 and 1). This parameter sets the `unif_Gloss` uniform in the fragment shader ||
 || `-s <value>`		|| Sets the specular shininess value (usually between 0 and 100+). This parameter sets the `unif_Shininess` uniform in the fragment shader ||
 
-The common options are available on all effects, both builtin (`colored`, `textured`, `bump`) or user-defined.
+The common options are available on all effects, both builtin (`colored`, `textured`, `bump`) and user-defined.
 
 ===  Custom shaders ===
 
