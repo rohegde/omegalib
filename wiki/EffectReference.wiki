@@ -1,7 +1,7 @@
-#summary Cyclops Effects and Shaders
+#summary Cyclops Effects and Materials
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.6.3 - 18 April 2013*
+<p>*Last revision:* ver. 3.6.3 - 18 April 2013*</p>
 
 <wiki:toc max_depth="4" />
 
@@ -68,7 +68,7 @@ Using Effects and Materials together gives users a lot of creative flexibility, 
 	* You have a shader with custom uniforms and want to set them at runtime: *use Material*
 	* You want to change an object color or alpha value at each frame: *use Material*
 
-The rest of this document will explain how to use effect definitions. For more information about the Material API, check the [CyclopsPythonReference Cyclops Python Reference Page].
+The rest of this document will explain how to use effect definitions. For more information about the Material API, check the [CyclopsPythonReference Cyclops Python Reference Page]. For more information on cyclops shaders see the [ShaderReference Cyclops Shader Reference Page].
 	
 -------------------------------------------------------------------------------
 ==  Common Options ==

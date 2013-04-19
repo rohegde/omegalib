@@ -1,0 +1,59 @@
+#summary Cyclops Shaders
+#sidebar Sidebar
+
+<p>*Last revision:* ver. 3.6.3 - 18 April 2013*<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>
+
+<wiki:toc max_depth="4" />
+
+= Cyclops Shaders =
+
+== Shader Macros ==
+|| *Macro* || *Description* ||
+|| `@vertexShader` ||  ||
+|| `@surfaceShader` ||  ||
+|| `@postLightingSection` ||  ||
+|| `@vsinclude shadowMap` || *internal* ||
+|| `@fsinclude shadowMap` || *internal* ||
+|| `@fsinclude lightFunctions` || *internal* ||
+|| `@customFragmentDefs` || *internal* ||
+|| `$@fragmentLightSection { }@` || *internal* ||
+
+== Callbacks ==
+|| *Function Name* || *Description* ||
+|| `void setupSurfaceData(vec4 eyeSpacePosition)` || ||
+|| `SurfaceData getSurfaceData(void)` || ||
+|| `SurfaceData getSurfaceData(void)` || ||
+|| `vec4 lightFunction(SurfaceData sd, LightData ld)` || ||
+
+== Common Variables ==
+|| *Variable* || *Description* ||
+|| `varying vec3 var_Normal` || ||
+|| `varying vec3 var_EyeVector` || ||
+|| `uniform float unif_Alpha` || ||
+
+== Structures ==
+=== `SurfaceData` ===
+|| *Variable* || *Description* ||
+|| `vec4 albedo` || ||
+|| `vec4 emissive` || ||
+|| `vec3 normal` || ||
+|| `floatshininess` || ||
+|| `float gloss` || ||
+
+=== `LightData` ===
+|| *Variable* || *Description* ||
+|| `vec4 diffuse` || ||
+|| `vec4 ambient` || ||
+|| `vec4 specular` || ||
+|| `vec3 dir` || ||
+|| `vec3 halfDir` || ||
+|| `vec3 spotDirection` || ||
+|| `float spotCutoff` || ||
+|| `float spotExponent` || ||
+|| `float shadow` || ||
+|| `float distance` || ||
+|| `vec3 attenuation` || ||
+
+=== `LitSurfaceData` ===
+|| *Variable* || *Description* ||
+|| `vec4 luminance` || ||

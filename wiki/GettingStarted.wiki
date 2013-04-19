@@ -32,6 +32,8 @@ This page offers extended information on how to develop applications for omegali
  * [CameraController Camera Controllers: customizing navigation and camera movement (2.0)]
 
 == Reference ==
+ * [EffectReference Effects and Materials]
+ * [ShaderReference Shader Reference]
  * [ConfigReference Configuration file reference]
  * [Filesystem File management in omegalib]
  * [AppFlow Application and Initialization Flow]
