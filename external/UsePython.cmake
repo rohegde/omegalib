@@ -5,7 +5,8 @@ if(WIN32)
 
 	if(NOT EXISTS ${EXTLIB_DIR})
   message(STATUS "Downloading Python...")
-  file(DOWNLOAD http://omegalib.googlecode.com/files/${EXTLIB_NAME}.tar.gz 	  execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf
+  file(DOWNLOAD http://omegalib.googlecode.com/files/${EXTLIB_NAME}.tar.gz ${EXTLIB_TGZ} SHOW_PROGRESS)
+  execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf
 		${EXTLIB_TGZ} WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 	endif(NOT EXISTS ${EXTLIB_DIR})
 endif()
