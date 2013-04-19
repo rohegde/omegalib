@@ -1,0 +1,10 @@
+@vertexShader
+
+attribute float deformation;
+varying float deform;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void setupSurfaceData(vec4 eyeSpacePosition)
+{
+deform=deformation;
+}
