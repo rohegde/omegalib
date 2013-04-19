@@ -4,13 +4,17 @@
 <wiki:toc max_depth="1" />
 
 ------------------------------------------------------------------------
-= omegalib v3.6 (*current developer version*) =
+= omegalib v3.7 (*current developer version*) =
+
+------------------------------------------------------------------------
+= omegalib v3.6 =
 == Major Changes ==
 general
 	* moved Porthole code from omega to omegaToolkit
 	* (*3.6.1*) additional improvements and fixes to runtime application switching.
 	* (*3.6.3*) added `modules` directory for modules that are shipped as part of omegalib but are not part of the core libraries. Modules also provide a good source of examples on how to extend omegalib.
 	* (*3.6.3*) fbx sdk packages are downloaded on demand from omegalib website instead of being part of the repository.
+	* (*3.6.4*) python and FreeImage fbx sdk packages are downloaded on demand from omegalib website instead of being part of the repository.
 orun
 	* control of application start command
 omega
@@ -23,6 +27,7 @@ omega
 	* (*3.6.1, Windows 32bit*) build process uses an internal copy of python instead of an external, so omegalib builds out-of-the-box even with python suppor enabled.
 	* (*3.6.2*) Fixed regression on loading of 8bit png images.
 	* (*3.6.3*) added onParentChanged to SceneNodeListener
+	* (*3.6.3*) Fixed invertex colors in readback target
 omegaToolkit
 	* New menu widgets: label, slider, image
 	* `Slider` class accessible from Python API
