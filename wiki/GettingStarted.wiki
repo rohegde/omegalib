@@ -12,7 +12,7 @@ This page offers extended information on how to develop applications for omegali
 == Python Programming ==
  * [BasicPython Python omegalib developement].
  * [PythonExamples Python examples]
- * [ExtendingOmegalib Mixing Python and C++] 
+ * [ExtendingOmegalib Mixing Python and C++ with custom modules] 
  * *Python Reference*
 	 * [OmegaPythonReference `omega`] the core omegalib module
 	 * [OmegaToolkitPythonReference `omegaToolkit`] a module with a few utility classes
