@@ -44,7 +44,7 @@ void Material::setDiffuseColor(const Color& color)
 	if(myMaterial == NULL)
 	{
 		myMaterial = new osg::Material();
-		myMaterial->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
+		//myMaterial->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
 		myStateSet->setAttributeAndModes(myMaterial, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 	}
 	myMaterial->setDiffuse(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(color));
@@ -56,7 +56,7 @@ void Material::setEmissiveColor(const Color& color)
 	if(myMaterial == NULL)
 	{
 		myMaterial = new osg::Material();
-		myMaterial->setColorMode(osg::Material::EMISSION);
+		//myMaterial->setColorMode(osg::Material::EMISSION);
 		myStateSet->setAttributeAndModes(myMaterial, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 	}
 	myMaterial->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(color));
@@ -84,7 +84,7 @@ void Material::setTransparent(bool value)
 	else
 	{
 		myStateSet->setRenderingHint(osg::StateSet::OPAQUE_BIN);
-		myStateSet->setMode(GL_BLEND, osg::StateAttribute::OFF);
+		myStateSet->setMode(GL_BLEND, osg::StateAttribute::OFF| osg::StateAttribute::OVERRIDE);
 	}
 }
 
@@ -105,6 +105,7 @@ void Material::reset()
 {
 	removeAllUniforms();
 	myStateSet->clear();
+	myMaterial = NULL;
 	myAlpha = addUniform("unif_Alpha", Uniform::Float);
 	myAlpha->setFloat(1.0f);
 	myStateSet->setNestRenderBins(false);

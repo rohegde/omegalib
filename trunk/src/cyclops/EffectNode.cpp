@@ -207,7 +207,7 @@ protected:
 			{
 				Color emissiveColor(emissive);
 				//mat->setColorMode(osg::Material::EMISSION);
-				//mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(emissiveColor));
+				mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(emissiveColor));
 			}
 			mat->setSpecular(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
 			ss->setAttributeAndModes(mat, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
@@ -524,6 +524,7 @@ private:
 EffectNode::EffectNode() 
 {
 	dirtyTechniques();
+	myMaterial = new Material(getOrCreateStateSet(), SceneManager::instance());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -534,8 +535,6 @@ EffectNode::~EffectNode()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Material* EffectNode::getMaterial()
 {
-	SceneManager* sm = SceneManager::instance();
-	if(myMaterial == NULL) myMaterial = new Material(getOrCreateStateSet(), sm);
 	return myMaterial;
 }
 
