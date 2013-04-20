@@ -1,0 +1,8 @@
+#summary MissionControl: Application Control and Collaboration Support
+#sidebar Sidebar
+
+<p>*Last revision:* ver. 3.7 - 19 April 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>
+
+= MissionControl: Application Control and Collaboration Support =
+
+*TODO*
