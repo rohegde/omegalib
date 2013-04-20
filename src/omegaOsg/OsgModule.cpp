@@ -99,6 +99,7 @@ OsgModule* OsgModule::instance()
 	{
 		mysInstance = new OsgModule();
 		ModuleServices::addModule(mysInstance);
+		mysInstance->doInitialize(Engine::instance());
 	}
 	return mysInstance; 
 }
