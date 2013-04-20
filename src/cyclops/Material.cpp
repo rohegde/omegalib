@@ -106,5 +106,6 @@ void Material::reset()
 	removeAllUniforms();
 	myStateSet->clear();
 	myAlpha = addUniform("unif_Alpha", Uniform::Float);
+	myAlpha->setFloat(1.0f);
 	myStateSet->setNestRenderBins(false);
 }
