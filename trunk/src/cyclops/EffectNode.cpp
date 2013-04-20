@@ -195,7 +195,7 @@ protected:
 		if(diffuse != "" | emissive != "")
 		{
 			osg::Material* mat = new osg::Material();
-			mat->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
+			//mat->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
 
 			if(diffuse != "")
 			{
@@ -206,7 +206,7 @@ protected:
 			if(emissive != "")
 			{
 				Color emissiveColor(emissive);
-				mat->setColorMode(osg::Material::EMISSION);
+				//mat->setColorMode(osg::Material::EMISSION);
 				//mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(emissiveColor));
 			}
 			mat->setSpecular(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
