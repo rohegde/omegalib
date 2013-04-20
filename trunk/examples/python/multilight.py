@@ -118,29 +118,23 @@ scene.setMainLight(light2)
 def toggleLight1():
 	light1.setEnabled(not light1.isEnabled())
 	if(light1.isEnabled()):
-		lightSphere1.getMaterial().setEmissiveColor(light1Color)
-		lightSphere1.getMaterial().setDiffuseColor(blackColor)
+		lightSphere1.getMaterial().setColor(blackColor, light1Color)
 	else:
-		lightSphere1.getMaterial().setEmissiveColor(blackColor)
-		lightSphere1.getMaterial().setDiffuseColor(light1Color)
+		lightSphere1.getMaterial().setColor(light1Color, blackColor)
 
 def toggleLight2():
 	light2.setEnabled(not light2.isEnabled())
 	if(light2.isEnabled()):
-		lightSphere2.getMaterial().setEmissiveColor(light2Color)
-		lightSphere2.getMaterial().setDiffuseColor(blackColor)
+		lightSphere2.getMaterial().setColor(blackColor, light2Color)
 	else:
-		lightSphere2.getMaterial().setEmissiveColor(blackColor)
-		lightSphere2.getMaterial().setDiffuseColor(light2Color)
+		lightSphere2.getMaterial().setColor(light2Color, blackColor)
 		
 def toggleLight3():
 	light3.setEnabled(not light3.isEnabled())
 	if(light3.isEnabled()):
-		lightSphere3.getMaterial().setEmissiveColor(light3Color)
-		lightSphere3.getMaterial().setDiffuseColor(blackColor)
+		lightSphere3.getMaterial().setColor(blackColor, light3Color)
 	else:
-		lightSphere3.getMaterial().setEmissiveColor(blackColor)
-		lightSphere3.getMaterial().setDiffuseColor(light3Color)
+		lightSphere3.getMaterial().setColor(light3Color, blackColor)
 
 #------------------------------------------------------------------------------
 # Update function
