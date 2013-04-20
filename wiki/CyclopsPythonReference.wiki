@@ -120,6 +120,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 
 -------------------------------------------------------------------------------
 ==  `class Uniform` ==
+Represents a shader uniform value.
 === Methods ===
 || Method(s) || Description ||
 || `getType()` || Returns the uniform type. ||
@@ -140,6 +141,7 @@ Currently supported uniform types are listed in the `UniformType` enumeration:
 
 -------------------------------------------------------------------------------
 ==  `class Uniforms` ==
+Represents a collection of shader uniforms.
 === Methods ===
 || Method(s) || Description ||
 || `addUniform(name, type)` ||  ||
@@ -149,6 +151,7 @@ Currently supported uniform types are listed in the `UniformType` enumeration:
 
 -------------------------------------------------------------------------------
 ==  `class Material` (extends `Uniforms`) ==
+Contains visual properties for an entity. Visual properties set through a material are applied after an effect definition, and override properties specified in the effect. See [EffectReference the effect and material reference page] for more information.
 === Methods ===
 || Method(s) || Description ||
 || `setColor(diffuse, emissive)` || Sets the diffuse and emissive colors for this material. After calling `setColor`, the passed colors will *override* any color definition specified in the entity effect. ||
