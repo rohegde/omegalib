@@ -123,7 +123,7 @@ namespace omega
 
 		// Compute an offset to the base port based on the port pool and tile viewport
 		int offs = (tiley * dc->tileGridSize[0] + tilex) * portPool / dc->numTiles;
-		dc->basePort + offs;
+		dc->basePort += offs;
 
 		ofmsg("Multi-Instance mode: instance id = %1% tile viewport (%2% %3% - %4% %5%) port %6%", 
 			%offs %tilex %tiley %(tilex + tilew) %(tiley + tileh) %dc->basePort);
@@ -316,6 +316,10 @@ namespace omega
 				sys->setApplication(&app);
 				sys->setupConfig(cfg);
 				sys->setupDisplaySystem();
+				// If multiApp string is set, setup multi-application mode.
+				// In multi-app mode, this instance will output to a subset of the available tiles, and will choose a
+				// communication port using a port interval starting at the configuration base port plus and dependent on a port pool.
+				if(multiAppString != "") setupMultiInstance(sys, multiAppString);
 				DisplaySystem* ds = sys->getDisplaySystem();
 				ds->killCluster();
 			}
