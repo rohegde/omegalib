@@ -11,7 +11,7 @@ vec4 pointLightFunction(SurfaceData sd, LightData ld)
 		float specular = pow( max(dot(ld.halfDir, sd.normal), 0.0), sd.shininess ); 
 		l.rgb += ld.specular.rgb * specular * sd.gloss; 
 	} 
-	l.rgb += ld.ambient.rgb;
+	l.rgb += sd.albedo.rgb * ld.ambient.rgb;
 	
 	vec3 ka = ld.attenuation;
 //	float att = clamp(0.0, 1.0, 1.0 / (ka[0] + ld.distance * ka[1] + ld.distance * ld.distance * ka[2]));
