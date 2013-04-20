@@ -132,8 +132,7 @@ BOOST_PYTHON_MODULE(cyclops)
 
 	// Material
 	PYAPI_REF_CLASS(Material, Uniforms)
-		PYAPI_METHOD(Material, setDiffuseColor)
-		PYAPI_METHOD(Material, setEmissiveColor)
+		PYAPI_METHOD(Material, setColor)
 		PYAPI_METHOD(Material, setTransparent)
 		PYAPI_METHOD(Material, isTransparent)
 		PYAPI_METHOD(Material, reset)
