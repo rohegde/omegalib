@@ -39,27 +39,15 @@ Material::Material(osg::StateSet* ss, SceneManager* sm): Uniforms(ss), myStateSe
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Material::setDiffuseColor(const Color& color)
+void Material::setColor(const Color& diffuse, const Color& emissive)
 {
 	if(myMaterial == NULL)
 	{
 		myMaterial = new osg::Material();
-		//myMaterial->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
 		myStateSet->setAttributeAndModes(myMaterial, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 	}
-	myMaterial->setDiffuse(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(color));
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Material::setEmissiveColor(const Color& color)
-{
-	if(myMaterial == NULL)
-	{
-		myMaterial = new osg::Material();
-		//myMaterial->setColorMode(osg::Material::EMISSION);
-		myStateSet->setAttributeAndModes(myMaterial, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
-	}
-	myMaterial->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(color));
+	myMaterial->setDiffuse(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(diffuse));
+	myMaterial->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(emissive));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
