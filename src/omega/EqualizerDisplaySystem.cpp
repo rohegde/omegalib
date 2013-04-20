@@ -414,11 +414,6 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 {
 	mySetting = &scfg;
 	DisplayConfig::LoadConfig(scfg, myDisplayConfig);
-
-	if(SystemManager::instance()->isMaster())
-	{
-		generateEqConfig();
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -449,7 +444,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 #ifndef __APPLE__
 	glewInit();
 #endif
-	Log::level = LOG_WARN;
+	Log::level = LOG_INFO;
 	mySys = sys;
 
 	//atexit(::exitConfig);
@@ -457,6 +452,9 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	// Launch application instances on secondary nodes.
 	if(SystemManager::instance()->isMaster())
 	{
+		// Generate the equalizer configuration
+		generateEqConfig();
+		
 		for(int n = 0; n < myDisplayConfig.numNodes; n++)
 		{
 			DisplayNodeConfig& nc = myDisplayConfig.nodes[n];
@@ -499,7 +497,10 @@ void EqualizerDisplaySystem::killCluster()
 
 			if(nc.hostname != "local")
 			{
-				if(myDisplayConfig.nodeKiller != "")
+				// Kill the node if at least one of the tiles on the node is enabled.
+				bool enabled = false;
+				for(int i = 0; i < nc.numTiles; i++) enabled |= nc.tiles[i]->enabled;
+				if(enabled && myDisplayConfig.nodeKiller != "")
 				{
 					String executable = StringUtils::replaceAll(myDisplayConfig.nodeKiller, "%c", SystemManager::instance()->getApplication()->getName());
 					executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
