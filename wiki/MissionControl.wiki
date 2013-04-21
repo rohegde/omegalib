@@ -5,15 +5,15 @@
 
 = Mission Control: Application Control and Collaboration Support =
 
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/MissionControl/mccontrol.png" width="500"/></p><p align="middle">
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/MissionControl/mccontrol.png" width="400"/></p><p align="middle">
 _^Mission Control Example 1: Controlling an instance through a web interface or the command-line `mcsend` tool.^_
 </p>
 
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/MissionControl/mcp2p.png" width="500"/></p><p align="middle">
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/MissionControl/mcp2p.png" width="400"/></p><p align="middle">
 _^Mission Control Example 2: Peer-to-peer communication between two omegalib instances.^_
 </p>
 
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/MissionControl/mcserver.png" width="500"/></p><p align="middle">
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/MissionControl/mcserver.png" width="400"/></p><p align="middle">
 _^Mission Control Example 3: Multi-application collaboration and control using a standalone mission control server.^_
 </p>
 
