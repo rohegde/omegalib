@@ -1,7 +1,7 @@
 #summary Omegalib configuration file reference
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.6 - 29 March 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+<p>*Last revision:* ver. 3.7 - 20 April 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
 <wiki:toc max_depth="4" />
 
@@ -47,9 +47,10 @@ These options go directly into the `config` section of the configuration file
 ---------------------------------------------------------------------------------------------------
 === `display` section ===
 The display configuration section describes the display system geometry, resources and rendering modes used by omegalib. The `display` section contains the following entries:
- * `type` (string, required): The type of the display system manager running the display system. Can be one of the following values
+ * `type` (String, required): The type of the display system manager running the display system. Can be one of the following values
   * `"Equalizer"`: Uses Equalizer to manage the display system.
- * `geometry` (string, required):
+ * `verbose` (Boolean, default `false`) - when set to true, the Display system will output additional diagnostic messages during startup and shutdown.
+ * `geometry` (String, required) - sets the geometry class of this display system (Supported values in omegalib 3.0 and higher are `Planar`, `Cylindrical`, and `Custom`)
  * `numTiles`
  * `referenceTile`
  * `referenceOffset`

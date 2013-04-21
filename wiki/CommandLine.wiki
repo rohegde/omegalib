@@ -1,8 +1,7 @@
 #summary Command line support
 #sidebar Sidebar
 = Command line support =
-<p>*Last revision:* ver. 3.0 - 24 August 2012
-<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>
+<p>*Last revision:* ver. 3.7 - 20 April 2013</p>
 
 All omegalib applications (yes, even the ones you create) support a few predefined command line arguments. If you application neds more, you can also add custom ones.
 
@@ -16,6 +15,7 @@ The predefined command line syntax of an omegalib application is:
  * `-K`: kill all application instances, when running on a cluster system
  * `-D path`: changes the default omegalib data path see [Filesystem the filesystem page] for more information
  * `-L path`: changes the path of the application log file (default: same as the application name with a .log extention)
+ * `-I <tx>,<ty>,<tw>,<th>,<portPool>`: (version 3.7+) sets up multi-instance mode. See [MultiInstance the Multi-Instance Guide] for more information.
  
 == Custom command line arguments ==
 You can create additional command line arguments for your application, right before calling `omain`:
