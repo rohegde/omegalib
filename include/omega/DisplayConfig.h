@@ -133,11 +133,13 @@ namespace omega
 		// UGLY CONSTANTS.
 		static const int MaxNodes = 64;
 		
-		DisplayConfig(): disableConfigGenerator(false), latency(1), enableSwapSync(true), forceMono(false)
+		DisplayConfig(): disableConfigGenerator(false), latency(1), enableSwapSync(true), forceMono(false), verbose(false)
 		{
 			memset(tileGrid, 0, sizeof(tileGrid));
 		}		
 		bool disableConfigGenerator;
+		//! When set to true, the Display system will output additional diagnostic messages during startup and shutdown.
+		bool verbose;
 
 		Vector2i canvasPixelSize;
 

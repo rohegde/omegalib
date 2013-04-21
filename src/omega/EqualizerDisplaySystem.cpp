@@ -444,7 +444,8 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 #ifndef __APPLE__
 	glewInit();
 #endif
-	Log::level = LOG_INFO;
+	if(getDisplayConfig().verbose) 	Log::level = LOG_INFO;
+	else Log::level = LOG_WARN;
 	mySys = sys;
 
 	//atexit(::exitConfig);

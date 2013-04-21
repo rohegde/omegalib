@@ -50,6 +50,8 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 	cfg.tileResolution = Config::getVector2iValue("tileResolution", scfg);
 	cfg.windowOffset = Config::getVector2iValue("windowOffset", scfg);
 
+	cfg.verbose = Config::getBoolValue("verbose", scfg, false);
+
 	cfg.latency = Config::getIntValue("latency", scfg);
 	
 	String sm = Config::getStringValue("stereoMode", scfg, "default");
