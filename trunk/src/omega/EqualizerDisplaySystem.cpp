@@ -676,7 +676,13 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, DisplayTileConfig* dtc
 		camera = Engine::instance()->getDefaultCamera();
 	}
 
-	oassert(camera != NULL);
+	// If the camera is still null, we may be running this code during initialization (before full
+	// tile data as been set up). Just print a warning and return an empty ray.
+	if(camera == NULL)
+	{
+		owarn("EqualizerDisplaySystem::getViewRay: null camera, returning default ray.");
+		return Ray();
+	}
 
 	Vector3f head = camera->getHeadOffset();
 
