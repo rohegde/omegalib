@@ -4,7 +4,7 @@
 <p>*Last revision:* ver. 3.7 - 22 April 2013</p>*
 
 <wiki:toc max_depth="2" />
-<wiki:gadget url="./bt.xml" up_color="red" up_text="HELLO WORLD"/>
+<wiki:gadget url="http://omegalib.googlecode.com/svn/wiki/bt.xml" up_color="red" up_text="HELLO WORLD"/>
 
 = Module omegaToolkit =
 omegaToolkit is a utility module for omegalib. It exposes some non-core functionalities such as
