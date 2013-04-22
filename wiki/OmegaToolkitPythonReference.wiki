@@ -1,7 +1,7 @@
 #summary Python reference: module omegaToolkit
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.6.3 - 7 April 2013</p>*
+<p>*Last revision:* ver. 3.7 - 22 April 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -146,7 +146,8 @@ The method `createContainer()` can specify a layout for containers. The layout i
 
 ---------------------------------------------------------------------------------------------------
 ==  `class Widget` ==
-Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_widget.html omegaTookit::ui::Widget] C++ class. Base class for GUI elements
+Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_widget.html omegaTookit::ui::Widget] C++ class. 
+Base class for GUI elements
 === Methods ===
 || Method(s) || Description ||
 || `setVisible(visible)`, `isVisible()` || Gets or sets the visibility for the widget ||
@@ -162,7 +163,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `setUiEventCommand(command)` || Sets the command to be invoked when events happen in the widget area (like clicks or value changes) ||
 || `getLayer()`, `setLayer(value)` || Gets or sets the layer for the widget. Layers influence the drawing order of widgets within the same container ||
 || `transformPoint(point)` || Transforms a point from global pixel coordinates to local pixel coordinates in the widget space. Returns a `Vector2` value ||
-|| `setCenter(point)` || Sets the widget position by it center ||
+|| `setCenter(point)`, `getCenter()` || Gets or Sets the widget position by it center ||
 || `setAlpha(value)` `getAlpha()` || Gets or sets the transparency of the widget. Blendng must be enabled through `setBlendMode` ||
 || `setBlendMode(value)` `setBlendMode()` || Gets or sets the blend mode for the widget ||
 || `setUpdateCommand(cmdstring)` `getUpdateCommand()` || Gets or specified an update command to be executed for each update cycle on the widget. Example: <code> widget.setUpdateCommand("print('widget updated')") </code> ||
