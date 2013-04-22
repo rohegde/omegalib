@@ -66,7 +66,6 @@ protected:
 };
 /* \endcond */
 
-
 btCollisionWorld* initCollision()
 {
     btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
@@ -80,7 +79,6 @@ btCollisionWorld* initCollision()
 
     return( collisionWorld );
 }
-
 
 osg::Node* createScene( btCollisionWorld* cw, MoveManipulator* mm, osg::ArgumentParser& arguments )
 {
