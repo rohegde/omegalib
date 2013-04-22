@@ -2,5 +2,8 @@
 <Module>
   <ModulePrefs title="hello world example" />
   <Content type="html">
+  <![CDATA[ 
+    <font background-color="red">HEYY</font>
+  ]]> 
   </Content>
 </Module>
