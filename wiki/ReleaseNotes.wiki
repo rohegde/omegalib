@@ -15,6 +15,8 @@
 	* *API CHANGE*: Material `setDiffuseColor` and `setEmissiveColor` have been merged into `setColor(diffuse, emissive)` to make it clear material color override both emissive and diffuse.
 *omegaOsg*
 	* FIX: `queueCommand(':autonearfar on')` done before osg module initialization was being ignored.
+*omegaToolkit*
+	* API Additions: `Widget.getCenter()`.
 ------------------------------------------------------------------------
 = omegalib v3.6 =
 == Major Changes ==
