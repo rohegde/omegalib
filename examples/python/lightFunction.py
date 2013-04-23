@@ -4,7 +4,7 @@ from omega import *
 from cyclops import *
 
 scene = getSceneManager()
-scene.setShaderMacroToString('customFragmentFunctions', '''
+scene.setShaderMacroToString('customFragmentDefs', '''
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	vec4 dropShadowLightFunction(SurfaceData sd, LightData ld)
 	{

@@ -73,8 +73,19 @@ void MouseCameraController::handleEvent(const Event& evt)
 void MouseCameraController::update(const UpdateContext& context)
 {
 	if(!isEnabled()) return;
-	//updateCamera(myMoveDir, myYaw, myPitch, 0, context.dt);
-	myMoveDir = Vector3f::Zero();
+	
+	Camera* c = getCamera();
+	myTorque = c->getOrientation().slerp(context.dt * 0.2f, myTorque) * AngleAxis(myYaw, Vector3f::UnitY());
+	
+	if(c != NULL)
+	{
+		c->translate(myMoveDir * context.dt, Node::TransformLocal);
+		//c->rotate(myTorque, Node::TransformWorld);
+		//c->setOrientation(myTorque);
+	}
+	
+	myMoveDir -= myMoveDir * context.dt * 10;
+	
 	reset();
 	myYaw = 0;
 	myPitch = 0;

@@ -55,6 +55,7 @@ namespace omega
 			disableOverlay(false), 
 			stereoMode(Mono),
 			enabled(false),
+			camera(NULL),
 			id(0)
 			 {}
 
@@ -133,11 +134,13 @@ namespace omega
 		// UGLY CONSTANTS.
 		static const int MaxNodes = 64;
 		
-		DisplayConfig(): disableConfigGenerator(false), latency(1), enableSwapSync(true), forceMono(false)
+		DisplayConfig(): disableConfigGenerator(false), latency(1), enableSwapSync(true), forceMono(false), verbose(false)
 		{
 			memset(tileGrid, 0, sizeof(tileGrid));
 		}		
 		bool disableConfigGenerator;
+		//! When set to true, the Display system will output additional diagnostic messages during startup and shutdown.
+		bool verbose;
 
 		Vector2i canvasPixelSize;
 
@@ -217,8 +220,12 @@ namespace omega
 		//! Default port used to connect to nodes
 		int basePort;
 
-		//! The tile grid is needed for 2d interaction with tiles. Configuration generators fill this up.
+		//! The tile grid is needed for 2d interaction with tiles. and for applications running on tile subsets.
+		//! Configuration generators fill this up.
 		DisplayTileConfig* tileGrid[128][128];
+		//! The number of horizontal and vertical tiles in the tile grid.
+		//! Configuration generators fill this up together with tileGrid;
+		Vector2i tileGridSize;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

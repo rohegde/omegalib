@@ -70,8 +70,16 @@ namespace cyclops {
 		void deleteContextMenu();
 		//@}
 
+		//! Piece management
+		//@{
+		vector<String> listPieces(const String& path);
+		SceneNode* getPiece(const String& path);
+		//@}
+
 	protected:
 		void initialize(osg::Node* node);
+		//! Used by the piece functions to find a named group inside the object.
+		osg::Group* findSubGroup(const String& path);
 
 	private:
 		Ref<SceneManager> mySceneManager;

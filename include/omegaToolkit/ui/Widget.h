@@ -78,6 +78,7 @@ namespace omegaToolkit {
         void setPosition(int value, int dimension) { myPosition[dimension] = value; }
 		// Convenience method to center the widget around the specified point.
 		void setCenter(const omega::Vector2f& value);
+		Vector2f getCenter();
         //! Sets the widget rotation
         //! @param value - the widget rotation in degrees
         void setRotation(float value) { myRotation = value; }

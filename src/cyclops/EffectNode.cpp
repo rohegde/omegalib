@@ -34,70 +34,6 @@
 using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Material::Material(osg::StateSet* ss, SceneManager* sm): Uniforms(ss), myStateSet(ss), myTransparent(false), mySceneManager(sm)
-{
-	ss->setNestRenderBins(false);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Material::setDiffuseColor(const Color& color)
-{
-	if(myMaterial == NULL)
-	{
-		myMaterial = new osg::Material();
-		myMaterial->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
-		myStateSet->setAttributeAndModes(myMaterial, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
-	}
-	myMaterial->setDiffuse(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(color));
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Material::setEmissiveColor(const Color& color)
-{
-	if(myMaterial == NULL)
-	{
-		myMaterial = new osg::Material();
-		myMaterial->setColorMode(osg::Material::EMISSION);
-		myStateSet->setAttributeAndModes(myMaterial, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
-	}
-	myMaterial->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(color));
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Material::setShininess(float value)
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Material::setGloss(float value)
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Material::setTransparent(bool value)
-{
-	myTransparent = value;
-	if(myTransparent)
-	{
-		//if(myStateSet->getRenderingHint() == osg::StateSet::OPAQUE_BIN)
-		//{
-		//	ofmsg("Entity::setAlpha: entity %1% switched to transparent bin", %getName());
-		//}
-		myStateSet->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
-		myStateSet->setMode(GL_BLEND, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
-	}
-	else
-	{
-		//if(myStateSet->getRenderingHint() == osg::StateSet::TRANSPARENT_BIN)
-		//{
-		//	ofmsg("Entity::setAlpha: entity %1% switched to opaque bin", %getName());
-		//}
-		myStateSet->setRenderingHint(osg::StateSet::OPAQUE_BIN);
-		myStateSet->setMode(GL_BLEND, osg::StateAttribute::OFF);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 class Technique: public osgFX::Technique
 {
 public:
@@ -259,7 +195,7 @@ protected:
 		if(diffuse != "" | emissive != "")
 		{
 			osg::Material* mat = new osg::Material();
-			mat->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
+			//mat->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
 
 			if(diffuse != "")
 			{
@@ -270,8 +206,8 @@ protected:
 			if(emissive != "")
 			{
 				Color emissiveColor(emissive);
-				mat->setColorMode(osg::Material::EMISSION);
-				//mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(emissiveColor));
+				//mat->setColorMode(osg::Material::EMISSION);
+				mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(emissiveColor));
 			}
 			mat->setSpecular(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
 			ss->setAttributeAndModes(mat, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
@@ -588,6 +524,7 @@ private:
 EffectNode::EffectNode() 
 {
 	dirtyTechniques();
+	myMaterial = new Material(getOrCreateStateSet(), SceneManager::instance());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -598,8 +535,6 @@ EffectNode::~EffectNode()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Material* EffectNode::getMaterial()
 {
-	SceneManager* sm = SceneManager::instance();
-	if(myMaterial == NULL) myMaterial = new Material(getOrCreateStateSet(), sm);
 	return myMaterial;
 }
 

@@ -99,6 +99,7 @@ OsgModule* OsgModule::instance()
 	{
 		mysInstance = new OsgModule();
 		ModuleServices::addModule(mysInstance);
+		mysInstance->doInitialize(Engine::instance());
 	}
 	return mysInstance; 
 }
@@ -109,7 +110,7 @@ OsgModule::OsgModule():
 {
     mysInstance = this;
 
-	myAutoNearFar = false;
+	myAutoNearFar = true;
 
     myRootNode = NULL;
     //myRootSceneObject = NULL;

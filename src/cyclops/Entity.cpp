@@ -24,6 +24,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#include <osg/Node>
 #include <osgUtil/Optimizer>
 #include <osgDB/Archive>
 #include <osgDB/ReadFile>
@@ -148,4 +149,91 @@ void Entity::deleteContextMenu()
 {
 	mySceneManager->deleteContextMenu(this);
 	myContextMenu = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+osg::Group* Entity::findSubGroup(const String& path)
+{
+	osg::Group* target = myOsgNode->asGroup();
+
+	// If the head node is not a group, it has no parts for sure.
+	if(target == NULL) return NULL;
+
+	// If a non-empty path has been specified, follow it to find a sub-node amd enumerate its pieces.
+	if(path != "")
+	{
+		Vector<String> pathParts = StringUtils::split(path, "/");
+		foreach(String pathPart, pathParts)
+		{
+			osg::Group* newTarget = NULL;
+			for(int i = 0; i < target->getNumChildren(); i++)
+			{
+				if(target->getChild(i)->getName() == pathPart)
+				{
+					newTarget = target->getChild(i)->asGroup();
+					if(newTarget == NULL) return NULL;
+				}
+			}
+			// Have we found the node in the path?
+			if(newTarget != NULL) 
+			{
+				target = newTarget;
+			}
+			else
+			{
+				ofwarn("Entity::listPieces: could not find %1% in path %2% for entity %3%", %pathPart %path %getName());
+				return NULL;
+			}
+		}
+	}
+	return target;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+vector<String> Entity::listPieces(const String& path)
+{
+	osg::Group* target = findSubGroup(path);
+	Vector<String> pieces;
+	if(target != NULL)
+	{
+		// If we are here, we have found a target node to enumerate pieces of.
+		for(int i = 0; i < target->getNumChildren(); i++)
+		{
+			osg::Group* piece = target->getChild(i)->asGroup();
+			if(piece != NULL) pieces.push_back(piece->getName());
+		}
+	}
+	return pieces;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+SceneNode* Entity::getPiece(const String& path)
+{
+	osg::Group* target = findSubGroup(path);
+	if(target != NULL)
+	{
+		SceneNode* sn = new SceneNode(getEngine());
+		OsgSceneObject* oso = new OsgSceneObject(target);
+		// Use local transforms, since the osg node is already part of a transform hierarchy.
+		oso->useLocalTransform(true);
+		sn->addComponent(oso);
+
+
+		addChild(sn);
+
+		// If the osg node is a transform node, copy its transformation to the scene node to
+		// preserve it.
+		osg::MatrixTransform* mtf = dynamic_cast<osg::MatrixTransform*>(target);
+		if(mtf != NULL)
+		{
+			osg::Vec3d t = mtf->getMatrix().getTrans();
+			osg::Vec3d s = mtf->getMatrix().getScale();
+			osg::Quat o = mtf->getMatrix().getRotate();
+			sn->setPosition(t[0], t[1], t[2]);
+			sn->setOrientation(o.w(), o.x(), o.y(), o.z());
+			sn->setScale(s[0], s[1], s[2]);
+		}
+		return sn;
+	}
+	return NULL;
 }

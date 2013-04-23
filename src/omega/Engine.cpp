@@ -268,6 +268,7 @@ void Engine::refreshPointer(int pointerId, const Event& evt)
 	{
 		ofmsg("Engine::refreshPointer: creating pointer %1%", %pointerId);
 		ptr = new Pointer();
+		ptr->setSize(180);
 		myPointers[pointerId] = ptr;
 		ptr->initialize(this);
 	}
