@@ -31,6 +31,8 @@
 #include "omega/NodeComponent.h"
 #include "omega/SceneNode.h"
 
+#include <osg/Matrix>
+
 namespace osg
 {
 	class MatrixTransform;
@@ -45,6 +47,9 @@ namespace omegaOsg
 	class OOSG_API OsgSceneObject: public NodeComponent, SceneNodeListener
 	{
 	public:
+		//! Creates a new OsgSceneObject wrapping an osg Node.
+		//! If th osg Node is already a matrix transform, OsgSceneObject will RESET any transformation 
+		//! currently applied to the node, and use the transformation of the SceneNode owning this object instead.
 		OsgSceneObject(osg::Node* node);
 		~OsgSceneObject();
 
@@ -67,11 +72,19 @@ namespace omegaOsg
 		virtual void onAttached(SceneNode*);
 		virtual void onDetached(SceneNode*);
 
+		//! When set to true, the osg object will use the SceneNode local transform instead of its
+		//! absolute one. This is useful when the osg object is already part of a node hierarchy,
+		//! and we only want to modify its local transformation. 
+		void useLocalTransform(bool value) { myUseLocalTransform = value; }
+		bool usesLocalTransform() { return myUseLocalTransform; }
+
 	private:
 		Ref<osg::Node> myNode;
 		Ref<osg::MatrixTransform> myTransform;
 		AlignedBox3 myBBox;
 		bool myInitialized;
+
+		bool myUseLocalTransform;
 	};
 };
 #endif

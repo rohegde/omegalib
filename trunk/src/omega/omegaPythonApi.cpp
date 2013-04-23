@@ -39,6 +39,7 @@
 #include "omega/PythonInterpreterWrapper.h"
 
 #include <boost/mpl/if.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
 #define PYCAP_GET(pyobj, className) pyobj != NULL ? (className*)PyCapsule_GetPointer(pyobj, #className) : NULL
 
@@ -1017,6 +1018,8 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(SoundInstance, getRoomSize)
 		PYAPI_METHOD(SoundInstance, fade)
 		;
+
+	class_< vector<String> >("StringVector").def(vector_indexing_suite< vector<String> >());
 
 	// Free Functions
 	def("getEvent", getEvent, return_value_policy<reference_existing_object>());
