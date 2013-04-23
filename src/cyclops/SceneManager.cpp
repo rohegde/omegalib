@@ -285,6 +285,8 @@ void SceneManager::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::onParentChanged(SceneNode* source, SceneNode* newParent)
 {
+	// Called by entities when their parent node changes. Update the osg parent node
+	// accordingly.
 	Entity* e = dynamic_cast<Entity*>(source);
 	if(e != NULL)
 	{

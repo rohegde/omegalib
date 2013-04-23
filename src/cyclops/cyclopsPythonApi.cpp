@@ -33,6 +33,7 @@
 #ifdef OMEGA_USE_PYTHON
 
 #include "omega/PythonInterpreterWrapper.h"
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
 using namespace cyclops;
 
@@ -152,6 +153,8 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_REF_GETTER(Entity, createContextMenu)
 		PYAPI_REF_GETTER(Entity, getContextMenu)
 		PYAPI_METHOD(Entity, deleteContextMenu)
+		PYAPI_GETTER(Entity, listPieces)
+		PYAPI_REF_GETTER(Entity, getPiece)
 		;
 
 	// SphereShape
