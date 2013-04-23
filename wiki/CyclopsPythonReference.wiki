@@ -101,9 +101,6 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 || `getGlobalUniforms()` || Returns the global uniforms object. Can be used to set uniforms that will apply to all entities. See the `Uniforms` class. ||
 || *Textures* || ||
 || `createTexture(name, pixels)` || Creates a texture with the specified name using the passed `PixelData` object. The texture can then be referenced in effect definitions. ||
-|| *Entity Pieces* || Entities can be made up by multiple components (pieces). For instance, complex loaded models may have multiple parts that we want to manipulate separately. ||
-|| `listPieces(path)` || Returns a list containing the names of all the entity pieces in the specified path. A path is a list of node names in the entity node tree. Use an empy string to list all the piece names connected directly to the entity root. ||
-|| `getPiece(path)` || Returns a `SceneNode` for a piece identified by the passed `path`. If no piece exists for `path`, returns `None`. All basic `SceneNode` functions work on entity pieces, but  pieces can't be detached from this entity and attached to another one (doing so will not influence their transform, since it is always local to the owner entity). ||
 
 === Examples ===
 ==== Global Uniforms ====
@@ -120,21 +117,6 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_
 	customFloat.setFloat(0.5)
 }}}
 
-==== Entity Pieces ====
-{{{
-	# Assume the house model represents a house with a door and window. The window has two panels (left and right)
-	house = StaticObject.create('house')
-	
-	# Print the names of all root pieces for this entity (would print something like 'window, door')
-	for pieceName in house.listPieces(''): print pieceName
-	
-	# Print the names for all pieces under the 'window' piece (would print something like 'left, right')
-	for pieceName in house.listPieces('window'): print pieceName
-	
-	# Get the left window panel and rotate it to open the window.
-	leftPanel = house.getPiece('window/left')
-	leftPanel.yaw(radians(90))
-}}}
 
 
 -------------------------------------------------------------------------------
@@ -195,6 +177,26 @@ AN entity is a drawable thing that derives from a scene node. Entities offer add
 || `createContextMenu()` || Creates a context menu attached to this entity. When the user selectes the entity, the menu will pop up. Returns a `Menu` object ||
 || `getContextMenu()` || Gets the attached context menu for the entity if one has been set. ||
 || `deleteContextMenu()` || Deletes a context menu attached to this entity ||
+|| *Entity Pieces* || Entities can be made up by multiple components (pieces). For instance, complex loaded models may have multiple parts that we want to manipulate separately. ||
+|| `listPieces(path)` || Returns a list containing the names of all the entity pieces in the specified path. A path is a list of node names in the entity node tree. Use an empy string to list all the piece names connected directly to the entity root. ||
+|| `getPiece(path)` || Returns a `SceneNode` for a piece identified by the passed `path`. If no piece exists for `path`, returns `None`. All basic `SceneNode` functions work on entity pieces, but  pieces can't be detached from this entity and attached to another one (doing so will not influence their transform, since it is always local to the owner entity). ||
+
+=== Examples ===
+==== Entity Pieces ====
+{{{
+	# Assume the house model represents a house with a door and window. The window has two panels (left and right)
+	house = StaticObject.create('house')
+	
+	# Print the names of all root pieces for this entity (would print something like 'window, door')
+	for pieceName in house.listPieces(''): print pieceName
+	
+	# Print the names for all pieces under the 'window' piece (would print something like 'left, right')
+	for pieceName in house.listPieces('window'): print pieceName
+	
+	# Get the left window panel and rotate it to open the window.
+	leftPanel = house.getPiece('window/left')
+	leftPanel.yaw(radians(90))
+}}}
 
 -------------------------------------------------------------------------------
 ==  `class SphereShape` (extends `SphereShape`) ==
