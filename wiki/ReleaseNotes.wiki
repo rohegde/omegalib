@@ -13,6 +13,7 @@
 *cyclops*
 	* Fixed material and effect color and alpha overrides
 	* *API CHANGE*: Material `setDiffuseColor` and `setEmissiveColor` have been merged into `setColor(diffuse, emissive)` to make it clear material color override both emissive and diffuse.
+	* API Additions: `Entity.listPieces()`, `Entity.getPiece()`.
 *omegaOsg*
 	* FIX: `queueCommand(':autonearfar on')` done before osg module initialization was being ignored.
 *omegaToolkit*
