@@ -55,6 +55,7 @@ namespace omega
 			disableOverlay(false), 
 			stereoMode(Mono),
 			enabled(false),
+			camera(NULL),
 			id(0)
 			 {}
 
