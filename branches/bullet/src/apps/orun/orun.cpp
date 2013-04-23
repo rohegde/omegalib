@@ -120,7 +120,7 @@ void OmegaViewer::initialize()
 #endif
 
 	//
-	String orunInitScriptName = "orun_init.py";
+	String orunInitScriptName = "default_init.py";
 	myAppStartFunctionCall = "from omegaToolkit import *; _onAppStart()";
 
 	Config* cfg = SystemManager::instance()->getAppConfig();

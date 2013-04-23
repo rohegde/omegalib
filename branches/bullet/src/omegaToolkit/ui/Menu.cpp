@@ -423,7 +423,7 @@ void Menu::show()
 	{
 		// Play a sound based on menu's position
 		Ref<SoundInstance> showSound = new SoundInstance(myManager->getShowMenuSound());
-		showSound->setPosition( my3dSettings.position );
+		showSound->setLocalPosition( my3dSettings.position );
 		showSound->play();
 	}
 }
@@ -451,7 +451,7 @@ void Menu::hide()
 	{
 		// Play a sound based on menu's position
 		Ref<SoundInstance> hideSound = new SoundInstance(myManager->getHideMenuSound());
-		hideSound->setPosition( my3dSettings.position );
+		hideSound->setLocalPosition( my3dSettings.position );
 		hideSound->play();
 	}
 }

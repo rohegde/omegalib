@@ -214,8 +214,8 @@ void SceneManager::initialize()
 
 	setShaderMacroToFile("fsinclude lightFunctions", "cyclops/common/forward/lightFunctions.frag");
 
-	setShaderMacroToString("customFragmentFunctions", "");
-	//setShaderMacroToString("lightFunction", "pointLightFunction");
+	setShaderMacroToString("customFragmentDefs", "");
+	setShaderMacroToFile("postLightingSection", "cyclops/common/postLighting/default.frag");
 
 	resetShadowSettings(myShadowSettings);
 
@@ -285,6 +285,8 @@ void SceneManager::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::onParentChanged(SceneNode* source, SceneNode* newParent)
 {
+	// Called by entities when their parent node changes. Update the osg parent node
+	// accordingly.
 	Entity* e = dynamic_cast<Entity*>(source);
 	if(e != NULL)
 	{
@@ -297,6 +299,16 @@ void SceneManager::onParentChanged(SceneNode* source, SceneNode* newParent)
 			myScene->addChild(e->getOsgNode());
 		}
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Uniforms* SceneManager::getGlobalUniforms() 
+{ 
+	if(myGlobalUniforms == NULL)
+	{
+		myGlobalUniforms = new Uniforms(myScene->getOrCreateStateSet());
+	}
+	return myGlobalUniforms; 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

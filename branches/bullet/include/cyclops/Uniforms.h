@@ -44,7 +44,7 @@ namespace cyclops {
 	class CY_API Uniform: public ReferenceType
 	{
 	public:
-		enum Type { Int, Float, Vector2f, Vector3f, Vector4f };
+		enum Type { Int, Float, Vector2f, Vector3f, Color };
 
 	public:
 		Uniform(osg::Uniform* uniform, Type type, uint elements = 1);
@@ -62,11 +62,16 @@ namespace cyclops {
 		int getInt();
 		void setVector2f(const omega::Vector2f& value);
 		omega::Vector2f getVector2f();
-		void setVector3f(const omega::Vector2f& value);
+		void setVector3f(const omega::Vector3f& value);
 		omega::Vector3f getVector3f();
-		void setVector4f(const omega::Vector4f& value);
-		omega::Vector4f getVector4f();
+		//void setVector4f(const omega::Vector4f& value);
+		//omega::Vector4f getVector4f();
+		void setColor(const omega::Color& value);
+		omega::Color getColor();
 		//@}
+
+		//! @internal
+		osg::Uniform* getOsgUniform() { return myOsgUniform; }
 
 	private:
 		Ref<osg::Uniform> myOsgUniform;
@@ -94,7 +99,8 @@ namespace cyclops {
 	private:
 		Ref<osg::StateSet> myStateSet;
 
-		Dictionary<String, Ref< Uniform > > myUniformDictionary;
+		typedef Dictionary<String, Ref< Uniform > > UniformDictionary;
+		UniformDictionary myUniformDictionary;
 	};
 };
 

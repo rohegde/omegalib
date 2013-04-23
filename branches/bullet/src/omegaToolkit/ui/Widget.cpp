@@ -103,6 +103,12 @@ void Widget::setCenter(const omega::Vector2f& value)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Vector2f Widget::getCenter()
+{
+	return myPosition + mySize / 2;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::setUIEventCommand(const String& command)
 {
 	if(myUiEventCommand == NULL) myUiEventCommand = new UiScriptCommand();
@@ -365,7 +371,7 @@ void Widget::playMenuScrollSound()
 		if( sound != NULL )
 		{
 			SoundInstance* inst = new SoundInstance(sound);
-			inst->setPosition( getContainer()->get3dSettings().position );
+			inst->setLocalPosition( getContainer()->get3dSettings().position );
 			inst->play();
 		}
 	}

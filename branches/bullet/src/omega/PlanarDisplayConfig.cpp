@@ -34,6 +34,7 @@ bool PlanarDisplayConfig::buildConfig(DisplayConfig& cfg, Setting& scfg)
 	bool autoOffsetWindows = Config::getBoolValue("autoOffsetWindows", scfg);
 
 	Vector2i numTiles = Config::getVector2iValue("numTiles", scfg);
+	cfg.tileGridSize = numTiles;
 
 	cfg.canvasPixelSize = numTiles.cwiseProduct(cfg.tileResolution);
 	ofmsg("canvas pixel size: %1%", %cfg.canvasPixelSize);

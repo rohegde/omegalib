@@ -35,10 +35,17 @@
 using namespace omegaOsg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node), myInitialized(false)
+OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node), myInitialized(false), myUseLocalTransform(false)
 {
-    myTransform = new osg::MatrixTransform();
-    myTransform->addChild( node );
+	// if node is already a matrix transform, do not parent it to another matrix transform and use
+	// it directly. NOTE that this will RESET any transformation currently applied to the node, and
+	// use the transformation of the SceneNode owning this object instead.
+	myTransform = dynamic_cast<osg::MatrixTransform*>(node);
+	if(myTransform == NULL)
+	{
+		myTransform = new osg::MatrixTransform();
+		myTransform->addChild( node );
+	}
 	myTransform->setDataVariance( osg::Object::DYNAMIC );
 
 	const osg::BoundingSphere& bs = node->getBound();
@@ -80,10 +87,22 @@ void OsgSceneObject::onDetached(SceneNode* node)
 void OsgSceneObject::update(const UpdateContext& context)
 {
 	SceneNode* node = getOwner();
-	const AffineTransform3& xform =  node->getFullTransform();
-	const Matrix4f& m = xform.matrix();
 	osg::Matrix oxform;
-	oxform.set(m.data());
+	if(myUseLocalTransform)
+	{
+		const Vector3f& pos = node->getPosition();
+		const Vector3f& sc = node->getScale();
+		const Quaternion& o = node->getOrientation();
+		oxform.setTrans(pos.x(), pos.y(), pos.z());
+		oxform.setRotate(osg::Quat(o.x(), o.y(), o.z(), o.w()));
+		oxform.scale(sc.x(), sc.y(), sc.z());
+	}
+	else
+	{
+		const AffineTransform3& xform =  node->getFullTransform();
+		const Matrix4f& m = xform.matrix();
+		oxform.set(m.data());
+	}
 	myTransform->setMatrix( oxform );
 	requestBoundingBoxUpdate();
 

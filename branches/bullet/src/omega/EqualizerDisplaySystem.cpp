@@ -414,11 +414,6 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 {
 	mySetting = &scfg;
 	DisplayConfig::LoadConfig(scfg, myDisplayConfig);
-
-	if(SystemManager::instance()->isMaster())
-	{
-		generateEqConfig();
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -449,7 +444,8 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 #ifndef __APPLE__
 	glewInit();
 #endif
-	Log::level = LOG_WARN;
+	if(getDisplayConfig().verbose) 	Log::level = LOG_INFO;
+	else Log::level = LOG_WARN;
 	mySys = sys;
 
 	//atexit(::exitConfig);
@@ -457,6 +453,9 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	// Launch application instances on secondary nodes.
 	if(SystemManager::instance()->isMaster())
 	{
+		// Generate the equalizer configuration
+		generateEqConfig();
+		
 		for(int n = 0; n < myDisplayConfig.numNodes; n++)
 		{
 			DisplayNodeConfig& nc = myDisplayConfig.nodes[n];
@@ -499,7 +498,10 @@ void EqualizerDisplaySystem::killCluster()
 
 			if(nc.hostname != "local")
 			{
-				if(myDisplayConfig.nodeKiller != "")
+				// Kill the node if at least one of the tiles on the node is enabled.
+				bool enabled = false;
+				for(int i = 0; i < nc.numTiles; i++) enabled |= nc.tiles[i]->enabled;
+				if(enabled && myDisplayConfig.nodeKiller != "")
 				{
 					String executable = StringUtils::replaceAll(myDisplayConfig.nodeKiller, "%c", SystemManager::instance()->getApplication()->getName());
 					executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
@@ -674,7 +676,13 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, DisplayTileConfig* dtc
 		camera = Engine::instance()->getDefaultCamera();
 	}
 
-	oassert(camera != NULL);
+	// If the camera is still null, we may be running this code during initialization (before full
+	// tile data as been set up). Just print a warning and return an empty ray.
+	if(camera == NULL)
+	{
+		owarn("EqualizerDisplaySystem::getViewRay: null camera, returning default ray.");
+		return Ray();
+	}
 
 	Vector3f head = camera->getHeadOffset();
 

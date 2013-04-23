@@ -87,7 +87,7 @@ omega::Vector2f Uniform::getVector2f()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Uniform::setVector3f(const omega::Vector2f& value)
+void Uniform::setVector3f(const omega::Vector3f& value)
 {
 	osg::Vec3 ov(value[0], value[1], value[2]);
 	myOsgUniform->set(ov);
@@ -102,18 +102,18 @@ omega::Vector3f Uniform::getVector3f()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Uniform::setVector4f(const omega::Vector4f& value)
+void Uniform::setColor(const omega::Color& value)
 {
 	osg::Vec4 ov(value[0], value[1], value[2], value[3]);
 	myOsgUniform->set(ov);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-omega::Vector4f Uniform::getVector4f()
+omega::Color Uniform::getColor()
 {
 	osg::Vec4 value;
 	myOsgUniform->get(value);
-	return omega::Vector4f(value[0], value[1], value[2], value.w());
+	return omega::Color(value[0], value[1], value[2], value.w());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -161,6 +161,11 @@ Uniform* Uniforms::getUniform(const String& name)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Uniforms::removeAllUniforms()
 {
+	foreach(UniformDictionary::Item i, myUniformDictionary)
+	{
+		myStateSet->removeUniform(i->getOsgUniform());
+	}
+	myUniformDictionary.clear();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,10 +175,9 @@ osg::Uniform::Type Uniforms::toOsgUniformType(Uniform::Type type)
 	{
 	case Uniform::Int: return osg::Uniform::INT;
 	case Uniform::Float: return osg::Uniform::FLOAT;
-	case Uniform::Vector2f: return osg::Uniform::FLOAT_MAT2;
-	case Uniform::Vector3f: return osg::Uniform::FLOAT_MAT3;
-	case Uniform::Vector4f: return osg::Uniform::FLOAT_MAT4;
+	case Uniform::Vector2f: return osg::Uniform::FLOAT_VEC2;
+	case Uniform::Vector3f: return osg::Uniform::FLOAT_VEC3;
+	case Uniform::Color: return osg::Uniform::FLOAT_VEC4;
 	}
 	return osg::Uniform::UNDEFINED;
 }
-

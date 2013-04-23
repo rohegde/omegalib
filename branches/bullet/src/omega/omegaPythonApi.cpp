@@ -39,6 +39,7 @@
 #include "omega/PythonInterpreterWrapper.h"
 
 #include <boost/mpl/if.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
 #define PYCAP_GET(pyobj, className) pyobj != NULL ? (className*)PyCapsule_GetPointer(pyobj, #className) : NULL
 
@@ -684,28 +685,6 @@ void ocleanrun(const String& script)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//! Class wrapping a PixelData object and a filename, used by the python wrapper
-//class ImageFile
-//{
-//public:
-//	ImageFile(const ImageFile& rhs):
-//	  myFilename(rhs.myFilename), myPixels(rhs.myPixels)
-//	  {}
-//
-//	ImageFile(const String filename, PixelData* pixels):
-//	  myFilename(filename), myPixels(pixels)
-//	  {}
-//
-//	const String& getFilename() { return myFilename; }
-//	PixelData* getPixels() { return myPixels; }
-//	bool isLoaded() { return myPixels != NULL; }
-//
-//private:
-//	String myFilename;
-//	Ref<PixelData> myPixels;
-//};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 PixelData* loadImage(const String& filename)
 {
 	Ref<PixelData> data = ImageUtils::loadImage(filename);
@@ -993,13 +972,6 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(PixelData, getHeight)
 		;
 
-	// ImageFile
-	//PYAPI_BASE_CLASS(ImageFile)
-	//	PYAPI_METHOD(ImageFile, isLoaded)
-	//	PYAPI_GETTER(ImageFile, getFilename)
-	//	PYAPI_REF_GETTER(ImageFile, getPixels)
-	//	;
-
 	// SoundEnvironment
 	PYAPI_REF_BASE_CLASS(SoundEnvironment)
 		PYAPI_REF_GETTER(SoundEnvironment, loadSoundFromFile)
@@ -1046,6 +1018,8 @@ BOOST_PYTHON_MODULE(omega)
 		PYAPI_METHOD(SoundInstance, getRoomSize)
 		PYAPI_METHOD(SoundInstance, fade)
 		;
+
+	class_< vector<String> >("StringVector").def(vector_indexing_suite< vector<String> >());
 
 	// Free Functions
 	def("getEvent", getEvent, return_value_policy<reference_existing_object>());
