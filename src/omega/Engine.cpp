@@ -220,11 +220,22 @@ void Engine::reset()
 
 	// Remove all children from the scene root.
 	myScene->removeAllChildren();
+	// Re-attach the default camera to the scene root.
+	myScene->addChild(myDefaultCamera);
 
-	myDefaultCamera->resetOrientation();
-	myDefaultCamera->setPosition(Vector3f::Zero());
-	myDefaultCamera->getController()->reset();
-	myDefaultCamera->removeAllChildren();
+	// Load camera config form application config file (if it is different from system configuration)
+	// Then in the system config
+	Config* syscfg = getSystemManager()->getSystemConfig();
+    Config* cfg = getSystemManager()->getAppConfig();
+    if(cfg != syscfg && cfg->exists("config/camera"))
+    {
+        Setting& s = cfg->lookup("config/camera");
+		myDefaultCamera->setup(s);
+    }
+	//myDefaultCamera->resetOrientation();
+	//myDefaultCamera->setPosition(Vector3f::Zero());
+	//myDefaultCamera->getController()->reset();
+	//myDefaultCamera->removeAllChildren();
 	
 	if(soundEnv != NULL)
 	{
