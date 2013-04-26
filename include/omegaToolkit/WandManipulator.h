@@ -46,7 +46,13 @@ namespace omegaToolkit {
 			myButton2Pressed(false),
 			myXAxis(0),
 			myYAxis(0),
-			myNodeActive(false) {}
+			myNodeActive(false) 
+		{
+			// Setting the interactor priority to low: we can set the target object in the 
+			// application event handler and start manipulating the objec tright away, without
+			// requiring a new 'selection'.
+			setPriority(PriorityLow);
+		}
 
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& conext);

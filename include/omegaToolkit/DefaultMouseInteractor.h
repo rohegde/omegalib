@@ -40,7 +40,10 @@ namespace omegaToolkit {
 			myMoveButtonFlag(Event::Left),
 			myRotateButtonFlag(Event::Right)
 			{
-				//setPriority(PriorityLow);
+				// Setting the interactor priority to low: we can set the target object in the 
+				// application event handler and start manipulating the objec tright away, without
+				// requiring a new click.
+				setPriority(PriorityLow);
 				myNodeActive = false;
 			}
 

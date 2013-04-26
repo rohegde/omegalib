@@ -43,7 +43,7 @@ namespace omegaToolkit { namespace ui {
 		virtual void update(const omega::UpdateContext& context);
 
 		omega::String getText() { return myLabel.getText(); }
-		void setText(omega::String value) { myLabel.setText(value); }
+		void setText(omega::String value) { myLabel.setText(value); requestLayoutRefresh(); }
 
 		void setIcon(PixelData* icon) { myImage.setData(icon); }
 		PixelData* getIcon() { return myImage.getData(); }
