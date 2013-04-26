@@ -513,6 +513,14 @@ boost::python::tuple getRayFromEvent(const Event* evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+boost::python::tuple getRayFromPoint(int x, int y)
+{
+	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+	Ray r = ds->getViewRay(Vector2i(x, y));
+	return boost::python::make_tuple(true, r.getOrigin(), r.getDirection());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Camera* getDefaultCamera()
 {
 	return Engine::instance()->getDefaultCamera();
@@ -739,10 +747,13 @@ int getImageLoaderThreads()
 void printModules()
 {
 	Vector<EngineModule*> mods = ModuleServices::getModules();
-	foreach(EngineModule* m, mods)
-	{
-		ofmsg("%1%", %m->getName());
-	}
+	
+	omsg("High   Priority:");
+	foreach(EngineModule* m, mods) if(m->getPriority() == EngineModule::PriorityHigh) ofmsg("    %1%", %m->getName());
+	omsg("Normal Priority:");
+	foreach(EngineModule* m, mods) if(m->getPriority() == EngineModule::PriorityNormal) ofmsg("    %1%", %m->getName());
+	omsg("Low    Priority:");
+	foreach(EngineModule* m, mods) if(m->getPriority() == EngineModule::PriorityLow) ofmsg("    %1%", %m->getName());
 }
 
 BOOST_PYTHON_FUNCTION_OVERLOADS(mcstartOverloads , mcstart, 0, 1)
@@ -1032,6 +1043,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("isSoundEnabled", isSoundEnabled);
 	def("querySceneRay", querySceneRay);
 	def("getRayFromEvent", getRayFromEvent);
+	def("getRayFromPoint", getRayFromPoint);
 	def("printChildren", &printChildren);
 	def("printObjCounts", &printObjCounts);
 	def("getBoolSetting", &getBoolSetting);
