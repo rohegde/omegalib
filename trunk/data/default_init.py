@@ -11,6 +11,23 @@ def _setCamSpeed(speedLevel):
 	if(cc != None):
 		cc.setSpeed(s)
 
+def _resetCamera():
+	getDefaultCamera().setPosition(Vector3(0, 0, 0))
+	getDefaultCamera().setPitchYawRoll(Vector3(0, 0, 0))
+		
+def _autonearfar(value):
+	if(value):
+		queueCommand(":autonearfar on")
+	else:
+		queueCommand(":autonearfar off")
+
+def _displayWand(value):
+	if(value):
+		getSceneManager().displayWand(0, 1)
+	else:
+		getSceneManager().hideWand(0, 1)
+		
+	
 def _onAppStart():
     # mm = getViewer().getMenuManager()
 	mm = MenuManager.createAndInitialize()
@@ -23,6 +40,11 @@ def _onAppStart():
 	mm.setMainMenu(mainmnu)
 	sysmnu = mainmnu.addSubMenu("System")
 	mi = sysmnu.addButton("Toggle freefly", ":freefly")
+	mi = sysmnu.addButton("Reset", "_resetCamera()")
+	mi = sysmnu.addButton("Auto Near / Far", "_autonearfar(%value%)")
+	mi.getButton().setCheckable(True)
+	mi = sysmnu.addButton("Display Wand", "_displayWand(%value%)")
+	mi.getButton().setCheckable(True)
 	global speedLabel
 	speedLabel = sysmnu.addLabel("sd")
 	_setCamSpeed(4)
