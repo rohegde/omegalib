@@ -59,7 +59,7 @@ void DefaultMouseInteractor::handleEvent(const Event& evt)
 			// myPointerRay.setOrigin(evt.getExtraDataVector3(0));
 			// myPointerRay.setDirection(evt.getExtraDataVector3(1));
 		// }
-		//if(evt.getType() == Event::Zoom) myPointerEventData = evt.getExtraDataInt(0);
+		if(evt.getType() == Event::Zoom) myPointerEventData = evt.getExtraDataInt(0);
 
 		updateNode();
 	}

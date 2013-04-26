@@ -607,6 +607,8 @@ void Container::handleEvent(const Event& evt)
 					w->handleEvent(newEvt);
 				}
 			}
+			// Copy back processe flag into original event.
+			if(newEvt.isProcessed()) evt.setProcessed();
 		}
 		else
 		{
