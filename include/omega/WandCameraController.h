@@ -43,8 +43,11 @@ namespace omega {
 		virtual bool handleCommand(const String& cmd);
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt);
+		virtual void setup(Setting& s);
 
 	private:
+		Event::Flags myNavigateButton;
+
 		// Navigation stuff.
 		Vector3f mySpeed;
 		Quaternion myTorque;
