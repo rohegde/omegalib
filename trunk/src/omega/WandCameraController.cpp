@@ -40,9 +40,17 @@ WandCameraController::WandCameraController():
 	myFreeFlyEnabled(false),
 	myTorque(Quaternion::Identity()),
 	myStartPYR(Vector3f::Zero()),
-	myCurPYR(Vector3f::Zero())
+	myCurPYR(Vector3f::Zero()),
+	myNavigateButton(Event::Button6)
 {
 	myAxisCorrection = Quaternion::Identity(); //AngleAxis(-Math::Pi / 2, Vector3f::UnitY());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void WandCameraController::setup(Setting& s)
+{
+	String navbtn = Config::getStringValue("navigationButton", s, "Button6");
+	myNavigateButton = Event::parseButtonName(navbtn);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,7 +95,7 @@ void WandCameraController::handleEvent(const Event& evt)
 		//myAxisCorrection = getCamera()->getOrientation();
 		
 		// Button6 = Left Analog pressed.
-		if(evt.isFlagSet(Event::Button6)) 
+		if(evt.isFlagSet(myNavigateButton)) 
 		{
 			if(myFreeFly == false)
 			{
