@@ -1,7 +1,7 @@
 #summary Python reference: module omega
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.6 - 27 March 2013</p>*
+<p>*Last revision:* ver. 3.7 - 26 April 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -198,6 +198,19 @@ Example:
 Returns the event currenty being processed. Should be used only inside an event handler function.
 
 === `getRayFromEvent(evt)` ===
+Returns a 3D ray from events that support ray generation.
+`Pointer`, `Wand` and `Mocap` events all support the generation of 3D rays into the scene. A typical use of rays is object picking. (see `querySceneRay`)
+The function returns a tuple containing three values:
+ * A boolean, se tto true when ray generation was sucessfull
+ * A `Vector3` containing the ray origin
+ * A `Vector3`containing the ray direction
+
+=== `getRayFromPoint(x, y)` ===
+Returns a ray from a 2D point on the screen plane. This method works for tiled displays as long as they provide a planar mapping of the display geometry (`PlanarDisplayConfig` and `CylindricalDisplayConfig` work. `CustomDisplayConfig` does not).
+The function returns a tuple containing three values:
+ * A boolean, se tto true when ray generation was sucessfull
+ * A `Vector3` containing the ray origin
+ * A `Vector3`containing the ray direction
 
 === `querySceneRay(origin, dir, callback)` ===
 Performs a query on the scene using a ray defined by the `origin` and `dir` parameters. For each hit node, it invokes a callback function taking the node reference and distance to the origin as parameters.

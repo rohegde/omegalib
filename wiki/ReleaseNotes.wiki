@@ -10,6 +10,7 @@
 	* Improved support for building custom external modules.
 *omega*
 	* `DisplayConfig.verbose` mode
+	* New python function: `getViewRay(x, y)`
 *cyclops*
 	* Fixed material and effect color and alpha overrides
 	* *API CHANGE*: Material `setDiffuseColor` and `setEmissiveColor` have been merged into `setColor(diffuse, emissive)` to make it clear material color override both emissive and diffuse.

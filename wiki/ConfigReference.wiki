@@ -170,6 +170,7 @@ Example:
 The `camera` section configures the default camera.
  * `controller` (String - one of `wand` `gamepad` `mouse` `mousekeyboard`)
  * `trackerSourceId` (int)
+ * `navigationButton` (String - button name): sets the button used by the camera controller for navigation. Supported by `wand` camera controller.
 
 Example:
 {{{
