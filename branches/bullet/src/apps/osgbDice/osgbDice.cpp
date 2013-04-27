@@ -17,12 +17,27 @@
  * Boston, MA 02111-1307, USA.
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
-
-#include <osgDB/ReadFile>
-#include <osgViewer/Viewer>
+#include <osgUtil/Optimizer>
+#include <osg/PositionAttitudeTransform>
 #include <osg/MatrixTransform>
-#include <osg/ShapeDrawable>
+#include <osg/Light>
+#include <osg/LightSource>
+#include <osg/Material>
+
+#define OMEGA_NO_GL_HEADERS
+#include <omega.h>
+#include <omegaToolkit.h>
+#include <omegaOsg.h>
+
+#include <osgViewer/Viewer>
+#include <osgDB/ReadFile>
+#include <osgGA/TrackballManipulator>
+#include <osgGA/GUIEventHandler>
+#include <osg/MatrixTransform>
 #include <osg/Geode>
+#include <osgwTools/Shapes.h>
+#include <osgwTools/Version.h>
+#include <osg/ShapeDrawable>
 
 #include <osgbDynamics/MotionState.h>
 #include <osgbCollision/CollisionShapes.h>
@@ -31,13 +46,72 @@
 
 #include <btBulletDynamicsCommon.h>
 
+
 #include <string>
+
 #include <osg/io_utils>
+#include <iostream>
 
+using namespace omega;
+using namespace omegaToolkit;
+using namespace omegaOsg;
 
+osg:: ref_ptr<osg::Node> createAxes( void ) {
 
-osg::MatrixTransform*
-makeDie( btDynamicsWorld* bw )
+        // This method should be made more succinct by using arrays.
+
+        const osg::Vec4f red( 1.0, 0.0, 0.0, 1.0 ), green( 0.0, 1.0, 0.0, 1.0 ), blue ( 0.0, 0.0, 1.0, 1.0 );
+        osg::Matrix mR, mT;
+
+        osg::ref_ptr< osg::Group > root = new osg::Group;
+        osg::ref_ptr< osg::MatrixTransform > mt = NULL;
+        osg::ref_ptr< osg::Geode > geode = NULL;
+
+        osg::ref_ptr< osg::Cylinder > axis = new osg::Cylinder( osg::Vec3f( 0.0, 0.0, 0.0 ), 1.0, 200.0 );
+        osg::ref_ptr< osg::Cone > arrow = new osg::Cone( osg::Vec3f( 0.0, 0.0, 0.0 ), 10.0, 20.0 );
+
+        // Draw the X axis in Red
+
+        osg::ref_ptr< osg::ShapeDrawable > xAxis = new osg::ShapeDrawable( axis );
+        xAxis->setColor( red );
+        geode = new osg::Geode;
+        geode->addDrawable( xAxis.get( ) );
+        mT.makeTranslate( 100.0, 0.0, 0.0 );
+        mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 0.0, 1.0, 0.0 ) );
+        mt = new osg::MatrixTransform;
+        mt->setMatrix( mR * mT );
+        mt->addChild( geode.get( ) );
+        root->addChild( mt.get( ) );
+
+        // Then the Y axis in green
+        osg::ref_ptr< osg::ShapeDrawable > yAxis = new osg::ShapeDrawable( axis );
+        yAxis->setColor( green );
+        geode = new osg::Geode;
+        geode->addDrawable( yAxis.get( ) );
+        mT.makeTranslate( 0.0, 100.0, 0.0 );
+        mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 1.0, 0.0, 0.0 ) );
+        mt = new osg::MatrixTransform;
+        mt->setMatrix( mR * mT );
+        mt->addChild( geode.get( ) );
+        root->addChild( mt.get( ) );
+
+        // And the Z axis in blue
+
+        osg::ref_ptr< osg::ShapeDrawable > zAxis = new osg::ShapeDrawable( axis );
+        zAxis->setColor( blue );
+        geode = new osg::Geode;
+        geode->addDrawable( zAxis.get( ) );
+        mT.makeTranslate( 0.0, 0.0, 100.0 );
+        //mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 0.0, 1.0, 0.0 ) );
+        mt = new osg::MatrixTransform;
+        mt->setMatrix( mT );
+        mt->addChild( geode.get( ) );
+        root->addChild( mt.get( ) );
+
+        return root.get( );
+}
+
+osg::MatrixTransform* makeDie( btDynamicsWorld* bw )
 {
     osg::MatrixTransform* root = new osg::MatrixTransform;
 	const std::string fileName( "dice.osg" );
@@ -61,27 +135,6 @@ makeDie( btDynamicsWorld* bw )
 
     return( root );
 }
-
-// initial steps to create bullet dynamics world
-// 100% bullet stuff
-btDynamicsWorld*
-initPhysics()
-{
-    btDefaultCollisionConfiguration * collisionConfiguration = new btDefaultCollisionConfiguration();
-    btCollisionDispatcher * dispatcher = new btCollisionDispatcher( collisionConfiguration );
-    btConstraintSolver * solver = new btSequentialImpulseConstraintSolver;
-
-    btVector3 worldAabbMin( -10000, -10000, -10000 );
-    btVector3 worldAabbMax( 10000, 10000, 10000 );
-    btBroadphaseInterface * inter = new btAxisSweep3( worldAabbMin, worldAabbMax, 1000 );
-
-    btDynamicsWorld * dynamicsWorld = new btDiscreteDynamicsWorld( dispatcher, inter, solver, collisionConfiguration );
-
-    dynamicsWorld->setGravity( btVector3( 0, 0, 9.8 ) );
-
-    return( dynamicsWorld );
-}
-
 
 /* \cond */
 class ShakeManipulator : public osgGA::GUIEventHandler
@@ -157,12 +210,8 @@ protected:
 };
 /* \endcond */
 
-
-
-
 // create a box
 // 100% osg stuff
-// can be simplified
 osg::Geode* osgBox( const osg::Vec3& center, const osg::Vec3& halfLengths )
 {
     osg::Vec3 l( halfLengths * 2. );
@@ -175,18 +224,64 @@ osg::Geode* osgBox( const osg::Vec3& center, const osg::Vec3& halfLengths )
     return( geode );
 }
 
+//================================================================================
 
-
-int
-main( int argc,
-      char ** argv )
+class OsgbDice: public EngineModule
 {
-    btDynamicsWorld* bulletWorld = initPhysics();
+public:
+	OsgbDice()
+	{
+		myOsg = new OsgModule();
+		ModuleServices::addModule(myOsg);
+		myWorld = initBtPhysicsWorld();
+	}
+
+	virtual btDynamicsWorld* initBtPhysicsWorld();
+
+	virtual void initialize();
+	virtual void update(const UpdateContext& context);
+	//virtual void handleEvent(const Event& evt) {}
+
+private:
+	btDynamicsWorld* myWorld;
+	Ref<OsgModule> myOsg;
+	Ref<SceneNode> mySceneNode;
+	Actor* myInteractor;
+	//osg::ref_ptr<osg::Light> myLight;
+	OsgSceneObject* myOso;
+	btRigidBody* myShakeBody;
+    osg::MatrixTransform* myShakeBox;
+	osgbDynamics::MotionState* myShakeMotion;
+};
+
+
+// initial steps to create bullet dynamics world
+// 100% bullet stuff
+btDynamicsWorld* OsgbDice::initBtPhysicsWorld()
+{
+    btDefaultCollisionConfiguration * collisionConfiguration = new btDefaultCollisionConfiguration();
+    btCollisionDispatcher * dispatcher = new btCollisionDispatcher( collisionConfiguration );
+    btConstraintSolver * solver = new btSequentialImpulseConstraintSolver;
+
+    btVector3 worldAabbMin( -100, -100, -100 );
+    btVector3 worldAabbMax( 100, 100, 100 );
+    btBroadphaseInterface * inter = new btAxisSweep3( worldAabbMin, worldAabbMax, 1000 );
+
+    btDynamicsWorld * dynamicsWorld = new btDiscreteDynamicsWorld( dispatcher, inter, solver, collisionConfiguration );
+
+    dynamicsWorld->setGravity( btVector3(0, 0, -9.8) );
+
+    return( dynamicsWorld );
+}
+
+void OsgbDice::initialize()
+{
     osg::Group* root = new osg::Group;
 
-    root->addChild( makeDie( bulletWorld ) );
-    root->addChild( makeDie( bulletWorld ) );
+    root->addChild( makeDie( myWorld ) );
+    root->addChild( makeDie( myWorld ) );
 
+	//root->addChild( createAxes().get() );
 
     /* BEGIN: Create environment boxes */
     float xDim( 10. );
@@ -194,76 +289,106 @@ main( int argc,
     float zDim( 6. );
     float thick( .1 );
 
-    osg::MatrixTransform* shakeBox = new osg::MatrixTransform;
-    btCompoundShape* cs = new btCompoundShape;
+    myShakeBox = new osg::MatrixTransform;
+    btCompoundShape* compoundShape = new btCompoundShape;
     { // floor -Z (far back of the shake cube)
         osg::Vec3 halfLengths( xDim*.5, yDim*.5, thick*.5 );
-        osg::Vec3 center( 0., 0., zDim*.5 );
-        shakeBox->addChild( osgBox( center, halfLengths ) );
+        osg::Vec3 center( 0., 0., -zDim*.5 );
+        myShakeBox->addChild( osgBox( center, halfLengths ) );
         btBoxShape* box = new btBoxShape( osgbCollision::asBtVector3( halfLengths ) );
         btTransform trans; trans.setIdentity();
         trans.setOrigin( osgbCollision::asBtVector3( center ) );
-        cs->addChildShape( trans, box );
+        compoundShape->addChildShape( trans, box );
     }
     { // top +Z (invisible, to allow user to see through; no OSG analogue
         osg::Vec3 halfLengths( xDim*.5, yDim*.5, thick*.5 );
-        osg::Vec3 center( 0., 0., -zDim*.5 );
-        //shakeBox->addChild( osgBox( center, halfLengths ) );
+        osg::Vec3 center( 0., 0., zDim*.5 );
+        //myShakeBox->addChild( osgBox( center, halfLengths ) );
         btBoxShape* box = new btBoxShape( osgbCollision::asBtVector3( halfLengths ) );
         btTransform trans; trans.setIdentity();
         trans.setOrigin( osgbCollision::asBtVector3( center ) );
-        cs->addChildShape( trans, box );
+        compoundShape->addChildShape( trans, box );
     }
     { // left -X
         osg::Vec3 halfLengths( thick*.5, yDim*.5, zDim*.5 );
         osg::Vec3 center( -xDim*.5, 0., 0. );
-        shakeBox->addChild( osgBox( center, halfLengths ) );
+        myShakeBox->addChild( osgBox( center, halfLengths ) );
         btBoxShape* box = new btBoxShape( osgbCollision::asBtVector3( halfLengths ) );
         btTransform trans; trans.setIdentity();
         trans.setOrigin( osgbCollision::asBtVector3( center ) );
-        cs->addChildShape( trans, box );
+        compoundShape->addChildShape( trans, box );
     }
     { // right +X
         osg::Vec3 halfLengths( thick*.5, yDim*.5, zDim*.5 );
         osg::Vec3 center( xDim*.5, 0., 0. );
-        shakeBox->addChild( osgBox( center, halfLengths ) );
+        myShakeBox->addChild( osgBox( center, halfLengths ) );
         btBoxShape* box = new btBoxShape( osgbCollision::asBtVector3( halfLengths ) );
         btTransform trans; trans.setIdentity();
         trans.setOrigin( osgbCollision::asBtVector3( center ) );
-        cs->addChildShape( trans, box );
+        compoundShape->addChildShape( trans, box );
     }
     { // bottom of window -Y
         osg::Vec3 halfLengths( xDim*.5, thick*.5, zDim*.5 );
         osg::Vec3 center( 0., -yDim*.5, 0. );
-        shakeBox->addChild( osgBox( center, halfLengths ) );
+        myShakeBox->addChild( osgBox( center, halfLengths ) );
         btBoxShape* box = new btBoxShape( osgbCollision::asBtVector3( halfLengths ) );
         btTransform trans; trans.setIdentity();
         trans.setOrigin( osgbCollision::asBtVector3( center ) );
-        cs->addChildShape( trans, box );
+        compoundShape->addChildShape( trans, box );
     }
     { // bottom of window -Y
         osg::Vec3 halfLengths( xDim*.5, thick*.5, zDim*.5 );
         osg::Vec3 center( 0., yDim*.5, 0. );
-        shakeBox->addChild( osgBox( center, halfLengths ) );
+        myShakeBox->addChild( osgBox( center, halfLengths ) );
         btBoxShape* box = new btBoxShape( osgbCollision::asBtVector3( halfLengths ) );
         btTransform trans; trans.setIdentity();
         trans.setOrigin( osgbCollision::asBtVector3( center ) );
-        cs->addChildShape( trans, box );
+        compoundShape->addChildShape( trans, box );
     }
     /* END: Create environment boxes */
 
-    osgbDynamics::MotionState * shakeMotion = new osgbDynamics::MotionState();
-    shakeMotion->setTransform( shakeBox );
+    myShakeMotion = new osgbDynamics::MotionState();
+    myShakeMotion->setTransform( myShakeBox );
     btScalar mass( 0.0 );
     btVector3 inertia( 0, 0, 0 );
-    btRigidBody::btRigidBodyConstructionInfo rb( mass, shakeMotion, cs, inertia );
-    btRigidBody* shakeBody = new btRigidBody( rb );
-    shakeBody->setCollisionFlags( shakeBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT );
-    shakeBody->setActivationState( DISABLE_DEACTIVATION );
-    bulletWorld->addRigidBody( shakeBody );
+    btRigidBody::btRigidBodyConstructionInfo rb( mass, myShakeMotion, compoundShape, inertia );
+    myShakeBody = new btRigidBody( rb );
+    myShakeBody->setCollisionFlags( myShakeBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT );
+    myShakeBody->setActivationState( DISABLE_DEACTIVATION );
+    myWorld->addRigidBody( myShakeBody );
 
-    root->addChild( shakeBox );
+    // Create an omegalib scene node and attach the osg node to it. This is used to interact with the 
+    // osg object through omegalib interactors.
+    myOso = new OsgSceneObject(myShakeBox);
+	root->addChild( myOso->getTransformedNode() );
+    mySceneNode = new SceneNode(getEngine());
+    mySceneNode->addComponent(myOso);
+    mySceneNode->setBoundingBoxVisible(true);
+    //mySceneNode->setBoundingBoxVisible(false);
+    getEngine()->getScene()->addChild(mySceneNode);
+	getEngine()->getDefaultCamera()->setPosition(0,-2,30);
 
+    // Set the interactor style used to manipulate meshes.
+    if(SystemManager::settingExists("config/interactor"))
+    {
+        Setting& sinteractor = SystemManager::settingLookup("config/interactor");
+        myInteractor = ToolkitUtils::createInteractor(sinteractor);
+        if(myInteractor != NULL)
+        {
+            ModuleServices::addModule(myInteractor);
+        }
+    }
+
+    if(myInteractor != NULL)
+    {
+        myInteractor->setSceneNode(mySceneNode);
+    }
+    //*/
+
+    // Set the osg node as the root node
+    myOsg->setRootNode(root);
+
+    /*/ create viewer (using osg funcdtions to view the scene and handle event, as in osgb)
     osgViewer::Viewer viewer;
     viewer.setUpViewInWindow( 150, 150, 400, 400 );
     viewer.setSceneData( root );
@@ -285,12 +410,28 @@ main( int argc,
         prevSimTime = currSimTime;
         viewer.frame();
     }
-
-    return( 0 );
+    //*/
 }
 
+void OsgbDice::update(const UpdateContext& context)
+{
+	osg::Matrix m = myOso->getTransformedNode()->getMatrix();
+	std::printf("(%lf, %lf, %lf)  ", m.getTrans().x(),m.getTrans().y(),m.getTrans().z());
+	std::printf("(%lf, %lf, %lf)\n", myShakeMotion->getTransform()->asMatrixTransform()->getMatrix().getTrans().x(),
+		myShakeMotion->getTransform()->asMatrixTransform()->getMatrix().getTrans().y(),
+		myShakeMotion->getTransform()->asMatrixTransform()->getMatrix().getTrans().z());
+	//myShakeMotion->setTransform( myShakeBox );
+	double elapsed = 1./60.;
+	myWorld->stepSimulation( elapsed, 4, elapsed/4. );
+	//prevSimTime = currSimTime;
+}
 
 /** \page diceexample The Mandatory Dice Example
 No physics-based project would be complete without a dice example. Use the
 left mouse button to chake the dice shaker.
 */
+int main(int argc, char** argv)
+{
+	Application<OsgbDice> app("osgbDice");
+    return omain(app, argc, argv);
+}

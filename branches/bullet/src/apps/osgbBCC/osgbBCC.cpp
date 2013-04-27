@@ -154,16 +154,18 @@ osg:: ref_ptr<osg::Node> createScene( btCollisionWorld* btcw ) {
         
         // Now to create red and pink Geodes, to hang on the MatrixTransforms
 
-        osg::ref_ptr< osg::Sphere > ball = new osg::Sphere( osg::Vec3f( 0.0, 0.0, 0.0 ), 10.0 );
 		//osg::Sphere* ball = new osg::Sphere( osg::Vec3f( 0.0, 0.0, 0.0 ), 10.0 );
-
-        osg::ref_ptr< osg::Geode > redGeode = new osg::Geode;
-		//osg::Geode* redGeode = new osg::Geode;
-        osg::ref_ptr< osg::ShapeDrawable > redBall = new osg::ShapeDrawable( ball );
+        //osg::Geode* redGeode = new osg::Geode;
 		//osg::ShapeDrawable* redBall = new osg::ShapeDrawable(ball); 
+		osg::ref_ptr< osg::Sphere > ball = new osg::Sphere( osg::Vec3f( 0.0, 0.0, 0.0 ), 10.0 );
+        osg::ref_ptr< osg::Geode > redGeode = new osg::Geode;
+        osg::ref_ptr< osg::ShapeDrawable > redBall = new osg::ShapeDrawable( ball.get() );
+		
 		redBall->setColor( osg::Vec4( 1.0, 0.0, 0.0, 1.0 ) );
 		redGeode->addDrawable( redBall );
         //redGeode->addDrawable( osgwTools::makeBox( osg::Vec3( 15, 15, 15) ) );
+
+
 
         osg::ref_ptr< osg::Geode > pinkGeode = new osg::Geode;
         osg::ref_ptr< osg::ShapeDrawable > pinkBall = new osg::ShapeDrawable( ball );

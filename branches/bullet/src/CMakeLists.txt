@@ -214,7 +214,7 @@ if(OMEGA_BUILD_OSG_LIB)
 		add_subdirectory(apps/osgbCollision)
 		add_subdirectory(apps/osgbBCC)
 		add_subdirectory(apps/osgbCollisionWithoutOmega)
-		add_subdirectory(apps/osgbBasicDemo)
+		#add_subdirectory(apps/osgbBasicDemo)
 		add_subdirectory(apps/osgbDice)
 	endif()
 	# Yin
