@@ -47,6 +47,12 @@ namespace omega {
 
 	private:
 		Event::Flags myNavigateButton;
+		//! When this button is pressed, the controller will not process any input or change the camera.
+		//! Useful to temporary map the same input buttons and axes to some different functionality.
+		Event::Flags myOverrideButton;
+		
+		bool myNavigating;
+		bool myOverride;
 
 		// Navigation stuff.
 		Vector3f mySpeed;
@@ -56,17 +62,16 @@ namespace omega {
 		
 		float myRotateSpeed;
 		//float myPitchMultiplier;
-		bool myFreeFly;
 		
-		float myPitch;	
+		//float myPitch;	
 		float myYaw;
-		float myRoll;	
+		//float myRoll;	
 		
-		Vector3f myStartPYR;
-		Vector3f myCurPYR;
+		//Vector3f myStartPYR;
+		//Vector3f myCurPYR;
 		
 		Vector3f myLastPointerPosition;
-		Vector3f myLastPointerDirection;
+		//Vector3f myLastPointerDirection;
 		Quaternion myLastPointerOrientation;
 		Quaternion myAxisCorrection;
 	};

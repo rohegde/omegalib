@@ -56,6 +56,8 @@ namespace omegaToolkit {
 
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& conext);
+		virtual void setup(const Setting& s);
+		virtual bool handleCommand(const String& cmd);
 
 		Event::Flags getMoveButtonFlag() { return myMoveButtonFlag; }
 		void setMoveButtonFlag(Event::Flags value) { myMoveButtonFlag = value; }
