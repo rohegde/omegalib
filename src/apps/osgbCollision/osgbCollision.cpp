@@ -25,7 +25,6 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include <osgUtil/Optimizer>
-#include <osgDB/ReadFile>
 #include <osg/PositionAttitudeTransform>
 #include <osg/MatrixTransform>
 #include <osg/Light>
@@ -50,6 +49,7 @@
 #include <osg/Geode>
 #include <osgwTools/Shapes.h>
 #include <osgwTools/Version.h>
+#include <osg/ShapeDrawable>
 
 #include <osg/io_utils>
 #include <iostream>
@@ -62,11 +62,150 @@ using namespace omegaOsg;
 String sModelName;
 float sModelSize = 1.0f;
 
+osg:: ref_ptr<osg::Node> createAxes( void ) {
+
+        // This method should be made more succinct by using arrays.
+
+        const osg::Vec4f red( 1.0, 0.0, 0.0, 1.0 ), green( 0.0, 1.0, 0.0, 1.0 ), blue ( 0.0, 0.0, 1.0, 1.0 );
+        osg::Matrix mR, mT;
+
+        osg::ref_ptr< osg::Group > root = new osg::Group;
+        osg::ref_ptr< osg::MatrixTransform > mt = NULL;
+        osg::ref_ptr< osg::Geode > geode = NULL;
+
+        osg::ref_ptr< osg::Cylinder > axis = new osg::Cylinder( osg::Vec3f( 0.0, 0.0, 0.0 ), 2.0, 500.0 );
+        osg::ref_ptr< osg::Cone > arrow = new osg::Cone( osg::Vec3f( 0.0, 0.0, 0.0 ), 10.0, 20.0 );
+
+        // Draw the X axis in Red
+
+        osg::ref_ptr< osg::ShapeDrawable > xAxis = new osg::ShapeDrawable( axis );
+        xAxis->setColor( red );
+        geode = new osg::Geode;
+        geode->addDrawable( xAxis.get( ) );
+        mT.makeTranslate( 250.0, 0.0, 0.0 );
+        mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 0.0, 1.0, 0.0 ) );
+        mt = new osg::MatrixTransform;
+        mt->setMatrix( mR * mT );
+        mt->addChild( geode.get( ) );
+        root->addChild( mt.get( ) );
+
+        osg::ref_ptr< osg::ShapeDrawable > xArrow= new osg::ShapeDrawable( arrow );
+        xArrow->setColor( red );
+        geode = new osg::Geode;
+        geode->addDrawable( xArrow.get( ) );
+        mT.makeTranslate( 500.0, 0.0, 0.0 );
+        mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 0.0, 1.0, 0.0 ) );
+        mt = new osg::MatrixTransform;
+        mt->setMatrix( mR * mT );
+        root->addChild( mt.get( ) );
+        mt->addChild( geode.get( ) );
+
+        // Then the Y axis in green
+        osg::ref_ptr< osg::ShapeDrawable > yAxis = new osg::ShapeDrawable( axis );
+        yAxis->setColor( green );
+        geode = new osg::Geode;
+        geode->addDrawable( yAxis.get( ) );
+        mT.makeTranslate( 0.0, 250.0, 0.0 );
+        mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 1.0, 0.0, 0.0 ) );
+        mt = new osg::MatrixTransform;
+        mt->setMatrix( mR * mT );
+        mt->addChild( geode.get( ) );
+        root->addChild( mt.get( ) );
+
+        osg::ref_ptr< osg::ShapeDrawable > yArrow= new osg::ShapeDrawable( arrow );
+        yArrow->setColor( green );
+        geode = new osg::Geode;
+        geode->addDrawable( yArrow.get( ) );
+        mT.makeTranslate( 0.0, 500.0, 0.0 );
+        mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( -1.0, 0.0, 0.0 ) );
+        mt = new osg::MatrixTransform;
+        mt->setMatrix( mR * mT );
+        root->addChild( mt.get( ) );
+        mt->addChild( geode.get( ) );
+
+        // And the Z axis in blue
+
+        osg::ref_ptr< osg::ShapeDrawable > zAxis = new osg::ShapeDrawable( axis );
+        zAxis->setColor( blue );
+        geode = new osg::Geode;
+        geode->addDrawable( zAxis.get( ) );
+        mT.makeTranslate( 0.0, 0.0, 250.0 );
+        //mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 0.0, 1.0, 0.0 ) );
+        mt = new osg::MatrixTransform;
+        mt->setMatrix( mT );
+        mt->addChild( geode.get( ) );
+        root->addChild( mt.get( ) );
+
+        osg::ref_ptr< osg::ShapeDrawable > zArrow= new osg::ShapeDrawable( arrow );
+        zArrow->setColor( blue );
+        geode = new osg::Geode;
+        geode->addDrawable( zArrow.get( ) );
+        mT.makeTranslate( 0.0, 0.0, 500.0 );
+        //mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 0.0, 1.0, 0.0 ) );
+        mt = new osg::MatrixTransform;
+        mt->setMatrix(mT );
+        root->addChild( mt.get( ) );
+        mt->addChild( geode.get( ) );
+
+        return root.get( );
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OsgViewer: public EngineModule
+class MoveManipulator : public osgGA::GUIEventHandler
 {
 public:
-	OsgViewer()
+    MoveManipulator() : _co( NULL ), _mt( NULL ) {}
+    MoveManipulator( const MoveManipulator& mm, osg::CopyOp copyop ) : _co( mm._co ), _mt( mm._mt ) {}
+    ~MoveManipulator() {}
+#if( OSGWORKS_OSG_VERSION > 20800 )
+    META_Object(osgBulletExample,MoveManipulator);
+#endif
+
+    virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa )
+    {
+        if( ( ea.getModKeyMask() & osgGA::GUIEventAdapter::MODKEY_CTRL ) == 0 )
+        {
+            return( false );
+        }
+        else if( ea.getEventType() == osgGA::GUIEventAdapter::PUSH )
+        {
+            _lastX = ea.getXnormalized();
+            _lastY = ea.getYnormalized();
+            return( true );
+        }
+        else if( ea.getEventType() == osgGA::GUIEventAdapter::DRAG )
+        {
+            double deltaX = ea.getXnormalized() - _lastX;
+            double deltaY = ea.getYnormalized() - _lastY;
+            _lastX = ea.getXnormalized();
+            _lastY = ea.getYnormalized();
+
+            deltaX *= 6.;
+            deltaY *= 6.;
+            osg::Matrix trans = osgbCollision::asOsgMatrix( _co->getWorldTransform() );
+            trans = trans * osg::Matrix::translate( deltaX, 0., deltaY );
+            _mt->setMatrix( trans );
+            _co->setWorldTransform( osgbCollision::asBtTransform( trans ) );
+            return( true );
+        }
+        return( false );
+    }
+
+    void setCollisionObject( btCollisionObject* co ) { _co = co; }
+    void setMatrixTransform( osg::MatrixTransform* mt ) { _mt = mt; }
+
+protected:
+    btCollisionObject* _co;
+    osg::MatrixTransform* _mt;
+    double _lastX, _lastY;
+};
+/* \endcond */
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Collision: public EngineModule
+{
+public:
+	Collision()
 	{
 		myOsg = new OsgModule();
 		ModuleServices::addModule(myOsg);
@@ -76,25 +215,30 @@ public:
 	virtual btCollisionWorld* initCollision();
 
 	virtual void initialize();
-	//virtual void update(const UpdateContext& context);
+	virtual void update(const UpdateContext& context);
 	//virtual void handleEvent(const Event& evt) {}
 
 private:
 	btCollisionWorld* myColWorld;
 	Ref<OsgModule> myOsg;
 	Ref<SceneNode> mySceneNode;
-	//Actor* myInteractor;
+	osgViewer::Viewer myViewer; // osgb viewer
+	MoveManipulator * myMoveManipulator; // osgb manipulator
+	Actor* myInteractor; // omegaLib interactor
 	//osg::ref_ptr<osg::Light> myLight;
+	bool myLastColState;
+	btCollisionObject* myColObject;
+	OsgSceneObject* myOso;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-btCollisionWorld* OsgViewer::initCollision()
+btCollisionWorld* Collision::initCollision()
 {
     btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
     btCollisionDispatcher* dispatcher = new btCollisionDispatcher( collisionConfiguration );
 
-    btVector3 worldAabbMin( -10, -10, -10 );
-    btVector3 worldAabbMax( 10, 10, 10 );
+    btVector3 worldAabbMin( -100, -100, -100 );
+    btVector3 worldAabbMax( 100, 100, 100 );
     btBroadphaseInterface* inter = new btAxisSweep3( worldAabbMin, worldAabbMax, 1000 );
 
     btCollisionWorld* collisionWorld = new btCollisionWorld( dispatcher, inter, collisionConfiguration );
@@ -103,58 +247,41 @@ btCollisionWorld* OsgViewer::initCollision()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgViewer::initialize()
+void Collision::initialize()
 {
 	// The node containing the scene
-	//osg::ref_ptr<osg::Node> node = NULL;
-
-	// The root node (we attach lights and other global state properties here)
-	// Set the root to be a lightsource to attach a light to it to illuminate the scene
-	//osg::Group* root = new osg::Group();
 	osg::ref_ptr< osg::Group > root = new osg::Group();
 
-	// Load osg object
-	//if(SystemManager::settingExists("config/scene"))
-	//{
-	//	Setting& sscene = SystemManager::settingLookup("config/scene");
-	//	sModelName = Config::getStringValue("filename", sscene, sModelName);
-	//	sModelSize = Config::getFloatValue("size", sscene, sModelSize);
-	//}
+	//root->addChild( createAxes().get() );
 
-	// 1st node, static
+	// create 1st box, static
 	osg::ref_ptr<osg::Geode> geode = new osg::Geode;
 	geode->addDrawable( osgwTools::makeBox( osg::Vec3( 1, 1, 1) ) );
 	root->addChild( geode.get() );
 
-	if (geode == NULL) 
-	{
-		owarn("!Failed to load model!");
-		return;
-	}
+	// make it a bullet object
+	myColObject = new btCollisionObject();
+	myColObject->setCollisionShape( osgbCollision::btBoxCollisionShapeFromOSG( geode ) ); // <-- here a Bullet object's shape is defined as a leaf node of OSG
+    myColObject->setCollisionFlags( btCollisionObject::CF_STATIC_OBJECT );
+	myColObject->setWorldTransform( osgbCollision::asBtTransform( osg::Matrix::translate(0,0,0) ) );
+    myColWorld->addCollisionObject( myColObject );
+
+	// create 2nd box, draggable
+	geode = new osg::Geode;
+    geode->addDrawable( osgwTools::makeBox( osg::Vec3( 1.5, 1.5, 1.5 ) ) );
+    //osg::Matrix transMatrix = osg::Matrix::translate( 3., 0., 0. );
+	//osg::ref_ptr<osg::MatrixTransform> mt = new osg::MatrixTransform( transMatrix );
+	//mt->addChild( geode.get() );
 
 	// make it a bullet object
-	btCollisionObject* btBoxObject = new btCollisionObject();
-	btBoxObject->setCollisionShape( osgbCollision::btBoxCollisionShapeFromOSG( geode ) ); // <-- here a Bullet object's shape is defined as a leaf node of OSG
-    btBoxObject->setCollisionFlags( btCollisionObject::CF_STATIC_OBJECT );
-    myColWorld->addCollisionObject( btBoxObject );
-
-	// 2nd node
-	// uncomment it after this app can compile successfully
-	geode = new osg::Geode;
-    geode->addDrawable( osgwTools::makeBox( osg::Vec3( 1, 1, 1 ) ) );
-    osg::Matrix transMatrix = osg::Matrix::translate( 3., 0., 0. );
-	osg::ref_ptr<osg::MatrixTransform> mt = new osg::MatrixTransform( transMatrix );
-	mt->addChild( geode.get() );
-    root->addChild( mt.get() );
-
-	btBoxObject = new btCollisionObject();
-    btBoxObject->setCollisionShape( osgbCollision::btBoxCollisionShapeFromOSG( geode ) ); // <-- here a Bullet object's shape is defined as a leaf node of OSG
-    btBoxObject->setCollisionFlags( btCollisionObject::CF_KINEMATIC_OBJECT );
-    btBoxObject->setWorldTransform( osgbCollision::asBtTransform( transMatrix ) );
-    myColWorld->addCollisionObject( btBoxObject );
+	myColObject = new btCollisionObject();
+    myColObject->setCollisionShape( osgbCollision::btBoxCollisionShapeFromOSG( geode ) );
+    myColObject->setCollisionFlags( btCollisionObject::CF_KINEMATIC_OBJECT );
+    //myColObject->setWorldTransform( osgbCollision::asBtTransform( transMatrix ) );
+    myColWorld->addCollisionObject( myColObject );
 	// following two lines are why this object is draggable
-    //mm->setCollisionObject( btBoxObject );
-    //mm->setMatrixTransform( mt );
+    //myMoveManipulator->setCollisionObject( btBoxObject );
+    //myMoveManipulator->setMatrixTransform( mt );
 	//*/ //end //
 
 	//Optimize scenegraph
@@ -163,33 +290,45 @@ void OsgViewer::initialize()
 
 	// Create an omegalib scene node and attach the osg node to it. This is used to interact with the 
 	// osg object through omegalib interactors.
-	OsgSceneObject* oso = new OsgSceneObject(root);
+	myOso = new OsgSceneObject(geode.get());
+	root->addChild( myOso->getTransformedNode() );
 	mySceneNode = new SceneNode(getEngine());
-	mySceneNode->addComponent(oso);
+	mySceneNode->addComponent(myOso);
 	mySceneNode->setBoundingBoxVisible(true);
+	mySceneNode->setPosition(3,0,0);
 	//mySceneNode->setBoundingBoxVisible(false);
 	getEngine()->getScene()->addChild(mySceneNode);
-	getEngine()->getDefaultCamera()->focusOn(getEngine()->getScene());
+	//getEngine()->getDefaultCamera()->focusOn(getEngine()->getScene());
+	getEngine()->getDefaultCamera()->setPosition(0,-2,30);
 
     // Set the interactor style used to manipulate meshes.
-	//if(SystemManager::settingExists("config/interactor"))
-	//{
-	//	Setting& sinteractor = SystemManager::settingLookup("config/interactor");
-	//	myInteractor = ToolkitUtils::createInteractor(sinteractor);
-	//	if(myInteractor != NULL)
-	//	{
-	//		ModuleServices::addModule(myInteractor);
-	//	}
-	//}
+	if(SystemManager::settingExists("config/interactor"))
+	{
+		Setting& sinteractor = SystemManager::settingLookup("config/interactor");
+		myInteractor = ToolkitUtils::createInteractor(sinteractor);
+		if(myInteractor != NULL)
+		{
+			ModuleServices::addModule(myInteractor);
+		}
+	}
 
-	//if(myInteractor != NULL)
-	//{
-	//	myInteractor->setSceneNode(mySceneNode);
-	//}
+	if(myInteractor != NULL)
+	{
+		myInteractor->setSceneNode(mySceneNode);
+	}
+	//*/
 
 	// Set the osg node as the root node
-	myOsg->setRootNode(oso->getTransformedNode());
+	myOsg->setRootNode(root);
+	//*/
 
+	/*/ create viewer (using osg funcdtions to view the scene and handle event, as in osgb)
+    myViewer.setUpViewInWindow( 10, 30, 800, 600 );
+    myViewer.setCameraManipulator( new osgGA::TrackballManipulator() );
+    myViewer.addEventHandler( myMoveManipulator );
+    myViewer.setSceneData( root.get() );
+	//*/
+	
 	/*/ Setup shading
 	myLight = new osg::Light;
     myLight->setLightNum(0);
@@ -205,17 +344,69 @@ void OsgViewer::initialize()
 	//ls->setStateSetModes(*root->getOrCreateStateSet(), osg::StateAttribute::ON);
 
 	//root->addChild(ls);
+
+	myLastColState = false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//void OsgViewer::update(const UpdateContext& context) 
-//{
-//}
+void detectCollision( bool& lastColState, btCollisionWorld* cw )
+{
+    unsigned int numManifolds = cw->getDispatcher()->getNumManifolds();
+    if( ( numManifolds == 0 ) && (lastColState == true ) )
+    {
+        osg::notify( osg::ALWAYS ) << "No collision." << std::endl;
+        lastColState = false;
+    }
+    else {
+        for( unsigned int i = 0; i < numManifolds; i++ )
+        {
+            btPersistentManifold* contactManifold = cw->getDispatcher()->getManifoldByIndexInternal(i);
+            unsigned int numContacts = contactManifold->getNumContacts();
+            for( unsigned int j=0; j<numContacts; j++ )
+            {
+                btManifoldPoint& pt = contactManifold->getContactPoint( j );
+                if( ( pt.getDistance() <= 0.f ) && ( lastColState == false ) )
+                {
+                    // grab these values for the contact normal arrows:
+                    osg::Vec3 pos = osgbCollision::asOsgVec3( pt.getPositionWorldOnA() ); // position of the collision on object A
+                    osg::Vec3 normal = osgbCollision::asOsgVec3( pt.m_normalWorldOnB ); // returns a unit vector
+                    float pen = pt.getDistance(); //penetration depth
+
+                    osg::Quat q;
+                    q.makeRotate( osg::Vec3( 0, 0, 1 ), normal );
+
+                    osg::notify( osg::ALWAYS ) << "Collision detected." << std::endl;
+
+                    osg::notify( osg::ALWAYS ) << "\tPosition: " << pos << std::endl;
+                    osg::notify( osg::ALWAYS ) << "\tNormal: " << normal << std::endl;
+                    osg::notify( osg::ALWAYS ) << "\tPenetration depth: " << pen << std::endl;
+                    //osg::notify( osg::ALWAYS ) << q.w() <<","<< q.x() <<","<< q.y() <<","<< q.z() << std::endl;
+                    lastColState = true;
+                }
+                else if( ( pt.getDistance() > 0.f ) && ( lastColState == true ) )
+                {
+                    osg::notify( osg::ALWAYS ) << "No collision." << std::endl;
+                    lastColState = false;
+                }
+            }
+        }
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Collision::update(const UpdateContext& context)
+{
+	osg::Matrix m = myOso->getTransformedNode()->getMatrix();
+	//std::printf("(%lf, %lf, %lf)\n", m.getTrans().x(),m.getTrans().y(),m.getTrans().z());
+	myColObject->setWorldTransform( osgbCollision::asBtTransform( m ) );
+	myColWorld->performDiscreteCollisionDetection();
+    detectCollision( myLastColState, myColWorld );
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Application entry point
 int main(int argc, char** argv)
 {
-	Application<OsgViewer> app("osgBulletTest");
+	Application<Collision> app("osgBulletTest");
     return omain(app, argc, argv);
 }
