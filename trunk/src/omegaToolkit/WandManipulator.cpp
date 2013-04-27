@@ -44,19 +44,11 @@ void WandManipulator::handleEvent(const Event& evt)
 		//myPointerPosition = Vector2f(evt.getPosition().x(), evt.getPosition().y());
 		myPointerEventType = evt.getType();
 		
-		if(evt.isFlagSet(myRotateButtonFlag)) 
-		{
-			myButton2Pressed = true;
-			omsg("ROTATE BUTTON PRESSED");
-		}
+		if(evt.isFlagSet(myRotateButtonFlag)) myButton2Pressed = true;
 		else myButton2Pressed = false;
 
-		if(evt.isFlagSet(myMoveButtonFlag))
-		{		
-			myButton1Pressed = true;
-			omsg("MOVE BUTTON PRESSED");
-		}
-		else myButton1Pressed = true;
+		if(evt.isFlagSet(myMoveButtonFlag))	myButton1Pressed = true;
+		else myButton1Pressed = false;
 		
 		SystemManager::instance()->getDisplaySystem()->getViewRayFromEvent(evt, myPointerRay);
 
