@@ -77,7 +77,9 @@ namespace cyclops {
 		void reset();
 
 	private:
-		Ref<SceneManager> mySceneManager;
+		// No ref to avoid circular dependency.
+		SceneManager* mySceneManager;
+
 		Ref<osg::StateSet> myStateSet;
 		Ref<osg::Material> myMaterial;
 		Ref<osg::Uniform> myShininess;

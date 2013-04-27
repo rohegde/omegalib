@@ -211,8 +211,8 @@ bool OmegaViewer::handleCommand(const String& cmd)
 	else if(args[0] == "u")
 	{
 		// u: unload all running applications.
-		interp->queueCommand(myAppStartFunctionCall, true);
 		interp->clean();
+		interp->queueCommand(myAppStartFunctionCall, true);
 		return true;
 	}
 	else if(args[0] == "lo")
@@ -226,7 +226,7 @@ bool OmegaViewer::handleCommand(const String& cmd)
 		// ln: list nodes
 
 		// ls is really just a shortcut for printChildren(getEngine().getScene(), <tree depth>)
-		interp->eval("printChildren(getEngine().getScene(), 10");
+		interp->eval("printChildren(getScene(), 10)");
 		return true;
 	}
 	else if(args[0] == "c")
