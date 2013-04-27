@@ -100,7 +100,7 @@ namespace cyclops {
 		bool updateOsgLight(int lightId, osg::Group* rootNode);
 
 	private:
-		Ref<SceneManager> mySceneManager;
+		SceneManager* mySceneManager;
 
 		Color myColor;
 		Color myAmbient;

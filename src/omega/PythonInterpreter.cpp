@@ -296,12 +296,18 @@ void PythonInterpreter::eval(const String& cscript, const char* format, ...)
 			// Remove colon.
 			String sscript = script.substr(1, script.length() - 1);
 			handled = ModuleServices::handleCommand(sscript);
+
+			// NOTE: the python interpreter is not an engine module, so it does not have 
+			// a handleCommand function per se... we still implement some quick commands here.
 			// if command is a ':post' we still execute it.
 			if(StringUtils::startsWith(sscript, "post"))
 			{
 				String cmd = sscript.substr(5);
 				eval(cmd);
 			}
+			// Enable / disable debug mode.
+			else if(sscript == "debug on") myDebugShell = true;
+			else if(sscript == "debug off") myDebugShell = false;
 		}
 		else		
 		{
@@ -383,13 +389,19 @@ void PythonInterpreter::runFile(const String& filename)
 void PythonInterpreter::clean()
 {
 	// destroy all global variables
-	eval("for uniquevar in [var for var in globals().copy() if var[0] != \"_\" and var != 'clearall']: del globals()[uniquevar]");
+	if(myDebugShell)
+	{
+		// Use this line instead of the previous to get debugging info on variable deletion. Useful in 
+		// case of crashes to know which variable is currently being deleted.
+		eval("for uniquevar in [var for var in globals().copy() if var[0] != \"_\" and var != 'clearall']: print(\"deleting \" + uniquevar); del globals()[uniquevar]");
+	}
+	else
+	{
+		eval("for uniquevar in [var for var in globals().copy() if var[0] != \"_\" and var != 'clearall']: del globals()[uniquevar]");
+	}
+
 	// Import omega module by default
 	eval("from omega import *");
-
-	// Use this line instead of the previous to get debugging info on variable deletion. Useful in 
-	// case of crashes to know which variable is currently being deleted.
-	//eval("for uniquevar in [var for var in globals().copy() if var[0] != \"_\" and var != 'clearall']: print(\"deleting \" + uniquevar); del globals()[uniquevar]");
 
 	// unregister callbacks
 	unregisterAllCallbacks();

@@ -252,6 +252,7 @@ namespace cyclops {
 
 		// Wand
 		Ref<omega::TrackedObject> myWandTracker;
+
 		Ref<CylinderShape> myWandEntity;
 
 		// Context menu stuff.

@@ -1055,6 +1055,7 @@ void SceneManager::displayWand(uint wandId, uint trackableId)
 	if(myWandEntity == NULL)
 	{
 		myWandEntity = new CylinderShape(this, 1, 1, 0.1);
+		myWandEntity->setName("Wand");
 		setWandSize(0.01f, 2);
 		myWandEntity->setEffect("colored -d white");
 	}

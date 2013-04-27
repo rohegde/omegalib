@@ -182,7 +182,8 @@ namespace omegaToolkit { namespace ui {
 		void onPushMenuStack();
 
 	private:
-		Ref<MenuManager> myManager;
+		MenuManager* myManager;
+
 		Ref<MenuItem> myRootItem;
 		String myName;
 

@@ -112,6 +112,7 @@ void Engine::initialize()
 	myDrawPointers = syscfg->getBoolValue("config/drawPointers", myDrawPointers);
 
     myDefaultCamera = new Camera(this);
+	myDefaultCamera->setName("DefaultCamera");
 	// By default attach camera to scene root.
 	myScene->addChild(myDefaultCamera);
 
@@ -220,6 +221,7 @@ void Engine::reset()
 
 	// Remove all children from the scene root.
 	myScene->removeAllChildren();
+	myDefaultCamera->removeAllChildren();
 	// Re-attach the default camera to the scene root.
 	myScene->addChild(myDefaultCamera);
 
