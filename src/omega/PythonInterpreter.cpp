@@ -395,6 +395,11 @@ void PythonInterpreter::clean()
 	unregisterAllCallbacks();
 
 	Engine::instance()->reset();
+
+	// Clear all queued commands.
+	//myInteractiveCommandLock.lock();
+	//myCommandQueue.clear();
+	//myInteractiveCommandLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -460,11 +465,13 @@ void PythonInterpreter::update(const UpdateContext& context)
 			// Purge commands from list
 			if(!qc->needsExecute && !qc->needsSend) cmdsToRemove.push_back(qc);
 		}
+		myInteractiveCommandLock.lock();
 		foreach(QueuedCommand* qc, cmdsToRemove)
 		{
 			myCommandQueue.remove(qc);
 			delete qc;
 		}
+		myInteractiveCommandLock.unlock();
 	}
 	
 	PyObject *arglist;
