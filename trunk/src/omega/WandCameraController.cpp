@@ -31,26 +31,27 @@ using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 WandCameraController::WandCameraController():
-	myRotateSpeed(0.01f),
+	myRotateSpeed(0.02f),
 	myYaw(0),
-	myPitch(0),
 	myLastPointerPosition(0, 0, 0),
 	mySpeed(0, 0, 0),
-	myFreeFly(false),
+	myNavigating(false),
+	myOverride(false),
 	myFreeFlyEnabled(false),
 	myTorque(Quaternion::Identity()),
-	myStartPYR(Vector3f::Zero()),
-	myCurPYR(Vector3f::Zero()),
 	myNavigateButton(Event::Button6)
 {
-	myAxisCorrection = Quaternion::Identity(); //AngleAxis(-Math::Pi / 2, Vector3f::UnitY());
+	myAxisCorrection = Quaternion::Identity(); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void WandCameraController::setup(Setting& s)
 {
-	String navbtn = Config::getStringValue("navigationButton", s, "Button6");
+	String navbtn = Config::getStringValue("navigationButton", s, "Button7");
 	myNavigateButton = Event::parseButtonName(navbtn);
+	
+	String ovrbtn = Config::getStringValue("overrideButton", s, "Button6");
+	myOverrideButton = Event::parseButtonName(ovrbtn);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,10 +78,16 @@ bool WandCameraController::handleCommand(const String& cmd)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void WandCameraController::handleEvent(const Event& evt)
 {
-	//if(!isEnabled() || evt.isProcessed()) return;
 	if(!isEnabled()) return;
 	if(evt.getServiceType() == Service::Wand)
 	{
+		if(evt.isFlagSet(myOverrideButton))
+		{
+			myOverride = true;
+			return;
+		}
+		else myOverride = false;
+		
 		float x = evt.getExtraDataFloat(0);
 		float y = evt.getExtraDataFloat(1);
 		
@@ -89,86 +96,52 @@ void WandCameraController::handleEvent(const Event& evt)
 		if(y < 0.1f && y > -0.1f) y = 0;
 		
 		myYaw = -x * myRotateSpeed;
-
-		mySpeed = evt.getOrientation() * Vector3f(0, 0, y / 2);
+		mySpeed = evt.getOrientation() * Vector3f(0, 0, y / 2) * CameraController::mySpeed;
 		
-		//myAxisCorrection = getCamera()->getOrientation();
-		
-		// Button6 = Left Analog pressed.
 		if(evt.isFlagSet(myNavigateButton)) 
 		{
-			if(myFreeFly == false)
+			if(myNavigating == false)
 			{
 				myLastPointerPosition = evt.getPosition();
-				
 				myAxisCorrection = getCamera()->getOrientation();
-				
-				
-				
 				Quaternion o = myAxisCorrection * evt.getOrientation();
-				
-				
 				myLastPointerOrientation = o.inverse() * getCamera()->getOrientation();
-				
-				
-				myLastPointerDirection = evt.getOrientation() * -Vector3f::UnitZ();
-				//myStartPYR = Math::quaternionToEuler(evt.getOrientation());
 			}
-			myFreeFly = true;
+			myNavigating = true;
 		}
 		else
 		{
-			myFreeFly = false;
-			//myTorque = Quaternion::Identity();
+			myNavigating = false;
 		}
 		
-		
-		
-		if(myFreeFly)
+		if(myNavigating)
 		{
-			Vector3f dv = (evt.getPosition() - myLastPointerPosition) * 4 * CameraController::mySpeed;
-			//float speedMul = 1 + dv.norm();
-			//ofmsg("Speedmul %1%", %speedMul);
+			Vector3f dv = (evt.getPosition() - myLastPointerPosition) * CameraController::mySpeed * 4;
 			mySpeed += dv;
-			//Quaternion o = myAxisCorrection * evt.getOrientation();
-			//myCurPYR = Math::quaternionToEuler(evt.getOrientation());
 
 			if(myFreeFlyEnabled)
 			{
 				Quaternion o = myAxisCorrection * evt.getOrientation();
 				myTorque = o * myLastPointerOrientation;
 			}
-			// myYaw = newO.yaw();
-			// myPitch = newO.pitch();
-			// myRoll = newO.roll();
-			
-			// ofmsg("$%1% %2% %3%", %myPitch %myYaw %myRoll);
-			//myTorque = myLastPointerOrientation * newO;
-			//myTorque = myTorque.slerp(1.0f - myRotateSpeed, Quaternion::Identity());
 		}
 	}
 }
 ///////////////////////////////////////////////////////////////////////
 void WandCameraController::update(const UpdateContext& context)
 {
-	if(!isEnabled()) return;
+	if(!isEnabled() || myOverride) return;
 	Camera* c = getCamera();
 	myTorque = c->getOrientation().slerp(context.dt * 0.2f, myTorque) * AngleAxis(myYaw, Vector3f::UnitY());
 	
 	if(c != NULL)
 	{
 		c->translate(mySpeed * context.dt, Node::TransformLocal);
-		//c->rotate(myTorque, Node::TransformWorld);
 		c->setOrientation(myTorque);
-		
 	}
 	
-	//Quaternion o = getCamera()->getOrientation();
-	
-	//getCamera()->translate(mySpeed * context.dt, Node::TransformLocal);
-	//getCamera()->rotate(myTorque.slerp(context.dt, Quaternion::Identity()), Node::TransformLocal);
-	
-	mySpeed -= mySpeed * context.dt * 10;
-	//myTorque = myTorque.slerp(0.5f, Quaternion::Identity());
+	// Perform speed damping only if we run at least 10fps
+	if(context.dt < 0.1f) mySpeed -= mySpeed * context.dt * 5;
+	else mySpeed = Vector3f::Zero();
 }
 

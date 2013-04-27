@@ -70,6 +70,7 @@ Actor* ToolkitUtils::createInteractor(const Setting& s)
     else if(interactorStyle == "wand")
     {
         WandManipulator* interactor = new WandManipulator();
+		interactor->setup(s);
         return interactor;
     }
     else if(interactorStyle == "twohands")

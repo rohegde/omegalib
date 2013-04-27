@@ -46,47 +46,49 @@ void WandManipulator::handleEvent(const Event& evt)
 		
 		if(evt.isFlagSet(myRotateButtonFlag)) 
 		{
-				//omsg("BUNGA");
 			myButton2Pressed = true;
+			omsg("ROTATE BUTTON PRESSED");
 		}
 		else myButton2Pressed = false;
+
+		if(evt.isFlagSet(myMoveButtonFlag))
+		{		
+			myButton1Pressed = true;
+			omsg("MOVE BUTTON PRESSED");
+		}
+		else myButton1Pressed = true;
 		
 		SystemManager::instance()->getDisplaySystem()->getViewRayFromEvent(evt, myPointerRay);
 
 		if(evt.getExtraDataItems() >= 2 && evt.getExtraDataType() == Event::ExtraDataFloatArray)
 		{
-			myXAxis = evt.getExtraDataFloat(0);
-			myYAxis = evt.getExtraDataFloat(1);
+			float x = evt.getExtraDataFloat(0);
+			float y = evt.getExtraDataFloat(1);
+			
+			// Thresholds
+			if(x < 0.1f && x > -0.1f) x = 0;
+			if(y < 0.1f && y > -0.1f) y = 0;
+			
+			myXAxis = x;
+			myYAxis = y;
 		}
 		
-		// if axis 4 is available, use it as button 1
-		if(evt.getExtraDataItems() >= 4 && evt.getExtraDataType() == Event::ExtraDataFloatArray)
-		{
-			if(evt.getExtraDataFloat(4) > 0.5f) 
-			{	
-				if(myButton1Pressed == false)
-				{
-					myPointerEventType = Event::Down;
-				}
-				myButton1Pressed = true;
-			}
-			else 
-			{
-				if(myButton1Pressed == true)
-				{
-					myPointerEventType = Event::Up;
-				}
-				myButton1Pressed = false;
-			}
-		}
-		else
-		{
-			// If axis 4 is not available, handle button 1 as a normal button
-			if(evt.isFlagSet(myMoveButtonFlag)) myButton1Pressed = true;
-			else myButton1Pressed = true;
-		}
 		myWandOrientation = evt.getOrientation();
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void WandManipulator::setup(const Setting& s)
+{
+	String movbtn = Config::getStringValue("moveButton", s, "Button5");
+	myMoveButtonFlag = Event::parseButtonName(movbtn);
+	String rotbtn = Config::getStringValue("rotateButton", s, "Button6");
+	myRotateButtonFlag = Event::parseButtonName(rotbtn);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool WandManipulator::handleCommand(const String& cmd)
+{
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,30 +97,29 @@ void WandManipulator::update(const UpdateContext& context)
 	// Exit immediately if we received no pointer event or if there is no node attached to this
 	// interactor
 	if(!myPointerEventReceived || myNode == NULL || !myNode->isVisible()) return;
-	if(myPointerEventType == Event::Down)
+	if(myPointerEventType == Event::Down && (myButton1Pressed || myButton2Pressed))
 	{
 		Vector3f handlePos;
+		myStartWandOrientationInv = myWandOrientation.inverse();
+		myStartOrientation = myWandOrientation.inverse() * myNode->getOrientation();
 		if(myNode->hit(myPointerRay, &handlePos, SceneNode::HitBest))
 		{
 			myStartBSphere = myNode->getBoundingSphere();
-			myStartWandOrientationInv = myWandOrientation.inverse();
-			myStartOrientation = myWandOrientation.inverse() * myNode->getOrientation();
 			//myStartRayDirection = myPointerRay.getDirection();
 			myHandlePosition = (handlePos - myNode->getPosition()); 
 			myHandleDistance = (handlePos - myPointerRay.getOrigin()).norm();
 			myNodeActive = true;
 			
-			//omsg("HITTTTTTTTTTTTTTTTTTTTTTTTT");
-			
-			//ofmsg("handlepos %1% myHandlePosition %2%", %handlePos %myHandlePosition);
-			//ofmsg("Ray origin %1% Direction %2% Handle Distance: %3%", %myPointerRay.getOrigin() %myPointerRay.getDirection() %myHandleDistance);
+			ofmsg("handlepos %1% myHandlePosition %2%", %handlePos %myHandlePosition);
+			ofmsg("Ray origin %1% Direction %2% Handle Distance: %3%", %myPointerRay.getOrigin() %myPointerRay.getDirection() %myHandleDistance);
 		}
 	}
 	else if(myPointerEventType == Event::Up)
 	{
 		myNodeActive = false;
 	}
-	else if(myPointerEventType == Event::Update)
+	
+	if(myPointerEventType == Event::Update)
 	{
 		// Manipulate object, if one is active.
 		if(myNodeActive)
@@ -131,9 +132,15 @@ void WandManipulator::update(const UpdateContext& context)
 				myNode->setPosition(newPos);
 				myNode->setOrientation(myWandOrientation * myStartOrientation);
 			}
-			else if(myButton2Pressed)
+		}
+		// For rotation and scaling, we do not need to point to the node directly.
+		if(myButton2Pressed)
+		{
+			myNode->setOrientation(myWandOrientation * myStartOrientation);
+			if(myYAxis != 0)
 			{
-				myNode->setOrientation(myWandOrientation * myStartOrientation);
+				float sc = 1.0f + myYAxis / 12.0f;
+				myNode->scale(sc, sc, sc);
 			}
 		}
 	}
@@ -141,3 +148,5 @@ void WandManipulator::update(const UpdateContext& context)
 	myPointerEventReceived = false;
 	myPointerEventType = Event::Null;
 }
+
+
