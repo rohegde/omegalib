@@ -1,5 +1,6 @@
 # This script is executed when orun starts, before running application scripts.
 from omega import *
+from cyclops import *
 
 speedLabel = None
 
@@ -25,7 +26,7 @@ def _displayWand(value):
 	if(value):
 		getSceneManager().displayWand(0, 1)
 	else:
-		getSceneManager().hideWand(0, 1)
+		getSceneManager().hideWand(0)
 		
 	
 def _onAppStart():
@@ -52,6 +53,9 @@ def _onAppStart():
 	ss.getSlider().setValue(4)
 	ss.getWidget().setWidth(200)
 	
+	mi = sysmnu.addButton("Toggle Stereo", "toggleStereo()")
+	mi = sysmnu.addButton("Toggle Console", ":c")
+	mi = sysmnu.addButton("List Active Modules", "printModules()")
 	mi = sysmnu.addButton("Exit omegalib", "oexit()")
 	
 
