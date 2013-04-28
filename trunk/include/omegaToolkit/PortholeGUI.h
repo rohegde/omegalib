@@ -210,7 +210,7 @@ namespace omega {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements the HTML GUI Manager for Porthole Service
-	class OTK_API PortholeGUI: ReferenceType{
+	class OTK_API PortholeGUI: public ReferenceType{
 
 	public:
 

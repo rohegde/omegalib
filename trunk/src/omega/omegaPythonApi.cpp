@@ -636,52 +636,6 @@ float getFarZ(float near)
 	return ds->getFarZ();
 }
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void mcstart(int port = MissionControlServer::DefaultPort)
-{
-	if(isMaster())
-	{
-		omsg("Initializing mission control server...");
-		MissionControlServer* srv = new MissionControlServer();
-		srv->setMessageHandler(new MissionControlMessageHandler());
-		srv->setPort(port);
-
-		// Register the mission control server. The service manager will take care of polling the server
-		// periodically to check for new connections.
-		SystemManager::instance()->getServiceManager()->addService(srv);
-		srv->start();
-	}
-}
-
-// Oh god the humanity!!
-static Ref<MissionControlClient> sMissionControlClient = NULL;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void mcconnect(const String& host = "127.0.0.1", int port = MissionControlServer::DefaultPort)
-{
-	if(isMaster())
-	{
-		sMissionControlClient = new MissionControlClient();
-		ModuleServices::addModule(sMissionControlClient);
-		sMissionControlClient->doInitialize(Engine::instance());
-		sMissionControlClient->connect(host, port);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void mcclose()
-{
-	if(isMaster())
-	{
-		if(sMissionControlClient != NULL)
-		{
-			ModuleServices::removeModule(sMissionControlClient);
-			sMissionControlClient = NULL;
-		}
-	}
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void orun(const String& script)
 {
@@ -1077,11 +1031,6 @@ BOOST_PYTHON_MODULE(omega)
 	def("getImageLoaderThreads", getImageLoaderThreads);
 	def("getHostname", getHostname, PYAPI_RETURN_VALUE);
 	def("printModules", printModules);
-
-	// NEW IN 3.4
-	def("mcstart", mcstart, mcstartOverloads());
-	def("mcconnect", mcconnect, mcconnectOverloads());
-	def("mcclose", mcclose);
 
 	def("orun", orun);
 	def("oclean", oclean);
