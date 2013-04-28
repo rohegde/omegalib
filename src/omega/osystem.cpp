@@ -30,6 +30,7 @@
 #include "omega/DisplaySystem.h"
 #include "omega/Engine.h"
 #include "omicron/StringUtils.h"
+#include "omega/MissionControl.h"
 
 #include <iostream>
 
@@ -149,6 +150,35 @@ namespace omega
 		}
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	void setupMissionControl(const String& mode, SystemManager* sys, const Setting& s, MissionControlClient*& missionControlClient)
+	{
+		int port = Config::getIntValue("port", s, MissionControlServer::DefaultPort);
+		String serverHost = Config::getStringValue("host", s, "127.0.0.1");
+		if(mode == "default")
+		{
+			omsg("Initializing mission control server...");
+			MissionControlServer* srv = new MissionControlServer();
+			srv->setMessageHandler(new MissionControlMessageHandler());
+			srv->setPort(port);
+
+			// Register the mission control server. The service manager will take care of polling the server
+			// periodically to check for new connections.
+			SystemManager::instance()->getServiceManager()->addService(srv);
+			srv->start();
+		}
+		else if(mode == "client")
+		{
+			missionControlClient = new MissionControlClient();
+			// Increase the reference count to avoid deallocation during module cleanup. We want to delete this object
+			// manually due to some issues deallocating it automatically on Visual Studio.
+			missionControlClient->ref();
+			ModuleServices::addModule(missionControlClient);
+			//sMissionControlClient->doInitialize(Engine::instance());
+			missionControlClient->connect(serverHost, port);
+		}
+	}
+
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	int omain(omega::ApplicationBase& app, int argc, char** argv)
 	{
@@ -166,6 +196,7 @@ namespace omega
 			String masterHostname;
 			String configFilename = ostr("%1%.cfg", %app.getName());
 			String multiAppString = "";
+			String mcmode = "default";
 #ifdef OMEGA_APPROOT_DIRECTORY
 			String dataPath = OMEGA_APPROOT_DIRECTORY;
 #else
@@ -219,6 +250,12 @@ namespace omega
 				"instance",
 				"Enable multi-instance mode and set global viewport and port pool as a string <tilex>,<tiley>,<tilewidth>,<tileHeight>,<portPool>", "",
 				multiAppString);
+
+			sArgs.newNamedString(
+				'm',
+				"mc",
+				"Sets mission control mode. (default, client, server) ", "In default mode, the application opens a mission control server if enabled in the configuration file. ",
+				mcmode);
 
 			sArgs.setName("omegalib");
 			sArgs.setAuthor("The Electronic Visualization Lab, UIC");
@@ -311,6 +348,9 @@ namespace omega
 
 			Config* cfg = new Config(curCfgFilename);
 			
+			// This is used when the application runs a mission control client.
+			MissionControlClient* missionControlClient = NULL;
+
 			if(kill)
 			{
 				sys->setApplication(&app);
@@ -334,6 +374,11 @@ namespace omega
 				else
 				{
 					sys->setup(cfg);
+					Config* syscfg = sys->getSystemConfig();
+					if(syscfg->exists("config/missionControl"))
+					{
+						setupMissionControl(mcmode, sys, syscfg->lookup("config/missionControl"), missionControlClient);
+					}
 				}
 
 				// If multiApp string is set, setup multi-application mode.
@@ -349,6 +394,12 @@ namespace omega
 				omsg(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OMEGALIB SHUTDOWN");
 				sys->cleanup();
 				omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< OMEGALIB SHUTDOWN\n\n");
+
+				if(missionControlClient != NULL) 
+				{
+					missionControlClient->unref();
+					missionControlClient = NULL;
+				}
 
 				omsg("===================== ReferenceType object leaks follow:");
 				ReferenceType::printObjCounts();

@@ -39,6 +39,40 @@ namespace omega {
 	class MissionControlConnection;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//! Stores the 4-character ids of messages used by the Mission Control protocol.
+	class MissionControlMessageIds
+	{
+	public:
+		//! bye! - tells the server this connection is over and will be closed after this message.
+		static const char* Bye;
+		//! mnis <name> - updates the name the server will use to identify this connection.
+		static const char* MyNameIs;
+		//! smsg <string> - sent by the server to a client: contains a log or response message that can be printed to the local console.
+		static const char* LogMessage;
+		//! sdto <name> - tells the server than messages from this connection should go ONLY to the named client.
+		static const char* SendTo;
+		//! sall - tells the server that messaged from this connection should be broadcast to all other clients. This is the default behavior.
+		static const char* SendAll;
+
+		//! scmd <command> - default behavior (see MissionControlMessageHandler): 
+		//! the receiver will dispatch <command> to the script interpreter.
+		static const char* ScriptCommand;
+		//! strq [statname][|statname]* - default behavior (see MissionControlMessageHandler): 
+		//! the receiver will send back a strq message with a list of pipe | separated stat names
+		static const char* StatRequest;
+		//! sted [statname]+ - default behavior (see MissionControlMessageHandler): 
+		//! the receiver will enable a set of statistics whose data will be returned back for each stat update message
+		static const char* StatEnable;
+		//! stup [name cur min max avg]* - default behavior (see MissionControlMessageHandler): 
+		//! the receiver will send back a stup message with current data (name, min, max, average times / values) about statistics enabled by a sten message.
+		static const char* StatUpdate;
+
+	private:
+		//! Can't be instantiated.
+		MissionControlMessageIds() {}
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API IMissionControlMessageHandler: public ReferenceType
 	{
 	public:
@@ -59,6 +93,7 @@ namespace omega {
 	{
 	public:
 		MissionControlConnection(ConnectionInfo ci, IMissionControlMessageHandler* msgHandler, MissionControlServer* server);
+		virtual ~MissionControlConnection() {}
 
 		virtual void handleData();
 		virtual void handleClosed();
@@ -68,11 +103,16 @@ namespace omega {
 		//! Client side: tells the server we are done talking and waits for graceful close.
 		void goodbyeServer();
 
+		String getName() { return myName; }
+		virtual void setName(const String& name);
+
 	private:
 		static const int BufferSize = 1024;
 		char myBuffer[BufferSize];
-		MissionControlServer* myServer;
-		IMissionControlMessageHandler* myMessageHandler;
+		Ref<MissionControlServer> myServer;
+		MissionControlConnection* myRecipient; // Message destination when private-message mode is enabled.
+		Ref<IMissionControlMessageHandler> myMessageHandler;
+		String myName;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,6 +126,7 @@ namespace omega {
 
 		virtual TcpConnection* createConnection(const ConnectionInfo& ci);
 		void closeConnection(MissionControlConnection* conn);
+		MissionControlConnection* findConnection(const String& name);
 		void broadcastMessage(const char* header, void* data, int size, MissionControlConnection* sender = NULL);
 		void setMessageHandler(IMissionControlMessageHandler* msgHandler) { myMessageHandler = msgHandler; }
 	
@@ -102,7 +143,15 @@ namespace omega {
 	{
 	public:
 		MissionControlClient(): EngineModule("MissionControlClient") {}
-		virtual ~MissionControlClient() {}
+		virtual ~MissionControlClient() 
+		{ 
+			// We make sure the connection object is destroyed here. This is important because if we
+			// let default destruction take place, the io_service object may get destroyed before the
+			// connection that uses it, leading to a crash. io_service is declared before the connection
+			// object in the class members so things would work anyways, but it's better to be explicit.
+			// In the future it would be good to keep this required behavior hidden in a base TcpClient class.
+			dispose(); 
+		}
 
 		virtual void dispose();
 		virtual void initialize();
@@ -111,10 +160,13 @@ namespace omega {
 		virtual bool handleCommand(const String& command);
 		void connect(const String& host, int port);
 
+		String getName() { return myConnection->getName(); }
+		virtual void setName(const String& name) { myConnection->setName(name); }
+
 	private:
+		asio::io_service myIoService;
 		Ref<MissionControlConnection> myConnection;
 		Ref<IMissionControlMessageHandler> myMessageHandler;
-		asio::io_service myIoService;
 	};
 }; // namespace omicron
 

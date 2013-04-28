@@ -33,12 +33,23 @@ using namespace omega;
 const int MissionControlServer::DefaultPort;
 #endif
 
+// Message id definitions
+const char* MissionControlMessageIds::MyNameIs = "mnis";
+const char* MissionControlMessageIds::Bye = "bye!";
+const char* MissionControlMessageIds::ScriptCommand = "scmd";
+const char* MissionControlMessageIds::StatRequest = "strq";
+const char* MissionControlMessageIds::StatEnable = "sten";
+const char* MissionControlMessageIds::StatUpdate = "stup";
+const char* MissionControlMessageIds::LogMessage = "smsg";
+const char* MissionControlMessageIds::SendTo = "sdto";
+const char* MissionControlMessageIds::SendAll = "sall";
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MissionControlMessageHandler::handleMessage(MissionControlConnection* sender, const char* header, char* data, int size)
 {
 	bool handled = true;
 
-	if(!strncmp(header, "scmd", 4)) 
+	if(!strncmp(header, MissionControlMessageIds::ScriptCommand, 4)) 
 	{
 		//script command message
 		String command(data);
@@ -60,7 +71,7 @@ bool MissionControlMessageHandler::handleMessage(MissionControlConnection* sende
 	//		sendMessage("help", (void*)helpString.c_str(), helpString.size());
 	//	}
 	//}
-	if(!strncmp(header, "strq", 4)) 
+	if(!strncmp(header, MissionControlMessageIds::StatRequest, 4)) 
 	{
 		// Request for stats names.
 		String statIds = "";
@@ -72,10 +83,10 @@ bool MissionControlMessageHandler::handleMessage(MissionControlConnection* sende
 				statIds.append(s->getName());
 				statIds.append("|");
 			}
-			sender->sendMessage("strq", (void*)statIds.c_str(), statIds.size());
+			sender->sendMessage(MissionControlMessageIds::StatRequest, (void*)statIds.c_str(), statIds.size());
 		}
 	}
-	if(!strncmp(header, "sten", 4)) 
+	if(!strncmp(header, MissionControlMessageIds::StatEnable, 4)) 
 	{
 		StatsManager* sm = SystemManager::instance()->getStatsManager();
 		if(sm != NULL)
@@ -94,7 +105,7 @@ bool MissionControlMessageHandler::handleMessage(MissionControlConnection* sende
 			}
 		}
 	}
-	if(!strncmp(header, "stup", 4)) 
+	if(!strncmp(header, MissionControlMessageIds::StatUpdate, 4)) 
 	{
 		if(myEnabledStats.size() > 0)
 		{
@@ -104,7 +115,7 @@ bool MissionControlMessageHandler::handleMessage(MissionControlConnection* sende
 			{
 				statIds.append(ostr("%1% %2% %3% %4% %5% ", %s->getName() %(int)s->getCur() %(int)s->getMin() %(int)s->getMax() %(int)s->getAvg()));
 			}
-			sender->sendMessage("stup", (void*)statIds.c_str(), statIds.size());
+			sender->sendMessage(MissionControlMessageIds::StatUpdate, (void*)statIds.c_str(), statIds.size());
 		}
 	}
 	return true;
@@ -114,10 +125,18 @@ bool MissionControlMessageHandler::handleMessage(MissionControlConnection* sende
 MissionControlConnection::MissionControlConnection(ConnectionInfo ci, IMissionControlMessageHandler* msgHandler, MissionControlServer* server): 
 	TcpConnection(ci),
 	myServer(server),
-	myMessageHandler(msgHandler)
+	myMessageHandler(msgHandler),
+	myRecipient(NULL)
 {
 }
         
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MissionControlConnection::setName(const String& name)
+{
+	myName = name;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MissionControlConnection::handleData()
 {
@@ -142,7 +161,7 @@ void MissionControlConnection::handleData()
 	if(myServer != NULL) myServer->broadcastMessage(header, myBuffer, dataSize, this);
 
 	// 'bye!' message closes the connection
-	if(!strncmp(header, "bye!", 4)) close();
+	if(!strncmp(header, MissionControlMessageIds::Bye, 4)) close();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,7 +189,7 @@ void MissionControlConnection::sendMessage(const char* header, void* data, int s
 ///////////////////////////////////////////////////////////////////////////////////////////
 void MissionControlConnection::goodbyeServer()
 {
-	sendMessage("bye!", NULL, 0);
+	sendMessage(MissionControlMessageIds::Bye, NULL, 0);
 	waitClose();
 }
 
@@ -208,6 +227,16 @@ void MissionControlServer::closeConnection(MissionControlConnection* conn)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+MissionControlConnection* MissionControlServer::findConnection(const String& name)
+{
+	foreach(MissionControlConnection* conn, myConnections)
+	{
+		if(conn->getName() == name) return conn;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void MissionControlServer::broadcastMessage(const char* header, void* data, int size, MissionControlConnection* sender)
 {
 	foreach(MissionControlConnection* conn, myConnections)
@@ -222,22 +251,29 @@ void MissionControlServer::broadcastMessage(const char* header, void* data, int 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MissionControlServer::addLine(const String& line)
 {
-	broadcastMessage("smsg", (void*)line.c_str(), line.size());
+	broadcastMessage(MissionControlMessageIds::LogMessage, (void*)line.c_str(), line.size());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MissionControlClient::initialize()
 {
-	myMessageHandler = new MissionControlMessageHandler();
-	myConnection = new MissionControlConnection(ConnectionInfo(myIoService), myMessageHandler, NULL);
+	if(myConnection == NULL)
+	{
+		myMessageHandler = new MissionControlMessageHandler();
+		myConnection = new MissionControlConnection(ConnectionInfo(myIoService), myMessageHandler, NULL);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MissionControlClient::dispose()
 {
-	if(myConnection->getState() == TcpConnection::ConnectionOpen)
+	if(myConnection != NULL)
 	{
-		myConnection->goodbyeServer();
+		if(myConnection->getState() == TcpConnection::ConnectionOpen)
+		{
+			myConnection->goodbyeServer();
+		}
+		myConnection = NULL;
 	}
 }
 
@@ -255,6 +291,10 @@ void MissionControlClient::handleEvent(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MissionControlClient::connect(const String& host, int port)
 {
+	if(myConnection == NULL)
+	{
+		initialize();
+	}
 	myConnection->open(host, port);
 }
 
@@ -264,7 +304,7 @@ bool MissionControlClient::handleCommand(const String& command)
 	if(StringUtils::startsWith(command, "post"))
 	{
 		String cmd = command.substr(5);
-		myConnection->sendMessage("scmd", (void*)cmd.c_str(), cmd.size());
+		myConnection->sendMessage(MissionControlMessageIds::ScriptCommand, (void*)cmd.c_str(), cmd.size());
 	}
 	// Let other modules process commands.
 	return false;
