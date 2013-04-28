@@ -1,7 +1,7 @@
 #summary Omegalib configuration file reference
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.7 - 20 April 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+<p>*Last revision:* ver. 3.7 - 26 April 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
 <wiki:toc max_depth="4" />
 
@@ -171,6 +171,7 @@ The `camera` section configures the default camera.
  * `controller` (String - one of `wand` `gamepad` `mouse` `mousekeyboard`)
  * `trackerSourceId` (int)
  * `navigationButton` (String - button name): sets the button used by the camera controller for navigation. Supported by `wand` camera controller.
+ * `overrideButton` (String - button name): when this button is pressed, the controller will not process any input or change the camera. Useful to temporary map the same input buttons and axes to some different functionality. Supported by `wand` camera controller.
 
 Example:
 {{{
@@ -185,11 +186,14 @@ Example:
 === `interactor` section ===
 The `interactor` section configures the standard interactor mode for the application
  * `style` (String - one of `wand` `mouse`)
+ * `moveButton` String - button name): sets the button used by to move objects. Supported by `wand` interactor.
+ * `rotateButton` String - button name): sets the button used by to rotate objects. Supported by `wand` interactor.
 Example:
 {{{
 	interactor:
 	{
 		style = "Wand";
+		moveButton = "Button3";
 	};
 }}}
 

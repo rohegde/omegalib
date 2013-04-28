@@ -32,6 +32,7 @@ This page offers extended information on how to develop applications for omegali
  * [MissionControl Mission Control: Connecting and Controlling Multiple Applications (3.7)]
  * [CameraController Camera Controllers: customizing navigation and camera movement (2.0)]
  * [PortholeReference Porthole: Adding Web Control and Image Streaming to your Application (3.0)]
+ * [QuickCommands Quick Commands Reference (3.0)]
 
 == Reference ==
  * [EffectReference Cyclops Effects and Materials]
