@@ -8,7 +8,7 @@ All omegalib applications (yes, even the ones you create) support a few predefin
 == Predefined command line arguments ==
 The predefined command line syntax of an omegalib application is:
 {{{
-	omegaApp [configFile] [-?] [-K] [-D path] [-L path]
+	omegaApp [configFile] [-?] [-K] [-D path] [-L path] [-I <tx>,<ty>,<tw>,<th>,<portPool>] [-m <default|client|server>]
 }}}
  * `configFile`: is the configuration file to use with this application (default: same as the application name with a .cfg extention, or default.cfg if the previous is not found)
  * `-?`: prints the full command line reference (predefined AND custom options)

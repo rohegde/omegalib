@@ -9,6 +9,7 @@
 *general*
 	* Improved support for building custom external modules.
 	* Additional fixes to runtime application switching.
+	* added mission control `-m` flag to the default command line options. (see [CommandLine the Command Line Wiki page]).
 *omega*
 	* `DisplayConfig.verbose` mode
 	* New python function: `getViewRay(x, y)`
