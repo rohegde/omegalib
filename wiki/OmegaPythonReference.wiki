@@ -369,7 +369,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_
 
 === Methods ===
 || Method(s) || Description ||
-|| `setYawPitchRoll(value)` || Sets the camera orientation as yaw, pitch roll in radians ||
+|| `setPitchYawRoll(value)` || Sets the camera orientation as yaw, pitch roll in radians. `value` is a `Vector3`. For example, to rotate 45 degrees around the global Y axis: {{{ camera.setPitchYawRoll(Vector3(0, radians(45), 0)) }}} ||
 || `getHeadOffset()`, `setHeadOffset(value)` || ||
 || `setHeadOrientation(value)`, `getHeadOrientation()` || ||
 || `isTrackingEnabled()`, `setTrackingEnabled(value)` || ||
