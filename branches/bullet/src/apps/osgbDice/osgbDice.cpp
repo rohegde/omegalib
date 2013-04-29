@@ -56,61 +56,6 @@ using namespace omega;
 using namespace omegaToolkit;
 using namespace omegaOsg;
 
-osg:: ref_ptr<osg::Node> createAxes( void ) {
-
-        // This method should be made more succinct by using arrays.
-
-        const osg::Vec4f red( 1.0, 0.0, 0.0, 1.0 ), green( 0.0, 1.0, 0.0, 1.0 ), blue ( 0.0, 0.0, 1.0, 1.0 );
-        osg::Matrix mR, mT;
-
-        osg::ref_ptr< osg::Group > root = new osg::Group;
-        osg::ref_ptr< osg::MatrixTransform > mt = NULL;
-        osg::ref_ptr< osg::Geode > geode = NULL;
-
-        osg::ref_ptr< osg::Cylinder > axis = new osg::Cylinder( osg::Vec3f( 0.0, 0.0, 0.0 ), 1.0, 200.0 );
-        osg::ref_ptr< osg::Cone > arrow = new osg::Cone( osg::Vec3f( 0.0, 0.0, 0.0 ), 10.0, 20.0 );
-
-        // Draw the X axis in Red
-
-        osg::ref_ptr< osg::ShapeDrawable > xAxis = new osg::ShapeDrawable( axis );
-        xAxis->setColor( red );
-        geode = new osg::Geode;
-        geode->addDrawable( xAxis.get( ) );
-        mT.makeTranslate( 100.0, 0.0, 0.0 );
-        mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 0.0, 1.0, 0.0 ) );
-        mt = new osg::MatrixTransform;
-        mt->setMatrix( mR * mT );
-        mt->addChild( geode.get( ) );
-        root->addChild( mt.get( ) );
-
-        // Then the Y axis in green
-        osg::ref_ptr< osg::ShapeDrawable > yAxis = new osg::ShapeDrawable( axis );
-        yAxis->setColor( green );
-        geode = new osg::Geode;
-        geode->addDrawable( yAxis.get( ) );
-        mT.makeTranslate( 0.0, 100.0, 0.0 );
-        mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 1.0, 0.0, 0.0 ) );
-        mt = new osg::MatrixTransform;
-        mt->setMatrix( mR * mT );
-        mt->addChild( geode.get( ) );
-        root->addChild( mt.get( ) );
-
-        // And the Z axis in blue
-
-        osg::ref_ptr< osg::ShapeDrawable > zAxis = new osg::ShapeDrawable( axis );
-        zAxis->setColor( blue );
-        geode = new osg::Geode;
-        geode->addDrawable( zAxis.get( ) );
-        mT.makeTranslate( 0.0, 0.0, 100.0 );
-        //mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 0.0, 1.0, 0.0 ) );
-        mt = new osg::MatrixTransform;
-        mt->setMatrix( mT );
-        mt->addChild( geode.get( ) );
-        root->addChild( mt.get( ) );
-
-        return root.get( );
-}
-
 osg::MatrixTransform* makeDie( btDynamicsWorld* bw )
 {
     osg::MatrixTransform* root = new osg::MatrixTransform;
@@ -252,6 +197,8 @@ private:
 	btRigidBody* myShakeBody;
     osg::MatrixTransform* myShakeBox;
 	osgbDynamics::MotionState* myShakeMotion;
+	osg::MatrixTransform* die1;
+	osg::MatrixTransform* die2;
 };
 
 
@@ -278,9 +225,20 @@ void OsgbDice::initialize()
 {
     osg::Group* root = new osg::Group;
 
-    root->addChild( makeDie( myWorld ) );
-    root->addChild( makeDie( myWorld ) );
+	die1 = makeDie( myWorld );
+	die2 = makeDie( myWorld );
+    //root->addChild( makeDie( myWorld ) );
+    //root->addChild( makeDie( myWorld ) );
 
+	root->addChild(die1);
+	root->addChild(die2);
+	for (int i=0;i<2;i++)
+	{
+		printf("%d: (%d, %d, %d)\n", i+1, 
+		root->getChild(i)->asTransform()->asMatrixTransform()->getMatrix().getTrans().x(),
+		root->getChild(i)->asTransform()->asMatrixTransform()->getMatrix().getTrans().y(),
+		root->getChild(i)->asTransform()->asMatrixTransform()->getMatrix().getTrans().z());
+	}
 	//root->addChild( createAxes().get() );
 
     /* BEGIN: Create environment boxes */
@@ -300,7 +258,7 @@ void OsgbDice::initialize()
         trans.setOrigin( osgbCollision::asBtVector3( center ) );
         compoundShape->addChildShape( trans, box );
     }
-    { // top +Z (invisible, to allow user to see through; no OSG analogue
+    /*{ // top +Z (invisible, to allow user to see through; no OSG analogue
         osg::Vec3 halfLengths( xDim*.5, yDim*.5, thick*.5 );
         osg::Vec3 center( 0., 0., zDim*.5 );
         //myShakeBox->addChild( osgBox( center, halfLengths ) );
@@ -308,7 +266,7 @@ void OsgbDice::initialize()
         btTransform trans; trans.setIdentity();
         trans.setOrigin( osgbCollision::asBtVector3( center ) );
         compoundShape->addChildShape( trans, box );
-    }
+    }*/
     { // left -X
         osg::Vec3 halfLengths( thick*.5, yDim*.5, zDim*.5 );
         osg::Vec3 center( -xDim*.5, 0., 0. );
@@ -356,6 +314,8 @@ void OsgbDice::initialize()
     myShakeBody->setCollisionFlags( myShakeBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT );
     myShakeBody->setActivationState( DISABLE_DEACTIVATION );
     myWorld->addRigidBody( myShakeBody );
+
+	printf("=====\n=====\n%d\n=====\n=====\n",myWorld->getNumCollisionObjects());
 
     // Create an omegalib scene node and attach the osg node to it. This is used to interact with the 
     // osg object through omegalib interactors.
@@ -415,14 +375,100 @@ void OsgbDice::initialize()
 
 void OsgbDice::update(const UpdateContext& context)
 {
-	osg::Matrix m = myOso->getTransformedNode()->getMatrix();
-	std::printf("(%lf, %lf, %lf)  ", m.getTrans().x(),m.getTrans().y(),m.getTrans().z());
-	std::printf("(%lf, %lf, %lf)\n", myShakeMotion->getTransform()->asMatrixTransform()->getMatrix().getTrans().x(),
-		myShakeMotion->getTransform()->asMatrixTransform()->getMatrix().getTrans().y(),
-		myShakeMotion->getTransform()->asMatrixTransform()->getMatrix().getTrans().z());
-	//myShakeMotion->setTransform( myShakeBox );
+	osg::MatrixTransform* shakeTrans = myShakeMotion->getTransform()->asMatrixTransform();
+
+	btVector3 btTrans(shakeTrans->getMatrix().getTrans().x(), shakeTrans->getMatrix().getTrans().y(), 0.25);
+	
+	/*/ 
+	printf("bullet:\n");
+	for (int i=0;i<2;i++)
+	{
+		printf("dice %d: (worldtrans) (%lf, %lf, %lf)\n", i+1,
+			myWorld->getCollisionObjectArray().at(i)->getWorldTransform().getOrigin().x(),
+			myWorld->getCollisionObjectArray().at(i)->getWorldTransform().getOrigin().y(),
+			myWorld->getCollisionObjectArray().at(i)->getWorldTransform().getOrigin().z());
+	}
+	{
+		printf("box: (worldtrans) (%lf, %lf, %lf)\n",
+			myWorld->getCollisionObjectArray().at(2)->getWorldTransform().getOrigin().x(),
+			myWorld->getCollisionObjectArray().at(2)->getWorldTransform().getOrigin().y(),
+			myWorld->getCollisionObjectArray().at(2)->getWorldTransform().getOrigin().z());
+	}
+	//*/
+	
+	btTransform world;
+    myShakeMotion->getWorldTransform( world );
+	world.setOrigin( btTrans );
+    myShakeMotion->setWorldTransform( world );
+
+	/*/
+	printf("motion:\n");
+	{
+		printf("motion (worldtrans): (%lf, %lf, %lf)\n", //一直不变
+			world.getOrigin().x(), world.getOrigin().y(), world.getOrigin().z());
+	}
+	{
+		printf("motion (trans): (%lf, %lf, %lf)\n",
+			myShakeMotion->getTransform()->asMatrixTransform()->getMatrix().getTrans().x(),
+			myShakeMotion->getTransform()->asMatrixTransform()->getMatrix().getTrans().y(),
+			myShakeMotion->getTransform()->asMatrixTransform()->getMatrix().getTrans().z());
+	}
+	//*/
+
+	/*/
+	printf("osg:\n");
+	for (int i=0;i<2;i++)
+	{
+		printf("dice %d: (myOsg.child(i)) (%lf, %lf, %lf)\n", i+1,
+			myOsg->getRootNode()->asGroup()->getChild(i)->asTransform()->asMatrixTransform()->getMatrix().getTrans().x(),
+			myOsg->getRootNode()->asGroup()->getChild(i)->asTransform()->asMatrixTransform()->getMatrix().getTrans().y(),
+			myOsg->getRootNode()->asGroup()->getChild(i)->asTransform()->asMatrixTransform()->getMatrix().getTrans().z());
+	}
+	{
+		printf("box: (myOsg.child(i)) (%lf, %lf, %lf)\n",
+			myOsg->getRootNode()->asGroup()->getChild(2)->asTransform()->asMatrixTransform()->getMatrix().getTrans().x(),
+			myOsg->getRootNode()->asGroup()->getChild(2)->asTransform()->asMatrixTransform()->getMatrix().getTrans().y(),
+			myOsg->getRootNode()->asGroup()->getChild(2)->asTransform()->asMatrixTransform()->getMatrix().getTrans().z());
+	}
+	//*/
+
+	/*/
+	printf("omegalib:\n");
+	printf("box: (%lf, %lf, %lf)\n",
+		myOso->getTransformedNode()->getMatrix().getTrans().x(),
+		myOso->getTransformedNode()->getMatrix().getTrans().y(),
+		myOso->getTransformedNode()->getMatrix().getTrans().z());
+	//*/
+
+	/*/
+	printf("world(new): (%lf, %lf, %lf)\n",
+		world.getOrigin().x(), world.getOrigin().y(), world.getOrigin().z());
+	//*/
+
+	/*/ debug print
+	for (int i=0;i<2;i++)
+	{
+		printf("%d: (%d, %d, %d)\n", i+1,
+			myOsg->getRootNode()->asGroup()->getChild(i)->asTransform()->asMatrixTransform()->getMatrix().getTrans().x(),
+			myOsg->getRootNode()->asGroup()->getChild(i)->asTransform()->asMatrixTransform()->getMatrix().getTrans().y(),
+			myOsg->getRootNode()->asGroup()->getChild(i)->asTransform()->asMatrixTransform()->getMatrix().getTrans().z());
+	}
+	//*/
+
+	/*/
+	printf("  1: (%d, %d, %d)\n", // strange, strange
+		die1->getMatrix().getTrans().x(),
+		die1->getMatrix().getTrans().y(),
+		die1->getMatrix().getTrans().z());
+	printf("  2: (%d, %d, %d)\n", // strange, strange
+		die2->getMatrix().getTrans().x(),
+		die2->getMatrix().getTrans().y(),
+		die2->getMatrix().getTrans().z());
+	//*/
+
 	double elapsed = 1./60.;
 	myWorld->stepSimulation( elapsed, 4, elapsed/4. );
+	//myWorld->stepSimulation( 1./60., 1, 1./60. );
 	//prevSimTime = currSimTime;
 }
 
