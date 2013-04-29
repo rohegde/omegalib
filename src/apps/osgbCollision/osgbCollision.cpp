@@ -62,145 +62,6 @@ using namespace omegaOsg;
 String sModelName;
 float sModelSize = 1.0f;
 
-osg:: ref_ptr<osg::Node> createAxes( void ) {
-
-        // This method should be made more succinct by using arrays.
-
-        const osg::Vec4f red( 1.0, 0.0, 0.0, 1.0 ), green( 0.0, 1.0, 0.0, 1.0 ), blue ( 0.0, 0.0, 1.0, 1.0 );
-        osg::Matrix mR, mT;
-
-        osg::ref_ptr< osg::Group > root = new osg::Group;
-        osg::ref_ptr< osg::MatrixTransform > mt = NULL;
-        osg::ref_ptr< osg::Geode > geode = NULL;
-
-        osg::ref_ptr< osg::Cylinder > axis = new osg::Cylinder( osg::Vec3f( 0.0, 0.0, 0.0 ), 2.0, 500.0 );
-        osg::ref_ptr< osg::Cone > arrow = new osg::Cone( osg::Vec3f( 0.0, 0.0, 0.0 ), 10.0, 20.0 );
-
-        // Draw the X axis in Red
-
-        osg::ref_ptr< osg::ShapeDrawable > xAxis = new osg::ShapeDrawable( axis );
-        xAxis->setColor( red );
-        geode = new osg::Geode;
-        geode->addDrawable( xAxis.get( ) );
-        mT.makeTranslate( 250.0, 0.0, 0.0 );
-        mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 0.0, 1.0, 0.0 ) );
-        mt = new osg::MatrixTransform;
-        mt->setMatrix( mR * mT );
-        mt->addChild( geode.get( ) );
-        root->addChild( mt.get( ) );
-
-        osg::ref_ptr< osg::ShapeDrawable > xArrow= new osg::ShapeDrawable( arrow );
-        xArrow->setColor( red );
-        geode = new osg::Geode;
-        geode->addDrawable( xArrow.get( ) );
-        mT.makeTranslate( 500.0, 0.0, 0.0 );
-        mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 0.0, 1.0, 0.0 ) );
-        mt = new osg::MatrixTransform;
-        mt->setMatrix( mR * mT );
-        root->addChild( mt.get( ) );
-        mt->addChild( geode.get( ) );
-
-        // Then the Y axis in green
-        osg::ref_ptr< osg::ShapeDrawable > yAxis = new osg::ShapeDrawable( axis );
-        yAxis->setColor( green );
-        geode = new osg::Geode;
-        geode->addDrawable( yAxis.get( ) );
-        mT.makeTranslate( 0.0, 250.0, 0.0 );
-        mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 1.0, 0.0, 0.0 ) );
-        mt = new osg::MatrixTransform;
-        mt->setMatrix( mR * mT );
-        mt->addChild( geode.get( ) );
-        root->addChild( mt.get( ) );
-
-        osg::ref_ptr< osg::ShapeDrawable > yArrow= new osg::ShapeDrawable( arrow );
-        yArrow->setColor( green );
-        geode = new osg::Geode;
-        geode->addDrawable( yArrow.get( ) );
-        mT.makeTranslate( 0.0, 500.0, 0.0 );
-        mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( -1.0, 0.0, 0.0 ) );
-        mt = new osg::MatrixTransform;
-        mt->setMatrix( mR * mT );
-        root->addChild( mt.get( ) );
-        mt->addChild( geode.get( ) );
-
-        // And the Z axis in blue
-
-        osg::ref_ptr< osg::ShapeDrawable > zAxis = new osg::ShapeDrawable( axis );
-        zAxis->setColor( blue );
-        geode = new osg::Geode;
-        geode->addDrawable( zAxis.get( ) );
-        mT.makeTranslate( 0.0, 0.0, 250.0 );
-        //mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 0.0, 1.0, 0.0 ) );
-        mt = new osg::MatrixTransform;
-        mt->setMatrix( mT );
-        mt->addChild( geode.get( ) );
-        root->addChild( mt.get( ) );
-
-        osg::ref_ptr< osg::ShapeDrawable > zArrow= new osg::ShapeDrawable( arrow );
-        zArrow->setColor( blue );
-        geode = new osg::Geode;
-        geode->addDrawable( zArrow.get( ) );
-        mT.makeTranslate( 0.0, 0.0, 500.0 );
-        //mR.makeRotate( 3.14159 / 2.0, osg::Vec3f( 0.0, 1.0, 0.0 ) );
-        mt = new osg::MatrixTransform;
-        mt->setMatrix(mT );
-        root->addChild( mt.get( ) );
-        mt->addChild( geode.get( ) );
-
-        return root.get( );
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class MoveManipulator : public osgGA::GUIEventHandler
-{
-public:
-    MoveManipulator() : _co( NULL ), _mt( NULL ) {}
-    MoveManipulator( const MoveManipulator& mm, osg::CopyOp copyop ) : _co( mm._co ), _mt( mm._mt ) {}
-    ~MoveManipulator() {}
-#if( OSGWORKS_OSG_VERSION > 20800 )
-    META_Object(osgBulletExample,MoveManipulator);
-#endif
-
-    virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa )
-    {
-        if( ( ea.getModKeyMask() & osgGA::GUIEventAdapter::MODKEY_CTRL ) == 0 )
-        {
-            return( false );
-        }
-        else if( ea.getEventType() == osgGA::GUIEventAdapter::PUSH )
-        {
-            _lastX = ea.getXnormalized();
-            _lastY = ea.getYnormalized();
-            return( true );
-        }
-        else if( ea.getEventType() == osgGA::GUIEventAdapter::DRAG )
-        {
-            double deltaX = ea.getXnormalized() - _lastX;
-            double deltaY = ea.getYnormalized() - _lastY;
-            _lastX = ea.getXnormalized();
-            _lastY = ea.getYnormalized();
-
-            deltaX *= 6.;
-            deltaY *= 6.;
-            osg::Matrix trans = osgbCollision::asOsgMatrix( _co->getWorldTransform() );
-            trans = trans * osg::Matrix::translate( deltaX, 0., deltaY );
-            _mt->setMatrix( trans );
-            _co->setWorldTransform( osgbCollision::asBtTransform( trans ) );
-            return( true );
-        }
-        return( false );
-    }
-
-    void setCollisionObject( btCollisionObject* co ) { _co = co; }
-    void setMatrixTransform( osg::MatrixTransform* mt ) { _mt = mt; }
-
-protected:
-    btCollisionObject* _co;
-    osg::MatrixTransform* _mt;
-    double _lastX, _lastY;
-};
-/* \endcond */
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Collision: public EngineModule
 {
@@ -222,8 +83,8 @@ private:
 	btCollisionWorld* myColWorld;
 	Ref<OsgModule> myOsg;
 	Ref<SceneNode> mySceneNode;
-	osgViewer::Viewer myViewer; // osgb viewer
-	MoveManipulator * myMoveManipulator; // osgb manipulator
+	//osgViewer::Viewer myViewer; // osgb viewer
+	//MoveManipulator * myMoveManipulator; // osgb manipulator
 	Actor* myInteractor; // omegaLib interactor
 	//osg::ref_ptr<osg::Light> myLight;
 	bool myLastColState;
