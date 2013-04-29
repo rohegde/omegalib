@@ -12,7 +12,7 @@
 	* added mission control `-m` flag to the default command line options. (see [CommandLine the Command Line Wiki page]).
 *omega*
 	* `DisplayConfig.verbose` mode
-	* New python function: `getViewRay(x, y)`
+	* New python functions: `getViewRay(x, y)`, `broadcastCommand()`
 *cyclops*
 	* Fixed material and effect color and alpha overrides
 	* *API CHANGE*: Material `setDiffuseColor` and `setEmissiveColor` have been merged into `setColor(diffuse, emissive)` to make it clear material color override both emissive and diffuse.

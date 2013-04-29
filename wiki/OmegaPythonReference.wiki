@@ -9,7 +9,60 @@
 The omega module contains all the core functionality of omegalib like scene graph management and event handling. It also offers a few utility functions to manage verious aspects of an omegalib application.
 
 -------------------------------------------------------------------------------
+== Scene Management ==
+These functions are used to access the scene, query nodes and read input events.
+
+=== `getScene()` ===
+Returns the root node of the scene.
+
+Example:
+{{{
+	# Move the entire scene
+	root = getScene()
+	root.setPosition(Vector3(0, 2, 0))
+}}}
+
+=== `getEvent()` ===
+Returns the event currenty being processed. Should be used only inside an event handler function.
+
+=== `getRayFromEvent(evt)` ===
+Returns a 3D ray from events that support ray generation.
+`Pointer`, `Wand` and `Mocap` events all support the generation of 3D rays into the scene. A typical use of rays is object picking. (see `querySceneRay`)
+The function returns a tuple containing three values:
+ * A boolean, se tto true when ray generation was sucessfull
+ * A `Vector3` containing the ray origin
+ * A `Vector3`containing the ray direction
+
+=== `getRayFromPoint(x, y)` ===
+Returns a ray from a 2D point on the screen plane. This method works for tiled displays as long as they provide a planar mapping of the display geometry (`PlanarDisplayConfig` and `CylindricalDisplayConfig` work. `CustomDisplayConfig` does not).
+The function returns a tuple containing three values:
+ * A boolean, se tto true when ray generation was sucessfull
+ * A `Vector3` containing the ray origin
+ * A `Vector3`containing the ray direction
+
+=== `querySceneRay(origin, dir, callback)` ===
+Performs a query on the scene using a ray defined by the `origin` and `dir` parameters. For each hit node, it invokes a callback function taking the node reference and distance to the origin as parameters.
+
+*NOTE:* only nodes tagged as selectable (see `Node.setSelectable`) will be considered for the query.
+
+Example:
+{{{
+	node = SceneNode.create('node')
+	getScene().addChild(node)
+	node.setSelectable(true)
+	
+	# attach some stuff to the node...
+	# [ ... ]
+	
+	def queryCallback(node distance):
+		print("Node " + node.getName() + " hit at " + distance)
+	
+	querySceneRay(Vector3f(0, 0, 0), Vector3f(0, 0, -1), queryCallback)
+}}}
+
+-------------------------------------------------------------------------------
 == Camera Management Functions ==
+These global functions that control the camera.
 
 === `getDefaultCamera()` ===
 Returns the main omegalib camera instance
@@ -28,6 +81,7 @@ Gets the far clip plane for the default camera
 
 -------------------------------------------------------------------------------
 == Callbacks ==
+These functions specify callbacks to be executed during frame updates and when events are received.
 
 === `setUpdateFunction(func)` ===
 Sets a callback functionto to be called for each frame. The function will take three parameters: 
@@ -116,6 +170,7 @@ Example:
 
 -------------------------------------------------------------------------------
 == Sound Management ==
+These global functions are used to handle the sound environment.
 
 === `getSoundEnvironment()` ===
 Returns an instance of the `SoundEnvironment` class if sound support is available on the system. Return `None` otherwise.
@@ -125,19 +180,36 @@ For more information on sound support check the [https://code.google.com/p/omicr
 Returns `True` if sound is enabled and available on the system
 
 -------------------------------------------------------------------------------
-== Settings ==
-=== `getBoolSetting(section, name, default)` ===
-Reads a boolean-type setting `name` from setting section `section`. The section is searched inside the app configuration file first, then in system configuration.
-If the setting is not found, the function return the specified default value.
-
--------------------------------------------------------------------------------
 == Application Control ==
+This functions control execution and can be used to start stop and clean scripts, and to execute deferred code.
 
 === `oexit()` ===
 Exits the application
 
+=== `isMaster()` ===
+Returns `True` if the script is executing on the *master node* of a cluster display system.
+
 === `queueCommand(script)` ===
 Queues a script command for execution. The command will be executed during the next update cycle.
+
+=== `broadcastCommand(script)` ===
+*For cluster systems only*. When executed on the master node, it tells all the slaves (and itself) to execute the specified command. Useful to implement event handlers after some code executed only on the master node (i.e. caching of remote data).
+A `broadcastCommand` call executed on a slave node does nothing. A call on a non-cluster environment behaves like `queueCommand`.
+
+Example:
+{{{
+	import urllib
+	# On the master node, fetch an image somewhere on the internet
+	if(isMaster())
+		urllib.urlretrieve("http://www.digimouth.com/news/media/2011/09/google-logo.jpg", "local-image.jpg")
+		# Call this when you are done
+		broadcastCommand('onImageLoaded()')
+	
+	# This will be called on all nodes once the image is loaded. You can open the image here.
+	# (Assuming use of a shared filesystem in your cluster installation)
+	def onImageLoaded():
+		img = loadImage("local-image.jpg")
+}}}
 
 === `orun(script)` ===
 Runs an external script. The script is executed immediately.
@@ -147,6 +219,45 @@ Stops the current script, cleans the engine and get everything back to its initi
 
 === `ocleanrun(script)` ===
 Like orun, but performs a cleanup first. Useful for runtime switching to a different application.
+
+=== `getHostname()` ===
+Gets the name of the host running the slave instance of omegalib
+
+-------------------------------------------------------------------------------
+== Data Access ==
+These functions are used control the loading of assets.
+
+=== `ofindfile(name)` ===
+Searches for a file, returning the full path if found, or an empty string if the search fails. See [FileSystem the filesystem management page] for more information on file lookup in omegalib.
+
+=== `osetdataprefix(prefix)` ===
+Sets a path prefix for data loading operations. Currently used only for image loading commands.
+
+=== `ogetdataprefix()` ===
+Gets the path prefix used for data loading operations. Currently used only for image loading commands.
+
+=== `loadImage(filename)` ===
+Loads an image given a file path. If loading is succesfull, returns an instance of `PixelData`. If loading fails, return `None`
+
+=== `setImageLoaderThreads(int)`, `getImageLoaderThreads()` ===
+Gets or sets the number of threads used for asynchronous image loading. Async image loading is currently available only for native code modules.
+
+-------------------------------------------------------------------------------
+== Diagnostics and Configuration ==
+These functins are used to configure various aspects of the application, and to print debug information.
+
+=== `getBoolSetting(section, name, default)` ===
+Reads a boolean-type setting `name` from setting section `section`. The section is searched inside the app configuration file first, then in system configuration.
+If the setting is not found, the function return the specified default value.
+
+=== `printChildren(node, depth)` ===
+Prints the tree of children of `node` up to the specified depth
+
+=== `overridePanopticStereo(value)` ===
+When set to true, switches from panoptic stereo tracking to standard tracking. This option is used only when panoptic stereo is enabled for the current display system.
+
+=== `toggleStereo()` ===
+Switches between mono and stereo rendering mode on systems with stereo rendering support.
 
 === `toggleStats(stats)` ===
 Enables or disables statistics output from a specific source in the statitics window. The statistics window must be enabled for the configuration. The `stats` parameter is a list of statistic or tile names separated by spaces.
@@ -169,92 +280,11 @@ Example:
 	toggleStats('compact')
 }}}
 
-=== `overridePanopticStereo(value)` ===
-When set to true, switches from panoptic stereo tracking to standard tracking. This option is used only when panoptic stereo is enabled for the current display system.
-
-=== `toggleStereo()` ===
-Switches between mono and stereo rendering mode on systems with stereo rendering support.
-
-=== `isMaster()` ===
-Returns `True` if the script is executing on the *master node* of a cluster display system.
-
--------------------------------------------------------------------------------
-== Misc. Functions ==
-
-=== `getHostname()` ===
-Gets the name of the host running the slave instance of omegalib
-
-=== `getScene()` ===
-Returns the root node of the scene.
-
-Example:
-{{{
-	# Move the entire scene
-	root = getScene()
-	root.setPosition(Vector3(0, 2, 0))
-}}}
-
-=== `getEvent()` ===
-Returns the event currenty being processed. Should be used only inside an event handler function.
-
-=== `getRayFromEvent(evt)` ===
-Returns a 3D ray from events that support ray generation.
-`Pointer`, `Wand` and `Mocap` events all support the generation of 3D rays into the scene. A typical use of rays is object picking. (see `querySceneRay`)
-The function returns a tuple containing three values:
- * A boolean, se tto true when ray generation was sucessfull
- * A `Vector3` containing the ray origin
- * A `Vector3`containing the ray direction
-
-=== `getRayFromPoint(x, y)` ===
-Returns a ray from a 2D point on the screen plane. This method works for tiled displays as long as they provide a planar mapping of the display geometry (`PlanarDisplayConfig` and `CylindricalDisplayConfig` work. `CustomDisplayConfig` does not).
-The function returns a tuple containing three values:
- * A boolean, se tto true when ray generation was sucessfull
- * A `Vector3` containing the ray origin
- * A `Vector3`containing the ray direction
-
-=== `querySceneRay(origin, dir, callback)` ===
-Performs a query on the scene using a ray defined by the `origin` and `dir` parameters. For each hit node, it invokes a callback function taking the node reference and distance to the origin as parameters.
-
-*NOTE:* only nodes tagged as selectable (see `Node.setSelectable`) will be considered for the query.
-
-Example:
-{{{
-	node = SceneNode.create('node')
-	getScene().addChild(node)
-	node.setSelectable(true)
-	
-	# attach some stuff to the node...
-	# [ ... ]
-	
-	def queryCallback(node distance):
-		print("Node " + node.getName() + " hit at " + distance)
-	
-	querySceneRay(Vector3f(0, 0, 0), Vector3f(0, 0, -1), queryCallback)
-}}}
-
-=== `ofindfile(name)` ===
-Searches for a file, returning the full path if found, or an empty string if the search fails. See [FileSystem the filesystem management page] for more information on file lookup in omegalib.
-
-=== `osetdataprefix(prefix)` ===
-Sets a path prefix for data loading operations. Currently used only for image loading commands.
-
-=== `ogetdataprefix()` ===
-Gets the path prefix used for data loading operations. Currently used only for image loading commands.
-
-=== `printChildren(node, depth)` ===
-Prints the tree of children of `node` up to the specified depth
-
 === `printObjCounts()` ===
 Prints a list and count of currently allocated refcounted objects
 
 === `printModules()` ===
 Lists the modules currently active in the application
-
-=== `loadImage(filename)` ===
-Loads an image given a file path. If loading is succesfull, returns an instance of `PixelData`. If loading fails, return `None`
-
-=== `setImageLoaderThreads(int)`, `getImageLoaderThreads()` ===
-Gets or sets the number of threads used for asynchronous image loading. Async image loading is currently available only for native code modules.
 
 -------------------------------------------------------------------------------
 ==  `class SceneNode` ==
