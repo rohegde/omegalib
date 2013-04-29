@@ -721,8 +721,6 @@ void printModules()
 	foreach(EngineModule* m, mods) if(m->getPriority() == EngineModule::PriorityLow) ofmsg("    %1%", %m->getName());
 }
 
-BOOST_PYTHON_FUNCTION_OVERLOADS(mcstartOverloads , mcstart, 0, 1)
-BOOST_PYTHON_FUNCTION_OVERLOADS(mcconnectOverloads , mcconnect, 0, 2)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeYawOverloads, yaw, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodePitchOverloads, pitch, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeRollOverloads, roll, 1, 2) 
