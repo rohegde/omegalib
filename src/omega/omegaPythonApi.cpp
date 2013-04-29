@@ -335,6 +335,21 @@ void queueCommand(const String& command)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void broadcastCommand(const String& command)
+{
+	// This only runs on the master node and sends the command to all slaves. Use the queeuCommand
+	// interpreter function again, but this time don't mark the command as local, so it will be sent
+	// to all nodes.
+	if(SystemManager::instance()->isMaster())
+	{
+		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+		// Mark the command as queued locally, since we expect queueCommand to be executed on all nodes
+		// when running in a distributed environment
+		interp->queueCommand(command);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 // @internal
 struct Vector3f_to_python
 {
@@ -1014,6 +1029,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("overridePanopticStereo", overridePanopticStereo);
 	def("toggleStereo", toggleStereo);
 	def("queueCommand", queueCommand);
+	def("broadcastCommand", broadcastCommand);
 	def("ogetdataprefix", ogetdataprefix);
 	def("osetdataprefix", osetdataprefix);
 	def("isMaster", isMaster);
