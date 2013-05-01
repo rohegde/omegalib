@@ -173,7 +173,7 @@ AN entity is a drawable thing that derives from a scene node. Entities offer add
 || `followTrackable(trackabeId)` || Starts following the motion-captured trackable `trackableId` ||
 || `setFollowOffset(offset, orientationOffset)` || Sets the tracking position and orientation offset applied to this object, with respect to the motion captured trackable ||
 || `unfollow()` || Stops following a motion-captured trackable ||
-|| *EXPERIMENTAL Context menu* || Context menus are still an experimental feature. Depending on the input configuration of your system they may not work. ||
+|| *EXPERIMENTAL Context menu* ||  ||
 || `createContextMenu()` || Creates a context menu attached to this entity. When the user selectes the entity, the menu will pop up. Returns a `Menu` object ||
 || `getContextMenu()` || Gets the attached context menu for the entity if one has been set. ||
 ||  `deleteContextMenu()` || Deletes a context menu attached to this entity ||
