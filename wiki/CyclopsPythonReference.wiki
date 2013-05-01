@@ -173,10 +173,10 @@ AN entity is a drawable thing that derives from a scene node. Entities offer add
 || `followTrackable(trackabeId)` || Starts following the motion-captured trackable `trackableId` ||
 || `setFollowOffset(offset, orientationOffset)` || Sets the tracking position and orientation offset applied to this object, with respect to the motion captured trackable ||
 || `unfollow()` || Stops following a motion-captured trackable ||
-|| *Context menu* || ||
-|| `createContextMenu()` || Creates a context menu attached to this entity. When the user selectes the entity, the menu will pop up. Returns a `Menu` object ||
-|| `getContextMenu()` || Gets the attached context menu for the entity if one has been set. ||
-|| `deleteContextMenu()` || Deletes a context menu attached to this entity ||
+|| *EXPERIMENTAL Context menu* || ||
+|| *EXPERIMENTAL* `createContextMenu()` || Creates a context menu attached to this entity. When the user selectes the entity, the menu will pop up. Returns a `Menu` object ||
+|| *EXPERIMENTAL* `getContextMenu()` || Gets the attached context menu for the entity if one has been set. ||
+|| *EXPERIMENTAL* `deleteContextMenu()` || Deletes a context menu attached to this entity ||
 || *Entity Pieces* || Entities can be made up by multiple components (pieces). For instance, complex loaded models may have multiple parts that we want to manipulate separately. ||
 || `listPieces(path)` || Returns a list containing the names of all the entity pieces in the specified path. A path is a list of node names in the entity node tree. Use an empy string to list all the piece names connected directly to the entity root. ||
 || `getPiece(path)` || Returns a `SceneNode` for a piece identified by the passed `path`. If no piece exists for `path`, returns `None`. All basic `SceneNode` functions work on entity pieces, but  pieces can't be detached from this entity and attached to another one (doing so will not influence their transform, since it is always local to the owner entity). ||
