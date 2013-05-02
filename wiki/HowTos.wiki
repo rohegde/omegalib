@@ -45,6 +45,14 @@ Given a `Vector3f trackerPosition`, you can convert it to the world reference fr
 	// use cam->localToWorldOrientation(orientation) to convert an orientation instead.
 }}}
 
+=== "I'm trying to load an .obj file. The model does not show up, and the console gets spammed with a lot of CullVisitor Errors' ===
+This is likely due to your obj model using *per-vertex colors*. The OpenSceneGraph obj loader does not like per-vertex colors. The typical solution is to use per-face colors instead. An easy way to do this is to open your mesh in a tool like MeshLab and use Filters > Color Creation and Processing > Vertex Colors to Face Colors
+When saving the new obj *make sure you disable colors* in the vertex attributes section.
+
+=== "My model disappears when I get close / far from it, or it just shows up on a few tiles of my tiled display" ===
+This is likely a near/far clipping plane issue. It usually shows up when you are drawing big models (i.e. when using osgEarth).
+Omegalib tries to set up good clipping planes for you but does not handle every situation well. You can manually specify the near and far clipping planes using the `setNearFarZ` function in python (or the equivalent `DisplaySystem` method in C++). A good test call is something like `setNearFarZ(0.1, 1000000)`. Note that if you have a big near-to-far z ratio, you may get z fighting issues for objects close in depth. Omegalib uses a 24-bit z buffer by default. 
+
 ---------------------------------------------------------------------------------------------------
 = Visual Studio 2010 =
 omegalib supports builds in visual studio 2008 and 2010. Both 32 and 64 bit builds should work, but currently only
