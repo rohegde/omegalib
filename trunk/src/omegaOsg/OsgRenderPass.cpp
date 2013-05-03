@@ -66,11 +66,94 @@ void OsgRenderPass::initialize()
 	RenderPass::initialize();
 
 	myModule = (OsgModule*)getUserData();
+
+	// Initialize standard scene view
 	mySceneView = new SceneView(myModule->getDatabasePager());
     mySceneView->initialize();
 	mySceneView->getState()->setContextID(getClient()->getGpuContext()->getId());
 
+	// Initialize far scene view (for depth partitioning) 
+	myFarSceneView = new SceneView(myModule->getDatabasePager());
+    myFarSceneView->initialize();
+	myFarSceneView->getState()->setContextID(getClient()->getGpuContext()->getId());
+
 	sInitLock.unlock();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgRenderPass::collectStat(Stat*& stat, const char* name, float value)
+{
+	myTimer.stop();
+	if(stat == NULL)
+	{
+		StatsManager* sm = SystemManager::instance()->getStatsManager();
+		unsigned int pipeId = getClient()->getGpuContext()->getId();
+		stat = sm->createStat(ostr(name, %pipeId));
+	}
+	stat->addSample(value);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgRenderPass::drawView(SceneView* view, const DrawContext& context, bool getstats, OsgModule::DepthPartitionMode dpm)
+{
+	view->getState()->setContextID(context.tile->id);
+
+	osg::Camera* cam = view->getCamera();
+
+	cam->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
+	cam->setProjectionMatrix(buildOsgMatrix(context.projection.matrix()));
+	cam->setViewMatrix(buildOsgMatrix(context.modelview.matrix()));
+	mySceneView->setAutoNearFar(myModule->getAutoNearFar());
+
+	// Adjust camera parameters to take depth partitioning into account
+	if(dpm == OsgModule::DepthPartitionNearOnly)
+	{
+		double left, right, bottom, top, zNear, zFar;
+		cam->getProjectionMatrixAsFrustum(left, right, bottom, top, zNear, zFar);
+
+		// Near camera: clean the Z buffer and use the depth partition Z as the far plane.
+		cam->setProjectionMatrixAsFrustum(left, right, bottom, top, zNear, myModule->getDepthPartitionZ());
+		cam->setClearMask(GL_DEPTH_BUFFER_BIT);
+	}
+	else if(dpm == OsgModule::DepthPartitionFarOnly)
+	{
+		double left, right, bottom, top, zNear, zFar;
+		cam->getProjectionMatrixAsFrustum(left, right, bottom, top, zNear, zFar);
+
+		// Far camera: do not clean the Z buffer and set the near plane to the depth partition Z. Rescale the 
+		// projection matrix accordingly.
+        double nr = myModule->getDepthPartitionZ() / zNear;
+        cam->setProjectionMatrixAsFrustum(left * nr, right * nr, bottom * nr, top * nr, myModule->getDepthPartitionZ(), zFar);
+		cam->setClearMask(0);
+	}
+
+	// Update the scene view root node if needed.
+	if(view->getSceneData() == NULL || 
+		view->getSceneData() != myModule->getRootNode())
+	{
+		osg::Node* root = myModule->getRootNode();
+		view->setSceneData(root);
+	}
+	view->setFrameStamp(myModule->getFrameStamp());
+
+	// Cull
+	if(getstats) myTimer.start();
+
+	view->cull(context.eye);
+
+	if(getstats) collectStat(myCullTimeStat, "osgCullP%1%", myTimer.getElapsedTime() * 1000);
+
+	// Draw
+	if(getstats) myTimer.start();
+
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
+	view->draw();
+	glPopAttrib();
+
+	if(getstats) collectStat(myDrawTimeStat, "osgDrawP%1%", myTimer.getElapsedTime() * 1000);
+
+	// Collect triangle count statistics (every 10 frames)
+	if(getstats) collectStat(myTriangleCountStat, "osgTrisP%1%", (float)view->getTriangleCount());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,70 +166,28 @@ void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 		// Collect statistics every 10 frames
 		if(context.frameNum % 10 == 0) getstats = true;
 
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		mySceneView->getState()->setContextID(context.tile->id);
-		mySceneView->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
-		mySceneView->setProjectionMatrix(buildOsgMatrix(context.projection.matrix()));
-		mySceneView->setViewMatrix(buildOsgMatrix(context.modelview.matrix()));
-		mySceneView->setAutoNearFar(myModule->getAutoNearFar());
-		//mySceneView->setDrawBufferValue(context.drawBuffer->getContext()->getId());
-
-		if(mySceneView->getSceneData() == NULL || mySceneView->getSceneData() != myModule->getRootNode())
-		{
-			osg::Node* root = myModule->getRootNode();
-			mySceneView->setSceneData(root);
-		}
-		mySceneView->setFrameStamp(myModule->getFrameStamp());
-
 		myModule->getDatabasePager()->signalBeginFrame(myModule->getFrameStamp());
 
-		if(getstats) myTimer.start();
-
-		mySceneView->cull(context.eye);
-
-		if(getstats)
+		OsgModule::DepthPartitionMode dpm = myModule->getDepthPartitionMode();
+		if(dpm == OsgModule::DepthPartitionOff)
 		{
-			myTimer.stop();
-			if(myCullTimeStat == NULL)
-			{
-				StatsManager* sm = SystemManager::instance()->getStatsManager();
-				unsigned int pipeId = getClient()->getGpuContext()->getId();
-				myCullTimeStat = sm->createStat(ostr("osgCullP%1%", %pipeId));
-			}
-			myCullTimeStat->addSample(myTimer.getElapsedTime() * 1000);
+			drawView(mySceneView, context, getstats, OsgModule::DepthPartitionOff);
 		}
-
-
-		if(getstats) myTimer.start();
-		glPushAttrib(GL_ALL_ATTRIB_BITS);
-		mySceneView->draw();
-		glPopAttrib();
-		if(getstats)
+		else
 		{
-			myTimer.stop();
-			if(myDrawTimeStat == NULL)
+			// When depth partitioning is on, we draw the scene twice using the two embedded SceneView instances.
+			if(dpm == OsgModule::DepthPartitionOn || dpm == OsgModule::DepthPartitionFarOnly)
 			{
-				StatsManager* sm = SystemManager::instance()->getStatsManager();
-				unsigned int pipeId = getClient()->getGpuContext()->getId();
-				myDrawTimeStat = sm->createStat(ostr("osgDrawP%1%", %pipeId));
+				drawView(mySceneView, context, getstats, OsgModule::DepthPartitionFarOnly);
 			}
-			float millis = myTimer.getElapsedTime() * 1000;
-			myDrawTimeStat->addSample(millis);
+			if(dpm == OsgModule::DepthPartitionOn || dpm == OsgModule::DepthPartitionNearOnly)
+			{
+				drawView(mySceneView, context, getstats, OsgModule::DepthPartitionNearOnly);
+			}
 		}
 
 		myModule->getDatabasePager()->signalEndFrame();
-		// Collect triangle count statistics (every 10 frames)
-		if(getstats)
-		{
-			if(myTriangleCountStat == NULL)
-			{
-				StatsManager* sm = SystemManager::instance()->getStatsManager();
-				unsigned int pipeId = getClient()->getGpuContext()->getId();
-				myTriangleCountStat = sm->createStat(ostr("osgTrisP%1%", %pipeId));
-			}
-			myTriangleCountStat->addSample((float)mySceneView->getTriangleCount());
-		}
+
 	}
 	//sInitLock.unlock();
 }

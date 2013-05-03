@@ -58,6 +58,19 @@ namespace omegaOsg
 	class OOSG_API OsgModule: public EngineModule
 	{
 	public:
+		//! The mode to use for scene depth partitioning
+		enum DepthPartitionMode
+		{
+			//! Depth partition is off. All nodes will be drawn using a single pair of near/far Z values.			
+			DepthPartitionOff, 
+			//! Depth partition is on. All nodes will be drawn in two batches, using the z value specified through setDepthPartitionZ at the threshold between near and far batches.			
+			DepthPartitionOn, 
+			//! Draw objects in the far depth partition batch only.
+			DepthPartitionFarOnly,
+			//! Draw objects in the near depth partition batch only.
+			DepthPartitionNearOnly
+		};
+
 		static OsgModule* instance();
 		static osg::Image* pixelDataToOsg(PixelData* img);
 
@@ -85,10 +98,18 @@ namespace omegaOsg
 		void setAutoNearFar(bool value) { myAutoNearFar = value; }
 		bool getAutoNearFar() { return myAutoNearFar; }
 
+		void setDepthPartitionMode(DepthPartitionMode mode) { myDepthPartitionMode = mode; }
+		DepthPartitionMode getDepthPartitionMode() { return myDepthPartitionMode; }
+		void setDepthPartitionZ(float value) { myDepthPartitionZ = value; }
+		float getDepthPartitionZ() { return myDepthPartitionZ; }
+
 	private:
 		static OsgModule* mysInstance;
 
 		bool myAutoNearFar;
+
+		DepthPartitionMode myDepthPartitionMode;
+		float myDepthPartitionZ;
 
 		//OsgSceneObject* myRootSceneObject;
 		Ref<osg::Node> myRootNode;

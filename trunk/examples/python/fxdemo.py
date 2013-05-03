@@ -20,8 +20,8 @@ box.setName("Box")
 
 # Place a light
 light = Light.create()
-light.setColor(Color("white"))
-light.setAmbient(Color("#202020"))
+light.setAmbient(Color("white"))
+#light.setAmbient(Color("#202020"))
 light.setEnabled(True)
 lightDistance = 0.5
 
@@ -90,7 +90,7 @@ def onObjectSelected(node, distance):
 		fxmnu.placeOnWand(e)
 		fxmnu.show()
 		mm.setMainMenu(fxmnu)
-		fxmnu.setLabel(selected.getName() + " effects")
+		#fxmnu.setLabel(selected.getName() + " effects")
 
 #--------------------------------------------------------------------------------------------------
 def onEvent():

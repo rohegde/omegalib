@@ -54,16 +54,15 @@ using namespace osg;
 using namespace osgUtil;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-SceneView::SceneView( osgDB::DatabasePager* dp, osg::DisplaySettings* ds)
+SceneView::SceneView( osgDB::DatabasePager* dp)
 {
-	_displaySettings = ds;
+	//_displaySettings = ds;
 	_databasePager = dp;
 
-    _prioritizeTextures = false;
+    //_prioritizeTextures = false;
     
-    setCamera(new Camera);
+    _camera = new Camera;
     _camera->setViewport(new Viewport);
-	_camera->setClearMask(0);
     
     _initCalled = false;
 
@@ -84,12 +83,12 @@ SceneView::SceneView(const SceneView& rhs, const osg::CopyOp& copyop):
     osg::Object(rhs,copyop),
     osg::CullSettings(rhs)
 {
-    _displaySettings = rhs._displaySettings;
+    //_displaySettings = rhs._displaySettings;
 
-    _prioritizeTextures = rhs._prioritizeTextures;
+    //_prioritizeTextures = rhs._prioritizeTextures;
     
     _camera = rhs._camera;
-    _cameraWithOwnership = rhs._cameraWithOwnership;
+    //_cameraWithOwnership = rhs._cameraWithOwnership;
     
     _initCalled = false;
 
@@ -120,26 +119,26 @@ SceneView::~SceneView()
 //};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneView::setCamera(osg::Camera* camera, bool assumeOwnershipOfCamera)
-{
-    if (camera)
-    {
-        _camera = camera;
-    }
-    else
-    {
-        osg::notify(osg::NOTICE)<<"Warning: attempt to assign a NULL camera to SceneView not permitted."<<std::endl;
-    }
-    
-    if (assumeOwnershipOfCamera)
-    {
-        _cameraWithOwnership = _camera.get();
-    }
-    else
-    {
-        _cameraWithOwnership = 0;
-    }
-}
+//void SceneView::setCamera(osg::Camera* camera, bool assumeOwnershipOfCamera)
+//{
+//    if (camera)
+//    {
+//        _camera = camera;
+//    }
+//    else
+//    {
+//        osg::notify(osg::NOTICE)<<"Warning: attempt to assign a NULL camera to SceneView not permitted."<<std::endl;
+//    }
+//    
+//    if (assumeOwnershipOfCamera)
+//    {
+//        _cameraWithOwnership = _camera.get();
+//    }
+//    else
+//    {
+//        _cameraWithOwnership = 0;
+//    }
+//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::setSceneData(osg::Node* node)
@@ -260,13 +259,13 @@ void SceneView::updateUniforms(int eye)
     if (_activeUniforms & VIEW_MATRIX_UNIFORM)
     {
         osg::Uniform* uniform = _localStateSet->getOrCreateUniform("osg_ViewMatrix",osg::Uniform::FLOAT_MAT4);
-        uniform->set(getViewMatrix());
+        uniform->set(_camera->getViewMatrix());
     }
 
     if (_activeUniforms & VIEW_MATRIX_INVERSE_UNIFORM)
     {
         osg::Uniform* uniform = _localStateSet->getOrCreateUniform("osg_ViewMatrixInverse",osg::Uniform::FLOAT_MAT4);
-        uniform->set(osg::Matrix::inverse(getViewMatrix()));
+        uniform->set(osg::Matrix::inverse(_camera->getViewMatrix()));
     }
 
 	// Add the eye uniform
@@ -308,15 +307,15 @@ void SceneView::cull(int eye)
    
 	state->initializeExtensionProcs();
     state->setFrameStamp(_frameStamp.get());
-    state->setDisplaySettings(_displaySettings.get());
+    //state->setDisplaySettings(_displaySettings.get());
 
     _cullVisitor->setTraversalMask(_cullMask);
-    bool computeNearFar = cullStage(getProjectionMatrix(),getViewMatrix(),_cullVisitor.get(),_stateGraph.get(),_renderStage.get(),getViewport());
+    bool computeNearFar = cullStage(_camera->getProjectionMatrix(),_camera->getViewMatrix(),_cullVisitor.get(),_stateGraph.get(),_renderStage.get(),_camera->getViewport());
     if (computeNearFar)
     {
         CullVisitor::value_type zNear = _cullVisitor->getCalculatedNearPlane();
         CullVisitor::value_type zFar = _cullVisitor->getCalculatedFarPlane();
-        _cullVisitor->clampProjectionMatrix(getProjectionMatrix(),zNear,zFar);
+        _cullVisitor->clampProjectionMatrix(_camera->getProjectionMatrix(),zNear,zFar);
     }
 	_renderInfo.popCamera();
 }
@@ -395,7 +394,7 @@ bool SceneView::cullStage(const osg::Matrixd& projection,const osg::Matrixd& mod
     renderStage->setCamera(_camera.get());
 
     if (_globalStateSet.valid()) cullVisitor->pushStateSet(_globalStateSet.get());
-    if (_secondaryStateSet.valid()) cullVisitor->pushStateSet(_secondaryStateSet.get());
+    //if (_secondaryStateSet.valid()) cullVisitor->pushStateSet(_secondaryStateSet.get());
     if (_localStateSet.valid()) cullVisitor->pushStateSet(_localStateSet.get());
 
     cullVisitor->pushViewport(viewport);
@@ -498,11 +497,11 @@ void SceneView::draw()
     // assume the the draw which is about to happen could generate GL objects that need flushing in the next frame.
     _requiresFlush = true;
 
-    state->setInitialViewMatrix(new osg::RefMatrix(getViewMatrix()));
+    state->setInitialViewMatrix(new osg::RefMatrix(_camera->getViewMatrix()));
 
     RenderLeaf* previous = NULL;
 
-    _localStateSet->setAttribute(getViewport());
+    _localStateSet->setAttribute(_camera->getViewport());
 
     _renderInfo.setView(_camera->getView());
 	_renderInfo.pushCamera(_camera.get());

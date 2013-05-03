@@ -49,20 +49,20 @@ class SceneView : public osg::Object, public osg::CullSettings
     public:
 
         /** Construct a default scene view.*/
-        SceneView(osgDB::DatabasePager* db=NULL, osg::DisplaySettings* ds=NULL);
+        SceneView(osgDB::DatabasePager* db = NULL);
 
         SceneView(const SceneView& sceneview, const osg::CopyOp& copyop = osg::CopyOp());
 
         META_Object(osgUtil, SceneView);
 
         /** Set the camera used to represent the camera view of this SceneView.*/
-        void setCamera(osg::Camera* camera, bool assumeOwnershipOfCamera = true);
+        //void setCamera(osg::Camera* camera, bool assumeOwnershipOfCamera = true);
 
         /** Get the camera used to represent the camera view of this SceneView.*/
         osg::Camera* getCamera() { return _camera.get(); }
 
         /** Get the const camera used to represent the camera view of this SceneView.*/
-        const osg::Camera* getCamera() const { return _camera.get(); }
+        //const osg::Camera* getCamera() const { return _camera.get(); }
 
         /** Set the data to view. The data will typically be
          *  an osg::Scene but can be any osg::Node type.
@@ -77,45 +77,44 @@ class SceneView : public osg::Object, public osg::CullSettings
         /** Get the const scene data which to view. The data will typically be
          *  an osg::Scene but can be any osg::Node type.
          */
-        const osg::Node* getSceneData(unsigned int childNo=0) const { return (_camera->getNumChildren()>childNo) ? _camera->getChild(childNo) : 0; }
+        //const osg::Node* getSceneData(unsigned int childNo=0) const { return (_camera->getNumChildren()>childNo) ? _camera->getChild(childNo) : 0; }
         
         /** Get the number of scene data subgraphs added to the SceneView's camera.*/
-        unsigned int getNumSceneData() const { return _camera->getNumChildren(); }
+        //unsigned int getNumSceneData() const { return _camera->getNumChildren(); }
 
         /** Set the viewport of the scene view to use specified osg::Viewport. */
-        void setViewport(osg::Viewport* viewport) { _camera->setViewport(viewport); }
+        //void setViewport(osg::Viewport* viewport) { _camera->setViewport(viewport); }
 
         /** Set the viewport of the scene view to specified dimensions. */
-        void setViewport(int x,int y,int width,int height) { _camera->setViewport(x,y,width,height); }
-
+        //void setViewport(int x,int y,int width,int height) { _camera->setViewport(x,y,width,height); }
 
         /** Get the viewport. */
-        osg::Viewport* getViewport() { return (_camera->getViewport()!=0) ? _camera->getViewport() : 0; }
+        //osg::Viewport* getViewport() { return (_camera->getViewport()!=0) ? _camera->getViewport() : 0; }
 
         /** Get the const viewport. */
-        const osg::Viewport* getViewport() const { return (_camera->getViewport()!=0) ? _camera->getViewport() : 0; }
+        //const osg::Viewport* getViewport() const { return (_camera->getViewport()!=0) ? _camera->getViewport() : 0; }
         
         /** Set the DisplaySettings. */
-        inline void setDisplaySettings(osg::DisplaySettings* vs) { _displaySettings = vs; }
+        //inline void setDisplaySettings(osg::DisplaySettings* vs) { _displaySettings = vs; }
         
         /** Get the const DisplaySettings */
-        inline const osg::DisplaySettings* getDisplaySettings() const { return _displaySettings.get(); }
+        //inline const osg::DisplaySettings* getDisplaySettings() const { return _displaySettings.get(); }
 
         /** Get the DisplaySettings */
-        inline osg::DisplaySettings* getDisplaySettings() { return _displaySettings.get(); }
+        //inline osg::DisplaySettings* getDisplaySettings() { return _displaySettings.get(); }
 
 
         void setGlobalStateSet(osg::StateSet* state) { _globalStateSet = state; }
         osg::StateSet* getGlobalStateSet() { return _globalStateSet.get(); }
-        const osg::StateSet* getGlobalStateSet() const { return _globalStateSet.get(); }
+        //const osg::StateSet* getGlobalStateSet() const { return _globalStateSet.get(); }
 
-        void setSecondaryStateSet(osg::StateSet* state) { _secondaryStateSet = state; }
-        osg::StateSet* getSecondaryStateSet() { return _secondaryStateSet.get(); }
-        const osg::StateSet* getSecondaryStateSet() const { return _secondaryStateSet.get(); }
+        //void setSecondaryStateSet(osg::StateSet* state) { _secondaryStateSet = state; }
+        //osg::StateSet* getSecondaryStateSet() { return _secondaryStateSet.get(); }
+        //const osg::StateSet* getSecondaryStateSet() const { return _secondaryStateSet.get(); }
 
         void setLocalStateSet(osg::StateSet* state) { _localStateSet = state; }
         osg::StateSet* getLocalStateSet() { return _localStateSet.get(); }
-        const osg::StateSet* getLocalStateSet() const { return _localStateSet.get(); }
+        //const osg::StateSet* getLocalStateSet() const { return _localStateSet.get(); }
 
 		void setAutoNearFar(bool value);
         
@@ -161,27 +160,25 @@ class SceneView : public osg::Object, public osg::CullSettings
 
 
         /** Set the projection matrix. Can be thought of as setting the lens of a camera. */
-        inline void setProjectionMatrix(const osg::Matrixf& matrix) { _camera->setProjectionMatrix(matrix); }
-
+        //inline void setProjectionMatrix(const osg::Matrixf& matrix) { _camera->setProjectionMatrix(matrix); }
 
         /** Get the projection matrix.*/
-        osg::Matrixd& getProjectionMatrix() { return _camera->getProjectionMatrix(); }
+        //osg::Matrixd& getProjectionMatrix() { return _camera->getProjectionMatrix(); }
 
         /** Get the const projection matrix.*/
-        const osg::Matrixd& getProjectionMatrix() const { return _camera->getProjectionMatrix(); }
+        //const osg::Matrixd& getProjectionMatrix() const { return _camera->getProjectionMatrix(); }
 
         /** Set the view matrix. Can be thought of as setting the position of the world relative to the camera in camera coordinates. */
-        inline void setViewMatrix(const osg::Matrixf& matrix) { _camera->setViewMatrix(matrix); }
+        //inline void setViewMatrix(const osg::Matrixf& matrix) { _camera->setViewMatrix(matrix); }
         
         /** Get the view matrix. */
-        osg::Matrixd& getViewMatrix() { return _camera->getViewMatrix(); }
+        //osg::Matrixd& getViewMatrix() { return _camera->getViewMatrix(); }
 
         /** Get the const view matrix. */
-        const osg::Matrixd& getViewMatrix() const { return _camera->getViewMatrix(); }
+        //const osg::Matrixd& getViewMatrix() const { return _camera->getViewMatrix(); }
 
         /** Get to the position and orientation of a modelview matrix, using the same convention as gluLookAt. */
-        void getViewMatrixAsLookAt(osg::Vec3& eye,osg::Vec3& center,osg::Vec3& up,float lookDistance=1.0f) const;
-
+        //void getViewMatrixAsLookAt(osg::Vec3& eye,osg::Vec3& center,osg::Vec3& up,float lookDistance=1.0f) const;
 
         void setInitVisitor(osg::NodeVisitor* av) { _initVisitor = av; }
         osg::NodeVisitor* getInitVisitor() { return _initVisitor.get(); }
@@ -223,10 +220,10 @@ class SceneView : public osg::Object, public osg::CullSettings
 
 
         /** Set whether the draw method should call renderer->prioritizeTexture.*/
-        void setPrioritizeTextures(bool pt) { _prioritizeTextures = pt; }
+        //void setPrioritizeTextures(bool pt) { _prioritizeTextures = pt; }
         
         /** Get whether the draw method should call renderer->prioritizeTexture.*/
-        bool getPrioritizeTextures() const { return _prioritizeTextures; }
+        //bool getPrioritizeTextures() const { return _prioritizeTextures; }
 
         /** Set the frame stamp for the current frame.*/
         inline void setFrameStamp(osg::FrameStamp* fs) { _frameStamp = fs; }
@@ -250,7 +247,7 @@ class SceneView : public osg::Object, public osg::CullSettings
         virtual void draw();
         
         /** Compute the number of dynamic objects that will be held in the rendering backend */
-        unsigned int getReferenceTypeCount() const { return _dynamicObjectCount; }
+       // unsigned int getReferenceTypeCount() const { return _dynamicObjectCount; }
         
         /** Release all OpenGL objects from the scene graph, such as texture objects, display lists etc.
           * These released scene graphs placed in the respective delete GLObjects cache, which
@@ -275,7 +272,7 @@ class SceneView : public osg::Object, public osg::CullSettings
         /** Do cull traversal of attached scene graph using Cull NodeVisitor. Return true if computeNearFar has been done during the cull traversal.*/
         virtual bool cullStage(const osg::Matrixd& projection,const osg::Matrixd& modelview,osgUtil::CullVisitor* cullVisitor, osgUtil::StateGraph* rendergraph, osgUtil::RenderStage* renderStage, osg::Viewport *viewport);
         
-        void clearArea(int x,int y,int width,int height,const osg::Vec4& color);
+        //void clearArea(int x,int y,int width,int height,const osg::Vec4& color);
 
         osg::ref_ptr<osg::StateSet>                 _localStateSet;
         osg::RenderInfo                             _renderInfo;
@@ -292,16 +289,16 @@ class SceneView : public osg::Object, public osg::CullSettings
         osg::ref_ptr<osg::FrameStamp>               _frameStamp;
         
         osg::observer_ptr<osg::Camera>              _camera;
-        osg::ref_ptr<osg::Camera>                   _cameraWithOwnership;
+        //osg::ref_ptr<osg::Camera>                   _cameraWithOwnership;
         
         osg::ref_ptr<osg::StateSet>                 _globalStateSet;
-        osg::ref_ptr<osg::DisplaySettings>          _displaySettings;
+        //osg::ref_ptr<osg::DisplaySettings>          _displaySettings;
         
         osg::ref_ptr<osg::StateSet>                 _secondaryStateSet;
 
 		osg::ref_ptr<osgDB::DatabasePager>			_databasePager;
 
-        float                                       _fusionDistanceValue;
+        //float                                       _fusionDistanceValue;
 
         bool                                        _prioritizeTextures;
         
