@@ -106,7 +106,9 @@ OsgModule* OsgModule::instance()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgModule::OsgModule():
-	EngineModule("OsgModule")
+	EngineModule("OsgModule"),
+		myDepthPartitionMode(DepthPartitionOff),
+		myDepthPartitionZ(1000)
 {
     mysInstance = this;
 
@@ -186,7 +188,8 @@ bool OsgModule::handleCommand(const String& command)
 	{
 		// ?: print help
 		omsg("OsgModule");
-		omsg("\t autonearfar [on|off] - toggle auto near far Z on or off");
+		omsg("\t autonearfar [on|off] - (experimental) toggle auto near far Z on or off");
+		omsg("\t depthpart [on <value>|off|near|far] - set the depth partition mode and Z threshold");
 	}
 	else if(args[0] == "autonearfar")
 	{
@@ -198,6 +201,34 @@ bool OsgModule::handleCommand(const String& command)
 		ofmsg("OsgModule: autoNearFar = %1%", %getAutoNearFar());
 		// Mark command as handled
 		return true;
+	}
+	else if(args[0] == "depthpart")
+	{
+		if(args.size() > 1)
+		{
+			if(args[1] == "on" && args.size() > 2)
+			{
+				float z = boost::lexical_cast<float>(args[2]);
+				myDepthPartitionMode = DepthPartitionOn;
+				myDepthPartitionZ = z;
+			}
+			else if(args[1] == "off")
+			{
+				myDepthPartitionMode = DepthPartitionOff;
+			}
+			else if(args[1] == "near")
+			{
+				myDepthPartitionMode = DepthPartitionNearOnly;
+			}
+			else if(args[1] == "far")
+			{
+				myDepthPartitionMode = DepthPartitionFarOnly;
+			}
+			else
+			{
+				ofwarn("OsgModule::handleCommand: unknown depth partition mode %1%", %command);
+			}
+		}
 	}
 	return false;
 }
