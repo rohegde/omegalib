@@ -1,7 +1,7 @@
 #summary Quick Commands Reference
 #sidebar Sidebar
 = Python omegalib developement =
-<p>*Last revision:* ver. 3.7 - 27 April 2013
+<p>*Last revision:* ver. 3.7 - 3 May 2013
 </p>
 
 
@@ -22,3 +22,27 @@ It is possible to use quick commands from within a script file, using the `queue
 
 == Extending quick commands ==
 If you are implementing your own omegalib module, you can expose additional quick commands. Quick commands are useful to allow runtime control for your modules, without the need to expose full python commands. To add quick commands to your module or application in C++, you have to implement the `EngineModule::handleCommand` method. When the user types a command starting with a colon, all modules implementing `handleCommand` will receive a copy of the command. See `src/apps/orun/orun.cpp` for an example of how quick commands are implemented.
+
+== Quick Commands List ==
+Here is alist of the quick commands supported by various omegalib modules and applications.
+|| *command* || *description* ||
+|| *omegalib* || ||
+|| `post [command]` || When connected to a mission control server, send the specified python command to all the other connected applications. ||
+|| `debug <on|off>` || Turn debug mode on and off. When debug mode is enabled, omegalib modules may output more information to the console. or change some visual properties (i.e. display bounding boxes for objects). The behavior depends on each module handling this command. ||
+|| `freefly` || *Wand camera controller* Enable/ Disable freefly mode. ||
+|| *orun* || ||
+|| `:u` || Unload the current running script and reset the environment. ||
+|| `:r <script>` || Run the specified script ||
+|| `:r! <script>` || Run the specified script after resetting the environment ||
+|| `:ln` || Print the scene node tree ||
+|| `:lo` || List all allocated objects ||
+|| `:c` || Turn on-screen console on/off (same as TAB key) ||
+|| `:s` || Print a summary of performance statistics ||
+|| `:w` || Turn the wand drawable object on / off. Works only when a motion-captured wand object is available ||
+|| `:f` || Draw current frames-per-second onscreen ||
+|| `:porthole [xmlFile] [cssFile]` || Turn on the Porthole web server. Accepts an optional xml interface description and css style. When left unspecified, `porthole/porthello.xml` and `porthole/porthello.css` will be used. FOr more information about porthole see the [PortholeReference Porthole Reference Page] ||
+|| *cyclops* || ||
+|| `:shaderInfo` || Print a list of currently loaded shaders. ||
+|| *omegaOsg* || ||
+|| `:autonearfar [on|off]` || *experimental* Enable auto calculation of the near and far clipping planes. ||
+|| `:depthpart [on <z>|off|near|far]` || Controls depth partitioning. When turned on, `z` specifies the Z plane that divides the near and far partition. The global near and far z planes are controlled with the `setNearFarZ` python command. Use the `near` and `far` options to display the near and far partitions only (for debug). ||

@@ -21,6 +21,7 @@
 	* Fixed optimization error for animated models.
 *omegaOsg*
 	* FIX: `queueCommand(':autonearfar on')` done before osg module initialization was being ignored.
+	* Added support for depth partitioning, to correctly render large scale scenes.
 *omegaToolkit*
 	* API Additions: `Widget.getCenter()`.
 ------------------------------------------------------------------------

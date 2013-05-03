@@ -46,12 +46,24 @@ Given a `Vector3f trackerPosition`, you can convert it to the world reference fr
 }}}
 
 === "I'm trying to load an .obj file. The model does not show up, and the console gets spammed with a lot of CullVisitor Errors' ===
+*Added:* ver. 3.7 - 29 April 2013
 This is likely due to your obj model using *per-vertex colors*. The OpenSceneGraph obj loader does not like per-vertex colors. The typical solution is to use per-face colors instead. An easy way to do this is to open your mesh in a tool like MeshLab and use Filters > Color Creation and Processing > Vertex Colors to Face Colors
 When saving the new obj *make sure you disable colors* in the vertex attributes section.
 
 === "My model disappears when I get close / far from it, or it just shows up on a few tiles of my tiled display" ===
+*Updated:* ver. 3.7 - 3 May 2013
 This is likely a near/far clipping plane issue. It usually shows up when you are drawing big models (i.e. when using osgEarth).
 Omegalib tries to set up good clipping planes for you but does not handle every situation well. You can manually specify the near and far clipping planes using the `setNearFarZ` function in python (or the equivalent `DisplaySystem` method in C++). A good test call is something like `setNearFarZ(0.1, 1000000)`. Note that if you have a big near-to-far z ratio, you may get z fighting issues for objects close in depth. Omegalib uses a 24-bit z buffer by default. 
+If your application is based on OpenSceneGraph (using cyclops for instance) you can also turn on *depth partitioning* to handle scenes with large Z intervals (i.e drawing planetary-scale data at a distance, plus small objects close to the camera).
+
+For example, to enable depth partitioning and create two partitions, one for near objects (z from 0.1 to 1000) and one for far objects (z from 1000 to 100000000):
+{{{
+	# Specify the overall depth range
+	setNearFarZ(0.1, 100000000)
+	# Give a render hint to the OpenSceneGraph module (if loaded): create a depth partition at 1000. 
+	queueCommand(`:depthpart on 1000`)
+}}}
+
 
 ---------------------------------------------------------------------------------------------------
 = Visual Studio 2010 =
