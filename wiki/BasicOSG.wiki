@@ -15,7 +15,7 @@ Modules are pluggable components that can enrich the functionality of omegalib a
  * plug in code that is run at every frame update
  * add its own handler for input events
  * manage its own synchronized data in a cluster configuration
-omegalib ships with a bunch of pre-made modules, like the ones that add support for vtk and OpenSceneGraph. And each time you are implementing an omegalib application, you are actually *implementing a new module* (that's why your main application will always be a subclass of `ServerModule`). For more information on `ServerModule` see [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_server_module.html omega::ServerModule]
+omegalib ships with a bunch of pre-made modules, like the ones that add support for vtk and OpenSceneGraph. And each time you are implementing an omegalib application, you are actually *implementing a new module* (that's why your main application will always be a subclass of `EngineModule`). For more information on `EngineModule` see [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_engine_module.html omega::EngineModule]
 
 Now let's go back to the main topic and take a look at the basic omega/osg application structure:
 {{{
