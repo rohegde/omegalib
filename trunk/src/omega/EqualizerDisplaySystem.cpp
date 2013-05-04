@@ -88,6 +88,12 @@ void EqualizerDisplaySystem::generateEqConfig()
 
 	START_BLOCK(result, "server");
 
+	START_BLOCK(result, "connection");
+	result +=
+		L("type TCPIP") +
+		L(ostr("port %1%", %eqcfg.basePort));
+	END_BLOCK(result);
+	
 	START_BLOCK(result, "config");
 	// Latency > 0 makes everything explode when a local node is initialized, due to 
 	// multiple shared data messages sent to slave nodes before they initialize their local objects

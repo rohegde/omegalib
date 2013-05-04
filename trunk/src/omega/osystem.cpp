@@ -126,6 +126,7 @@ namespace omega
 		int offs = (tiley * dc->tileGridSize[0] + tilex) * portPool / dc->numTiles;
 		dc->basePort += offs;
 
+		ofmsg("Grid size %1% %2% pool %3% numTimes %4%", %dc->tileGridSize[0] %dc->tileGridSize[1] %portPool %dc->numTiles);
 		ofmsg("Multi-Instance mode: instance id = %1% tile viewport (%2% %3% - %4% %5%) port %6%", 
 			%offs %tilex %tiley %(tilex + tilew) %(tiley + tileh) %dc->basePort);
 	}
@@ -254,7 +255,7 @@ namespace omega
 			sArgs.newNamedString(
 				'm',
 				"mc",
-				"Sets mission control mode. (default, client, server) ", "In default mode, the application opens a mission control server if enabled in the configuration file. ",
+				"Sets mission control mode. (default, client, server, disable) ", "In default mode, the application opens a mission control server if enabled in the configuration file. ",
 				mcmode);
 
 			sArgs.setName("omegalib");
