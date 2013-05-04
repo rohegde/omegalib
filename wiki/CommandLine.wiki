@@ -1,7 +1,7 @@
 #summary Command line support
 #sidebar Sidebar
 = Command line support =
-<p>*Last revision:* ver. 3.7 - 27 April 2013</p>
+<p>*Last revision:* ver. 3.7 - 3 May 2013</p>
 
 All omegalib applications (yes, even the ones you create) support a few predefined command line arguments. If you application neds more, you can also add custom ones.
 
@@ -16,7 +16,7 @@ The predefined command line syntax of an omegalib application is:
  * `-D path`: changes the default omegalib data path see [Filesystem the filesystem page] for more information
  * `-L path`: changes the path of the application log file (default: same as the application name with a .log extention)
  * `-I <tx>,<ty>,<tw>,<th>,<portPool>`: (version 3.7+) sets up multi-instance mode. See [MultiInstance the Multi-Instance Guide] for more information.
- * `-m <default|client|server>`: (version 3.7+) sets the mission control mode. Read more in the section below.
+ * `-m <default|client|server,disable>`: (version 3.7+) sets the mission control mode. Read more in the section below.
 
 === Mission Control Mode ===
 The `-m` switch speciies the mission control mode for the application. Mission control allows applications to receive remote commands and create connections to each other to support collaborative applications. See the [MissionControl Mission Control Wiki Page] for more information about Mission Control.
@@ -24,6 +24,7 @@ The configuration of mission control is specified in the system configuration fi
  * `default`: this is the default mode (not entering the `-m` switch is the same as entering `-m default`). In this mode the application checks the `serverEnabled` variable in the system configuration, and if set to true opens a *mission control server* on the port specified in the system configuration (`port` variable), or using default port 22500.
  * `server`: same as default  bt forces the creation of a server even if `serverEnabled` is set to false in the configuration file.
  * `client`: this option sets up the application as a *mission control client*, and attempts connection to a server using the `serverHost` and `port` variables in the system configuration file.
+ * `disable`: disables mission control
 
 == Custom command line arguments ==
 You can create additional command line arguments for your application, right before calling `omain`:

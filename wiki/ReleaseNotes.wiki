@@ -10,6 +10,7 @@
 	* Improved support for building custom external modules.
 	* Additional fixes to runtime application switching.
 	* added mission control `-m` flag to the default command line options. (see [CommandLine the Command Line Wiki page]).
+	* added support for *multi-instance* launching (using the `-I` command line option). Now multiple intances of omegalib can easily run on a cluster driving a display system, sharing the same configuration and each controlling a subsection of the display space.
 *omega*
 	* `DisplayConfig.verbose` mode
 	* New python functions: `getViewRay(x, y)`, `broadcastCommand()`
