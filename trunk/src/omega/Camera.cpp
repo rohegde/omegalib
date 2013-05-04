@@ -47,7 +47,8 @@ Camera::Camera(Engine* e, uint flags):
 	myTrackerSourceId(-1),
 	myHeadOrientation(Quaternion::Identity()),
 	myHeadOffset(Vector3f::Zero()),
-	myMask(0)
+	myMask(0),
+	myEyeSeparation(0.6f)
 {
 	//myProjectionOffset = -Vector3f::UnitZ();
 
