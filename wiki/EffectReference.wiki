@@ -94,6 +94,8 @@ The common options are available on all effects, both builtin (`colored`, `textu
 || `colored -d blue -g 1.0 -s 30` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/bluePlastic.png" width="150"/> ||
 || `colored -d blue -g 0.5 -s 1` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/blues1.png" width="150"/> ||
 || `colored -d #202020 -g 1.0 -s 30 -t -a` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/additive.png" width="150"/> ||
+|| `colored -d black -e yellow` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/emissive.PNG" width="150"/> ||
+|| `colored -d yellow | colored -d black -e red -w -o -10000` || <img src="http://omegalib.googlecode.com/svn/wiki/EffectReference/wire2.PNG" width="150"/> ||
 
 -------------------------------------------------------------------------------
 ==  Textured shading ==
