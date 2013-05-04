@@ -29,6 +29,7 @@
 
 #include <osgFX/Technique>
 #include <osg/PolygonMode>
+#include <osg/PolygonOffset>
 #include<osg/BlendFunc>
 
 using namespace cyclops;
@@ -89,6 +90,76 @@ protected:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	bool processDefaultArguments(libconfig::ArgumentHelper& ah, const String& def, osg::StateSet* ss)
+	{
+		bool transparent = false;
+		bool additive = false;
+		bool disableDepth = false;
+		bool disableCull = false;
+		bool wireframe = false;
+		double offset = 0;
+
+		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
+		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
+		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
+		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
+		ah.newNamedDouble('o', "offset", "polygon offset", "enables and specifies the polygon offset", offset);
+		ah.newFlag('w', "wireframe", "enables wireframe", wireframe);
+		bool help = false;
+		ah.newFlag('?', "help", "prints help", help);
+		ah.process(def.c_str());
+
+		if(help)
+		{
+			osg::StateSet* ss = new osg::StateSet();
+			ah.writeUsage(cout);
+			addPass(ss);
+			return false;
+		}
+
+		ss->setNestRenderBins(false);
+		if(disableDepth)
+		{
+			ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
+		}
+		if(transparent)
+		{
+			ss->setMode(GL_BLEND, osg::StateAttribute::ON);
+			//ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF); 
+			ss->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+			//ss->setBinName("SORT_FRONT_TO_BACK");
+			if(additive)
+			{
+				osg::BlendFunc* bf = new osg::BlendFunc();
+				bf->setFunction(GL_SRC_ALPHA, GL_ONE);
+				ss->setAttribute(bf);
+			}
+		}
+		else
+		{
+			ss->setMode(GL_BLEND, osg::StateAttribute::OFF);
+		}
+		if(disableCull)
+		{
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE );
+		}
+		else
+		{
+			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
+		}
+		if(offset != 0)
+		{
+			ss->setAttributeAndModes(new osg::PolygonOffset(2.0f, offset), osg::StateAttribute::ON);
+		}
+		if(wireframe)
+		{
+			ss->setAttributeAndModes(new osg::PolygonMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE), osg::StateAttribute::ON);
+		}
+
+		return true;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void define_passes()
 	{
 		Vector<String> passes = StringUtils::split(myDefinition, "|");
@@ -101,7 +172,8 @@ protected:
 			else if(StringUtils::startsWith(*iter, "bump")) define_passes_bump(*iter);
 			else if(*iter == "")
 			{
-				define_passes_colored("colored");
+				// No pass specified, just use the default pipeline.
+				addPass(new osg::StateSet());
 			}
 			else
 			{
@@ -118,11 +190,7 @@ protected:
 		String emissive = "";
 		double shininess = 10;
 		double gloss = 0;
-		bool transparent = false;
 		bool vertexShaderVariant = false;
-		bool additive = false;
-		bool disableDepth = false;
-		bool disableCull = false;
 		String variation = "";
 		libconfig::ArgumentHelper ah;
 		ah.newString("effectName", "the effect name", effectName);
@@ -132,26 +200,13 @@ protected:
 		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
 		ah.newNamedString('v', "variation", "variation", "effect variation", variation);
 		ah.newFlag('V', "Vertex", "enable vertex shader variant", vertexShaderVariant);
-		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
-		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
-		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
-		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
-		bool help = false;
-		ah.newFlag('?', "help", "prints help", help);
-		ah.process(def.c_str());
 
-		if(help)
-		{
-			osg::StateSet* ss = new osg::StateSet();
-			ah.writeUsage(cout);
-			addPass(ss);
-		}
-
-		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
-		ss->setNestRenderBins(false);
 		addPass(ss);
 
+		if(!processDefaultArguments(ah, def, ss)) return;
+
+		//SceneManager* sm = SceneManager::instance();
 		ProgramAsset* asset = getOrCreateProgram("Colored", variation, vertexShaderVariant);
 
 		if(asset != NULL)
@@ -159,36 +214,6 @@ protected:
 			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
 			ss->addUniform( new osg::Uniform("unif_Shininess", (float)shininess) );
 			ss->addUniform( new osg::Uniform("unif_Gloss", (float)gloss) );
-			if(disableDepth)
-			{
-				ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
-			}
-			if(transparent)
-			{
-				ss->setMode(GL_BLEND, osg::StateAttribute::ON);
-				//ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF); 
-				ss->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
-				//ss->setBinName("SORT_FRONT_TO_BACK");
-				if(additive)
-				{
-					osg::BlendFunc* bf = new osg::BlendFunc();
-					bf->setFunction(GL_SRC_ALPHA, GL_ONE);
-					ss->setAttribute(bf);
-				}
-			}
-			else
-			{
-				ss->setMode(GL_BLEND, osg::StateAttribute::OFF);
-			}
-		}
-
-		if(disableCull)
-		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE );
-		}
-		else
-		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
 		}
 
 		// If we have colors, add material attribute
@@ -441,15 +466,11 @@ protected:
 		ah.newFlag('?', "help", "prints help", help);
 		ah.process(def.c_str());
 
-		if(help)
-		{
-			osg::StateSet* ss = new osg::StateSet();
-			ah.writeUsage(cout);
-			addPass(ss);
-		}
-
-		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
+		addPass(ss);
+		if(!processDefaultArguments(ah, def, ss)) return;
+
+		//SceneManager* sm = SceneManager::instance();
 		ProgramAsset* asset = getOrCreateProgram(effectName, "", false);
 
 		if(asset != NULL)
@@ -457,39 +478,6 @@ protected:
 			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
 			ss->addUniform( new osg::Uniform("unif_Shininess", (float)shininess) );
 			ss->addUniform( new osg::Uniform("unif_Gloss", (float)gloss) );
-			if(disableDepth)
-			{
-				ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
-			}
-			if(transparent)
-			{
-				ss->setMode(GL_BLEND, osg::StateAttribute::ON);
-				//ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF); 
-				ss->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
-				if(additive)
-				{
-					osg::BlendFunc* bf = new osg::BlendFunc();
-					bf->setFunction(GL_SRC_ALPHA, GL_ONE);
-					ss->setAttribute(bf);
-				}
-			}
-			else
-			{
-				ss->setMode(GL_BLEND, osg::StateAttribute::OFF);
-			}
-		}
-
-		if(disableCull)
-		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE );
-		}
-		else
-		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
-		}
-		if(drawPoints)
-		{
-			ss->setAttribute(new osg::PolygonMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::POINT));
 		}
 
 		// If we have colors, add material attribute
@@ -513,7 +501,6 @@ protected:
 			ss->setAttributeAndModes(mat, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 		}
 
-		addPass(ss);
 	}
 
 private:
