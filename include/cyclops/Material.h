@@ -71,6 +71,9 @@ namespace cyclops {
 		//void setProgram(const String& program) { myProgramName = program; }
 		//String getProgram() { return myProgramName; }
 
+		//! Enables or disables lighting for this object. 
+		//! @remarks lighting control through this method only works when rendering through the fixed-function pipeline. 
+		//! The entity owning this material must have no effect set (Entity.setEffect(""))
 		void setLightingEnabled(bool value);
 		bool isLightingEnabled() { return myLightingEnabled; }
 
