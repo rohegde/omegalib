@@ -3,16 +3,14 @@
 = Cyclops programming in omegalib =
 <p>*Last revision:* ver. 3.0 - 21 August 2012</p>
 
-In this page we will introduce omega/cyclops programming Cyclops is a utility library that sits on top of omegalib and OpenSceneGraph, and it is designed to simplify developement of applications that need to draw complex and visually pleasant scenes, without having to deal with the low-level details of osg. SOme of cyclops features are:
+In this page we will introduce omega/cyclops programming Cyclops is a utility library that sits on top of omegalib and OpenSceneGraph, and it is designed to speed-up developement of simple graphical applications, without having to deal with the low-level details of osg. In a sense, cyclops is the `GLUT` library of omegalib. Some of cyclops features are:
  * Support for loading scenes defined in a simple xml format
  * Easy creation of primitive shapes, like planes, spheres, cubes and so on
  * Out-of-the-box support for soft shadows
  * An expandable shaders and effects library
  * Full support for scripting through a python interface
 
-In many ways, cyclops works as a basic game engine, letting users interact with entities, static objects, scenes lights and so on.
-
-If you are undecided whether to develop your omegalib application using osg or cyclops, go with cyclops. It will take you way less time to have a working code base, and you will still have the option of integrating your own osg code by subclassing the `DrawableObject` class. The only scenario in which it makes sense to stick with omega/osg is when porting already existing applications.
+If you are undecided whether to develop your omegalib application using osg or cyclops, go with cyclops. It will take you way less time to have a working code base, and you will still have the option of integrating your own osg code by subclassing the `DrawableObject` class. The only scenario in which it makes sense to stick with omega/osg is when porting already existing applications, or when you are planning on using only advanced features of OpenSceneGraph and don't want to reference another utility library.
 
 == Cyclops Hello World ==
 The following code illustrates a basic cyclops application:
