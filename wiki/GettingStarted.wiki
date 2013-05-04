@@ -24,18 +24,18 @@ This page offers extended information on how to develop applications for omegali
  * [NewApplication Setting Up a Standalone Omegalib C++ Application].
  * [BasicOpenGL OpenGL Programming in Omegalib].
  * [BasicOSG OpenSceneGraph programming in Omegalib].
- * [BasicCyclops Cyclops Programming in Omegalib].
  * [BasicVtk Vtk Programming in Omegalib].
 
 == Feature Guides ==
+ * [BasicCyclops Cyclops: quickly create simple applications for Omegalib/OpenSceneGraph].
+ * [EffectReference Cyclops Effects, Materials and Shaders]
+ * [PortholeReference Porthole: Adding Web Control and Image Streaming to your Application (3.0)]
+ * [QuickCommands Quick Commands Reference (3.0)]
  * [MultiInstance Running Multiple Omegalib Instances (3.6.3)]
  * [MissionControl Mission Control: Connecting and Controlling Multiple Applications (3.7)]
  * [CameraController Camera Controllers: customizing navigation and camera movement (2.0)]
- * [PortholeReference Porthole: Adding Web Control and Image Streaming to your Application (3.0)]
- * [QuickCommands Quick Commands Reference (3.0)]
 
 == Reference ==
- * [EffectReference Cyclops Effects, Materials and Shaders]
  * [ConfigReference Configuration file reference]
  * [Filesystem File management in omegalib]
  * [AppFlow Application and Initialization Flow]
