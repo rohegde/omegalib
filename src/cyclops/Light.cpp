@@ -85,6 +85,13 @@ bool Light::updateOsgLight(int lightId, osg::Group* rootNode)
 			rootNode->addChild(myOsgLightSource);
 		}
 
+		// If the attachment node is different than the one the lightsource is attached to, change it.
+		if(rootNode != myOsgLightSource->getParent(0))
+		{
+			myOsgLightSource->getParent(0)->removeChild(myOsgLightSource);
+			rootNode->addChild(rootNode);
+		}
+
 		osg::Light* ol = myOsgLight;
 		osg::LightSource* ols = myOsgLightSource;
 		const Vector3f pos = getDerivedPosition();

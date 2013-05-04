@@ -53,6 +53,7 @@ void Material::setColor(const Color& diffuse, const Color& emissive)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Material::setShininess(float value)
 {
+	myMaterial->setShininess(osg::Material::FRONT_AND_BACK, value);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,6 +90,19 @@ float Material::getAlpha()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Material::setLightingEnabled(bool value)
+{
+	if(value)
+	{
+		myStateSet->setMode(GL_LIGHTING, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+	}
+	else
+	{
+		myStateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Material::reset()
 {
 	removeAllUniforms();
@@ -97,4 +111,6 @@ void Material::reset()
 	myAlpha = addUniform("unif_Alpha", Uniform::Float);
 	myAlpha->setFloat(1.0f);
 	myStateSet->setNestRenderBins(false);
+
+	setLightingEnabled(true);
 }

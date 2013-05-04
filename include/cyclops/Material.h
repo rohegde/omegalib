@@ -71,6 +71,10 @@ namespace cyclops {
 		//void setProgram(const String& program) { myProgramName = program; }
 		//String getProgram() { return myProgramName; }
 
+		void setLightingEnabled(bool value);
+		bool isLightingEnabled() { return myLightingEnabled; }
+
+
 		osg::StateSet* getStateSet() { return myStateSet; }
 
 		//! Resets all material properties to their default values.
@@ -86,6 +90,8 @@ namespace cyclops {
 		Ref<osg::Uniform> myGloss;
 		Ref<cyclops::Uniform> myAlpha;
 		bool myTransparent;
+
+		bool myLightingEnabled;
 
 		//String myProgramName;
 		//Ref<ProgramAsset> myProgram;
