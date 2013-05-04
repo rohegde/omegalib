@@ -68,10 +68,10 @@ Using Effects and Materials together gives users a lot of creative flexibility, 
 	* You have a shader with custom uniforms and want to set them at runtime: *use Material*
 	* You want to change an object color or alpha value at each frame: *use Material*
 
-The rest of this document will explain how to use effect definitions. For more information about the Material API, check the [CyclopsPythonReference Cyclops Python Reference Page]. For more information on cyclops shaders see the [ShaderReference Cyclops Shader Reference Page].
+The rest of this document will explain how to use effect definitions. For more information about the Material API, check the [CyclopsPythonReference Cyclops Python Reference Page].
 	
 -------------------------------------------------------------------------------
-==  Common Options ==
+==  Common Effect Options ==
 || *Option* || *Meaning* ||
 || `-t`		|| Enable alpha blending ||
 || `-a`		|| Enable additive blending (requires `-t`) ||
