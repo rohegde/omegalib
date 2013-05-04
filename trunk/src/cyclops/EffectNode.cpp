@@ -54,7 +54,10 @@ protected:
 
 		//String vertName = ostr("%1%/%2%.vert", %shaderRoot %name);
 		String fragName;
-		if(variant != "")
+		// The @ character in the variant name is used to generate a new separate program variation using the same shaders.
+		// This is useful, for instance, to decouple effects with different numbers of lights applied at the same time in 
+		// the scene.
+		if(variant != "" && variant[0] != '@')
 		{
 			// If the name already contains a slash do not use the default cyclops shader path: this allows the user to
 			// select custom shaders.
@@ -83,6 +86,10 @@ protected:
 		else
 		{
 			fragName = ostr("%1%/%2%.frag", %shaderRoot %name);
+			if(variant[0] == '@')
+			{
+				progName = ostr("%1%-%2%", %name %variant);
+			}
 		}
 
 		SceneManager* sm = SceneManager::instance();
@@ -451,6 +458,7 @@ protected:
 		bool disableDepth = false;
 		bool disableCull = false;
 		bool drawPoints = false;
+		String variant;
 		libconfig::ArgumentHelper ah;
 		ah.newString("effectName", "the effect name", effectName);
 		ah.newNamedString('d', "diffuse", "diffuse material", "diffuse material color", diffuse);
@@ -462,6 +470,7 @@ protected:
 		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
 		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
 		ah.newFlag('p', "points", "draw points", drawPoints);
+		ah.newNamedString('v', "variant", "shader variant", "fragment shader variant", variant);
 		bool help = false;
 		ah.newFlag('?', "help", "prints help", help);
 		ah.process(def.c_str());
@@ -471,7 +480,7 @@ protected:
 		if(!processDefaultArguments(ah, def, ss)) return;
 
 		//SceneManager* sm = SceneManager::instance();
-		ProgramAsset* asset = getOrCreateProgram(effectName, "", false);
+		ProgramAsset* asset = getOrCreateProgram(effectName, variant, false);
 
 		if(asset != NULL)
 		{
