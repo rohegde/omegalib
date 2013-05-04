@@ -79,7 +79,9 @@ void DisplayConfig::LoadConfig(Setting& scfg, DisplayConfig& cfg)
 	cfg.launcherInterval = Config::getIntValue("launcherInterval", scfg, 500);
 
 	const Setting& sTiles = scfg["tiles"];
+	// Reset number of nodes and tiles. Will count them in the next loop.
 	cfg.numNodes = 0;
+	cfg.numTiles = 0;
 
 	cfg.displayStatsOnMaster = Config::getBoolValue("displayStatsOnMaster", scfg, false);
 	if(cfg.displayStatsOnMaster)
