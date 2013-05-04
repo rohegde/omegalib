@@ -77,6 +77,8 @@ The rest of this document will explain how to use effect definitions. For more i
 || `-a`		|| Enable additive blending (requires `-t`) ||
 || `-D`		|| Disable depth testing ||
 || `-C`		|| Disable backface culling ||
+|| `-w`		|| Render object as wireframe ||
+|| `-o [num]`		|| Polygon offset value. Used when rendering the same object multiple times, to offset the depth value and pass the depth test. ||
 || `-g <value>`		|| Sets the specular gloss value (usually between 0 and 1). This parameter sets the `unif_Gloss` uniform in the fragment shader ||
 || `-s <value>`		|| Sets the specular shininess value (usually between 0 and 100+). This parameter sets the `unif_Shininess` uniform in the fragment shader ||
 
@@ -101,3 +103,58 @@ The common options are available on all effects, both builtin (`colored`, `textu
 
 -------------------------------------------------------------------------------
 ==  Bump shading ==
+*TODO*
+
+-------------------------------------------------------------------------------
+= Shaders Reference =
+
+== Shader Macros ==
+|| *Macro* || *Description* ||
+|| `@vertexShader` || Added at the beginning of a shader, add the default cyclops vertex shader code. (default is `/data/cyclops/common/forward/default.vert`). You need to add this at the beginning of a vertex shader to use all the other macros and functions listed here. ||
+|| `@surfaceShader` || Added at the beginning of a shader, add the default cyclops fragment shader code. (default is `/data/cyclops/common/forward/default.fragment`). You need to add this at the beginning of a vertex shader to use all the other macros and functions listed here. ||
+|| `@postLightingSection` ||  ||
+|| `$@fragmentLightSection { }@` || Defines the block of code that will be included in the shader for each active light Inisde the block, `@lightIndex` is the index of the current light in the gl_LightSource array. See `/data/cyclops/common/forward/default.frag` for an example of use. Re-defining this in your shader as an empty block can be used to disable lighting. ||
+
+|| `@vsinclude shadowMap` || *internal* ||
+|| `@fsinclude shadowMap` || *internal* ||
+|| `@fsinclude lightFunctions` || *internal* ||
+|| `@customFragmentDefs` || *internal* ||
+
+== Callbacks ==
+|| *Function Name* || *Description* ||
+|| `void setupSurfaceData(vec4 eyeSpacePosition)` || Used inside a cyclops vertex shader (see `@vertexShader`) to setup custom per-vertex rendering properties. Can be left empty. ||
+|| `SurfaceData getSurfaceData(void)` || Used inside a cyclops surface shader (see `@surfaceShader`) to define the properties of the renderable surface. Must return a `SurfaceData` structure with the properties of the current surface fragment. ||
+|| `vec4 lightFunction(SurfaceData sd, LightData ld)` || Used to implement custom light functions used by `Light.setLightFuction`. Accepts surface and light definition structures, and returns output luminance for the current surface fragment.||
+
+== Common Variables ==
+|| *Variable* || *Description* ||
+|| `varying vec3 var_Normal` || ||
+|| `varying vec3 var_EyeVector` || ||
+|| `uniform float unif_Alpha` || ||
+
+== Structures ==
+=== `SurfaceData` ===
+|| *Variable* || *Description* ||
+|| `vec4 albedo` || The albedo of the surface. Will be modulated by the lights affecting the surface. Albedo alpha will be multiplied by emissive alpha. ||
+|| `vec4 emissive` || The emissive color of the surface. This color will be added to the final luminance, after lighting. ||
+|| `vec3 normal` || The normal of this surface fragment. ||
+|| `float shininess` || The shininess power of the fragment. Used for specular calculation. ||
+|| `float gloss` || The gloss of the fragment. Between 0 and 1. Modulates the specular luminance before adding it to the final fragment luminance (so, 0 disables specular) ||
+
+=== `LightData` ===
+|| *Variable* || *Description* ||
+|| `vec4 diffuse` || The diffuse color of the light. ||
+|| `vec4 ambient` || The ambient color of the light. ||
+|| `vec4 specular` || The specular color of the light. ||
+|| `vec3 dir` || The light direction for directional lights. ||
+|| `vec3 halfDir` || The light half vector. ||
+|| `vec3 spotDirection` || The light direction for spot lights. ||
+|| `float spotCutoff` || The cutoff for spot lights. ||
+|| `float spotExponent` || The exponent for spot lights. ||
+|| `float shadow` || A shadow multiplier for lights generating shadow maps. ||
+|| `float distance` || The distance for spot lights. ||
+|| `vec3 attenuation` || The constant, linear, quadratic attenuation for the light. ||
+
+=== `LitSurfaceData` ===
+|| *Variable* || *Description* ||
+|| `vec4 luminance` || The final luminance for the fragment. Typically this is the final value written to the frame buffer. ||

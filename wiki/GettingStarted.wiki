@@ -35,8 +35,7 @@ This page offers extended information on how to develop applications for omegali
  * [QuickCommands Quick Commands Reference (3.0)]
 
 == Reference ==
- * [EffectReference Cyclops Effects and Materials]
- * [ShaderReference Cyclops Shader Reference]
+ * [EffectReference Cyclops Effects, Materials and Shaders]
  * [ConfigReference Configuration file reference]
  * [Filesystem File management in omegalib]
  * [AppFlow Application and Initialization Flow]
