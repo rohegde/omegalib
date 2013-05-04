@@ -67,12 +67,6 @@ namespace omega {
 		void setup(Setting& s);
 		void handleEvent(const Event& evt);
 
-		//const Vector3f& getProjectionOffset() { return myProjectionOffset; }
-		//void setProjectionOffset(const Vector3f& value) { myProjectionOffset = value; }
-
-		//void setOrientationAndResetController(const Quaternion& value);
-
-		//! PYAPI
 		void setPitchYawRoll(const Vector3f& yawPitchRoll);
 				
 		const AffineTransform3& getViewTransform();
@@ -82,11 +76,6 @@ namespace omega {
 		//! Returns a view ray given an origin point in normalized coordinates.
 		//! @param normalizedPoint - the origin point for the ray in normalized ([0, 1]) coordinates
 		Ray getViewRay(const Vector2f& normalizedPoint);
-
-		//const AffineTransform3& getViewTransform();
-		//const AffineTransform3& getProjectionTransform();
-		//void setProjectionTransform(const AffineTransform3& value);
-		//void setViewTransform(const AffineTransform3& value);
 
 		bool getAutoAspect();
 		void setAutoAspect(bool value);
@@ -116,6 +105,9 @@ namespace omega {
 		void setTrackingEnabled(bool value) { myTrackingEnabled = value; }
 		int getTrackerSourceId() { return myTrackerSourceId; }
 		void setTrackerSourceId(int value) { myTrackerSourceId = value; }
+		//! Set eye separation for stereo rendering
+		void setEyeSeparation(float value) { myEyeSeparation = value; }
+		float getEyeSeparation() { return myEyeSeparation; }
 		//@}
 
 		//! Converts a point from local to world coordinates using the camera position and orientation
@@ -149,6 +141,9 @@ namespace omega {
 		Quaternion myHeadOrientation;
 		//! Observer head transform
 		AffineTransform3 myHeadTransform;
+
+		//! Eye separation
+		float myEyeSeparation;
 		
 		//! Tracking stuff
 		bool myTrackingEnabled;
