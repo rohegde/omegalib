@@ -1,7 +1,7 @@
 #summary Python reference: module omega
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.7 - 26 April 2013</p>*
+<p>*Last revision:* ver. 3.7 - 4 May 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -401,7 +401,8 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_
 || Method(s) || Description ||
 || `setPitchYawRoll(value)` || Sets the camera orientation as yaw, pitch roll in radians. `value` is a `Vector3`. For example, to rotate 45 degrees around the global Y axis: {{{ camera.setPitchYawRoll(Vector3(0, radians(45), 0)) }}} ||
 || `getHeadOffset()`, `setHeadOffset(value)` || ||
-|| `setHeadOrientation(value)`, `getHeadOrientation()` || ||
+|| `setEyeSeparation(float value)`, `getEyeSeparation()` || Gets or sets the eye separation for stereo rendering ||
+|| `setHeadOrientation(Vector3 value)`, `getHeadOrientation()` || ||
 || `isTrackingEnabled()`, `setTrackingEnabled(value)` || ||
 || `getTrackerSourceId()`, `setTrackerSourceId(value)` || ||
 || `setControllerEnabled(value)`, `isControllerEnabled()` || ||
