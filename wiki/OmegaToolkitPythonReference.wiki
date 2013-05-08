@@ -160,7 +160,7 @@ Base class for GUI elements
 || `setStyleValue(style, value)` || Sets the value for a single style key ||
 || `refresh()` || Forces a widget refresh ||
 || `hitTest(position)` || Checks if the specified pixel position (as a `Vector2` value) lies within the widget area ||
-|| `setUiEventCommand(command)` || Sets the command to be invoked when events happen in the widget area (like clicks or value changes) ||
+|| `setUIEventCommand(command)` || Sets the command to be invoked when events happen in the widget area (like clicks or value changes) ||
 || `getLayer()`, `setLayer(value)` || Gets or sets the layer for the widget. Layers influence the drawing order of widgets within the same container ||
 || `transformPoint(point)` || Transforms a point from global pixel coordinates to local pixel coordinates in the widget space. Returns a `Vector2` value ||
 || `setCenter(point)`, `getCenter()` || Gets or Sets the widget position by it center ||
