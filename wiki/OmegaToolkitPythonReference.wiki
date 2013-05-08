@@ -77,7 +77,6 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `addContainer()` || Convenience method for adding a container. Returns a reference to the created `MenuItem` ||
 || `show()` || Displays the menu ||
 || `hide()` || Hides the menu ||
-|| `placeOnWand(event)` || Places the menu along the wand ray contained in the passed event ||
 || `isVisible()` || Returns `True` if this menu is currently visible ||
 || `placeOnWand(event)` || When 3d menus are enabled, places the menu on the wand ray. The argument must be an event containing ray information, like a `Wand` or `Pointer` event. ||
 
