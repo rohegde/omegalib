@@ -305,6 +305,13 @@ void Menu::update(const UpdateContext& context)
 	c3ds.node = my3dSettings.node;
 	//c3ds.alpha = my3dSettings.alpha;
 
+	if(c3ds.enable3d == false)
+	{
+		myContainer->setAlpha(c3ds.alpha);
+		myContainer->setBlendMode(Widget::BlendNormal);
+		myContainer->setScale(c3ds.alpha);
+	}
+
 	if(myContainer->isVisible())
 	{
 		if(c3ds.alpha <= 0.1f)
@@ -389,6 +396,11 @@ void Menu::onPushMenuStack()
 		Vector3f dir = subc3ds.normal.cross(subc3ds.up);
 		my3dSettings.position += subc3ds.normal * (-0.3f) + dir * (subc3ds.scale * myContainer->getWidth());
 		my3dSettings.alpha = myActiveSubMenu->get3dSettings().alpha / 3;
+
+		if(!my3dSettings.enable3d)
+		{
+			myActiveSubMenu->getContainer()->setPosition(myContainer->getPosition());
+		}
 	}
 }
 
