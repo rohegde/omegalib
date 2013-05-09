@@ -3,6 +3,7 @@ from omega import *
 from cyclops import *
 
 speedLabel = None
+mainmnu = None
 
 def _setCamSpeed(speedLevel):
 	global speedLabel
@@ -30,9 +31,20 @@ def _displayWand(value):
 		
 	
 def _onAppStart():
+	global mainmnu
     # mm = getViewer().getMenuManager()
 	mm = MenuManager.createAndInitialize()
 	mainmnu = mm.createMenu("Main Menu")
+
+	# If menus are in 2d mode, add a menu open button
+	if(not getBoolSetting('config/ui', 'menu3dEnabled', False)):
+		uim = UiModule.instance()
+		wf = uim.getWidgetFactory()
+		mainButton = wf.createButton('mainButton', uim.getUi())
+		mainButton.setText("Main Menu")
+		mainButton.setUIEventCommand('mainmnu.show()')
+		mainButton.setStyleValue('fill', 'black')
+		mainmnu.getContainer().setPosition(Vector2(5, 25))
 	
 	mi = mainmnu.addImage(loadImage("omegalib-transparent-white.png"))
 	ics = mi.getImage().getSize() * 0.1
@@ -56,8 +68,28 @@ def _onAppStart():
 	mi = sysmnu.addButton("Toggle Stereo", "toggleStereo()")
 	mi = sysmnu.addButton("Toggle Console", ":c")
 	mi = sysmnu.addButton("List Active Modules", "printModules()")
-	mi = sysmnu.addButton("Exit omegalib", "oexit()")
-	
+	mi = sysmnu.addButton("Exit omegalib", "_shutdown()")
 
-# If config says to start mission control server, do it now.
-if(getBoolSetting("config/missionControl", "serverEnabled", False)): mcstart()
+
+shuttingDown = False
+fadeOutVal = 0
+
+def _shutdown():
+	global shuttingDown
+	global fadeOutVal
+	shuttingDown = True
+	fadeOutVal = 0
+
+def onUpdate(frame, t, dt):
+	global shuttingDown
+	global fadeOutVal
+	if(shuttingDown):
+		if(fadeOutVal >= 1): oexit()
+		else:
+			uim = UiModule.instance()
+			ui = uim.getUi()
+			alpha = int(fadeOutVal * 256)
+			ui.setStyleValue('fill', '#000000' + hex(alpha)[2:])
+			fadeOutVal += dt
+	
+setUpdateFunction(onUpdate)
