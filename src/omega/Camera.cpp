@@ -48,7 +48,7 @@ Camera::Camera(Engine* e, uint flags):
 	myHeadOrientation(Quaternion::Identity()),
 	myHeadOffset(Vector3f::Zero()),
 	myMask(0),
-	myEyeSeparation(0.16f)
+	myEyeSeparation(0.06f)
 {
 	//myProjectionOffset = -Vector3f::UnitZ();
 
