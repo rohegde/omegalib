@@ -47,7 +47,8 @@ Engine::Engine(ApplicationBase* app):
 	//myPointerMode(PointerModeWand)
 	myDrawPointers(false),
 	myDebugWand(false),
-	myPrimaryButton(Event::Button3)
+	myPrimaryButton(Event::Button3),
+	soundEnv(NULL)
 {
     mysInstance = this;
 }
@@ -148,21 +149,24 @@ void Engine::initialize()
 
 	// Load sound config from system config file
 	// On distributed systems, this is executed only on the master node
-	if(syscfg->exists("config/sound"))
+	if(SystemManager::instance()->isMaster())
 	{
-        Setting& s = syscfg->lookup("config/sound");
+		if(syscfg->exists("config/sound"))
+		{
+			Setting& s = syscfg->lookup("config/sound");
 
-		String soundServerIP = Config::getStringValue("soundServerIP", s, "localhost");
-		int soundServerPort = Config::getIntValue("soundServerPort", s, 57120);
+			String soundServerIP = Config::getStringValue("soundServerIP", s, "localhost");
+			int soundServerPort = Config::getIntValue("soundServerPort", s, 57120);
 
-		soundManager = new SoundManager(soundServerIP,soundServerPort);
-		soundManager->startSoundServer();
+			soundManager = new SoundManager(soundServerIP,soundServerPort);
+			soundManager->startSoundServer();
 
-		soundEnv = soundManager->getSoundEnvironment();
-		soundEnv->setListenerPosition( getDefaultCamera()->getPosition() );
-		soundEnv->setListenerOrientation( getDefaultCamera()->getOrientation() );
+			soundEnv = soundManager->getSoundEnvironment();
+			soundEnv->setListenerPosition( getDefaultCamera()->getPosition() );
+			soundEnv->setListenerOrientation( getDefaultCamera()->getOrientation() );
 
-		soundEnv->setUserPosition( Vector3f(0.0,1.8f,0.0) );
+			soundEnv->setUserPosition( Vector3f(0.0,1.8f,0.0) );
+		}
 	}
 
 	// Load input mapping

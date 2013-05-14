@@ -356,6 +356,7 @@ void PythonInterpreter::evalEventCommand(const String& command, const Event& evt
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::runFile(const String& filename)
 {
+	ofmsg("PythonInterpreter::runFile: running %1%", %filename);
 	// Substitute the OMEGA_DATA_ROOT and OMEGA_APP_ROOT macros in the path.
 	String path = filename;
 	path = StringUtils::replaceAll(path, "OMEGA_DATA_ROOT", OMEGA_DATA_PATH);
