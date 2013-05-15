@@ -365,14 +365,17 @@ void Widget::dispatchUIEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::playMenuScrollSound()
 {
-	if(SystemManager::settingExists("config/sound"))
+	if(getEngine()->getSoundEnvironment() != NULL)
 	{
-		Sound* sound = getEngine()->getSoundEnvironment()->getSound("scrollMenuSound");
-		if( sound != NULL )
+		if(SystemManager::settingExists("config/sound"))
 		{
-			SoundInstance* inst = new SoundInstance(sound);
-			inst->setLocalPosition( getContainer()->get3dSettings().position );
-			inst->play();
+			Sound* sound = getEngine()->getSoundEnvironment()->getSound("scrollMenuSound");
+			if( sound != NULL )
+			{
+				SoundInstance* inst = new SoundInstance(sound);
+				inst->setLocalPosition( getContainer()->get3dSettings().position );
+				inst->play();
+			}
 		}
 	}
 }
