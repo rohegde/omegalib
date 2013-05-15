@@ -23,6 +23,9 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * The omegalib Engine is the core runtime component of omegalib. It runs on each node of a cluster 
+ * system and handles the abstract scene graph, cameras, distribution of events and frame updates. 
  *************************************************************************************************/
 #include "omega/Engine.h"
 #include "omega/Application.h"
@@ -166,6 +169,13 @@ void Engine::initialize()
 			soundEnv->setListenerOrientation( getDefaultCamera()->getOrientation() );
 
 			soundEnv->setUserPosition( Vector3f(0.0,1.8f,0.0) );
+
+			bool assetCacheEnabled = Config::getBoolValue("assetCacheEnabled", s, true);
+			int assetCachePort = Config::getIntValue("assetCachePort", s, 22500);
+
+			soundManager->setAssetCacheEnabled(assetCacheEnabled);
+			soundManager->getAssetCacheManager()->addCacheHost(soundServerIP);
+			soundManager->getAssetCacheManager()->setCachePort(assetCachePort);
 		}
 	}
 

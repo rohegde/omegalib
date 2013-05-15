@@ -23,6 +23,9 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * The omegalib Engine is the core runtime component of omegalib. It runs on each node of a cluster 
+ * system and handles the abstract scene graph, cameras, distribution of events and frame updates. 
  *************************************************************************************************/
 #ifndef __ENGINE_SERVER_H__
 #define __ENGINE_SERVER_H__
