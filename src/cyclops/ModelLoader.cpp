@@ -155,6 +155,7 @@ osg::Node* ModelLoader::processDefaultOptions(osg::Node* node, ModelAsset* asset
 				osgUtil::Optimizer::MERGE_GEOMETRY | 
 				osgUtil::Optimizer::SPATIALIZE_GROUPS |
 				osgUtil::Optimizer::MERGE_GEODES |
+				osgUtil::Optimizer::TRISTRIP_GEOMETRY |
 				osgUtil::Optimizer::VERTEX_POSTTRANSFORM);
 		}
 
