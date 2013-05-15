@@ -23,6 +23,8 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * The scene manager contains all the main features used to handle a cyclops scene and its assets.
  *************************************************************************************************/
 #ifndef __CY_SCENE_MANAGER__
 #define __CY_SCENE_MANAGER__
@@ -106,6 +108,7 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! The scene manager contains all the main features used to handle a cyclops scene and its assets.
 	class CY_API SceneManager: public EngineModule, SceneNodeListener
 	{
 	friend class Entity;
@@ -261,6 +264,8 @@ namespace cyclops {
 
 		// Model loaders
 		Dictionary< String, Ref<ModelLoader> > myLoaderDictionary;
+		// The default loader. Used when all the other loaders fail.
+		ModelLoader* myDefaultLoader;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

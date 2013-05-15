@@ -112,7 +112,7 @@ OsgModule::OsgModule():
 {
     mysInstance = this;
 
-	myAutoNearFar = true;
+	myAutoNearFar = false;
 
     myRootNode = NULL;
     //myRootSceneObject = NULL;

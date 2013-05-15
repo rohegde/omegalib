@@ -254,11 +254,7 @@ protected:
 		String variant;
 		double shininess = 10;
 		double gloss = 0;
-		bool transparent = false;
-		bool additive = false;
 		bool vertexShaderVariant = false;
-		bool disableDepth = false;
-		bool disableCull = false;
 		libconfig::ArgumentHelper ah;
 		
 		ah.newString("effectName", "the effect name", effectName);
@@ -267,25 +263,13 @@ protected:
 		ah.newFlag('V', "Vertex", "enable vertex shader variant", vertexShaderVariant);
 		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
 		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
-		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
-		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
-		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
-		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
-		bool help = false;
-		ah.newFlag('?', "help", "prints help", help);
-		ah.process(def.c_str());
 
-		if(help)
-		{
-			osg::StateSet* ss = new osg::StateSet();
-			ah.writeUsage(cout);
-			addPass(ss);
-		}
+		osg::StateSet* ss = new osg::StateSet();
+		addPass(ss);
+
+		if(!processDefaultArguments(ah, def, ss)) return;
 		
 		SceneManager* sm = SceneManager::instance();
-		osg::StateSet* ss = new osg::StateSet();
-		ss->setNestRenderBins(false);
-		addPass(ss);
 		osg::Program* prog = NULL;
 		ProgramAsset* asset = getOrCreateProgram("Textured", variant, vertexShaderVariant);
 		if(asset != NULL)
@@ -297,36 +281,6 @@ protected:
 			ss->addUniform( new osg::Uniform("unif_Gloss", (float)gloss) );
 
 			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
-
-			if(disableDepth)
-			{
-				ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
-			}
-			if(transparent)
-			{
-				ss->setMode(GL_BLEND, osg::StateAttribute::ON);
-				if(additive)
-				{
-					osg::BlendFunc* bf = new osg::BlendFunc();
-					bf->setFunction(GL_SRC_ALPHA, GL_ONE);
-					ss->setAttribute(bf);
-				}
-				else
-				{
-					osg::BlendFunc* bf = new osg::BlendFunc();
-					bf->setFunction(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-					ss->setAttribute(bf);
-				}				
-			}
-		}
-
-		if(disableCull)
-		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE );
-		}
-		else
-		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
 		}
 
 		if(diffuse != "")
@@ -351,11 +305,7 @@ protected:
 		String variant;
 		double shininess = 10;
 		double gloss = 0;
-		bool transparent = false;
-		bool additive = false;
 		bool vertexShaderVariant = false;
-		bool disableDepth = false;
-		bool disableCull = false;
 		libconfig::ArgumentHelper ah;
 		
 		ah.newString("effectName", "the effect name", effectName);
@@ -365,25 +315,12 @@ protected:
 		ah.newFlag('V', "Vertex", "enable vertex shader variant", vertexShaderVariant);
 		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
 		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
-		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
-		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
-		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
-		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
-		bool help = false;
-		ah.newFlag('?', "help", "prints help", help);
-		ah.process(def.c_str());
-
-		if(help)
-		{
-			osg::StateSet* ss = new osg::StateSet();
-			ah.writeUsage(cout);
-			addPass(ss);
-		}
 		
-		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
-		ss->setNestRenderBins(false);
 		addPass(ss);
+		if(!processDefaultArguments(ah, def, ss)) return;
+
+		SceneManager* sm = SceneManager::instance();
 		osg::Program* prog = NULL;
 		ProgramAsset* asset = getOrCreateProgram("Bump", variant, vertexShaderVariant);
 		if(asset != NULL)
@@ -399,30 +336,6 @@ protected:
 			ss->addUniform( new osg::Uniform("unif_Gloss", (float)gloss) );
 
 			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
-
-			if(disableDepth)
-			{
-				ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
-			}
-			if(transparent)
-			{
-				ss->setMode(GL_BLEND, osg::StateAttribute::ON);
-				if(additive)
-				{
-					osg::BlendFunc* bf = new osg::BlendFunc();
-					bf->setFunction(GL_SRC_ALPHA, GL_ONE);
-					ss->setAttribute(bf);
-				}
-			}
-		}
-
-		if(disableCull)
-		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE );
-		}
-		else
-		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
 		}
 
 		if(diffuse != "")
@@ -453,10 +366,6 @@ protected:
 		String emissive = "";
 		double shininess = 10;
 		double gloss = 0;
-		bool transparent = false;
-		bool additive = false;
-		bool disableDepth = false;
-		bool disableCull = false;
 		bool drawPoints = false;
 		String variant;
 		libconfig::ArgumentHelper ah;
@@ -465,15 +374,8 @@ protected:
 		ah.newNamedString('e', "emissive", "emissive material", "emissive material color", emissive);
 		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
 		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
-		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
-		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
-		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
-		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
 		ah.newFlag('p', "points", "draw points", drawPoints);
 		ah.newNamedString('v', "variant", "shader variant", "fragment shader variant", variant);
-		bool help = false;
-		ah.newFlag('?', "help", "prints help", help);
-		ah.process(def.c_str());
 
 		osg::StateSet* ss = new osg::StateSet();
 		addPass(ss);

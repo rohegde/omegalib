@@ -23,6 +23,8 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * The scene manager contains all the main features used to handle a cyclops scene and its assets.
  *************************************************************************************************/
 #include <osgUtil/Optimizer>
 #include <osgDB/Archive>
@@ -135,7 +137,11 @@ SceneManager::SceneManager():
 	myModelLoaderThread = NULL;
 	sShutdownLoaderThread = false;
 
-	addLoader(new DefaultModelLoader());
+	myDefaultLoader = new DefaultModelLoader();
+
+	// Add the default loader to the list of loaders, so it can be called explicitly. The default loader
+	// Will always be used last.
+	addLoader(myDefaultLoader);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -900,17 +906,22 @@ bool SceneManager::loadModel(ModelInfo* info)
 		String basename;
 		String extension;
 		StringUtils::splitBaseFilename(asset->name, basename, extension);
-		typedef pair<String, Ref<ModelLoader> > LoaderDictionaryItem;
+		typedef KeyValue<String, Ref<ModelLoader> > LoaderDictionaryItem;
 		foreach(LoaderDictionaryItem ml, myLoaderDictionary)
 		{
-			if(ml.second->supportsExtension(extension))
+			if(ml.second != myDefaultLoader && ml->supportsExtension(extension))
 			{
-				if(ml.second->load(asset)) 
+				if(ml->load(asset)) 
 				{
 					result = true;
 					break;
 				}
 			}
+		}
+		// All loaders failed or none was able to handle the model file extension. Use the default loader.
+		if(!result)
+		{
+			result = myDefaultLoader->load(asset);
 		}
 	}
 	omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< SceneManager::loadModel\n");
