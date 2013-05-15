@@ -130,14 +130,17 @@ void Button::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Button::playPressedSound()
 {
-	if(SystemManager::settingExists("config/sound"))
+	if(getEngine()->getSoundEnvironment() != NULL)
 	{
-		Sound* sound = getEngine()->getSoundEnvironment()->getSound("selectMenuSound");
-		if( sound != NULL )
+		if(SystemManager::settingExists("config/sound"))
 		{
-			SoundInstance* inst = new SoundInstance(sound);
-			inst->setLocalPosition( getContainer()->get3dSettings().position );
-			inst->play();
+			Sound* sound = getEngine()->getSoundEnvironment()->getSound("selectMenuSound");
+			if( sound != NULL )
+			{
+				SoundInstance* inst = new SoundInstance(sound);
+				inst->setLocalPosition( getContainer()->get3dSettings().position );
+				inst->play();
+			}
 		}
 	}
 }
