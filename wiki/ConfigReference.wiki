@@ -130,6 +130,10 @@ Example:
 
 ---------------------------------------------------------------------------------------------------
 === `sound` section ===
+	* `soundServerIP`
+	* `soundServerPort`
+	* `assetCacheEnabled` (bool) - when set to true enabled the asset cache manager. The application will try to copy sounds over to the sound server machine (assuming a cache server is running)
+	* `assetCachePort` (int: default 22500) - the asset cache server port number
 Example:
 {{{
 	sound:

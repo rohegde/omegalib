@@ -10,7 +10,8 @@ Currently, precompiled versions of omegalib are available for windows only. You 
 === Major releases ===
 For each major release you can read release notes in the [ReleaseNotes] page.
 The current developer version is the most up to date, but the binaries may NOT contain all the features listed in the release notes page (some of them may still be on the source repository only).
-	* (*Current Developer Version*) Omegalib 3.7 [https://dl.dropboxusercontent.com/shz/3j65w5bek4mplne/Nvl5q4zsBw/win32-v3.7?token_hash=AAFyZTVXHy1D0bw5VoPXKsX65iWBlgneP7eGMx5QG16S7w&top_level_offset=9 [Download Zip]]
+	* (*Current Developer Version*) Omegalib 4.0 *binaries not available yet*
+	* Omegalib 3.7 [https://dl.dropboxusercontent.com/shz/3j65w5bek4mplne/Nvl5q4zsBw/win32-v3.7?token_hash=AAFyZTVXHy1D0bw5VoPXKsX65iWBlgneP7eGMx5QG16S7w&top_level_offset=9 [Download Zip]]
 	* Omegalib 3.6 [https://dl.dropbox.com/shz/lzjxsc64t9cg4rg/dhW0vn5dGS/win32-v3.6?token_hash=AAHNPT_9Ya0jZ0IrKjIqEWW3tdwwkVet7DUpnIhkJPA4Vg&top_level_offset=9 [Download Zip]]
 	* Omegalib 3.5 [https://dl.dropbox.com/shz/gnlmx1vnxebttx0/oq-e0PIRF4/win32-v3.5?token_hash=AAHToo7m1iCtO5NQmQhF8_J8mkD3iAFHILYrBfhpCSAMSg&top_level_offset=9 [Download Zip]]
 	* Omegalib 3.4 [https://omegalib.googlecode.com/files/omegalib-3.4-win32.zip [Download Zip]]

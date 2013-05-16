@@ -4,7 +4,13 @@
 <wiki:toc max_depth="1" />
 
 ------------------------------------------------------------------------
-= omegalib v3.7 (*current developer version*) =
+= omegalib v4.0 (*current developer version*) =
+== Major Changes ==
+
+------------------------------------------------------------------------
+= omegalib v3.7 =
+== Notes ==
+This is an intermediate release, before some major planned API additions for 4.0. 
 == Major Changes ==
 *general*
 	* Improved support for building custom external modules.
@@ -27,7 +33,9 @@
 	* FIX: `queueCommand(':autonearfar on')` done before osg module initialization was being ignored.
 	* Added support for depth partitioning, to correctly render large scale scenes.
 *omegaToolkit*
-	* API Additions: `Widget.getCenter()`.
+	* API Additions: `Widget.getCenter()`
+	* API Additions: `Menu.getContainer()`
+	* Improved support for 2D mode menus
 ------------------------------------------------------------------------
 = omegalib v3.6 =
 == Major Changes ==

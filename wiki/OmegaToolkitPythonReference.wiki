@@ -1,7 +1,7 @@
 #summary Python reference: module omegaToolkit
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.7 - 22 April 2013</p>*
+<p>*Last revision:* ver. 3.7 - 8 May 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -79,6 +79,7 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `hide()` || Hides the menu ||
 || `isVisible()` || Returns `True` if this menu is currently visible ||
 || `placeOnWand(event)` || When 3d menus are enabled, places the menu on the wand ray. The argument must be an event containing ray information, like a `Wand` or `Pointer` event. ||
+|| `getContainer()` || Gets the 'Container' widget containing the items of this menu ||
 
 === Examples ===
 ==== Place on wand ====
