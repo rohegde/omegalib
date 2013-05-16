@@ -142,10 +142,10 @@ protected:
 				ss->setAttribute(bf);
 			}
 		}
-		else
-		{
-			ss->setMode(GL_BLEND, osg::StateAttribute::OFF);
-		}
+		//else
+		//{
+		//	ss->setMode(GL_BLEND, osg::StateAttribute::OFF);
+		//}
 		if(disableCull)
 		{
 			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE );
