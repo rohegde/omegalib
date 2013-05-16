@@ -136,10 +136,10 @@ BOOST_PYTHON_MODULE(cyclops)
 		PYAPI_METHOD(Material, setColor)
 		PYAPI_METHOD(Material, setTransparent)
 		PYAPI_METHOD(Material, isTransparent)
-		PYAPI_METHOD(Material, setLightingEnabled)
-		PYAPI_METHOD(Material, isLightingEnabled)
 		PYAPI_METHOD(Material, reset)
 		PYAPI_METHOD(Material, setAlpha)
+		PYAPI_METHOD(Material, setProgram)
+		PYAPI_METHOD(Material, parse)
 		PYAPI_METHOD(Material, getAlpha);
 
 	// Entity

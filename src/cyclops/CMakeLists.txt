@@ -32,6 +32,7 @@ set(SRCS
 		LineSet.cpp
 		Light.cpp
 		Material.cpp
+		MaterialParser.cpp
 		ModelLoader.cpp
 		Shapes.cpp
 		Skybox.cpp
@@ -48,6 +49,7 @@ set(HEADERS
 		${CMAKE_SOURCE_DIR}/include/cyclops/LineSet.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/Light.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/Material.h
+		${CMAKE_SOURCE_DIR}/include/cyclops/MaterialParser.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/ModelLoader.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/cyclopsConfig.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/Shapes.h

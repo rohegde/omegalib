@@ -44,6 +44,7 @@ SET( srcs
 		MouseCameraController.cpp
 		WandCameraController.cpp
 		CameraOutput.cpp
+		Color.cpp
 		CylindricalDisplayConfig.cpp
 		Console.cpp
 		DrawInterface.cpp
@@ -89,6 +90,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/AsyncTask.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Camera.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CameraController.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Color.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DisplayConfig.h
 		${OmegaLib_SOURCE_DIR}/include/omega/KeyboardMouseCameraController.h
 		${OmegaLib_SOURCE_DIR}/include/omega/GamepadCameraController.h

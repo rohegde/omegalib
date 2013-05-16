@@ -42,6 +42,7 @@ namespace cyclops {
 	using namespace omega;
 	using namespace omegaOsg;
 	class SceneManager;
+	class ProgramAsset;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Encapsulates an OpenSceneGraph stateset and offers a quick interface to a few commonly
@@ -54,11 +55,37 @@ namespace cyclops {
 		void setColor(const Color& diffuse, const Color& emissive);
 		void setShininess(float value);
 		void setGloss(float value);
+		float getShininess();
+		float getGloss();
 
-		//! Transparency control
+		//! Textures
+		//@{
+		void setDiffuseTexture(const String& name);
+		void setNormalTexture(const String& name);
+		const String& getDiffuseTexture() { return myDiffuseTexture; }
+		const String& getNormalTexture() { return myNormalTexture; }
+		//@}
+
+		//! Creates a material from a string definition (uses the effect syntax)
+		bool parse(const String& definition);
+
+		//! Flags
 		//@{
 		void setTransparent(bool value);
 		bool isTransparent() { return myTransparent; }
+		void setAdditive(bool value);
+		bool isAdditive() { return myAdditive; }
+		void setDepthTestEnabled(bool value);
+		bool isDepthTestEnabled() { return myDepthTest; }
+		void setDoubleFace(bool value);
+		bool isDoubleFace() { return myDoubleFace; }
+		void setWireframe(bool value);
+		bool isWireframe() { return myWireframe; }
+		//@}
+
+		//! Set the material polygon offset.
+		void setPolygonOffset(float factor, float units);
+
 		//! Sets the material alpha value.
 		//! @remarks setAlpha only sets the value of the unif_Alpha uniform. By default, cyclops shaders use this 
 		//! uniform to modulate fragment alpha values after lighting (see postLightingSection/default.frag).
@@ -66,35 +93,41 @@ namespace cyclops {
 		void setAlpha(float value);
 		//! Gets the material alpha value.
 		float getAlpha();
-		//@}
 
 		//void setProgram(const String& program) { myProgramName = program; }
 		//String getProgram() { return myProgramName; }
-
-		//! Enables or disables lighting for this object. 
-		//! @remarks lighting control through this method only works when rendering through the fixed-function pipeline. 
-		//! The entity owning this material must have no effect set (Entity.setEffect(""))
-		void setLightingEnabled(bool value);
-		bool isLightingEnabled() { return myLightingEnabled; }
-
 
 		osg::StateSet* getStateSet() { return myStateSet; }
 
 		//! Resets all material properties to their default values.
 		void reset();
 
+		//! Sets the gpu program attached to this material. Returns true if the program has been set correctly.
+		bool setProgram(const String& name);
+
+	private:
+		ProgramAsset* getOrCreateProgram(const String& name, const String& variant = "");
+
 	private:
 		// No ref to avoid circular dependency.
 		SceneManager* mySceneManager;
 
+		// Flags
+		bool myTransparent;
+		bool myAdditive;
+		bool myDepthTest;
+		bool myDoubleFace;
+		bool myWireframe;
+
 		Ref<osg::StateSet> myStateSet;
 		Ref<osg::Material> myMaterial;
-		Ref<osg::Uniform> myShininess;
-		Ref<osg::Uniform> myGloss;
-		Ref<cyclops::Uniform> myAlpha;
-		bool myTransparent;
 
-		bool myLightingEnabled;
+		Ref<cyclops::Uniform> myShininess;
+		Ref<cyclops::Uniform> myGloss;
+		Ref<cyclops::Uniform> myAlpha;
+
+		String myDiffuseTexture;
+		String myNormalTexture;
 
 		//String myProgramName;
 		//Ref<ProgramAsset> myProgram;

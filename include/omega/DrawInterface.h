@@ -28,6 +28,7 @@
 #define __RENDERER_H__
 
 #include "osystem.h"
+#include "omega/Color.h"
 #include "omega/Font.h"
 #include "omega/ApplicationBase.h"
 

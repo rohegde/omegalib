@@ -30,6 +30,7 @@
 #include "osystem.h"
 #include "omega/NodeComponent.h"
 #include "omega/Node.h"
+#include "omega/Color.h"
 
 namespace omega {
 	class Engine;
