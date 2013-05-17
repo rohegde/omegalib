@@ -23,6 +23,9 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * Contains code for the Entity class. All drawable 3D objects in the cyclops framework derive 
+ * from Entity.
  *************************************************************************************************/
 #include <osg/Node>
 #include <osgUtil/Optimizer>
@@ -46,7 +49,7 @@ Entity::Entity(SceneManager* scene):
 		myCastShadow(true)
 {
 	// By default attach new entities to the root node of the scene.
-	myEffect = new EffectNode();
+	myEffect = new EffectNode(scene);
 	Engine* engine = mySceneManager->getEngine();
 	//engine->getScene()->addChild(this);
 }
@@ -105,7 +108,34 @@ void Entity::setEffect(const String& effectDefinition)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Material* Entity::getMaterial()
 {
-	return myEffect->getMaterial();
+	return getMaterialByIndex(0);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Material* Entity::getMaterialByIndex(unsigned int index)
+{
+	return myEffect->getMaterial(index);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int Entity::getMaterialCount()
+{
+	return myEffect->getMaterialCount();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::addMaterial(Material* mat)
+{
+	// NOTE: We have to reset the effect definition, otherwise all materials will be refreated. This will also force
+	// an effect refresh.
+	myEffect->addMaterial(mat);
+	myEffect->setDefinition("");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::clearMaterials()
+{
+	myEffect->clearMaterials();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

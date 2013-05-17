@@ -38,391 +38,57 @@ using namespace cyclops;
 class Technique: public osgFX::Technique
 {
 public:
-	Technique(const String& definition): myDefinition(definition)
+	Technique(const String& definition, EffectNode* fx): myDefinition(definition), myFxNode(fx)
 	{}
 
     /// Validate.
     bool validate(osg::State&) const { return true; }
 protected:
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	ProgramAsset* getOrCreateProgram(const String& name, const String& variant = "", bool vertexShaderVariant = false)
-	{
-		String shaderRoot = "cyclops/common";
-		String progName = name;
-
-		String vertName = ostr("%1%/%2%.vert", %shaderRoot %name);
-
-		//String vertName = ostr("%1%/%2%.vert", %shaderRoot %name);
-		String fragName;
-		// The @ character in the variant name is used to generate a new separate program variation using the same shaders.
-		// This is useful, for instance, to decouple effects with different numbers of lights applied at the same time in 
-		// the scene.
-		if(variant != "" && variant[0] != '@')
-		{
-			// If the name already contains a slash do not use the default cyclops shader path: this allows the user to
-			// select custom shaders.
-			if(variant.find('/') != String::npos)
-			{
-				fragName = ostr("%1%.frag", %variant);
-			}
-			else
-			{
-				fragName = ostr("%1%/%2%-%3%.frag", %shaderRoot %name %variant);
-			}
-
-			progName = ostr("%1%-%2%", %name %variant);
-			if(vertexShaderVariant)
-			{
-				if(variant.find('/') != String::npos)
-				{
-					vertName = ostr("%1%.vert", %variant);
-				}
-				else
-				{
-					vertName = ostr("%1%/%2%-%3%.vert", %shaderRoot %name %variant);
-				}
-			}
-		}
-		else
-		{
-			fragName = ostr("%1%/%2%.frag", %shaderRoot %name);
-			if(variant[0] == '@')
-			{
-				progName = ostr("%1%-%2%", %name %variant);
-			}
-		}
-
-		SceneManager* sm = SceneManager::instance();
-		return sm->getOrCreateProgram(progName, vertName, fragName);
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	bool processDefaultArguments(libconfig::ArgumentHelper& ah, const String& def, osg::StateSet* ss)
-	{
-		bool transparent = false;
-		bool additive = false;
-		bool disableDepth = false;
-		bool disableCull = false;
-		bool wireframe = false;
-		double offset = 0;
-
-		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
-		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
-		ah.newFlag('D', "disable-depth", "disable depth testing for this effect", disableDepth);
-		ah.newFlag('C', "disable-cull", "disable back face culling", disableCull);
-		ah.newNamedDouble('o', "offset", "polygon offset", "enables and specifies the polygon offset", offset);
-		ah.newFlag('w', "wireframe", "enables wireframe", wireframe);
-		bool help = false;
-		ah.newFlag('?', "help", "prints help", help);
-		ah.process(def.c_str());
-
-		if(help)
-		{
-			osg::StateSet* ss = new osg::StateSet();
-			ah.writeUsage(cout);
-			addPass(ss);
-			return false;
-		}
-
-		ss->setNestRenderBins(false);
-		if(disableDepth)
-		{
-			ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
-		}
-		if(transparent)
-		{
-			ss->setMode(GL_BLEND, osg::StateAttribute::ON);
-			//ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF); 
-			ss->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
-			//ss->setBinName("SORT_FRONT_TO_BACK");
-			if(additive)
-			{
-				osg::BlendFunc* bf = new osg::BlendFunc();
-				bf->setFunction(GL_SRC_ALPHA, GL_ONE);
-				ss->setAttribute(bf);
-			}
-		}
-		//else
-		//{
-		//	ss->setMode(GL_BLEND, osg::StateAttribute::OFF);
-		//}
-		if(disableCull)
-		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE );
-		}
-		else
-		{
-			ss->setMode( GL_CULL_FACE, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
-		}
-		if(offset != 0)
-		{
-			ss->setAttributeAndModes(new osg::PolygonOffset(2.0f, offset), osg::StateAttribute::ON);
-		}
-		if(wireframe)
-		{
-			ss->setAttributeAndModes(new osg::PolygonMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE), osg::StateAttribute::ON);
-		}
-
-		return true;
-	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void define_passes()
 	{
-		Vector<String> passes = StringUtils::split(myDefinition, "|");
-
-		for(Vector<String>::iterator iter = passes.begin(); iter != passes.end(); iter++)
+		// If an effect definition is specified, clear the effect materials and recreate them use
+		// the effect definition string.
+		if(myDefinition != "")
 		{
-			StringUtils::trim(*iter);
-			if(StringUtils::startsWith(*iter, "colored")) define_passes_colored(*iter);
-			else if(StringUtils::startsWith(*iter, "textured")) define_passes_textured(*iter);
-			else if(StringUtils::startsWith(*iter, "bump")) define_passes_bump(*iter);
-			else if(*iter == "")
+			myFxNode->clearMaterials();
+
+			Vector<String> passes = StringUtils::split(myDefinition, "|");
+
+			for(Vector<String>::iterator iter = passes.begin(); iter != passes.end(); iter++)
 			{
-				// No pass specified, just use the default pipeline.
-				addPass(new osg::StateSet());
-			}
-			else
-			{
-				define_passes_custom(*iter);
-			}
-		}
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	void define_passes_colored(const String& def)
-	{
-		String effectName;
-		String diffuse = "";
-		String emissive = "";
-		double shininess = 10;
-		double gloss = 0;
-		bool vertexShaderVariant = false;
-		String variation = "";
-		libconfig::ArgumentHelper ah;
-		ah.newString("effectName", "the effect name", effectName);
-		ah.newNamedString('d', "diffuse", "diffuse material", "diffuse material color", diffuse);
-		ah.newNamedString('e', "emissive", "emissive material", "emissive material color", emissive);
-		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
-		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
-		ah.newNamedString('v', "variation", "variation", "effect variation", variation);
-		ah.newFlag('V', "Vertex", "enable vertex shader variant", vertexShaderVariant);
-
-		osg::StateSet* ss = new osg::StateSet();
-		addPass(ss);
-
-		if(!processDefaultArguments(ah, def, ss)) return;
-
-		//SceneManager* sm = SceneManager::instance();
-		ProgramAsset* asset = getOrCreateProgram("Colored", variation, vertexShaderVariant);
-
-		if(asset != NULL)
-		{
-			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
-			ss->addUniform( new osg::Uniform("unif_Shininess", (float)shininess) );
-			ss->addUniform( new osg::Uniform("unif_Gloss", (float)gloss) );
-		}
-
-		// If we have colors, add material attribute
-		if(diffuse != "" | emissive != "")
-		{
-			osg::Material* mat = new osg::Material();
-			//mat->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
-
-			if(diffuse != "")
-			{
-				Color diffuseColor(diffuse);
-				mat->setDiffuse(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(diffuseColor));
-				mat->setAmbient(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(diffuseColor));
-			}
-			if(emissive != "")
-			{
-				Color emissiveColor(emissive);
-				//mat->setColorMode(osg::Material::EMISSION);
-				mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(emissiveColor));
-			}
-			mat->setSpecular(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
-			ss->setAttributeAndModes(mat, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
-		}
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	void define_passes_textured(const String& def)
-	{
-		String effectName;
-		String diffuse;
-		String variant;
-		double shininess = 10;
-		double gloss = 0;
-		bool vertexShaderVariant = false;
-		libconfig::ArgumentHelper ah;
-		
-		ah.newString("effectName", "the effect name", effectName);
-		ah.newNamedString('d', "diffuse", "diffuse texture", "diffuse texture file name", diffuse);
-		ah.newNamedString('v', "variant", "shader variant", "fragment shader variant", variant);
-		ah.newFlag('V', "Vertex", "enable vertex shader variant", vertexShaderVariant);
-		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
-		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
-
-		osg::StateSet* ss = new osg::StateSet();
-		addPass(ss);
-
-		if(!processDefaultArguments(ah, def, ss)) return;
-		
-		SceneManager* sm = SceneManager::instance();
-		osg::Program* prog = NULL;
-		ProgramAsset* asset = getOrCreateProgram("Textured", variant, vertexShaderVariant);
-		if(asset != NULL)
-		{
-			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
-			ss->addUniform( new osg::Uniform("unif_DiffuseMap", 0) );
-			ss->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
-			ss->addUniform( new osg::Uniform("unif_Shininess", (float)shininess) );
-			ss->addUniform( new osg::Uniform("unif_Gloss", (float)gloss) );
-
-			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
-		}
-
-		if(diffuse != "")
-		{
-			osg::Texture2D* tex = sm->getTexture(diffuse);
-
-			if(tex != NULL)
-			{
-				// By default keep original texture size
-				tex->setResizeNonPowerOfTwoHint(false);
-				ss->setTextureAttribute(0, tex);
+				StringUtils::trim(*iter);
+				osg::StateSet* ss = new osg::StateSet();
+				Material* mat = new Material(ss, myFxNode->getSceneManager());
+				if(mat->parse(*iter)) 
+				{
+					myFxNode->addMaterial(mat);
+					addPass(ss);
+				}
 			}
 		}
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	void define_passes_bump(const String& def)
-	{
-		String effectName;
-		String diffuse;
-		String normal;
-		String variant;
-		double shininess = 10;
-		double gloss = 0;
-		bool vertexShaderVariant = false;
-		libconfig::ArgumentHelper ah;
-		
-		ah.newString("effectName", "the effect name", effectName);
-		ah.newNamedString('d', "diffuse", "diffuse texture", "diffuse texture file name", diffuse);
-		ah.newNamedString('n', "normal", "normal texture", "normal texture file name", normal);
-		ah.newNamedString('v', "variant", "shader variant", "fragment shader variant", variant);
-		ah.newFlag('V', "Vertex", "enable vertex shader variant", vertexShaderVariant);
-		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
-		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
-		
-		osg::StateSet* ss = new osg::StateSet();
-		addPass(ss);
-		if(!processDefaultArguments(ah, def, ss)) return;
-
-		SceneManager* sm = SceneManager::instance();
-		osg::Program* prog = NULL;
-		ProgramAsset* asset = getOrCreateProgram("Bump", variant, vertexShaderVariant);
-		if(asset != NULL)
+		else
 		{
-			// Set the bind location for the tangent attribute array
-			asset->program->addBindAttribLocation("attrib_Tangent", 6);
-
-			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
-			ss->addUniform( new osg::Uniform("unif_DiffuseMap", 0) );
-			ss->addUniform( new osg::Uniform("unif_NormalMap", 1) );
-			ss->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
-			ss->addUniform( new osg::Uniform("unif_Shininess", (float)shininess) );
-			ss->addUniform( new osg::Uniform("unif_Gloss", (float)gloss) );
-
-			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
-		}
-
-		if(diffuse != "")
-		{
-			osg::Texture2D* tex = sm->getTexture(diffuse);
-			if(tex != NULL)
+			// No definition specified: create passes using the existing materials in the effect node.
+			for(int i = 0; i < myFxNode->getMaterialCount(); i++)
 			{
-				ss->setTextureAttribute(0, tex);
+				addPass(myFxNode->getMaterial(i)->getStateSet());
 			}
 		}
-
-		if(normal != "")
-		{
-			osg::Texture2D* tex = sm->getTexture(normal);
-			if(tex != NULL)
-			{
-				ss->setTextureAttribute(1, tex);
-			}
-		}
-		addPass(ss);
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	void define_passes_custom(const String& def)
-	{
-		String effectName;
-		String diffuse = "";
-		String emissive = "";
-		double shininess = 10;
-		double gloss = 0;
-		bool drawPoints = false;
-		String variant;
-		libconfig::ArgumentHelper ah;
-		ah.newString("effectName", "the effect name", effectName);
-		ah.newNamedString('d', "diffuse", "diffuse material", "diffuse material color", diffuse);
-		ah.newNamedString('e', "emissive", "emissive material", "emissive material color", emissive);
-		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
-		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
-		ah.newFlag('p', "points", "draw points", drawPoints);
-		ah.newNamedString('v', "variant", "shader variant", "fragment shader variant", variant);
-
-		osg::StateSet* ss = new osg::StateSet();
-		addPass(ss);
-		if(!processDefaultArguments(ah, def, ss)) return;
-
-		//SceneManager* sm = SceneManager::instance();
-		ProgramAsset* asset = getOrCreateProgram(effectName, variant, false);
-
-		if(asset != NULL)
-		{
-			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
-			ss->addUniform( new osg::Uniform("unif_Shininess", (float)shininess) );
-			ss->addUniform( new osg::Uniform("unif_Gloss", (float)gloss) );
-		}
-
-		// If we have colors, add material attribute
-		if(diffuse != "" | emissive != "")
-		{
-			osg::Material* mat = new osg::Material();
-			mat->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
-
-			if(diffuse != "")
-			{
-				Color diffuseColor(diffuse);
-				mat->setDiffuse(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(diffuseColor));
-				mat->setAmbient(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(diffuseColor));
-			}
-			if(emissive != "")
-			{
-				Color emissiveColor(emissive);
-				mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(emissiveColor));
-			}
-			mat->setSpecular(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
-			ss->setAttributeAndModes(mat, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
-		}
-
 	}
 
 private:
 	String myDefinition;
+	EffectNode* myFxNode;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-EffectNode::EffectNode() 
+EffectNode::EffectNode(SceneManager* sm):
+	mySceneManager(sm)
 {
 	dirtyTechniques();
-	myMaterial = new Material(getOrCreateStateSet(), SceneManager::instance());
+	//myMaterial = new Material(getOrCreateStateSet(), sm);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -431,9 +97,21 @@ EffectNode::~EffectNode()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Material* EffectNode::getMaterial()
+Material* EffectNode::getMaterial(unsigned int index)
 {
-	return myMaterial;
+	return myMaterials[index];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void EffectNode::addMaterial(Material* mat)
+{
+	myMaterials.push_back(mat);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void EffectNode::clearMaterials()
+{
+	myMaterials.clear();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -446,8 +124,8 @@ void EffectNode::setDefinition(const String& definition)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool EffectNode::define_techniques()
 {
-	Technique* tech = new Technique(myDefinition);
-	this->addTechnique(tech);
+	myCurrentTechnique = new Technique(myDefinition, this);
+	this->addTechnique(myCurrentTechnique);
 	return true;
 }
 

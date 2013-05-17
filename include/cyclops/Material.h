@@ -50,6 +50,9 @@ namespace cyclops {
 	class CY_API Material: public Uniforms
 	{
 	public:
+		static Material* create(); 
+
+	public:
 		Material(osg::StateSet* ss, SceneManager* sm);
 
 		void setColor(const Color& diffuse, const Color& emissive);

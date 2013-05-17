@@ -145,16 +145,16 @@ void MissionControlConnection::handleData()
 {
     // Read message header.
 	char header[4];
-    read((byte*)myBuffer, 4);
+    read(myBuffer, 4);
 	memcpy(header, myBuffer, 4);
 
     // Read data length.
 	int dataSize;
-    read((byte*)myBuffer, 4);
+    read(myBuffer, 4);
 	memcpy(&dataSize, myBuffer, 4);
 
     // Read data.
-    read((byte*)myBuffer, dataSize);
+    read(myBuffer, dataSize);
 	myBuffer[dataSize] = '\0';
 
 	// Handle message locally, if a message handler is available.

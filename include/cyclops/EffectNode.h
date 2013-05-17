@@ -51,7 +51,8 @@ namespace cyclops {
 	public:
 
 	public:
-		EffectNode();
+		EffectNode() {}
+		EffectNode(SceneManager* sm);
 		virtual ~EffectNode();
 
 		EffectNode(const EffectNode& copy, const osg::CopyOp& op = osg::CopyOp::SHALLOW_COPY) : osgFX::Effect(copy, op) {	}
@@ -66,13 +67,25 @@ namespace cyclops {
 		String getDefinition() { return myDefinition; }
 		void setDefinition(const String& definition);
 
-		Material* getMaterial();
+		SceneManager* getSceneManager() { return mySceneManager; }
+
+		Material* getMaterial(unsigned int index);
+		void addMaterial(Material* mat);
+		int getMaterialCount();
+		void clearMaterials();
 
 	private:
 		Ref<osgFX::Technique> myCurrentTechnique;
-		Ref<Material> myMaterial;
+
+		Vector< Ref<Material> > myMaterials;
+
 		String myDefinition;
+		SceneManager* mySceneManager;
 	};
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int EffectNode::getMaterialCount()
+	{ return myMaterials.size(); }
 };
 
 #endif

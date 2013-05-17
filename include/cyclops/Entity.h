@@ -23,6 +23,9 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * Contains code for the Entity class. All drawable 3D objects in the cyclops framework derive 
+ * from Entity.
  *************************************************************************************************/
 #ifndef __CY_DRAWABLE_OBJECT__
 #define __CY_DRAWABLE_OBJECT__
@@ -56,9 +59,16 @@ namespace cyclops {
 		osg::Node* getOsgNode() { return myEffect; }
 		//SceneNode* getSceneNode() { return mySceneNode; }
 
+		//! Visuals
+		//@{
 		bool hasEffect();
 		void setEffect(const String& effectDefinition);
 		Material* getMaterial();
+		Material* getMaterialByIndex(unsigned int index);
+		int getMaterialCount();
+		void addMaterial(Material* mat);
+		void clearMaterials();
+		//@}
 
 		void castShadow(bool value);
 		bool doesCastShadow();
