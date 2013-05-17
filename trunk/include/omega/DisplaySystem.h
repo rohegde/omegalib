@@ -62,6 +62,10 @@ public:
 
 	virtual void killCluster() {}
 
+	//! Re-applies the display settings to the display system. Depending on the display system,
+	//! some settings may not be re-applied at runtime.
+	virtual void refreshSettings() {}
+
 	//! Returns the size of the display canvas.
 	virtual Vector2i getCanvasSize() = 0;
 	//! Returns a view ray given a pointer position in pixel coordinates

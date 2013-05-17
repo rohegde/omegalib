@@ -75,6 +75,7 @@ namespace omega
 		virtual void killCluster();
 		virtual DisplaySystemType getId() { return DisplaySystem::Equalizer; }
 		bool isDebugMouseEnabled() { return myDebugMouse; }
+		virtual void refreshSettings();
 
 		//! Returns the size of the display canvas.
 		virtual Vector2i getCanvasSize();
