@@ -1,6 +1,7 @@
 # This script is executed when orun starts, before running application scripts.
 from omega import *
 from cyclops import *
+from euclid import *
 
 speedLabel = None
 mainmnu = None
