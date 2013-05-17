@@ -39,7 +39,7 @@ class Technique: public osgFX::Technique
 {
 public:
 	Technique(const String& definition, EffectNode* fx): myDefinition(definition), myFxNode(fx)
-	{}
+	{ define_passes(); }
 
     /// Validate.
     bool validate(osg::State&) const { return true; }
@@ -118,7 +118,12 @@ void EffectNode::clearMaterials()
 void EffectNode::setDefinition(const String& definition)
 {
 	myDefinition = definition;
+	
 	dirtyTechniques();
+	
+	// Force a node traversal to regenerate techniques
+	osg::NodeVisitor nv;
+	traverse(nv);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

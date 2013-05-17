@@ -47,7 +47,7 @@ bool processDefaultArguments(Material* mat, libconfig::ArgumentHelper& ah, const
 	double offset = 0;
 	double shininess = 10;
 	double gloss = 0;
-	String diffuse = "white";
+	String diffuse = "";
 	String emissive = "black";
 	String normal = "";
 
@@ -94,13 +94,16 @@ bool processDefaultArguments(Material* mat, libconfig::ArgumentHelper& ah, const
 	if(wireframe) mat->setWireframe(true);
 	if(offset != 0) mat->setPolygonOffset(2.0f, offset);
 
-	if(Color::isValidColor(diffuse))
+	if(diffuse != "")
 	{
-		mat->setColor(Color(diffuse), Color(emissive));
-	}
-	else
-	{
-		mat->setDiffuseTexture(diffuse);
+		if(Color::isValidColor(diffuse))
+		{
+			mat->setColor(Color(diffuse), Color(emissive));
+		}
+		else
+		{
+			mat->setDiffuseTexture(diffuse);
+		}
 	}
 
 	if(normal != "")
