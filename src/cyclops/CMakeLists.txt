@@ -39,6 +39,7 @@ set(SRCS
 		SceneLoader.cpp
 		SceneManager.cpp
 		StaticObject.cpp
+		Text.cpp
 		Uniforms.cpp
 		cyclopsPythonApi.cpp)
     
@@ -53,6 +54,7 @@ set(HEADERS
 		${CMAKE_SOURCE_DIR}/include/cyclops/ModelLoader.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/cyclopsConfig.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/Shapes.h
+		${CMAKE_SOURCE_DIR}/include/cyclops/Text.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/Skybox.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/StaticObject.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/SceneLoader.h

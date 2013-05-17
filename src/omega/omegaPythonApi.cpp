@@ -559,16 +559,15 @@ Camera* getCamera(const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//Camera* getOrCreateCamera(const String& name)
-//{
-//	Camera* cam = Engine::instance()->getCamera(name);
-//	if(cam == NULL)
-//	{
-//		cam = Engine::instance()->createCamera(name);
-//	}
-//	return cam;
-//}
-
+Camera* getOrCreateCamera(const String& name)
+{
+	Camera* cam = Engine::instance()->getCamera(name);
+	if(cam == NULL)
+	{
+		cam = Engine::instance()->createCamera(name);
+	}
+	return cam;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool isMaster()
@@ -628,6 +627,19 @@ void toggleStereo()
 	{
 		eqds->getDisplayConfig().forceMono = !eqds->getDisplayConfig().forceMono;
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+vector<String> getTiles()
+{
+	vector<String> res;
+	DisplayConfig& dc = SystemManager::instance()->getDisplaySystem()->getDisplayConfig();
+	typedef KeyValue<String, DisplayTileConfig*> TileItem;
+	foreach(TileItem ti, dc.tiles)
+	{
+		res.push_back(ti.getKey());
+	}
+	return res;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1017,7 +1029,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("getEngine", getEngine, PYAPI_RETURN_REF);
 	def("getDefaultCamera", getDefaultCamera, PYAPI_RETURN_REF);
 	def("getCamera", getCamera, PYAPI_RETURN_REF);
-	//def("getOrCreateCamera", getOrCreateCamera, PYAPI_RETURN_REF);
+	def("getOrCreateCamera", getOrCreateCamera, PYAPI_RETURN_REF);
 	def("getScene", getScene, PYAPI_RETURN_REF);
 	def("getSoundEnvironment", getSoundEnvironment, PYAPI_RETURN_REF);
 	def("isSoundEnabled", isSoundEnabled);
@@ -1029,6 +1041,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("getBoolSetting", &getBoolSetting);
 	def("toggleStats", &toggleStats);
 	def("overridePanopticStereo", overridePanopticStereo);
+	def("getTiles", getTiles, PYAPI_RETURN_VALUE);
 	def("toggleStereo", toggleStereo);
 	def("queueCommand", queueCommand);
 	def("broadcastCommand", broadcastCommand);
@@ -1037,12 +1050,10 @@ BOOST_PYTHON_MODULE(omega)
 	def("isMaster", isMaster);
 	def("loadImage", loadImage, PYAPI_RETURN_REF);
 
-	// NEW IN 3.2.1
 	def("addDataPath", addDataPath);
 	def("resetDataPaths", addDataPath);
 	def("printDataPaths", printDataPaths);
 
-	// NEW IN 3.3
 	def("setImageLoaderThreads", setImageLoaderThreads);
 	def("getImageLoaderThreads", getImageLoaderThreads);
 	def("getHostname", getHostname, PYAPI_RETURN_VALUE);
