@@ -1,7 +1,7 @@
 #summary Python reference: module cyclops
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.7 - 22 April 2013</p>*
+<p>*Last revision:* ver. 4.0 - 16 May 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -155,10 +155,23 @@ Represents a collection of shader uniforms.
 Contains visual properties for an entity. Visual properties set through a material are applied after an effect definition, and override properties specified in the effect. See [EffectReference the effect and material reference page] for more information.
 === Methods ===
 || Method(s) || Description ||
-|| `setColor(diffuse, emissive)` || Sets the diffuse and emissive colors for this material. After calling `setColor`, the passed colors will *override* any color definition specified in the entity effect. ||
-|| `setTransparent(value)` `isTransparent()` || Sets or gets the transparent flag for this entity. `setTransparent` overrides a transparency flag specified in the entity effect. ||
+|| `Material create()` *static* || creates a new material object ||
+|| `setColor(Color diffuse, Color emissive)` || Sets the diffuse and emissive colors for this material. After calling `setColor`, the passed colors will *override* any color definition specified in the entity effect. ||
 || `reset()` || Resets all material properties to their default values. Colors and transparency will switch back to their default values (that is, whatever is specified in the entity effect. See [EffectReference the effect and material reference page] for more information. ||
-|| `setAlpha(value)`, `getAlpha()` || Sets or gets the material alpha value. `setAlpha` only sets the value of the unif_Alpha uniform. By default, cyclops shaders use this uniform to modulate fragment alpha values after lighting (see `postLightingSection/default.frag`). This behavior can be modified by the user, redefining the @postLightingSection shader macro.||
+|| `parse(string definiton)` || ||
+|| `setAlpha(bool value)`, `getAlpha()` || Sets or gets the material alpha value. `setAlpha` only sets the value of the unif_Alpha uniform. By default, cyclops shaders use this uniform to modulate fragment alpha values after lighting (see `postLightingSection/default.frag`). This behavior can be modified by the user, redefining the @postLightingSection shader macro.||
+|| `setPolygonOffset(float factor, float units)` || ||
+|| `setShininess(float value)`, `float getShininess()` || ||
+|| `setGloss(float value)`, `float getGloss()` || ||
+|| *Flags* ||  ||
+|| `setTransparent(bool value)` `isTransparent()` || Sets or gets the transparent flag for this entity. `setTransparent` overrides a transparency flag specified in the entity effect. ||
+|| `setWireframe(bool value)`, `isWireframe()` || ||
+|| `setDoubleFace(bool value)`, `isDoubleFace()` || ||
+|| `setAdditive(bool value)`, `isAdditive()` || ||
+|| `setDepthTestEnabled(bool value)`, `isDepthTestEnabled()` || ||
+|| *Textures* ||  ||
+|| `setDiffuseTexture(String texture)`, `String getDiffuseTexture()` || ||
+|| `setNormalTexture(String texture)`, `String getNormalTexture()` || ||
 
 -------------------------------------------------------------------------------
 ==  `class Entity` (extends `SceneNode`) ==
@@ -167,19 +180,23 @@ AN entity is a drawable thing that derives from a scene node. Entities offer add
 
 === Methods ===
 || Method(s) || Description ||
-|| `hasEffect()` || Returns true if an effect is set for the entity ||
-|| `setEffect(effectDefinition)` || Sets the rendering effect for the entity ||
-|| `getAlpha()`, `setAlpha(value)` || Gets or sets the transparency for the entity (between 0 and 1) ||
-|| `followTrackable(trackabeId)` || Starts following the motion-captured trackable `trackableId` ||
-|| `setFollowOffset(offset, orientationOffset)` || Sets the tracking position and orientation offset applied to this object, with respect to the motion captured trackable ||
+|| `followTrackable(int trackabeId)` || Starts following the motion-captured trackable `trackableId` ||
+|| `setFollowOffset(Vector3 offset, Quaternion orientationOffset)` || Sets the tracking position and orientation offset applied to this object, with respect to the motion captured trackable ||
 || `unfollow()` || Stops following a motion-captured trackable ||
+|| *Visual Properties* || ||
+|| `hasEffect()` || Returns true if an effect is set for the entity ||
+|| `Material getMaterial()`, `Material getMaterialByIndex(int index)` || Retrieves a material layer for this entity. `getMaterial()` returns material layer 0 by default ||
+|| `int getMaterialCount()` || Returns the number of material layers for this entity. ||
+|| `clearMaterials()` || Remosed all the material layers for this entity. ||
+|| `addMaterial(Material m)` || Adds a material layer to this entity. The Entity visuals will be automatically updated. ||
+|| `setEffect(string effectDefinition)` || Sets the rendering effect for the entity ||
 || *EXPERIMENTAL Context menu* ||  ||
 || `createContextMenu()` || Creates a context menu attached to this entity. When the user selectes the entity, the menu will pop up. Returns a `Menu` object ||
-|| `getContextMenu()` || Gets the attached context menu for the entity if one has been set. ||
+|| `Menu getContextMenu()` || Gets the attached context menu for the entity if one has been set. ||
 ||  `deleteContextMenu()` || Deletes a context menu attached to this entity ||
 || *Entity Pieces* || Entities can be made up by multiple components (pieces). For instance, complex loaded models may have multiple parts that we want to manipulate separately. ||
-|| `listPieces(path)` || Returns a list containing the names of all the entity pieces in the specified path. A path is a list of node names in the entity node tree. Use an empy string to list all the piece names connected directly to the entity root. ||
-|| `getPiece(path)` || Returns a `SceneNode` for a piece identified by the passed `path`. If no piece exists for `path`, returns `None`. All basic `SceneNode` functions work on entity pieces, but  pieces can't be detached from this entity and attached to another one (doing so will not influence their transform, since it is always local to the owner entity). ||
+|| `listPieces(string path)` || Returns a list containing the names of all the entity pieces in the specified path. A path is a list of node names in the entity node tree. Use an empy string to list all the piece names connected directly to the entity root. ||
+|| `getPiece(string path)` || Returns a `SceneNode` for a piece identified by the passed `path`. If no piece exists for `path`, returns `None`. All basic `SceneNode` functions work on entity pieces, but  pieces can't be detached from this entity and attached to another one (doing so will not influence their transform, since it is always local to the owner entity). ||
 
 === Examples ===
 ==== Entity Pieces ====

@@ -6,7 +6,13 @@
 ------------------------------------------------------------------------
 = omegalib v4.0 (*current developer version*) =
 == Major Changes ==
+*omega*
+	* Added `Color` from omicron. Added `Color.isValidColor`
+*cyclops*
+	* Major revision of the Material API. Materials have a lot more properties and flags. Multiple material layers can be added to an entity, without having to use the `setEffect` string. `setEffect` is not just a shorthand version of adding material layers to an Entity.
+	
 
+	
 ------------------------------------------------------------------------
 = omegalib v3.7 =
 == Notes ==
