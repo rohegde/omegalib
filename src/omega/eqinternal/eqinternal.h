@@ -131,6 +131,8 @@ public:
     virtual uint32_t startFrame( const uint128_t& version );
     virtual uint32_t finishFrame();
 	const UpdateContext& getUpdateContext();
+	// Refresh information for all observers. Used when camera attachments change.
+	void updateObserverCameras();
 
 private:
     void processMousePosition(eq::Window* source, int x, int y, Vector2i& outPosition, Ray& ray);

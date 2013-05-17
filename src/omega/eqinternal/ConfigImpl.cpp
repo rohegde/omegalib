@@ -327,7 +327,7 @@ uint32_t ConfigImpl::finishFrame()
 
 				if(dtc->cameraName == "")
 				{
-					// Use dafault camera for this tile
+					// Use default camera for this tile
 					otd.camera = engine->getDefaultCamera();
 				}
 				else
@@ -373,3 +373,53 @@ uint32_t ConfigImpl::finishFrame()
     return eq::Config::finishFrame();
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ConfigImpl::updateObserverCameras()
+{
+    EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+	Engine* engine = Engine::instance();
+
+	// Update observers
+	int numObservers = getObservers().size();
+	for(int i = 0; i < numObservers; i++)
+	{
+		ObserverTileData& otd = myObserverTileData[i];
+		// If the observer data has not been initialized yet, do it now.
+		if(otd.observer != NULL)
+		{
+			// Get the tile name from the observer name.
+			String tileName = otd.observer->getName();
+			DisplayConfig dc = ds->getDisplayConfig();
+			if(dc.tiles.find(tileName) == dc.tiles.end())
+			{
+				oferror("ConfigImpl::finishFrame: could not find tile %1%", %tileName);
+			}
+			else
+			{
+				DisplayTileConfig* dtc = dc.tiles[tileName];
+
+				// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
+				otd.yaw = dtc->yaw;
+				
+				otd.tileCenter = dtc->center;
+
+				if(dtc->cameraName == "")
+				{
+					// Use default camera for this tile
+					otd.camera = engine->getDefaultCamera();
+				}
+				else
+				{
+					// Use a custom camera for this tile (create it here if necessary)
+					Camera* customCamera = engine->getCamera(dtc->cameraName);
+					if(customCamera == NULL)
+					{
+						customCamera = engine->createCamera(dtc->cameraName);
+					}
+					otd.camera = customCamera;
+				}
+				dtc->camera = otd.camera;
+			}
+		}
+	}
+}

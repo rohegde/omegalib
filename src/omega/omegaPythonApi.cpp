@@ -643,6 +643,19 @@ vector<String> getTiles()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void setTileCamera(const String& tilename, const String& cameraName)
+{
+	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+	DisplayConfig& dc = ds->getDisplayConfig();
+	if(dc.tiles.find(tilename) != dc.tiles.end())
+	{
+		DisplayTileConfig* dtc = dc.tiles[tilename];
+		dtc->cameraName = cameraName;
+	}
+	ds->refreshSettings();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void setNearFarZ(float nearZ, float farZ)
 {
 	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
@@ -1042,6 +1055,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("toggleStats", &toggleStats);
 	def("overridePanopticStereo", overridePanopticStereo);
 	def("getTiles", getTiles, PYAPI_RETURN_VALUE);
+	def("setTileCamera", setTileCamera);
 	def("toggleStereo", toggleStereo);
 	def("queueCommand", queueCommand);
 	def("broadcastCommand", broadcastCommand);

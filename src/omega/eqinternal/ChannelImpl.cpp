@@ -153,7 +153,7 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 		context->projection.data()[i] = proj.array[i];
 	}
 
-	Camera* cam = Engine::instance()->getDefaultCamera();
+	Camera* cam = myDC.tile->camera; // Engine::instance()->getDefaultCamera();
 
     context->modelview = mw * cam->getViewTransform();
 
