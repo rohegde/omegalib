@@ -20,8 +20,8 @@ box.setName("Box")
 
 # Place a light
 light = Light.create()
-light.setAmbient(Color("white"))
-#light.setAmbient(Color("#202020"))
+light.setColor(Color("white"))
+light.setAmbient(Color("#202020"))
 light.setEnabled(True)
 lightDistance = 0.5
 
@@ -64,12 +64,12 @@ fx = "bump -d cyclops/test/wall002.jpg -n cyclops/test/wall002DOT3.jpg"; bmnu.ad
 
 #--------------------------------------------------------------------------------------------------
 # custom shader effect definitions
-fx = "colored -v examples/wire -V -d yellow -g 1.0 -s 10 -t"; xmnu.addButton(fx, "selected.setEffect('" + fx + "')")
+fx = "./wire -d yellow -g 1.0 -s 10 -t"; xmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 fx = "textured -v examples/custom2 -d cyclops/test/checker.jpg -t"; xmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 
 #--------------------------------------------------------------------------------------------------
 # multipass effect definitions
-fx = "textured -d cyclops/test/checker.jpg | colored -v examples/wire -V -d yellow -g 1.0 -s 10 -t -D"; kmnu.addButton(fx, "selected.setEffect('" + fx + "')")
+fx = "textured -d cyclops/test/checker.jpg | ./wire -d yellow -g 1.0 -s 10 -t -D"; kmnu.addButton(fx, "selected.setEffect('" + fx + "')")
 
 #--------------------------------------------------------------------------------------------------
 def onUpdate(frame, t, dt):

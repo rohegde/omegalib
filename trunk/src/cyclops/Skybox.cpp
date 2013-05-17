@@ -194,8 +194,8 @@ void Skybox::updateSkyBox()
 		ProgramAsset* cubeMapProgram = NULL;
 		cubeMapProgram = sm->getOrCreateProgram(
 			"skybox-cube", 
-			"cyclops/common/Skybox.vert", 
-			"cyclops/common/Skybox.frag");
+			"cyclops/common/skybox.vert", 
+			"cyclops/common/skybox.frag");
 
 		osg::StateSet* stateset = myGeode->getOrCreateStateSet();
 		if(cubeMapProgram != NULL)

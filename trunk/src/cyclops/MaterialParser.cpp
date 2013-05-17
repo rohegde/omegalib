@@ -76,6 +76,16 @@ bool processDefaultArguments(Material* mat, libconfig::ArgumentHelper& ah, const
 		return false;
 	}
 
+	// Set the material program
+	if(variation != "")
+	{
+		mat->setProgram(effectName);
+	}
+	else
+	{
+		mat->setProgram(effectName + " " + variation);
+	}
+
 	mat->setAdditive(additive);
 	mat->setTransparent(transparent);
 	mat->setDepthTestEnabled(!disableDepth);

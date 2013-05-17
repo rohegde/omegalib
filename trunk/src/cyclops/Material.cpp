@@ -35,6 +35,12 @@
 using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Material* Material::create()
+{
+	return new Material(new osg::StateSet(), SceneManager::instance());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Material::Material(osg::StateSet* ss, SceneManager* sm): Uniforms(ss), myStateSet(ss), myTransparent(false), mySceneManager(sm)
 {
 	reset();
@@ -97,12 +103,12 @@ void Material::setDiffuseTexture(const String& name)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Material::setNormalTexture(const String& name)
 {
-	if(!getUniform("unif_NormalMap"))	addUniform("unif_NormalMap", Uniform::Int)->setInt(0);
+	if(!getUniform("unif_NormalMap"))	addUniform("unif_NormalMap", Uniform::Int)->setInt(1);
 	osg::Texture2D* tex = mySceneManager->getTexture(name);
 	if(tex != NULL)
 	{
 		tex->setResizeNonPowerOfTwoHint(false);
-		myStateSet->setTextureAttribute(0, tex);
+		myStateSet->setTextureAttribute(1, tex);
 	}
 }
 
@@ -237,6 +243,9 @@ bool Material::setProgram(const String& name)
 		pvar = "";
 	}
 
+	StringUtils::trim(pname);
+	StringUtils::trim(pvar);
+
 	ProgramAsset* pa = getOrCreateProgram(pname, pvar);
 	if(pa != NULL)
 	{
@@ -253,9 +262,14 @@ ProgramAsset* Material::getOrCreateProgram(const String& name, const String& var
 	String progName = name;
 
 	String vertName = ostr("%1%/%2%.vert", %shaderRoot %name);
+	String fragName = ostr("%1%/%2%.frag", %shaderRoot %name);
+	if(name.find('/') != String::npos)
+	{
+		vertName = name + ".vert";
+		fragName = name + ".frag";
+	}
 
 	//String vertName = ostr("%1%/%2%.vert", %shaderRoot %name);
-	String fragName;
 	// The @ character in the variant name is used to generate a new separate program variation using the same shaders.
 	// This is useful, for instance, to decouple effects with different numbers of lights applied at the same time in 
 	// the scene.
@@ -276,7 +290,6 @@ ProgramAsset* Material::getOrCreateProgram(const String& name, const String& var
 	}
 	else
 	{
-		fragName = ostr("%1%/%2%.frag", %shaderRoot %name);
 		if(variant[0] == '@')
 		{
 			progName = ostr("%1%-%2%", %name %variant);
