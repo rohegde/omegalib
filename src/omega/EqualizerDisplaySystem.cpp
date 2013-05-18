@@ -525,6 +525,7 @@ void EqualizerDisplaySystem::killCluster()
 void EqualizerDisplaySystem::finishInitialize(ConfigImpl* config)
 {
 	myConfig = config;
+	myConfig->updateObserverCameras();
 	/*ofmsg("Initializing %1% observer(s).", %myObservers.size());
 	if(mySetting->exists("observers"))
 	{

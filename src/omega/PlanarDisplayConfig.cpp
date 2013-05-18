@@ -68,6 +68,9 @@ bool PlanarDisplayConfig::buildConfig(DisplayConfig& cfg, Setting& scfg)
 				cfg.tileGrid[x][y] = tc;
 
 				tc->enabled = true;
+				tc->isInGrid = true;
+				tc->gridX = x;
+				tc->gridY = y;
 
 				// Compute the display corners for a planar display configuration
 				tc->topLeft = canvasTopLeft + Vector3f(x * tw, -(y * th), 0);
