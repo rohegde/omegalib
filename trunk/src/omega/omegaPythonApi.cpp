@@ -582,6 +582,12 @@ String getHostname()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+bool isHostInTileSection(const String& hostname, int tilex, int tiley, int tilew, int tileh)
+{
+	return SystemManager::instance()->isHostInTileSection(hostname, tilex, tiley, tilew, tileh);
+}
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneNode* getScene()
 {
 	return Engine::instance()->getScene();
@@ -1071,6 +1077,7 @@ BOOST_PYTHON_MODULE(omega)
 	def("setImageLoaderThreads", setImageLoaderThreads);
 	def("getImageLoaderThreads", getImageLoaderThreads);
 	def("getHostname", getHostname, PYAPI_RETURN_VALUE);
+	def("isHostInTileSection", isHostInTileSection);
 	def("printModules", printModules);
 
 	def("orun", orun);

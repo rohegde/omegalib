@@ -81,7 +81,9 @@ bool CylindricalDisplayConfig::buildConfig(DisplayConfig& cfg, Setting& scfg)
 				cfg.tileGrid[x][y] = tc;
 				
 				tc->enabled = true;
-
+				tc->isInGrid = true;
+				tc->gridX = x;
+				tc->gridY = y;
 				
 				tc->yaw = curAngle;
 				tc->pitch = 0;

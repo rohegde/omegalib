@@ -56,13 +56,21 @@ namespace omega
 			stereoMode(Mono),
 			enabled(false),
 			camera(NULL),
-			id(0)
+			id(0),
+			isInGrid(false)
 			 {}
 
 		StereoMode stereoMode;
 
 		String name;
 		int id;
+
+		//! The X position of this tile in the tile grid. Set by display configurations that generate 2D tile grids.
+		int gridX;
+		//! The Y position of this tile in the tile grid. Set by display configurations that generate 2D tile grids.
+		int gridY;
+		//! When set to true, this tile is part of a 2D tile grid.
+		bool isInGrid;
 
 		//Vector2i index;
 		//Vector2i resolution;
