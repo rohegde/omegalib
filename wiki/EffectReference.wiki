@@ -1,7 +1,7 @@
 #summary Cyclops Effects and Materials
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.7 - 3 May 2013*</p>
+<p>*Last revision:* ver. 4.0 - 18 May 2013*</p>
 
 <wiki:toc max_depth="4" />
 
@@ -18,6 +18,9 @@ An example of applying effects in python follows:
 }}}
 
 In general the effect string definition will look like `<effect-type> [-option [value]]+`
+
+== Note for omegalib 4.0 and higher ==
+In omegalib 4.0+, the cyclops material API has been extended to support *all* the functionality included in effects. Please see the [CyclopsPythonReference] page for more information. All the information described here is still valid. The Effect and material API is backwards compatible. But some explanation of the internals may be out of date. This document will be updated in the near future to better explain how the new material API works.
 
 ==  Effects and Materials, Some Background ==
 In version 3.5 and higher of omegalib, Entities offer a new material API (`Entity.getMaterial` and the `Material` and `Uniforms` class). Materials and effects share a few common functionalities.

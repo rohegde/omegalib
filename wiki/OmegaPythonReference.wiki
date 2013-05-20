@@ -1,7 +1,7 @@
 #summary Python reference: module omega
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.7 - 4 May 2013</p>*
+<p>*Last revision:* ver. 4.0 - 17 May 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -69,6 +69,12 @@ Returns the main omegalib camera instance
 
 === `getCamera(name)` ===
 Finds a camera by name
+
+=== `getOrCreateCamera(name)` ===
+Finds a camera by name, or creates it if no camera with the specified name exists.
+
+=== `setTileCamera(tileName, cameraName)` ===
+Sets the camera attached to the specified tile (by name). The tile names can be obtained using the `getTiles()` function. If a camera with the specified name does not exist, it will be created.
 
 === `setNearFarZ(near, far)` ===
 Sets the near and far clip planes for the default camera
@@ -223,6 +229,14 @@ Like orun, but performs a cleanup first. Useful for runtime switching to a diffe
 === `getHostname()` ===
 Gets the name of the host running the slave instance of omegalib
 
+=== `isHostInTileSection(string host, int tilex, int tiley, int tilew, int tileh)` ===
+Returns true if the specified host owns at least a tile in the specified tile rectangle.
+Example:
+{{{
+	# Prints TRUE on hosts that are within the tile rectangle [1,1 -> 2,1]
+	if(isHostInTileSection(getHostname(), 1, 1, 2, 1) print('TRUE')
+}}}
+
 -------------------------------------------------------------------------------
 == Data Access ==
 These functions are used control the loading of assets.
@@ -255,6 +269,9 @@ Prints the tree of children of `node` up to the specified depth
 
 === `overridePanopticStereo(value)` ===
 When set to true, switches from panoptic stereo tracking to standard tracking. This option is used only when panoptic stereo is enabled for the current display system.
+
+=== `listTiles()` ===
+Return a list of the names of all the tiles used by the current configuration
 
 === `toggleStereo()` ===
 Switches between mono and stereo rendering mode on systems with stereo rendering support.
