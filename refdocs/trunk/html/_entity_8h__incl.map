@@ -1,10 +1,11 @@
 <map id="D:/Workspace/omegalib/core/include/cyclops/Entity.h" name="D:/Workspace/omegalib/core/include/cyclops/Entity.h">
-<area shape="rect" id="node3" href="$cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="699,245,798,269"/>
-<area shape="rect" id="node10" href="$_effect_node_8h.html" title="EffectNode.h" alt="" coords="356,101,442,125"/>
-<area shape="rect" id="node13" href="$_uniforms_8h.html" title="Uniforms.h" alt="" coords="535,173,610,197"/>
-<area shape="rect" id="node16" href="$omega_8h.html" title="omega.h" alt="" coords="22,245,86,269"/>
-<area shape="rect" id="node19" href="$omega_osg_8h.html" title="omegaOsg.h" alt="" coords="219,245,302,269"/>
-<area shape="rect" id="node21" href="$omega_toolkit_8h.html" title="omegaToolkit.h" alt="" coords="580,245,674,269"/>
-<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="645,389,753,413"/>
-<area shape="rect" id="node7" href="$_application_8h.html" title="omega/Application.h" alt="" coords="591,317,711,341"/>
+<area shape="rect" id="node3" href="$cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="195,317,293,341"/>
+<area shape="rect" id="node10" href="$_effect_node_8h.html" title="EffectNode.h" alt="" coords="318,101,404,125"/>
+<area shape="rect" id="node16" href="$_uniforms_8h.html" title="Uniforms.h" alt="" coords="423,245,497,269"/>
+<area shape="rect" id="node19" href="$omega_8h.html" title="omega.h" alt="" coords="107,317,171,341"/>
+<area shape="rect" id="node22" href="$omega_osg_8h.html" title="omegaOsg.h" alt="" coords="673,317,756,341"/>
+<area shape="rect" id="node24" href="$omega_toolkit_8h.html" title="omegaToolkit.h" alt="" coords="510,317,604,341"/>
+<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="141,461,248,485"/>
+<area shape="rect" id="node7" href="$_application_8h.html" title="omega/Application.h" alt="" coords="87,389,207,413"/>
+<area shape="rect" id="node13" href="$_material_8h.html" title="Material.h" alt="" coords="425,173,495,197"/>
 </map>

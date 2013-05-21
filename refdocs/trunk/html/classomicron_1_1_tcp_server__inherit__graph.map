@@ -1,5 +1,6 @@
 <map id="omicron::TcpServer" name="omicron::TcpServer">
 <area shape="rect" id="node7" href="$classomega_1_1_mission_control_server.html" title="omega::MissionControlServer" alt="" coords="5,221,168,245"/>
-<area shape="rect" id="node2" href="$classomicron_1_1_service.html" title="omicron::Service" alt="" coords="35,77,137,101"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="16,5,157,29"/>
+<area shape="rect" id="node9" href="$classomicron_1_1_asset_cache_service.html" title="The asset cache service manages a set of caches." alt="" coords="193,221,351,245"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_service.html" title="omicron::Service" alt="" coords="127,77,229,101"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="108,5,249,29"/>
 </map>

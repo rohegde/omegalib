@@ -1,6 +1,7 @@
 <map id="omegaToolkit::ui::DefaultButton" name="omegaToolkit::ui::DefaultButton">
-<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_button.html" title="omegaToolkit::ui::Button" alt="" coords="392,89,533,113"/>
-<area shape="rect" id="node4" href="$classomega_toolkit_1_1ui_1_1_abstract_button.html" title="omegaToolkit::ui::Abstract\lButton" alt="" coords="145,5,295,41"/>
-<area shape="rect" id="node6" href="$classomega_toolkit_1_1ui_1_1_image.html" title="omegaToolkit::ui::Image" alt="" coords="151,65,289,89"/>
-<area shape="rect" id="node8" href="$classomega_toolkit_1_1ui_1_1_label.html" title="omegaToolkit::ui::Label" alt="" coords="153,173,287,197"/>
+<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_button.html" title="omegaToolkit::ui::Button" alt="" coords="475,115,616,139"/>
+<area shape="rect" id="node4" href="$classomega_toolkit_1_1ui_1_1_abstract_button.html" title="omegaToolkit::ui::Abstract\lButton" alt="" coords="227,30,378,66"/>
+<area shape="rect" id="node6" href="$classomega_toolkit_1_1ui_1_1_image.html" title="omegaToolkit::ui::Image" alt="" coords="233,91,372,115"/>
+<area shape="rect" id="node8" href="$classomega_toolkit_1_1ui_1_1_label.html" title="omegaToolkit::ui::Label" alt="" coords="235,199,370,223"/>
+<area shape="rect" id="node10" href="$classomega_1_1_color.html" title="omega::Color" alt="" coords="27,161,114,185"/>
 </map>

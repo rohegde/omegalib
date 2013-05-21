@@ -1,7 +1,8 @@
 <map id="D:/Workspace/omegalib/core/include/omega/GlutDisplaySystem.h" name="D:/Workspace/omegalib/core/include/omega/GlutDisplaySystem.h">
-<area shape="rect" id="node3" href="$_display_system_8h.html" title="DisplaySystem.h" alt="" coords="5,173,107,197"/>
-<area shape="rect" id="node10" href="$_render_target_8h.html" title="RenderTarget.h" alt="" coords="117,101,216,125"/>
-<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="108,317,180,341"/>
-<area shape="rect" id="node7" href="$_application_base_8h.html" title="ApplicationBase.h" alt="" coords="45,245,152,269"/>
-<area shape="rect" id="node13" href="$_texture_8h.html" title="Texture.h" alt="" coords="131,173,201,197"/>
+<area shape="rect" id="node3" href="$_display_system_8h.html" title="DisplaySystem.h" alt="" coords="61,173,163,197"/>
+<area shape="rect" id="node13" href="$_render_target_8h.html" title="RenderTarget.h" alt="" coords="197,101,296,125"/>
+<area shape="rect" id="node5" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="155,317,227,341"/>
+<area shape="rect" id="node7" href="$_application_base_8h.html" title="ApplicationBase.h" alt="" coords="137,245,244,269"/>
+<area shape="rect" id="node10" href="$_color_8h.html" title="Color.h" alt="" coords="5,245,61,269"/>
+<area shape="rect" id="node16" href="$_texture_8h.html" title="Texture.h" alt="" coords="211,173,281,197"/>
 </map>

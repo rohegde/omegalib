@@ -1,5 +1,5 @@
 <map id="omega::EngineModule" name="omega::EngineModule">
-<area shape="rect" id="node7" href="$classcyclops_1_1_scene_manager.html" title="cyclops::SceneManager" alt="" coords="568,72,704,96"/>
+<area shape="rect" id="node7" href="$classcyclops_1_1_scene_manager.html" title="The scene manager contains all the main features used to handle a cyclops scene and its assets..." alt="" coords="568,72,704,96"/>
 <area shape="rect" id="node9" href="$classomega_1_1_actor.html" title="omega::Actor" alt="" coords="592,120,680,144"/>
 <area shape="rect" id="node21" href="$classomega_1_1_camera_controller.html" title="omega::CameraController" alt="" coords="563,168,709,192"/>
 <area shape="rect" id="node23" href="$classomega_1_1_event_sharing_module.html" title="omega::EventSharingModule" alt="" coords="556,216,716,240"/>

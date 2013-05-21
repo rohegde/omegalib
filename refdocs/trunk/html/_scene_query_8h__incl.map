@@ -1,7 +1,8 @@
 <map id="D:/Workspace/omegalib/core/include/omega/SceneQuery.h" name="D:/Workspace/omegalib/core/include/omega/SceneQuery.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="107,235,179,259"/>
-<area shape="rect" id="node10" href="$_scene_node_8h.html" title="omega/SceneNode.h" alt="" coords="105,91,228,115"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="146,307,211,331"/>
-<area shape="rect" id="node13" href="$_node_component_8h.html" title="omega/NodeComponent.h" alt="" coords="125,163,272,187"/>
-<area shape="rect" id="node16" href="$_node_8h.html" title="omega/Node.h" alt="" coords="297,163,391,187"/>
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="147,235,219,259"/>
+<area shape="rect" id="node10" href="$_scene_node_8h.html" title="omega/SceneNode.h" alt="" coords="121,91,244,115"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="186,307,251,331"/>
+<area shape="rect" id="node13" href="$_node_component_8h.html" title="omega/NodeComponent.h" alt="" coords="109,163,256,187"/>
+<area shape="rect" id="node16" href="$_node_8h.html" title="omega/Node.h" alt="" coords="281,163,375,187"/>
+<area shape="rect" id="node19" href="$_color_8h.html" title="omega/Color.h" alt="" coords="399,163,492,187"/>
 </map>

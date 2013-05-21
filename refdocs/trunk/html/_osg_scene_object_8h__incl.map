@@ -1,7 +1,8 @@
 <map id="D:/Workspace/omegalib/core/include/omegaOsg/OsgSceneObject.h" name="D:/Workspace/omegalib/core/include/omegaOsg/OsgSceneObject.h">
 <area shape="rect" id="node3" href="$oosgbase_8h.html" title="omegaOsg/oosgbase.h" alt="" coords="5,101,139,125"/>
-<area shape="rect" id="node5" href="$_node_component_8h.html" title="omega/NodeComponent.h" alt="" coords="95,173,243,197"/>
-<area shape="rect" id="node9" href="$_scene_node_8h.html" title="omega/SceneNode.h" alt="" coords="216,101,339,125"/>
-<area shape="rect" id="node7" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="245,245,317,269"/>
-<area shape="rect" id="node13" href="$_node_8h.html" title="omega/Node.h" alt="" coords="319,173,412,197"/>
+<area shape="rect" id="node5" href="$_node_component_8h.html" title="omega/NodeComponent.h" alt="" coords="89,173,236,197"/>
+<area shape="rect" id="node9" href="$_scene_node_8h.html" title="omega/SceneNode.h" alt="" coords="213,101,336,125"/>
+<area shape="rect" id="node7" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="280,245,352,269"/>
+<area shape="rect" id="node13" href="$_node_8h.html" title="omega/Node.h" alt="" coords="312,173,405,197"/>
+<area shape="rect" id="node16" href="$_color_8h.html" title="omega/Color.h" alt="" coords="429,173,523,197"/>
 </map>

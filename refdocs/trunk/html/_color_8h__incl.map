@@ -1,5 +1,5 @@
-<map id="D:/Workspace/omegalib/core/external/omicron/include/omicron/Color.h" name="D:/Workspace/omegalib/core/external/omicron/include/omicron/Color.h">
-<area shape="rect" id="node3" href="$external_2omicron_2include_2omicron_2osystem_8h.html" title="osystem.h" alt="" coords="53,173,125,197"/>
-<area shape="rect" id="node14" href="$_string_utils_8h.html" title="StringUtils.h" alt="" coords="153,101,233,125"/>
-<area shape="rect" id="node11" href="$external_2omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="182,245,247,269"/>
+<map id="D:/Workspace/omegalib/core/include/omega/Color.h" name="D:/Workspace/omegalib/core/include/omega/Color.h">
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="16,91,88,115"/>
+<area shape="rect" id="node10" href="$_string_utils_8h.html" title="omicron/StringUtils.h" alt="" coords="113,91,233,115"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="55,163,120,187"/>
 </map>

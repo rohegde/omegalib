@@ -1,3 +1,4 @@
 <map id="omega::SceneNodeListener" name="omega::SceneNodeListener">
-<area shape="rect" id="node3" href="$classomega_osg_1_1_osg_scene_object.html" title="omegaOsg::OsgSceneObject" alt="" coords="5,77,165,101"/>
+<area shape="rect" id="node3" href="$classcyclops_1_1_scene_manager.html" title="The scene manager contains all the main features used to handle a cyclops scene and its assets..." alt="" coords="5,77,141,101"/>
+<area shape="rect" id="node5" href="$classomega_osg_1_1_osg_scene_object.html" title="omegaOsg::OsgSceneObject" alt="" coords="166,77,327,101"/>
 </map>

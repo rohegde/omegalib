@@ -1,4 +1,5 @@
 <map id="omega::EqualizerDisplaySystem" name="omega::EqualizerDisplaySystem">
-<area shape="rect" id="node2" href="$classomega_1_1_display_system.html" title="omega::DisplaySystem" alt="" coords="27,77,157,101"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="21,5,163,29"/>
+<area shape="rect" id="node2" href="$classomega_1_1_display_system.html" title="omega::DisplaySystem" alt="" coords="89,91,220,115"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,5,147,29"/>
+<area shape="rect" id="node6" href="$structomega_1_1_display_config.html" title="Stores omegalib display configuration data." alt="" coords="171,5,297,29"/>
 </map>
