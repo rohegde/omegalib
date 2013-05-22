@@ -23,6 +23,9 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * What's in this file: 
+ *	The wrapper code for the omegalib python API. 
  *************************************************************************************************/
 #include "omega/PythonInterpreter.h"
 #include "omega/SystemManager.h"
@@ -584,7 +587,8 @@ String getHostname()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool isHostInTileSection(const String& hostname, int tilex, int tiley, int tilew, int tileh)
 {
-	return SystemManager::instance()->isHostInTileSection(hostname, tilex, tiley, tilew, tileh);
+	DisplayConfig& dc = SystemManager::instance()->getDisplaySystem()->getDisplayConfig();
+	return dc.isHostInTileSection(hostname, tilex, tiley, tilew, tileh);
 }
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////////

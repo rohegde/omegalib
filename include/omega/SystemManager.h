@@ -116,8 +116,6 @@ namespace omega
 		bool isMaster() { return myIsMaster; }
 		String getHostname();
 		const String& getHostnameAndPort();
-		//! Returns true if the specified host is running a tile in the specified section. 
-		bool isHostInTileSection(const String& hostname, int tilex, int tiley, int tilew, int tileh);
 
 		PythonInterpreter* getScriptInterpreter() { return myInterpreter; }
 

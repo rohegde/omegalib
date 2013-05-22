@@ -23,6 +23,10 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * What's in this file: 
+ *	Classes used to describe a display system configuration (network, screens, 
+ *	system geometry etc.)
  *************************************************************************************************/
 #include "omega/DisplayConfig.h"
 #include "omega/Engine.h"
@@ -238,4 +242,26 @@ void DisplayConfig::computeTileCorners(DisplayTileConfig* tc)
 	tc->topLeft = tc->center + (up * th / 2) - (right * tw / 2);
 	tc->bottomLeft = tc->center - (up * th / 2) - (right * tw / 2);
 	tc->bottomRight = tc->center - (up * th / 2) + (right * tw / 2);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool DisplayConfig::isHostInTileSection(const String& hostname, int tilex, int tiley, int tilew, int tileh)
+{
+	// find host node.
+	for(int i = 0; i < numNodes; i++)
+	{
+		if(nodes[i].hostname == hostname)
+		{
+			// If at least one tile is in section, return true.
+			for(int j = 0; j < nodes[i].numTiles; j++)
+			{
+				DisplayTileConfig* dtc = nodes[i].tiles[j];
+				if(dtc->isInGrid && 
+					dtc->gridX >= tilex && dtc->gridX < tilex + tilew &&
+					dtc->gridY >= tiley && dtc->gridY < tiley + tileh) return true;
+			}
+			return false;
+		}
+	}
+	return false;
 }
