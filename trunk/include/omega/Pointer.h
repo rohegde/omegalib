@@ -40,7 +40,7 @@ namespace omega {
  		  myVisible(true),
 		  myColor(0.1f, 0.1f, 0.2f, 0.95f),
 		  myText(""),
-		  myPointerSize(180) {}
+		  myPointerSize(32) {}
 
 		virtual Renderable* createRenderable();
 

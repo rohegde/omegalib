@@ -81,6 +81,8 @@ void Engine::initialize()
     // Setup the console default font
     Config* cfg = getSystemManager()->getAppConfig();
 
+	Setting& syscfgroot = syscfg->lookup("config");
+
     if(syscfg->exists("config/console/font"))
     {
         Setting& fontSetting = syscfg->lookup("config/console/font");
@@ -114,6 +116,7 @@ void Engine::initialize()
 
 	// Read draw pointers option.
 	myDrawPointers = syscfg->getBoolValue("config/drawPointers", myDrawPointers);
+	myPointerSize = Config::getIntValue("pointerSize", syscfgroot, 32);
 
     myDefaultCamera = new Camera(this);
 	myDefaultCamera->setName("DefaultCamera");
@@ -295,7 +298,7 @@ void Engine::refreshPointer(int pointerId, const Event& evt)
 	{
 		ofmsg("Engine::refreshPointer: creating pointer %1%", %pointerId);
 		ptr = new Pointer();
-		ptr->setSize(180);
+		ptr->setSize(myPointerSize);
 		myPointers[pointerId] = ptr;
 		ptr->initialize(this);
 	}

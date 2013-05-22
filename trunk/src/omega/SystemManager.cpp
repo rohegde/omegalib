@@ -367,25 +367,3 @@ const String& SystemManager::getHostnameAndPort()
 	return myHostname;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool SystemManager::isHostInTileSection(const String& hostname, int tilex, int tiley, int tilew, int tileh)
-{
-	DisplayConfig& dc = myDisplaySystem->getDisplayConfig();
-	// find host node.
-	for(int i = 0; i < dc.numNodes; i++)
-	{
-		if(dc.nodes[i].hostname == hostname)
-		{
-			// If at least one tile is in section, return true.
-			for(int j = 0; j < dc.nodes[i].numTiles; j++)
-			{
-				DisplayTileConfig* dtc = dc.nodes[i].tiles[j];
-				if(dtc->isInGrid && 
-					dtc->gridX >= tilex && dtc->gridX < tilex + tilew &&
-					dtc->gridY >= tiley && dtc->gridY < tiley + tileh) return true;
-			}
-			return false;
-		}
-	}
-	return false;
-}

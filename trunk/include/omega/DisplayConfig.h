@@ -23,6 +23,10 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * What's in this file: 
+ *	Classes used to describe a display system configuration (network, screens, 
+ *	system geometry etc.)
  *************************************************************************************************/
 #ifndef __DISPLAY_CONFIG__
 #define __DISPLAY_CONFIG__
@@ -43,7 +47,7 @@ namespace omega
 	class Renderer;
 	class Camera;
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct DisplayTileConfig
 	{
 	public:
@@ -137,6 +141,9 @@ namespace omega
 		// Computes the corner positions for the specified tile using information stored in the tile and configuration
 		// like center, yaw and pitch, lcd size and so on.
 		void computeTileCorners(DisplayTileConfig* tile);
+
+		//! Returns true if the specified host is running a tile in the specified section. 
+		bool isHostInTileSection(const String& hostname, int tilex, int tiley, int tilew, int tileh);
 
 	public:
 		// UGLY CONSTANTS.
