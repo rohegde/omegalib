@@ -1,7 +1,7 @@
 #summary Omegalib configuration file reference
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 3.7 - 26 April 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
+<p>*Last revision:* ver. 4.0 - 22 May 2013<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
 <wiki:toc max_depth="4" />
 
@@ -41,8 +41,9 @@ A system configuration file contains several sections. A few of them (like the `
 ---------------------------------------------------------------------------------------------------
 === Global configuration options ===
 These options go directly into the `config` section of the configuration file
- * pythonShellEnabled (bool): enables the interactive python console.
- * drawPointers (bool): draw 2D pointers on screen.
+ * `pythonShellEnabled` (bool): enables the interactive python console.
+ * `drawPointers` (bool, default `false`): draw 2D pointers on screen.
+ * `pointerSize` (bool, default 32): the size in pixels of 2D pointers.
 
 ---------------------------------------------------------------------------------------------------
 === `display` section ===
