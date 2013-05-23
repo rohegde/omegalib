@@ -23,6 +23,9 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * What's in this file:
+ *	The code for the system manager: the kernel of the omegalib runtime.
  *************************************************************************************************/
 #ifndef __SYSTEM_MANAGER_H__
 #define __SYSTEM_MANAGER_H__
@@ -42,7 +45,8 @@ namespace omega
 	class SageManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	// The SystemManager class is the root object of the omegalib architecture.
+	//! SystemManager is the kernel of the omegalib runtime. It takes care of setting up the system,
+	//! starting up and shutting down services and displays, and it manages the application execution.
 	class OMEGA_API SystemManager
 	{
 	public:
@@ -123,9 +127,21 @@ namespace omega
 
 		void setupServiceManager();
 		void setupDisplaySystem();
+
+		//! Returns the application instance Id. On systems running multiple omegalib instances concurrently,
+		//! Each application should have a different index set. The index is used, among other things, to apply
+		//! offsets to communication ports, to avoid port conflicts. This number is set automatically during initialization
+		//! by the omain() call. It is derived by command line parameters passed with the '-I' switch.
+		int getInstanceId() { return myInstanceId; }
+		//! @internal
+		void setInstanceId(int id) { myInstanceId = id; }
+
 	private:
 		SystemManager();
 		~SystemManager();
+
+		//! Utility function, offsets the netservice port using the system manager application instance id, to avoid port conflicts.
+		void adjustNetServicePort(Setting& stnetsvc);
 
 	private:
 		// Singleton instance.
@@ -148,6 +164,9 @@ namespace omega
 
 		String myHostname;
 		String myProgramName;
+
+		//! The application instance id.
+		int myInstanceId;
 
 		// Stats manager.
 		StatsManager* myStatsManager;

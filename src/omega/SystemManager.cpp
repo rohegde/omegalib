@@ -23,6 +23,9 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * What's in this file:
+ *	The code for the system manager: the kernel of the omegalib runtime.
  *************************************************************************************************/
 #include "omega/SystemManager.h"
 
@@ -100,7 +103,8 @@ SystemManager::SystemManager():
 	myExitRequested(false),
 	myIsInitialized(false),
 	myIsMaster(true),
-	mySageManager(NULL)
+	mySageManager(NULL),
+	myInstanceId(0)
 {
 	myDataManager = DataManager::getInstance();
 	myInterpreter = new PythonInterpreter();
@@ -201,6 +205,23 @@ void SystemManager::setupConfig(Config* appcfg)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SystemManager::adjustNetServicePort(Setting& stnetsvc)
+{
+	for(int i = 0; i < stnetsvc.getLength(); i++)
+	{
+		// If the service has a dataPort field, offset it using the instance id.
+		Setting& ssvc = stnetsvc[i];
+		if(ssvc.exists("dataPort"))
+		{
+			int curVal = ssvc["dataPort"];
+			curVal += myInstanceId;
+			ssvc["dataPort"] = curVal;
+			ofmsg("Service %1%: dataPort set to %2%", %ssvc.getName() %curVal);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SystemManager::setupServiceManager()
 {
 	myServiceManager = new ServiceManager();
@@ -223,11 +244,13 @@ void SystemManager::setupServiceManager()
 		Setting& stRoot = mySystemConfig->getRootSetting()["config"];
 		if(stRoot.exists("input"))
 		{
-			myServiceManager->setup(stRoot["input"]);
+			Setting& stnetsvc = stRoot["input"];
+			myServiceManager->setup(stnetsvc);
 		}
 		else if(stRoot.exists("services"))
 		{
-			myServiceManager->setup(stRoot["services"]);
+			Setting& stnetsvc = stRoot["services"];
+			myServiceManager->setup(stnetsvc);
 		}
 		else
 		{

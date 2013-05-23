@@ -105,7 +105,7 @@ namespace omega
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void editMultiInstanceDisplayConfig(DisplayConfig* dc, int tilex, int tiley, int tilew, int tileh, int portPool)
+	int editMultiInstanceDisplayConfig(DisplayConfig* dc, int tilex, int tiley, int tilew, int tileh, int portPool)
 	{
 		// By default set all tiles to disabled.
 		typedef Dictionary<String, DisplayTileConfig*> DisplayTileDictionary;
@@ -129,6 +129,8 @@ namespace omega
 		ofmsg("Grid size %1% %2% pool %3% numTimes %4%", %dc->tileGridSize[0] %dc->tileGridSize[1] %portPool %dc->numTiles);
 		ofmsg("Multi-Instance mode: instance id = %1% tile viewport (%2% %3% - %4% %5%) port %6%", 
 			%offs %tilex %tiley %(tilex + tilew) %(tiley + tileh) %dc->basePort);
+
+		return offs;
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -147,7 +149,9 @@ namespace omega
 			int tileWidth = boost::lexical_cast<int>(args[2]);
 			int tileHeight = boost::lexical_cast<int>(args[3]);
 			int portPool = boost::lexical_cast<int>(args[4]);
-			editMultiInstanceDisplayConfig(dc, tilex, tiley, tileWidth, tileHeight, portPool);
+			
+			int instanceId = editMultiInstanceDisplayConfig(dc, tilex, tiley, tileWidth, tileHeight, portPool);
+			sys->setInstanceId(instanceId);
 		}
 	}
 
