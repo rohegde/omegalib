@@ -244,6 +244,36 @@ void DisplayConfig::computeTileCorners(DisplayTileConfig* tc)
 	tc->bottomRight = tc->center - (up * th / 2) + (right * tw / 2);
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+int DisplayConfig::setupMultiInstance(MultiInstanceConfig* mic)
+{
+	// By default set all tiles to disabled.
+	typedef Dictionary<String, DisplayTileConfig*> DisplayTileDictionary;
+	foreach(DisplayTileDictionary::Item dtc, tiles) dtc->enabled = false;
+
+	// Enable tiles in the active viewport
+	for(int y = mic->tiley; y < mic->tiley + mic->tileh; y++)
+	{
+		for(int x = mic->tilex; x < mic->tilex + mic->tilew; x++)
+		{
+			DisplayTileConfig* dtc = tileGrid[x][y];
+			if(dtc != NULL) dtc->enabled = true;
+			else ofwarn("editMultiappDisplayConfig: cold not find tile %1% %2%", %x %y);
+		}
+	}
+
+	// Compute an offset to the base port based on the port pool and tile viewport
+	int offs = (mic->tiley * tileGridSize[0] + mic->tilex) * mic->portPool / numTiles;
+	basePort += offs;
+	mic->id = offs;
+
+	ofmsg("Grid size %1% %2% pool %3% numTimes %4%", %tileGridSize[0] %tileGridSize[1] %mic->portPool %numTiles);
+	ofmsg("Multi-Instance mode: instance id = %1% tile viewport (%2% %3% - %4% %5%) port %6%", 
+		%mic->id %mic->tilex %mic->tiley %(mic->tilex + mic->tilew) %(mic->tiley + mic->tileh) %basePort);
+
+	return offs;
+}
+	
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool DisplayConfig::isHostInTileSection(const String& hostname, int tilex, int tiley, int tilew, int tileh)
 {

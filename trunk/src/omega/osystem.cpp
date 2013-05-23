@@ -104,54 +104,29 @@ namespace omega
 		ds->killCluster();
 	}
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	int editMultiInstanceDisplayConfig(DisplayConfig* dc, int tilex, int tiley, int tilew, int tileh, int portPool)
-	{
-		// By default set all tiles to disabled.
-		typedef Dictionary<String, DisplayTileConfig*> DisplayTileDictionary;
-		foreach(DisplayTileDictionary::Item dtc, dc->tiles) dtc->enabled = false;
 
-		// Enable tiles in the active viewport
-		for(int y = tiley; y < tiley + tileh; y++)
-		{
-			for(int x = tilex; x < tilex + tilew; x++)
-			{
-				DisplayTileConfig* dtc = dc->tileGrid[x][y];
-				if(dtc != NULL) dtc->enabled = true;
-				else ofwarn("editMultiappDisplayConfig: cold not find tile %1% %2%", %x %y);
-			}
-		}
-
-		// Compute an offset to the base port based on the port pool and tile viewport
-		int offs = (tiley * dc->tileGridSize[0] + tilex) * portPool / dc->numTiles;
-		dc->basePort += offs;
-
-		ofmsg("Grid size %1% %2% pool %3% numTimes %4%", %dc->tileGridSize[0] %dc->tileGridSize[1] %portPool %dc->numTiles);
-		ofmsg("Multi-Instance mode: instance id = %1% tile viewport (%2% %3% - %4% %5%) port %6%", 
-			%offs %tilex %tiley %(tilex + tilew) %(tiley + tileh) %dc->basePort);
-
-		return offs;
-	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	void setupMultiInstance(SystemManager* sys, const String& multiAppString)
 	{
 		DisplayConfig* dc = &sys->getDisplaySystem()->getDisplayConfig();
 		Vector<String> args = StringUtils::split(multiAppString, ",");
-		if(args.size() != 5)
+		if(args.size() < 4)
 		{
-			ofwarn("Invalid number of arguments for -M option '%1%'. 5 expected: <tilex>,<tiley>,<tilewidth>,<tileHeight>,<portPool>", %multiAppString);
+			ofwarn("Invalid number of arguments for -M option '%1%'. 4-5 expected: <tilex>,<tiley>,<tilewidth>,<tileHeight>[,portPool = 100]", %multiAppString);
 		}
 		else
 		{
-			int tilex = boost::lexical_cast<int>(args[0]);
-			int tiley = boost::lexical_cast<int>(args[1]);
-			int tileWidth = boost::lexical_cast<int>(args[2]);
-			int tileHeight = boost::lexical_cast<int>(args[3]);
-			int portPool = boost::lexical_cast<int>(args[4]);
-			
-			int instanceId = editMultiInstanceDisplayConfig(dc, tilex, tiley, tileWidth, tileHeight, portPool);
-			sys->setInstanceId(instanceId);
+			MultiInstanceConfig& mic = sys->getMultiInstanceConfig();
+
+			mic.enabled = true;
+			mic.tilex = boost::lexical_cast<int>(args[0]);
+			mic.tiley = boost::lexical_cast<int>(args[1]);
+			mic.tilew = boost::lexical_cast<int>(args[2]);
+			mic.tileh = boost::lexical_cast<int>(args[3]);
+
+			if(args.size() == 5) mic.portPool = boost::lexical_cast<int>(args[4]);
+			else mic.portPool = 100;
 		}
 	}
 
@@ -356,15 +331,16 @@ namespace omega
 			// This is used when the application runs a mission control client.
 			MissionControlClient* missionControlClient = NULL;
 
+			// If multiApp string is set, setup multi-application mode.
+			// In multi-app mode, this instance will output to a subset of the available tiles, and will choose a
+			// communication port using a port interval starting at the configuration base port plus and dependent on a port pool.
+			if(multiAppString != "") setupMultiInstance(sys, multiAppString);
+
 			if(kill)
 			{
 				sys->setApplication(&app);
 				sys->setupConfig(cfg);
 				sys->setupDisplaySystem();
-				// If multiApp string is set, setup multi-application mode.
-				// In multi-app mode, this instance will output to a subset of the available tiles, and will choose a
-				// communication port using a port interval starting at the configuration base port plus and dependent on a port pool.
-				if(multiAppString != "") setupMultiInstance(sys, multiAppString);
 				DisplaySystem* ds = sys->getDisplaySystem();
 				ds->killCluster();
 			}
@@ -385,11 +361,6 @@ namespace omega
 						setupMissionControl(mcmode, sys, syscfg->lookup("config/missionControl"), missionControlClient);
 					}
 				}
-
-				// If multiApp string is set, setup multi-application mode.
-				// In multi-app mode, this instance will output to a subset of the available tiles, and will choose a
-				// communication port using a port interval starting at the configuration base port plus and dependent on a port pool.
-				if(multiAppString != "") setupMultiInstance(sys, multiAppString);
 
 				sys->initialize();
 				omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< OMEGALIB BOOT\n\n");

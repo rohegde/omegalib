@@ -45,6 +45,28 @@ namespace omega
 	class SageManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! Contains data about multi-instance mode.
+	struct MultiInstanceConfig
+	{
+		MultiInstanceConfig():
+			enabled(false),
+			tilex(0),tiley(0),tilew(0),tileh(0),id(0),portPool(100) {}
+
+		//! application instance Id. On systems running multiple omegalib instances concurrently,
+		//! Each application should have a different index set. The index is used, among other things, to apply
+		//! offsets to communication ports, to avoid port conflicts. This number is set automatically during initialization
+		//! by the omain() call. It is derived by command line parameters passed with the '-I' switch.
+		int id;
+
+		bool enabled;
+		int tilex;
+		int tiley;
+		int tilew;
+		int tileh;
+		int portPool;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! SystemManager is the kernel of the omegalib runtime. It takes care of setting up the system,
 	//! starting up and shutting down services and displays, and it manages the application execution.
 	class OMEGA_API SystemManager
@@ -128,13 +150,7 @@ namespace omega
 		void setupServiceManager();
 		void setupDisplaySystem();
 
-		//! Returns the application instance Id. On systems running multiple omegalib instances concurrently,
-		//! Each application should have a different index set. The index is used, among other things, to apply
-		//! offsets to communication ports, to avoid port conflicts. This number is set automatically during initialization
-		//! by the omain() call. It is derived by command line parameters passed with the '-I' switch.
-		int getInstanceId() { return myInstanceId; }
-		//! @internal
-		void setInstanceId(int id) { myInstanceId = id; }
+		MultiInstanceConfig& getMultiInstanceConfig() { return myMultiInstanceConfig; }
 
 	private:
 		SystemManager();
@@ -166,7 +182,7 @@ namespace omega
 		String myProgramName;
 
 		//! The application instance id.
-		int myInstanceId;
+		MultiInstanceConfig myMultiInstanceConfig;
 
 		// Stats manager.
 		StatsManager* myStatsManager;

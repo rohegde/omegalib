@@ -103,8 +103,7 @@ SystemManager::SystemManager():
 	myExitRequested(false),
 	myIsInitialized(false),
 	myIsMaster(true),
-	mySageManager(NULL),
-	myInstanceId(0)
+	mySageManager(NULL)
 {
 	myDataManager = DataManager::getInstance();
 	myInterpreter = new PythonInterpreter();
@@ -151,8 +150,11 @@ void SystemManager::setup(Config* appcfg)
 
 	try
 	{
-		setupServiceManager();
+		// The display system needs to be set up before service manager, because it finishes setting up
+		// the multi instance configuration parameters that are used during service configuration.
 		setupDisplaySystem();
+
+		setupServiceManager();
 		if(myInterpreter->isEnabled())
 		{
 			if(mySystemConfig->exists("config"))
@@ -214,7 +216,7 @@ void SystemManager::adjustNetServicePort(Setting& stnetsvc)
 		if(ssvc.exists("dataPort"))
 		{
 			int curVal = ssvc["dataPort"];
-			curVal += myInstanceId;
+			curVal += myMultiInstanceConfig.id;
 			ssvc["dataPort"] = curVal;
 			ofmsg("Service %1%: dataPort set to %2%", %ssvc.getName() %curVal);
 		}
@@ -245,13 +247,13 @@ void SystemManager::setupServiceManager()
 		if(stRoot.exists("input"))
 		{
 			Setting& stnetsvc = stRoot["input"];
-			adjustNetServicePort(stnetsvc);
+			if(myMultiInstanceConfig.enabled) adjustNetServicePort(stnetsvc);
 			myServiceManager->setup(stnetsvc);
 		}
 		else if(stRoot.exists("services"))
 		{
 			Setting& stnetsvc = stRoot["services"];
-			adjustNetServicePort(stnetsvc);
+			if(myMultiInstanceConfig.enabled) adjustNetServicePort(stnetsvc);
 			myServiceManager->setup(stnetsvc);
 		}
 		else
@@ -298,7 +300,17 @@ void SystemManager::setupDisplaySystem()
 		}
 		if(ds != NULL)
 		{
+			// Setup the display system. This call will parse the display configuration and fill
+			// the DisplayConfig structure.
 			ds->setup(stDS);
+
+			// If multi-instance mode is active, adjust the display settings.
+			if(myMultiInstanceConfig.enabled)
+			{
+				// This call will also set the instance id in myMultiInstanceConfig.
+				ds->getDisplayConfig().setupMultiInstance(&myMultiInstanceConfig);
+			}
+
 			setDisplaySystem(ds);
 		}
 	}
