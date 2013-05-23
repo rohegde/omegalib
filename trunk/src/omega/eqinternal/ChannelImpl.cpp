@@ -153,13 +153,16 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 		context->projection.data()[i] = proj.array[i];
 	}
 
-	//Camera* cam = myDC.tile->camera; // Engine::instance()->getDefaultCamera();
 	if(myDC.tile->camera != NULL)
 	{
-		Camera* cam = myDC.tile->camera; // Engine::instance()->getDefaultCamera();
+		Camera* cam = myDC.tile->camera; 
 		context->modelview = mw * cam->getViewTransform();
 	}
-    //context->modelview = mw * cam->getViewTransform();
+	else
+	{
+		Camera* cam = client->getEngine()->getDefaultCamera();
+		context->modelview = mw * cam->getViewTransform();
+	}
 
 	// Setup the stencil buffer if needed.
 	// The stencil buffer is set up if th tile is using an interleaved mode (line or pixel)
@@ -293,7 +296,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 
 	// If SAGE support is enabled, notify frame finish
 #ifdef OMEGA_USE_SAGE
-	SageManager* sage = getRenderer()->getSystemManager()->getSageManager();
+	SageManager* sage = getClient()->getSystemManager()->getSageManager();
 	if(sage != NULL)
 	{
 		sage->finishFrame(myDC);

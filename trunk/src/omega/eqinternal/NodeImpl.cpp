@@ -59,10 +59,10 @@ bool NodeImpl::configInit( const eq::uint128_t& initID )
 		ConfigImpl* config = static_cast<ConfigImpl*>( getConfig());
 		config->mapSharedData(initID);
 
-		EqualizerDisplaySystem* eqds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
-		eqds->finishInitialize(config);
-
 		myServer->initialize();
+		
+		EqualizerDisplaySystem* eqds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+		eqds->finishInitialize(config, myServer);
 	}
 
 	return Node::configInit(initID);

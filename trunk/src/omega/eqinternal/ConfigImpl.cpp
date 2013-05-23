@@ -121,7 +121,7 @@ bool ConfigImpl::init()
 	myServer = new Engine(app);
 	
 	EqualizerDisplaySystem* eqds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
-	eqds->finishInitialize(this);
+	eqds->finishInitialize(this, myServer);
 
 	myServer->initialize();
 
@@ -342,7 +342,6 @@ uint32_t ConfigImpl::finishFrame()
 					// Make sure the camera is enabled for the specified tile.
 					//otd.camera->getOutput(dtc.device)->setEnabled(true);
 				}
-				dtc->camera = otd.camera;
 			}
 		}
 
