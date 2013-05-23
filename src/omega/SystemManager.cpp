@@ -245,11 +245,13 @@ void SystemManager::setupServiceManager()
 		if(stRoot.exists("input"))
 		{
 			Setting& stnetsvc = stRoot["input"];
+			adjustNetServicePort(stnetsvc);
 			myServiceManager->setup(stnetsvc);
 		}
 		else if(stRoot.exists("services"))
 		{
 			Setting& stnetsvc = stRoot["services"];
+			adjustNetServicePort(stnetsvc);
 			myServiceManager->setup(stnetsvc);
 		}
 		else

@@ -522,24 +522,29 @@ void EqualizerDisplaySystem::killCluster()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::finishInitialize(ConfigImpl* config)
+void EqualizerDisplaySystem::finishInitialize(ConfigImpl* config, Engine* engine)
 {
 	myConfig = config;
-	myConfig->updateObserverCameras();
-	/*ofmsg("Initializing %1% observer(s).", %myObservers.size());
-	if(mySetting->exists("observers"))
+	// Setup cameras for each tile.
+	typedef KeyValue<String, DisplayTileConfig*> TileItem;
+	foreach(TileItem dtc, myDisplayConfig.tiles)
 	{
-		Setting& stObservers = (*mySetting)["observers"];
-		for(int i = 0; i < stObservers.getLength(); i++)
+		if(dtc->cameraName == "")
 		{
-			Setting& stObserver = stObservers[i];
-			Observer* obs = getObserver(i);
-			obs->load(stObserver);
+			// Use default camera for this tile
+			dtc->camera = engine->getDefaultCamera();
 		}
+		else
+		{
+			// Use a custom camera for this tile (create it here if necessary)
+			Camera* customCamera = engine->getCamera(dtc->cameraName);
+			if(customCamera == NULL)
+			{
+				customCamera = engine->createCamera(dtc->cameraName);
+			}
+			dtc->camera = customCamera;
+		}	
 	}
-	*/
-	//omsg("Equalizer initialization DONE");
-	//omsg("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< DISPLAY STARTUP\n\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
