@@ -109,7 +109,6 @@ namespace omega
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	void setupMultiInstance(SystemManager* sys, const String& multiAppString)
 	{
-		DisplayConfig* dc = &sys->getDisplaySystem()->getDisplayConfig();
 		Vector<String> args = StringUtils::split(multiAppString, ",");
 		if(args.size() < 4)
 		{
