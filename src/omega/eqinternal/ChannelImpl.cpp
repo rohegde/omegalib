@@ -155,11 +155,13 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 
 	if(myDC.tile->camera != NULL)
 	{
+		//ofmsg("CUSTOM CAM %1%", %myDC.tile->camera->getName());
 		Camera* cam = myDC.tile->camera; 
 		context->modelview = mw * cam->getViewTransform();
 	}
 	else
 	{
+		//omsg("DEFAULT CAM");
 		Camera* cam = client->getEngine()->getDefaultCamera();
 		context->modelview = mw * cam->getViewTransform();
 	}
@@ -296,7 +298,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 
 	// If SAGE support is enabled, notify frame finish
 #ifdef OMEGA_USE_SAGE
-	SageManager* sage = getRenderer()->getSystemManager()->getSageManager();
+	SageManager* sage = getClient()->getSystemManager()->getSageManager();
 	if(sage != NULL)
 	{
 		sage->finishFrame(myDC);

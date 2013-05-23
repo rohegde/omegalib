@@ -661,6 +661,8 @@ void setTileCamera(const String& tilename, const String& cameraName)
 	{
 		DisplayTileConfig* dtc = dc.tiles[tilename];
 		dtc->cameraName = cameraName;
+		// Create the camera here (this is guaranteed to happen on all nodes)
+		dtc->camera = getOrCreateCamera(cameraName);
 	}
 	ds->refreshSettings();
 }

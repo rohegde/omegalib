@@ -415,6 +415,7 @@ void ConfigImpl::updateObserverCameras()
 					{
 						customCamera = engine->createCamera(dtc->cameraName);
 					}
+					ofmsg("Tile %1% camera set to %2%", %dtc->name %dtc->cameraName);
 					otd.camera = customCamera;
 				}
 				dtc->camera = otd.camera;
