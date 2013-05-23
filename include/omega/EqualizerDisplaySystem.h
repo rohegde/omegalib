@@ -35,6 +35,7 @@ namespace omega
 	class EqualizerNodeFactory;
 	class ViewImpl;
 	class ConfigImpl;
+	class Engine;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// This class is used to route equalizer log into the omega log system.
@@ -89,7 +90,7 @@ namespace omega
 
 		//! @internal Finish equalizer display system initialization.
 		//! This method is called from the node init function. Performs observer initialization.
-		void finishInitialize(ConfigImpl* config);
+		void finishInitialize(ConfigImpl* config, Engine* engine);
 
 		void exitConfig();
 
