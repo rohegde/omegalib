@@ -142,6 +142,12 @@ namespace omega
 		// like center, yaw and pitch, lcd size and so on.
 		void computeTileCorners(DisplayTileConfig* tile);
 
+		//! Modifies the display configuration to run on the tile subset specified in 
+		//! MultiInstanceConfig. This call modifies enabled tiles and port assignments in the display configuration and
+		//! Assings the application an instance id. The instance id is written in the id field of MultiInstanceConfig and
+		//! is returned by this call.
+		int DisplayConfig::setupMultiInstance(MultiInstanceConfig* mic);
+
 		//! Returns true if the specified host is running a tile in the specified section. 
 		bool isHostInTileSection(const String& hostname, int tilex, int tiley, int tilew, int tileh);
 
