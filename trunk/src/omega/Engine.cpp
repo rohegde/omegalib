@@ -258,8 +258,8 @@ void Engine::reset()
 	
 	if(soundEnv != NULL)
 	{
-		soundEnv->stopAllSounds();
-		soundEnv->cleanupAllSounds();
+		soundEnv->getSoundManager()->stopAllSounds();
+		soundEnv->getSoundManager()->cleanupAllSounds();
 	}
 }
 

@@ -97,8 +97,8 @@ namespace omega
 		SoundEnvironment* se = Engine::instance()->getSoundEnvironment();
 		if(se != NULL)
 		{
-			se->stopAllSounds();
-			se->cleanupAllSounds();
+			se->getSoundManager()->stopAllSounds();
+			se->getSoundManager()->cleanupAllSounds();
 		}
 
 		ds->killCluster();

@@ -71,8 +71,8 @@ PyObject* omegaExit(PyObject* self, PyObject* args)
 	SoundEnvironment* se = Engine::instance()->getSoundEnvironment();
 	if(se != NULL)
 	{
-		se->stopAllSounds();
-		se->cleanupAllSounds();
+		se->getSoundManager()->stopAllSounds();
+		se->getSoundManager()->cleanupAllSounds();
 	}
 	Py_INCREF(Py_None);
 	return Py_None;
