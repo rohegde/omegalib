@@ -237,7 +237,7 @@ void HelloApplication::handleEvent(const Event& evt)
 			}
 			else if( evt.getFlags() == Event::Button5 ) // Wand L1
 			{
-				env->stopAllSounds();
+				env->getSoundManager()->stopAllSounds();
 			}
 			else if( evt.getFlags() == Event::ButtonLeft ) // DPad
 			{
