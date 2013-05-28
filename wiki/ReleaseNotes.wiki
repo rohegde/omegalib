@@ -10,6 +10,8 @@
 	* Added `Color` from omicron. Added `Color.isValidColor`
 	* Added per-tile runtime camera controls: `isHostInTileSection`, `setTileCamera`.
 	* `pointerSize` config option
+	* Automatic multi-instance port adjustment for NetService
+	* on the `-I` multi-instance switch, the port pool can be left unspecified. It will be set to 100 by default.
 *cyclops*
 	* Major revision of the Material API. Materials have a lot more properties and flags. Multiple material layers can be added to an entity, without having to use the `setEffect` string. `setEffect` is not just a shorthand version of adding material layers to an Entity.
 *omicron*

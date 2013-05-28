@@ -2,7 +2,7 @@
 #sidebar Sidebar
 
 = Running omegalib scripts in CAVE2 =
-<p>*Last revision:* ver. 3.3 - 13 February 2012</p>
+<p>*Last revision:* ver. 4.0 - 28 May 2013</p>
 This step by step guide explains how to run omegalib scripts on the EVL CAVE2 system. It is targeted at users that already have an account set up in the system. For more information on python programming check the [BasicPython] page, or the python reference section in the sidebar
 
 == Prerequisites ==
@@ -10,10 +10,13 @@ The user should have a personal account on the CAVE2 cluster, and should be able
 
 == Step 1: setting the path ==
 The omegalib user version is installed in `/data/evl/omegalib-user`. To simplify launching scripts from your account, you should add the binary folder from this install to your path. For instance, you can add the following lines to the `.bashrc` file in your home directory:
+*NOTE* To use OpenSceneGraph plugins (for instance to load obj files, .earth files etc), you will have to add the respective paths to the `LD_LIBRARY_PATH` variable.
 {{{
 	# Add the omegalib bin directory to path
 	PATH=$PATH:/data/evl/omegalib-user/build/bin
 	export PATH
+	# (OPTIONAL) add the osg plugins path and the osgEarth binary path to LD_LIBRARY_PATH
+	export LD_LIBRARY_PATH=/data/evl/osgearth/lib:/data/evl/omegalib-user/build/bin/osgPlugins-3.0.1
 }}}
 To see if you have done this correctly, log into into your account and type.
 {{{
