@@ -164,10 +164,19 @@ void Engine::initialize()
 			String soundServerIP = Config::getStringValue("soundServerIP", s, "localhost");
 			int soundServerPort = Config::getIntValue("soundServerPort", s, 57120);
 
+			float volumeScale = Config::getFloatValue("volumeScale", s, 0.5);
+
 			soundManager = new SoundManager(soundServerIP,soundServerPort);
-			soundManager->startSoundServer();
+
+			ofmsg("Engine: Connecting to sound server at %1% on port %2%...", %soundServerIP %soundServerPort);
+			while( !soundManager->isSoundServerRunning() )
+			{
+				soundManager->startSoundServer();
+			}
+			omsg("Engine: Connected to sound server.");
 
 			soundEnv = soundManager->getSoundEnvironment();
+			soundEnv->setVolumeScale( volumeScale );
 			soundEnv->setListenerPosition( getDefaultCamera()->getPosition() );
 			soundEnv->setListenerOrientation( getDefaultCamera()->getOrientation() );
 
@@ -376,6 +385,9 @@ void Engine::update(const UpdateContext& context)
 
 	if( soundEnv != NULL )
 	{
+		// Processing messages from sound server
+		soundManager->poll();
+
 		// Update the listener position with the camera's 'navigative' position
 		soundEnv->setListenerPosition( getDefaultCamera()->getPosition() );
 		soundEnv->setListenerOrientation( getDefaultCamera()->getOrientation() );
