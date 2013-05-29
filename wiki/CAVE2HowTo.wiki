@@ -58,3 +58,12 @@ By default omegalib configures the system by looking up for a `default.cfg` conf
 }}}
 Or you can directly write a full system configuration into your own default.cfg.
 
+== Random Notes ==
+=== Sound in CAVE2 ===
+CAVE2 uses a supercollider sound serve that can be controlled with the sound API in the omega module. But sound applications that run on your desktop may need a small change to run in CAVE2. In CAVE2, only the head node controls the sound server, so all the display nodes will have their sound interface disabled. `isSoundEnabled()` returns `False`, and `getSoundEnvironment()` returns `None` on all nodes except the master. This may lead to script errors unless you check for sound support before running you sound code:
+{{{
+	# Check for sound support
+	se = getSoundEnvironment()
+	if(se != None):
+		# DO sound stuff here ..
+}}}

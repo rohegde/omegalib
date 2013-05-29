@@ -1,7 +1,7 @@
 #summary Python reference: module omega
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 4.0 - 17 May 2013</p>*
+<p>*Last revision:* ver. 4.0 - 28 May 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -179,11 +179,11 @@ Example:
 These global functions are used to handle the sound environment.
 
 === `getSoundEnvironment()` ===
-Returns an instance of the `SoundEnvironment` class if sound support is available on the system. Return `None` otherwise.
+Returns an instance of the `SoundEnvironment` class if sound support is available on the system. Return `None` otherwise. On cluster systems with sound enabled, this function returns a valid `SoundEnvironment` instance *only* on the master node. Slave nodes do not have a sound interface. To create cluster-aware code users should skip sound code in their scripts when sound is disabled (for instance with an `if(isSoundEnabled()):` block.
 For more information on sound support check the [https://code.google.com/p/omicron-sdk/wiki/SoundAPIReference omicron Sound Reference Page]
 
 === `isSoundEnabled()` ===
-Returns `True` if sound is enabled and available on the system
+Returns `True` if sound is enabled and available on the system. On cluster systems with sound enabled, this function returns true *only* on the head node.
 
 -------------------------------------------------------------------------------
 == Application Control ==
