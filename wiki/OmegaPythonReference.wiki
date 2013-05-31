@@ -1,7 +1,7 @@
 #summary Python reference: module omega
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 4.0 - 28 May 2013</p>*
+<p>*Last revision:* ver. 4.0 - 31 May 2013</p>*
 
 <wiki:toc max_depth="2" />
 
@@ -45,7 +45,7 @@ Performs a query on the scene using a ray defined by the `origin` and `dir` para
 
 *NOTE:* only nodes tagged as selectable (see `Node.setSelectable`) will be considered for the query.
 
-Example:
+Example 1 - Simple query:
 {{{
 	node = SceneNode.create('node')
 	getScene().addChild(node)
@@ -59,6 +59,36 @@ Example:
 	
 	querySceneRay(Vector3f(0, 0, 0), Vector3f(0, 0, -1), queryCallback)
 }}}
+
+Example 2 - Picking and moving objects:
+{{{
+	# Create multiple objects, do setSelectable(True) on them
+	# to make them selectable in ray queries
+	# [...] Skipping code
+	
+	# Create an interactor, this will be used to move objects once they
+	# are selected
+	interactor = ToolkitUtils.setupInteractor('config/interactor')
+
+	# This function is called when an object is picked.
+	# Just set the object as the active movable object by passing it
+	# to the interactor
+	def onObjectSelected(node, distance):
+		interactor.setSceneNode(node)
+
+	# Event function: on pointer events when the left button is pressed,
+	# do picking. 
+	def onEvent():
+		e = getEvent()
+		if(e.getServiceType() == ServiceType.Pointer):
+			# When the confirm button is pressed:
+			if(e.isButtonDown(EventFlags.Button1)):
+				r = getRayFromEvent(e)
+				if(r[0]): querySceneRay(r[1], r[2], onObjectSelected)
+
+	setEventFunction(onEvent)
+}}}
+
 
 -------------------------------------------------------------------------------
 == Camera Management Functions ==
