@@ -10,7 +10,7 @@ Currently, precompiled versions of omegalib are available for windows only. You 
 === Major releases ===
 For each major release you can read release notes in the [ReleaseNotes] page.
 The current developer version is the most up to date, but the binaries may NOT contain all the features listed in the release notes page (some of them may still be on the source repository only).
-	* (*Current Developer Version*) Omegalib 4.0.1 [https://dl.dropboxusercontent.com/shz/dim6p7lrsutff5j/JqCTlKIRXh/win32-v4.0?token_hash=AAFGmkJlp0wVjiE9JqA_AMKaFkYWGGZIhHx9fbRdVRjO5w&top_level_offset=9 [Download Zip]]] 
+	* (*Current Developer Version*) Omegalib 4.0.1 [https://www.dropbox.com/s/aelxq9p5ofo5xgu/win32-v4.0.zip [Download Zip]]] 
 	* Omegalib 3.7 [https://dl.dropboxusercontent.com/shz/3j65w5bek4mplne/Nvl5q4zsBw/win32-v3.7?token_hash=AAFyZTVXHy1D0bw5VoPXKsX65iWBlgneP7eGMx5QG16S7w&top_level_offset=9 [Download Zip]]
 
 === Additional precompiled libraries ===
