@@ -77,7 +77,7 @@ bool processDefaultArguments(Material* mat, libconfig::ArgumentHelper& ah, const
 	}
 
 	// Set the material program
-	if(variation != "")
+	if(variation == "")
 	{
 		mat->setProgram(effectName);
 	}
