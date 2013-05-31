@@ -213,7 +213,7 @@ void Material::reset()
 	myGloss->setFloat(1.0f);
 
 	myShininess = addUniform("unif_Shininess", Uniform::Float);
-	myGloss->setFloat(1.0f);
+	myGloss->setFloat(0.0f);
 
 	// Reset flags to default values.
 	setTransparent(false);
