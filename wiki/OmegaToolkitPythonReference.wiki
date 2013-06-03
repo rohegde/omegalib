@@ -192,10 +192,16 @@ Wraps the [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_tool
 || `get3dSettings()` || Returns the container 3d settings for the container ||
 || `setPixelOutputEnabled(bool)` `isPixelOutputEnabled()` || Sets pixel output for the container. When enabled, the container will render to a pixel buffer instead of the screen ||
 || `getPixels()` || Returns the pixel data from the container when pixel output is enabled. Returned object is of `PixelData` type ||
-|| `addChild(widget)` || Adds a child to this container ||
-|| `removeChild(widget)` || Removes a child from this container ||
+|| `addChild(Widget child)` || Adds a child to this container ||
+|| `removeChild(Widget child)` || Removes a child from this container ||
 || `getChildByIndex(int)` || Returns a child by index. Returns `None` if index is invalid. ||
 || `getChildByName()` || Returns a child by name. Returns `None` if name is invalid. ||
+|| *Layout* ||  ||
+|| `ContainerLayout getLayout()`, `setLayout(ContainerLayout layout)` || Gets or sets the layout of this container. The `ContainerLayout` enumeration contains the following values: `LayoutFree`, `LayoutHorizontal`, `LayoutVertical`, `LayoutGrid` ||
+|| `int getMargin()`, `setMargin(int pixels)` || Gets or sets the margin between the container's content and its borders ||
+|| `int getPadding()`, `setPadding(int pixels)` || Gets or sets the padding space between elements within the container ||
+|| *Interaction* ||  ||
+|| `bool isEventInside(Event e)` || Returns true if the event happens within the container boundaries. This method supports all pointer and ray-generating events, and works with 2D and 3D mode containers. ||
 
 ---------------------------------------------------------------------------------------------------
 ==  `class Button` (extends `Widget`) ==
