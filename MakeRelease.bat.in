@@ -32,6 +32,7 @@ xcopy "${CMAKE_SOURCE_DIR}\data\fonts" .\fonts\ /S /Y
 
 copy "${CMAKE_SOURCE_DIR}\data\default.cfg" .\ /Y
 copy "${CMAKE_SOURCE_DIR}\data\default_init.py" .\ /Y
+copy "${CMAKE_SOURCE_DIR}\data\omegalib-transparent-white.png" .\ /Y
 copy "${CMAKE_SOURCE_DIR}\external\omicron\data\oinputserver.cfg" .\ /Y
 
 copy "${CMAKE_SOURCE_DIR}\tools\MissionControl\bin\Release\FastColoredTextBox.dll" .\bin /Y
