@@ -48,6 +48,9 @@ namespace omega {
 
 		virtual void addLine(const String& line);
 
+		void setNumLines(int value) { myLines = value; }
+		int getNumLines() { return myLines; }
+
 	private:
 		int myLines;
 		Color myBackgroundColor;
