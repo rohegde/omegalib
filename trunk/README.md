@@ -1,7 +1,6 @@
 ## omegalib v4.0 
 ### Notes
 This is the current developer version
-a different note here
 
 ### Major Changes
 
