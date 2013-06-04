@@ -1,0 +1,528 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2B0C2B2F14749E1C002A1436 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2B0C2B2E14749E1C002A1436 /* Settings.bundle */; };
+		2B741F5B14725A8F001EB9E5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B741F5A14725A8F001EB9E5 /* CFNetwork.framework */; };
+		2BD088DF1468D9850010DF51 /* Oscar.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BD088DE1468D9850010DF51 /* Oscar.png */; };
+		2BF40FCD1480D78F002903C6 /* middleRow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF40FC91480D78F002903C6 /* middleRow.png */; };
+		2BF40FCE1480D78F002903C6 /* topAndBottomRow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF40FCA1480D78F002903C6 /* topAndBottomRow.png */; };
+		2BF40FD01480D78F002903C6 /* topRow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF40FCC1480D78F002903C6 /* topRow.png */; };
+		2BF445E41472417B004FCF5E /* portholeiPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF445E31472417B004FCF5E /* portholeiPad.png */; };
+		2BF7FB651455D7B400942695 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF7FB641455D7B400942695 /* UIKit.framework */; };
+		2BF7FB671455D7B400942695 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF7FB661455D7B400942695 /* Foundation.framework */; };
+		2BF7FB691455D7B400942695 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF7FB681455D7B400942695 /* CoreGraphics.framework */; };
+		2BF7FB6B1455D7B400942695 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF7FB6A1455D7B400942695 /* CoreData.framework */; };
+		2BF7FB711455D7B400942695 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BF7FB6F1455D7B400942695 /* InfoPlist.strings */; };
+		2BF7FB731455D7B400942695 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FB721455D7B400942695 /* main.m */; };
+		2BF7FB771455D7B400942695 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FB761455D7B400942695 /* AppDelegate.m */; };
+		2BF7FB7A1455D7B400942695 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BF7FB781455D7B400942695 /* MainStoryboard_iPhone.storyboard */; };
+		2BF7FB7D1455D7B400942695 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BF7FB7B1455D7B400942695 /* MainStoryboard_iPad.storyboard */; };
+		2BF7FB801455D7B400942695 /* Porthole.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FB7E1455D7B400942695 /* Porthole.xcdatamodeld */; };
+		2BF7FB831455D7B400942695 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FB821455D7B400942695 /* MasterViewController.m */; };
+		2BF7FB861455D7B400942695 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FB851455D7B400942695 /* DetailViewController.m */; };
+		2BF7FB9F1455D90F00942695 /* portholeiPodRetina.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF7FB9E1455D90F00942695 /* portholeiPodRetina.png */; };
+		2BF7FBA11455D91200942695 /* portholeiPod.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF7FBA01455D91200942695 /* portholeiPod.png */; };
+		2BF7FBA41455D9F300942695 /* UIArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBA31455D9F300942695 /* UIArea.m */; };
+		2BF7FBAB1455DA0200942695 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBA61455DA0200942695 /* UIImage+Alpha.m */; };
+		2BF7FBAC1455DA0200942695 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBA81455DA0200942695 /* UIImage+Resize.m */; };
+		2BF7FBAD1455DA0200942695 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBAA1455DA0200942695 /* UIImage+RoundedCorner.m */; };
+		2BF7FBB01455DA2C00942695 /* FreeInteractionAreaView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBAF1455DA2C00942695 /* FreeInteractionAreaView.m */; };
+		2BF7FBB71455DA3D00942695 /* PulseCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBB61455DA3D00942695 /* PulseCircleView.m */; };
+		2BF7FBBA1455DA4500942695 /* CustomUIArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBB91455DA4500942695 /* CustomUIArea.m */; };
+		2BF7FBC61455F36600942695 /* TCPClientOmega.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBC51455F36600942695 /* TCPClientOmega.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2B0C2B2E14749E1C002A1436 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Porthole/Settings.bundle; sourceTree = "<group>"; };
+		2B741F5A14725A8F001EB9E5 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		2BD088DE1468D9850010DF51 /* Oscar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Oscar.png; path = Porthole/Resources/Oscar.png; sourceTree = "<group>"; };
+		2BF40FC91480D78F002903C6 /* middleRow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = middleRow.png; path = Porthole/Resources/middleRow.png; sourceTree = "<group>"; };
+		2BF40FCA1480D78F002903C6 /* topAndBottomRow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topAndBottomRow.png; path = Porthole/Resources/topAndBottomRow.png; sourceTree = "<group>"; };
+		2BF40FCC1480D78F002903C6 /* topRow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topRow.png; path = Porthole/Resources/topRow.png; sourceTree = "<group>"; };
+		2BF445E31472417B004FCF5E /* portholeiPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portholeiPad.png; sourceTree = "<group>"; };
+		2BF7FB601455D7B400942695 /* Porthole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Porthole.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BF7FB641455D7B400942695 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		2BF7FB661455D7B400942695 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2BF7FB681455D7B400942695 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2BF7FB6A1455D7B400942695 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		2BF7FB6E1455D7B400942695 /* Porthole-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Porthole-Info.plist"; sourceTree = "<group>"; };
+		2BF7FB701455D7B400942695 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2BF7FB721455D7B400942695 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2BF7FB741455D7B400942695 /* Porthole-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Porthole-Prefix.pch"; sourceTree = "<group>"; };
+		2BF7FB751455D7B400942695 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		2BF7FB761455D7B400942695 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		2BF7FB791455D7B400942695 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		2BF7FB7C1455D7B400942695 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		2BF7FB7F1455D7B400942695 /* Porthole.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Porthole.xcdatamodel; sourceTree = "<group>"; };
+		2BF7FB811455D7B400942695 /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
+		2BF7FB821455D7B400942695 /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
+		2BF7FB841455D7B400942695 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		2BF7FB851455D7B400942695 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		2BF7FB9E1455D90F00942695 /* portholeiPodRetina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portholeiPodRetina.png; sourceTree = "<group>"; };
+		2BF7FBA01455D91200942695 /* portholeiPod.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portholeiPod.png; sourceTree = "<group>"; };
+		2BF7FBA21455D9F300942695 /* UIArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIArea.h; sourceTree = "<group>"; };
+		2BF7FBA31455D9F300942695 /* UIArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIArea.m; sourceTree = "<group>"; };
+		2BF7FBA51455DA0200942695 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
+		2BF7FBA61455DA0200942695 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
+		2BF7FBA71455DA0200942695 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
+		2BF7FBA81455DA0200942695 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
+		2BF7FBA91455DA0200942695 /* UIImage+RoundedCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCorner.h"; sourceTree = "<group>"; };
+		2BF7FBAA1455DA0200942695 /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
+		2BF7FBAE1455DA2C00942695 /* FreeInteractionAreaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FreeInteractionAreaView.h; sourceTree = "<group>"; };
+		2BF7FBAF1455DA2C00942695 /* FreeInteractionAreaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FreeInteractionAreaView.m; sourceTree = "<group>"; };
+		2BF7FBB31455DA3400942695 /* OmegaProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OmegaProtocol.h; sourceTree = "<group>"; };
+		2BF7FBB51455DA3D00942695 /* PulseCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulseCircleView.h; sourceTree = "<group>"; };
+		2BF7FBB61455DA3D00942695 /* PulseCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PulseCircleView.m; sourceTree = "<group>"; };
+		2BF7FBB81455DA4500942695 /* CustomUIArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomUIArea.h; sourceTree = "<group>"; };
+		2BF7FBB91455DA4500942695 /* CustomUIArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomUIArea.m; sourceTree = "<group>"; };
+		2BF7FBC41455F36600942695 /* TCPClientOmega.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPClientOmega.h; sourceTree = "<group>"; };
+		2BF7FBC51455F36600942695 /* TCPClientOmega.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPClientOmega.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2BF7FB5D1455D7B400942695 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2BF7FB651455D7B400942695 /* UIKit.framework in Frameworks */,
+				2BF7FB671455D7B400942695 /* Foundation.framework in Frameworks */,
+				2BF7FB691455D7B400942695 /* CoreGraphics.framework in Frameworks */,
+				2BF7FB6B1455D7B400942695 /* CoreData.framework in Frameworks */,
+				2B741F5B14725A8F001EB9E5 /* CFNetwork.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2B91D0F61468A0A5005C13A5 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				2BF40FC91480D78F002903C6 /* middleRow.png */,
+				2BF40FCA1480D78F002903C6 /* topAndBottomRow.png */,
+				2BF40FCC1480D78F002903C6 /* topRow.png */,
+				2BD088DE1468D9850010DF51 /* Oscar.png */,
+			);
+			name = Resource;
+			sourceTree = "<group>";
+		};
+		2BF7FB551455D7B400942695 = {
+			isa = PBXGroup;
+			children = (
+				2BF7FBA01455D91200942695 /* portholeiPod.png */,
+				2BF7FB9E1455D90F00942695 /* portholeiPodRetina.png */,
+				2BF445E31472417B004FCF5E /* portholeiPad.png */,
+				2B91D0F61468A0A5005C13A5 /* Resource */,
+				2BF7FB6C1455D7B400942695 /* Porthole */,
+				2BF7FB631455D7B400942695 /* Frameworks */,
+				2BF7FB611455D7B400942695 /* Products */,
+				2B0C2B2E14749E1C002A1436 /* Settings.bundle */,
+			);
+			sourceTree = "<group>";
+		};
+		2BF7FB611455D7B400942695 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FB601455D7B400942695 /* Porthole.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2BF7FB631455D7B400942695 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2B741F5A14725A8F001EB9E5 /* CFNetwork.framework */,
+				2BF7FB641455D7B400942695 /* UIKit.framework */,
+				2BF7FB661455D7B400942695 /* Foundation.framework */,
+				2BF7FB681455D7B400942695 /* CoreGraphics.framework */,
+				2BF7FB6A1455D7B400942695 /* CoreData.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2BF7FB6C1455D7B400942695 /* Porthole */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FB941455D85500942695 /* MainArchitecture */,
+				2BF7FB911455D82D00942695 /* General Classes */,
+				2BF7FB8C1455D7BF00942695 /* Specific Classes */,
+				2BF7FB6D1455D7B400942695 /* Supporting Files */,
+			);
+			path = Porthole;
+			sourceTree = "<group>";
+		};
+		2BF7FB6D1455D7B400942695 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FB6E1455D7B400942695 /* Porthole-Info.plist */,
+				2BF7FB6F1455D7B400942695 /* InfoPlist.strings */,
+				2BF7FB721455D7B400942695 /* main.m */,
+				2BF7FB741455D7B400942695 /* Porthole-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		2BF7FB8C1455D7BF00942695 /* Specific Classes */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FB901455D81B00942695 /* FreeInteractionAreaView */,
+				2BF7FB8E1455D7FA00942695 /* PulseCircle */,
+				2BF7FB8D1455D7F000942695 /* CustomUIArea */,
+				2BF7FBC71455F36900942695 /* TCPClientOmega */,
+			);
+			name = "Specific Classes";
+			sourceTree = "<group>";
+		};
+		2BF7FB8D1455D7F000942695 /* CustomUIArea */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FBB81455DA4500942695 /* CustomUIArea.h */,
+				2BF7FBB91455DA4500942695 /* CustomUIArea.m */,
+			);
+			name = CustomUIArea;
+			sourceTree = "<group>";
+		};
+		2BF7FB8E1455D7FA00942695 /* PulseCircle */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FBB51455DA3D00942695 /* PulseCircleView.h */,
+				2BF7FBB61455DA3D00942695 /* PulseCircleView.m */,
+			);
+			name = PulseCircle;
+			sourceTree = "<group>";
+		};
+		2BF7FB901455D81B00942695 /* FreeInteractionAreaView */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FBAE1455DA2C00942695 /* FreeInteractionAreaView.h */,
+				2BF7FBAF1455DA2C00942695 /* FreeInteractionAreaView.m */,
+			);
+			name = FreeInteractionAreaView;
+			sourceTree = "<group>";
+		};
+		2BF7FB911455D82D00942695 /* General Classes */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FB931455D84A00942695 /* UIArea */,
+				2BF7FB921455D83C00942695 /* UIImage */,
+			);
+			name = "General Classes";
+			sourceTree = "<group>";
+		};
+		2BF7FB921455D83C00942695 /* UIImage */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FBA51455DA0200942695 /* UIImage+Alpha.h */,
+				2BF7FBA61455DA0200942695 /* UIImage+Alpha.m */,
+				2BF7FBA71455DA0200942695 /* UIImage+Resize.h */,
+				2BF7FBA81455DA0200942695 /* UIImage+Resize.m */,
+				2BF7FBA91455DA0200942695 /* UIImage+RoundedCorner.h */,
+				2BF7FBAA1455DA0200942695 /* UIImage+RoundedCorner.m */,
+			);
+			name = UIImage;
+			sourceTree = "<group>";
+		};
+		2BF7FB931455D84A00942695 /* UIArea */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FBA21455D9F300942695 /* UIArea.h */,
+				2BF7FBA31455D9F300942695 /* UIArea.m */,
+			);
+			name = UIArea;
+			sourceTree = "<group>";
+		};
+		2BF7FB941455D85500942695 /* MainArchitecture */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FB7E1455D7B400942695 /* Porthole.xcdatamodeld */,
+				2BF7FB991455D88A00942695 /* MainStoryBoards */,
+				2BF7FB9A1455D89700942695 /* MasterVC */,
+				2BF7FB9B1455D8A100942695 /* DetailVC */,
+				2BF7FB951455D85F00942695 /* AppDelegate */,
+			);
+			name = MainArchitecture;
+			sourceTree = "<group>";
+		};
+		2BF7FB951455D85F00942695 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FB751455D7B400942695 /* AppDelegate.h */,
+				2BF7FB761455D7B400942695 /* AppDelegate.m */,
+			);
+			name = AppDelegate;
+			sourceTree = "<group>";
+		};
+		2BF7FB991455D88A00942695 /* MainStoryBoards */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FB781455D7B400942695 /* MainStoryboard_iPhone.storyboard */,
+				2BF7FB7B1455D7B400942695 /* MainStoryboard_iPad.storyboard */,
+			);
+			name = MainStoryBoards;
+			sourceTree = "<group>";
+		};
+		2BF7FB9A1455D89700942695 /* MasterVC */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FB811455D7B400942695 /* MasterViewController.h */,
+				2BF7FB821455D7B400942695 /* MasterViewController.m */,
+			);
+			name = MasterVC;
+			sourceTree = "<group>";
+		};
+		2BF7FB9B1455D8A100942695 /* DetailVC */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FB841455D7B400942695 /* DetailViewController.h */,
+				2BF7FB851455D7B400942695 /* DetailViewController.m */,
+			);
+			name = DetailVC;
+			sourceTree = "<group>";
+		};
+		2BF7FBC71455F36900942695 /* TCPClientOmega */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7FBC41455F36600942695 /* TCPClientOmega.h */,
+				2BF7FBC51455F36600942695 /* TCPClientOmega.m */,
+				2BF7FBB31455DA3400942695 /* OmegaProtocol.h */,
+			);
+			name = TCPClientOmega;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2BF7FB5F1455D7B400942695 /* Porthole */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2BF7FB891455D7B400942695 /* Build configuration list for PBXNativeTarget "Porthole" */;
+			buildPhases = (
+				2BF7FB5C1455D7B400942695 /* Sources */,
+				2BF7FB5D1455D7B400942695 /* Frameworks */,
+				2BF7FB5E1455D7B400942695 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Porthole;
+			productName = Porthole;
+			productReference = 2BF7FB601455D7B400942695 /* Porthole.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2BF7FB571455D7B400942695 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Univeristy of Illinois at Chicago";
+			};
+			buildConfigurationList = 2BF7FB5A1455D7B400942695 /* Build configuration list for PBXProject "Porthole" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2BF7FB551455D7B400942695;
+			productRefGroup = 2BF7FB611455D7B400942695 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2BF7FB5F1455D7B400942695 /* Porthole */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2BF7FB5E1455D7B400942695 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2BF7FB711455D7B400942695 /* InfoPlist.strings in Resources */,
+				2BF7FB7A1455D7B400942695 /* MainStoryboard_iPhone.storyboard in Resources */,
+				2BF7FB7D1455D7B400942695 /* MainStoryboard_iPad.storyboard in Resources */,
+				2BF7FB9F1455D90F00942695 /* portholeiPodRetina.png in Resources */,
+				2BF7FBA11455D91200942695 /* portholeiPod.png in Resources */,
+				2BD088DF1468D9850010DF51 /* Oscar.png in Resources */,
+				2BF445E41472417B004FCF5E /* portholeiPad.png in Resources */,
+				2B0C2B2F14749E1C002A1436 /* Settings.bundle in Resources */,
+				2BF40FCD1480D78F002903C6 /* middleRow.png in Resources */,
+				2BF40FCE1480D78F002903C6 /* topAndBottomRow.png in Resources */,
+				2BF40FD01480D78F002903C6 /* topRow.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2BF7FB5C1455D7B400942695 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2BF7FB731455D7B400942695 /* main.m in Sources */,
+				2BF7FB771455D7B400942695 /* AppDelegate.m in Sources */,
+				2BF7FB801455D7B400942695 /* Porthole.xcdatamodeld in Sources */,
+				2BF7FB831455D7B400942695 /* MasterViewController.m in Sources */,
+				2BF7FB861455D7B400942695 /* DetailViewController.m in Sources */,
+				2BF7FBA41455D9F300942695 /* UIArea.m in Sources */,
+				2BF7FBAB1455DA0200942695 /* UIImage+Alpha.m in Sources */,
+				2BF7FBAC1455DA0200942695 /* UIImage+Resize.m in Sources */,
+				2BF7FBAD1455DA0200942695 /* UIImage+RoundedCorner.m in Sources */,
+				2BF7FBB01455DA2C00942695 /* FreeInteractionAreaView.m in Sources */,
+				2BF7FBB71455DA3D00942695 /* PulseCircleView.m in Sources */,
+				2BF7FBBA1455DA4500942695 /* CustomUIArea.m in Sources */,
+				2BF7FBC61455F36600942695 /* TCPClientOmega.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		2BF7FB6F1455D7B400942695 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2BF7FB701455D7B400942695 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		2BF7FB781455D7B400942695 /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2BF7FB791455D7B400942695 /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		2BF7FB7B1455D7B400942695 /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2BF7FB7C1455D7B400942695 /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2BF7FB871455D7B400942695 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Dennis Chau (QNFT9H7G2U)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dennis Chau (QNFT9H7G2U)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PROVISIONING_PROFILE = "D9429CEA-87E3-4938-B8D9-95C26FE3047A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D9429CEA-87E3-4938-B8D9-95C26FE3047A";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2BF7FB881455D7B400942695 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Dennis Chau (QNFT9H7G2U)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dennis Chau (QNFT9H7G2U)";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "D9429CEA-87E3-4938-B8D9-95C26FE3047A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D9429CEA-87E3-4938-B8D9-95C26FE3047A";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2BF7FB8A1455D7B400942695 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Porthole/Porthole-Prefix.pch";
+				INFOPLIST_FILE = "Porthole/Porthole-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		2BF7FB8B1455D7B400942695 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Porthole/Porthole-Prefix.pch";
+				INFOPLIST_FILE = "Porthole/Porthole-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2BF7FB5A1455D7B400942695 /* Build configuration list for PBXProject "Porthole" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2BF7FB871455D7B400942695 /* Debug */,
+				2BF7FB881455D7B400942695 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2BF7FB891455D7B400942695 /* Build configuration list for PBXNativeTarget "Porthole" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2BF7FB8A1455D7B400942695 /* Debug */,
+				2BF7FB8B1455D7B400942695 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		2BF7FB7E1455D7B400942695 /* Porthole.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				2BF7FB7F1455D7B400942695 /* Porthole.xcdatamodel */,
+			);
+			currentVersion = 2BF7FB7F1455D7B400942695 /* Porthole.xcdatamodel */;
+			path = Porthole.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 2BF7FB571455D7B400942695 /* Project object */;
+}
