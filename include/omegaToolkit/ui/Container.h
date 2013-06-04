@@ -104,10 +104,12 @@ namespace omegaToolkit { namespace ui {
 		//@{
 		void setLayout(Layout layout);
 		Layout getLayout();
-		float getPadding();
-		float getMargin();
+		//! Sets the margin between the container's content and its borders.
 		void setPadding(float value);
+		float getPadding();
+		//! Sets the padding space between elements within the container.
 		void setMargin(float value);
+		float getMargin();
 		HorizontalAlign getHorizontalAlign();
 		void setHorizontalAlign(HorizontalAlign value);
 		VerticalAlign getVerticalAlign();
@@ -215,11 +217,11 @@ namespace omegaToolkit { namespace ui {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Container::setPadding(float value) 
-	{ myPadding = value; }
+	{ myPadding = value; requestLayoutRefresh(); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Container::setMargin(float value) 
-	{ myMargin = value; }
+	{ myMargin = value; requestLayoutRefresh(); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Container::HorizontalAlign Container::getHorizontalAlign()
