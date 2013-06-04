@@ -220,6 +220,7 @@ Example:
 === `console` section ===
 The `console` section configures the on-screen console.
 	* `font` (Subsection): configures the console font, following the same syntax used for the `defaultFont` section.
+	* `lines` (int): sets the number of lines displayed by the console.
 
 Example:
 {{{
