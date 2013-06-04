@@ -93,6 +93,12 @@ void Engine::initialize()
         myConsole->setFont(FontInfo("console", "fonts/arial.ttf", 12));
     }
 
+    if(syscfg->exists("config/console/lines"))
+    {
+        Setting& linesSetting = syscfg->lookup("config/console");
+        myConsole->setNumLines(linesSetting["lines"]);
+    }
+	
     // Setup the system font.
 	// Look in the app config first
     if(cfg->exists("config/defaultFont"))
