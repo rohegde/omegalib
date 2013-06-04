@@ -226,7 +226,7 @@ bool DefaultModelLoader::load(ModelAsset* asset)
 		{ 
 			ofmsg("Loading model %1%", %filePath);
 			osgDB::Options* options = new osgDB::Options; 
-			options->setOptionString("noTesselateLargePolygons noTriStripPolygons noRotate"); 
+			options->setOptionString("noTesselateLargePolygons noTriStripPolygons noRotation"); 
 
 			if(asset->info->buildKdTree)
 			{
