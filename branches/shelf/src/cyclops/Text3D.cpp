@@ -23,74 +23,59 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * The Text class is used to place text in a 3D scene.
  *************************************************************************************************/
-#ifndef __OSYSTEM_H__
-#define __OSYSTEM_H__
+#include "cyclops/Text3D.h"
+#include "cyclops/SceneManager.h"
 
-#include "omegaConfig.h"
+#include <osgUtil/TangentSpaceGenerator>
+#include <osgwTools/Shapes.h>
+#include<osgText/Text>
+
+using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// The current omegalib version string.
-#define OMEGA_VERSION "4.0.1"
+Text3D* Text3D::create(const String& font, float size, const String& text)
+{
+	Text3D* txt = new Text3D(SceneManager::instance());
+	txt->setFont(font);
+	txt->setFontSize(size);
+	txt->setText(text);
+	return txt;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// WIN32 Platform-specific includes & macros.
-#ifdef WIN32
-	#define WIN32_LEAN_AND_MEAN
-	// Omega DLL import / export macros
-	#ifndef OMEGA_STATIC
-		#ifdef OMEGA_EXPORTING
-		   #define OMEGA_API    __declspec(dllexport)
-		#else
-		   #define OMEGA_API    __declspec(dllimport)
-		#endif
-	#else
-		#define OMEGA_API
-	#endif
-#else
-	#define OMEGA_API
-#endif
+Text3D::Text3D(SceneManager* scene):
+	Entity(scene)
+{
+	osg::Geode* txtGeode = new osg::Geode();
+	myTextDrawable = new osgText::Text();
+	txtGeode->addDrawable(myTextDrawable);
 
-#include "otypes.h"
+	initialize(txtGeode);
+}
 
-#ifdef OMEGA_OS_WIN
-	// Visual leak detector
-	#ifdef OMEGA_ENABLE_VLD
-	#include <vld.h>
-	#endif
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Text3D::setFont(const String& fontfile)
+{
+	myTextDrawable->setFont(fontfile);
+	//myTextDrawable
+}
 
-struct GLEWContextStruct;
-typedef struct GLEWContextStruct GLEWContext;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Text3D::setFontSize(float size)
+{
+	//myTextDrawable->set
+	//myTextDrawable
+}
 
-// Forward declaration of DataSource, used for omain
-namespace omega 
-{ 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	// Function definitions.
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Text3D::setText(const String& text)
+{
+}
 
-	//! Glew
-	//@{
-	//! @internal gets a glew context for the current thread, if present.
-	OMEGA_API GLEWContext* glewGetContext();
-	//! @internal sets a glew context for the current thread.
-	OMEGA_API void glewSetContext(const GLEWContext* context);
-	//@}
-
-	OMEGA_API libconfig::ArgumentHelper& oargs();
-
-	//OMEGA_API void omain(omega::ApplicationBase& app, const char* configFile, const char* logFile, omega::DataSource* dataSource = NULL);
-	OMEGA_API int omain(omega::ApplicationBase& app, int argc, char** argv);
-
-	//! Runs the specified command in a separate process.
-	//! @return true if the command launched succesfully, false otherwise.
-	OMEGA_API bool olaunch(const String& command);
-
-	//! Returns the current working directory.
-	OMEGA_API String ogetcwd();
-
-	OMEGA_API void osetdataprefix(const String& data);
-	OMEGA_API String ogetdataprefix();
-};
-
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Text3D::setColor(const Color& col)
+{
+}

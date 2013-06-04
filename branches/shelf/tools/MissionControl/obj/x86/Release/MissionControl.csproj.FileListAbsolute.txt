@@ -13,3 +13,6 @@ D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Release\GenerateResourc
 D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Release\GenerateResource.write.1.tlog
 D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Release\MissionControl.exe
 D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Release\MissionControl.pdb
+D:\Workspace\omegalib\core\tools\MissionControl\bin\Release\MissionControl.exe.config
+D:\Workspace\omegalib\core\tools\MissionControl\obj\x86\Release\MissionControl.exe
+D:\Workspace\omegalib\core\tools\MissionControl\obj\x86\Release\MissionControl.pdb

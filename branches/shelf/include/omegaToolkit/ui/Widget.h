@@ -192,6 +192,7 @@ namespace omegaToolkit {
         void setDebugModeEnabled(bool value) { myDebugModeEnabled = value; }
 
 		//@}
+
     protected:
         bool simpleHitTest(const omega::Vector2f& point);
         static bool simpleHitTest(const omega::Vector2f& point, const omega::Vector2f& pos, const omega::Vector2f& size);

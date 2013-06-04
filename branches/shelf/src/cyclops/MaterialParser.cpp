@@ -87,7 +87,6 @@ bool processDefaultArguments(Material* mat, libconfig::ArgumentHelper& ah, const
 	}
 
 	mat->setAdditive(additive);
-	mat->setTransparent(transparent);
 	mat->setDepthTestEnabled(!disableDepth);
 	mat->setDoubleFace(disableCull);
 
@@ -115,6 +114,9 @@ bool processDefaultArguments(Material* mat, libconfig::ArgumentHelper& ah, const
 
 	mat->setShininess(shininess);
 	mat->setGloss(gloss);
+
+	mat->setTransparent(transparent);
+
 
 	return true;
 }
