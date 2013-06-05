@@ -67,3 +67,20 @@ CAVE2 uses a supercollider sound serve that can be controlled with the sound API
 	if(se != None):
 		# DO sound stuff here ..
 }}}
+
+=== Fixing configuration ===
+If when you start your program in CAVE2 it just displays on the head node, or on a subset of the CAVE2, that's likely because the wrong configuration has been set as default. Fixing this is easy, you just need to modify the `default.cfg` file under `/data/evl/omegalib-user/core/data`. The file will look similar to this:
+{{{
+	config:
+	{
+		systemConfig = "system/desktop.cfg";
+		//systemConfig = "evl/lyra-xinerama.cfg";
+		//systemConfig = "system/test-multipipe.cfg";
+		//systemConfig = "system/cave-emu.cfg";
+		//systemConfig = "system/test-multinode.cfg";
+		//systemConfig = "system/test-customTile.cfg";
+		//systemConfig = "system/test-wand-emulation.cfg";
+		//systemConfig = "system/test-tracker.cfg";
+	};
+}}}
+Make sure that the `systemConfig = "evl/lyra-xinerama.cfg";` is the only uncommented line: in the example above, omegalib is configured to run in desktop mode.
