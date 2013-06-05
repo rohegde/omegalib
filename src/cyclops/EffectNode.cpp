@@ -65,6 +65,11 @@ protected:
 				{
 					myFxNode->addMaterial(mat);
 					addPass(ss);
+
+					// Renrer bin hack: addPass resets the render bin for the stateset, so we force
+					// the opaque / transparent renderbin settings here. Re-calling setTransparent
+					// will make sure the render bin is correct.
+					mat->setTransparent(mat->isTransparent());
 				}
 			}
 		}
