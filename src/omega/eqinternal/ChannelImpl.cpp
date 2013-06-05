@@ -298,7 +298,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 
 	// If SAGE support is enabled, notify frame finish
 #ifdef OMEGA_USE_SAGE
-	SageManager* sage = getClient()->getSystemManager()->getSageManager();
+	SageManager* sage = getRenderer()->getSystemManager()->getSageManager();
 	if(sage != NULL)
 	{
 		sage->finishFrame(myDC);
