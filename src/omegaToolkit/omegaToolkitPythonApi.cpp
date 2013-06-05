@@ -231,6 +231,15 @@ BOOST_PYTHON_MODULE(omegaToolkit)
 		PYAPI_METHOD(Container, removeChild)
 		PYAPI_REF_GETTER(Container, getChildByIndex)
 		PYAPI_REF_GETTER(Container, getChildByName)
+		// Layout
+		PYAPI_METHOD(Container, setLayout)
+		PYAPI_GETTER(Container, getLayout)
+		PYAPI_METHOD(Container, getPadding)
+		PYAPI_METHOD(Container, setPadding)
+		PYAPI_METHOD(Container, getMargin)
+		PYAPI_METHOD(Container, setMargin)
+		// Interaction
+		PYAPI_METHOD(Container, isEventInside)
 		;
 
 	// Button
