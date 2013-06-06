@@ -26,7 +26,7 @@
 ###################################################################################################
 set(OMICRON_BASE_DIR ${CMAKE_BINARY_DIR}/omicron)
 set(OMICRON_BINARY_DIR ${OMICRON_BASE_DIR}/omicron)
-set(OMICRON_SOURCE_DIR ${CMAKE_SOURCE_DIR}/external/omicron)
+set(OMICRON_SOURCE_DIR ${CMAKE_SOURCE_DIR}/omicron)
 
 if(APPLE)
 	ExternalProject_Add(
