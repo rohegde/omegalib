@@ -23,6 +23,9 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * What's in this file:
+ *	The omegalib python interpreter core (excluding the wrapping code to the omegalib API)
  *************************************************************************************************/
 #include "omega/PythonInterpreter.h"
 #include "omega/SystemManager.h"
@@ -376,6 +379,10 @@ void PythonInterpreter::runFile(const String& filename)
 
 		DataManager* dm = SystemManager::instance()->getDataManager();
 		dm->setCurrentPath(scriptPath);
+
+		// Add the path to the module lookup path for the interpreter, so we can open modules 
+		// in the same directory.
+		addPythonPath(scriptPath.c_str());
 
 		PyObject* PyFileObject = PyFile_FromString((char*)fullPath.c_str(), "r");
 		PyRun_SimpleFile(PyFile_AsFile(PyFileObject), filename.c_str());
