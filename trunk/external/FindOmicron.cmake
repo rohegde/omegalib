@@ -1,7 +1,7 @@
 ###################################################################################################
-# THE OMEGA LIB PROJECT
+# THE OMICRON PROJECT
 #-------------------------------------------------------------------------------------------------
-# Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+# Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
 # Authors:										
 #  Alessandro Febretti		febret@gmail.com
 #-------------------------------------------------------------------------------------------------
@@ -24,58 +24,39 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
-set(OMEGA_USE_EXTERNAL_OMICRON false CACHE BOOL "When set to true, use an external build of omicron")
+if(COMMAND cmake_policy)
+      cmake_policy(SET CMP0003 NEW)
+      #cmake_policy(SET CMP0008 NEW)
+endif(COMMAND cmake_policy)
 
-if(OMEGA_USE_EXTERNAL_OMICRON)
-	include(${CMAKE_SOURCE_DIR}/external/FindOmicron.cmake)
-else()
-	set(OMICRON_BASE_DIR ${CMAKE_BINARY_DIR}/omicron)
-	set(OMICRON_BINARY_DIR ${OMICRON_BASE_DIR}/omicron)
-	set(OMICRON_SOURCE_DIR ${CMAKE_SOURCE_DIR}/omicron)
+set(OMICRON_BINARY_DIR ${OMICRON_DEFAULT_BINARY_DIR} CACHE PATH "Path of the omegalib bin directory (the one containing the include, bin and lib folders")
 
-	ExternalProject_Add(
-		omicron
-		PREFIX omicron
-		DOWNLOAD_COMMAND ""
-		UPDATE_COMMAND ""
-		INSTALL_COMMAND ""
-		SOURCE_DIR ${OMICRON_SOURCE_DIR}
-		BINARY_DIR ${OMICRON_BINARY_DIR}
-		STAMP_DIR ${OMICRON_BASE_DIR}/stamp
-		TMP_DIR ${OMICRON_BASE_DIR}/tmp
-		CMAKE_ARGS 
-			-DOMICRON_USE_CUSTOM_OUTPUT:BOOL=true
-			
-			# Disable build of omicron examples (they se external projects and look for binary files in the wrong place
-			# due to binary file redirection we do here.
-			-DOMICRON_BUILD_EXAMPLES:BOOL=false
-			
-			-DOMICRON_LIBRARY_OUTPUT_DIRECTORY:PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-			-DOMICRON_ARCHIVE_OUTPUT_DIRECTORY:PATH=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
-			-DOMICRON_RUNTIME_OUTPUT_DIRECTORY:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-			
-			-DOMICRON_LIBRARY_OUTPUT_DIRECTORY_DEBUG:PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG}
-			-DOMICRON_LIBRARY_OUTPUT_DIRECTORY_RELEASE:PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE}
-			-DOMICRON_ARCHIVE_OUTPUT_DIRECTORY_DEBUG:PATH=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG}
-			-DOMICRON_ARCHIVE_OUTPUT_DIRECTORY_RELEASE:PATH=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE}
-			-DOMICRON_RUNTIME_OUTPUT_DIRECTORY_DEBUG:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}
-			-DOMICRON_RUNTIME_OUTPUT_DIRECTORY_RELEASE:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}
-			-DCMAKE_OSX_SYSROOT:PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk
-			-DCMAKE_OSX_DEPLOYMENT_TARGET:VAR=10.7
-		)
-
-	set_target_properties(omicron PROPERTIES FOLDER "3rdparty")
+if(OMICRON_BINARY_DIR)
+	include(${OMICRON_BINARY_DIR}/UseOmicron.cmake)
 
 	# the following are the include directories needed to build a 3rd party omegalib application.
 	# in the future, just ${OMICRON_ROOT_DIR}/include will be needed, but for now, multiple paths 
 	# have to be specified. If building a project without Cmake, remember to specify ALL these directories
 	# as include paths for your compiler.
 	set(OMICRON_INCLUDE_DIRS ${OMICRON_BINARY_DIR}/include ${OMICRON_SOURCE_DIR}/include ${OMICRON_SOURCE_DIR}/external/include)
-		  
-	set(OMICRON_LIB_DIR_RELEASE ${CMAKE_BINARY_DIR}/lib/release)
-	set(OMICRON_LIB_DIR_DEBUG ${CMAKE_BINARY_DIR}/lib/debug)
-	set(OMICRON_LIB_DIR ${CMAKE_BINARY_DIR}/lib)
-	set(OMICRON_BIN_DIR ${CMAKE_BINARY_DIR}/bin)
+	
+	if(OMICRON_LIB_DIR)
+		set(OMICRON_LIB_DIR_RELEASE ${OMICRON_LIB_DIR}/release)
+		set(OMICRON_LIB_DIR_DEBUG ${OMICRON_LIB_DIR}/debug)
+	else()
+		set(OMICRON_LIB_DIR_RELEASE ${OMICRON_BINARY_DIR}/lib/release)
+		set(OMICRON_LIB_DIR_DEBUG ${OMICRON_BINARY_DIR}/lib/debug)
+		set(OMICRON_LIB_DIR ${OMICRON_BINARY_DIR}/lib)
+	endif()
+
+	if(OMICRON_BIN_DIR)
+		set(OMICRON_BIN_DIR_RELEASE ${OMICRON_BIN_DIR}/release)
+		set(OMICRON_BIN_DIR_DEBUG ${OMICRON_BIN_DIR}/debug)
+	else()
+		set(OMICRON_BIN_DIR_RELEASE ${OMICRON_BINARY_DIR}/bin/release)
+		set(OMICRON_BIN_DIR_DEBUG ${OMICRON_BINARY_DIR}/bin/debug)
+		set(OMICRON_BIN_DIR ${OMICRON_BINARY_DIR}/bin)
+	endif()
 
 	###################################################################################################
 	# Set the output directories for libraries and binary files
@@ -88,15 +69,26 @@ else()
 			set(OMICRON_LIB_DEBUG ${OMICRON_BIN_DIR}/libomicron.dylib)
 			set(OMICRON_LIB_RELEASE ${OMICRON_BIN_DIR}/libomicron.dylib)
 		else(APPLE)
+			# omicron
 			set(OMICRON_LIB_DEBUG ${OMICRON_BIN_DIR}/libomicron.so)
 			set(OMICRON_LIB_RELEASE ${OMICRON_BIN_DIR}/libomicron.so)
-		endif(APPLE)
+		endif()
 	endif()
 
 	set(OMICRON_LIB debug ${OMICRON_LIB_DEBUG} optimized ${OMICRON_LIB_RELEASE})
-
+	
 	# On linux, asio depends on pthreads so add it as a dependency.
 	if(UNIX)
 		set(OMICRON_LIB ${OMICRON_LIB} pthread)
 	endif(UNIX)
-endif()
+	
+	###################################################################################################
+	# Visual studio specific options.
+	if(MSVC)
+		# Exclude libcmt when linking in visual studio
+		set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
+		set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
+		add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244 /wd4018)
+	endif(MSVC)
+endif(OMICRON_BINARY_DIR)
+
