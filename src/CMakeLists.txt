@@ -71,7 +71,7 @@ set(OMEGA_USE_PORTHOLE true CACHE BOOL "Enable Porthole support")
 
 ###################################################################################################
 # Options
-set(OMEGA_BUILD_OSG_LIB false CACHE BOOL "Enable build of OpenSceneGraph integration library")
+set(OMEGA_BUILD_OSG_LIB true CACHE BOOL "Enable build of OpenSceneGraph integration library")
 set(OMEGA_BUILD_VTK_LIB false CACHE BOOL "Enable build of vtk integration library (Vtk has to be compiled with Python support)")
 
 ###################################################################################################
