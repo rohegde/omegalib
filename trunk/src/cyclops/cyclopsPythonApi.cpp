@@ -29,7 +29,7 @@
 #include "cyclops/AnimatedObject.h"
 #include "cyclops/SceneLoader.h"
 #include "cyclops/LineSet.h"
-#include "cyclops/Text.h"
+#include "cyclops/Text3D.h"
 
 #ifdef OMEGA_USE_PYTHON
 
@@ -217,12 +217,11 @@ BOOST_PYTHON_MODULE(cyclops)
 		;
 
 	// Text
-	PYAPI_REF_CLASS(Text, Entity)
-		PYAPI_STATIC_REF_GETTER(Text, create)
-		PYAPI_METHOD(Text, setText)
-		PYAPI_METHOD(Text, setFont)
-		PYAPI_METHOD(Text, setFontSize)
-		PYAPI_METHOD(Text, setColor)
+	PYAPI_REF_CLASS(Text3D, Entity)
+		PYAPI_STATIC_REF_GETTER(Text3D, create)
+		PYAPI_METHOD(Text3D, setText)
+		PYAPI_METHOD(Text3D, setFont)
+		PYAPI_METHOD(Text3D, setFontSize)
 		;
 
 	// StaticObject
