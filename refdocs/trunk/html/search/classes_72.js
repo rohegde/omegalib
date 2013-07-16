@@ -90,7 +90,6 @@ var searchData=
   ['renderablecommand',['RenderableCommand',['../structomega_1_1_renderable_command.html',1,'omega']]],
   ['renderablefactory',['RenderableFactory',['../classomega_1_1_renderable_factory.html',1,'omega']]],
   ['renderer',['Renderer',['../classomega_1_1_renderer.html',1,'omega']]],
-  ['rendererobject',['RendererObject',['../classomega_1_1_renderer_object.html',1,'omega']]],
   ['renderpass',['RenderPass',['../classomega_1_1_render_pass.html',1,'omega']]],
   ['rendertarget',['RenderTarget',['../classomega_1_1_render_target.html',1,'omega']]]
 ];

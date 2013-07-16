@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.0</span>
+   &#160;<span id="projectnumber">4.1</span>
    </div>
   </td>
  </tr>
@@ -117,7 +117,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classomega_1_1_python_interpreter__coll__graph.png" border="0" usemap="#omega_1_1_python_interpreter_coll__map" alt="Collaboration graph"/></div>
 <map name="omega_1_1_python_interpreter_coll__map" id="omega_1_1_python_interpreter_coll__map">
-<area shape="rect" id="node2" href="classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="268,5,396,29"/><area shape="rect" id="node4" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="23,5,164,29"/><area shape="rect" id="node10" href="classomicron_1_1_list.html" title="omicron::List\&lt; QueuedCommand * \&gt;" alt="" coords="233,155,431,179"/><area shape="rect" id="node12" title="STL class." alt="" coords="6,155,181,179"/><area shape="rect" id="node14" href="classomicron_1_1_list.html" title="omicron::List\&lt; void * \&gt;" alt="" coords="265,216,399,240"/><area shape="rect" id="node16" title="STL class." alt="" coords="39,216,148,240"/><area shape="rect" id="node18" href="classomicron_1_1_lock.html" title="omicron::Lock" alt="" coords="288,283,376,307"/></map>
+<area shape="rect" id="node2" href="classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="268,7,396,31"/><area shape="rect" id="node4" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="23,5,164,29"/><area shape="rect" id="node6" title="STL class." alt="" coords="296,57,368,81"/><area shape="rect" id="node8" title="STL class." alt="" coords="38,54,149,90"/><area shape="rect" id="node14" href="classomicron_1_1_list.html" title="omicron::List\&lt; QueuedCommand * \&gt;" alt="" coords="233,208,431,232"/><area shape="rect" id="node16" title="STL class." alt="" coords="6,208,181,232"/><area shape="rect" id="node18" href="classomicron_1_1_list.html" title="omicron::List\&lt; void * \&gt;" alt="" coords="265,269,399,293"/><area shape="rect" id="node20" title="STL class." alt="" coords="39,269,148,293"/><area shape="rect" id="node22" href="classomicron_1_1_lock.html" title="omicron::Lock" alt="" coords="288,336,376,360"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
@@ -130,36 +130,43 @@ Public Types</h2></td></tr>
 <a class="el" href="classomega_1_1_python_interpreter.html#a92dedd3bd1ab9ac69f29ce66e0efafb7a3c3721de97393d6381e6bbdfc808ace9">CallbackEvent</a>, 
 <a class="el" href="classomega_1_1_python_interpreter.html#a92dedd3bd1ab9ac69f29ce66e0efafb7a8f061eda10d9c6c21ebe7f757ac8857d">CallbackDraw</a>
  }</td></tr>
+<tr class="memitem:a18a445c0370977fbe3d5c5593a01fa7d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a18a445c0370977fbe3d5c5593a01fa7d">RunFlags</a> { <a class="el" href="classomega_1_1_python_interpreter.html#a18a445c0370977fbe3d5c5593a01fa7da5698992a07bba5f5ec2cedea5671c795">NoRunFlags</a> =  0, 
+<a class="el" href="classomega_1_1_python_interpreter.html#a18a445c0370977fbe3d5c5593a01fa7dab3ea9640469686fa96618697024ce307">SetCwdToScriptPath</a> =  1 &lt;&lt; 1, 
+<a class="el" href="classomega_1_1_python_interpreter.html#a18a445c0370977fbe3d5c5593a01fa7daa4db106cf7862a1bc2dd931846a26f60">AddScriptPathToModuleSearchPath</a> =  1 &lt;&lt; 2, 
+<a class="el" href="classomega_1_1_python_interpreter.html#a18a445c0370977fbe3d5c5593a01fa7da7a2035a646953811e206c39330161f81">DefaultRunFlags</a> =  SetCwdToScriptPath | AddScriptPathToModuleSearchPath
+ }</td></tr>
+<tr class="memdesc:a18a445c0370977fbe3d5c5593a01fa7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The flags that can be applied to the runFile method.  <a href="classomega_1_1_python_interpreter.html#a18a445c0370977fbe3d5c5593a01fa7d">More...</a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac014169f0f768b7a43254143e7bc6822"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ac014169f0f768b7a43254143e7bc6822">PythonInterpreter</a> ()</td></tr>
 <tr class="memitem:a5a35b0aebf424e66b11751e84c6419bf"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a5a35b0aebf424e66b11751e84c6419bf">~PythonInterpreter</a> ()</td></tr>
-<tr class="memitem:a08076e3c751f9f0e81ff0b4b81b78146"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a08076e3c751f9f0e81ff0b4b81b78146">setup</a> (const <a class="el" href="namespaceomicron.html#afb87024a570b82fb906138146d2e812d">Setting</a> &amp;setting)</td></tr>
-<tr class="memitem:a8865144f0410afb5b8c1ba9553b4e1bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a8865144f0410afb5b8c1ba9553b4e1bb">initialize</a> (const char *programName)</td></tr>
-<tr class="memitem:a32ad91ade198e6551132ae42a7211400"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a32ad91ade198e6551132ae42a7211400">addModule</a> (const char *<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>, PyMethodDef *methods)</td></tr>
-<tr class="memitem:a849f3c765f969e06ac12d69bd0f54b3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a849f3c765f969e06ac12d69bd0f54b3b">addModule</a> (const char *<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>, PyMethodDef *methods, const <a class="el" href="classomicron_1_1_dictionary.html">Dictionary</a>&lt; <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>, int &gt; intConstants, const <a class="el" href="classomicron_1_1_dictionary.html">Dictionary</a>&lt; <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>, <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &gt; stringConstants)</td></tr>
-<tr class="memitem:a5ce6408c42497829b08aed5a8d4a36e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a5ce6408c42497829b08aed5a8d4a36e0">eval</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;script, const char *<a class="el" href="glew_8h.html#a1e3b09934060e9d373139c3557730d37">format</a>=NULL,...)</td></tr>
+<tr class="memitem:a08076e3c751f9f0e81ff0b4b81b78146"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a08076e3c751f9f0e81ff0b4b81b78146">setup</a> (const <a class="el" href="namespaceomicron.html#afb87024a570b82fb906138146d2e812d">Setting</a> &amp;setting)</td></tr>
+<tr class="memitem:a8865144f0410afb5b8c1ba9553b4e1bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a8865144f0410afb5b8c1ba9553b4e1bb">initialize</a> (const char *programName)</td></tr>
+<tr class="memitem:a32ad91ade198e6551132ae42a7211400"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a32ad91ade198e6551132ae42a7211400">addModule</a> (const char *<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>, PyMethodDef *methods)</td></tr>
+<tr class="memitem:a849f3c765f969e06ac12d69bd0f54b3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a849f3c765f969e06ac12d69bd0f54b3b">addModule</a> (const char *<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>, PyMethodDef *methods, const <a class="el" href="classomicron_1_1_dictionary.html">Dictionary</a>&lt; <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>, int &gt; intConstants, const <a class="el" href="classomicron_1_1_dictionary.html">Dictionary</a>&lt; <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>, <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &gt; stringConstants)</td></tr>
+<tr class="memitem:a5ce6408c42497829b08aed5a8d4a36e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a5ce6408c42497829b08aed5a8d4a36e0">eval</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;script, const char *<a class="el" href="glew_8h.html#a1e3b09934060e9d373139c3557730d37">format</a>=NULL,...)</td></tr>
 <tr class="memdesc:a5ce6408c42497829b08aed5a8d4a36e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Immediately executes a script statement on the local node.  <a href="#a5ce6408c42497829b08aed5a8d4a36e0"></a><br/></td></tr>
-<tr class="memitem:a9fc2419133dc248fe0889ab5711cbf94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a9fc2419133dc248fe0889ab5711cbf94">runFile</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;filename)</td></tr>
-<tr class="memitem:a1dca3b663306e80666c99e44ab4ced80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a1dca3b663306e80666c99e44ab4ced80">clean</a> ()</td></tr>
+<tr class="memitem:ac5072aa526da4948dcad573c4cc5f732"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ac5072aa526da4948dcad573c4cc5f732">runFile</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;filename, <a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a> <a class="el" href="glew_8h.html#ac7ba7d3cce3d19ca020e056b37231289">flags</a>=<a class="el" href="classomega_1_1_python_interpreter.html#a18a445c0370977fbe3d5c5593a01fa7da7a2035a646953811e206c39330161f81">DefaultRunFlags</a>)</td></tr>
+<tr class="memdesc:ac5072aa526da4948dcad573c4cc5f732"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute a script file.  <a href="#ac5072aa526da4948dcad573c4cc5f732"></a><br/></td></tr>
+<tr class="memitem:a1dca3b663306e80666c99e44ab4ced80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a1dca3b663306e80666c99e44ab4ced80">clean</a> ()</td></tr>
 <tr class="memdesc:a1dca3b663306e80666c99e44ab4ced80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleans the application state.  <a href="#a1dca3b663306e80666c99e44ab4ced80"></a><br/></td></tr>
-<tr class="memitem:af01d1a3b41597cce6cb9a8786dd20bce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#af01d1a3b41597cce6cb9a8786dd20bce">cleanRun</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;filename)</td></tr>
+<tr class="memitem:af01d1a3b41597cce6cb9a8786dd20bce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#af01d1a3b41597cce6cb9a8786dd20bce">cleanRun</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;filename)</td></tr>
 <tr class="memdesc:af01d1a3b41597cce6cb9a8786dd20bce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleans the application state and runs a new script.  <a href="#af01d1a3b41597cce6cb9a8786dd20bce"></a><br/></td></tr>
-<tr class="memitem:a892ef3ec1a418e0878e45c29c7b46f43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a892ef3ec1a418e0878e45c29c7b46f43">evalEventCommand</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;command, const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt)</td></tr>
+<tr class="memitem:a892ef3ec1a418e0878e45c29c7b46f43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a892ef3ec1a418e0878e45c29c7b46f43">evalEventCommand</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;command, const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt)</td></tr>
 <tr class="memdesc:a892ef3ec1a418e0878e45c29c7b46f43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes an event command statement.  <a href="#a892ef3ec1a418e0878e45c29c7b46f43"></a><br/></td></tr>
-<tr class="memitem:ac24b932ec4bc0aff4978646f44308548"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ac24b932ec4bc0aff4978646f44308548">queueCommand</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;command, bool local=false)</td></tr>
+<tr class="memitem:ac24b932ec4bc0aff4978646f44308548"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ac24b932ec4bc0aff4978646f44308548">queueCommand</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;command, bool local=false)</td></tr>
 <tr class="memdesc:ac24b932ec4bc0aff4978646f44308548"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queues a command for execution.  <a href="#ac24b932ec4bc0aff4978646f44308548"></a><br/></td></tr>
-<tr class="memitem:a047be3bf6896714f316fba9fdcda1843"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a047be3bf6896714f316fba9fdcda1843">registerCallback</a> (<a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> *<a class="el" href="libwebsockets_8h.html#afd0b58d039ffb936dee7a16865525db7">callback</a>, <a class="el" href="classomega_1_1_python_interpreter.html#a92dedd3bd1ab9ac69f29ce66e0efafb7">CallbackType</a> <a class="el" href="glew_8h.html#a8d78e2e8a676abd547a596dd84811285">type</a>)</td></tr>
-<tr class="memitem:a1bab70aeb90a150aba211c3a0f2696c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a1bab70aeb90a150aba211c3a0f2696c1">unregisterAllCallbacks</a> ()</td></tr>
-<tr class="memitem:ace7a04aaddc154181f2a8e149ff58f97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ace7a04aaddc154181f2a8e149ff58f97">addPythonPath</a> (const char *)</td></tr>
+<tr class="memitem:a047be3bf6896714f316fba9fdcda1843"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a047be3bf6896714f316fba9fdcda1843">registerCallback</a> (<a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> *<a class="el" href="libwebsockets_8h.html#afd0b58d039ffb936dee7a16865525db7">callback</a>, <a class="el" href="classomega_1_1_python_interpreter.html#a92dedd3bd1ab9ac69f29ce66e0efafb7">CallbackType</a> <a class="el" href="glew_8h.html#a8d78e2e8a676abd547a596dd84811285">type</a>)</td></tr>
+<tr class="memitem:a1bab70aeb90a150aba211c3a0f2696c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a1bab70aeb90a150aba211c3a0f2696c1">unregisterAllCallbacks</a> ()</td></tr>
+<tr class="memitem:ace7a04aaddc154181f2a8e149ff58f97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ace7a04aaddc154181f2a8e149ff58f97">addPythonPath</a> (const char *)</td></tr>
 <tr class="memitem:a5b0fd62ee778bd5012e7070fb7983701"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a5b0fd62ee778bd5012e7070fb7983701">isEnabled</a> ()</td></tr>
 <tr class="memitem:af2c229ad5716d788aebba2656e09dda2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#af2c229ad5716d788aebba2656e09dda2">isShellEnabled</a> ()</td></tr>
-<tr class="memitem:a666ca93764266426f94764b06d473157"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a666ca93764266426f94764b06d473157">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
-<tr class="memitem:afdd6814295e9189271ca2a947e20b4fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#afdd6814295e9189271ca2a947e20b4fb">handleEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt)</td></tr>
-<tr class="memitem:a7a996de51a97ed624dd14c4517c63650"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a7a996de51a97ed624dd14c4517c63650">draw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context, <a class="el" href="classomega_1_1_camera.html">Camera</a> *cam)</td></tr>
-<tr class="memitem:aa5c2074644ca757eb57d080ad3dbb7be"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aa5c2074644ca757eb57d080ad3dbb7be">commitSharedData</a> (<a class="el" href="classomega_1_1_shared_o_stream.html">SharedOStream</a> &amp;out)</td></tr>
-<tr class="memitem:aa3ee596e25f0a318cd1c4e99aef111ce"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aa3ee596e25f0a318cd1c4e99aef111ce">updateSharedData</a> (<a class="el" href="classomega_1_1_shared_i_stream.html">SharedIStream</a> &amp;<a class="el" href="glew_8h.html#a83ad0ee7f1e06b59c90271716e689080">in</a>)</td></tr>
+<tr class="memitem:a666ca93764266426f94764b06d473157"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a666ca93764266426f94764b06d473157">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
+<tr class="memitem:afdd6814295e9189271ca2a947e20b4fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#afdd6814295e9189271ca2a947e20b4fb">handleEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt)</td></tr>
+<tr class="memitem:a7a996de51a97ed624dd14c4517c63650"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a7a996de51a97ed624dd14c4517c63650">draw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context, <a class="el" href="classomega_1_1_camera.html">Camera</a> *cam)</td></tr>
+<tr class="memitem:aa5c2074644ca757eb57d080ad3dbb7be"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aa5c2074644ca757eb57d080ad3dbb7be">commitSharedData</a> (<a class="el" href="classomega_1_1_shared_o_stream.html">SharedOStream</a> &amp;out)</td></tr>
+<tr class="memitem:aa3ee596e25f0a318cd1c4e99aef111ce"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aa3ee596e25f0a318cd1c4e99aef111ce">updateSharedData</a> (<a class="el" href="classomega_1_1_shared_i_stream.html">SharedIStream</a> &amp;<a class="el" href="glew_8h.html#a83ad0ee7f1e06b59c90271716e689080">in</a>)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -170,12 +177,13 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:aa0a152fc77b2afeb682d37a27e24ec35"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aa0a152fc77b2afeb682d37a27e24ec35">myEnabled</a></td></tr>
 <tr class="memitem:af691416859554570f480d00c43e9b04c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#af691416859554570f480d00c43e9b04c">myShellEnabled</a></td></tr>
 <tr class="memitem:a6258e75f790fc8e3951979404b835380"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a6258e75f790fc8e3951979404b835380">myDebugShell</a></td></tr>
+<tr class="memitem:ac7453112afdf1dd3a95f00364949b797"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ac7453112afdf1dd3a95f00364949b797">myInitCommand</a></td></tr>
 <tr class="memitem:a7d21dc817b5391750bb80a06d7e23621"><td class="memItemLeft" align="right" valign="top">PythonInteractiveThread *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a7d21dc817b5391750bb80a06d7e23621">myInteractiveThread</a></td></tr>
 <tr class="memitem:adfbe90b7af80f6717fa6e9e350ee26e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_lock.html">Lock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#adfbe90b7af80f6717fa6e9e350ee26e2">myInteractiveCommandLock</a></td></tr>
 <tr class="memitem:ac27b14d5adf60d7b79750e5282621c01"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="structomega_1_1_python_interpreter_1_1_queued_command.html">QueuedCommand</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ac27b14d5adf60d7b79750e5282621c01">myCommandQueue</a></td></tr>
-<tr class="memitem:ac3eebb0980e552d354d2502de485d4b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ac3eebb0980e552d354d2502de485d4b9">myUpdateCallbacks</a></td></tr>
-<tr class="memitem:abc5ca5481454e4f5e4df02bb5a5fc280"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#abc5ca5481454e4f5e4df02bb5a5fc280">myEventCallbacks</a></td></tr>
-<tr class="memitem:a32b00c808f35616408cfedb6bb29b010"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a32b00c808f35616408cfedb6bb29b010">myDrawCallbacks</a></td></tr>
+<tr class="memitem:ac3eebb0980e552d354d2502de485d4b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ac3eebb0980e552d354d2502de485d4b9">myUpdateCallbacks</a></td></tr>
+<tr class="memitem:abc5ca5481454e4f5e4df02bb5a5fc280"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#abc5ca5481454e4f5e4df02bb5a5fc280">myEventCallbacks</a></td></tr>
+<tr class="memitem:a32b00c808f35616408cfedb6bb29b010"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a32b00c808f35616408cfedb6bb29b010">myDrawCallbacks</a></td></tr>
 <tr class="memitem:ad29bfdf17d301e6bd1054b26116ba9a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_lock.html">Lock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ad29bfdf17d301e6bd1054b26116ba9a9">myLock</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="friends"></a>
@@ -203,6 +211,34 @@ Additional Inherited Members</h2></td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a92dedd3bd1ab9ac69f29ce66e0efafb7a3c3721de97393d6381e6bbdfc808ace9"></a>CallbackEvent</em>&nbsp;</td><td>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a92dedd3bd1ab9ac69f29ce66e0efafb7a8f061eda10d9c6c21ebe7f757ac8857d"></a>CallbackDraw</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a18a445c0370977fbe3d5c5593a01fa7d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classomega_1_1_python_interpreter.html#a18a445c0370977fbe3d5c5593a01fa7d">omega::PythonInterpreter::RunFlags</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The flags that can be applied to the runFile method. </p>
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="a18a445c0370977fbe3d5c5593a01fa7da5698992a07bba5f5ec2cedea5671c795"></a>NoRunFlags</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a18a445c0370977fbe3d5c5593a01fa7dab3ea9640469686fa96618697024ce307"></a>SetCwdToScriptPath</em>&nbsp;</td><td>
+<p>Set the current working directory to the script path. </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a18a445c0370977fbe3d5c5593a01fa7daa4db106cf7862a1bc2dd931846a26f60"></a>AddScriptPathToModuleSearchPath</em>&nbsp;</td><td>
+<p>Adds the script path to the search path for python modules (loaded using the import command) </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a18a445c0370977fbe3d5c5593a01fa7da7a2035a646953811e206c39330161f81"></a>DefaultRunFlags</em>&nbsp;</td><td>
 </td></tr>
 </table>
 </dd>
@@ -255,7 +291,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::addModule </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::addModule </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -281,7 +317,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::addModule </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::addModule </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -319,7 +355,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::addPythonPath </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::addPythonPath </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>dir</em></td><td>)</td>
@@ -335,7 +371,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::clean </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::clean </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -352,7 +388,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::cleanRun </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::cleanRun </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
           <td class="paramname"><em>filename</em></td><td>)</td>
@@ -373,7 +409,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::commitSharedData </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::commitSharedData </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_shared_o_stream.html">SharedOStream</a> &amp;&#160;</td>
           <td class="paramname"><em>out</em></td><td>)</td>
@@ -396,7 +432,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::draw </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::draw </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;&#160;</td>
           <td class="paramname"><em>context</em>, </td>
@@ -422,7 +458,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::eval </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::eval </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
           <td class="paramname"><em>script</em>, </td>
@@ -456,7 +492,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::evalEventCommand </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::evalEventCommand </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
           <td class="paramname"><em>command</em>, </td>
@@ -509,7 +545,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::handleEvent </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::handleEvent </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;&#160;</td>
           <td class="paramname"><em>evt</em></td><td>)</td>
@@ -525,7 +561,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::initialize </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::initialize </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>programName</em></td><td>)</td>
@@ -579,7 +615,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::queueCommand </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::queueCommand </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
           <td class="paramname"><em>command</em>, </td>
@@ -608,9 +644,9 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::registerCallback </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::registerCallback </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> *&#160;</td>
           <td class="paramname"><em>callback</em>, </td>
         </tr>
         <tr>
@@ -629,19 +665,32 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9fc2419133dc248fe0889ab5711cbf94"></a>
+<a class="anchor" id="ac5072aa526da4948dcad573c4cc5f732"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::runFile </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::runFile </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
-          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a>&#160;</td>
+          <td class="paramname"><em>flags</em> = <code><a class="el" href="classomega_1_1_python_interpreter.html#a18a445c0370977fbe3d5c5593a01fa7da7a2035a646953811e206c39330161f81">DefaultRunFlags</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Execute a script file. </p>
+<p>The script path accepts two macros: OMEGA_DATA_ROOT will be substituted with the default data directory for the omegalib installation OMEGA_APP_ROOT will be substituted with the application directory for the installation (set throguh CMake at build configuration time) </p>
 
 </div>
 </div>
@@ -650,7 +699,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::setup </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::setup </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomicron.html#afb87024a570b82fb906138146d2e812d">Setting</a> &amp;&#160;</td>
           <td class="paramname"><em>setting</em></td><td>)</td>
@@ -666,7 +715,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::unregisterAllCallbacks </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::unregisterAllCallbacks </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -681,7 +730,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::update </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::update </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;&#160;</td>
           <td class="paramname"><em>context</em></td><td>)</td>
@@ -700,7 +749,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> PythonInterpreter::updateSharedData </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> PythonInterpreter::updateSharedData </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_shared_i_stream.html">SharedIStream</a> &amp;&#160;</td>
           <td class="paramname"><em>in</em></td><td>)</td>
@@ -788,7 +837,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomicron_1_1_list.html">List</a>&lt;<a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>*&gt; omega::PythonInterpreter::myDrawCallbacks</td>
+          <td class="memname"><a class="el" href="classomicron_1_1_list.html">List</a>&lt;<a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>*&gt; omega::PythonInterpreter::myDrawCallbacks</td>
         </tr>
       </table>
   </td>
@@ -828,7 +877,27 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomicron_1_1_list.html">List</a>&lt;<a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>*&gt; omega::PythonInterpreter::myEventCallbacks</td>
+          <td class="memname"><a class="el" href="classomicron_1_1_list.html">List</a>&lt;<a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>*&gt; omega::PythonInterpreter::myEventCallbacks</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac7453112afdf1dd3a95f00364949b797"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> omega::PythonInterpreter::myInitCommand</td>
         </tr>
       </table>
   </td>
@@ -928,7 +997,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomicron_1_1_list.html">List</a>&lt;<a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>*&gt; omega::PythonInterpreter::myUpdateCallbacks</td>
+          <td class="memname"><a class="el" href="classomicron_1_1_list.html">List</a>&lt;<a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>*&gt; omega::PythonInterpreter::myUpdateCallbacks</td>
         </tr>
       </table>
   </td>

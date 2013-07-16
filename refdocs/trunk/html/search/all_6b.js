@@ -57,8 +57,13 @@ var searchData=
   ['keyboardservice_2ecpp',['KeyboardService.cpp',['../_keyboard_service_8cpp.html',1,'']]],
   ['keyboardservice_2eh',['KeyboardService.h',['../_keyboard_service_8h.html',1,'']]],
   ['keycode',['KeyCode',['../namespaceomicron.html#a7d379b7d297168f70a2a073fe4880880',1,'omicron']]],
-  ['keyvalue',['KeyValue',['../classomicron_1_1_key_value.html',1,'omicron']]],
   ['keyvalue',['KeyValue',['../classomicron_1_1_key_value.html#af40b871f9ef857f7491ec062ed7e2715',1,'omicron::KeyValue::KeyValue(const K &amp;k, T v)'],['../classomicron_1_1_key_value.html#a45dc8d715737d5648cb23654f32ea51f',1,'omicron::KeyValue::KeyValue(std::pair&lt; K, T &gt; src)'],['../classomicron_1_1_key_value.html#ab30d9998c58ebc9e1abe80d675961b42',1,'omicron::KeyValue::KeyValue(std::pair&lt; const K, T &gt; src)']]],
+  ['keyvalue',['KeyValue',['../classomicron_1_1_key_value.html',1,'omicron']]],
+  ['kg',['Kg',['../structwiimote__state_1_1balance__board.html#add0388061b25ab73c52810a85f4fa69e',1,'wiimote_state::balance_board']]],
+  ['kg0',['Kg0',['../structwiimote__state_1_1balance__board_1_1calibration__info.html#ad30343c7d09f3957c79805996b395c0a',1,'wiimote_state::balance_board::calibration_info']]],
+  ['kg17',['Kg17',['../structwiimote__state_1_1balance__board_1_1calibration__info.html#a0294f302c90839e95eac4d184d330080',1,'wiimote_state::balance_board::calibration_info']]],
+  ['kg34',['Kg34',['../structwiimote__state_1_1balance__board_1_1calibration__info.html#ae1a1b1bbb574a9315274820b2f96b791',1,'wiimote_state::balance_board::calibration_info']]],
+  ['kill',['kill',['../classomega_1_1_actor.html#a26a6e9cae2f1a98155a98eb013386c92',1,'omega::Actor']]],
   ['killcluster',['killCluster',['../classomega_1_1_display_system.html#ad6fa7a49e0d6952439956c1b57ef3f98',1,'omega::DisplaySystem::killCluster()'],['../classomega_1_1_equalizer_display_system.html#ada7531fb26fd9357d390bfbc64bfcc70',1,'omega::EqualizerDisplaySystem::killCluster()']]],
   ['kinect_5fconfig',['KINECT_CONFIG',['../_open_n_i_service_8h.html#a00f8ebce30ca2f38cfe658a729b9b6e4',1,'OpenNIService.h']]]
 ];

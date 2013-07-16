@@ -7,7 +7,7 @@ var searchData=
   ['needsexecute',['needsExecute',['../structomega_1_1_python_interpreter_1_1_queued_command.html#a89cb4e3d157f98baa118612a0ce9a0a8',1,'omega::PythonInterpreter::QueuedCommand']]],
   ['needssend',['needsSend',['../structomega_1_1_python_interpreter_1_1_queued_command.html#a70fdc3c14bf00059db38006e645ab469',1,'omega::PythonInterpreter::QueuedCommand']]],
   ['negativeinfinity',['NegativeInfinity',['../classomicron_1_1_math.html#a860076bf9f1aca476d5c764f3a388fa7',1,'omicron::Math']]],
-  ['next',['next',['../classomega_1_1xml_1_1_ti_xml_node.html#a267fa57dacec31513ebb03aba1e99ebd',1,'omega::xml::TiXmlNode']]],
+  ['next',['next',['../struct_c_h_a_n_g_e_l_i_s_t___e_n_t_r_y.html#a7d969058ec8579e99fa4d7a91e0623d3',1,'CHANGELIST_ENTRY::next()'],['../structvrpn_msg_callback_entry.html#a45c58ce8c47198b0a16a88cd276cf8a6',1,'vrpnMsgCallbackEntry::next()'],['../structvrpn_log_filter_entry.html#aecf162465638871f1e36ca5c21284a02',1,'vrpnLogFilterEntry::next()'],['../classomega_1_1xml_1_1_ti_xml_node.html#a267fa57dacec31513ebb03aba1e99ebd',1,'omega::xml::TiXmlNode::next()']]],
   ['next_5fsibling',['next_sibling',['../structjson__value.html#a0861144b05e48b5531bc562d817f8e21',1,'json_value']]],
   ['nidle',['nIdle',['../struct_idle_data.html#aa2d76fbc0323acf40278ff8a8fe4e7e1',1,'IdleData']]],
   ['node',['node',['../structomega_1_1_scene_query_result.html#a0aedd60e927d0e38f3d4a6a72f51cc33',1,'omega::SceneQueryResult::node()'],['../structomega_toolkit_1_1ui_1_1_container3d_settings.html#af8295e83a6bcead50dd0ab2838dd701a',1,'omegaToolkit::ui::Container3dSettings::node()']]],
@@ -26,5 +26,7 @@ var searchData=
   ['numnodes',['numNodes',['../classcyclops_1_1_model_asset.html#a71f17f7b6d43473556e37cc166fba6a6',1,'cyclops::ModelAsset::numNodes()'],['../structomega_1_1_display_config.html#a50f4e8e84130b6adab52436987f80a57',1,'omega::DisplayConfig::numNodes()']]],
   ['numpoly',['numPoly',['../struct_polygon_ref.html#ae9e392170f02fd82dbfdbf4593e10912',1,'PolygonRef']]],
   ['numtiles',['numTiles',['../structomega_1_1_display_node_config.html#a41cd316489b331402d2376d852c7713d',1,'omega::DisplayNodeConfig::numTiles()'],['../structomega_1_1_display_config.html#a5e266e92096800a21ddfec2cadf6e96a',1,'omega::DisplayConfig::numTiles()']]],
+  ['nunchuk',['Nunchuk',['../structwiimote__state.html#a0ec8c7bba611687e52dff099123b38ee',1,'wiimote_state']]],
+  ['nunchukneargupdates',['NunchukNearGUpdates',['../structwiimote__state.html#a3f77c177ad71c61b0e0f7cf8b346e999',1,'wiimote_state']]],
   ['nvertex',['nVertex',['../struct_polygon_ref.html#a3b6fb120091ba32aefcf3d97193c2bc6',1,'PolygonRef']]]
 ];

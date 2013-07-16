@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['get_5fdidevice_5fsubtype',['GET_DIDEVICE_SUBTYPE',['../dinput_8h.html#aa4b9625909c9a77cd910b561f0236b3b',1,'dinput.h']]],
+  ['get_5fdidevice_5ftype',['GET_DIDEVICE_TYPE',['../dinput_8h.html#aead1501393d240410fdc29be4ad1bc8d',1,'dinput.h']]],
   ['getcurrentdir',['GetCurrentDir',['../osystem_8cpp.html#af0c0d1034a71f8aa3a08cda83c9d4e7a',1,'osystem.cpp']]],
   ['gl_5f1pass_5fext',['GL_1PASS_EXT',['../glew_8h.html#aa579dedc63b8774f6162377800d97d06',1,'glew.h']]],
   ['gl_5f1pass_5fsgis',['GL_1PASS_SGIS',['../glew_8h.html#a49502a48b1761c54e7712b2a7624e9b2',1,'glew.h']]],

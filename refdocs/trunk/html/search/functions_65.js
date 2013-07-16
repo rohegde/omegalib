@@ -1,7 +1,6 @@
 var searchData=
 [
   ['editableobject',['EditableObject',['../classomega_toolkit_1_1_editable_object.html#a432f5b0c9fa18c41f438b97a9473d27e',1,'omegaToolkit::EditableObject']]],
-  ['editmultiinstancedisplayconfig',['editMultiInstanceDisplayConfig',['../namespaceomega.html#a6a168a80054eec4d3931eedb9ce5c12c',1,'omega']]],
   ['effectnode',['EffectNode',['../classcyclops_1_1_effect_node.html#af9a9cbe4d91f3b2b6bf8bd538a342e16',1,'cyclops::EffectNode::EffectNode()'],['../classcyclops_1_1_effect_node.html#a3a5775130c3d63ac3e90ec1da9cc71d5',1,'cyclops::EffectNode::EffectNode(SceneManager *sm)'],['../classcyclops_1_1_effect_node.html#aa2b0ad50118b5d753ba59e63b71fd827',1,'cyclops::EffectNode::EffectNode(const EffectNode &amp;copy, const osg::CopyOp &amp;op=osg::CopyOp::SHALLOW_COPY)']]],
   ['element',['Element',['../classomega_1_1xml_1_1_ti_xml_handle.html#ab48cd8c4c5027f2471edb4cfbc5368d4',1,'omega::xml::TiXmlHandle']]],
   ['empty',['empty',['../classomega_1_1xml_1_1_ti_xml_string.html#a462f02e7eca37cd2b849e8dd3c2bc1f0',1,'omega::xml::TiXmlString']]],
@@ -13,7 +12,7 @@ var searchData=
   ['encode',['encode',['../classomega_1_1_image_utils.html#abf0dee73ad2ee17169c11fb1797b31af',1,'omega::ImageUtils']]],
   ['encodestring',['EncodeString',['../classomega_1_1xml_1_1_ti_xml_base.html#a935c54da130e8073c4a8c8614ec07428',1,'omega::xml::TiXmlBase']]],
   ['encoding',['Encoding',['../classomega_1_1xml_1_1_ti_xml_declaration.html#a1542a1e7e03e27e39ec37b18e64d8c80',1,'omega::xml::TiXmlDeclaration']]],
-  ['enddraw',['endDraw',['../classomega_1_1_camera.html#a05c9a3dadab12da3651b6492866f6fcd',1,'omega::Camera::endDraw()'],['../classomega_1_1_camera_output.html#ae6b8e486fc01a7b453a8b7f553d00811',1,'omega::CameraOutput::endDraw()'],['../classomega_1_1_draw_interface.html#ae6c8926e6e558d5f47ef72590811034d',1,'omega::DrawInterface::endDraw()'],['../classomega_toolkit_1_1ui_1_1_container_renderable.html#a5da41e551a0eaaee9294b89a81c851cb',1,'omegaToolkit::ui::ContainerRenderable::endDraw()']]],
+  ['enddraw',['endDraw',['../classomega_1_1_i_camera_listener.html#a4aa7eae5e8477894dd5c120c3f1c8564',1,'omega::ICameraListener::endDraw()'],['../classomega_1_1_camera.html#a05c9a3dadab12da3651b6492866f6fcd',1,'omega::Camera::endDraw()'],['../classomega_1_1_camera_output.html#ae6b8e486fc01a7b453a8b7f553d00811',1,'omega::CameraOutput::endDraw()'],['../classomega_1_1_draw_interface.html#ae6c8926e6e558d5f47ef72590811034d',1,'omega::DrawInterface::endDraw()'],['../classomega_toolkit_1_1ui_1_1_container_renderable.html#a5da41e551a0eaaee9294b89a81c851cb',1,'omegaToolkit::ui::ContainerRenderable::endDraw()']]],
   ['endswith',['endsWith',['../classomicron_1_1_string_utils.html#ad11a9810ef4b8c40abf27fe092d86acc',1,'omicron::StringUtils']]],
   ['engine',['Engine',['../classomega_1_1_engine.html#a61d8c569df32b9d3ffbe12809b68d7db',1,'omega::Engine']]],
   ['enginemodule',['EngineModule',['../classomega_1_1_engine_module.html#a3c9b0b7e0e97e19e1d542ff6f67579e9',1,'omega::EngineModule::EngineModule(const String &amp;name)'],['../classomega_1_1_engine_module.html#a9cc0f51c8b842a1480d8c430963fc2e6',1,'omega::EngineModule::EngineModule()']]],

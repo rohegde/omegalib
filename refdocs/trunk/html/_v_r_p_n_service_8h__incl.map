@@ -1,8 +1,11 @@
-<map id="D:/Workspace/omegalib/core/external/omicron/include/omicron/VRPNService.h" name="D:/Workspace/omegalib/core/external/omicron/include/omicron/VRPNService.h">
-<area shape="rect" id="node3" href="$external_2omicron_2include_2omicron_2osystem_8h.html" title="omicron/osystem.h" alt="" coords="157,245,269,269"/>
-<area shape="rect" id="node14" href="$_service_manager_8h.html" title="omicron/ServiceManager.h" alt="" coords="71,101,221,125"/>
-<area shape="rect" id="node11" href="$external_2omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="182,317,247,341"/>
-<area shape="rect" id="node16" href="$_event_8h.html" title="Event.h" alt="" coords="183,173,243,197"/>
-<area shape="rect" id="node19" href="$_config_8h.html" title="Config.h" alt="" coords="5,173,67,197"/>
-<area shape="rect" id="node22" href="$_thread_8h.html" title="Thread.h" alt="" coords="92,173,159,197"/>
+<map id="D:/Workspace/omegalib/core/omicron/include/omicron/VRPNService.h" name="D:/Workspace/omegalib/core/omicron/include/omicron/VRPNService.h">
+<area shape="rect" id="node3" href="$omicron_2include_2omicron_2osystem_8h.html" title="omicron/osystem.h" alt="" coords="524,245,637,269"/>
+<area shape="rect" id="node19" href="$_service_manager_8h.html" title="omicron/ServiceManager.h" alt="" coords="533,101,683,125"/>
+<area shape="rect" id="node11" href="$omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="491,317,555,341"/>
+<area shape="rect" id="node14" href="$time_8h.html" title="time.h" alt="" coords="443,389,494,413"/>
+<area shape="rect" id="node16" href="$_math_8h.html" title="omicron/math/Math.h" alt="" coords="293,389,418,413"/>
+<area shape="rect" id="node21" href="$_event_8h.html" title="Event.h" alt="" coords="689,173,749,197"/>
+<area shape="rect" id="node24" href="$_config_8h.html" title="Config.h" alt="" coords="511,173,573,197"/>
+<area shape="rect" id="node27" href="$_thread_8h.html" title="Thread.h" alt="" coords="598,173,665,197"/>
+<area shape="rect" id="node40" title="All types of client/server/peer objects in VRPN should be derived from the vrpn_BaseClass type descri..." alt="" coords="28,173,135,197"/>
 </map>

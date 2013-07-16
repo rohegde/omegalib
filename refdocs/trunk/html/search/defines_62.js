@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['boost_5fdate_5ftime_5fno_5flib',['BOOST_DATE_TIME_NO_LIB',['../external_2omicron_2include_2omicron_2otypes_8h.html#af58041bb6e915309a739a3fe3403254a',1,'otypes.h']]],
+  ['boost_5fdate_5ftime_5fno_5flib',['BOOST_DATE_TIME_NO_LIB',['../omicron_2include_2omicron_2otypes_8h.html#af58041bb6e915309a739a3fe3403254a',1,'otypes.h']]],
   ['boost_5fpp_5flocal_5flimits',['BOOST_PP_LOCAL_LIMITS',['../numeric_8cpp.html#ac172a4a9fd76e79c6cc98fbbf0faf9db',1,'numeric.cpp']]],
   ['boost_5fpp_5flocal_5fmacro',['BOOST_PP_LOCAL_MACRO',['../numeric_8cpp.html#acfaac07391edc41614d3464f59e8e739',1,'numeric.cpp']]],
   ['boost_5fpython_5fas_5fobject',['BOOST_PYTHON_AS_OBJECT',['../numeric_8cpp.html#aa24dca4d14c2663e4366ec5e38e4777d',1,'numeric.cpp']]],
@@ -12,6 +12,6 @@ var searchData=
   ['boost_5fpython_5fno_5flib',['BOOST_PYTHON_NO_LIB',['../_python_interpreter_wrapper_8h.html#a73ee1a7f40bfe5bc969217682ca44815',1,'PythonInterpreterWrapper.h']]],
   ['boost_5fpython_5fobject_5fptr',['BOOST_PYTHON_OBJECT_PTR',['../str_8cpp.html#ad87aebeabcf5ed4c915e7449e9ae5403',1,'str.cpp']]],
   ['boost_5fpython_5fsource',['BOOST_PYTHON_SOURCE',['../errors_8cpp.html#a589edc670ace03e928bf8429fe3dbec2',1,'errors.cpp']]],
-  ['boost_5fregex_5fno_5flib',['BOOST_REGEX_NO_LIB',['../external_2omicron_2include_2omicron_2otypes_8h.html#a9886d58b6a28f14ed8fc7053e6d20619',1,'otypes.h']]],
+  ['boost_5fregex_5fno_5flib',['BOOST_REGEX_NO_LIB',['../omicron_2include_2omicron_2otypes_8h.html#a9886d58b6a28f14ed8fc7053e6d20619',1,'otypes.h']]],
   ['bzero',['bzero',['../websock-w32_8h.html#ae259660715c248fa1153bb5a098de374',1,'websock-w32.h']]]
 ];

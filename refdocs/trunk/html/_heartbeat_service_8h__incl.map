@@ -1,8 +1,8 @@
-<map id="D:/Workspace/omegalib/core/external/omicron/include/omicron/HeartbeatService.h" name="D:/Workspace/omegalib/core/external/omicron/include/omicron/HeartbeatService.h">
-<area shape="rect" id="node3" href="$external_2omicron_2include_2omicron_2osystem_8h.html" title="omicron/osystem.h" alt="" coords="91,245,204,269"/>
-<area shape="rect" id="node14" href="$_service_manager_8h.html" title="omicron/ServiceManager.h" alt="" coords="95,101,245,125"/>
-<area shape="rect" id="node11" href="$external_2omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="241,317,305,341"/>
-<area shape="rect" id="node16" href="$_event_8h.html" title="Event.h" alt="" coords="75,173,135,197"/>
-<area shape="rect" id="node19" href="$_config_8h.html" title="Config.h" alt="" coords="159,173,221,197"/>
-<area shape="rect" id="node22" href="$_thread_8h.html" title="Thread.h" alt="" coords="247,173,313,197"/>
+<map id="D:/Workspace/omegalib/core/omicron/include/omicron/HeartbeatService.h" name="D:/Workspace/omegalib/core/omicron/include/omicron/HeartbeatService.h">
+<area shape="rect" id="node3" href="$omicron_2include_2omicron_2osystem_8h.html" title="omicron/osystem.h" alt="" coords="73,245,185,269"/>
+<area shape="rect" id="node14" href="$_service_manager_8h.html" title="omicron/ServiceManager.h" alt="" coords="77,101,227,125"/>
+<area shape="rect" id="node11" href="$omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="222,317,287,341"/>
+<area shape="rect" id="node16" href="$_event_8h.html" title="Event.h" alt="" coords="57,173,116,197"/>
+<area shape="rect" id="node19" href="$_config_8h.html" title="Config.h" alt="" coords="141,173,203,197"/>
+<area shape="rect" id="node22" href="$_thread_8h.html" title="Thread.h" alt="" coords="228,173,295,197"/>
 </map>

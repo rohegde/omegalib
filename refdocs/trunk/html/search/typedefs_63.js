@@ -17,6 +17,7 @@ var searchData=
   ['cl_5fmem',['cl_mem',['../include_2omega_2otypes_8h.html#a0bc3cbcf5a2c3b8a26e05326e1751703',1,'otypes.h']]],
   ['cl_5fprogram',['cl_program',['../include_2omega_2otypes_8h.html#a825f00d6dca5905cf3673e3028e5521a',1,'otypes.h']]],
   ['clamp',['clamp',['../glew_8h.html#a3878d3005eeb2d2ef414abc752ba3c9b',1,'glew.h']]],
+  ['cname',['cName',['../vrpn___connection_8h.html#a9348ce2847fc3424944650f0ad83032c',1,'vrpn_Connection.h']]],
   ['color',['color',['../glew_8h.html#a3ea846f998d64f079b86052b6c4193a8',1,'glew.h']]],
   ['colornumber',['colorNumber',['../glew_8h.html#aa0cc7c98d48d41e532115fa975a55d8e',1,'glew.h']]],
   ['colorsamples',['colorSamples',['../glew_8h.html#af334f6527ff1506d876a19b4cfb268d5',1,'glew.h']]],

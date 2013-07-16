@@ -6,6 +6,7 @@ var searchData=
   ['openniservice',['OpenNIService',['../classomicron_1_1_open_n_i_service.html',1,'omicron']]],
   ['option',['option',['../structoption.html',1,'']]],
   ['optitrackservice',['OptiTrackService',['../classomicron_1_1_opti_track_service.html',1,'omicron']]],
+  ['orientation',['orientation',['../structwiimote__state_1_1acceleration_1_1orientation.html',1,'wiimote_state::acceleration']]],
   ['osgfbxreader',['OsgFbxReader',['../class_osg_fbx_reader.html',1,'']]],
   ['osgmodule',['OsgModule',['../classomega_osg_1_1_osg_module.html',1,'omegaOsg']]],
   ['osgrenderpass',['OsgRenderPass',['../classomega_osg_1_1_osg_render_pass.html',1,'omegaOsg']]],

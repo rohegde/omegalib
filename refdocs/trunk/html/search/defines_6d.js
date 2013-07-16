@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['makediprop',['MAKEDIPROP',['../dinput_8h.html#ac55d6df20c8ae6fc392e7e6328f5e03a',1,'dinput.h']]],
   ['max_5fbroadcast_5fpayload',['MAX_BROADCAST_PAYLOAD',['../private-libwebsockets_8h.html#ad4c5735165ce4d24ef056d7f298bbdf4',1,'private-libwebsockets.h']]],
   ['max_5fclients',['MAX_CLIENTS',['../private-libwebsockets_8h.html#a0a8f91f93d75a07f0ae45077db45b3eb',1,'private-libwebsockets.h']]],
   ['max_5fmux_5frecursion',['MAX_MUX_RECURSION',['../libwebsockets_8h.html#aa3330ef5f7429b47c28e11143979c674',1,'libwebsockets.h']]],
@@ -7,6 +8,7 @@ var searchData=
   ['max_5fvertex_5ftexture_5fimage_5funits_5farb',['MAX_VERTEX_TEXTURE_IMAGE_UNITS_ARB',['../glew_8h.html#a0baed9755e98fb51ded8e9e29c428e03',1,'glew.h']]],
   ['max_5fwebsocket_5f04_5fkey_5flen',['MAX_WEBSOCKET_04_KEY_LEN',['../private-libwebsockets_8h.html#a45622ebab38575b7782fecd6b0d06426',1,'private-libwebsockets.h']]],
   ['max_5fxgm_5fsubchannels',['MAX_XGM_SUBCHANNELS',['../extension-x-google-mux_8h.html#a096bafdd8b86533a1e6be33dc40cf0a4',1,'extension-x-google-mux.h']]],
+  ['maxcpointsnum',['MAXCPOINTSNUM',['../dinput_8h.html#ac59cc3e425eb1e9744916f1d33f732f6',1,'dinput.h']]],
   ['msg_5fcamera_5fid',['MSG_CAMERA_ID',['../_porthole_service_8cpp.html#af586f7c594cef161887006371757034b',1,'PortholeService.cpp']]],
   ['msg_5fcamera_5fsize',['MSG_CAMERA_SIZE',['../_porthole_service_8cpp.html#a8a171fb9004980beab38feb663655b67',1,'PortholeService.cpp']]],
   ['msg_5fdelta_5frotation',['MSG_DELTA_ROTATION',['../_porthole_service_8cpp.html#ae27d86cf508757c231acd98efbeea7e4',1,'PortholeService.cpp']]],

@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['oassert',['oassert',['../external_2omicron_2include_2omicron_2osystem_8h.html#a007bd259e00c9e367839cb8f31eb19f9',1,'osystem.h']]],
-  ['odbg',['odbg',['../external_2omicron_2include_2omicron_2osystem_8h.html#a4a481dfc3e9af54c4fd87c5d0a6d45ba',1,'osystem.h']]],
+  ['oassert',['oassert',['../omicron_2include_2omicron_2osystem_8h.html#a007bd259e00c9e367839cb8f31eb19f9',1,'osystem.h']]],
+  ['odbg',['odbg',['../omicron_2include_2omicron_2osystem_8h.html#a4a481dfc3e9af54c4fd87c5d0a6d45ba',1,'osystem.h']]],
   ['oferror',['oferror',['../_string_utils_8h.html#a829b0992d1a01fbb4c3a69bb34823dea',1,'StringUtils.h']]],
   ['ofloat_5fptr',['OFLOAT_PTR',['../omicron_connector_client_8h.html#ab4d44f3769f01165b66f2f523e059c89',1,'omicronConnectorClient.h']]],
   ['ofmsg',['ofmsg',['../_string_utils_8h.html#afed982317cdfb448298f610969465de1',1,'StringUtils.h']]],

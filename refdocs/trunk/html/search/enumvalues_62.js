@@ -1,12 +1,20 @@
 var searchData=
 [
   ['back',['Back',['../classomega_toolkit_1_1ui_1_1_widget.html#ac304c8f3c64555687b3f00ff8683ac70a60cf1f141933e9121301488723f55cca',1,'omegaToolkit::ui::Widget']]],
+  ['balance_5fboard',['BALANCE_BOARD',['../structwiimote__state.html#adc98ee04350f83c8f166b0c010dad12facca62d23e35b4abb502854293e0b6ee7',1,'wiimote_state']]],
+  ['balance_5fchanged',['BALANCE_CHANGED',['../wiimote__common_8h.html#a6e2f3e6823c733b983709fd0e4773298a77ac4ed055ddf73732ca5b8966740ab0',1,'wiimote_common.h']]],
+  ['balance_5fconnected',['BALANCE_CONNECTED',['../wiimote__common_8h.html#a6e2f3e6823c733b983709fd0e4773298a9dd38bb4d689244ffdba94966ca63f45',1,'wiimote_common.h']]],
+  ['balance_5fweight_5fchanged',['BALANCE_WEIGHT_CHANGED',['../wiimote__common_8h.html#a6e2f3e6823c733b983709fd0e4773298abf6f6374eccd738101922a28d93ee677',1,'wiimote_common.h']]],
+  ['basic',['BASIC',['../structwiimote__state_1_1ir.html#ae0dc8c74b2624b5bda7da05231f2e929a5d23ff226e88e32b9f881d62b3db2a5d',1,'wiimote_state::ir']]],
+  ['battery_5fchanged',['BATTERY_CHANGED',['../wiimote__common_8h.html#a6e2f3e6823c733b983709fd0e4773298a7e7a06f539cde27e9c054121b66b13eb',1,'wiimote_common.h']]],
+  ['battery_5fdrained',['BATTERY_DRAINED',['../wiimote__common_8h.html#a6e2f3e6823c733b983709fd0e4773298aa6156bdc5b296997e1467ee44846ddb9',1,'wiimote_common.h']]],
   ['blendadditive',['BlendAdditive',['../classomega_toolkit_1_1ui_1_1_widget.html#a3756ea690a251b54bcd93c5f5e7f0db7acd8a22913a7798c00ddd79224567a4e3',1,'omegaToolkit::ui::Widget']]],
   ['blenddisabled',['BlendDisabled',['../classomega_toolkit_1_1ui_1_1_widget.html#a3756ea690a251b54bcd93c5f5e7f0db7a993a1fcfdf5c7e2283df09f1093434dd',1,'omegaToolkit::ui::Widget']]],
   ['blendinherit',['BlendInherit',['../classomega_toolkit_1_1ui_1_1_widget.html#a3756ea690a251b54bcd93c5f5e7f0db7ac8ecf2cbc031d29807f68f415a593ec9',1,'omegaToolkit::ui::Widget']]],
   ['blendnormal',['BlendNormal',['../classomega_toolkit_1_1ui_1_1_widget.html#a3756ea690a251b54bcd93c5f5e7f0db7a834ddeed24a1598faed32a1462f8b68a',1,'omegaToolkit::ui::Widget']]],
   ['both_5fside',['BOTH_SIDE',['../namespaceomicron.html#a781fe3276ec5b8864b093b3ca9b1f0cfaaedff3d87f523f1155f4293c6d830f70',1,'omicron']]],
   ['brain',['Brain',['../classomicron_1_1_service.html#a3992f0756d1aee668f6740487ddb4dafae410e12da1b6b0134700672217a4a000',1,'omicron::Service']]],
+  ['broken',['BROKEN',['../vrpn___connection_8h.html#aeb30bf699a39ea2cb5819381461ee54d',1,'vrpn_Connection.h']]],
   ['button',['Button',['../classomega_toolkit_1_1ui_1_1_menu_item.html#ae3f2271d031d040784adbf9ee9045bfeae6663b1a1c84a85d8ef77985b8b39ef8',1,'omegaToolkit::ui::MenuItem']]],
   ['button1',['Button1',['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a7d3360d2c35676c4848c6e8327926b33',1,'omicron::EventBase']]],
   ['button2',['Button2',['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a9b1193c90cb902cda6a255694f78efea',1,'omicron::EventBase']]],
@@ -23,6 +31,7 @@ var searchData=
   ['buttonone',['ButtonOne',['../classomicron_1_1_wiimote_service.html#afe6a34a9ab7e417280398d5dd076cc11ade1afb236031e1fbbd92292ae256eee7',1,'omicron::WiimoteService']]],
   ['buttonplus',['ButtonPlus',['../classomicron_1_1_wiimote_service.html#afe6a34a9ab7e417280398d5dd076cc11a49a16e785349c22073501f71df108b29',1,'omicron::WiimoteService']]],
   ['buttonright',['ButtonRight',['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a8892f2a12e17fdfd90648b3f937269c9',1,'omicron::EventBase::ButtonRight()'],['../classomicron_1_1_wiimote_service.html#afe6a34a9ab7e417280398d5dd076cc11acd5c0a1aac00d395cc85560da4a049fb',1,'omicron::WiimoteService::ButtonRight()']]],
+  ['buttons_5fchanged',['BUTTONS_CHANGED',['../wiimote__common_8h.html#a6e2f3e6823c733b983709fd0e4773298a1aed36050ab0681442dc8feb79827c45',1,'wiimote_common.h']]],
   ['buttontwo',['ButtonTwo',['../classomicron_1_1_wiimote_service.html#afe6a34a9ab7e417280398d5dd076cc11a32b07654129d0b169e154ce465054275',1,'omicron::WiimoteService']]],
   ['buttonup',['ButtonUp',['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a80c9666ef689cf30daa0c6165887b3f0',1,'omicron::EventBase::ButtonUp()'],['../classomicron_1_1_wiimote_service.html#afe6a34a9ab7e417280398d5dd076cc11a11c619d1f2ba9b3b85aebd2aacb53265',1,'omicron::WiimoteService::ButtonUp()']]]
 ];

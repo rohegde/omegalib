@@ -1,2 +1,13 @@
 <map id="wiimote" name="wiimote">
+<area shape="rect" id="node2" href="$structwiimote__state.html" title="wiimote_state" alt="" coords="851,460,941,484"/>
+<area shape="rect" id="node4" href="$structwiimote__state_1_1nunchuk.html" title="wiimote_state::nunchuk" alt="" coords="550,241,687,265"/>
+<area shape="rect" id="node18" href="$structwiimote__state_1_1speaker.html" title="wiimote_state::speaker" alt="" coords="551,176,686,200"/>
+<area shape="rect" id="node8" href="$structwiimote__state_1_1acceleration.html" title="wiimote_state::acceleration" alt="" coords="168,301,323,325"/>
+<area shape="rect" id="node12" href="$structwiimote__state_1_1classic__controller.html" title="wiimote_state::classic\l_controller" alt="" coords="369,394,495,430"/>
+<area shape="rect" id="node15" href="$structwiimote__state_1_1calibration__info.html" title="wiimote_state::calibration_info" alt="" coords="347,480,517,504"/>
+<area shape="rect" id="node35" href="$structwiimote__state_1_1leds.html" title="wiimote_state::leds" alt="" coords="374,31,490,55"/>
+<area shape="rect" id="node22" href="$structwiimote__state_1_1ir.html" title="wiimote_state::ir" alt="" coords="567,749,670,773"/>
+<area shape="rect" id="node26" href="$structwiimote__state_1_1buttons.html" title="wiimote_state::buttons" alt="" coords="551,592,686,616"/>
+<area shape="rect" id="node28" href="$structwiimote__state_1_1balance__board.html" title="wiimote_state::balance\l_board" alt="" coords="551,641,686,677"/>
+<area shape="rect" id="node33" href="$structwiimote__state_1_1motion__plus.html" title="wiimote_state::motion_plus" alt="" coords="541,701,696,725"/>
 </map>

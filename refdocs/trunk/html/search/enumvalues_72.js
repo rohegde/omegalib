@@ -12,7 +12,7 @@ var searchData=
   ['rendertotexture',['RenderToTexture',['../classomega_1_1_render_target.html#a3660bf54c67b1f9006259b92b1e24e8ca00a6344d9dd7d3cbd45f382bd8f606f7',1,'omega::RenderTarget']]],
   ['rendertransparent',['RenderTransparent',['../classomega_1_1_render_pass.html#a10ca0c009b64d3d72050cdcf7c34a688a996c919088d9ff44d5b903b7569cdd85',1,'omega::RenderPass']]],
   ['rendervtk',['RenderVtk',['../classomega_vtk_1_1_vtk_render_pass.html#a61124589ad3cf3488b7548b9d06410e2a918fd4ac7b8cfe29feb1d38499923a10',1,'omegaVtk::VtkRenderPass']]],
-  ['right',['Right',['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a24435f3ee9832b1ab148c81de2bfb2c9',1,'omicron::EventBase']]],
+  ['right',['Right',['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a24435f3ee9832b1ab148c81de2bfb2c9',1,'omicron::EventBase::Right()'],['../structwiimote__state_1_1buttons.html#a928314f6e8bf64248d9765bcf4d5222ba49e3bff26da2dc0e4a95d90ae9d50235',1,'wiimote_state::buttons::RIGHT()'],['../structwiimote__state_1_1classic__controller_1_1buttons.html#ac8848474c114d9d820c07186dfbf930da7ca4e3ebf7ded4281322df019b157f65',1,'wiimote_state::classic_controller::buttons::RIGHT()']]],
   ['rightelbow',['RightElbow',['../namespaceomicron.html#a9f3967ddaa0d027bfb5d4c75b8f2a522a85eeafd4a476ce229835008fb93ec9e3',1,'omicron']]],
   ['rightfoot',['RightFoot',['../namespaceomicron.html#a9f3967ddaa0d027bfb5d4c75b8f2a522a0d360dc1f389c50145153598c0730953',1,'omicron']]],
   ['righthand',['RightHand',['../namespaceomicron.html#a9f3967ddaa0d027bfb5d4c75b8f2a522a96477bc137b8f2f28f94f9432c5b043f',1,'omicron']]],

@@ -1,10 +1,10 @@
 <map id="omega::DrawContext" name="omega::DrawContext">
-<area shape="rect" id="node2" href="$classomega_1_1_render_target.html" title="omega::RenderTarget" alt="" coords="261,108,390,132"/>
+<area shape="rect" id="node2" href="$classomega_1_1_render_target.html" title="omega::RenderTarget" alt="" coords="258,108,387,132"/>
 <area shape="rect" id="node4" href="$classomega_1_1_gpu_resource.html" title="omega::GpuResource" alt="" coords="6,5,133,29"/>
-<area shape="rect" id="node8" href="$structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="254,299,397,323"/>
-<area shape="rect" id="node10" href="$classomega_1_1_camera.html" title="omega::Camera" alt="" coords="20,53,119,77"/>
-<area shape="rect" id="node24" title="STL class." alt="" coords="33,532,105,556"/>
-<area shape="rect" id="node30" href="$structomicron_1_1_rect.html" title="Stores a rectangular region in integer units." alt="" coords="281,461,370,485"/>
-<area shape="rect" id="node32" href="$classomega_1_1_renderer.html" title="omega::Renderer" alt="" coords="272,509,379,533"/>
-<area shape="rect" id="node34" href="$classomega_1_1_gpu_context.html" title="omega::GpuContext" alt="" coords="265,628,385,652"/>
+<area shape="rect" id="node8" href="$structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="251,317,394,341"/>
+<area shape="rect" id="node10" href="$classomega_1_1_camera.html" title="The Camera class handles information about a view transformation, head &#160;tracking and optional target ..." alt="" coords="20,53,119,77"/>
+<area shape="rect" id="node24" title="STL class." alt="" coords="33,451,105,475"/>
+<area shape="rect" id="node36" href="$classomega_1_1_gpu_context.html" title="omega::GpuContext" alt="" coords="263,589,383,613"/>
+<area shape="rect" id="node32" href="$structomicron_1_1_rect.html" title="Stores a rectangular region in integer units." alt="" coords="278,747,367,771"/>
+<area shape="rect" id="node34" href="$classomega_1_1_renderer.html" title="The omegalib renderer is the entry point for all of omegalib rendering code." alt="" coords="269,795,376,819"/>
 </map>

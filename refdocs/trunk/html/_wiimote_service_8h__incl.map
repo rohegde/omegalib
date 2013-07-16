@@ -1,10 +1,11 @@
-<map id="D:/Workspace/omegalib/core/external/omicron/include/omicron/WiimoteService.h" name="D:/Workspace/omegalib/core/external/omicron/include/omicron/WiimoteService.h">
-<area shape="rect" id="node3" href="$external_2omicron_2include_2omicron_2osystem_8h.html" title="omicron/osystem.h" alt="" coords="155,245,268,269"/>
+<map id="D:/Workspace/omegalib/core/omicron/include/omicron/WiimoteService.h" name="D:/Workspace/omegalib/core/omicron/include/omicron/WiimoteService.h">
+<area shape="rect" id="node3" href="$omicron_2include_2omicron_2osystem_8h.html" title="omicron/osystem.h" alt="" coords="157,245,269,269"/>
 <area shape="rect" id="node18" href="$_timer_8h.html" title="omicron/Timer.h" alt="" coords="292,101,391,125"/>
 <area shape="rect" id="node23" href="$_service_manager_8h.html" title="omicron/ServiceManager.h" alt="" coords="85,101,235,125"/>
-<area shape="rect" id="node34" href="$_wiimote_8h.html" title="omicron/wiimote.h" alt="" coords="424,317,533,341"/>
-<area shape="rect" id="node11" href="$external_2omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="215,317,280,341"/>
+<area shape="rect" id="node34" href="$_wiimote_8h.html" title="omicron/wiimote.h" alt="" coords="423,317,532,341"/>
+<area shape="rect" id="node11" href="$omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="251,317,316,341"/>
 <area shape="rect" id="node25" href="$_event_8h.html" title="Event.h" alt="" coords="97,173,156,197"/>
 <area shape="rect" id="node28" href="$_config_8h.html" title="Config.h" alt="" coords="181,173,243,197"/>
 <area shape="rect" id="node31" href="$_thread_8h.html" title="Thread.h" alt="" coords="5,173,72,197"/>
+<area shape="rect" id="node42" href="$wiimote__state_8h.html" title="wiimote_state.h" alt="" coords="605,389,704,413"/>
 </map>

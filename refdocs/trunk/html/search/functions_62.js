@@ -1,14 +1,15 @@
 var searchData=
 [
+  ['b',['B',['../structwiimote__state_1_1buttons.html#ae879e551a035c1faf4a573c14b9e5ae5',1,'wiimote_state::buttons::B()'],['../structwiimote__state_1_1classic__controller_1_1buttons.html#a016dc9531dcf0d5d36448b1cc4dfd9f3',1,'wiimote_state::classic_controller::buttons::B()']]],
   ['base64_5fdecode',['base64_decode',['../_porthole_service_8cpp.html#a4640747c991ef786cffa156a3dc53cdc',1,'PortholeService.cpp']]],
   ['base64_5fencode',['base64_encode',['../_porthole_service_8cpp.html#a3409fa3795f44deb77fe72094084d020',1,'PortholeService.cpp']]],
-  ['begindraw',['beginDraw',['../classomega_1_1_camera.html#ac9ad9dc0119c93f313e12e2a3f5bac8f',1,'omega::Camera::beginDraw()'],['../classomega_1_1_camera_output.html#a60c33caee767aa3a50d1443e04cf319d',1,'omega::CameraOutput::beginDraw()'],['../classomega_toolkit_1_1ui_1_1_container_renderable.html#aeada07d1ff14f5c7ed929fc8d9500656',1,'omegaToolkit::ui::ContainerRenderable::beginDraw()']]],
+  ['begindraw',['beginDraw',['../classomega_1_1_i_camera_listener.html#ac1b2db3538a993e0627c3fd532e40d25',1,'omega::ICameraListener::beginDraw()'],['../classomega_1_1_camera.html#ac9ad9dc0119c93f313e12e2a3f5bac8f',1,'omega::Camera::beginDraw()'],['../classomega_1_1_camera_output.html#a60c33caee767aa3a50d1443e04cf319d',1,'omega::CameraOutput::beginDraw()'],['../classomega_toolkit_1_1ui_1_1_container_renderable.html#aeada07d1ff14f5c7ed929fc8d9500656',1,'omegaToolkit::ui::ContainerRenderable::beginDraw()']]],
   ['begindraw2d',['beginDraw2D',['../classomega_1_1_draw_interface.html#ad4688273172ae196cf86a985ac1609cf',1,'omega::DrawInterface']]],
   ['begindraw3d',['beginDraw3D',['../classomega_1_1_draw_interface.html#a62f1b3379ad55865200b4714e6f04cea',1,'omega::DrawInterface']]],
   ['bind',['bind',['../classomega_1_1_pixel_data.html#ac4dbbb7020594de2e836bc16a7706bac',1,'omega::PixelData::bind()'],['../classomega_1_1_render_target.html#ad3be95ab0face573601ed15eecb7beef',1,'omega::RenderTarget::bind()'],['../classomega_1_1_texture.html#a46867c4fdd78c6a03fbc9183e26d77fe',1,'omega::Texture::bind()']]],
   ['blank',['Blank',['../classomega_1_1xml_1_1_ti_xml_text.html#a5430e842470ac567c4dd08aaeee4c71f',1,'omega::xml::TiXmlText']]],
   ['block_5fallocator',['block_allocator',['../classblock__allocator.html#abda299ed3635ce0006b942c2d4114372',1,'block_allocator']]],
-  ['bool',['BOOL',['../wglew_8h.html#aac8eace2cea06e3f4abec4e884000342',1,'wglew.h']]],
+  ['bool',['BOOL',['../wglew_8h.html#aac8eace2cea06e3f4abec4e884000342',1,'BOOL(WINAPI *PFNWGLSETSTEREOEMITTERSTATE3DLPROC)(HDC hDC:&#160;wglew.h'],['../dinput_8h.html#aa329482e9480267b328989972b606a2b',1,'BOOL(FAR PASCAL *LPDIENUMEFFECTSINFILECALLBACK)(LPCDIFILEEFFECT:&#160;dinput.h']]],
   ['boost_5fpython_5fmodule',['BOOST_PYTHON_MODULE',['../omega_vtk_python_api_8cpp.html#a2160f48077c68802edadf21c2a3f5fa9',1,'omegaVtkPythonApi.cpp']]],
   ['boundingradiusfromaabb',['boundingRadiusFromAABB',['../classomicron_1_1_math.html#a94a28cf1f152612004b371b02e078e91',1,'omicron::Math']]],
   ['boxshape',['BoxShape',['../classcyclops_1_1_box_shape.html#a2e3a653bfda8a89ab77625187ab44f8f',1,'cyclops::BoxShape']]],

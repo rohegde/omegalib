@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.0</span>
+   &#160;<span id="projectnumber">4.1</span>
    </div>
   </td>
  </tr>
@@ -109,20 +109,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="structomega_1_1_display_config__coll__graph.png" border="0" usemap="#omega_1_1_display_config_coll__map" alt="Collaboration graph"/></div>
 <map name="omega_1_1_display_config_coll__map" id="omega_1_1_display_config_coll__map">
-<area shape="rect" id="node2" href="structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="251,727,394,751"/><area shape="rect" id="node32" href="structomega_1_1_display_node_config.html" title="omega::DisplayNodeConfig" alt="" coords="572,485,724,509"/><area shape="rect" id="node4" href="classomega_1_1_camera.html" title="omega::Camera" alt="" coords="16,672,115,696"/><area shape="rect" id="node18" title="STL class." alt="" coords="29,467,101,491"/><area shape="rect" id="node22" href="classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, DisplayTileConfig * \&gt;" alt="" coords="563,1173,733,1209"/><area shape="rect" id="node24" href="classstdext_1_1hash__map.html" title="stdext::hash_map\&lt; String,\l DisplayTileConfig * \&gt;" alt="" coords="246,1173,399,1209"/></map>
+<area shape="rect" id="node2" href="structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="251,392,394,416"/><area shape="rect" id="node36" href="structomega_1_1_display_node_config.html" title="omega::DisplayNodeConfig" alt="" coords="572,675,724,699"/><area shape="rect" id="node4" href="classomega_1_1_camera.html" title="The Camera class handles information about a view transformation, head &#160;tracking and optional target ..." alt="" coords="16,340,115,364"/><area shape="rect" id="node18" title="STL class." alt="" coords="29,875,101,899"/><area shape="rect" id="node26" href="classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, DisplayTileConfig * \&gt;" alt="" coords="563,1061,733,1097"/><area shape="rect" id="node28" href="classstdext_1_1hash__map.html" title="stdext::hash_map\&lt; String,\l DisplayTileConfig * \&gt;" alt="" coords="246,1061,399,1097"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aac5c8f6c5b92de5bd0b60e0baed0818e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#aac5c8f6c5b92de5bd0b60e0baed0818e">computeTileCorners</a> (<a class="el" href="structomega_1_1_display_tile_config.html">DisplayTileConfig</a> *tile)</td></tr>
+<tr class="memitem:aac5c8f6c5b92de5bd0b60e0baed0818e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#aac5c8f6c5b92de5bd0b60e0baed0818e">computeTileCorners</a> (<a class="el" href="structomega_1_1_display_tile_config.html">DisplayTileConfig</a> *tile)</td></tr>
+<tr class="memdesc:aac5c8f6c5b92de5bd0b60e0baed0818e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the corner positions for the specified tile using information stored in the tile and configuration like center, yaw and pitch, lcd size and so on.  <a href="#aac5c8f6c5b92de5bd0b60e0baed0818e"></a><br/></td></tr>
+<tr class="memitem:a52553534749632c64cf606b449400dd8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a52553534749632c64cf606b449400dd8">setupMultiInstance</a> (<a class="el" href="structomega_1_1_multi_instance_config.html">MultiInstanceConfig</a> *mic)</td></tr>
+<tr class="memdesc:a52553534749632c64cf606b449400dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modifies the display configuration to run on the tile subset specified in <a class="el" href="structomega_1_1_multi_instance_config.html" title="Contains data about multi-instance mode.">MultiInstanceConfig</a>.  <a href="#a52553534749632c64cf606b449400dd8"></a><br/></td></tr>
+<tr class="memitem:a8c2ae12e37e32f28185f8c673c3c6cb4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a8c2ae12e37e32f28185f8c673c3c6cb4">isHostInTileSection</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;hostname, int tilex, int tiley, int tilew, int tileh)</td></tr>
+<tr class="memdesc:a8c2ae12e37e32f28185f8c673c3c6cb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the specified host is running a tile in the specified section.  <a href="#a8c2ae12e37e32f28185f8c673c3c6cb4"></a><br/></td></tr>
 <tr class="memitem:aec846624967980586de38bb36734ae0f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#aec846624967980586de38bb36734ae0f">DisplayConfig</a> ()</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a9fcc2b4f5080ff48ed587479432f8118"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a9fcc2b4f5080ff48ed587479432f8118">LoadConfig</a> (<a class="el" href="namespaceomicron.html#afb87024a570b82fb906138146d2e812d">Setting</a> &amp;<a class="el" href="glew_8h.html#a4af680a6c683f88ed67b76f207f2e6e4">s</a>, <a class="el" href="structomega_1_1_display_config.html">DisplayConfig</a> &amp;cfg)</td></tr>
+<tr class="memitem:a9fcc2b4f5080ff48ed587479432f8118"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a9fcc2b4f5080ff48ed587479432f8118">LoadConfig</a> (<a class="el" href="namespaceomicron.html#afb87024a570b82fb906138146d2e812d">Setting</a> &amp;<a class="el" href="glew_8h.html#a4af680a6c683f88ed67b76f207f2e6e4">s</a>, <a class="el" href="structomega_1_1_display_config.html">DisplayConfig</a> &amp;cfg)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:abe5c50e4c4b5919684c0b1c5fc44201f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#abe5c50e4c4b5919684c0b1c5fc44201f">invertStereo</a></td></tr>
+<tr class="memdesc:abe5c50e4c4b5919684c0b1c5fc44201f"><td class="mdescLeft">&#160;</td><td class="mdescRight">When set to true, eyes are inverted in stereo mode.  <a href="#abe5c50e4c4b5919684c0b1c5fc44201f"></a><br/></td></tr>
 <tr class="memitem:a0b496519218bd353c50ea334c6f0fe8f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a0b496519218bd353c50ea334c6f0fe8f">disableConfigGenerator</a></td></tr>
 <tr class="memitem:a09583c22b91ee6227829a44e06f6048e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a09583c22b91ee6227829a44e06f6048e">verbose</a></td></tr>
 <tr class="memdesc:a09583c22b91ee6227829a44e06f6048e"><td class="mdescLeft">&#160;</td><td class="mdescRight">When set to true, the Display system will output additional diagnostic messages during startup and shutdown.  <a href="#a09583c22b91ee6227829a44e06f6048e"></a><br/></td></tr>
@@ -145,7 +152,7 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ac9c1378897e9e83f1771a4f9320000e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#ac9c1378897e9e83f1771a4f9320000e0">windowOffset</a></td></tr>
 <tr class="memdesc:ac9c1378897e9e83f1771a4f9320000e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">When set to true, window positions will be computed automatically in a multiwindow setting.  <a href="#ac9c1378897e9e83f1771a4f9320000e0"></a><br/></td></tr>
 <tr class="memitem:abd8a56cdefd31a79afcfe406ebd41ca5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1_display_tile_config.html#a173c7e3329dca1fc6bfc76497a7e81a0">DisplayTileConfig::StereoMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#abd8a56cdefd31a79afcfe406ebd41ca5">stereoMode</a></td></tr>
-<tr class="memdesc:abd8a56cdefd31a79afcfe406ebd41ca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Global stereo mode. Will be used by tiles that specify 'Default" as their stereo mode.  <a href="#abd8a56cdefd31a79afcfe406ebd41ca5"></a><br/></td></tr>
+<tr class="memdesc:abd8a56cdefd31a79afcfe406ebd41ca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Global stereo mode.  <a href="#abd8a56cdefd31a79afcfe406ebd41ca5"></a><br/></td></tr>
 <tr class="memitem:a2211c1eab8b770d5fb55544c1d180786"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a2211c1eab8b770d5fb55544c1d180786">enableVSync</a></td></tr>
 <tr class="memdesc:a2211c1eab8b770d5fb55544c1d180786"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable vsync on all tiles.  <a href="#a2211c1eab8b770d5fb55544c1d180786"></a><br/></td></tr>
 <tr class="memitem:a537d06fe65d17463f124f26ec6889a19"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a537d06fe65d17463f124f26ec6889a19">enableSwapSync</a></td></tr>
@@ -159,7 +166,7 @@ Public Attributes</h2></td></tr>
 <a class="el" href="structomega_1_1_display_tile_config.html">DisplayTileConfig</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a87401c6967c491610ae06b3404f8eaa5">tiles</a></td></tr>
 <tr class="memdesc:a87401c6967c491610ae06b3404f8eaa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tile configurations.  <a href="#a87401c6967c491610ae06b3404f8eaa5"></a><br/></td></tr>
 <tr class="memitem:a5e266e92096800a21ddfec2cadf6e96a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a5e266e92096800a21ddfec2cadf6e96a">numTiles</a></td></tr>
-<tr class="memdesc:a5e266e92096800a21ddfec2cadf6e96a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total display resolution. Will be computed automatically during the setup process, users should leave this blank.  <a href="#a5e266e92096800a21ddfec2cadf6e96a"></a><br/></td></tr>
+<tr class="memdesc:a5e266e92096800a21ddfec2cadf6e96a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total display resolution.  <a href="#a5e266e92096800a21ddfec2cadf6e96a"></a><br/></td></tr>
 <tr class="memitem:a50f4e8e84130b6adab52436987f80a57"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a50f4e8e84130b6adab52436987f80a57">numNodes</a></td></tr>
 <tr class="memdesc:a50f4e8e84130b6adab52436987f80a57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of nodes for a multimachine display system.  <a href="#a50f4e8e84130b6adab52436987f80a57"></a><br/></td></tr>
 <tr class="memitem:aacec39c04f551d1bc0a7f4782a9463cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1_display_node_config.html">DisplayNodeConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#aacec39c04f551d1bc0a7f4782a9463cb">nodes</a> [<a class="el" href="structomega_1_1_display_config.html#a39f729ff2bbb2791817c7c8658253aa5">MaxNodes</a>]</td></tr>
@@ -218,7 +225,7 @@ Static Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> DisplayConfig::computeTileCorners </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> DisplayConfig::computeTileCorners </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structomega_1_1_display_tile_config.html">DisplayTileConfig</a> *&#160;</td>
           <td class="paramname"><em>tile</em></td><td>)</td>
@@ -226,6 +233,54 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Computes the corner positions for the specified tile using information stored in the tile and configuration like center, yaw and pitch, lcd size and so on. </p>
+
+</div>
+</div>
+<a class="anchor" id="a8c2ae12e37e32f28185f8c673c3c6cb4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DisplayConfig::isHostInTileSection </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>hostname</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tilex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tiley</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tilew</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tileh</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns true if the specified host is running a tile in the specified section. </p>
 
 </div>
 </div>
@@ -237,7 +292,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> DisplayConfig::LoadConfig </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> DisplayConfig::LoadConfig </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceomicron.html#afb87024a570b82fb906138146d2e812d">Setting</a> &amp;&#160;</td>
           <td class="paramname"><em>s</em>, </td>
@@ -260,6 +315,25 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a52553534749632c64cf606b449400dd8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int DisplayConfig::setupMultiInstance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structomega_1_1_multi_instance_config.html">MultiInstanceConfig</a> *&#160;</td>
+          <td class="paramname"><em>mic</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Modifies the display configuration to run on the tile subset specified in <a class="el" href="structomega_1_1_multi_instance_config.html" title="Contains data about multi-instance mode.">MultiInstanceConfig</a>. </p>
+<p>This call modifies enabled tiles and port assignments in the display configuration and Assings the application an instance id. The instance id is written in the id field of <a class="el" href="structomega_1_1_multi_instance_config.html" title="Contains data about multi-instance mode.">MultiInstanceConfig</a> and is returned by this call. </p>
 
 </div>
 </div>
@@ -413,6 +487,20 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="abe5c50e4c4b5919684c0b1c5fc44201f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::DisplayConfig::invertStereo</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>When set to true, eyes are inverted in stereo mode. </p>
+
+</div>
+</div>
 <a class="anchor" id="ac1e4a5a77ce3e084b0fa5771b64bb87e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -527,7 +615,8 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Total display resolution. Will be computed automatically during the setup process, users should leave this blank. </p>
+<p>Total display resolution. </p>
+<p>Will be computed automatically during the setup process, users should leave this blank. </p>
 
 </div>
 </div>
@@ -596,7 +685,8 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Global stereo mode. Will be used by tiles that specify 'Default" as their stereo mode. </p>
+<p>Global stereo mode. </p>
+<p>Will be used by tiles that specify 'Default" as their stereo mode. </p>
 
 </div>
 </div>

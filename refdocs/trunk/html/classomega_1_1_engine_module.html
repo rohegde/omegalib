@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.0</span>
+   &#160;<span id="projectnumber">4.1</span>
    </div>
   </td>
  </tr>
@@ -90,6 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classomega_1_1_engine_module-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">omega::EngineModule Class Reference</div>  </div>
@@ -104,7 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classomega_1_1_engine_module__inherit__graph.png" border="0" usemap="#omega_1_1_engine_module_inherit__map" alt="Inheritance graph"/></div>
 <map name="omega_1_1_engine_module_inherit__map" id="omega_1_1_engine_module_inherit__map">
-<area shape="rect" id="node7" href="classcyclops_1_1_scene_manager.html" title="The scene manager contains all the main features used to handle a cyclops scene and its assets..." alt="" coords="568,72,704,96"/><area shape="rect" id="node9" href="classomega_1_1_actor.html" title="omega::Actor" alt="" coords="592,120,680,144"/><area shape="rect" id="node21" href="classomega_1_1_camera_controller.html" title="omega::CameraController" alt="" coords="563,168,709,192"/><area shape="rect" id="node23" href="classomega_1_1_event_sharing_module.html" title="omega::EventSharingModule" alt="" coords="556,216,716,240"/><area shape="rect" id="node25" href="classomega_1_1_mission_control_client.html" title="omega::MissionControlClient" alt="" coords="557,264,715,288"/><area shape="rect" id="node27" href="classomega_1_1_sage_manager.html" title="omega::SageManager" alt="" coords="572,312,700,336"/><area shape="rect" id="node29" href="classomega_osg_1_1_osg_module.html" title="omegaOsg::OsgModule" alt="" coords="569,360,703,384"/><area shape="rect" id="node31" href="classomega_toolkit_1_1_scene_editor_module.html" title="omegaToolkit::SceneEditor\lModule" alt="" coords="561,409,711,445"/><area shape="rect" id="node33" href="classomega_toolkit_1_1ui_1_1_menu_manager.html" title="omegaToolkit::ui::MenuManager" alt="" coords="547,469,725,493"/><area shape="rect" id="node35" href="classomega_toolkit_1_1_ui_module.html" title="omegaToolkit::UiModule" alt="" coords="568,517,704,541"/><area shape="rect" id="node37" href="classomega_vtk_1_1_vtk_module.html" title="omegaVtk::VtkModule" alt="" coords="573,565,699,589"/><area shape="rect" id="node2" href="classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="195,312,323,336"/><area shape="rect" id="node4" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,312,147,336"/><area shape="rect" id="node11" href="classomega_1_1_tracked_object.html" title="omega::TrackedObject" alt="" coords="798,5,930,29"/><area shape="rect" id="node13" href="classomega_toolkit_1_1_controller_manipulator.html" title="omegaToolkit::Controller\lManipulator" alt="" coords="794,54,934,90"/><area shape="rect" id="node15" href="classomega_toolkit_1_1_default_mouse_interactor.html" title="omegaToolkit::DefaultMouse\lInteractor" alt="" coords="785,114,943,150"/><area shape="rect" id="node17" href="classomega_toolkit_1_1_default_two_hands_interactor.html" title="omegaToolkit::DefaultTwo\lHandsInteractor" alt="" coords="790,174,938,210"/><area shape="rect" id="node19" href="classomega_toolkit_1_1_mouse_manipulator.html" title="omegaToolkit::MouseManipulator" alt="" coords="774,235,954,259"/></map>
+<area shape="rect" id="node7" href="classcyclops_1_1_scene_manager.html" title="The scene manager contains all the main features used to handle a cyclops scene and its assets..." alt="" coords="568,72,704,96"/><area shape="rect" id="node9" href="classomega_1_1_actor.html" title="A specialied EngineModule used to control objects in a scene and define custom behaviors." alt="" coords="592,120,680,144"/><area shape="rect" id="node21" href="classomega_1_1_camera_controller.html" title="omega::CameraController" alt="" coords="563,168,709,192"/><area shape="rect" id="node23" href="classomega_1_1_event_sharing_module.html" title="omega::EventSharingModule" alt="" coords="556,216,716,240"/><area shape="rect" id="node25" href="classomega_1_1_mission_control_client.html" title="omega::MissionControlClient" alt="" coords="557,264,715,288"/><area shape="rect" id="node27" href="classomega_1_1_sage_manager.html" title="omega::SageManager" alt="" coords="572,312,700,336"/><area shape="rect" id="node29" href="classomega_osg_1_1_osg_module.html" title="omegaOsg::OsgModule" alt="" coords="569,360,703,384"/><area shape="rect" id="node31" href="classomega_toolkit_1_1_scene_editor_module.html" title="omegaToolkit::SceneEditor\lModule" alt="" coords="561,409,711,445"/><area shape="rect" id="node33" href="classomega_toolkit_1_1ui_1_1_menu_manager.html" title="omegaToolkit::ui::MenuManager" alt="" coords="547,469,725,493"/><area shape="rect" id="node35" href="classomega_toolkit_1_1_ui_module.html" title="omegaToolkit::UiModule" alt="" coords="568,517,704,541"/><area shape="rect" id="node37" href="classomega_vtk_1_1_vtk_module.html" title="omegaVtk::VtkModule" alt="" coords="573,565,699,589"/><area shape="rect" id="node2" href="classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="195,312,323,336"/><area shape="rect" id="node4" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,312,147,336"/><area shape="rect" id="node11" href="classomega_1_1_tracked_object.html" title="omega::TrackedObject" alt="" coords="798,5,930,29"/><area shape="rect" id="node13" href="classomega_toolkit_1_1_controller_manipulator.html" title="omegaToolkit::Controller\lManipulator" alt="" coords="794,54,934,90"/><area shape="rect" id="node15" href="classomega_toolkit_1_1_default_mouse_interactor.html" title="omegaToolkit::DefaultMouse\lInteractor" alt="" coords="785,114,943,150"/><area shape="rect" id="node17" href="classomega_toolkit_1_1_default_two_hands_interactor.html" title="omegaToolkit::DefaultTwo\lHandsInteractor" alt="" coords="790,174,938,210"/><area shape="rect" id="node19" href="classomega_toolkit_1_1_mouse_manipulator.html" title="omegaToolkit::MouseManipulator" alt="" coords="774,235,954,259"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for omega::EngineModule:</div>
@@ -118,9 +119,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a8327c4b2189615448644faafac37b0ef"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0ef">Priority</a> { <a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0efa55f6c4f5d9807e73062f31c7183e14da">PriorityLow</a> =  0, 
-<a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0efac82f8703775bfa121c7a3c83ac9b4aa5">PriorityNormal</a> =  1, 
-<a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0efa30d0e6c7703de3f0a4b9e29d6e9fb38f">PriorityHigh</a> =  2
+<tr class="memitem:a8327c4b2189615448644faafac37b0ef"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0ef">Priority</a> { <br/>
+&#160;&#160;<a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0efaf3ade827f646a64ee79755717d745384">PriorityLowest</a> =  0, 
+<a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0efa55f6c4f5d9807e73062f31c7183e14da">PriorityLow</a> =  1, 
+<a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0efac82f8703775bfa121c7a3c83ac9b4aa5">PriorityNormal</a> =  2, 
+<a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0efa30d0e6c7703de3f0a4b9e29d6e9fb38f">PriorityHigh</a> =  3, 
+<br/>
+&#160;&#160;<a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0efa7266d4c0ec4a7f366e314b2341e6bf97">PriorityHighest</a> =  4
+<br/>
  }</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
@@ -128,27 +134,31 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3c9b0b7e0e97e19e1d542ff6f67579e9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a3c9b0b7e0e97e19e1d542ff6f67579e9">EngineModule</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
 <tr class="memitem:a9cc0f51c8b842a1480d8c430963fc2e6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a9cc0f51c8b842a1480d8c430963fc2e6">EngineModule</a> ()</td></tr>
 <tr class="memitem:aff686c62a74030f2a40b2ed2e265b3c4"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#aff686c62a74030f2a40b2ed2e265b3c4">~EngineModule</a> ()</td></tr>
-<tr class="memitem:a9eaa70027f813cdb903d763ad30b55e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a9eaa70027f813cdb903d763ad30b55e7">enableSharedData</a> ()</td></tr>
-<tr class="memitem:aee884c673225489d8272af84b0eeef74"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#aee884c673225489d8272af84b0eeef74">initialize</a> ()</td></tr>
-<tr class="memitem:ac144ad632e5306757d12774cd3c77df9"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#ac144ad632e5306757d12774cd3c77df9">dispose</a> ()</td></tr>
-<tr class="memitem:a7c061074f58cf8bd92c4bb7c558dbc7d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a7c061074f58cf8bd92c4bb7c558dbc7d">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
-<tr class="memitem:aaa37722672c81e782e202d07534f3b14"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#aaa37722672c81e782e202d07534f3b14">handleEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt)</td></tr>
+<tr class="memitem:a9eaa70027f813cdb903d763ad30b55e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a9eaa70027f813cdb903d763ad30b55e7">enableSharedData</a> ()</td></tr>
+<tr class="memitem:aee884c673225489d8272af84b0eeef74"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#aee884c673225489d8272af84b0eeef74">initialize</a> ()</td></tr>
+<tr class="memitem:ac144ad632e5306757d12774cd3c77df9"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#ac144ad632e5306757d12774cd3c77df9">dispose</a> ()</td></tr>
+<tr class="memitem:a7c061074f58cf8bd92c4bb7c558dbc7d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a7c061074f58cf8bd92c4bb7c558dbc7d">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
+<tr class="memitem:aaa37722672c81e782e202d07534f3b14"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#aaa37722672c81e782e202d07534f3b14">handleEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt)</td></tr>
 <tr class="memitem:a6641ffd16fad35600540fd470614556e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a6641ffd16fad35600540fd470614556e">handleCommand</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;cmd)</td></tr>
-<tr class="memitem:a060c2b22fc751d4002a85d9c58cca98d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a060c2b22fc751d4002a85d9c58cca98d">commitSharedData</a> (<a class="el" href="classomega_1_1_shared_o_stream.html">SharedOStream</a> &amp;out)</td></tr>
-<tr class="memitem:a02a53825388a2bce137bd53c46b81882"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a02a53825388a2bce137bd53c46b81882">updateSharedData</a> (<a class="el" href="classomega_1_1_shared_i_stream.html">SharedIStream</a> &amp;<a class="el" href="glew_8h.html#a83ad0ee7f1e06b59c90271716e689080">in</a>)</td></tr>
-<tr class="memitem:ac130eb6851927b05c641421d0ae48b16"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#ac130eb6851927b05c641421d0ae48b16">initializeRenderer</a> (<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *)</td></tr>
-<tr class="memitem:acfd963eb9e7d5969cc840da91a4c8356"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#acfd963eb9e7d5969cc840da91a4c8356">doInitialize</a> (<a class="el" href="classomega_1_1_engine.html">Engine</a> *server)</td></tr>
-<tr class="memitem:ac72f58d9fdbe06d3574a0568de02a2c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#ac72f58d9fdbe06d3574a0568de02a2c4">doDispose</a> ()</td></tr>
+<tr class="memitem:a060c2b22fc751d4002a85d9c58cca98d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a060c2b22fc751d4002a85d9c58cca98d">commitSharedData</a> (<a class="el" href="classomega_1_1_shared_o_stream.html">SharedOStream</a> &amp;out)</td></tr>
+<tr class="memitem:a02a53825388a2bce137bd53c46b81882"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a02a53825388a2bce137bd53c46b81882">updateSharedData</a> (<a class="el" href="classomega_1_1_shared_i_stream.html">SharedIStream</a> &amp;<a class="el" href="glew_8h.html#a83ad0ee7f1e06b59c90271716e689080">in</a>)</td></tr>
+<tr class="memitem:ac130eb6851927b05c641421d0ae48b16"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#ac130eb6851927b05c641421d0ae48b16">initializeRenderer</a> (<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *)</td></tr>
+<tr class="memitem:acfd963eb9e7d5969cc840da91a4c8356"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#acfd963eb9e7d5969cc840da91a4c8356">doInitialize</a> (<a class="el" href="classomega_1_1_engine.html">Engine</a> *server)</td></tr>
+<tr class="memitem:ac72f58d9fdbe06d3574a0568de02a2c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#ac72f58d9fdbe06d3574a0568de02a2c4">doDispose</a> ()</td></tr>
 <tr class="memitem:a9d33d4ae7707b7b86b86c05a87cb147a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a9d33d4ae7707b7b86b86c05a87cb147a">isInitialized</a> ()</td></tr>
 <tr class="memitem:a66e5b55110ac4b2402d44694963b22b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_engine.html">Engine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a66e5b55110ac4b2402d44694963b22b9">getEngine</a> ()</td></tr>
 <tr class="memitem:a1d35b956028f3045f2c344b45bfb0158"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0ef">Priority</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a1d35b956028f3045f2c344b45bfb0158">getPriority</a> ()</td></tr>
-<tr class="memitem:a297d7a11369ac28920e27fbf4c03a65a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a297d7a11369ac28920e27fbf4c03a65a">setPriority</a> (<a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0ef">Priority</a> <a class="el" href="glew_8h.html#a6a4f8a1a444e9080b297963b3db29fe0">value</a>)</td></tr>
+<tr class="memitem:a297d7a11369ac28920e27fbf4c03a65a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a297d7a11369ac28920e27fbf4c03a65a">setPriority</a> (<a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0ef">Priority</a> <a class="el" href="glew_8h.html#a6a4f8a1a444e9080b297963b3db29fe0">value</a>)</td></tr>
 <tr class="memitem:a00d7667b6517fcaa1a469b3c9600fe01"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a00d7667b6517fcaa1a469b3c9600fe01">getName</a> ()</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a1becf4874bcab2a44045f56f9ec52b4e"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_module.html#a1becf4874bcab2a44045f56f9ec52b4e">ModuleServices</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_methods_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&nbsp;Static Public Member Functions inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
-<tr class="memitem:a2ab483ab6db3edcca6495fe9465d72d2 inherit pub_static_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a2ab483ab6db3edcca6495fe9465d72d2">printObjCounts</a> ()</td></tr>
+<tr class="memitem:a2ab483ab6db3edcca6495fe9465d72d2 inherit pub_static_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a2ab483ab6db3edcca6495fe9465d72d2">printObjCounts</a> ()</td></tr>
 <tr class="inherit_header pro_static_attribs_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&nbsp;Static Protected Attributes inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a436dafe8b6a5c62b5f111b644c6ed4b0 inherit pro_static_attribs_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="classomicron_1_1_reference_type.html">ReferenceType</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a436dafe8b6a5c62b5f111b644c6ed4b0">mysObjList</a></td></tr>
 </table>
@@ -163,11 +173,15 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="a8327c4b2189615448644faafac37b0efaf3ade827f646a64ee79755717d745384"></a>PriorityLowest</em>&nbsp;</td><td>
+</td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a8327c4b2189615448644faafac37b0efa55f6c4f5d9807e73062f31c7183e14da"></a>PriorityLow</em>&nbsp;</td><td>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a8327c4b2189615448644faafac37b0efac82f8703775bfa121c7a3c83ac9b4aa5"></a>PriorityNormal</em>&nbsp;</td><td>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a8327c4b2189615448644faafac37b0efa30d0e6c7703de3f0a4b9e29d6e9fb38f"></a>PriorityHigh</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a8327c4b2189615448644faafac37b0efa7266d4c0ec4a7f366e314b2341e6bf97"></a>PriorityHighest</em>&nbsp;</td><td>
 </td></tr>
 </table>
 </dd>
@@ -255,7 +269,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> omega::EngineModule::commitSharedData </td>
+          <td class="memname">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> omega::EngineModule::commitSharedData </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_shared_o_stream.html">SharedOStream</a> &amp;&#160;</td>
           <td class="paramname"><em>out</em></td><td>)</td>
@@ -283,7 +297,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> omega::EngineModule::dispose </td>
+          <td class="memname">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> omega::EngineModule::dispose </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -305,7 +319,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> EngineModule::doDispose </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> EngineModule::doDispose </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -320,7 +334,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> EngineModule::doInitialize </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> EngineModule::doInitialize </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_engine.html">Engine</a> *&#160;</td>
           <td class="paramname"><em>server</em></td><td>)</td>
@@ -336,7 +350,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> EngineModule::enableSharedData </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> EngineModule::enableSharedData </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -439,7 +453,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_mission_control_client.html#a0b43c9ed48d488e79351dc35d50017bc">omega::MissionControlClient</a>, and <a class="el" href="classomega_1_1_wand_camera_controller.html#a8d2b4c9ebd33545d3160861dad63cab4">omega::WandCameraController</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_mission_control_client.html#a0b43c9ed48d488e79351dc35d50017bc">omega::MissionControlClient</a>, <a class="el" href="classomega_1_1_actor.html#ad2cd4c608bf2c4d27f50808988c99a50">omega::Actor</a>, and <a class="el" href="classomega_1_1_wand_camera_controller.html#a8d2b4c9ebd33545d3160861dad63cab4">omega::WandCameraController</a>.</p>
 
 </div>
 </div>
@@ -451,7 +465,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> omega::EngineModule::handleEvent </td>
+          <td class="memname">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> omega::EngineModule::handleEvent </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;&#160;</td>
           <td class="paramname"><em>evt</em></td><td>)</td>
@@ -465,7 +479,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_camera_controller.html#a7b866242221178ddd2b49b4f796a52a1">omega::CameraController</a>, <a class="el" href="classomega_1_1_wand_camera_controller.html#a62812383624cecb876f557a6699a0b81">omega::WandCameraController</a>, <a class="el" href="classomega_1_1_gamepad_camera_controller.html#a9f8e119cf6a06c613d4dd2e23fe45d02">omega::GamepadCameraController</a>, <a class="el" href="classomega_1_1_keyboard_mouse_camera_controller.html#a7376ba8fd16b9c33ad92dc4034287309">omega::KeyboardMouseCameraController</a>, <a class="el" href="classomega_1_1_mouse_camera_controller.html#a96d5fe2850376a97bf288805fd83ab55">omega::MouseCameraController</a>, and <a class="el" href="classomega_1_1_tracked_object.html#aa4c4f16d458808b1e24cc7a23aee810e">omega::TrackedObject</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_actor.html#a9759739a1dc8e42ea02462f8cc2fd875">omega::Actor</a>, <a class="el" href="classomega_1_1_camera_controller.html#a7b866242221178ddd2b49b4f796a52a1">omega::CameraController</a>, <a class="el" href="classomega_1_1_keyboard_mouse_camera_controller.html#a7376ba8fd16b9c33ad92dc4034287309">omega::KeyboardMouseCameraController</a>, <a class="el" href="classomega_1_1_wand_camera_controller.html#a62812383624cecb876f557a6699a0b81">omega::WandCameraController</a>, <a class="el" href="classomega_1_1_gamepad_camera_controller.html#a9f8e119cf6a06c613d4dd2e23fe45d02">omega::GamepadCameraController</a>, <a class="el" href="classomega_1_1_mouse_camera_controller.html#a96d5fe2850376a97bf288805fd83ab55">omega::MouseCameraController</a>, and <a class="el" href="classomega_1_1_tracked_object.html#aa4c4f16d458808b1e24cc7a23aee810e">omega::TrackedObject</a>.</p>
 
 </div>
 </div>
@@ -477,7 +491,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> omega::EngineModule::initialize </td>
+          <td class="memname">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> omega::EngineModule::initialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -502,7 +516,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> omega::EngineModule::initializeRenderer </td>
+          <td class="memname">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> omega::EngineModule::initializeRenderer </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_renderer.html">Renderer</a> *&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -551,7 +565,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> omega::EngineModule::setPriority </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> omega::EngineModule::setPriority </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_engine_module.html#a8327c4b2189615448644faafac37b0ef">Priority</a>&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -575,7 +589,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> omega::EngineModule::update </td>
+          <td class="memname">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> omega::EngineModule::update </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;&#160;</td>
           <td class="paramname"><em>context</em></td><td>)</td>
@@ -589,7 +603,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_mission_control_client.html#a67bb0ec6c2e4e3177013ca3bacbb77fd">omega::MissionControlClient</a>, <a class="el" href="classomega_osg_1_1_osg_module.html#a6ac8b18a8ca65db03c08d8edbc6f79c4">omegaOsg::OsgModule</a>, <a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a7fa494c5f968aac2077e2d1be5f55447">omegaToolkit::SceneEditorModule</a>, <a class="el" href="classomega_vtk_1_1_vtk_module.html#a1e2b4c8d312f41a6e5e3c4a7deb0b8b0">omegaVtk::VtkModule</a>, <a class="el" href="classomega_toolkit_1_1_ui_module.html#a5a66a4920a9a00967d9f36e87ee7a252">omegaToolkit::UiModule</a>, <a class="el" href="classomega_toolkit_1_1_wand_manipulator.html#a4376591ff8f0d867f696159dc946453d">omegaToolkit::WandManipulator</a>, <a class="el" href="classomega_1_1_camera_controller.html#adf17770dda159f9d3337e2113bba255e">omega::CameraController</a>, <a class="el" href="classomega_toolkit_1_1ui_1_1_menu_manager.html#a1e7fcae54c6d4630a4c890f9177bab87">omegaToolkit::ui::MenuManager</a>, <a class="el" href="classomega_1_1_wand_camera_controller.html#acfbc5c687be43c7e3079b580cd142bee">omega::WandCameraController</a>, <a class="el" href="classomega_1_1_gamepad_camera_controller.html#a6c81f9d07dfd99049ae5d6e1579cba76">omega::GamepadCameraController</a>, <a class="el" href="classomega_1_1_keyboard_mouse_camera_controller.html#a3061e2ae865b0cdbf4368a42ad9b1b99">omega::KeyboardMouseCameraController</a>, <a class="el" href="classomega_1_1_mouse_camera_controller.html#a139fd981cf2872cfaf6fcadf8b6a65be">omega::MouseCameraController</a>, <a class="el" href="classomega_toolkit_1_1_controller_manipulator.html#a654cfdf68a0e0bb0d90f1321b1829aae">omegaToolkit::ControllerManipulator</a>, <a class="el" href="classomega_1_1_tracked_object.html#a8953c7f36cfbd35f27d6f757d28fd5df">omega::TrackedObject</a>, and <a class="el" href="classomega_toolkit_1_1_mouse_manipulator.html#a9a0087590c6838ed342cd0b932ef10fe">omegaToolkit::MouseManipulator</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_mission_control_client.html#a67bb0ec6c2e4e3177013ca3bacbb77fd">omega::MissionControlClient</a>, <a class="el" href="classomega_1_1_actor.html#aa67cfecc539e8d7fd50c5c65c5150eb4">omega::Actor</a>, <a class="el" href="classomega_osg_1_1_osg_module.html#a6ac8b18a8ca65db03c08d8edbc6f79c4">omegaOsg::OsgModule</a>, <a class="el" href="classomega_toolkit_1_1_wand_manipulator.html#a4376591ff8f0d867f696159dc946453d">omegaToolkit::WandManipulator</a>, <a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a7fa494c5f968aac2077e2d1be5f55447">omegaToolkit::SceneEditorModule</a>, <a class="el" href="classomega_vtk_1_1_vtk_module.html#a1e2b4c8d312f41a6e5e3c4a7deb0b8b0">omegaVtk::VtkModule</a>, <a class="el" href="classomega_toolkit_1_1_ui_module.html#a5a66a4920a9a00967d9f36e87ee7a252">omegaToolkit::UiModule</a>, <a class="el" href="classomega_1_1_camera_controller.html#adf17770dda159f9d3337e2113bba255e">omega::CameraController</a>, <a class="el" href="classomega_1_1_keyboard_mouse_camera_controller.html#a3061e2ae865b0cdbf4368a42ad9b1b99">omega::KeyboardMouseCameraController</a>, <a class="el" href="classomega_toolkit_1_1ui_1_1_menu_manager.html#a1e7fcae54c6d4630a4c890f9177bab87">omegaToolkit::ui::MenuManager</a>, <a class="el" href="classomega_1_1_wand_camera_controller.html#acfbc5c687be43c7e3079b580cd142bee">omega::WandCameraController</a>, <a class="el" href="classomega_1_1_gamepad_camera_controller.html#a6c81f9d07dfd99049ae5d6e1579cba76">omega::GamepadCameraController</a>, <a class="el" href="classomega_1_1_mouse_camera_controller.html#a139fd981cf2872cfaf6fcadf8b6a65be">omega::MouseCameraController</a>, <a class="el" href="classomega_toolkit_1_1_controller_manipulator.html#a654cfdf68a0e0bb0d90f1321b1829aae">omegaToolkit::ControllerManipulator</a>, <a class="el" href="classomega_1_1_tracked_object.html#a8953c7f36cfbd35f27d6f757d28fd5df">omega::TrackedObject</a>, and <a class="el" href="classomega_toolkit_1_1_mouse_manipulator.html#a9a0087590c6838ed342cd0b932ef10fe">omegaToolkit::MouseManipulator</a>.</p>
 
 </div>
 </div>
@@ -601,7 +615,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> omega::EngineModule::updateSharedData </td>
+          <td class="memname">virtual <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> omega::EngineModule::updateSharedData </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_shared_i_stream.html">SharedIStream</a> &amp;&#160;</td>
           <td class="paramname"><em>in</em></td><td>)</td>
@@ -618,6 +632,27 @@ Additional Inherited Members</h2></td></tr>
 <p>Reimplemented from <a class="el" href="classomega_1_1_shared_object.html#ab75d571413704191930c695d8d70a270">omega::SharedObject</a>.</p>
 
 <p>Reimplemented in <a class="el" href="classomega_1_1_event_sharing_module.html#ae863f0a8c6dc37c95dc0803ce35f6666">omega::EventSharingModule</a>.</p>
+
+</div>
+</div>
+<h2>Friends And Related Function Documentation</h2>
+<a class="anchor" id="a1becf4874bcab2a44045f56f9ec52b4e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classomega_1_1_module_services.html">ModuleServices</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

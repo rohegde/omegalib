@@ -13,6 +13,8 @@ var searchData=
   ['widget_2eh',['Widget.h',['../_widget_8h.html',1,'']]],
   ['widgetfactory_2eh',['WidgetFactory.h',['../_widget_factory_8h.html',1,'']]],
   ['wiimote_2eh',['Wiimote.h',['../_wiimote_8h.html',1,'']]],
+  ['wiimote_5fcommon_2eh',['wiimote_common.h',['../wiimote__common_8h.html',1,'']]],
+  ['wiimote_5fstate_2eh',['wiimote_state.h',['../wiimote__state_8h.html',1,'']]],
   ['wiimoteservice_2eh',['WiimoteService.h',['../_wiimote_service_8h.html',1,'']]],
   ['windowimpl_2ecpp',['WindowImpl.cpp',['../_window_impl_8cpp.html',1,'']]],
   ['wrapper_2ecpp',['wrapper.cpp',['../wrapper_8cpp.html',1,'']]],

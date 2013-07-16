@@ -1,7 +1,8 @@
 <map id="omega::PythonInterpreterWrapper" name="omega::PythonInterpreterWrapper">
-<area shape="rect" id="node6" href="$classomega_1_1_python_interpreter.html" title="omega::PythonInterpreter" alt="" coords="369,185,519,209"/>
-<area shape="rect" id="node8" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="41,137,169,161"/>
-<area shape="rect" id="node13" href="$classomicron_1_1_list.html" title="omicron::List\&lt; QueuedCommand * \&gt;" alt="" coords="6,233,205,257"/>
-<area shape="rect" id="node15" href="$classomicron_1_1_list.html" title="omicron::List\&lt; void * \&gt;" alt="" coords="38,295,173,319"/>
-<area shape="rect" id="node17" href="$classomicron_1_1_lock.html" title="omicron::Lock" alt="" coords="61,361,149,385"/>
+<area shape="rect" id="node6" href="$classomega_1_1_python_interpreter.html" title="omega::PythonInterpreter" alt="" coords="369,208,519,232"/>
+<area shape="rect" id="node8" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="41,135,169,159"/>
+<area shape="rect" id="node10" title="STL class." alt="" coords="69,183,141,207"/>
+<area shape="rect" id="node15" href="$classomicron_1_1_list.html" title="omicron::List\&lt; QueuedCommand * \&gt;" alt="" coords="6,279,205,303"/>
+<area shape="rect" id="node17" href="$classomicron_1_1_list.html" title="omicron::List\&lt; void * \&gt;" alt="" coords="38,339,173,363"/>
+<area shape="rect" id="node19" href="$classomicron_1_1_lock.html" title="omicron::Lock" alt="" coords="61,405,149,429"/>
 </map>

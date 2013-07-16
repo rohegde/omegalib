@@ -26,9 +26,9 @@ var searchData=
   ['osgsceneobject_2ecpp',['OsgSceneObject.cpp',['../_osg_scene_object_8cpp.html',1,'']]],
   ['osgsceneobject_2eh',['OsgSceneObject.h',['../_osg_scene_object_8h.html',1,'']]],
   ['osystem_2ecpp',['osystem.cpp',['../osystem_8cpp.html',1,'']]],
-  ['osystem_2eh',['osystem.h',['../external_2omicron_2include_2omicron_2osystem_8h.html',1,'']]],
   ['osystem_2eh',['osystem.h',['../include_2omega_2osystem_8h.html',1,'']]],
-  ['otypes_2eh',['otypes.h',['../external_2omicron_2include_2omicron_2otypes_8h.html',1,'']]],
+  ['osystem_2eh',['osystem.h',['../omicron_2include_2omicron_2osystem_8h.html',1,'']]],
+  ['otypes_2eh',['otypes.h',['../omicron_2include_2omicron_2otypes_8h.html',1,'']]],
   ['otypes_2eh',['otypes.h',['../include_2omega_2otypes_8h.html',1,'']]],
   ['ovtkbase_2eh',['ovtkbase.h',['../ovtkbase_8h.html',1,'']]]
 ];

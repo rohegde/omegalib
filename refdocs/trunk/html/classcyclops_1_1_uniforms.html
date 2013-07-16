@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.0</span>
+   &#160;<span id="projectnumber">4.1</span>
    </div>
   </td>
  </tr>
@@ -89,6 +89,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classcyclops_1_1_uniforms-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">cyclops::Uniforms Class Reference</div>  </div>
@@ -103,7 +104,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classcyclops_1_1_uniforms__inherit__graph.png" border="0" usemap="#cyclops_1_1_uniforms_inherit__map" alt="Inheritance graph"/></div>
 <map name="cyclops_1_1_uniforms_inherit__map" id="cyclops_1_1_uniforms_inherit__map">
-<area shape="rect" id="node5" href="classcyclops_1_1_material.html" title="Encapsulates an OpenSceneGraph stateset and offers a quick interface to a few commonly used settings..." alt="" coords="25,149,127,173"/><area shape="rect" id="node2" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,5,147,29"/></map>
+<area shape="rect" id="node5" href="classcyclops_1_1_material.html" title="The Material class encapsulates an OpenSceneGraph stateset and offers a quick interface to a few comm..." alt="" coords="25,149,127,173"/><area shape="rect" id="node2" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,5,147,29"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for cyclops::Uniforms:</div>
@@ -119,21 +120,29 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac4c4ae7486adfceacbc926d10abcfacd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_uniforms.html#ac4c4ae7486adfceacbc926d10abcfacd">Uniforms</a> (osg::StateSet *stateset)</td></tr>
 <tr class="memitem:a27212fdb84e27d2e61bb57d89b902e1f"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_uniforms.html#a27212fdb84e27d2e61bb57d89b902e1f">~Uniforms</a> ()</td></tr>
+<tr class="memitem:ab5a673b5327b45831c099d0600ff118b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_uniforms.html#ab5a673b5327b45831c099d0600ff118b">attachUniform</a> (<a class="el" href="classcyclops_1_1_uniform.html">Uniform</a> *)</td></tr>
+<tr class="memdesc:ab5a673b5327b45831c099d0600ff118b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attaches an existing uniform to this object.  <a href="#ab5a673b5327b45831c099d0600ff118b"></a><br/></td></tr>
 <tr class="memitem:ab013286d7e1cf8b40ffca54a96da0192"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcyclops_1_1_uniform.html">Uniform</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_uniforms.html#ab013286d7e1cf8b40ffca54a96da0192">addUniform</a> (const String &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>, <a class="el" href="classcyclops_1_1_uniform.html#a2c96113882a9b2107be4cbc8591b8b85">Uniform::Type</a> <a class="el" href="glew_8h.html#a8d78e2e8a676abd547a596dd84811285">type</a>)</td></tr>
+<tr class="memdesc:ab013286d7e1cf8b40ffca54a96da0192"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new uniform to this object.  <a href="#ab013286d7e1cf8b40ffca54a96da0192"></a><br/></td></tr>
 <tr class="memitem:a672ecb4984d17989fbaa53cadba08cd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcyclops_1_1_uniform.html">Uniform</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_uniforms.html#a672ecb4984d17989fbaa53cadba08cd9">addUniformArray</a> (const String &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>, <a class="el" href="classcyclops_1_1_uniform.html#a2c96113882a9b2107be4cbc8591b8b85">Uniform::Type</a> <a class="el" href="glew_8h.html#a8d78e2e8a676abd547a596dd84811285">type</a>, uint elements)</td></tr>
+<tr class="memdesc:a672ecb4984d17989fbaa53cadba08cd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new uniform array to this object.  <a href="#a672ecb4984d17989fbaa53cadba08cd9"></a><br/></td></tr>
 <tr class="memitem:a4b9bd40a3f2c54193cffc6ad11898160"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcyclops_1_1_uniform.html">Uniform</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_uniforms.html#a4b9bd40a3f2c54193cffc6ad11898160">getUniform</a> (const String &amp;<a class="el" href="glew_8h.html#a5c4947d4516dd7cfa3505ce3a648a4ef">name</a>)</td></tr>
-<tr class="memitem:a002b7e62450dd96df8bc476871dab77d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_uniforms.html#a002b7e62450dd96df8bc476871dab77d">removeAllUniforms</a> ()</td></tr>
+<tr class="memitem:a002b7e62450dd96df8bc476871dab77d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_uniforms.html#a002b7e62450dd96df8bc476871dab77d">removeAllUniforms</a> ()</td></tr>
 <tr class="inherit_header pub_methods_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&nbsp;Public Member Functions inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a67ee43bd869da4325f4fc86a74c7dee5 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a67ee43bd869da4325f4fc86a74c7dee5">ReferenceType</a> ()</td></tr>
 <tr class="memitem:a4b8526fb1b60859c3d898d24ab2d78fb inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a4b8526fb1b60859c3d898d24ab2d78fb">~ReferenceType</a> ()</td></tr>
-<tr class="memitem:ab697105dd0bd4549995d9996f142daa1 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#ab697105dd0bd4549995d9996f142daa1">ref</a> ()</td></tr>
-<tr class="memitem:ab142bd02b19831effeeb43d7db1d4e7f inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#ab142bd02b19831effeeb43d7db1d4e7f">unref</a> ()</td></tr>
+<tr class="memitem:ab697105dd0bd4549995d9996f142daa1 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#ab697105dd0bd4549995d9996f142daa1">ref</a> ()</td></tr>
+<tr class="memitem:ab142bd02b19831effeeb43d7db1d4e7f inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#ab142bd02b19831effeeb43d7db1d4e7f">unref</a> ()</td></tr>
 <tr class="memitem:a8a70b1992a3ac5bf501e18b95e0dc961 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a8a70b1992a3ac5bf501e18b95e0dc961">refCount</a> ()</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a696e8b35e1d1ad2be9ec27593d7b33ec"><td class="memItemLeft" align="right" valign="top">static osg::Uniform::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_uniforms.html#a696e8b35e1d1ad2be9ec27593d7b33ec">toOsgUniformType</a> (<a class="el" href="classcyclops_1_1_uniform.html#a2c96113882a9b2107be4cbc8591b8b85">Uniform::Type</a> Type)</td></tr>
+<tr class="inherit_header pub_static_methods_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&nbsp;Static Public Member Functions inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
+<tr class="memitem:a2ab483ab6db3edcca6495fe9465d72d2 inherit pub_static_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a2ab483ab6db3edcca6495fe9465d72d2">printObjCounts</a> ()</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_static_methods_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&nbsp;Static Public Member Functions inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
-<tr class="memitem:a2ab483ab6db3edcca6495fe9465d72d2 inherit pub_static_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a2ab483ab6db3edcca6495fe9465d72d2">printObjCounts</a> ()</td></tr>
 <tr class="inherit_header pro_static_attribs_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&nbsp;Static Protected Attributes inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a436dafe8b6a5c62b5f111b644c6ed4b0 inherit pro_static_attribs_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="classomicron_1_1_reference_type.html">ReferenceType</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a436dafe8b6a5c62b5f111b644c6ed4b0">mysObjList</a></td></tr>
 </table>
@@ -202,6 +211,8 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Adds a new uniform to this object. </p>
+
 </div>
 </div>
 <a class="anchor" id="a672ecb4984d17989fbaa53cadba08cd9"></a>
@@ -234,6 +245,26 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Adds a new uniform array to this object. </p>
+
+</div>
+</div>
+<a class="anchor" id="ab5a673b5327b45831c099d0600ff118b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> Uniforms::attachUniform </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classcyclops_1_1_uniform.html">Uniform</a> *&#160;</td>
+          <td class="paramname"><em>uniform</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attaches an existing uniform to this object. </p>
+
 </div>
 </div>
 <a class="anchor" id="a4b9bd40a3f2c54193cffc6ad11898160"></a>
@@ -257,12 +288,36 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="wglew_8h.html#aeea6e3dfae3acf232096f57d2d57f084">void</a> Uniforms::removeAllUniforms </td>
+          <td class="memname"><a class="el" href="vrpn___analog___output_8h.html#a4f1fbcef68c3b55a7da67fd9dd955e35">void</a> Uniforms::removeAllUniforms </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a696e8b35e1d1ad2be9ec27593d7b33ec"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">osg::Uniform::Type Uniforms::toOsgUniformType </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classcyclops_1_1_uniform.html#a2c96113882a9b2107be4cbc8591b8b85">Uniform::Type</a>&#160;</td>
+          <td class="paramname"><em>Type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

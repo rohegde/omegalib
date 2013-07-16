@@ -18,9 +18,11 @@ var searchData=
   ['modelloader',['ModelLoader',['../structcyclops_1_1_model_loader.html',1,'cyclops']]],
   ['modelloaderthread',['ModelLoaderThread',['../class_model_loader_thread.html',1,'']]],
   ['moduleservices',['ModuleServices',['../classomega_1_1_module_services.html',1,'omega']]],
+  ['motion_5fplus',['motion_plus',['../structwiimote__state_1_1motion__plus.html',1,'wiimote_state']]],
   ['mousecameracontroller',['MouseCameraController',['../classomega_1_1_mouse_camera_controller.html',1,'omega']]],
   ['mousemanipulator',['MouseManipulator',['../classomega_toolkit_1_1_mouse_manipulator.html',1,'omegaToolkit']]],
   ['mouseservice',['MouseService',['../classomega_1_1_mouse_service.html',1,'omega']]],
   ['moveskywitheyepointtransform',['MoveSkyWithEyePointTransform',['../class_move_sky_with_eye_point_transform.html',1,'']]],
-  ['mskinectservice',['MSKinectService',['../classomicron_1_1_m_s_kinect_service.html',1,'omicron']]]
+  ['mskinectservice',['MSKinectService',['../classomicron_1_1_m_s_kinect_service.html',1,'omicron']]],
+  ['multiinstanceconfig',['MultiInstanceConfig',['../structomega_1_1_multi_instance_config.html',1,'omega']]]
 ];

@@ -1,6 +1,6 @@
 <map id="omega::CameraController" name="omega::CameraController">
 <area shape="rect" id="node7" href="$classomega_1_1_gamepad_camera_controller.html" title="omega::GamepadCameraController" alt="" coords="553,5,743,29"/>
-<area shape="rect" id="node9" href="$classomega_1_1_keyboard_mouse_camera_controller.html" title="omega::KeyboardMouseCamera\lController" alt="" coords="560,54,736,90"/>
+<area shape="rect" id="node9" href="$classomega_1_1_keyboard_mouse_camera_controller.html" title="Implements a camera controller using mouse and keyboard in FPS style: WASD keys are used to move..." alt="" coords="560,54,736,90"/>
 <area shape="rect" id="node11" href="$classomega_1_1_mouse_camera_controller.html" title="omega::MouseCameraController" alt="" coords="559,115,737,139"/>
 <area shape="rect" id="node13" href="$classomega_1_1_wand_camera_controller.html" title="omega::WandCameraController" alt="" coords="561,163,735,187"/>
 <area shape="rect" id="node2" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="181,88,309,112"/>
