@@ -1,8 +1,0 @@
-<map id="omega::DisplayConfig" name="omega::DisplayConfig">
-<area shape="rect" id="node2" href="$structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="251,392,394,416"/>
-<area shape="rect" id="node36" href="$structomega_1_1_display_node_config.html" title="omega::DisplayNodeConfig" alt="" coords="572,675,724,699"/>
-<area shape="rect" id="node4" href="$classomega_1_1_camera.html" title="The Camera class handles information about a view transformation, head &#160;tracking and optional target ..." alt="" coords="16,340,115,364"/>
-<area shape="rect" id="node18" title="STL class." alt="" coords="29,875,101,899"/>
-<area shape="rect" id="node26" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, DisplayTileConfig * \&gt;" alt="" coords="563,1061,733,1097"/>
-<area shape="rect" id="node28" href="$classstdext_1_1hash__map.html" title="stdext::hash_map\&lt; String,\l DisplayTileConfig * \&gt;" alt="" coords="246,1061,399,1097"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="Thread" name="Thread">
-<area shape="rect" id="node3" href="$class_death_switch_thread.html" title="DeathSwitchThread" alt="" coords="5,77,120,101"/>
-<area shape="rect" id="node5" href="$class_image_loader_thread.html" title="ImageLoaderThread" alt="" coords="145,77,263,101"/>
-<area shape="rect" id="node7" href="$class_model_loader_thread.html" title="ModelLoaderThread" alt="" coords="288,77,405,101"/>
-</map>
