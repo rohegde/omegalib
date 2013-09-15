@@ -1,22 +1,23 @@
 var searchData=
 [
-  ['default',['Default',['../structomega_1_1_display_tile_config.html#a173c7e3329dca1fc6bfc76497a7e81a0a08c0dedc23a78e10b60ae9cb6f06adc1',1,'omega::DisplayTileConfig']]],
+  ['default',['Default',['../classomega_1_1_display_tile_config.html#a173c7e3329dca1fc6bfc76497a7e81a0a08c0dedc23a78e10b60ae9cb6f06adc1',1,'omega::DisplayTileConfig']]],
   ['default_5funiforms',['DEFAULT_UNIFORMS',['../class_scene_view.html#a0420e51bd0699ebc65558dd42623363ba7603b751610d4c5ee0d729547c79d8a5',1,'SceneView']]],
   ['defaultflags',['DefaultFlags',['../classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5aba06c0a544606a9b3d0e9ce232d637e8',1,'omega::Camera']]],
   ['defaultrenderpassmask',['DefaultRenderPassMask',['../classomega_1_1_camera.html#a746373af21486a022c4dc1c806e685c9a184d132ade07a4dc54e8cc42e6a07b64',1,'omega::Camera']]],
   ['defaultrunflags',['DefaultRunFlags',['../classomega_1_1_python_interpreter.html#a18a445c0370977fbe3d5c5593a01fa7da7a2035a646953811e206c39330161f81',1,'omega::PythonInterpreter']]],
   ['delta_5fframe_5ftime_5funiform',['DELTA_FRAME_TIME_UNIFORM',['../class_scene_view.html#a0420e51bd0699ebc65558dd42623363ba2f2f7ba6b86a9d7d3d1cc7f67e96a8ce',1,'SceneView']]],
   ['delta_5fsimulation_5ftime_5funiform',['DELTA_SIMULATION_TIME_UNIFORM',['../class_scene_view.html#a0420e51bd0699ebc65558dd42623363baa049d54009f61902f844b2e78c3b5034',1,'SceneView']]],
-  ['demo_5fprotocol_5fcount',['DEMO_PROTOCOL_COUNT',['../_porthole_service_8cpp.html#a90a49cea8dabc23589063d8119251b4ba4e9a8b8ebeaab91227e057f9bcea2837',1,'PortholeService.cpp']]],
   ['depthpartitionfaronly',['DepthPartitionFarOnly',['../classomega_osg_1_1_osg_module.html#af0f0eb01eeeb3e3253581197b9c5a541a85ee296b85b7d3616e67f708c481cbc3',1,'omegaOsg::OsgModule']]],
   ['depthpartitionnearonly',['DepthPartitionNearOnly',['../classomega_osg_1_1_osg_module.html#af0f0eb01eeeb3e3253581197b9c5a541a068bc9949862955742381e717570130a',1,'omegaOsg::OsgModule']]],
   ['depthpartitionoff',['DepthPartitionOff',['../classomega_osg_1_1_osg_module.html#af0f0eb01eeeb3e3253581197b9c5a541ae94e7cb6292928b207c203bfee72291c',1,'omegaOsg::OsgModule']]],
   ['depthpartitionon',['DepthPartitionOn',['../classomega_osg_1_1_osg_module.html#af0f0eb01eeeb3e3253581197b9c5a541a5f5cf1a9b2e13d21f17042721c88bfb2',1,'omegaOsg::OsgModule']]],
-  ['diffuse_5ftexture_5funit',['DIFFUSE_TEXTURE_UNIT',['../struct_state_set_content.html#a5aaef035fe01d01d257aa15a2f2eb610afce5069630aa303b2bcdbef3c10c2fef',1,'StateSetContent']]],
   ['directional',['Directional',['../classcyclops_1_1_light.html#add8e02ac8662c74347910a02f52d2d61ad1e87052410152f03f816a6be22c68ca',1,'cyclops::Light']]],
   ['disconnect',['Disconnect',['../classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53add3786ebed4f09618dcc401af49c9ece',1,'omicron::EventBase']]],
   ['dispose',['Dispose',['../structomega_1_1_renderable_command.html#a2f709f4e25ad366db288a9b610df01eaa7d503b456e3119148b278151bcedaedb',1,'omega::RenderableCommand']]],
-  ['down',['DOWN',['../structwiimote__state_1_1buttons.html#a928314f6e8bf64248d9765bcf4d5222bac244ae8c67c3bafe50f98c75d46df38d',1,'wiimote_state::buttons::DOWN()'],['../structwiimote__state_1_1classic__controller_1_1buttons.html#ac8848474c114d9d820c07186dfbf930da07b790bf371cfdf0cd000110b1b6097a',1,'wiimote_state::classic_controller::buttons::DOWN()'],['../classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a38b89b3f23109db7ce6e49947d909b64',1,'omicron::EventBase::Down()']]],
+  ['down',['Down',['../classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a38b89b3f23109db7ce6e49947d909b64',1,'omicron::EventBase']]],
+  ['drawlog',['DrawLog',['../classomega_1_1_console.html#a37b6b4338f9722358b0b2c04c1c98408a3a1b9f52d2db1f636c97a39a4477ff85',1,'omega::Console']]],
+  ['drawnone',['DrawNone',['../classomega_1_1_console.html#a37b6b4338f9722358b0b2c04c1c98408a29073471c925959c2f776be694c1108a',1,'omega::Console']]],
   ['drawoverlay',['DrawOverlay',['../classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5a18ef22e656ce035a7ecfb9d17658aebe',1,'omega::Camera']]],
-  ['drawscene',['DrawScene',['../classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5acf5ad8da80e8ef549d24282045c8e0fc',1,'omega::Camera']]]
+  ['drawscene',['DrawScene',['../classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5acf5ad8da80e8ef549d24282045c8e0fc',1,'omega::Camera']]],
+  ['drawstats',['DrawStats',['../classomega_1_1_console.html#a37b6b4338f9722358b0b2c04c1c98408a4a2dc520837f114835b773f00cb23f20',1,'omega::Console']]]
 ];

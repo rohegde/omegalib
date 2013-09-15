@@ -1,12 +1,6 @@
 var searchData=
 [
-  ['emissive_5ftexture_5funit',['EMISSIVE_TEXTURE_UNIT',['../struct_state_set_content.html#a5aaef035fe01d01d257aa15a2f2eb610acb0117cdc52121f5dfb92cf94ba0405b',1,'StateSetContent']]],
   ['equalizer',['Equalizer',['../classomega_1_1_display_system.html#af4f12048c7d637be88b17733a9d85268ac166b8aa3c91c3cc2a4552d4a52fdd34',1,'omega::DisplaySystem']]],
-  ['extended',['EXTENDED',['../structwiimote__state_1_1ir.html#ae0dc8c74b2624b5bda7da05231f2e929a89e81f251f88783f6526ec6896edaa43',1,'wiimote_state::ir']]],
-  ['extension_5fchanged',['EXTENSION_CHANGED',['../wiimote__common_8h.html#a6e2f3e6823c733b983709fd0e4773298a0699a44b447a4ba70c60602e584d38a6',1,'wiimote_common.h']]],
-  ['extension_5fconnected',['EXTENSION_CONNECTED',['../wiimote__common_8h.html#a6e2f3e6823c733b983709fd0e4773298a29be153736b89d936be01a416bc64b98',1,'wiimote_common.h']]],
-  ['extension_5fdisconnected',['EXTENSION_DISCONNECTED',['../wiimote__common_8h.html#a6e2f3e6823c733b983709fd0e4773298ada186228512dc00fb5ee6400e0b8e7b7',1,'wiimote_common.h']]],
-  ['extension_5fpartially_5finserted',['EXTENSION_PARTIALLY_INSERTED',['../wiimote__common_8h.html#a6e2f3e6823c733b983709fd0e4773298a8db61b0ba12e69e37be76bf406aab2ee',1,'wiimote_common.h']]],
   ['extent_5ffinite',['EXTENT_FINITE',['../classomicron_1_1_aligned_box3.html#aa5ca503cc04397fcbd453d6a53f4f514a1c1a7b89490962d6dddc4b922c954705',1,'omicron::AlignedBox3']]],
   ['extent_5finfinite',['EXTENT_INFINITE',['../classomicron_1_1_aligned_box3.html#aa5ca503cc04397fcbd453d6a53f4f514a2e3c9077bbc9f54da6d2ec02bc49a324',1,'omicron::AlignedBox3']]],
   ['extent_5fnull',['EXTENT_NULL',['../classomicron_1_1_aligned_box3.html#aa5ca503cc04397fcbd453d6a53f4f514a7b5134330740099cf11fb3e7eaa51f3b',1,'omicron::AlignedBox3']]],

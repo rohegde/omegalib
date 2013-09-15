@@ -1,6 +1,11 @@
 <map id="omega::Actor" name="omega::Actor">
-<area shape="rect" id="node2" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="5,272,133,296"/>
-<area shape="rect" id="node4" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="5,163,133,187"/>
-<area shape="rect" id="node6" href="$classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph." alt="" coords="223,272,339,296"/>
-<area shape="rect" id="node8" href="$classomega_1_1_node.html" title="PYAPI Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="230,163,316,187"/>
+<area shape="rect" id="node2" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="789,156,917,180"/>
+<area shape="rect" id="node4" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="507,69,635,93"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="167,5,308,29"/>
+<area shape="rect" id="node10" href="$classomega_1_1_node.html" title="Class representing a general&#45;purpose node in an articulated scene graph. " alt="" coords="527,256,614,280"/>
+<area shape="rect" id="node8" href="$classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph. " alt="" coords="795,300,911,324"/>
+<area shape="rect" id="node20" href="$classomicron_1_1_name_generator.html" title="Utility class to generate a sequentially numbered series of names. " alt="" coords="166,399,309,423"/>
+<area shape="rect" id="node22" title="STL class. " alt="" coords="5,361,77,385"/>
+<area shape="rect" id="node30" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, Ref\&lt; Node \&gt; \&gt;" alt="" coords="166,447,309,483"/>
+<area shape="rect" id="node34" href="$classomicron_1_1_list.html" title="omicron::List\&lt; omega\l::Node * \&gt;" alt="" coords="174,103,301,139"/>
 </map>

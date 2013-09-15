@@ -1,10 +1,9 @@
 var searchData=
 [
-  ['porthole_5fevent_5ftoken_5fcamera_5fid',['PORTHOLE_EVENT_TOKEN_CAMERA_ID',['../_porthole_g_u_i_8h.html#a0daab9f153fd5ad6b7740af250fd6c09',1,'PortholeGUI.h']]],
-  ['porthole_5fevent_5ftoken_5fevent',['PORTHOLE_EVENT_TOKEN_EVENT',['../_porthole_g_u_i_8h.html#aaceb984b352e7474581cd8b547f62952',1,'PortholeGUI.h']]],
-  ['porthole_5fevent_5ftoken_5fkey',['PORTHOLE_EVENT_TOKEN_KEY',['../_porthole_g_u_i_8h.html#a41240a9bd8f726f625c82679d8085912',1,'PortholeGUI.h']]],
-  ['porthole_5fevent_5ftoken_5fmouse_5fbtn',['PORTHOLE_EVENT_TOKEN_MOUSE_BTN',['../_porthole_g_u_i_8h.html#a3817231f3595c9a72a8cf8b1094d22b1',1,'PortholeGUI.h']]],
-  ['porthole_5fevent_5ftoken_5fvalue',['PORTHOLE_EVENT_TOKEN_VALUE',['../_porthole_g_u_i_8h.html#a855a33f10f271bd0747648bd7266c80b',1,'PortholeGUI.h']]],
+  ['parsectx_5fappend_5fstring',['parsectx_append_string',['../parsectx_8h.html#a72f375662e32ee3949db87110b1497c0',1,'parsectx.h']]],
+  ['parsectx_5fcleanup',['parsectx_cleanup',['../parsectx_8h.html#a6b425cd29c1ffed36ab410829ba1e80d',1,'parsectx.h']]],
+  ['parsectx_5finit',['parsectx_init',['../parsectx_8h.html#aef833c188a39409f420bd7c42fcac28b',1,'parsectx.h']]],
+  ['parsectx_5ftake_5fstring',['parsectx_take_string',['../parsectx_8h.html#a3afa9b8362d647a4cc7b64bf9bea9a9f',1,'parsectx.h']]],
   ['print_5fsocket_5ferror',['PRINT_SOCKET_ERROR',['../omicron_connector_client_8h.html#aa7360f63bac96d27b8f419964b5f61db',1,'omicronConnectorClient.h']]],
   ['pyapi_5fbase_5fclass',['PYAPI_BASE_CLASS',['../_python_interpreter_wrapper_8h.html#a54e8ca34f2943397f4206c991d49c40d',1,'PythonInterpreterWrapper.h']]],
   ['pyapi_5fbase_5fclass_5fwith_5fctor',['PYAPI_BASE_CLASS_WITH_CTOR',['../_python_interpreter_wrapper_8h.html#a34e5eaef6a414f2675ffa910ad9e881c',1,'PythonInterpreterWrapper.h']]],

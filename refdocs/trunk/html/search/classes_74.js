@@ -1,20 +1,14 @@
 var searchData=
 [
-  ['tangentspacegeneratorvisitor',['TangentSpaceGeneratorVisitor',['../class_tangent_space_generator_visitor.html',1,'']]],
   ['tcpconnection',['TcpConnection',['../classomicron_1_1_tcp_connection.html',1,'omicron']]],
   ['tcpserver',['TcpServer',['../classomicron_1_1_tcp_server.html',1,'omicron']]],
-  ['technique',['Technique',['../class_technique.html',1,'']]],
-  ['technique',['Technique',['../classosg_f_x_1_1_technique.html',1,'']]],
   ['text',['Text',['../classcyclops_1_1_text.html',1,'cyclops']]],
   ['text3d',['Text3D',['../classcyclops_1_1_text3_d.html',1,'cyclops']]],
   ['texture',['Texture',['../classomega_1_1_texture.html',1,'omega']]],
-  ['textureresizenonpoweroftwohintvisitor',['TextureResizeNonPowerOfTwoHintVisitor',['../class_texture_resize_non_power_of_two_hint_visitor.html',1,'']]],
   ['texturesource',['TextureSource',['../classomega_1_1_texture_source.html',1,'omega']]],
   ['thinkgearservice',['ThinkGearService',['../classomicron_1_1_think_gear_service.html',1,'omicron']]],
   ['thread',['Thread',['../classomicron_1_1_thread.html',1,'omicron']]],
-  ['thread',['Thread',['../class_thread.html',1,'']]],
   ['timer',['Timer',['../classomicron_1_1_timer.html',1,'omicron']]],
-  ['timezone',['timezone',['../structtimezone.html',1,'']]],
   ['tixmlattribute',['TiXmlAttribute',['../classomega_1_1xml_1_1_ti_xml_attribute.html',1,'omega::xml']]],
   ['tixmlattributeset',['TiXmlAttributeSet',['../classomega_1_1xml_1_1_ti_xml_attribute_set.html',1,'omega::xml']]],
   ['tixmlbase',['TiXmlBase',['../classomega_1_1xml_1_1_ti_xml_base.html',1,'omega::xml']]],
@@ -35,6 +29,5 @@ var searchData=
   ['touch',['Touch',['../struct_touch.html',1,'']]],
   ['touchgesturemanager',['TouchGestureManager',['../classomicron_1_1_touch_gesture_manager.html',1,'omicron']]],
   ['touchgroup',['TouchGroup',['../classomicron_1_1_touch_group.html',1,'omicron']]],
-  ['trackedobject',['TrackedObject',['../classomega_1_1_tracked_object.html',1,'omega']]],
-  ['triangle',['Triangle',['../struct_triangle.html',1,'']]]
+  ['trackedobject',['TrackedObject',['../classomega_1_1_tracked_object.html',1,'omega']]]
 ];

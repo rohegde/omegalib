@@ -1,19 +1,10 @@
 var searchData=
 [
   ['ray_2eh',['Ray.h',['../_ray_8h.html',1,'']]],
-  ['readerfreeimage_2ecpp',['ReaderFreeImage.cpp',['../_reader_free_image_8cpp.html',1,'']]],
   ['readerfreeimage_2eh',['ReaderFreeImage.h',['../_reader_free_image_8h.html',1,'']]],
-  ['readerwriterfbx_2ecpp',['ReaderWriterFBX.cpp',['../_reader_writer_f_b_x_8cpp.html',1,'']]],
-  ['readerwriterfbx_2eh',['ReaderWriterFBX.h',['../_reader_writer_f_b_x_8h.html',1,'']]],
-  ['readerwriteriv_2ecpp',['ReaderWriterIV.cpp',['../_reader_writer_i_v_8cpp.html',1,'']]],
-  ['readerwriteriv_2eh',['ReaderWriterIV.h',['../_reader_writer_i_v_8h.html',1,'']]],
   ['ref_2ehpp',['ref.hpp',['../ref_8hpp.html',1,'']]],
-  ['registry_2ecpp',['registry.cpp',['../registry_8cpp.html',1,'']]],
-  ['renderable_2ecpp',['Renderable.cpp',['../_renderable_8cpp.html',1,'']]],
   ['renderable_2eh',['Renderable.h',['../_renderable_8h.html',1,'']]],
-  ['renderer_2ecpp',['Renderer.cpp',['../_renderer_8cpp.html',1,'']]],
   ['renderer_2eh',['Renderer.h',['../_renderer_8h.html',1,'']]],
   ['renderpass_2eh',['RenderPass.h',['../_render_pass_8h.html',1,'']]],
-  ['rendertarget_2ecpp',['RenderTarget.cpp',['../_render_target_8cpp.html',1,'']]],
   ['rendertarget_2eh',['RenderTarget.h',['../_render_target_8h.html',1,'']]]
 ];

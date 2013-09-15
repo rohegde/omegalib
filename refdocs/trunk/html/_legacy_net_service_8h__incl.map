@@ -1,8 +1,6 @@
 <map id="D:/Workspace/omegalib/core/omicron/include/omicron/LegacyNetService.h" name="D:/Workspace/omegalib/core/omicron/include/omicron/LegacyNetService.h">
 <area shape="rect" id="node3" href="$omicron_2include_2omicron_2osystem_8h.html" title="omicron/osystem.h" alt="" coords="100,245,213,269"/>
 <area shape="rect" id="node16" href="$_service_manager_8h.html" title="omicron/ServiceManager.h" alt="" coords="91,101,241,125"/>
-<area shape="rect" id="node33" href="$netdb_8h.html" title="netdb.h" alt="" coords="671,101,730,125"/>
-<area shape="rect" id="node45" href="$unistd_8h.html" title="unistd.h" alt="" coords="1252,101,1313,125"/>
 <area shape="rect" id="node11" href="$omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="140,317,205,341"/>
 <area shape="rect" id="node18" href="$_event_8h.html" title="Event.h" alt="" coords="27,173,86,197"/>
 <area shape="rect" id="node21" href="$_config_8h.html" title="Config.h" alt="" coords="111,173,173,197"/>

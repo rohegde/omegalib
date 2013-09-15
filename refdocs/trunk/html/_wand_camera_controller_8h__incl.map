@@ -1,9 +1,14 @@
 <map id="D:/Workspace/omegalib/core/include/omega/WandCameraController.h" name="D:/Workspace/omegalib/core/include/omega/WandCameraController.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="157,389,229,413"/>
-<area shape="rect" id="node10" href="$_application_base_8h.html" title="ApplicationBase.h" alt="" coords="93,173,200,197"/>
-<area shape="rect" id="node20" href="$_camera_controller_8h.html" title="omega/CameraController.h" alt="" coords="199,101,351,125"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="197,461,261,485"/>
-<area shape="rect" id="node13" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="93,317,203,341"/>
-<area shape="rect" id="node16" href="$_display_config_8h.html" title="DisplayConfig.h" alt="" coords="155,245,252,269"/>
-<area shape="rect" id="node24" href="$_module_services_8h.html" title="ModuleServices.h" alt="" coords="328,245,435,269"/>
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="280,461,352,485"/>
+<area shape="rect" id="node12" href="$_application_base_8h.html" title="ApplicationBase.h" alt="" coords="188,173,295,197"/>
+<area shape="rect" id="node28" href="$_camera_controller_8h.html" title="omega/CameraController.h" alt="" coords="307,101,459,125"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="319,533,384,557"/>
+<area shape="rect" id="node10" href="$omicron_8h.html" title="omicron.h" alt="" coords="353,605,423,629"/>
+<area shape="rect" id="node15" href="$_display_config_8h.html" title="DisplayConfig.h" alt="" coords="113,317,209,341"/>
+<area shape="rect" id="node21" href="$_gpu_resource_8h.html" title="GpuResource.h" alt="" coords="279,245,375,269"/>
+<area shape="rect" id="node24" href="$include_2omega_2_draw_context_8h.html" title="DrawContext.h" alt="" coords="57,245,153,269"/>
+<area shape="rect" id="node18" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="93,389,203,413"/>
+<area shape="rect" id="node32" href="$_module_services_8h.html" title="ModuleServices.h" alt="" coords="489,317,596,341"/>
+<area shape="rect" id="node35" href="$_engine_8h.html" title="Engine.h" alt="" coords="429,389,493,413"/>
+<area shape="rect" id="node38" href="$_shared_data_services_8h.html" title="omega/SharedDataServices.h" alt="" coords="517,389,683,413"/>
 </map>

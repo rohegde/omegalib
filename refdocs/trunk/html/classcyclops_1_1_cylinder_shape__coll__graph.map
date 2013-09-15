@@ -1,4 +1,5 @@
 <map id="cyclops::CylinderShape" name="cyclops::CylinderShape">
-<area shape="rect" id="node2" href="$classcyclops_1_1_entity.html" title="Encapsulates an osg node (or nodes) and offers a few additional functionality for them..." alt="" coords="25,77,119,101"/>
-<area shape="rect" id="node4" href="$classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph." alt="" coords="14,5,129,29"/>
+<area shape="rect" id="node2" href="$classcyclops_1_1_entity.html" title="Encapsulates an osg node (or nodes) and offers a few additional functionality for them..." alt="" coords="25,155,119,179"/>
+<area shape="rect" id="node4" href="$classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph. " alt="" coords="14,80,129,104"/>
+<area shape="rect" id="node6" href="$classomega_1_1_node.html" title="Class representing a general&#45;purpose node in an articulated scene graph. " alt="" coords="29,5,115,29"/>
 </map>

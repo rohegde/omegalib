@@ -1,9 +1,10 @@
 <map id="D:/Workspace/omegalib/core/omicron/include/omicron/GestureService.h" name="D:/Workspace/omegalib/core/omicron/include/omicron/GestureService.h">
-<area shape="rect" id="node3" href="$omicron_2include_2omicron_2osystem_8h.html" title="omicron/osystem.h" alt="" coords="80,317,193,341"/>
-<area shape="rect" id="node14" href="$_service_manager_8h.html" title="omicron/ServiceManager.h" alt="" coords="76,173,226,197"/>
-<area shape="rect" id="node25" href="$_mocap_gesture_manager_8h.html" title="omicron/MocapGestureManager.h" alt="" coords="197,101,381,125"/>
-<area shape="rect" id="node11" href="$omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="230,389,294,413"/>
-<area shape="rect" id="node16" href="$_event_8h.html" title="Event.h" alt="" coords="22,245,81,269"/>
-<area shape="rect" id="node19" href="$_config_8h.html" title="Config.h" alt="" coords="106,245,168,269"/>
-<area shape="rect" id="node22" href="$_thread_8h.html" title="Thread.h" alt="" coords="193,245,260,269"/>
+<area shape="rect" id="node3" href="$omicron_2include_2omicron_2osystem_8h.html" title="omicron/osystem.h" alt="" coords="146,317,259,341"/>
+<area shape="rect" id="node30" href="$_service_manager_8h.html" title="omicron/ServiceManager.h" alt="" coords="142,173,292,197"/>
+<area shape="rect" id="node41" href="$_mocap_gesture_manager_8h.html" title="omicron/MocapGestureManager.h" alt="" coords="263,101,447,125"/>
+<area shape="rect" id="node11" href="$omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="298,389,363,413"/>
+<area shape="rect" id="node28" href="$ref_8hpp.html" title="omicron/ref.hpp" alt="" coords="771,468,869,492"/>
+<area shape="rect" id="node32" href="$_event_8h.html" title="Event.h" alt="" coords="87,245,147,269"/>
+<area shape="rect" id="node35" href="$_config_8h.html" title="Config.h" alt="" coords="171,245,233,269"/>
+<area shape="rect" id="node38" href="$_thread_8h.html" title="Thread.h" alt="" coords="259,245,325,269"/>
 </map>

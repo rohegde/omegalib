@@ -1,16 +1,20 @@
 <map id="omega::SharedObject" name="omega::SharedObject">
-<area shape="rect" id="node5" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="383,245,511,269"/>
-<area shape="rect" id="node29" href="$classomega_1_1_python_interpreter.html" title="omega::PythonInterpreter" alt="" coords="371,293,522,317"/>
-<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="5,269,147,293"/>
-<area shape="rect" id="node7" href="$classcyclops_1_1_scene_manager.html" title="The scene manager contains all the main features used to handle a cyclops scene and its assets..." alt="" coords="592,5,728,29"/>
-<area shape="rect" id="node9" href="$classomega_1_1_actor.html" title="A specialied EngineModule used to control objects in a scene and define custom behaviors." alt="" coords="616,53,704,77"/>
-<area shape="rect" id="node11" href="$classomega_1_1_camera_controller.html" title="omega::CameraController" alt="" coords="587,101,733,125"/>
-<area shape="rect" id="node13" href="$classomega_1_1_event_sharing_module.html" title="omega::EventSharingModule" alt="" coords="580,149,740,173"/>
-<area shape="rect" id="node15" href="$classomega_1_1_mission_control_client.html" title="omega::MissionControlClient" alt="" coords="581,197,739,221"/>
-<area shape="rect" id="node17" href="$classomega_1_1_sage_manager.html" title="omega::SageManager" alt="" coords="596,245,724,269"/>
-<area shape="rect" id="node19" href="$classomega_osg_1_1_osg_module.html" title="omegaOsg::OsgModule" alt="" coords="593,293,727,317"/>
-<area shape="rect" id="node21" href="$classomega_toolkit_1_1_scene_editor_module.html" title="omegaToolkit::SceneEditor\lModule" alt="" coords="585,342,735,378"/>
-<area shape="rect" id="node23" href="$classomega_toolkit_1_1ui_1_1_menu_manager.html" title="omegaToolkit::ui::MenuManager" alt="" coords="571,403,749,427"/>
-<area shape="rect" id="node25" href="$classomega_toolkit_1_1_ui_module.html" title="omegaToolkit::UiModule" alt="" coords="592,451,728,475"/>
-<area shape="rect" id="node27" href="$classomega_vtk_1_1_vtk_module.html" title="omegaVtk::VtkModule" alt="" coords="597,499,723,523"/>
+<area shape="rect" id="node5" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="383,283,511,307"/>
+<area shape="rect" id="node37" href="$classomega_1_1_python_interpreter.html" title="omega::PythonInterpreter" alt="" coords="371,331,522,355"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="5,307,147,331"/>
+<area shape="rect" id="node7" href="$classcyclops_1_1_scene_manager.html" title="The scene manager contains all the main features used to handle a cyclops scene and its assets..." alt="" coords="592,43,728,67"/>
+<area shape="rect" id="node9" href="$classomega_1_1_actor.html" title="A specialied EngineModule used to control objects in a scene and define custom behaviors. " alt="" coords="616,91,704,115"/>
+<area shape="rect" id="node19" href="$classomega_1_1_camera_controller.html" title="omega::CameraController" alt="" coords="587,139,733,163"/>
+<area shape="rect" id="node21" href="$classomega_1_1_console.html" title="omega::Console" alt="" coords="610,187,710,211"/>
+<area shape="rect" id="node23" href="$classomega_1_1_event_sharing_module.html" title="omega::EventSharingModule" alt="" coords="580,235,740,259"/>
+<area shape="rect" id="node25" href="$classomega_1_1_mission_control_client.html" title="omega::MissionControlClient" alt="" coords="581,283,739,307"/>
+<area shape="rect" id="node27" href="$classomega_osg_1_1_osg_module.html" title="omegaOsg::OsgModule" alt="" coords="593,331,727,355"/>
+<area shape="rect" id="node29" href="$classomega_toolkit_1_1_scene_editor_module.html" title="omegaToolkit::SceneEditor\lModule" alt="" coords="585,379,735,415"/>
+<area shape="rect" id="node31" href="$classomega_toolkit_1_1ui_1_1_menu_manager.html" title="omegaToolkit::ui::MenuManager" alt="" coords="571,440,749,464"/>
+<area shape="rect" id="node33" href="$classomega_toolkit_1_1_ui_module.html" title="omegaToolkit::UiModule" alt="" coords="592,488,728,512"/>
+<area shape="rect" id="node35" href="$classomega_vtk_1_1_vtk_module.html" title="omegaVtk::VtkModule" alt="" coords="597,536,723,560"/>
+<area shape="rect" id="node11" href="$classomega_1_1_tracked_object.html" title="omega::TrackedObject" alt="" coords="811,5,943,29"/>
+<area shape="rect" id="node13" href="$classomega_toolkit_1_1_controller_manipulator.html" title="omegaToolkit::Controller\lManipulator" alt="" coords="807,54,947,90"/>
+<area shape="rect" id="node15" href="$classomega_toolkit_1_1_default_mouse_interactor.html" title="omegaToolkit::DefaultMouse\lInteractor" alt="" coords="798,114,957,150"/>
+<area shape="rect" id="node17" href="$classomega_toolkit_1_1_default_two_hands_interactor.html" title="omegaToolkit::DefaultTwo\lHandsInteractor" alt="" coords="803,174,951,210"/>
 </map>

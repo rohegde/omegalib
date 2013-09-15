@@ -1,10 +1,11 @@
 <map id="omega::Actor" name="omega::Actor">
-<area shape="rect" id="node7" href="$classomega_1_1_tracked_object.html" title="omega::TrackedObject" alt="" coords="518,5,650,29"/>
-<area shape="rect" id="node9" href="$classomega_toolkit_1_1_controller_manipulator.html" title="omegaToolkit::Controller\lManipulator" alt="" coords="514,54,654,90"/>
-<area shape="rect" id="node11" href="$classomega_toolkit_1_1_default_mouse_interactor.html" title="omegaToolkit::DefaultMouse\lInteractor" alt="" coords="505,114,663,150"/>
-<area shape="rect" id="node13" href="$classomega_toolkit_1_1_default_two_hands_interactor.html" title="omegaToolkit::DefaultTwo\lHandsInteractor" alt="" coords="510,174,658,210"/>
-<area shape="rect" id="node15" href="$classomega_toolkit_1_1_mouse_manipulator.html" title="omegaToolkit::MouseManipulator" alt="" coords="494,235,674,259"/>
-<area shape="rect" id="node17" href="$classomega_toolkit_1_1_wand_manipulator.html" title="Implements a wand node manipulator." alt="" coords="495,283,673,307"/>
-<area shape="rect" id="node2" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="181,151,309,175"/>
-<area shape="rect" id="node4" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="5,151,133,175"/>
+<area shape="rect" id="node9" href="$classomega_1_1_tracked_object.html" title="omega::TrackedObject" alt="" coords="707,5,839,29"/>
+<area shape="rect" id="node11" href="$classomega_toolkit_1_1_controller_manipulator.html" title="omegaToolkit::Controller\lManipulator" alt="" coords="703,54,843,90"/>
+<area shape="rect" id="node13" href="$classomega_toolkit_1_1_default_mouse_interactor.html" title="omegaToolkit::DefaultMouse\lInteractor" alt="" coords="694,114,853,150"/>
+<area shape="rect" id="node15" href="$classomega_toolkit_1_1_default_two_hands_interactor.html" title="omegaToolkit::DefaultTwo\lHandsInteractor" alt="" coords="699,174,847,210"/>
+<area shape="rect" id="node17" href="$classomega_toolkit_1_1_mouse_manipulator.html" title="omegaToolkit::MouseManipulator" alt="" coords="683,235,863,259"/>
+<area shape="rect" id="node19" href="$classomega_toolkit_1_1_wand_manipulator.html" title="Implements a wand node manipulator. " alt="" coords="685,283,862,307"/>
+<area shape="rect" id="node2" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="371,151,499,175"/>
+<area shape="rect" id="node4" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="195,151,323,175"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="5,151,147,175"/>
 </map>

@@ -1,11 +1,12 @@
 <map id="omega::PythonInterpreter" name="omega::PythonInterpreter">
-<area shape="rect" id="node2" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="268,7,396,31"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="23,5,164,29"/>
-<area shape="rect" id="node6" title="STL class." alt="" coords="296,57,368,81"/>
-<area shape="rect" id="node8" title="STL class." alt="" coords="38,54,149,90"/>
-<area shape="rect" id="node14" href="$classomicron_1_1_list.html" title="omicron::List\&lt; QueuedCommand * \&gt;" alt="" coords="233,208,431,232"/>
-<area shape="rect" id="node16" title="STL class." alt="" coords="6,208,181,232"/>
-<area shape="rect" id="node18" href="$classomicron_1_1_list.html" title="omicron::List\&lt; void * \&gt;" alt="" coords="265,269,399,293"/>
-<area shape="rect" id="node20" title="STL class." alt="" coords="39,269,148,293"/>
-<area shape="rect" id="node22" href="$classomicron_1_1_lock.html" title="omicron::Lock" alt="" coords="288,336,376,360"/>
+<area shape="rect" id="node2" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="492,11,620,35"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="264,11,405,35"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_list.html" title="omicron::List\&lt; omicron\l::ReferenceType * \&gt;" alt="" coords="5,5,136,41"/>
+<area shape="rect" id="node8" href="$classomicron_1_1_list.html" title="omicron::List\&lt; omega\l::PythonInterpreter::\lQueuedCommand * \&gt;" alt="" coords="493,59,619,107"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="240,65,429,101"/>
+<area shape="rect" id="node24" title="STL class. " alt="" coords="280,125,389,149"/>
+<area shape="rect" id="node14" title="STL class. " alt="" coords="520,180,592,204"/>
+<area shape="rect" id="node16" title="STL class. " alt="" coords="279,174,390,210"/>
+<area shape="rect" id="node22" href="$classomicron_1_1_list.html" title="omicron::List\&lt; void * \&gt;" alt="" coords="489,131,623,155"/>
+<area shape="rect" id="node27" href="$classomicron_1_1_lock.html" title="omicron::Lock" alt="" coords="512,353,600,377"/>
 </map>

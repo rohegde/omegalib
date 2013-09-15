@@ -1,4 +1,5 @@
 <map id="omegaToolkit::ControllerManipulator" name="omegaToolkit::ControllerManipulator">
-<area shape="rect" id="node2" href="$classomega_1_1_actor.html" title="A specialied EngineModule used to control objects in a scene and define custom behaviors." alt="" coords="31,77,119,101"/>
-<area shape="rect" id="node4" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="11,5,139,29"/>
+<area shape="rect" id="node2" href="$classomega_1_1_actor.html" title="A specialied EngineModule used to control objects in a scene and define custom behaviors. " alt="" coords="31,149,119,173"/>
+<area shape="rect" id="node4" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="11,77,139,101"/>
+<area shape="rect" id="node6" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="11,5,139,29"/>
 </map>

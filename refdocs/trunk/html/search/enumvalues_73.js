@@ -13,7 +13,7 @@ var searchData=
   ['servicetypewand',['ServiceTypeWand',['../classomicron_1_1_event_base.html#ab1f3e0a5d901729bf93e3b5ff37a54bea891e9497786f155e6573e7024293f9ee',1,'omicron::EventBase']]],
   ['setcwdtoscriptpath',['SetCwdToScriptPath',['../classomega_1_1_python_interpreter.html#a18a445c0370977fbe3d5c5593a01fa7dab3ea9640469686fa96618697024ce307',1,'omega::PythonInterpreter']]],
   ['shift',['Shift',['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a5dd0d2a5be462ea2bf1d8ec2caa4cb63',1,'omicron::EventBase']]],
-  ['sidebyside',['SideBySide',['../structomega_1_1_display_tile_config.html#a173c7e3329dca1fc6bfc76497a7e81a0a0dcb430442072f37a41c28aff7ec33bd',1,'omega::DisplayTileConfig']]],
+  ['sidebyside',['SideBySide',['../classomega_1_1_display_tile_config.html#a173c7e3329dca1fc6bfc76497a7e81a0a0dcb430442072f37a41c28aff7ec33bd',1,'omega::DisplayTileConfig']]],
   ['simulation_5ftime_5funiform',['SIMULATION_TIME_UNIFORM',['../class_scene_view.html#a0420e51bd0699ebc65558dd42623363baa342279a0c2b4575fd49bf0f27afa09d',1,'SceneView']]],
   ['slider',['Slider',['../classomega_toolkit_1_1ui_1_1_menu_item.html#ae3f2271d031d040784adbf9ee9045bfea2eec95239933d4ee1fb271cce6465a9d',1,'omegaToolkit::ui::MenuItem']]],
   ['specialbutton1',['SpecialButton1',['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a63462d75ea4b449015f9707114272a6a',1,'omicron::EventBase']]],

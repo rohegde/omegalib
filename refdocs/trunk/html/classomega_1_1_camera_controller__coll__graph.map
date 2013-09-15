@@ -1,4 +1,5 @@
 <map id="omega::CameraController" name="omega::CameraController">
-<area shape="rect" id="node2" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="5,80,133,104"/>
-<area shape="rect" id="node4" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="5,5,133,29"/>
+<area shape="rect" id="node2" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="12,155,140,179"/>
+<area shape="rect" id="node4" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="12,80,140,104"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="5,5,147,29"/>
 </map>

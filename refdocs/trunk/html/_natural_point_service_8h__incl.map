@@ -1,8 +1,8 @@
 <map id="D:/Workspace/omegalib/core/omicron/include/omicron/NaturalPointService.h" name="D:/Workspace/omegalib/core/omicron/include/omicron/NaturalPointService.h">
-<area shape="rect" id="node3" href="$omicron_2include_2omicron_2osystem_8h.html" title="omicron/osystem.h" alt="" coords="45,245,158,269"/>
-<area shape="rect" id="node14" href="$_service_manager_8h.html" title="omicron/ServiceManager.h" alt="" coords="49,101,199,125"/>
-<area shape="rect" id="node11" href="$omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="195,317,259,341"/>
-<area shape="rect" id="node16" href="$_event_8h.html" title="Event.h" alt="" coords="29,173,89,197"/>
-<area shape="rect" id="node19" href="$_config_8h.html" title="Config.h" alt="" coords="113,173,175,197"/>
-<area shape="rect" id="node22" href="$_thread_8h.html" title="Thread.h" alt="" coords="201,173,267,197"/>
+<area shape="rect" id="node3" href="$omicron_2include_2omicron_2osystem_8h.html" title="omicron/osystem.h" alt="" coords="107,245,220,269"/>
+<area shape="rect" id="node28" href="$_service_manager_8h.html" title="omicron/ServiceManager.h" alt="" coords="111,101,261,125"/>
+<area shape="rect" id="node11" href="$omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="259,317,324,341"/>
+<area shape="rect" id="node30" href="$_event_8h.html" title="Event.h" alt="" coords="91,173,151,197"/>
+<area shape="rect" id="node33" href="$_config_8h.html" title="Config.h" alt="" coords="175,173,237,197"/>
+<area shape="rect" id="node36" href="$_thread_8h.html" title="Thread.h" alt="" coords="263,173,329,197"/>
 </map>

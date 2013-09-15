@@ -1,9 +1,9 @@
 <map id="D:/Workspace/omegalib/core/omicron/include/omicron/ThinkGearService.h" name="D:/Workspace/omegalib/core/omicron/include/omicron/ThinkGearService.h">
-<area shape="rect" id="node3" href="$omicron_2include_2omicron_2osystem_8h.html" title="omicron/osystem.h" alt="" coords="157,245,269,269"/>
-<area shape="rect" id="node14" href="$_service_manager_8h.html" title="omicron/ServiceManager.h" alt="" coords="71,101,221,125"/>
-<area shape="rect" id="node25" href="$thinkgear_8h.html" title="This header file defines the ThinkGear Communications Driver (TGCD) API, which is a set of functions ..." alt="" coords="421,101,539,125"/>
-<area shape="rect" id="node11" href="$omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="182,317,247,341"/>
-<area shape="rect" id="node16" href="$_event_8h.html" title="Event.h" alt="" coords="183,173,243,197"/>
-<area shape="rect" id="node19" href="$_config_8h.html" title="Config.h" alt="" coords="5,173,67,197"/>
-<area shape="rect" id="node22" href="$_thread_8h.html" title="Thread.h" alt="" coords="92,173,159,197"/>
+<area shape="rect" id="node3" href="$omicron_2include_2omicron_2osystem_8h.html" title="omicron/osystem.h" alt="" coords="417,245,529,269"/>
+<area shape="rect" id="node32" href="$_service_manager_8h.html" title="omicron/ServiceManager.h" alt="" coords="331,101,481,125"/>
+<area shape="rect" id="node11" href="$omicron_2include_2omicron_2otypes_8h.html" title="otypes.h" alt="" coords="442,317,507,341"/>
+<area shape="rect" id="node28" href="$ref_8hpp.html" title="omicron/ref.hpp" alt="" coords="556,396,655,420"/>
+<area shape="rect" id="node34" href="$_event_8h.html" title="Event.h" alt="" coords="443,173,503,197"/>
+<area shape="rect" id="node37" href="$_config_8h.html" title="Config.h" alt="" coords="265,173,327,197"/>
+<area shape="rect" id="node40" href="$_thread_8h.html" title="Thread.h" alt="" coords="352,173,419,197"/>
 </map>

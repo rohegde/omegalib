@@ -1,25 +1,12 @@
 var searchData=
 [
-  ['wandcameracontroller_2ecpp',['WandCameraController.cpp',['../_wand_camera_controller_8cpp.html',1,'']]],
   ['wandcameracontroller_2eh',['WandCameraController.h',['../_wand_camera_controller_8h.html',1,'']]],
-  ['wandemulationservice_2ecpp',['WandEmulationService.cpp',['../_wand_emulation_service_8cpp.html',1,'']]],
   ['wandemulationservice_2eh',['WandEmulationService.h',['../_wand_emulation_service_8h.html',1,'']]],
-  ['wandmanipulator_2ecpp',['WandManipulator.cpp',['../_wand_manipulator_8cpp.html',1,'']]],
   ['wandmanipulator_2eh',['WandManipulator.h',['../_wand_manipulator_8h.html',1,'']]],
   ['wandservice_2eh',['WandService.h',['../_wand_service_8h.html',1,'']]],
-  ['websock_2dw32_2eh',['websock-w32.h',['../websock-w32_8h.html',1,'']]],
-  ['wglew_2eh',['wglew.h',['../wglew_8h.html',1,'']]],
-  ['widget_2ecpp',['Widget.cpp',['../_widget_8cpp.html',1,'']]],
   ['widget_2eh',['Widget.h',['../_widget_8h.html',1,'']]],
   ['widgetfactory_2eh',['WidgetFactory.h',['../_widget_factory_8h.html',1,'']]],
   ['wiimote_2eh',['Wiimote.h',['../_wiimote_8h.html',1,'']]],
-  ['wiimote_5fcommon_2eh',['wiimote_common.h',['../wiimote__common_8h.html',1,'']]],
-  ['wiimote_5fstate_2eh',['wiimote_state.h',['../wiimote__state_8h.html',1,'']]],
   ['wiimoteservice_2eh',['WiimoteService.h',['../_wiimote_service_8h.html',1,'']]],
-  ['windowimpl_2ecpp',['WindowImpl.cpp',['../_window_impl_8cpp.html',1,'']]],
-  ['wrapper_2ecpp',['wrapper.cpp',['../wrapper_8cpp.html',1,'']]],
-  ['writercomparetriangle_2ecpp',['WriterCompareTriangle.cpp',['../_writer_compare_triangle_8cpp.html',1,'']]],
-  ['writercomparetriangle_2eh',['WriterCompareTriangle.h',['../_writer_compare_triangle_8h.html',1,'']]],
-  ['writernodevisitor_2ecpp',['WriterNodeVisitor.cpp',['../_writer_node_visitor_8cpp.html',1,'']]],
-  ['writernodevisitor_2eh',['WriterNodeVisitor.h',['../_writer_node_visitor_8h.html',1,'']]]
+  ['wincompat_2eh',['wincompat.h',['../wincompat_8h.html',1,'']]]
 ];

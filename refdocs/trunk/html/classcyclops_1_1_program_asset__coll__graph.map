@@ -1,4 +1,5 @@
 <map id="cyclops::ProgramAsset" name="cyclops::ProgramAsset">
-<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="253,11,395,35"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_list.html" title="omicron::List\&lt; Reference\lType * \&gt;" alt="" coords="5,5,149,41"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="416,11,557,35"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_list.html" title="omicron::List\&lt; omicron\l::ReferenceType * \&gt;" alt="" coords="181,5,312,41"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="6,5,130,41"/>
 </map>

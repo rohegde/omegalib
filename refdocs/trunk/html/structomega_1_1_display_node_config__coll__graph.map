@@ -1,5 +1,8 @@
 <map id="omega::DisplayNodeConfig" name="omega::DisplayNodeConfig">
-<area shape="rect" id="node2" href="$structomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="246,352,389,376"/>
-<area shape="rect" id="node4" href="$classomega_1_1_camera.html" title="The Camera class handles information about a view transformation, head &#160;tracking and optional target ..." alt="" coords="16,287,115,311"/>
-<area shape="rect" id="node18" title="STL class." alt="" coords="29,785,101,809"/>
+<area shape="rect" id="node2" href="$classomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="502,365,645,389"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="240,324,381,348"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_list.html" title="omicron::List\&lt; omicron\l::ReferenceType * \&gt;" alt="" coords="5,315,136,351"/>
+<area shape="rect" id="node8" href="$classomega_1_1_camera.html" title="The Camera class handles information about a view transformation, head &#160;tracking and optional target ..." alt="" coords="261,372,360,396"/>
+<area shape="rect" id="node10" href="$classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph. " alt="" coords="13,376,129,400"/>
+<area shape="rect" id="node22" title="STL class. " alt="" coords="275,584,347,608"/>
 </map>

@@ -1,9 +1,12 @@
 <map id="D:/Workspace/omegalib/core/include/cyclops/Shapes.h" name="D:/Workspace/omegalib/core/include/cyclops/Shapes.h">
-<area shape="rect" id="node3" href="$_entity_8h.html" title="cyclops/Entity.h" alt="" coords="215,101,313,125"/>
-<area shape="rect" id="node5" href="$cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="5,245,104,269"/>
-<area shape="rect" id="node7" href="$_effect_node_8h.html" title="EffectNode.h" alt="" coords="221,173,307,197"/>
-<area shape="rect" id="node10" href="$omega_8h.html" title="omega.h" alt="" coords="128,245,192,269"/>
-<area shape="rect" id="node12" href="$omega_osg_8h.html" title="omegaOsg.h" alt="" coords="220,245,303,269"/>
-<area shape="rect" id="node14" href="$omega_toolkit_8h.html" title="omegaToolkit.h" alt="" coords="327,245,421,269"/>
-<area shape="rect" id="node16" href="$_uniforms_8h.html" title="Uniforms.h" alt="" coords="121,173,196,197"/>
+<area shape="rect" id="node3" href="$_entity_8h.html" title="cyclops/Entity.h" alt="" coords="561,101,660,125"/>
+<area shape="rect" id="node5" href="$cyclops_config_8h.html" title="cyclopsConfig.h" alt="" coords="195,389,293,413"/>
+<area shape="rect" id="node12" href="$_effect_node_8h.html" title="EffectNode.h" alt="" coords="318,173,404,197"/>
+<area shape="rect" id="node18" href="$_uniforms_8h.html" title="Uniforms.h" alt="" coords="423,317,497,341"/>
+<area shape="rect" id="node21" href="$omega_8h.html" title="omega.h" alt="" coords="107,389,171,413"/>
+<area shape="rect" id="node24" href="$omega_osg_8h.html" title="omegaOsg.h" alt="" coords="673,389,756,413"/>
+<area shape="rect" id="node26" href="$omega_toolkit_8h.html" title="omegaToolkit.h" alt="" coords="510,389,604,413"/>
+<area shape="rect" id="node7" href="$include_2omega_2osystem_8h.html" title="omega/osystem.h" alt="" coords="141,533,248,557"/>
+<area shape="rect" id="node9" href="$_application_8h.html" title="omega/Application.h" alt="" coords="87,461,207,485"/>
+<area shape="rect" id="node15" href="$_material_8h.html" title="Material.h" alt="" coords="425,245,495,269"/>
 </map>

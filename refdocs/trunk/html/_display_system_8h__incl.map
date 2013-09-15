@@ -1,9 +1,12 @@
 <map id="D:/Workspace/omegalib/core/include/omega/DisplaySystem.h" name="D:/Workspace/omegalib/core/include/omega/DisplaySystem.h">
-<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="84,317,156,341"/>
-<area shape="rect" id="node10" href="$_application_base_8h.html" title="ApplicationBase.h" alt="" coords="31,101,137,125"/>
-<area shape="rect" id="node20" href="$_color_8h.html" title="Color.h" alt="" coords="234,101,291,125"/>
-<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="123,389,188,413"/>
-<area shape="rect" id="node13" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="65,245,175,269"/>
-<area shape="rect" id="node16" href="$_display_config_8h.html" title="DisplayConfig.h" alt="" coords="122,173,219,197"/>
-<area shape="rect" id="node23" href="$_string_utils_8h.html" title="omicron/StringUtils.h" alt="" coords="301,173,421,197"/>
+<area shape="rect" id="node3" href="$include_2omega_2osystem_8h.html" title="osystem.h" alt="" coords="167,389,239,413"/>
+<area shape="rect" id="node14" href="$_application_base_8h.html" title="ApplicationBase.h" alt="" coords="143,101,249,125"/>
+<area shape="rect" id="node30" href="$_color_8h.html" title="Color.h" alt="" coords="7,317,64,341"/>
+<area shape="rect" id="node7" href="$include_2omega_2otypes_8h.html" title="otypes.h" alt="" coords="170,461,235,485"/>
+<area shape="rect" id="node10" href="$omicron_8h.html" title="omicron.h" alt="" coords="200,533,269,557"/>
+<area shape="rect" id="node12" href="$_string_utils_8h.html" title="omicron/StringUtils.h" alt="" coords="77,605,197,629"/>
+<area shape="rect" id="node17" href="$_display_config_8h.html" title="DisplayConfig.h" alt="" coords="262,245,359,269"/>
+<area shape="rect" id="node23" href="$_gpu_resource_8h.html" title="GpuResource.h" alt="" coords="20,245,116,269"/>
+<area shape="rect" id="node26" href="$include_2omega_2_draw_context_8h.html" title="DrawContext.h" alt="" coords="191,173,287,197"/>
+<area shape="rect" id="node20" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="241,317,351,341"/>
 </map>

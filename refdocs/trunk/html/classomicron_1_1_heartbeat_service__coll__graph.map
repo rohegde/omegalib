@@ -1,4 +1,5 @@
 <map id="omicron::HeartbeatService" name="omicron::HeartbeatService">
-<area shape="rect" id="node2" href="$classomicron_1_1_service.html" title="omicron::Service" alt="" coords="29,77,131,101"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types." alt="" coords="9,5,151,29"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_service.html" title="The base class for Services: a Service has code that is executed periodically (in the poll method) an..." alt="" coords="29,179,131,203"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="9,104,151,128"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_list.html" title="omicron::List\&lt; omicron\l::ReferenceType * \&gt;" alt="" coords="15,6,145,42"/>
 </map>
