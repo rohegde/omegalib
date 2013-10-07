@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.2</span>
+   &#160;<span id="projectnumber">5.0</span>
    </div>
   </td>
  </tr>
@@ -138,6 +138,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a15e6133ed827f0f90dc53647e8d550bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c9af372eeefea15e286b73ac44263d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="include_2omega_2otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b">GLuint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_draw_interface.html#a1c9af372eeefea15e286b73ac44263d4">createProgram</a> (<a class="el" href="include_2omega_2otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b">GLuint</a> vertextShader, <a class="el" href="include_2omega_2otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b">GLuint</a> fragmentShader)</td></tr>
 <tr class="separator:a1c9af372eeefea15e286b73ac44263d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a304f697e380232850647c819a100364b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="include_2omega_2otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b">GLuint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_draw_interface.html#a304f697e380232850647c819a100364b">getOrCreateProgram</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;name, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;vertexShaderFile, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;fragmentShaderFile)</td></tr>
+<tr class="memdesc:a304f697e380232850647c819a100364b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a gpu program by name.  <a href="#a304f697e380232850647c819a100364b">More...</a><br/></td></tr>
+<tr class="separator:a304f697e380232850647c819a100364b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a277779b5428fb7294a2a6274b1540d47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_draw_interface.html#a277779b5428fb7294a2a6274b1540d47">beginDraw3D</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
 <tr class="memdesc:a277779b5428fb7294a2a6274b1540d47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drawing control.  <a href="#a277779b5428fb7294a2a6274b1540d47">More...</a><br/></td></tr>
@@ -746,6 +749,41 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a304f697e380232850647c819a100364b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="include_2omega_2otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b">GLuint</a> omega::DrawInterface::getOrCreateProgram </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>vertexShaderFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>fragmentShaderFile</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a gpu program by name. </p>
+<p>If the program does not exists, it attempts to create it using the passed vertex and fragment shader file names as sources. </p>
 
 </div>
 </div>

@@ -1,20 +1,6 @@
 var searchData=
 [
-  ['glbitfield',['GLbitfield',['../include_2omega_2otypes_8h.html#a0fb936f29008789fb46b434319f68cc9',1,'otypes.h']]],
-  ['glboolean',['GLboolean',['../include_2omega_2otypes_8h.html#aa010a67382116caf29c29318251ccb6c',1,'otypes.h']]],
-  ['glbyte',['GLbyte',['../include_2omega_2otypes_8h.html#a0a9e8b1f1d9c4bcf1c0bc5d5d4e3608a',1,'otypes.h']]],
-  ['glclampd',['GLclampd',['../include_2omega_2otypes_8h.html#abcfa26465edd603937283c6ffae752c6',1,'otypes.h']]],
-  ['glclampf',['GLclampf',['../include_2omega_2otypes_8h.html#aded4e0631b68d219180490a73d8424c0',1,'otypes.h']]],
-  ['gldouble',['GLdouble',['../include_2omega_2otypes_8h.html#a4f86c02824a01bb647d89449b9a8eacc',1,'otypes.h']]],
-  ['glenum',['GLenum',['../include_2omega_2otypes_8h.html#a7efd7809e1632cdae75603fd1fee61c0',1,'otypes.h']]],
   ['glewcontext',['GLEWContext',['../include_2omega_2osystem_8h.html#abfda657ca3abf4c6b75394c88ff4d7bb',1,'osystem.h']]],
-  ['glfloat',['GLfloat',['../include_2omega_2otypes_8h.html#a31aeedaeef29442c9c015ab355c8f5ab',1,'otypes.h']]],
   ['glint',['GLint',['../include_2omega_2otypes_8h.html#a5ac0f3c4d7fafd42b284b5487a791017',1,'otypes.h']]],
-  ['glshort',['GLshort',['../include_2omega_2otypes_8h.html#a2dfad4d45d694268922f502efa9c1cc0',1,'otypes.h']]],
-  ['glsizei',['GLsizei',['../include_2omega_2otypes_8h.html#a9289d5b99dc1f27f01480360f2e18ae0',1,'otypes.h']]],
-  ['glubyte',['GLubyte',['../include_2omega_2otypes_8h.html#a0595908be03a8cff881a23cdc9170e7c',1,'otypes.h']]],
-  ['gluint',['GLuint',['../include_2omega_2otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b',1,'otypes.h']]],
-  ['glulong',['GLulong',['../include_2omega_2otypes_8h.html#a8f6f6dc6769b28bef09e380cb5bcddbb',1,'otypes.h']]],
-  ['glushort',['GLushort',['../include_2omega_2otypes_8h.html#ac995a558f6571eb5f98b7a6d2b2a4468',1,'otypes.h']]],
-  ['glvoid',['GLvoid',['../include_2omega_2otypes_8h.html#a1e5eb1ac5e47603cc80ab58338b92393',1,'otypes.h']]]
+  ['gluint',['GLuint',['../include_2omega_2otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b',1,'otypes.h']]]
 ];

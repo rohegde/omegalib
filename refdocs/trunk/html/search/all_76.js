@@ -1,7 +1,7 @@
 var searchData=
 [
   ['vabottom',['VABottom',['../classomega_1_1_font.html#a778510098a82da8818d37608e8531fada1a0631943cda786389ec8fc0d9a5bbbb',1,'omega::Font']]],
-  ['value',['Value',['../classomega_1_1xml_1_1_ti_xml_node.html#a901e2ae09c8349ff1c86e655b832fba0',1,'omega::xml::TiXmlNode::Value()'],['../classomega_1_1xml_1_1_ti_xml_attribute.html#ab325a46d98fe0bc1a35b4fe48bb9b57a',1,'omega::xml::TiXmlAttribute::Value()'],['../structconfig__setting__t.html#a2d217386c7e30456e484151b61ce597f',1,'config_setting_t::value()'],['../classomega_1_1xml_1_1_ti_xml_node.html#a59c3d5265e53a7a6178913e308da0d6f',1,'omega::xml::TiXmlNode::value()']]],
+  ['value',['value',['../structconfig__setting__t.html#a2d217386c7e30456e484151b61ce597f',1,'config_setting_t::value()'],['../classomega_1_1xml_1_1_ti_xml_node.html#a59c3d5265e53a7a6178913e308da0d6f',1,'omega::xml::TiXmlNode::value()'],['../classomega_1_1xml_1_1_ti_xml_node.html#a901e2ae09c8349ff1c86e655b832fba0',1,'omega::xml::TiXmlNode::Value() const '],['../classomega_1_1xml_1_1_ti_xml_attribute.html#ab325a46d98fe0bc1a35b4fe48bb9b57a',1,'omega::xml::TiXmlAttribute::Value()']]],
   ['valuetstr',['ValueTStr',['../classomega_1_1xml_1_1_ti_xml_node.html#a776d678d17dbe46ade9835dd7f6619c1',1,'omega::xml::TiXmlNode']]],
   ['vamiddle',['VAMiddle',['../classomega_1_1_font.html#a778510098a82da8818d37608e8531fada21ee94c9b6a143c1f49ee0e4abbe4ed6',1,'omega::Font']]],
   ['vatop',['VATop',['../classomega_1_1_font.html#a778510098a82da8818d37608e8531fada7e255f95d6146ee589f90ecc58c6e8f2',1,'omega::Font']]],

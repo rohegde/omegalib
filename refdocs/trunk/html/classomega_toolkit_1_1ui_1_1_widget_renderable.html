@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.2</span>
+   &#160;<span id="projectnumber">5.0</span>
    </div>
   </td>
  </tr>
@@ -91,6 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classomega_toolkit_1_1ui_1_1_widget_renderable-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">omegaToolkit::ui::WidgetRenderable Class Reference</div>  </div>
@@ -125,6 +126,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a359c0414fa7b6f8c7f424e49212e8e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b4c9bb6d90fc4feddf0ee353523e800"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget_renderable.html#a6b4c9bb6d90fc4feddf0ee353523e800">drawContent</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
 <tr class="separator:a6b4c9bb6d90fc4feddf0ee353523e800"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcdc24922507959377d270a95147a1d4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget_renderable.html#afcdc24922507959377d270a95147a1d4">refresh</a> ()</td></tr>
+<tr class="separator:afcdc24922507959377d270a95147a1d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classomega_1_1_renderable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomega_1_1_renderable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classomega_1_1_renderable.html">omega::Renderable</a></td></tr>
 <tr class="memitem:a1f3635d98411dc20b1d27d4ae3b9b086 inherit pub_methods_classomega_1_1_renderable"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_renderable.html#a1f3635d98411dc20b1d27d4ae3b9b086">Renderable</a> ()</td></tr>
 <tr class="separator:a1f3635d98411dc20b1d27d4ae3b9b086 inherit pub_methods_classomega_1_1_renderable"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,8 +149,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae347d1369849843de0a729177a2561cb inherit pub_methods_classomega_1_1_renderable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4316c609026955c3bb84d593c8f20632 inherit pub_methods_classomega_1_1_renderable"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_renderable.html#a4316c609026955c3bb84d593c8f20632">dispose</a> ()</td></tr>
 <tr class="separator:a4316c609026955c3bb84d593c8f20632 inherit pub_methods_classomega_1_1_renderable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4707a9f506717f2ed3017faf7ef72f3a inherit pub_methods_classomega_1_1_renderable"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_renderable.html#a4707a9f506717f2ed3017faf7ef72f3a">refresh</a> ()</td></tr>
-<tr class="separator:a4707a9f506717f2ed3017faf7ef72f3a inherit pub_methods_classomega_1_1_renderable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a67ee43bd869da4325f4fc86a74c7dee5 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a67ee43bd869da4325f4fc86a74c7dee5">ReferenceType</a> ()</td></tr>
 <tr class="separator:a67ee43bd869da4325f4fc86a74c7dee5 inherit pub_methods_classomicron_1_1_reference_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,9 +171,14 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ada72fde9acdb5d4e2eab566c0da2ce61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6251b81c93030177356b1847030ddca8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget_renderable.html#a6251b81c93030177356b1847030ddca8">popDrawAttributes</a> ()</td></tr>
 <tr class="separator:a6251b81c93030177356b1847030ddca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1ab4dc8ac5eb0b19e5303f82b8220fd"><td class="memItemLeft" align="right" valign="top">RenderState *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget_renderable.html#ab1ab4dc8ac5eb0b19e5303f82b8220fd">getRenderState</a> ()</td></tr>
-<tr class="memdesc:ab1ab4dc8ac5eb0b19e5303f82b8220fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current renderstate (accessible inside drawContent)  <a href="#ab1ab4dc8ac5eb0b19e5303f82b8220fd">More...</a><br/></td></tr>
-<tr class="separator:ab1ab4dc8ac5eb0b19e5303f82b8220fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:ae3df60677191b2e5d306a7ab21b1d687"><td class="memItemLeft" align="right" valign="top"><a class="el" href="include_2omega_2otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b">GLuint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget_renderable.html#ae3df60677191b2e5d306a7ab21b1d687">myShaderProgram</a></td></tr>
+<tr class="memdesc:ae3df60677191b2e5d306a7ab21b1d687"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current renderstate (accessible inside drawContent)  <a href="#ae3df60677191b2e5d306a7ab21b1d687">More...</a><br/></td></tr>
+<tr class="separator:ae3df60677191b2e5d306a7ab21b1d687"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8207a559aed3dc42316ac62079852dc1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="include_2omega_2otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b">GLuint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget_renderable.html#a8207a559aed3dc42316ac62079852dc1">myAlphaUniform</a></td></tr>
+<tr class="separator:a8207a559aed3dc42316ac62079852dc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -260,31 +266,6 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Reimplemented in <a class="el" href="classomega_toolkit_1_1ui_1_1_label_renderable.html#a5c04e1d808a55af8484fa52e3ce3b284">omegaToolkit::ui::LabelRenderable</a>, <a class="el" href="classomega_toolkit_1_1ui_1_1_image_renderable.html#a2416c0714ad3131b6999a720674e4526">omegaToolkit::ui::ImageRenderable</a>, <a class="el" href="classomega_toolkit_1_1ui_1_1_default_slider_renderable.html#a24c46a2ac18a4e26a1d0a877d7f04161">omegaToolkit::ui::DefaultSliderRenderable</a>, and <a class="el" href="classomega_toolkit_1_1ui_1_1_default_button_renderable.html#a62233d4c591898df7959e68555af33c0">omegaToolkit::ui::DefaultButtonRenderable</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab1ab4dc8ac5eb0b19e5303f82b8220fd"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">RenderState* omegaToolkit::ui::WidgetRenderable::getRenderState </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets the current renderstate (accessible inside drawContent) </p>
 
 </div>
 </div>
@@ -377,6 +358,76 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="afcdc24922507959377d270a95147a1d4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void omegaToolkit::ui::WidgetRenderable::refresh </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classomega_1_1_renderable.html#a4707a9f506717f2ed3017faf7ef72f3a">omega::Renderable</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classomega_toolkit_1_1ui_1_1_label_renderable.html#a16235ac6463d09cd999d94f1d9dc5cbb">omegaToolkit::ui::LabelRenderable</a>, and <a class="el" href="classomega_toolkit_1_1ui_1_1_image_renderable.html#a0f5fcdd02659a1516a6c61a22beff6c0">omegaToolkit::ui::ImageRenderable</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a8207a559aed3dc42316ac62079852dc1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="include_2omega_2otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b">GLuint</a> omegaToolkit::ui::WidgetRenderable::myAlphaUniform</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae3df60677191b2e5d306a7ab21b1d687"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="include_2omega_2otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b">GLuint</a> omegaToolkit::ui::WidgetRenderable::myShaderProgram</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the current renderstate (accessible inside drawContent) </p>
 
 </div>
 </div>

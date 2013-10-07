@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.2</span>
+   &#160;<span id="projectnumber">5.0</span>
    </div>
   </td>
  </tr>
@@ -224,6 +224,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5fae04b031fb7b3bd974952ef33c5090"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d96bff304498955d59f38f2a9574b20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_camera.html">Camera</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a0d96bff304498955d59f38f2a9574b20">getFacingCamera</a> ()</td></tr>
 <tr class="separator:a0d96bff304498955d59f38f2a9574b20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6f795461fdfc2cbda1bf2e4db68f9d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#ab6f795461fdfc2cbda1bf2e4db68f9d0">setFacingCameraFixedY</a> (bool value)</td></tr>
+<tr class="memdesc:ab6f795461fdfc2cbda1bf2e4db68f9d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">When set to true, Y axis for nodes facing camera will be fixed to the world Y axis.  <a href="#ab6f795461fdfc2cbda1bf2e4db68f9d0">More...</a><br/></td></tr>
+<tr class="separator:ab6f795461fdfc2cbda1bf2e4db68f9d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d7d1730a87b387c0adb4066fa705073"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a3d7d1730a87b387c0adb4066fa705073">isFacingCameraFixedY</a> ()</td></tr>
+<tr class="separator:a3d7d1730a87b387c0adb4066fa705073"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:abc128a047dcada2d93d0dc3bc9a00bc3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#abc128a047dcada2d93d0dc3bc9a00bc3">followTrackable</a> (int trackableId)</td></tr>
 <tr class="memdesc:abc128a047dcada2d93d0dc3bc9a00bc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trackable object.  <a href="#abc128a047dcada2d93d0dc3bc9a00bc3">More...</a><br/></td></tr>
@@ -964,6 +969,29 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a3d7d1730a87b387c0adb4066fa705073"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::SceneNode::isFacingCameraFixedY </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a2bf6784b9bd2f0a688db01626d608db5"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1243,6 +1271,33 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Billboard mode. </p>
+
+</div>
+</div>
+<a class="anchor" id="ab6f795461fdfc2cbda1bf2e4db68f9d0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::SceneNode::setFacingCameraFixedY </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>When set to true, Y axis for nodes facing camera will be fixed to the world Y axis. </p>
+<p>When set to false, the Y axis will follow the camera Y axis. </p>
 
 </div>
 </div>

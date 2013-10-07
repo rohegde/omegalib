@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">4.2</span>
+   &#160;<span id="projectnumber">5.0</span>
    </div>
   </td>
  </tr>
@@ -102,8 +102,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_scene_view__inherit__graph.png" border="0" usemap="#_scene_view_inherit__map" alt="Inheritance graph"/></div>
-<map name="_scene_view_inherit__map" id="_scene_view_inherit__map">
-</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for SceneView:</div>
@@ -111,8 +109,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_scene_view__coll__graph.png" border="0" usemap="#_scene_view_coll__map" alt="Collaboration graph"/></div>
-<map name="_scene_view_coll__map" id="_scene_view_coll__map">
-</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -216,10 +212,10 @@ osg::CollectOccludersVisitor *&#160;</td><td class="memItemRight" valign="bottom
 <tr class="memitem:a1a87dd50bb02994a2503e44ac72016cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a1a87dd50bb02994a2503e44ac72016cc">clearReferencesToDependentCameras</a> ()</td></tr>
 <tr class="memdesc:a1a87dd50bb02994a2503e44ac72016cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">clear the refence to any any dependent cameras.  <a href="#a1a87dd50bb02994a2503e44ac72016cc">More...</a><br/></td></tr>
 <tr class="separator:a1a87dd50bb02994a2503e44ac72016cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa514cb89c421082021bbd69f4f627e74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#aa514cb89c421082021bbd69f4f627e74">setDrawBufferValue</a> (<a class="el" href="include_2omega_2otypes_8h.html#a7efd7809e1632cdae75603fd1fee61c0">GLenum</a> drawBufferValue)</td></tr>
+<tr class="memitem:aa514cb89c421082021bbd69f4f627e74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#aa514cb89c421082021bbd69f4f627e74">setDrawBufferValue</a> (GLenum drawBufferValue)</td></tr>
 <tr class="memdesc:aa514cb89c421082021bbd69f4f627e74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the draw buffer value used at the start of each frame draw.  <a href="#aa514cb89c421082021bbd69f4f627e74">More...</a><br/></td></tr>
 <tr class="separator:aa514cb89c421082021bbd69f4f627e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97fc81db9ffa5d83f97278e6c46cbfb7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="include_2omega_2otypes_8h.html#a7efd7809e1632cdae75603fd1fee61c0">GLenum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a97fc81db9ffa5d83f97278e6c46cbfb7">getDrawBufferValue</a> () const </td></tr>
+<tr class="memitem:a97fc81db9ffa5d83f97278e6c46cbfb7"><td class="memItemLeft" align="right" valign="top">GLenum&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a97fc81db9ffa5d83f97278e6c46cbfb7">getDrawBufferValue</a> () const </td></tr>
 <tr class="memdesc:a97fc81db9ffa5d83f97278e6c46cbfb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the draw buffer value used at the start of each frame draw.  <a href="#a97fc81db9ffa5d83f97278e6c46cbfb7">More...</a><br/></td></tr>
 <tr class="separator:a97fc81db9ffa5d83f97278e6c46cbfb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1d93c35fc993c382aa7a79ec5b2196c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#ae1d93c35fc993c382aa7a79ec5b2196c">setFrameStamp</a> (osg::FrameStamp *fs)</td></tr>
@@ -753,7 +749,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="include_2omega_2otypes_8h.html#a7efd7809e1632cdae75603fd1fee61c0">GLenum</a> SceneView::getDrawBufferValue </td>
+          <td class="memname">GLenum SceneView::getDrawBufferValue </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1309,7 +1305,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">void SceneView::setDrawBufferValue </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="include_2omega_2otypes_8h.html#a7efd7809e1632cdae75603fd1fee61c0">GLenum</a>&#160;</td>
+          <td class="paramtype">GLenum&#160;</td>
           <td class="paramname"><em>drawBufferValue</em></td><td>)</td>
           <td></td>
         </tr>

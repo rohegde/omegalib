@@ -1,5 +1,5 @@
 <map id="omegaToolkit::ui::DefaultSliderRenderable" name="omegaToolkit::ui::DefaultSliderRenderable">
-<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_widget_renderable.html" title="omegaToolkit::ui::Widget\lRenderable" alt="" coords="6,150,148,186"/>
-<area shape="rect" id="node4" href="$classomega_1_1_renderable.html" title="omega::Renderable" alt="" coords="19,77,136,101"/>
-<area shape="rect" id="node6" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="7,5,148,29"/>
+<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_widget_renderable.html" title="omegaToolkit::ui::Widget\lRenderable" alt="" coords="81,177,223,213"/>
+<area shape="rect" id="node4" href="$classomega_1_1_renderable.html" title="omega::Renderable" alt="" coords="17,80,135,104"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="5,5,147,29"/>
 </map>
