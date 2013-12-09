@@ -13,5 +13,7 @@ var searchData=
   ['lefthip',['LeftHip',['../namespaceomicron.html#a9f3967ddaa0d027bfb5d4c75b8f2a522a29782981172abf70f4f520d460ee7eb3',1,'omicron']]],
   ['leftknee',['LeftKnee',['../namespaceomicron.html#a9f3967ddaa0d027bfb5d4c75b8f2a522a9767220939bcbed58406d5e68fcdb0ea',1,'omicron']]],
   ['leftshoulder',['LeftShoulder',['../namespaceomicron.html#a9f3967ddaa0d027bfb5d4c75b8f2a522a0ffbe7f7454b01776088e4baf7d146b9',1,'omicron']]],
-  ['lineinterleaved',['LineInterleaved',['../classomega_1_1_display_tile_config.html#a173c7e3329dca1fc6bfc76497a7e81a0a51dbe4d2c4dd3039e6e1c31f67358d68',1,'omega::DisplayTileConfig']]]
+  ['linear',['Linear',['../classomicron_1_1_sound.html#a64411746b1a34186174f02c1e7c8b12da22970c3bdab07abadf8785c783358f10',1,'omicron::Sound']]],
+  ['lineinterleaved',['LineInterleaved',['../classomega_1_1_display_tile_config.html#a173c7e3329dca1fc6bfc76497a7e81a0a51dbe4d2c4dd3039e6e1c31f67358d68',1,'omega::DisplayTileConfig']]],
+  ['logarithmic',['Logarithmic',['../classomicron_1_1_sound.html#a64411746b1a34186174f02c1e7c8b12dacca61fcaeee58f7420d295d3fa266cdb',1,'omicron::Sound']]]
 ];

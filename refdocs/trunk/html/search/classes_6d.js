@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['material',['Material',['../classcyclops_1_1_material.html',1,'cyclops']]],
-  ['materialparser',['MaterialParser',['../classcyclops_1_1_material_parser.html',1,'cyclops']]],
   ['math',['Math',['../classomicron_1_1_math.html',1,'omicron']]],
   ['menu',['Menu',['../classomega_toolkit_1_1ui_1_1_menu.html',1,'omegaToolkit::ui']]],
   ['menuitem',['MenuItem',['../classomega_toolkit_1_1ui_1_1_menu_item.html',1,'omegaToolkit::ui']]],
@@ -12,10 +10,6 @@ var searchData=
   ['missioncontrolserver',['MissionControlServer',['../classomega_1_1_mission_control_server.html',1,'omega']]],
   ['mocapgesturemanager',['MocapGestureManager',['../classomicron_1_1_mocap_gesture_manager.html',1,'omicron']]],
   ['mocapuser',['MocapUser',['../structomicron_1_1_mocap_user.html',1,'omicron']]],
-  ['modelasset',['ModelAsset',['../classcyclops_1_1_model_asset.html',1,'cyclops']]],
-  ['modelgeometry',['ModelGeometry',['../classcyclops_1_1_model_geometry.html',1,'cyclops']]],
-  ['modelinfo',['ModelInfo',['../structcyclops_1_1_model_info.html',1,'cyclops']]],
-  ['modelloader',['ModelLoader',['../structcyclops_1_1_model_loader.html',1,'cyclops']]],
   ['moduleservices',['ModuleServices',['../classomega_1_1_module_services.html',1,'omega']]],
   ['mousecameracontroller',['MouseCameraController',['../classomega_1_1_mouse_camera_controller.html',1,'omega']]],
   ['mousemanipulator',['MouseManipulator',['../classomega_toolkit_1_1_mouse_manipulator.html',1,'omegaToolkit']]],

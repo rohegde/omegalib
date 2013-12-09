@@ -16,6 +16,5 @@ var searchData=
   ['container3dsettings',['Container3dSettings',['../structomega_toolkit_1_1ui_1_1_container3d_settings.html',1,'omegaToolkit::ui']]],
   ['containerrenderable',['ContainerRenderable',['../classomega_toolkit_1_1ui_1_1_container_renderable.html',1,'omegaToolkit::ui']]],
   ['controllermanipulator',['ControllerManipulator',['../classomega_toolkit_1_1_controller_manipulator.html',1,'omegaToolkit']]],
-  ['cylindershape',['CylinderShape',['../classcyclops_1_1_cylinder_shape.html',1,'cyclops']]],
   ['cylindricaldisplayconfig',['CylindricalDisplayConfig',['../classomega_1_1_cylindrical_display_config.html',1,'omega']]]
 ];

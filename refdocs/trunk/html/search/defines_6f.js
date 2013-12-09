@@ -10,7 +10,6 @@ var searchData=
   ['oi_5freadbuf',['OI_READBUF',['../omicron_connector_client_8h.html#a325f345c40d8374588f41210768d6a4a',1,'omicronConnectorClient.h']]],
   ['oint_5fptr',['OINT_PTR',['../omicron_connector_client_8h.html#a7303e47209e1c5be785aaea3228607bb',1,'omicronConnectorClient.h']]],
   ['omega_5fapi',['OMEGA_API',['../include_2omega_2osystem_8h.html#a8218be650a705d9f2357f037aa34be9f',1,'osystem.h']]],
-  ['omega_5fno_5fgl_5fheaders',['OMEGA_NO_GL_HEADERS',['../_animated_object_8h.html#a03a44da698806126401e1e39107d631b',1,'OMEGA_NO_GL_HEADERS():&#160;AnimatedObject.h'],['../_effect_node_8h.html#a03a44da698806126401e1e39107d631b',1,'OMEGA_NO_GL_HEADERS():&#160;EffectNode.h'],['../_entity_8h.html#a03a44da698806126401e1e39107d631b',1,'OMEGA_NO_GL_HEADERS():&#160;Entity.h'],['../_light_8h.html#a03a44da698806126401e1e39107d631b',1,'OMEGA_NO_GL_HEADERS():&#160;Light.h'],['../_material_8h.html#a03a44da698806126401e1e39107d631b',1,'OMEGA_NO_GL_HEADERS():&#160;Material.h'],['../_material_parser_8h.html#a03a44da698806126401e1e39107d631b',1,'OMEGA_NO_GL_HEADERS():&#160;MaterialParser.h'],['../_model_geometry_8h.html#a03a44da698806126401e1e39107d631b',1,'OMEGA_NO_GL_HEADERS():&#160;ModelGeometry.h'],['../_model_loader_8h.html#a03a44da698806126401e1e39107d631b',1,'OMEGA_NO_GL_HEADERS():&#160;ModelLoader.h'],['../_scene_loader_8h.html#a03a44da698806126401e1e39107d631b',1,'OMEGA_NO_GL_HEADERS():&#160;SceneLoader.h'],['../_scene_manager_8h.html#a03a44da698806126401e1e39107d631b',1,'OMEGA_NO_GL_HEADERS():&#160;SceneManager.h'],['../_skybox_8h.html#a03a44da698806126401e1e39107d631b',1,'OMEGA_NO_GL_HEADERS():&#160;Skybox.h'],['../_uniforms_8h.html#a03a44da698806126401e1e39107d631b',1,'OMEGA_NO_GL_HEADERS():&#160;Uniforms.h']]],
   ['omega_5fversion',['OMEGA_VERSION',['../include_2omega_2osystem_8h.html#a3644e2da2d829a342684d6f2b498a8b2',1,'osystem.h']]],
   ['omicron_5fconnector_5flean_5fand_5fmean',['OMICRON_CONNECTOR_LEAN_AND_MEAN',['../_event_8h.html#a849c615d8293c648be30508125b4b864',1,'OMICRON_CONNECTOR_LEAN_AND_MEAN():&#160;Event.h'],['../_service_8h.html#a849c615d8293c648be30508125b4b864',1,'OMICRON_CONNECTOR_LEAN_AND_MEAN():&#160;Service.h']]],
   ['omicron_5fconnectorclient_5fdefined',['OMICRON_CONNECTORCLIENT_DEFINED',['../omicron_connector_client_8h.html#a885fd41c6d9e99b7dc399f0a0274926b',1,'omicronConnectorClient.h']]],
@@ -44,10 +43,6 @@ var searchData=
   ['omicron_5fskel_5ftorso',['OMICRON_SKEL_TORSO',['../_open_n_i_service_8h.html#af06bf8ed667c3580be2ad72934a6d987',1,'OpenNIService.h']]],
   ['omicron_5fskel_5fwaist',['OMICRON_SKEL_WAIST',['../_open_n_i_service_8h.html#a6abfc1f6f88023491a80e5a4eba80c2b',1,'OpenNIService.h']]],
   ['omicron_5fversion',['OMICRON_VERSION',['../omicron_8h.html#ade51dd9f7a49deab2f8e41cdd3a02adc',1,'omicron.h']]],
-  ['oosg_5fapi',['OOSG_API',['../oosgbase_8h.html#ad5bef7a6e952d6ad0dca1cb750f3a5dd',1,'oosgbase.h']]],
-  ['oosg_5fvec2',['OOSG_VEC2',['../_osg_module_8h.html#a51f747a96eedad1de94be39b1624902c',1,'OsgModule.h']]],
-  ['oosg_5fvec3',['OOSG_VEC3',['../_osg_module_8h.html#ac15205acee502ad3768c3b5db06784bc',1,'OsgModule.h']]],
   ['ostr',['ostr',['../_string_utils_8h.html#a0a83e2181a8166cb0dd2a31bc8e57413',1,'StringUtils.h']]],
-  ['otk_5fapi',['OTK_API',['../omega_toolkit_config_8h.html#a52cfe647ae987657d886784d28a4f56e',1,'omegaToolkitConfig.h']]],
-  ['ovtk_5fapi',['OVTK_API',['../ovtkbase_8h.html#af5d44763ec7e326772f24db40fcfbcc8',1,'ovtkbase.h']]]
+  ['otk_5fapi',['OTK_API',['../omega_toolkit_config_8h.html#a52cfe647ae987657d886784d28a4f56e',1,'omegaToolkitConfig.h']]]
 ];

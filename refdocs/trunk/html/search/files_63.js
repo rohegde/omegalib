@@ -8,7 +8,5 @@ var searchData=
   ['console_2eh',['Console.h',['../_console_8h.html',1,'']]],
   ['container_2eh',['Container.h',['../_container_8h.html',1,'']]],
   ['controllermanipulator_2eh',['ControllerManipulator.h',['../_controller_manipulator_8h.html',1,'']]],
-  ['cyclops_2eh',['cyclops.h',['../cyclops_8h.html',1,'']]],
-  ['cyclopsconfig_2eh',['cyclopsConfig.h',['../cyclops_config_8h.html',1,'']]],
   ['cylindricaldisplayconfig_2eh',['CylindricalDisplayConfig.h',['../_cylindrical_display_config_8h.html',1,'']]]
 ];

@@ -11,7 +11,6 @@ var searchData=
   ['box_5finfinite',['BOX_INFINITE',['../classomicron_1_1_aligned_box3.html#a569bbbf14740b6238db2326e210775bd',1,'omicron::AlignedBox3']]],
   ['box_5fnull',['BOX_NULL',['../classomicron_1_1_aligned_box3.html#adb5aa9ac9b458a7b4b4fbc2268decf2b',1,'omicron::AlignedBox3']]],
   ['buffers',['buffers',['../structscan__context.html#a49a22b83cacfde03f8f3ac70784ef202',1,'scan_context']]],
-  ['buildkdtree',['buildKdTree',['../structcyclops_1_1_model_info.html#a8cc333d505812c99bb39c5279de325b5',1,'cyclops::ModelInfo']]],
   ['buttonnamefrombit',['ButtonNameFromBit',['../classwiimote.html#ace30a93255b2ea01fff52790693e7a72',1,'wiimote']]],
   ['bye',['Bye',['../classomega_1_1_mission_control_message_ids.html#a4a8a6b083a5a1ff969a77fa3f7b0bf85',1,'omega::MissionControlMessageIds']]]
 ];

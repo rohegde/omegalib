@@ -2,8 +2,6 @@ var searchData=
 [
   ['tcpconnection',['TcpConnection',['../classomicron_1_1_tcp_connection.html',1,'omicron']]],
   ['tcpserver',['TcpServer',['../classomicron_1_1_tcp_server.html',1,'omicron']]],
-  ['text',['Text',['../classcyclops_1_1_text.html',1,'cyclops']]],
-  ['text3d',['Text3D',['../classcyclops_1_1_text3_d.html',1,'cyclops']]],
   ['texture',['Texture',['../classomega_1_1_texture.html',1,'omega']]],
   ['texturesource',['TextureSource',['../classomega_1_1_texture_source.html',1,'omega']]],
   ['thinkgearservice',['ThinkGearService',['../classomicron_1_1_think_gear_service.html',1,'omicron']]],

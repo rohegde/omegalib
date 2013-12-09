@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['color_5fto_5fosg',['COLOR_TO_OSG',['../omega_osg_8h.html#afc81f45923e852757d3653ac124d7c56',1,'omegaOsg.h']]],
   ['config_5ferror_5ffile',['config_error_file',['../libconfig_8h.html#afa6fd5377d0bf3ec59c53bb59b347445',1,'libconfig.h']]],
   ['config_5ferror_5fline',['config_error_line',['../libconfig_8h.html#a76d7d1fcd7e07dcfa00f6fe4ca0d1b63',1,'libconfig.h']]],
   ['config_5ferror_5ftext',['config_error_text',['../libconfig_8h.html#af49c152fe5f4c5049cb99e5dc74d6e26',1,'libconfig.h']]],
@@ -34,6 +33,5 @@ var searchData=
   ['config_5ftype_5fint64',['CONFIG_TYPE_INT64',['../libconfig_8h.html#ab27e66c1a690422bf5a31fc054434765',1,'libconfig.h']]],
   ['config_5ftype_5flist',['CONFIG_TYPE_LIST',['../libconfig_8h.html#a1926c451e695309907e40c8800774e38',1,'libconfig.h']]],
   ['config_5ftype_5fnone',['CONFIG_TYPE_NONE',['../libconfig_8h.html#ab339b4487df7c8e85a40c4755b3db1ae',1,'libconfig.h']]],
-  ['config_5ftype_5fstring',['CONFIG_TYPE_STRING',['../libconfig_8h.html#a12837182b7370012eaf838cf98570249',1,'libconfig.h']]],
-  ['cy_5fapi',['CY_API',['../cyclops_config_8h.html#a580f6c144f99569cf172eab5b1c11db3',1,'cyclopsConfig.h']]]
+  ['config_5ftype_5fstring',['CONFIG_TYPE_STRING',['../libconfig_8h.html#a12837182b7370012eaf838cf98570249',1,'libconfig.h']]]
 ];

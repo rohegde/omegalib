@@ -5,14 +5,9 @@ var searchData=
   ['planardisplayconfig',['PlanarDisplayConfig',['../classomega_1_1_planar_display_config.html',1,'omega']]],
   ['plane',['Plane',['../classomicron_1_1_plane.html',1,'omicron']]],
   ['planeboundedvolume',['PlaneBoundedVolume',['../classomicron_1_1_plane_bounded_volume.html',1,'omicron']]],
-  ['planeshape',['PlaneShape',['../classcyclops_1_1_plane_shape.html',1,'cyclops']]],
   ['pointer',['Pointer',['../classomega_1_1_pointer.html',1,'omega']]],
   ['pointerrenderable',['PointerRenderable',['../classomega_1_1_pointer_renderable.html',1,'omega']]],
   ['pqservice',['PQService',['../classomicron_1_1_p_q_service.html',1,'omicron']]],
-  ['programasset',['ProgramAsset',['../classcyclops_1_1_program_asset.html',1,'cyclops']]],
   ['pythoninterpreter',['PythonInterpreter',['../classomega_1_1_python_interpreter.html',1,'omega']]],
-  ['pythoninterpreterwrapper',['PythonInterpreterWrapper',['../structomega_1_1_python_interpreter_wrapper.html',1,'omega']]],
-  ['pyvtkclass',['PyVTKClass',['../struct_py_v_t_k_class.html',1,'']]],
-  ['pyvtkobject',['PyVTKObject',['../struct_py_v_t_k_object.html',1,'']]],
-  ['pyvtkspecialobject',['PyVTKSpecialObject',['../struct_py_v_t_k_special_object.html',1,'']]]
+  ['pythoninterpreterwrapper',['PythonInterpreterWrapper',['../structomega_1_1_python_interpreter_wrapper.html',1,'omega']]]
 ];

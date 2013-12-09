@@ -1,7 +1,7 @@
 var searchData=
 [
   ['radtodeg',['RadToDeg',['../classomicron_1_1_math.html#af3539112eeff96692f4e992468ba7783',1,'omicron::Math']]],
-  ['receivesshadowtraversalmask',['ReceivesShadowTraversalMask',['../classcyclops_1_1_scene_manager.html#a900ac062431c2722889b3ad5fb67e0c7',1,'cyclops::SceneManager']]],
+  ['raytopointconverter',['rayToPointConverter',['../classomega_1_1_display_config.html#a7b3391674f0fd7545eca50f326c7dbcb',1,'omega::DisplayConfig']]],
   ['red',['Red',['../classomega_1_1_color.html#aeaabbf0abdd1d624cb44fdb1645a7b92',1,'omega::Color']]],
   ['referenceoffset',['referenceOffset',['../classomega_1_1_display_config.html#a99247f43c5e16819e6bd2fdd82f45f92',1,'omega::DisplayConfig']]],
   ['referencetile',['referenceTile',['../classomega_1_1_display_config.html#a975dc79ddf364479e0a71f06d490cc64',1,'omega::DisplayConfig']]],

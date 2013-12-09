@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">5.0</span>
+   &#160;<span id="projectnumber">5.1</span>
    </div>
   </td>
  </tr>
@@ -107,7 +107,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classomega_1_1_display_system__inherit__graph.png" border="0" usemap="#omega_1_1_display_system_inherit__map" alt="Inheritance graph"/></div>
 <map name="omega_1_1_display_system_inherit__map" id="omega_1_1_display_system_inherit__map">
-<area shape="rect" id="node5" href="classomega_1_1_equalizer_display_system.html" title="omega::EqualizerDisplaySystem" alt="" coords="5,149,179,173"/><area shape="rect" id="node8" href="classomega_1_1_glut_display_system.html" title="Implements a display system based on GLUT, offering a single render window and mouse input support..." alt="" coords="203,149,353,173"/><area shape="rect" id="node2" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="21,5,163,29"/></map>
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for omega::DisplaySystem:</div>
@@ -116,7 +116,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classomega_1_1_display_system__coll__graph.png" border="0" usemap="#omega_1_1_display_system_coll__map" alt="Collaboration graph"/></div>
 <map name="omega_1_1_display_system_coll__map" id="omega_1_1_display_system_coll__map">
-<area shape="rect" id="node2" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="416,44,557,68"/><area shape="rect" id="node8" href="classomega_1_1_display_config.html" title="Stores omegalib display configuration data. " alt="" coords="1251,304,1378,328"/><area shape="rect" id="node15" href="classomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="690,585,833,609"/><area shape="rect" id="node4" href="classomicron_1_1_list.html" title="omicron::List\&lt; omicron\l::ReferenceType * \&gt;" alt="" coords="181,38,312,74"/><area shape="rect" id="node6" title="STL class. " alt="" coords="6,38,130,74"/><area shape="rect" id="node11" href="classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, omega::DisplayTile\lConfig * \&gt;" alt="" coords="1009,152,1167,200"/><area shape="rect" id="node46" href="structomega_1_1_display_node_config.html" title="omega::DisplayNodeConfig" alt="" coords="1012,1051,1164,1075"/><area shape="rect" id="node18" href="classomega_1_1_camera.html" title="The Camera class handles information about a view transformation, head &#160;tracking and optional target ..." alt="" coords="437,655,536,679"/><area shape="rect" id="node30" title="STL class. " alt="" coords="451,1111,523,1135"/></map>
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -150,12 +150,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9381fc4e6e08ac322b45f632ea2fb938"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a9381fc4e6e08ac322b45f632ea2fb938">getCanvasSize</a> ()=0</td></tr>
 <tr class="memdesc:a9381fc4e6e08ac322b45f632ea2fb938"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the size of the display canvas.  <a href="#a9381fc4e6e08ac322b45f632ea2fb938">More...</a><br/></td></tr>
 <tr class="separator:a9381fc4e6e08ac322b45f632ea2fb938"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24a713b287d7efb437318abb073dc931"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomicron_1_1_ray.html">Ray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a24a713b287d7efb437318abb073dc931">getViewRay</a> (<a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a> position)=0</td></tr>
-<tr class="memdesc:a24a713b287d7efb437318abb073dc931"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a view ray given a pointer position in pixel coordinates.  <a href="#a24a713b287d7efb437318abb073dc931">More...</a><br/></td></tr>
-<tr class="separator:a24a713b287d7efb437318abb073dc931"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68cb7eba0397d0437701a9ab1498096f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a68cb7eba0397d0437701a9ab1498096f">getViewRayFromEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt, <a class="el" href="classomicron_1_1_ray.html">Ray</a> &amp;ray, bool normalizedPointerCoords=false)</td></tr>
-<tr class="memdesc:a68cb7eba0397d0437701a9ab1498096f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes a view ray from a pointer or wand event.  <a href="#a68cb7eba0397d0437701a9ab1498096f">More...</a><br/></td></tr>
-<tr class="separator:a68cb7eba0397d0437701a9ab1498096f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5e75384a026d58cac02be36e03ec480"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_ray.html">Ray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#aa5e75384a026d58cac02be36e03ec480">getViewRay</a> (<a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a> position)</td></tr>
+<tr class="separator:aa5e75384a026d58cac02be36e03ec480"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3275ff6605649733351bb7a6437a2f9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#aa3275ff6605649733351bb7a6437a2f9">getViewRayFromEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt, <a class="el" href="classomicron_1_1_ray.html">Ray</a> &amp;ray, bool normalizedPointerCoords=false)</td></tr>
+<tr class="separator:aa3275ff6605649733351bb7a6437a2f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab37d8c023d97230e7d999d093d05d47b"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_display_config.html">DisplayConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#ab37d8c023d97230e7d999d093d05d47b">getDisplayConfig</a> ()</td></tr>
 <tr class="separator:ab37d8c023d97230e7d999d093d05d47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c48a0ad27086caef221eb1ffba15497"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomega_1_1_color.html">Color</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a2c48a0ad27086caef221eb1ffba15497">getBackgroundColor</a> ()</td></tr>
@@ -387,7 +385,7 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a24a713b287d7efb437318abb073dc931"></a>
+<a class="anchor" id="aa5e75384a026d58cac02be36e03ec480"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -395,7 +393,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classomicron_1_1_ray.html">Ray</a> omega::DisplaySystem::getViewRay </td>
+          <td class="memname"><a class="el" href="classomicron_1_1_ray.html">Ray</a> omega::DisplaySystem::getViewRay </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a>&#160;</td>
           <td class="paramname"><em>position</em></td><td>)</td>
@@ -404,18 +402,14 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns a view ray given a pointer position in pixel coordinates. </p>
-
-<p>Implemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#ae30d249256e99a1b951b4e8c5fcf481c">omega::EqualizerDisplaySystem</a>, <a class="el" href="classomega_1_1_equalizer_display_system.html#ae30d249256e99a1b951b4e8c5fcf481c">omega::EqualizerDisplaySystem</a>, and <a class="el" href="classomega_1_1_glut_display_system.html#a4cf384e057e6764bfdcdd7cd4687719a">omega::GlutDisplaySystem</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="a68cb7eba0397d0437701a9ab1498096f"></a>
+<a class="anchor" id="aa3275ff6605649733351bb7a6437a2f9"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -423,7 +417,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool omega::DisplaySystem::getViewRayFromEvent </td>
+          <td class="memname">bool omega::DisplaySystem::getViewRayFromEvent </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;&#160;</td>
           <td class="paramname"><em>evt</em>, </td>
@@ -448,15 +442,10 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Computes a view ray from a pointer or wand event. </p>
-<p>Returns true if the ray has been generated succesfully, false otherwise (i.e. because the event is not a wand or pointer event) </p>
-
-<p>Reimplemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#a80f1e5570d7af5a609119d42058483e0">omega::EqualizerDisplaySystem</a>.</p>
 
 </div>
 </div>

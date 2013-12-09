@@ -1,8 +1,6 @@
 var searchData=
 [
   ['tcp_2eh',['Tcp.h',['../_tcp_8h.html',1,'']]],
-  ['text_2eh',['Text.h',['../_text_8h.html',1,'']]],
-  ['text3d_2eh',['Text3D.h',['../_text3_d_8h.html',1,'']]],
   ['texture_2eh',['Texture.h',['../_texture_8h.html',1,'']]],
   ['texturesource_2eh',['TextureSource.h',['../_texture_source_8h.html',1,'']]],
   ['thinkgearservice_2eh',['ThinkGearService.h',['../_think_gear_service_8h.html',1,'']]],

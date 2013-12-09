@@ -10,6 +10,5 @@ var searchData=
   ['in_5fbuttons_5fbalance_5fboard',['IN_BUTTONS_BALANCE_BOARD',['../classwiimote.html#a887692d8a5e95d07e11d77f471c7710caf978b15211631ca01cf6341cca26c482',1,'wiimote']]],
   ['inactive',['INACTIVE',['../struct_touch.html#a01501a46b9666b95eecf447cd2adb842a48b577e8050a62274672267b13052f84',1,'Touch']]],
   ['initialize',['Initialize',['../structomega_1_1_renderable_command.html#a2f709f4e25ad366db288a9b610df01eaa598b121011a95b340622b5b6ca8d4c4c',1,'omega::RenderableCommand']]],
-  ['int',['Int',['../classcyclops_1_1_uniform.html#a2c96113882a9b2107be4cbc8591b8b85a116e136845ebd78c47537f4b780cd804',1,'cyclops::Uniform']]],
   ['invalid',['Invalid',['../classomega_1_1_display_system.html#af4f12048c7d637be88b17733a9d85268ab254963f80d8d59f9cf6a9eba47349ec',1,'omega::DisplaySystem::Invalid()'],['../classomicron_1_1_direct_input_service.html#a7f489b1508e7aa5bc76e0ce8339d426da681e11ed7e337b465a30cefd78e28a58',1,'omicron::DirectInputService::Invalid()'],['../classomicron_1_1_x_input_service.html#a2a2a5c29ec1ee352b7671140cf2925e0aa172a124f1ed268cf7a948b3aab09277',1,'omicron::XInputService::Invalid()']]]
 ];

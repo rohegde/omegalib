@@ -5,7 +5,7 @@ var searchData=
   ['textureunit2',['TextureUnit2',['../classomega_1_1_gpu_context.html#a321629710bed5663bde68b7141bac27ba7e3fb9cd2b489ce9f1fb85ae0889b0ad',1,'omega::GpuContext']]],
   ['textureunit3',['TextureUnit3',['../classomega_1_1_gpu_context.html#a321629710bed5663bde68b7141bac27babed05a2d19b5affbbc4a78dd1fec33db',1,'omega::GpuContext']]],
   ['textureunitinvalid',['TextureUnitInvalid',['../classomega_1_1_gpu_context.html#a321629710bed5663bde68b7141bac27baa1d582f4907b258077a5de67c7afdaaf',1,'omega::GpuContext']]],
-  ['time',['Time',['../classomega_1_1_stat.html#ae7174b0a28a068009b1cf4b12242c162a6b69ab90ebf63f09f7b1f024bf91fb85',1,'omega::Stat']]],
+  ['time',['Time',['../classomega_1_1_stats_manager.html#aab41875cd51d3af256917714f5bdf966a8c49db7ce4ba0e8bf1743d64eb7e3305',1,'omega::StatsManager']]],
   ['tinyxml_5fcomment',['TINYXML_COMMENT',['../classomega_1_1xml_1_1_ti_xml_node.html#aa0c792d404e17a49254b696b2de45237af14a2a7a8294b71f89d8e9951d792f24',1,'omega::xml::TiXmlNode']]],
   ['tinyxml_5fdeclaration',['TINYXML_DECLARATION',['../classomega_1_1xml_1_1_ti_xml_node.html#aa0c792d404e17a49254b696b2de45237a2de4efe0d5c333191703ac95eeb1b821',1,'omega::xml::TiXmlNode']]],
   ['tinyxml_5fdocument',['TINYXML_DOCUMENT',['../classomega_1_1xml_1_1_ti_xml_node.html#aa0c792d404e17a49254b696b2de45237a198b2a87542dbb8aca4bfdf5188815be',1,'omega::xml::TiXmlNode']]],
@@ -62,8 +62,6 @@ var searchData=
   ['transformlocal',['TransformLocal',['../classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56ea52b3eed17fdeae2ecd5652d33dbb04d5',1,'omega::Node']]],
   ['transformparent',['TransformParent',['../classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56ea07dbdb8a6f0c166978209d424ce11f0f',1,'omega::Node']]],
   ['transformworld',['TransformWorld',['../classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56ea6c4c86a003dc11c25150b05047187151',1,'omega::Node']]],
-  ['triangles',['Triangles',['../classcyclops_1_1_program_asset.html#a2e7fd754af6050a92a845e2220b0beb7a8c61bd43b21543050ad86dc8573ac345',1,'cyclops::ProgramAsset']]],
-  ['trianglestrip',['TriangleStrip',['../classcyclops_1_1_program_asset.html#a2e7fd754af6050a92a845e2220b0beb7ace92d63c82556f41f5639f44429d6b6f',1,'cyclops::ProgramAsset']]],
   ['typemotionplus',['TypeMotionPlus',['../classomicron_1_1_wiimote_service.html#a772073c7967187dfb75a2801750b6b8ea9775bbf35ec58e172174d129dfec27b8',1,'omicron::WiimoteService']]],
   ['typenunchuk',['TypeNunchuk',['../classomicron_1_1_wiimote_service.html#a772073c7967187dfb75a2801750b6b8ea2ecf471ab5e2659c6c416abf08fa4dc6',1,'omicron::WiimoteService']]],
   ['typewiimote',['TypeWiimote',['../classomicron_1_1_wiimote_service.html#a772073c7967187dfb75a2801750b6b8ea2e7228aafd0d24b6e3adf35cd81919ee',1,'omicron::WiimoteService']]]

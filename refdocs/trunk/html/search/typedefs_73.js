@@ -4,8 +4,6 @@ var searchData=
   ['serviceallocator',['ServiceAllocator',['../namespaceomicron.html#aa949e9165a05084b21e2a5bba4bf68cf',1,'omicron']]],
   ['serviceallocatordictionary',['ServiceAllocatorDictionary',['../namespaceomicron.html#a2ebedde0fd88cd7457b7f846a22a38d1',1,'omicron']]],
   ['setting',['Setting',['../namespaceomicron.html#afb87024a570b82fb906138146d2e812d',1,'omicron']]],
-  ['shadercache',['ShaderCache',['../classcyclops_1_1_scene_manager.html#adb944d2a3f6c37cdc9d939ec2c7c7dde',1,'cyclops::SceneManager']]],
-  ['shadermacrodictionary',['ShaderMacroDictionary',['../classcyclops_1_1_scene_manager.html#a053241ecf49754905b76f18c9f2189bf',1,'cyclops::SceneManager']]],
   ['size_5ftype',['size_type',['../classomega_1_1xml_1_1_ti_xml_string.html#a775dccf8caab6682907de572aeda3636',1,'omega::xml::TiXmlString']]],
   ['sourcedictionary',['SourceDictionary',['../classomicron_1_1_data_manager.html#abcd7a65750acdb8cc2dd04027cf61e31',1,'omicron::DataManager']]],
   ['state_5fchanged_5fcallback',['state_changed_callback',['../_wiimote_8h.html#af679c9ac6e0ab5d837c513f760691e9a',1,'Wiimote.h']]],

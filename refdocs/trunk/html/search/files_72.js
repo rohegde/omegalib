@@ -1,7 +1,6 @@
 var searchData=
 [
   ['ray_2eh',['Ray.h',['../_ray_8h.html',1,'']]],
-  ['readerfreeimage_2eh',['ReaderFreeImage.h',['../_reader_free_image_8h.html',1,'']]],
   ['ref_2ehpp',['ref.hpp',['../ref_8hpp.html',1,'']]],
   ['renderable_2eh',['Renderable.h',['../_renderable_8h.html',1,'']]],
   ['renderer_2eh',['Renderer.h',['../_renderer_8h.html',1,'']]],

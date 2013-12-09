@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">5.0</span>
+   &#160;<span id="projectnumber">5.1</span>
    </div>
   </td>
  </tr>
@@ -108,7 +108,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classomega_toolkit_1_1ui_1_1_container__inherit__graph.png" border="0" usemap="#omega_toolkit_1_1ui_1_1_container_inherit__map" alt="Inheritance graph"/></div>
 <map name="omega_toolkit_1_1ui_1_1_container_inherit__map" id="omega_toolkit_1_1ui_1_1_container_inherit__map">
-<area shape="rect" id="node2" href="classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="97,149,239,173"/><area shape="rect" id="node4" href="classomega_1_1_renderable_factory.html" title="Base class for objects that can create renderables. " alt="" coords="5,77,160,101"/><area shape="rect" id="node6" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="12,5,153,29"/><area shape="rect" id="node8" href="classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="185,77,321,101"/></map>
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for omegaToolkit::ui::Container:</div>
@@ -117,7 +117,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classomega_toolkit_1_1ui_1_1_container__coll__graph.png" border="0" usemap="#omega_toolkit_1_1ui_1_1_container_coll__map" alt="Collaboration graph"/></div>
 <map name="omega_toolkit_1_1ui_1_1_container_coll__map" id="omega_toolkit_1_1ui_1_1_container_coll__map">
-<area shape="rect" id="node2" href="classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="297,176,439,200"/><area shape="rect" id="node4" href="classomega_1_1_renderable_factory.html" title="Base class for objects that can create renderables. " alt="" coords="5,80,160,104"/><area shape="rect" id="node6" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="12,5,153,29"/><area shape="rect" id="node8" href="classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="185,80,321,104"/></map>
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -181,10 +181,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5ff4b90b5cde6174916314e3392b08ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_toolkit_1_1ui_1_1_container3d_settings.html">Container3dSettings</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a5ff4b90b5cde6174916314e3392b08ad">get3dSettings</a> ()</td></tr>
 <tr class="memdesc:a5ff4b90b5cde6174916314e3392b08ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the container 3d settings.  <a href="#a5ff4b90b5cde6174916314e3392b08ad">More...</a><br/></td></tr>
 <tr class="separator:a5ff4b90b5cde6174916314e3392b08ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10b679c12d7fc667dcf5691092c42a60"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a10b679c12d7fc667dcf5691092c42a60">updateSize</a> (<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *r)</td></tr>
-<tr class="separator:a10b679c12d7fc667dcf5691092c42a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4acb42f60e32d2d0a0b7f9044118c96"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#ac4acb42f60e32d2d0a0b7f9044118c96">autosize</a> (<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *r)</td></tr>
-<tr class="separator:ac4acb42f60e32d2d0a0b7f9044118c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a903cdec2161887de552f0dfd26e6ae3b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a903cdec2161887de552f0dfd26e6ae3b">isIn3DContainer</a> ()</td></tr>
+<tr class="memdesc:a903cdec2161887de552f0dfd26e6ae3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this widget is part of a container that will be drawn in 3D mode.  <a href="#a903cdec2161887de552f0dfd26e6ae3b">More...</a><br/></td></tr>
+<tr class="separator:a903cdec2161887de552f0dfd26e6ae3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb80b5a913d90876f9a0ea64b636efaa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#afb80b5a913d90876f9a0ea64b636efaa">updateSize</a> ()</td></tr>
+<tr class="separator:afb80b5a913d90876f9a0ea64b636efaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73f76d53f41fdecaa979282b6310adfa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a73f76d53f41fdecaa979282b6310adfa">autosize</a> ()</td></tr>
+<tr class="separator:a73f76d53f41fdecaa979282b6310adfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3bd9c68f377c71c370273fa0e58f03f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#ac3bd9c68f377c71c370273fa0e58f03f">updateChildrenNavigation</a> ()</td></tr>
 <tr class="memdesc:ac3bd9c68f377c71c370273fa0e58f03f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recomputes navigation links for widgets in this container.  <a href="#ac3bd9c68f377c71c370273fa0e58f03f">More...</a><br/></td></tr>
 <tr class="separator:ac3bd9c68f377c71c370273fa0e58f03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -239,6 +242,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0c67ab3b2fadfc0fd492568f7650da18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a219450eb671970b71958cee9233ae8f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a219450eb671970b71958cee9233ae8f4">setGridColumns</a> (int value)</td></tr>
 <tr class="separator:a219450eb671970b71958cee9233ae8f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae239efb421746769b0d3b2b95834ea78"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#ae239efb421746769b0d3b2b95834ea78">isClippingEnabled</a> ()</td></tr>
+<tr class="separator:ae239efb421746769b0d3b2b95834ea78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cf1dea7a67dc06f735849c7cb410ddf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a9cf1dea7a67dc06f735849c7cb410ddf">setClippingEnabled</a> (bool value)</td></tr>
+<tr class="separator:a9cf1dea7a67dc06f735849c7cb410ddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:aafed208a82927a60fce507398be374d0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#aafed208a82927a60fce507398be374d0">isPixelOutputEnabled</a> ()</td></tr>
 <tr class="memdesc:aafed208a82927a60fce507398be374d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pixel output.  <a href="#aafed208a82927a60fce507398be374d0">More...</a><br/></td></tr>
@@ -415,6 +422,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3d0fa2ad0738c9aa12305f72d2b8aa86 inherit pub_methods_classomega_toolkit_1_1ui_1_1_widget"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a3d0fa2ad0738c9aa12305f72d2b8aa86">setScale</a> (float value)</td></tr>
 <tr class="separator:a3d0fa2ad0738c9aa12305f72d2b8aa86 inherit pub_methods_classomega_toolkit_1_1ui_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23869808c0fe0af3df24e3fbc25e4ca6 inherit pub_methods_classomega_toolkit_1_1ui_1_1_widget"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a23869808c0fe0af3df24e3fbc25e4ca6">getScale</a> ()</td></tr>
+<tr class="memdesc:a23869808c0fe0af3df24e3fbc25e4ca6 inherit pub_methods_classomega_toolkit_1_1ui_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the widget scale.  <a href="#a23869808c0fe0af3df24e3fbc25e4ca6">More...</a><br/></td></tr>
 <tr class="separator:a23869808c0fe0af3df24e3fbc25e4ca6 inherit pub_methods_classomega_toolkit_1_1ui_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac71cc2a2ce7a449a84cde74872b600fd inherit pub_methods_classomega_toolkit_1_1ui_1_1_widget"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#ac71cc2a2ce7a449a84cde74872b600fd">setAlpha</a> (float value)</td></tr>
 <tr class="separator:ac71cc2a2ce7a449a84cde74872b600fd inherit pub_methods_classomega_toolkit_1_1ui_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -693,7 +701,7 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac4acb42f60e32d2d0a0b7f9044118c96"></a>
+<a class="anchor" id="a73f76d53f41fdecaa979282b6310adfa"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -703,8 +711,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">virtual void omegaToolkit::ui::Container::autosize </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classomega_1_1_renderer.html">Renderer</a> *&#160;</td>
-          <td class="paramname"><em>r</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -715,7 +722,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented from <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#adbc260cce48d4c728a9ebfbfb1546957">omegaToolkit::ui::Widget</a>.</p>
+<p>Reimplemented from <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a9ac7e7bea92b7a3e39d60cf0303118bb">omegaToolkit::ui::Widget</a>.</p>
 
 </div>
 </div>
@@ -1096,6 +1103,21 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ae239efb421746769b0d3b2b95834ea78"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omegaToolkit::ui::Container::isClippingEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a2c8ab77cedbe08e7249ba6b13757ff9e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1112,6 +1134,33 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Returns true if the event happens within the container boundaries. </p>
 <p>This method supports all pointer and ray-generating events, and works with 2D and 3D mode containers. </p>
+
+</div>
+</div>
+<a class="anchor" id="a903cdec2161887de552f0dfd26e6ae3b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omegaToolkit::ui::Container::isIn3DContainer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if this widget is part of a container that will be drawn in 3D mode. </p>
+
+<p>Reimplemented from <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a79f606fcddccfb47da894aaf1928d5c9">omegaToolkit::ui::Widget</a>.</p>
 
 </div>
 </div>
@@ -1217,6 +1266,22 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Remove a child from this widget. </p>
+
+</div>
+</div>
+<a class="anchor" id="a9cf1dea7a67dc06f735849c7cb410ddf"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omegaToolkit::ui::Container::setClippingEnabled </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1454,7 +1519,7 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a10b679c12d7fc667dcf5691092c42a60"></a>
+<a class="anchor" id="afb80b5a913d90876f9a0ea64b636efaa"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1464,8 +1529,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">virtual void omegaToolkit::ui::Container::updateSize </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classomega_1_1_renderer.html">Renderer</a> *&#160;</td>
-          <td class="paramname"><em>r</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1476,7 +1540,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented from <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#ae4dba4a9f322f993690a36698b333e8d">omegaToolkit::ui::Widget</a>.</p>
+<p>Reimplemented from <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a41ab8af6235fe6ffd583bdc89bca79c7">omegaToolkit::ui::Widget</a>.</p>
 
 </div>
 </div>

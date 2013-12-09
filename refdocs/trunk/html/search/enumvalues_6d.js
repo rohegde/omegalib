@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['memory',['Memory',['../classomega_1_1_stat.html#ae7174b0a28a068009b1cf4b12242c162a6f71ebd539b3d117106bec0447c89765',1,'omega::Stat']]],
+  ['memory',['Memory',['../classomega_1_1_stats_manager.html#aab41875cd51d3af256917714f5bdf966a5c339db210a73e897e0e23cf0d266de5',1,'omega::StatsManager']]],
   ['middle',['Middle',['../classomega_toolkit_1_1ui_1_1_widget.html#ac304c8f3c64555687b3f00ff8683ac70a6c8f675968772b8c6d4be2b1f572bca0',1,'omegaToolkit::ui::Widget::Middle()'],['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a6e0352793a3f96fb7d123dbc0620c472',1,'omicron::EventBase::Middle()']]],
   ['mocap',['Mocap',['../classomicron_1_1_service.html#a3992f0756d1aee668f6740487ddb4dafa5e5c63a75a36c3bd17a451c476cd1c81',1,'omicron::Service']]],
-  ['modelassettype',['ModelAssetType',['../classcyclops_1_1_scene_manager.html#a3e3f213ce88c8b8ec522eec61e8b00afac3aa2f084f008d0ff5a9c9297b2344e2',1,'cyclops::SceneManager']]],
   ['mono',['Mono',['../classomega_1_1_display_tile_config.html#a173c7e3329dca1fc6bfc76497a7e81a0aefac48d4fcd0739c96d8b4301cf56fdb',1,'omega::DisplayTileConfig']]],
   ['mouseinteractorstyle',['MouseInteractorStyle',['../classomega_toolkit_1_1_scene_editor_module.html#ae30cce9218ece22a6ae62a18720b5420ae2b00312c3a7fe8ccd9a64103a63c254',1,'omegaToolkit::SceneEditorModule']]],
   ['move',['Move',['../classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a18111bc12fb3e086fd7b810e4255f19e',1,'omicron::EventBase']]],

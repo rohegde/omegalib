@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">5.0</span>
+   &#160;<span id="projectnumber">5.1</span>
    </div>
   </td>
  </tr>
@@ -93,7 +93,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classomega_1_1_application_base-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">omega::ApplicationBase Class Reference</div>  </div>
+<div class="title">omega::ApplicationBase Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -105,7 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classomega_1_1_application_base__inherit__graph.png" border="0" usemap="#omega_1_1_application_base_inherit__map" alt="Inheritance graph"/></div>
 <map name="omega_1_1_application_base_inherit__map" id="omega_1_1_application_base_inherit__map">
-<area shape="rect" id="node3" href="classomega_1_1_application.html" title="a convenience application class to create omegaToolkit applications " alt="" coords="5,77,147,101"/></map>
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for omega::ApplicationBase:</div>
@@ -113,14 +113,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classomega_1_1_application_base__coll__graph.png" border="0" usemap="#omega_1_1_application_base_coll__map" alt="Collaboration graph"/></div>
+<map name="omega_1_1_application_base_coll__map" id="omega_1_1_application_base_coll__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a26352286c6c49182a470a1cf6835a4a2"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_base.html#a26352286c6c49182a470a1cf6835a4a2">getName</a> ()</td></tr>
 <tr class="separator:a26352286c6c49182a470a1cf6835a4a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35ec048bdbed409fb33db7702b2e69e5"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_base.html#a35ec048bdbed409fb33db7702b2e69e5">getExecutableName</a> ()</td></tr>
-<tr class="separator:a35ec048bdbed409fb33db7702b2e69e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a347fc30ca88b4b3105f54aa56969cc73"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_base.html#a347fc30ca88b4b3105f54aa56969cc73">getExecutableName</a> ()=0</td></tr>
+<tr class="separator:a347fc30ca88b4b3105f54aa56969cc73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36408f1c273ee547a7c5ede7ca9d2afb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_base.html#a36408f1c273ee547a7c5ede7ca9d2afb">setExecutableName</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;name)=0</td></tr>
+<tr class="separator:a36408f1c273ee547a7c5ede7ca9d2afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad75e31a47aeb76cb10f89547038a44ea"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_base.html#ad75e31a47aeb76cb10f89547038a44ea">initialize</a> ()</td></tr>
 <tr class="memdesc:ad75e31a47aeb76cb10f89547038a44ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called once for entire application initialization tasks.  <a href="#ad75e31a47aeb76cb10f89547038a44ea">More...</a><br/></td></tr>
 <tr class="separator:ad75e31a47aeb76cb10f89547038a44ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,7 +135,7 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:a5c8075d86e0a1e8acbb02aea11acd102"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a35ec048bdbed409fb33db7702b2e69e5"></a>
+<a class="anchor" id="a347fc30ca88b4b3105f54aa56969cc73"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -147,12 +151,12 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_application.html#aa4f8851d979f8e99ba4311581241f756">omega::Application&lt; T &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classomega_1_1_application.html#aa4f8851d979f8e99ba4311581241f756">omega::Application&lt; T &gt;</a>.</p>
 
 </div>
 </div>
@@ -205,6 +209,32 @@ Static Public Attributes</h2></td></tr>
 <p>Called once for entire application initialization tasks. </p>
 
 <p>Reimplemented in <a class="el" href="classomega_1_1_application.html#ad94a951867033557cf57f18abeb9ce1a">omega::Application&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a36408f1c273ee547a7c5ede7ca9d2afb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void omega::ApplicationBase::setExecutableName </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classomega_1_1_application.html#abb96fd1dbc8761022265e0db0cd8a06d">omega::Application&lt; T &gt;</a>.</p>
 
 </div>
 </div>

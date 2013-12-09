@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['obj',['obj',['../classvtk_python_command.html#a36ce956c86484b29b274de50d07f6700',1,'vtkPythonCommand']]],
   ['object_5fid',['object_id',['../structomicron_1_1_v_r_p_n_struct.html#aeb5172159436a9cc893d69344bf88c18',1,'omicron::VRPNStruct']]],
   ['object_5fname',['object_name',['../structomicron_1_1_v_r_p_n_struct.html#a0736dfc506ed2ba9564e46527468e0cb',1,'omicron::VRPNStruct']]],
   ['offscreen',['offscreen',['../classomega_1_1_display_tile_config.html#adcb929406e73f8c612ad2fc4e8ce3252',1,'omega::DisplayTileConfig']]],
@@ -12,8 +11,6 @@ var searchData=
   ['omg_5fscenemd',['omg_sceneMD',['../classomicron_1_1_open_n_i_service.html#a31ec58c453a420890b983a61a840b2dd',1,'omicron::OpenNIService']]],
   ['omg_5fstrpose',['omg_strPose',['../classomicron_1_1_open_n_i_service.html#a701226f9bbcf1c56d1ecd91cf843db42',1,'omicron::OpenNIService']]],
   ['omg_5fusergenerator_5fv',['omg_UserGenerator_v',['../classomicron_1_1_open_n_i_service.html#ae9d34a270450c33cf6be3fe2ed836bb2',1,'omicron::OpenNIService']]],
-  ['optimize',['optimize',['../structcyclops_1_1_model_info.html#a36f8afdb24d1460ef9953d9dd696c6bc',1,'cyclops::ModelInfo']]],
-  ['options',['options',['../structcyclops_1_1_model_info.html#aff2708cd75f54f2fd1c69bb8a9d3d511',1,'cyclops::ModelInfo']]],
   ['orange',['Orange',['../classomega_1_1_color.html#a134378c03fa70733f902be2846fa1da2',1,'omega::Color']]],
   ['orientation',['orientation',['../structomicron_1_1_joint.html#ab9dcfe510d493623e0e05afc24ff4b39',1,'omicron::Joint::orientation()'],['../structomicron_1_1_mocap_user.html#a78022170520fd5a97b9543ff0f66954b',1,'omicron::MocapUser::orientation()']]],
   ['orw',['orw',['../structomicron_connector_1_1_event_data.html#a10b402af0ca31d134b301f506e2c29f1',1,'omicronConnector::EventData']]],
