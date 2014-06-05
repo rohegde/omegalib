@@ -3,6 +3,8 @@ var searchData=
   ['lastchild',['lastChild',['../classomega_1_1xml_1_1_ti_xml_node.html#ac1cc9255748399e238b983611fa8381c',1,'omega::xml::TiXmlNode']]],
   ['lastorientation',['lastOrientation',['../structomicron_1_1_joint.html#acfdb9b192c674c7939e250ac7cdd0203',1,'omicron::Joint']]],
   ['lastposition',['lastPosition',['../structomicron_1_1_joint.html#aee0b2c7e7199ad437f16703e501f1735',1,'omicron::Joint']]],
+  ['lastxpos',['lastXPos',['../struct_touch.html#a516f8c56c96c1e4d2c18e185d35a2ec4',1,'Touch']]],
+  ['lastypos',['lastYPos',['../struct_touch.html#a487376bc9d995e194bbe92b06654b107',1,'Touch']]],
   ['latency',['latency',['../classomega_1_1_display_config.html#ac1e4a5a77ce3e084b0fa5771b64bb87e',1,'omega::DisplayConfig']]],
   ['launcherinterval',['launcherInterval',['../classomega_1_1_display_config.html#ab755d4c04360c0154f556df2bffea97d',1,'omega::DisplayConfig']]],
   ['lefthand',['leftHand',['../structomicron_1_1_mocap_user.html#ab657f2d620b115031eb95cfcdd1da43f',1,'omicron::MocapUser']]],

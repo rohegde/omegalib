@@ -1,8 +1,0 @@
-<map id="omegaToolkit::ui::AbstractButton" name="omegaToolkit::ui::AbstractButton">
-<area shape="rect" id="node11" href="$classomega_toolkit_1_1ui_1_1_button.html" title="omegaToolkit::ui::Button" alt="" coords="97,307,239,331"/>
-<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="97,149,239,173"/>
-<area shape="rect" id="node4" href="$classomega_1_1_renderable_factory.html" title="Base class for objects that can create renderables. " alt="" coords="5,77,160,101"/>
-<area shape="rect" id="node6" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="12,5,153,29"/>
-<area shape="rect" id="node8" href="$classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="185,77,321,101"/>
-<area shape="rect" id="node13" href="$classomega_toolkit_1_1ui_1_1_default_button.html" title="omegaToolkit::ui::Default\lButton" alt="" coords="96,379,240,415"/>
-</map>

@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">5.1</span>
+   &#160;<span id="projectnumber">5.3</span>
    </div>
   </td>
  </tr>
@@ -237,8 +237,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abc128a047dcada2d93d0dc3bc9a00bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6371439bbe0afd878876929dd6045ab8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a6371439bbe0afd878876929dd6045ab8">setFollowOffset</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;offset, const <a class="el" href="namespaceomicron.html#abe495230fb99452e2ea1b9d237a98885">Quaternion</a> &amp;ooffset)</td></tr>
 <tr class="separator:a6371439bbe0afd878876929dd6045ab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d572d7a2135b3241f3241e64bb1eb0c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_tracked_object.html">TrackedObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a7d572d7a2135b3241f3241e64bb1eb0c">getTracker</a> ()</td></tr>
+<tr class="separator:a7d572d7a2135b3241f3241e64bb1eb0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dc186940ddfc6da5507479d4e99f40b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a0dc186940ddfc6da5507479d4e99f40b">unfollow</a> ()</td></tr>
 <tr class="separator:a0dc186940ddfc6da5507479d4e99f40b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:ac6cbcc2ce82be04357b1aeed017c884f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#ac6cbcc2ce82be04357b1aeed017c884f">setFlag</a> (<a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a> bit)</td></tr>
+<tr class="memdesc:ac6cbcc2ce82be04357b1aeed017c884f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classomega_1_1_node.html" title="Class representing a general-purpose node in an articulated scene graph. ">Node</a> flags.  <a href="#ac6cbcc2ce82be04357b1aeed017c884f">More...</a><br/></td></tr>
+<tr class="separator:ac6cbcc2ce82be04357b1aeed017c884f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69e4a58100487ecdd52cd0cc34abbdec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a69e4a58100487ecdd52cd0cc34abbdec">unsetFlag</a> (<a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a> bit)</td></tr>
+<tr class="separator:a69e4a58100487ecdd52cd0cc34abbdec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78294c6676fee9aa127d62daa8499ad5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a78294c6676fee9aa127d62daa8499ad5">isFlagSet</a> (<a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a> bit)</td></tr>
+<tr class="separator:a78294c6676fee9aa127d62daa8499ad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classomega_1_1_node"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomega_1_1_node')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classomega_1_1_node.html">omega::Node</a></td></tr>
 <tr class="memitem:a7648149fee6e53e854cbd65fc7f50e91 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a7648149fee6e53e854cbd65fc7f50e91">Node</a> ()</td></tr>
 <tr class="memdesc:a7648149fee6e53e854cbd65fc7f50e91 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor, should only be called by parent, not directly.  <a href="#a7648149fee6e53e854cbd65fc7f50e91">More...</a><br/></td></tr>
@@ -899,6 +909,29 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a7d572d7a2135b3241f3241e64bb1eb0c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1_tracked_object.html">TrackedObject</a> * omega::SceneNode::getTracker </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a476879ba90b51d69d1b27b17cefcabcc"></a>
 <div class="memitem">
 <div class="memproto">
@@ -982,6 +1015,30 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">bool omega::SceneNode::isFacingCameraFixedY </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a78294c6676fee9aa127d62daa8499ad5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::SceneNode::isFlagSet </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a>&#160;</td>
+          <td class="paramname"><em>bit</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1303,6 +1360,32 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ac6cbcc2ce82be04357b1aeed017c884f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::SceneNode::setFlag </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a>&#160;</td>
+          <td class="paramname"><em>bit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classomega_1_1_node.html" title="Class representing a general-purpose node in an articulated scene graph. ">Node</a> flags. </p>
+
+</div>
+</div>
 <a class="anchor" id="a6371439bbe0afd878876929dd6045ab8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1451,6 +1534,30 @@ Additional Inherited Members</h2></td></tr>
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a69e4a58100487ecdd52cd0cc34abbdec"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::SceneNode::unsetFlag </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a>&#160;</td>
+          <td class="paramname"><em>bit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

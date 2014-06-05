@@ -27,5 +27,6 @@ var searchData=
   ['font',['Font',['../classomega_1_1_font.html#a81a301deac5dad4c562863be7d31af58',1,'omega::Font']]],
   ['fontinfo',['FontInfo',['../structomega_1_1_font_info.html#a88023dfc483de00d91aa807ee27a9712',1,'omega::FontInfo::FontInfo()'],['../structomega_1_1_font_info.html#abde8f130fdf3eae6e5915905763441cb',1,'omega::FontInfo::FontInfo(String theName, String theFilename, int theSize)']]],
   ['framecontroller',['frameController',['../classomicron_1_1_natural_point_service.html#a7e6bf08c7eb2df7fbdc6e52316478fb3',1,'omicron::NaturalPointService']]],
-  ['frameinfo',['FrameInfo',['../structomega_1_1_frame_info.html#a9f05139631aff46bd597bf5580e43d82',1,'omega::FrameInfo']]]
+  ['frameinfo',['FrameInfo',['../structomega_1_1_frame_info.html#a9f05139631aff46bd597bf5580e43d82',1,'omega::FrameInfo']]],
+  ['fromstring',['fromString',['../structomega_toolkit_1_1ui_1_1_widget_1_1_border_style.html#a41d208f0a8d1979b89047f96848476ba',1,'omegaToolkit::ui::Widget::BorderStyle']]]
 ];

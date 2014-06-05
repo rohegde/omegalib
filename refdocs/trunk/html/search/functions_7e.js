@@ -50,6 +50,7 @@ var searchData=
   ['_7estat',['~Stat',['../classomega_1_1_stat.html#a2b15c815521da879de15695aa71a1661',1,'omega::Stat']]],
   ['_7etcpconnection',['~TcpConnection',['../classomicron_1_1_tcp_connection.html#a1cca53438ec5688ff1ccf01bed15e3e7',1,'omicron::TcpConnection']]],
   ['_7etcpserver',['~TcpServer',['../classomicron_1_1_tcp_server.html#a7dd696ef2ba3ebb4ee29c85871e6f39d',1,'omicron::TcpServer']]],
+  ['_7etextbox',['~TextBox',['../classomega_toolkit_1_1ui_1_1_text_box.html#a547bae4cbe570fab5909dff7af399d85',1,'omegaToolkit::ui::TextBox']]],
   ['_7etexturesource',['~TextureSource',['../classomega_1_1_texture_source.html#ac71f89db0c6ec1fc4382b26dc898135b',1,'omega::TextureSource']]],
   ['_7ethread',['~Thread',['../classomicron_1_1_thread.html#a012a985ab4253730f1acfbb503b3428f',1,'omicron::Thread']]],
   ['_7etimer',['~Timer',['../classomicron_1_1_timer.html#a383edc25eb0b3a807365af3fe663e0d5',1,'omicron::Timer']]],

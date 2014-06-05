@@ -4,7 +4,7 @@ var searchData=
   ['parsectx_5fcleanup',['parsectx_cleanup',['../parsectx_8h.html#a6b425cd29c1ffed36ab410829ba1e80d',1,'parsectx.h']]],
   ['parsectx_5finit',['parsectx_init',['../parsectx_8h.html#aef833c188a39409f420bd7c42fcac28b',1,'parsectx.h']]],
   ['parsectx_5ftake_5fstring',['parsectx_take_string',['../parsectx_8h.html#a3afa9b8362d647a4cc7b64bf9bea9a9f',1,'parsectx.h']]],
-  ['print_5fsocket_5ferror',['PRINT_SOCKET_ERROR',['../omicron_connector_client_8h.html#aa7360f63bac96d27b8f419964b5f61db',1,'omicronConnectorClient.h']]],
+  ['print_5fsocket_5ferror',['PRINT_SOCKET_ERROR',['../omicron_connector_client_8h.html#aa7360f63bac96d27b8f419964b5f61db',1,'PRINT_SOCKET_ERROR():&#160;omicronConnectorClient.h'],['../_input_server_8h.html#aa7360f63bac96d27b8f419964b5f61db',1,'PRINT_SOCKET_ERROR():&#160;InputServer.h']]],
   ['pyapi_5fbase_5fclass',['PYAPI_BASE_CLASS',['../_python_interpreter_wrapper_8h.html#a54e8ca34f2943397f4206c991d49c40d',1,'PythonInterpreterWrapper.h']]],
   ['pyapi_5fbase_5fclass_5fwith_5fctor',['PYAPI_BASE_CLASS_WITH_CTOR',['../_python_interpreter_wrapper_8h.html#a34e5eaef6a414f2675ffa910ad9e881c',1,'PythonInterpreterWrapper.h']]],
   ['pyapi_5fenum',['PYAPI_ENUM',['../_python_interpreter_wrapper_8h.html#ad9dbfaa7512438ab9846b6e337b377cb',1,'PythonInterpreterWrapper.h']]],

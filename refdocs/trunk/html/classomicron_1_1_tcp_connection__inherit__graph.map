@@ -1,5 +1,0 @@
-<map id="omicron::TcpConnection" name="omicron::TcpConnection">
-<area shape="rect" id="node5" href="$classomega_1_1_mission_control_connection.html" title="omega::MissionControlConnection" alt="" coords="5,149,189,173"/>
-<area shape="rect" id="node7" href="$classomicron_1_1_asset_cache_connection.html" title="Represents a connection between the cache service and a remote cache manager. " alt="" coords="215,149,393,173"/>
-<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="129,5,271,29"/>
-</map>

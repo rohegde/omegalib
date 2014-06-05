@@ -1,6 +1,0 @@
-<map id="omega::MissionControlClient" name="omega::MissionControlClient">
-<area shape="rect" id="node2" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="12,156,140,180"/>
-<area shape="rect" id="node4" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="12,77,140,101"/>
-<area shape="rect" id="node6" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="5,5,147,29"/>
-<area shape="rect" id="node8" href="$classomega_1_1_i_mission_control_message_handler.html" title="omega::IMissionControlMessage\lHandler" alt="" coords="165,150,341,186"/>
-</map>

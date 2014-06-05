@@ -17,7 +17,7 @@ digraph "omega::DrawContext"
   Node6 [label="omega::DisplayTileConfig",height=0.2,width=0.4,color="red",URL="$classomega_1_1_display_tile_config.html"];
   Node4 -> Node6 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node7 -> Node6 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" camera" ,fontname="FreeSans.ttf"];
-  Node7 [label="omega::Camera",height=0.2,width=0.4,color="red",URL="$classomega_1_1_camera.html",tooltip="The Camera class handles information about a view transformation, head  tracking and optional target ..."];
+  Node7 [label="omega::Camera",height=0.2,width=0.4,color="red",URL="$classomega_1_1_camera.html",tooltip="The Camera class handles information about a view transformation, head tracking and optional target b..."];
   Node8 -> Node6 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" yaw\npitch" ,fontname="FreeSans.ttf"];
   Node8 [label="float",height=0.2,width=0.4,color="grey75"];
   Node9 -> Node6 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" stereoMode" ,fontname="FreeSans.ttf"];
@@ -32,6 +32,7 @@ digraph "omega::DrawContext"
   Node13 [label="unsigned",height=0.2,width=0.4,color="grey75"];
   Node14 -> Node1 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" modelview" ,fontname="FreeSans.ttf"];
   Node14 [label="Transform\< real, 3,\l Eigen::Affine, 0 \>",height=0.2,width=0.4,color="grey75"];
+  Node7 -> Node1 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" camera" ,fontname="FreeSans.ttf"];
   Node15 -> Node1 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" task" ,fontname="FreeSans.ttf"];
   Node15 [label="Task",height=0.2,width=0.4,color="grey75"];
   Node16 -> Node1 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" viewport" ,fontname="FreeSans.ttf"];

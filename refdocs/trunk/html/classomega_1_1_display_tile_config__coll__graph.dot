@@ -12,7 +12,7 @@ digraph "omega::DisplayTileConfig"
   Node4 -> Node3 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node4 [label="std::list\< omicron\l::ReferenceType * \>",height=0.2,width=0.4,color="grey75",tooltip="STL class. "];
   Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" camera" ,fontname="FreeSans.ttf"];
-  Node5 [label="omega::Camera",height=0.2,width=0.4,color="black",URL="$classomega_1_1_camera.html",tooltip="The Camera class handles information about a view transformation, head  tracking and optional target ..."];
+  Node5 [label="omega::Camera",height=0.2,width=0.4,color="black",URL="$classomega_1_1_camera.html",tooltip="The Camera class handles information about a view transformation, head tracking and optional target b..."];
   Node6 -> Node5 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node6 [label="omega::SceneNode",height=0.2,width=0.4,color="black",URL="$classomega_1_1_scene_node.html",tooltip="Represents a node in the omegalib scene graph. "];
   Node7 -> Node6 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];

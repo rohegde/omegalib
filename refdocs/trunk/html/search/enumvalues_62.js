@@ -1,6 +1,7 @@
 var searchData=
 [
   ['back',['Back',['../classomega_toolkit_1_1ui_1_1_widget.html#ac304c8f3c64555687b3f00ff8683ac70a60cf1f141933e9121301488723f55cca',1,'omegaToolkit::ui::Widget']]],
+  ['backspace',['Backspace',['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977aa0c90a31c176d16c2b8a3595378a07e5',1,'omicron::EventBase']]],
   ['blendadditive',['BlendAdditive',['../classomega_toolkit_1_1ui_1_1_widget.html#a3756ea690a251b54bcd93c5f5e7f0db7acd8a22913a7798c00ddd79224567a4e3',1,'omegaToolkit::ui::Widget']]],
   ['blenddisabled',['BlendDisabled',['../classomega_toolkit_1_1ui_1_1_widget.html#a3756ea690a251b54bcd93c5f5e7f0db7a993a1fcfdf5c7e2283df09f1093434dd',1,'omegaToolkit::ui::Widget']]],
   ['blendinherit',['BlendInherit',['../classomega_toolkit_1_1ui_1_1_widget.html#a3756ea690a251b54bcd93c5f5e7f0db7ac8ecf2cbc031d29807f68f415a593ec9',1,'omegaToolkit::ui::Widget']]],

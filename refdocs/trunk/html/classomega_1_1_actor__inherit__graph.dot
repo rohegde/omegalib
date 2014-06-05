@@ -12,7 +12,7 @@ digraph "omega::Actor"
   Node4 -> Node3 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node4 [label="omicron::ReferenceType",height=0.2,width=0.4,color="black",URL="$classomicron_1_1_reference_type.html",tooltip="Implements a base class for reference-counted types. "];
   Node1 -> Node5 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node5 [label="omega::TrackedObject",height=0.2,width=0.4,color="black",URL="$classomega_1_1_tracked_object.html"];
+  Node5 [label="omega::TrackedObject",height=0.2,width=0.4,color="black",URL="$classomega_1_1_tracked_object.html",tooltip="Implements an Actor that sets the position and orientation of a scene node based on a events generate..."];
   Node1 -> Node6 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node6 [label="omegaToolkit::Controller\lManipulator",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_controller_manipulator.html"];
   Node1 -> Node7 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];

@@ -31,8 +31,8 @@ digraph "D:/Workspace/omegalib/core/omicron/include/omicron/OpenNIService.h"
   Node13 [label="boost/detail/atomic\l_count.hpp",height=0.2,width=0.4,color="grey75"];
   Node6 -> Node14 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node14 [label="omicron/ref.hpp",height=0.2,width=0.4,color="red",URL="$ref_8hpp.html"];
-  Node1 -> Node15 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node15 [label="omicron/Color.h",height=0.2,width=0.4,color="grey75"];
+  Node6 -> Node15 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node15 [label="hash_map",height=0.2,width=0.4,color="grey75"];
   Node1 -> Node16 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node16 [label="omicron/ServiceManager.h",height=0.2,width=0.4,color="black",URL="$_service_manager_8h.html"];
   Node16 -> Node17 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];

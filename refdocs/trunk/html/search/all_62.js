@@ -1,6 +1,7 @@
 var searchData=
 [
   ['back',['Back',['../classomega_toolkit_1_1ui_1_1_widget.html#ac304c8f3c64555687b3f00ff8683ac70a60cf1f141933e9121301488723f55cca',1,'omegaToolkit::ui::Widget']]],
+  ['backspace',['Backspace',['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977aa0c90a31c176d16c2b8a3595378a07e5',1,'omicron::EventBase']]],
   ['baseport',['basePort',['../classomega_1_1_display_config.html#a648b1fc4caa94f69ba7e2d0eeff18cc4',1,'omega::DisplayConfig']]],
   ['begindraw',['beginDraw',['../classomega_1_1_i_camera_listener.html#a25c7803c81a6d32e0fd59cc18e3508e0',1,'omega::ICameraListener::beginDraw()'],['../classomega_1_1_camera.html#af5b0b1e3e758ff99e528ffd4595b824b',1,'omega::Camera::beginDraw()'],['../classomega_1_1_camera_output.html#a3e425d56083eb424d78a17db9dd8311b',1,'omega::CameraOutput::beginDraw()'],['../classomega_toolkit_1_1ui_1_1_container_renderable.html#a26979b3f6530c1594c9460b3d53ace1a',1,'omegaToolkit::ui::ContainerRenderable::beginDraw()']]],
   ['begindraw2d',['beginDraw2D',['../classomega_1_1_draw_interface.html#ac95300f0f8e21b2bfabffa74e4816378',1,'omega::DrawInterface']]],
@@ -20,6 +21,7 @@ var searchData=
   ['boost_5fpython_5fno_5flib',['BOOST_PYTHON_NO_LIB',['../_python_interpreter_wrapper_8h.html#a73ee1a7f40bfe5bc969217682ca44815',1,'PythonInterpreterWrapper.h']]],
   ['boost_5fregex_5fno_5flib',['BOOST_REGEX_NO_LIB',['../omicron_2include_2omicron_2otypes_8h.html#a9886d58b6a28f14ed8fc7053e6d20619',1,'otypes.h']]],
   ['borderless',['borderless',['../classomega_1_1_display_tile_config.html#a80351e16e1eedf1da073c7dee256572e',1,'omega::DisplayTileConfig::borderless()'],['../classomega_1_1_display_config.html#a05c59606376426b226a9a5db16b7c923',1,'omega::DisplayConfig::borderless()']]],
+  ['borderstyle',['BorderStyle',['../structomega_toolkit_1_1ui_1_1_widget_1_1_border_style.html',1,'omegaToolkit::ui::Widget']]],
   ['both_5fside',['BOTH_SIDE',['../namespaceomicron.html#a781fe3276ec5b8864b093b3ca9b1f0cfaaedff3d87f523f1155f4293c6d830f70',1,'omicron']]],
   ['bottomleft',['bottomLeft',['../classomega_1_1_display_tile_config.html#ae1b53db3ced823329746388dfca388e0',1,'omega::DisplayTileConfig']]],
   ['bottomright',['bottomRight',['../classomega_1_1_display_tile_config.html#aea35adf3ed1d33951e00e6742bbf8c6f',1,'omega::DisplayTileConfig']]],
@@ -60,8 +62,8 @@ var searchData=
   ['buttonup',['ButtonUp',['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a80c9666ef689cf30daa0c6165887b3f0',1,'omicron::EventBase::ButtonUp()'],['../classomicron_1_1_wiimote_service.html#afe6a34a9ab7e417280398d5dd076cc11a11c619d1f2ba9b3b85aebd2aacb53265',1,'omicron::WiimoteService::ButtonUp()']]],
   ['bye',['Bye',['../classomega_1_1_mission_control_message_ids.html#a4a8a6b083a5a1ff969a77fa3f7b0bf85',1,'omega::MissionControlMessageIds']]],
   ['byte',['byte',['../namespaceomicron.html#accbbf225f8124c69519d9bbaf963107c',1,'omicron']]],
-  ['bytearray',['ByteArray',['../structomicron_1_1_byte_array.html#a95641e910428b550f88e4d76db2d08dd',1,'omicron::ByteArray']]],
   ['bytearray',['ByteArray',['../structomicron_1_1_byte_array.html',1,'omicron']]],
+  ['bytearray',['ByteArray',['../structomicron_1_1_byte_array.html#a95641e910428b550f88e4d76db2d08dd',1,'omicron::ByteArray']]],
   ['bytearray_2eh',['ByteArray.h',['../_byte_array_8h.html',1,'']]],
   ['bytesavailable',['bytesAvailable',['../classomicron_1_1_data_stream.html#a3afbc4dcfbd05377e1ba62dac7aa1333',1,'omicron::DataStream::bytesAvailable()'],['../classomicron_1_1_file_data_stream.html#abe23a472e616168e3d5694683fcfb860',1,'omicron::FileDataStream::bytesAvailable()']]]
 ];

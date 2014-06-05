@@ -12,4 +12,6 @@ digraph "omegaToolkit::ui::Label"
   Node4 [label="omicron::ReferenceType",height=0.2,width=0.4,color="black",URL="$classomicron_1_1_reference_type.html",tooltip="Implements a base class for reference-counted types. "];
   Node5 -> Node2 [dir="back",color="firebrick4",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node5 [label="omicron::IEventListener",height=0.2,width=0.4,color="black",URL="$classomicron_1_1_i_event_listener.html",tooltip="The IEventListener interface is implemented by objects that can receive and process events..."];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node6 [label="omegaToolkit::ui::TextBox",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1ui_1_1_text_box.html"];
 }

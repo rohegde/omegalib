@@ -30,4 +30,7 @@ digraph "D:/Workspace/omegalib/core/include/omegaToolkit/ui/DefaultSkin.h"
   Node10 -> Node6 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node2 -> Node5 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node2 -> Node7 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node2 -> Node11 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node11 [label="omegaToolkit/ui/TextBox.h",height=0.2,width=0.4,color="black",URL="$_text_box_8h.html"];
+  Node11 -> Node6 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
 }

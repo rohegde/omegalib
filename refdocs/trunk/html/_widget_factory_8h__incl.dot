@@ -36,4 +36,7 @@ digraph "D:/Workspace/omegalib/core/include/omegaToolkit/ui/WidgetFactory.h"
   Node12 -> Node6 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node1 -> Node4 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node1 -> Node7 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node1 -> Node13 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node13 [label="omegaToolkit/ui/TextBox.h",height=0.2,width=0.4,color="black",URL="$_text_box_8h.html"];
+  Node13 -> Node6 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
 }

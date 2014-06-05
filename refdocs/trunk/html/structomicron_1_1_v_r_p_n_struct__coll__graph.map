@@ -1,5 +1,0 @@
-<map id="omicron::VRPNStruct" name="omicron::VRPNStruct">
-<area shape="rect" id="node2" href="$classomicron_1_1_v_r_p_n_service.html" title="omicron::VRPNService" alt="" coords="12,155,140,179"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_service.html" title="The base class for Services: a Service has code that is executed periodically (in the poll method) an..." alt="" coords="25,80,127,104"/>
-<area shape="rect" id="node6" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="5,5,147,29"/>
-</map>

@@ -39,5 +39,7 @@ var searchData=
   ['int64_5fhex_5ffmt',['INT64_HEX_FMT',['../wincompat_8h.html#a87486ae107978bf61a694b6b8ac345ed',1,'wincompat.h']]],
   ['int8_5fmax',['INT8_MAX',['../scanner_8h.html#aaf7f29f45f1a513b4748a4e5014ddf6a',1,'scanner.h']]],
   ['int8_5fmin',['INT8_MIN',['../scanner_8h.html#aadcf2a81af243df333b31efa6461ab8e',1,'scanner.h']]],
-  ['int_5fptr',['INT_PTR',['../_event_8h.html#a5cabde7e44472264cc51742484e3b16c',1,'Event.h']]]
+  ['int_5fptr',['INT_PTR',['../_event_8h.html#a5cabde7e44472264cc51742484e3b16c',1,'Event.h']]],
+  ['invalid_5fsocket',['INVALID_SOCKET',['../_input_server_8h.html#a26769957ec1a2beaf223f33b66ee64ab',1,'InputServer.h']]],
+  ['ioctlsocket',['ioctlsocket',['../_input_server_8h.html#ad2d1c4dd0a32e296151deba96f1c9651',1,'InputServer.h']]]
 ];

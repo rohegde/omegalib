@@ -1,6 +1,0 @@
-<map id="omegaOsg::OsgSceneObject" name="omegaOsg::OsgSceneObject">
-<area shape="rect" id="node2" href="$classomega_1_1_node_component.html" title="NodeComponent is the base class for objects that can be attached to a scene node. ..." alt="" coords="5,179,147,203"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="5,104,147,128"/>
-<area shape="rect" id="node6" href="$classomicron_1_1_list.html" title="omicron::List\&lt; omicron\l::ReferenceType * \&gt;" alt="" coords="11,6,141,42"/>
-<area shape="rect" id="node8" href="$classomega_1_1_scene_node_listener.html" title="omega::SceneNodeListener" alt="" coords="172,179,327,203"/>
-</map>

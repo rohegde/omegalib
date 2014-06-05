@@ -1,5 +1,0 @@
-<map id="omegaToolkit::WandManipulator" name="omegaToolkit::WandManipulator">
-<area shape="rect" id="node2" href="$classomega_1_1_actor.html" title="A specialied EngineModule used to control objects in a scene and define custom behaviors. " alt="" coords="49,149,137,173"/>
-<area shape="rect" id="node4" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="29,77,157,101"/>
-<area shape="rect" id="node6" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="29,5,157,29"/>
-</map>

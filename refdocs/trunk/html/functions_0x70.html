@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">5.1</span>
+   &#160;<span id="projectnumber">5.3</span>
    </div>
   </td>
  </tr>
@@ -361,10 +361,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classomega_1_1xml_1_1_ti_xml_node.html#ab78404a78e26d7d78c2731be0954cb73">omega::xml::TiXmlNode</a>
 </li>
 <li>Previous()
-: <a class="el" href="classomega_1_1xml_1_1_ti_xml_attribute.html#a8b195bf24e6533a52b71ba92f3559544">omega::xml::TiXmlAttribute</a>
+: <a class="el" href="classomega_1_1xml_1_1_ti_xml_attribute.html#a44025e280b83ea70a5d7fe9c694db5db">omega::xml::TiXmlAttribute</a>
 </li>
 <li>PreviousSibling()
-: <a class="el" href="classomega_1_1xml_1_1_ti_xml_node.html#a87e80e4b64beb7ce165d776484016b0a">omega::xml::TiXmlNode</a>
+: <a class="el" href="classomega_1_1xml_1_1_ti_xml_node.html#a6150ab91714493acd0132620748b1f0e">omega::xml::TiXmlNode</a>
+</li>
+<li>prevPosResetTime
+: <a class="el" href="struct_touch.html#acf22434771b371eab550124456e8169d">Touch</a>
+</li>
+<li>prevPosTimer
+: <a class="el" href="struct_touch.html#a2319e59d591adeb632394367a423d681">Touch</a>
 </li>
 <li>Primitive
 : <a class="el" href="classomega_1_1_stats_manager.html#aab41875cd51d3af256917714f5bdf966a7c829d92a1e14c49243151390dd45fe7">omega::StatsManager</a>
@@ -372,14 +378,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>Print()
 : <a class="el" href="classomega_1_1xml_1_1_ti_xml_attribute.html#a5abecd5a1f2d8c62b74cb31d3d710e6f">omega::xml::TiXmlAttribute</a>
 , <a class="el" href="classomega_1_1xml_1_1_ti_xml_declaration.html#a4f7b4c35d66de08d0cd415eb5b05f039">omega::xml::TiXmlDeclaration</a>
-, <a class="el" href="classomega_1_1xml_1_1_ti_xml_element.html#aaa2525428dfd4660b14685d6721b3f79">omega::xml::TiXmlElement</a>
-, <a class="el" href="classomega_1_1xml_1_1_ti_xml_document.html#abe99202985ac4901e159ed4b2d96251f">omega::xml::TiXmlDocument</a>
-, <a class="el" href="classomega_1_1xml_1_1_ti_xml_attribute.html#a8186e6c0f74687e04a678e3081c72ed7">omega::xml::TiXmlAttribute</a>
 , <a class="el" href="classomega_1_1xml_1_1_ti_xml_unknown.html#ad3e6e66dfa1e061a018c9ffe25813afa">omega::xml::TiXmlUnknown</a>
 , <a class="el" href="classomega_1_1xml_1_1_ti_xml_document.html#ae11b4abaa646ee60696d5c300606c195">omega::xml::TiXmlDocument</a>
-, <a class="el" href="classomega_1_1xml_1_1_ti_xml_text.html#a21a1dded93c95aabe2dbe65ba4146013">omega::xml::TiXmlText</a>
+, <a class="el" href="classomega_1_1xml_1_1_ti_xml_declaration.html#a4788a89d3a2d4eea322d7019de05a424">omega::xml::TiXmlDeclaration</a>
+, <a class="el" href="classomega_1_1xml_1_1_ti_xml_document.html#abe99202985ac4901e159ed4b2d96251f">omega::xml::TiXmlDocument</a>
 , <a class="el" href="classomega_1_1xml_1_1_ti_xml_base.html#a6dbf59d2c214635322a0d05e324dd856">omega::xml::TiXmlBase</a>
+, <a class="el" href="classomega_1_1xml_1_1_ti_xml_element.html#aaa2525428dfd4660b14685d6721b3f79">omega::xml::TiXmlElement</a>
+, <a class="el" href="classomega_1_1xml_1_1_ti_xml_text.html#a21a1dded93c95aabe2dbe65ba4146013">omega::xml::TiXmlText</a>
 , <a class="el" href="classomega_1_1xml_1_1_ti_xml_comment.html#a11ae86f6593408cf6109ef7e8ac71de1">omega::xml::TiXmlComment</a>
+, <a class="el" href="classomega_1_1xml_1_1_ti_xml_attribute.html#a8186e6c0f74687e04a678e3081c72ed7">omega::xml::TiXmlAttribute</a>
 </li>
 <li>printObjCounts()
 : <a class="el" href="classomicron_1_1_reference_type.html#a2ab483ab6db3edcca6495fe9465d72d2">omicron::ReferenceType</a>
@@ -427,8 +434,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classomicron_1_1_plane.html#a0807891f2644797348f4801c16b19927">omicron::Plane</a>
 </li>
 <li>PS3
-: <a class="el" href="classomicron_1_1_direct_input_service.html#a7f489b1508e7aa5bc76e0ce8339d426dac67da9949acb40bb000aa4cbde30a1fc">omicron::DirectInputService</a>
-, <a class="el" href="classomicron_1_1_x_input_service.html#a2a2a5c29ec1ee352b7671140cf2925e0a91aaad9d1568c2015282d230e7078982">omicron::XInputService</a>
+: <a class="el" href="classomicron_1_1_x_input_service.html#a2a2a5c29ec1ee352b7671140cf2925e0a91aaad9d1568c2015282d230e7078982">omicron::XInputService</a>
+, <a class="el" href="classomicron_1_1_direct_input_service.html#a7f489b1508e7aa5bc76e0ce8339d426dac67da9949acb40bb000aa4cbde30a1fc">omicron::DirectInputService</a>
 , <a class="el" href="classomicron_1_1_legacy_direct_input_service.html#aba268a2acf7c5fdbcf6e39b26711772faaeea47ec4e3560aa87c5fd482b089f23">omicron::LegacyDirectInputService</a>
 </li>
 <li>Purple

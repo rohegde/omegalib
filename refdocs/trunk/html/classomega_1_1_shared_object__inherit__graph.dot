@@ -12,7 +12,7 @@ digraph "omega::SharedObject"
   Node3 -> Node4 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node4 [label="omega::Actor",height=0.2,width=0.4,color="black",URL="$classomega_1_1_actor.html",tooltip="A specialied EngineModule used to control objects in a scene and define custom behaviors. "];
   Node4 -> Node5 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node5 [label="omega::TrackedObject",height=0.2,width=0.4,color="black",URL="$classomega_1_1_tracked_object.html"];
+  Node5 [label="omega::TrackedObject",height=0.2,width=0.4,color="black",URL="$classomega_1_1_tracked_object.html",tooltip="Implements an Actor that sets the position and orientation of a scene node based on a events generate..."];
   Node4 -> Node6 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node6 [label="omegaToolkit::Controller\lManipulator",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_controller_manipulator.html"];
   Node4 -> Node7 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];

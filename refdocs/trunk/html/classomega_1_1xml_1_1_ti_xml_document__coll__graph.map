@@ -1,5 +1,0 @@
-<map id="omega::xml::TiXmlDocument" name="omega::xml::TiXmlDocument">
-<area shape="rect" id="node2" href="$classomega_1_1xml_1_1_ti_xml_node.html" title="The parent class for everything in the Document Object Model. " alt="" coords="294,289,428,313"/>
-<area shape="rect" id="node4" href="$classomega_1_1xml_1_1_ti_xml_base.html" title="TiXmlBase is a base class for every class in TinyXml. " alt="" coords="168,187,301,211"/>
-<area shape="rect" id="node6" href="$structomega_1_1xml_1_1_ti_xml_cursor.html" title="omega::xml::TiXmlCursor" alt="" coords="98,101,240,125"/>
-</map>

@@ -24,6 +24,7 @@ digraph "omegaToolkit::ui::Label"
   Node10 [label="VerticalAlign",height=0.2,width=0.4,color="grey75"];
   Node11 -> Node1 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" myHorizontalAlign" ,fontname="FreeSans.ttf"];
   Node11 [label="HorizontalAlign",height=0.2,width=0.4,color="grey75"];
+  Node8 -> Node1 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" myAutosizeVerticalPadding\nmyAutosizeHorizontalPadding" ,fontname="FreeSans.ttf"];
   Node12 -> Node1 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" myColor" ,fontname="FreeSans.ttf"];
   Node12 [label="omega::Color",height=0.2,width=0.4,color="black",URL="$classomega_1_1_color.html"];
   Node12 -> Node12 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" Yellow\nLime\nNavy\nWhite\nOlive\nBlue\nPurple\nTeal\nAqua\nSilver\n..." ,fontname="FreeSans.ttf"];

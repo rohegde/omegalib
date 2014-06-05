@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">5.1</span>
+   &#160;<span id="projectnumber">5.3</span>
    </div>
   </td>
  </tr>
@@ -123,7 +123,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Public Types</h2></td></tr>
 <tr class="memitem:af4f12048c7d637be88b17733a9d85268"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#af4f12048c7d637be88b17733a9d85268">DisplaySystemType</a> { <a class="el" href="classomega_1_1_display_system.html#af4f12048c7d637be88b17733a9d85268ab254963f80d8d59f9cf6a9eba47349ec">Invalid</a>, 
 <a class="el" href="classomega_1_1_display_system.html#af4f12048c7d637be88b17733a9d85268ac166b8aa3c91c3cc2a4552d4a52fdd34">Equalizer</a>, 
-<a class="el" href="classomega_1_1_display_system.html#af4f12048c7d637be88b17733a9d85268a796852e5aa416554006fdfba274ce6e8">Glut</a>
+<a class="el" href="classomega_1_1_display_system.html#af4f12048c7d637be88b17733a9d85268a796852e5aa416554006fdfba274ce6e8">Glut</a>, 
+<a class="el" href="classomega_1_1_display_system.html#af4f12048c7d637be88b17733a9d85268a72d9d09086da191bbd38d69681c24ff9">Null</a>
  }</td></tr>
 <tr class="separator:af4f12048c7d637be88b17733a9d85268"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -160,6 +161,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2c48a0ad27086caef221eb1ffba15497"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa1d3fbb7f8fbdd22b64747191265b20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#afa1d3fbb7f8fbdd22b64747191265b20">setBackgroundColor</a> (const <a class="el" href="classomega_1_1_color.html">Color</a> &amp;value)</td></tr>
 <tr class="separator:afa1d3fbb7f8fbdd22b64747191265b20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5557454e81f3b5ba82e65326ec75bc6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a5557454e81f3b5ba82e65326ec75bc6c">clearColor</a> (bool enabled)</td></tr>
+<tr class="separator:a5557454e81f3b5ba82e65326ec75bc6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeed8b6772fe7479126190f948eaaa9d2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#aeed8b6772fe7479126190f948eaaa9d2">isClearColorEnabled</a> ()</td></tr>
+<tr class="separator:aeed8b6772fe7479126190f948eaaa9d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2129ca4703e771812ab1ecbf1d21d7c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a2129ca4703e771812ab1ecbf1d21d7c5">clearDepth</a> (bool enabled)</td></tr>
+<tr class="separator:a2129ca4703e771812ab1ecbf1d21d7c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa63c3b8b6886382e76d345382e662bea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#aa63c3b8b6886382e76d345382e662bea">isClearDepthEnabled</a> ()</td></tr>
+<tr class="separator:aa63c3b8b6886382e76d345382e662bea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a67ee43bd869da4325f4fc86a74c7dee5 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a67ee43bd869da4325f4fc86a74c7dee5">ReferenceType</a> ()</td></tr>
 <tr class="separator:a67ee43bd869da4325f4fc86a74c7dee5 inherit pub_methods_classomicron_1_1_reference_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,6 +216,8 @@ Additional Inherited Members</h2></td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="af4f12048c7d637be88b17733a9d85268ac166b8aa3c91c3cc2a4552d4a52fdd34"></a>Equalizer</em>&nbsp;</td><td class="fielddoc">
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="af4f12048c7d637be88b17733a9d85268a796852e5aa416554006fdfba274ce6e8"></a>Glut</em>&nbsp;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="af4f12048c7d637be88b17733a9d85268a72d9d09086da191bbd38d69681c24ff9"></a>Null</em>&nbsp;</td><td class="fielddoc">
 </td></tr>
 </table>
 
@@ -285,6 +296,54 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a5557454e81f3b5ba82e65326ec75bc6c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::DisplaySystem::clearColor </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2129ca4703e771812ab1ecbf1d21d7c5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::DisplaySystem::clearDepth </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a2c48a0ad27086caef221eb1ffba15497"></a>
 <div class="memitem">
 <div class="memproto">
@@ -331,7 +390,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Returns the size of the display canvas. </p>
 
-<p>Implemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#a1897257d1cf90e8a6b8dd540edea1622">omega::EqualizerDisplaySystem</a>, <a class="el" href="classomega_1_1_equalizer_display_system.html#a1897257d1cf90e8a6b8dd540edea1622">omega::EqualizerDisplaySystem</a>, and <a class="el" href="classomega_1_1_glut_display_system.html#a2a86e0de2a9eb0cd533b9ec1f8183e2b">omega::GlutDisplaySystem</a>.</p>
+<p>Implemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#a1897257d1cf90e8a6b8dd540edea1622">omega::EqualizerDisplaySystem</a>, <a class="el" href="classomega_1_1_equalizer_display_system.html#a1897257d1cf90e8a6b8dd540edea1622">omega::EqualizerDisplaySystem</a>, <a class="el" href="classomega_1_1_glut_display_system.html#a2a86e0de2a9eb0cd533b9ec1f8183e2b">omega::GlutDisplaySystem</a>, and <a class="el" href="classomega_1_1_null_display_system.html#ac0d125e40324bd7ea8fedcdd91081a4e">omega::NullDisplaySystem</a>.</p>
 
 </div>
 </div>
@@ -381,7 +440,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#a8b6a900dd80617b352a1825cb738d466">omega::EqualizerDisplaySystem</a>, <a class="el" href="classomega_1_1_equalizer_display_system.html#a8b6a900dd80617b352a1825cb738d466">omega::EqualizerDisplaySystem</a>, and <a class="el" href="classomega_1_1_glut_display_system.html#a115ff754001e9232cff440f946be9c70">omega::GlutDisplaySystem</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#a8b6a900dd80617b352a1825cb738d466">omega::EqualizerDisplaySystem</a>, <a class="el" href="classomega_1_1_equalizer_display_system.html#a8b6a900dd80617b352a1825cb738d466">omega::EqualizerDisplaySystem</a>, <a class="el" href="classomega_1_1_glut_display_system.html#a115ff754001e9232cff440f946be9c70">omega::GlutDisplaySystem</a>, and <a class="el" href="classomega_1_1_null_display_system.html#afab60c4bf8914c5df753594e38f9f0b9">omega::NullDisplaySystem</a>.</p>
 
 </div>
 </div>
@@ -475,6 +534,52 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aeed8b6772fe7479126190f948eaaa9d2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::DisplaySystem::isClearColorEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa63c3b8b6886382e76d345382e662bea"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::DisplaySystem::isClearDepthEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="ad6fa7a49e0d6952439956c1b57ef3f98"></a>
 <div class="memitem">
 <div class="memproto">
@@ -552,7 +657,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Starts display system rendering. </p>
 <p>This call does not return until the current omegalib application sends an exit request to the system manager. </p>
 
-<p>Implemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#a8b92b31d02114926597892e649d2a7ab">omega::EqualizerDisplaySystem</a>, <a class="el" href="classomega_1_1_equalizer_display_system.html#a8b92b31d02114926597892e649d2a7ab">omega::EqualizerDisplaySystem</a>, and <a class="el" href="classomega_1_1_glut_display_system.html#a61ffb9eb14a644e03c815fcc9b31ace9">omega::GlutDisplaySystem</a>.</p>
+<p>Implemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#a8b92b31d02114926597892e649d2a7ab">omega::EqualizerDisplaySystem</a>, <a class="el" href="classomega_1_1_equalizer_display_system.html#a8b92b31d02114926597892e649d2a7ab">omega::EqualizerDisplaySystem</a>, <a class="el" href="classomega_1_1_null_display_system.html#aa60e935f093b25c4473233843453d176">omega::NullDisplaySystem</a>, and <a class="el" href="classomega_1_1_glut_display_system.html#a61ffb9eb14a644e03c815fcc9b31ace9">omega::GlutDisplaySystem</a>.</p>
 
 </div>
 </div>

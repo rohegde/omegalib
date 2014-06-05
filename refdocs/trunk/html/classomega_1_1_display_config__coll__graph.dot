@@ -17,7 +17,7 @@ digraph "omega::DisplayConfig"
   Node6 [label="omega::DisplayTileConfig",height=0.2,width=0.4,color="black",URL="$classomega_1_1_display_tile_config.html"];
   Node2 -> Node6 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node7 -> Node6 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" camera" ,fontname="FreeSans.ttf"];
-  Node7 [label="omega::Camera",height=0.2,width=0.4,color="red",URL="$classomega_1_1_camera.html",tooltip="The Camera class handles information about a view transformation, head  tracking and optional target ..."];
+  Node7 [label="omega::Camera",height=0.2,width=0.4,color="red",URL="$classomega_1_1_camera.html",tooltip="The Camera class handles information about a view transformation, head tracking and optional target b..."];
   Node8 -> Node6 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" yaw\npitch" ,fontname="FreeSans.ttf"];
   Node8 [label="float",height=0.2,width=0.4,color="grey75"];
   Node9 -> Node6 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" stereoMode" ,fontname="FreeSans.ttf"];

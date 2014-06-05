@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">5.1</span>
+   &#160;<span id="projectnumber">5.3</span>
    </div>
   </td>
  </tr>
@@ -106,9 +106,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a7ae5ef27a3266d6e824bea66942ca22d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_ray.html">Ray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_utils.html#a7ae5ef27a3266d6e824bea66942ca22d">getViewRay</a> (<a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a> position, <a class="el" href="classomega_1_1_display_tile_config.html">DisplayTileConfig</a> *dtc)</td></tr>
 <tr class="memdesc:a7ae5ef27a3266d6e824bea66942ca22d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a view ray given a local pointer positon and a tile index.  <a href="#a7ae5ef27a3266d6e824bea66942ca22d">More...</a><br/></td></tr>
 <tr class="separator:a7ae5ef27a3266d6e824bea66942ca22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6badff5c2cbb24bda1902c6504c11ac"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_utils.html#aa6badff5c2cbb24bda1902c6504c11ac">getViewRayFromEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt, <a class="el" href="classomicron_1_1_ray.html">Ray</a> &amp;ray, const <a class="el" href="classomega_1_1_display_config.html">DisplayConfig</a> &amp;cfg, bool normalizedPointerCoords=false)</td></tr>
-<tr class="memdesc:aa6badff5c2cbb24bda1902c6504c11ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes a view ray from a pointer or wand event.  <a href="#aa6badff5c2cbb24bda1902c6504c11ac">More...</a><br/></td></tr>
-<tr class="separator:aa6badff5c2cbb24bda1902c6504c11ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3df8ad43ab228ca798edadd6313f197"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_utils.html#ae3df8ad43ab228ca798edadd6313f197">getViewRayFromEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt, <a class="el" href="classomicron_1_1_ray.html">Ray</a> &amp;ray, const <a class="el" href="classomega_1_1_display_config.html">DisplayConfig</a> &amp;cfg, bool normalizedPointerCoords=false, <a class="el" href="classomega_1_1_camera.html">Camera</a> *=NULL)</td></tr>
+<tr class="memdesc:ae3df8ad43ab228ca798edadd6313f197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes a view ray from a pointer or wand event.  <a href="#ae3df8ad43ab228ca798edadd6313f197">More...</a><br/></td></tr>
+<tr class="separator:ae3df8ad43ab228ca798edadd6313f197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a296e7c0c017cf0d89bcfec537e1c3256"><td class="memItemLeft" align="right" valign="top">static std::pair&lt; bool, <a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_utils.html#a296e7c0c017cf0d89bcfec537e1c3256">getDisplayPointFromViewRay</a> (const <a class="el" href="classomicron_1_1_ray.html">Ray</a> &amp;ray, const <a class="el" href="classomega_1_1_display_config.html">DisplayConfig</a> &amp;cfg, bool normalizedPointerCoords=false)</td></tr>
 <tr class="memdesc:a296e7c0c017cf0d89bcfec537e1c3256"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes a 2D pointer given a 3D view ray.  <a href="#a296e7c0c017cf0d89bcfec537e1c3256">More...</a><br/></td></tr>
 <tr class="separator:a296e7c0c017cf0d89bcfec537e1c3256"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -231,7 +231,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aa6badff5c2cbb24bda1902c6504c11ac"></a>
+<a class="anchor" id="ae3df8ad43ab228ca798edadd6313f197"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -260,7 +260,13 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>normalizedPointerCoords</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>normalizedPointerCoords</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_camera.html">Camera</a> *&#160;</td>
+          <td class="paramname"> = <code>NULL</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

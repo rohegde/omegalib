@@ -4,7 +4,7 @@ var searchData=
   ['datainfo',['DataInfo',['../structomicron_1_1_data_info.html#af27f6b67b4105db784ca836406110f2f',1,'omicron::DataInfo']]],
   ['datasource',['DataSource',['../classomicron_1_1_data_source.html#a7738105ce3eedd2a2e10175fea18e557',1,'omicron::DataSource']]],
   ['datastream',['DataStream',['../classomicron_1_1_data_stream.html#aaeb8141f18065e25d52e994494f556f6',1,'omicron::DataStream']]],
-  ['deactivate',['deactivate',['../classomega_toolkit_1_1ui_1_1_widget.html#a55b15aada9a4829739eac237785322f4',1,'omegaToolkit::ui::Widget']]],
+  ['deactivate',['deactivate',['../classomega_toolkit_1_1ui_1_1_text_box.html#acc7ae0a162b60d6bccc9f7824a7b7ece',1,'omegaToolkit::ui::TextBox::deactivate()'],['../classomega_toolkit_1_1ui_1_1_widget.html#a55b15aada9a4829739eac237785322f4',1,'omegaToolkit::ui::Widget::deactivate()']]],
   ['decode',['decode',['../classomega_1_1_image_utils.html#a11a304da6fa4bb19b173158ba4d32a6b',1,'omega::ImageUtils']]],
   ['defaultbutton',['DefaultButton',['../classomega_toolkit_1_1ui_1_1_default_button.html#a4d9ca27f9c524066cbd207018ac85bef',1,'omegaToolkit::ui::DefaultButton']]],
   ['defaultbuttonrenderable',['DefaultButtonRenderable',['../classomega_toolkit_1_1ui_1_1_default_button_renderable.html#ac307c2c6e315ed087533e2cc69384aaf',1,'omegaToolkit::ui::DefaultButtonRenderable']]],

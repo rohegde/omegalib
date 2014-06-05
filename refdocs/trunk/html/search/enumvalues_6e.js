@@ -9,6 +9,6 @@ var searchData=
   ['no_5fside',['NO_SIDE',['../namespaceomicron.html#a781fe3276ec5b8864b093b3ca9b1f0cfa91d000e7e0457e71a2fd1e96c54086ad',1,'omicron']]],
   ['none',['None',['../classomicron_1_1_sound.html#a64411746b1a34186174f02c1e7c8b12da3319b219eb6d064439804b7d4450bccc',1,'omicron::Sound']]],
   ['norunflags',['NoRunFlags',['../classomega_1_1_python_interpreter.html#a18a445c0370977fbe3d5c5593a01fa7da5698992a07bba5f5ec2cedea5671c795',1,'omega::PythonInterpreter']]],
-  ['null',['Null',['../classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a8b32e4c6339728750b064785e2fe184e',1,'omicron::EventBase']]],
+  ['null',['Null',['../classomega_1_1_display_system.html#af4f12048c7d637be88b17733a9d85268a72d9d09086da191bbd38d69681c24ff9',1,'omega::DisplaySystem::Null()'],['../classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a8b32e4c6339728750b064785e2fe184e',1,'omicron::EventBase::Null()']]],
   ['numlayers',['NumLayers',['../classomega_toolkit_1_1ui_1_1_widget.html#ac304c8f3c64555687b3f00ff8683ac70a2399bf93e4ad60ea609524c25c47172c',1,'omegaToolkit::ui::Widget']]]
 ];

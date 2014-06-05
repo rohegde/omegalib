@@ -1,9 +1,0 @@
-<map id="omegaToolkit::ui::DefaultButton" name="omegaToolkit::ui::DefaultButton">
-<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_button.html" title="omegaToolkit::ui::Button" alt="" coords="571,171,712,195"/>
-<area shape="rect" id="node4" href="$classomega_toolkit_1_1ui_1_1_abstract_button.html" title="omegaToolkit::ui::Abstract\lButton" alt="" coords="323,99,474,135"/>
-<area shape="rect" id="node6" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="6,116,149,140"/>
-<area shape="rect" id="node10" href="$classomega_toolkit_1_1ui_1_1_image.html" title="omegaToolkit::ui::Image" alt="" coords="329,171,468,195"/>
-<area shape="rect" id="node17" href="$classomega_toolkit_1_1ui_1_1_label.html" title="omegaToolkit::ui::Label" alt="" coords="331,323,466,347"/>
-<area shape="rect" id="node13" href="$classomicron_1_1_ref.html" title="omicron::Ref\&lt; omega\l::PixelData \&gt;" alt="" coords="14,165,141,201"/>
-<area shape="rect" id="node26" href="$classomega_1_1_color.html" title="omega::Color" alt="" coords="34,596,121,620"/>
-</map>

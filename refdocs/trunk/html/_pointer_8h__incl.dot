@@ -29,5 +29,18 @@ digraph "D:/Workspace/omegalib/core/include/omega/Pointer.h"
   Node2 -> Node10 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node10 [label="IRendererCommand.h",height=0.2,width=0.4,color="black",URL="$_i_renderer_command_8h.html"];
   Node10 -> Node3 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node2 -> Node11 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node11 [label="Renderer.h",height=0.2,width=0.4,color="black",URL="$_renderer_8h.html"];
+  Node11 -> Node3 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node11 -> Node10 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node11 -> Node8 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node11 -> Node6 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node11 -> Node7 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node11 -> Node12 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node12 [label="SystemManager.h",height=0.2,width=0.4,color="red",URL="$_system_manager_8h.html"];
+  Node12 -> Node3 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node11 -> Node13 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node13 [label="omega/RenderTarget.h",height=0.2,width=0.4,color="red",URL="$_render_target_8h.html"];
+  Node13 -> Node3 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node1 -> Node9 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
 }

@@ -9,5 +9,5 @@ digraph "omega::SceneNode"
   Node3 -> Node2 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node3 [label="omicron::ReferenceType",height=0.2,width=0.4,color="black",URL="$classomicron_1_1_reference_type.html",tooltip="Implements a base class for reference-counted types. "];
   Node1 -> Node4 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node4 [label="omega::Camera",height=0.2,width=0.4,color="black",URL="$classomega_1_1_camera.html",tooltip="The Camera class handles information about a view transformation, head  tracking and optional target ..."];
+  Node4 [label="omega::Camera",height=0.2,width=0.4,color="black",URL="$classomega_1_1_camera.html",tooltip="The Camera class handles information about a view transformation, head tracking and optional target b..."];
 }

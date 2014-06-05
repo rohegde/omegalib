@@ -1,7 +1,0 @@
-<map id="omega::TrackedObject" name="omega::TrackedObject">
-<area shape="rect" id="node2" href="$classomega_1_1_actor.html" title="A specialied EngineModule used to control objects in a scene and define custom behaviors. " alt="" coords="127,357,215,381"/>
-<area shape="rect" id="node4" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="5,272,133,296"/>
-<area shape="rect" id="node6" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="5,163,133,187"/>
-<area shape="rect" id="node8" href="$classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph. " alt="" coords="223,272,339,296"/>
-<area shape="rect" id="node10" href="$classomega_1_1_node.html" title="Class representing a general&#45;purpose node in an articulated scene graph. " alt="" coords="230,163,316,187"/>
-</map>

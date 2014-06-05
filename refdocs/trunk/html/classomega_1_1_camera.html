@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">5.1</span>
+   &#160;<span id="projectnumber">5.3</span>
    </div>
   </td>
  </tr>
@@ -98,9 +98,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p><pre class="fragment">The Camera class handles information about a view transformation, head 
-tracking and optional target buffers for off screen rendering
-</pre><p> A camera can have a controller that is used to implement a navigation technique.  
+<p>The <a class="el" href="classomega_1_1_camera.html" title="The Camera class handles information about a view transformation, head tracking and optional target b...">Camera</a> class handles information about a view transformation, head tracking and optional target buffers for off screen rendering A camera can have a controller that is used to implement a navigation technique.  
  <a href="classomega_1_1_camera.html#details">More...</a></p>
 
 <p><code>#include &lt;Camera.h&gt;</code></p>
@@ -125,6 +123,10 @@ tracking and optional target buffers for off screen rendering
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
+<tr class="memitem:ac9fdcfcdbb6a11db52d58a8b7dae0a44"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44">ViewMode</a> { <a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44a289f4cb516fc3e96470dd85673f85c07">Immersive</a>, 
+<a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44ad847cbf8ca0de1c0af1bcd71f52feff8">Classic</a>
+ }</td></tr>
+<tr class="separator:ac9fdcfcdbb6a11db52d58a8b7dae0a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8ebd502f9dc760f33bf8fc58c58bcf5"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5">CameraFlags</a> { <a class="el" href="classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5acf5ad8da80e8ef549d24282045c8e0fc">DrawScene</a> = 1 &lt;&lt; 1, 
 <a class="el" href="classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5a18ef22e656ce035a7ecfb9d17658aebe">DrawOverlay</a> = 1 &lt;&lt; 2, 
 <a class="el" href="classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5aba06c0a544606a9b3d0e9ce232d637e8">DefaultFlags</a> = DrawScene | DrawOverlay
@@ -181,6 +183,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac4551f498f78617b6bd829120ad9075e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ac4551f498f78617b6bd829120ad9075e">isEnabledInContext</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
 <tr class="memdesc:ac4551f498f78617b6bd829120ad9075e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this camera is enabled in the specified draw context.  <a href="#ac4551f498f78617b6bd829120ad9075e">More...</a><br/></td></tr>
 <tr class="separator:ac4551f498f78617b6bd829120ad9075e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69741c3e02835c148139132daf503776"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a69741c3e02835c148139132daf503776">isEnabledInContext</a> (<a class="el" href="structomega_1_1_draw_context.html#a1d80ad5a2f764a5bdec468424347fede">DrawContext::Task</a> task, const <a class="el" href="classomega_1_1_display_tile_config.html">DisplayTileConfig</a> *tile)</td></tr>
+<tr class="separator:a69741c3e02835c148139132daf503776"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5e0b64b813690c988432623659edef6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ab5e0b64b813690c988432623659edef6">overlapsTile</a> (const <a class="el" href="classomega_1_1_display_tile_config.html">DisplayTileConfig</a> *tile, const <a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a> &amp;canvasSize)</td></tr>
+<tr class="memdesc:ab5e0b64b813690c988432623659edef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this camera view area overlaps the specified tile.  <a href="#ab5e0b64b813690c988432623659edef6">More...</a><br/></td></tr>
+<tr class="separator:ab5e0b64b813690c988432623659edef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d0788af31818e306b5b1188943c4bbe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a5d0788af31818e306b5b1188943c4bbe">setEnabled</a> (bool value)</td></tr>
 <tr class="memdesc:a5d0788af31818e306b5b1188943c4bbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the camera enabled flag.  <a href="#a5d0788af31818e306b5b1188943c4bbe">More...</a><br/></td></tr>
 <tr class="separator:a5d0788af31818e306b5b1188943c4bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,6 +202,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2a846bb10f5a000ec105eb3839409470"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a2a846bb10f5a000ec105eb3839409470">worldToLocalPosition</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;position)</td></tr>
 <tr class="memdesc:a2a846bb10f5a000ec105eb3839409470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a point from world to local coordinates using the camera position and orientation.  <a href="#a2a846bb10f5a000ec105eb3839409470">More...</a><br/></td></tr>
 <tr class="separator:a2a846bb10f5a000ec105eb3839409470"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82213aa8860c2733e6f38712a86e3bf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a82213aa8860c2733e6f38712a86e3bf4">clear</a> (<a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
+<tr class="separator:a82213aa8860c2733e6f38712a86e3bf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a000dce959e3162eff04818e5dd725766"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a000dce959e3162eff04818e5dd725766">endDraw</a> (<a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
 <tr class="separator:a000dce959e3162eff04818e5dd725766"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5b0b1e3e758ff99e528ffd4595b824b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#af5b0b1e3e758ff99e528ffd4595b824b">beginDraw</a> (<a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
@@ -214,16 +223,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aadb285494f1aa45a8c0414a3398e3d65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf9d70b693c811987f04b8557f7c9940"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#aaf9d70b693c811987f04b8557f7c9940">removeListener</a> (<a class="el" href="classomega_1_1_i_camera_listener.html">ICameraListener</a> *listener)</td></tr>
 <tr class="separator:aaf9d70b693c811987f04b8557f7c9940"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4b8d06b6eeb6731aa42259f5acbd2ce"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ac4b8d06b6eeb6731aa42259f5acbd2ce">getViewPosition</a> ()</td></tr>
-<tr class="memdesc:ac4b8d06b6eeb6731aa42259f5acbd2ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the position of the view generated by this camera on the global canvas, in normalized coordinates.  <a href="#ac4b8d06b6eeb6731aa42259f5acbd2ce">More...</a><br/></td></tr>
-<tr class="separator:ac4b8d06b6eeb6731aa42259f5acbd2ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ae82e7636513007cc9c9d4ac429680e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a3ae82e7636513007cc9c9d4ac429680e">setViewPosition</a> (float x, float y)</td></tr>
-<tr class="separator:a3ae82e7636513007cc9c9d4ac429680e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9f75e22f50fa27c360dde634637565c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ab9f75e22f50fa27c360dde634637565c">getViewSize</a> ()</td></tr>
-<tr class="memdesc:ab9f75e22f50fa27c360dde634637565c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the size of the view generated by this camera on the global canvas, in normalized coordinates.  <a href="#ab9f75e22f50fa27c360dde634637565c">More...</a><br/></td></tr>
-<tr class="separator:ab9f75e22f50fa27c360dde634637565c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b5aea1c8261f1f337f0b9b75dfbb540"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a2b5aea1c8261f1f337f0b9b75dfbb540">setViewSize</a> (float x, float y)</td></tr>
-<tr class="separator:a2b5aea1c8261f1f337f0b9b75dfbb540"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ad28032480b0a93d76e7b54cf9cbb332b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ad28032480b0a93d76e7b54cf9cbb332b">setSceneEnabled</a> (bool value)</td></tr>
 <tr class="memdesc:ad28032480b0a93d76e7b54cf9cbb332b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a view ray given an origin point in normalized coordinates.  <a href="#ad28032480b0a93d76e7b54cf9cbb332b">More...</a><br/></td></tr>
@@ -270,6 +269,47 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab5fbc8ea537cbbdc8a1fb530047ac5ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1d0168bac53584db4d6ca2fe084d6a4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ad1d0168bac53584db4d6ca2fe084d6a4">getEyeSeparation</a> ()</td></tr>
 <tr class="separator:ad1d0168bac53584db4d6ca2fe084d6a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:ac4b8d06b6eeb6731aa42259f5acbd2ce"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ac4b8d06b6eeb6731aa42259f5acbd2ce">getViewPosition</a> ()</td></tr>
+<tr class="memdesc:ac4b8d06b6eeb6731aa42259f5acbd2ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">View management.  <a href="#ac4b8d06b6eeb6731aa42259f5acbd2ce">More...</a><br/></td></tr>
+<tr class="separator:ac4b8d06b6eeb6731aa42259f5acbd2ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ae82e7636513007cc9c9d4ac429680e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a3ae82e7636513007cc9c9d4ac429680e">setViewPosition</a> (float x, float y)</td></tr>
+<tr class="separator:a3ae82e7636513007cc9c9d4ac429680e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9f75e22f50fa27c360dde634637565c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ab9f75e22f50fa27c360dde634637565c">getViewSize</a> ()</td></tr>
+<tr class="memdesc:ab9f75e22f50fa27c360dde634637565c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the size of the view generated by this camera on the global canvas, in normalized coordinates.  <a href="#ab9f75e22f50fa27c360dde634637565c">More...</a><br/></td></tr>
+<tr class="separator:ab9f75e22f50fa27c360dde634637565c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b5aea1c8261f1f337f0b9b75dfbb540"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a2b5aea1c8261f1f337f0b9b75dfbb540">setViewSize</a> (float x, float y)</td></tr>
+<tr class="separator:a2b5aea1c8261f1f337f0b9b75dfbb540"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bb9dd30488cea1c4258d5927b8931eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a6bb9dd30488cea1c4258d5927b8931eb">setReferenceView</a> (float x, float y, float width, float height)</td></tr>
+<tr class="separator:a6bb9dd30488cea1c4258d5927b8931eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae162e41e988b8fdeb7f77f264bf1c1ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ae162e41e988b8fdeb7f77f264bf1c1ea">setViewMode</a> (<a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44">ViewMode</a> mode)</td></tr>
+<tr class="memdesc:ae162e41e988b8fdeb7f77f264bf1c1ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the view mode.  <a href="#ae162e41e988b8fdeb7f77f264bf1c1ea">More...</a><br/></td></tr>
+<tr class="separator:ae162e41e988b8fdeb7f77f264bf1c1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb32e7076c8610877ea95b739564bfad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44">ViewMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#afb32e7076c8610877ea95b739564bfad">getViewMode</a> ()</td></tr>
+<tr class="separator:afb32e7076c8610877ea95b739564bfad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefde7f8dabce3e93681b7da3ae43d251"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#aefde7f8dabce3e93681b7da3ae43d251">getPixelViewX</a> ()</td></tr>
+<tr class="memdesc:aefde7f8dabce3e93681b7da3ae43d251"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function: returns the pixel rectangle corresponding to the current camera view.  <a href="#aefde7f8dabce3e93681b7da3ae43d251">More...</a><br/></td></tr>
+<tr class="separator:aefde7f8dabce3e93681b7da3ae43d251"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a548818a17aa4a4fc607f17ec6642834c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a548818a17aa4a4fc607f17ec6642834c">getPixelViewY</a> ()</td></tr>
+<tr class="separator:a548818a17aa4a4fc607f17ec6642834c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0565829c305174c78b869c033896ef75"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a0565829c305174c78b869c033896ef75">getPixelViewWidth</a> ()</td></tr>
+<tr class="separator:a0565829c305174c78b869c033896ef75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4000157dcefb99fd56ccc5954bdcfd96"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a4000157dcefb99fd56ccc5954bdcfd96">getPixelViewHeight</a> ()</td></tr>
+<tr class="separator:a4000157dcefb99fd56ccc5954bdcfd96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:aefeed88e844b5c18003971c98a969b15"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomega_1_1_color.html">Color</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#aefeed88e844b5c18003971c98a969b15">getBackgroundColor</a> ()</td></tr>
+<tr class="memdesc:aefeed88e844b5c18003971c98a969b15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frame buffer clear.  <a href="#aefeed88e844b5c18003971c98a969b15">More...</a><br/></td></tr>
+<tr class="separator:aefeed88e844b5c18003971c98a969b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f8cec45a191e736317beaae1b4a1b8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a7f8cec45a191e736317beaae1b4a1b8e">setBackgroundColor</a> (const <a class="el" href="classomega_1_1_color.html">Color</a> &amp;value)</td></tr>
+<tr class="separator:a7f8cec45a191e736317beaae1b4a1b8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a714ead163d4bec584487f06a519d3cb7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a714ead163d4bec584487f06a519d3cb7">clearColor</a> (bool enabled)</td></tr>
+<tr class="separator:a714ead163d4bec584487f06a519d3cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bbd70e32a8c183d64ba0b3ea854cdb0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a9bbd70e32a8c183d64ba0b3ea854cdb0">isClearColorEnabled</a> ()</td></tr>
+<tr class="separator:a9bbd70e32a8c183d64ba0b3ea854cdb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe87b4af23b2eb6217f7fa4f76577ce3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#afe87b4af23b2eb6217f7fa4f76577ce3">clearDepth</a> (bool enabled)</td></tr>
+<tr class="separator:afe87b4af23b2eb6217f7fa4f76577ce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e4eef6fbb4881a886d7c1ba6e797f08"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a5e4eef6fbb4881a886d7c1ba6e797f08">isClearDepthEnabled</a> ()</td></tr>
+<tr class="separator:a5e4eef6fbb4881a886d7c1ba6e797f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classomega_1_1_scene_node"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomega_1_1_scene_node')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classomega_1_1_scene_node.html">omega::SceneNode</a></td></tr>
 <tr class="memitem:a27a37c0775c898414fd73fc6787116a3 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a27a37c0775c898414fd73fc6787116a3">SceneNode</a> (<a class="el" href="classomega_1_1_engine.html">Engine</a> *server)</td></tr>
 <tr class="separator:a27a37c0775c898414fd73fc6787116a3 inherit pub_methods_classomega_1_1_scene_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -361,8 +401,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abc128a047dcada2d93d0dc3bc9a00bc3 inherit pub_methods_classomega_1_1_scene_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6371439bbe0afd878876929dd6045ab8 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a6371439bbe0afd878876929dd6045ab8">setFollowOffset</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;offset, const <a class="el" href="namespaceomicron.html#abe495230fb99452e2ea1b9d237a98885">Quaternion</a> &amp;ooffset)</td></tr>
 <tr class="separator:a6371439bbe0afd878876929dd6045ab8 inherit pub_methods_classomega_1_1_scene_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d572d7a2135b3241f3241e64bb1eb0c inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_tracked_object.html">TrackedObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a7d572d7a2135b3241f3241e64bb1eb0c">getTracker</a> ()</td></tr>
+<tr class="separator:a7d572d7a2135b3241f3241e64bb1eb0c inherit pub_methods_classomega_1_1_scene_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dc186940ddfc6da5507479d4e99f40b inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a0dc186940ddfc6da5507479d4e99f40b">unfollow</a> ()</td></tr>
 <tr class="separator:a0dc186940ddfc6da5507479d4e99f40b inherit pub_methods_classomega_1_1_scene_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6cbcc2ce82be04357b1aeed017c884f inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#ac6cbcc2ce82be04357b1aeed017c884f">setFlag</a> (<a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a> bit)</td></tr>
+<tr class="memdesc:ac6cbcc2ce82be04357b1aeed017c884f inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classomega_1_1_node.html" title="Class representing a general-purpose node in an articulated scene graph. ">Node</a> flags.  <a href="#ac6cbcc2ce82be04357b1aeed017c884f">More...</a><br/></td></tr>
+<tr class="separator:ac6cbcc2ce82be04357b1aeed017c884f inherit pub_methods_classomega_1_1_scene_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69e4a58100487ecdd52cd0cc34abbdec inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a69e4a58100487ecdd52cd0cc34abbdec">unsetFlag</a> (<a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a> bit)</td></tr>
+<tr class="separator:a69e4a58100487ecdd52cd0cc34abbdec inherit pub_methods_classomega_1_1_scene_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78294c6676fee9aa127d62daa8499ad5 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a78294c6676fee9aa127d62daa8499ad5">isFlagSet</a> (<a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a> bit)</td></tr>
+<tr class="separator:a78294c6676fee9aa127d62daa8499ad5 inherit pub_methods_classomega_1_1_scene_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classomega_1_1_node"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomega_1_1_node')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classomega_1_1_node.html">omega::Node</a></td></tr>
 <tr class="memitem:a7648149fee6e53e854cbd65fc7f50e91 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a7648149fee6e53e854cbd65fc7f50e91">Node</a> ()</td></tr>
 <tr class="memdesc:a7648149fee6e53e854cbd65fc7f50e91 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor, should only be called by parent, not directly.  <a href="#a7648149fee6e53e854cbd65fc7f50e91">More...</a><br/></td></tr>
@@ -558,6 +607,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a8831923618eac386e3662fd1d3bba433"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a8831923618eac386e3662fd1d3bba433">updateViewBounds</a> (<a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;ctx, const <a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a> &amp;canvasSize)</td></tr>
 <tr class="memdesc:a8831923618eac386e3662fd1d3bba433"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recomputed the view bounds for the current tile, updating the viewMin and viewMax values in the context structure.  <a href="#a8831923618eac386e3662fd1d3bba433">More...</a><br/></td></tr>
 <tr class="separator:a8831923618eac386e3662fd1d3bba433"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a382e9d36ea89eff13445acf4f4ca674b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a382e9d36ea89eff13445acf4f4ca674b">updateImmersiveViewTransform</a> ()</td></tr>
+<tr class="separator:a382e9d36ea89eff13445acf4f4ca674b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classomega_1_1_scene_node"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classomega_1_1_scene_node')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classomega_1_1_scene_node.html">omega::SceneNode</a></td></tr>
 <tr class="memitem:adbf5a34d4cc53ac68ea60afb2f52d504 inherit pro_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#adbf5a34d4cc53ac68ea60afb2f52d504">setParent</a> (<a class="el" href="classomega_1_1_node.html">Node</a> *parent)</td></tr>
 <tr class="memdesc:adbf5a34d4cc53ac68ea60afb2f52d504 inherit pro_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only available internally - notification of parent.  <a href="#adbf5a34d4cc53ac68ea60afb2f52d504">More...</a><br/></td></tr>
@@ -649,9 +700,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a436dafe8b6a5c62b5f111b644c6ed4b0 inherit pro_static_attribs_classomicron_1_1_reference_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><pre class="fragment">The Camera class handles information about a view transformation, head 
-tracking and optional target buffers for off screen rendering
-</pre><p> A camera can have a controller that is used to implement a navigation technique. </p>
+<div class="textblock"><p>The <a class="el" href="classomega_1_1_camera.html" title="The Camera class handles information about a view transformation, head tracking and optional target b...">Camera</a> class handles information about a view transformation, head tracking and optional target buffers for off screen rendering A camera can have a controller that is used to implement a navigation technique. </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="ac8ebd502f9dc760f33bf8fc58c58bcf5"></a>
 <div class="memitem">
@@ -686,6 +735,26 @@ tracking and optional target buffers for off screen rendering
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a746373af21486a022c4dc1c806e685c9a184d132ade07a4dc54e8cc42e6a07b64"></a>DefaultRenderPassMask</em>&nbsp;</td><td class="fielddoc">
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="a746373af21486a022c4dc1c806e685c9ac29b2697c019b7935656731a4837cc1d"></a>AllRenderPassMask</em>&nbsp;</td><td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<a class="anchor" id="ac9fdcfcdbb6a11db52d58a8b7dae0a44"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44">omega::Camera::ViewMode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="ac9fdcfcdbb6a11db52d58a8b7dae0a44a289f4cb516fc3e96470dd85673f85c07"></a>Immersive</em>&nbsp;</td><td class="fielddoc">
+<p>In immersive view mode, the scene does not follow view movement. </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="ac9fdcfcdbb6a11db52d58a8b7dae0a44ad847cbf8ca0de1c0af1bcd71f52feff8"></a>Classic</em>&nbsp;</td><td class="fielddoc">
+<p>In classic view mode, the scene follows the view movement and size. </p>
 </td></tr>
 </table>
 
@@ -762,6 +831,70 @@ tracking and optional target buffers for off screen rendering
 
 </div>
 </div>
+<a class="anchor" id="a82213aa8860c2733e6f38712a86e3bf4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::Camera::clear </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>context</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a714ead163d4bec584487f06a519d3cb7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::Camera::clearColor </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="afe87b4af23b2eb6217f7fa4f76577ce3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::Camera::clearDepth </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a000dce959e3162eff04818e5dd725766"></a>
 <div class="memitem">
 <div class="memproto">
@@ -807,6 +940,31 @@ tracking and optional target buffers for off screen rendering
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aefeed88e844b5c18003971c98a969b15"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classomega_1_1_color.html">Color</a>&amp; omega::Camera::getBackgroundColor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Frame buffer clear. </p>
 
 </div>
 </div>
@@ -1058,6 +1216,68 @@ tracking and optional target buffers for off screen rendering
 
 </div>
 </div>
+<a class="anchor" id="a4000157dcefb99fd56ccc5954bdcfd96"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int omega::Camera::getPixelViewHeight </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0565829c305174c78b869c033896ef75"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int omega::Camera::getPixelViewWidth </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aefde7f8dabce3e93681b7da3ae43d251"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int omega::Camera::getPixelViewX </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convenience function: returns the pixel rectangle corresponding to the current camera view. </p>
+
+</div>
+</div>
+<a class="anchor" id="a548818a17aa4a4fc607f17ec6642834c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int omega::Camera::getPixelViewY </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a7a86a163644ec03eb9ecc5d83b6ffbd6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1067,6 +1287,29 @@ tracking and optional target buffers for off screen rendering
       <table class="memname">
         <tr>
           <td class="memname">int omega::Camera::getTrackerSourceId </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="afb32e7076c8610877ea95b739564bfad"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44">Camera::ViewMode</a> omega::Camera::getViewMode </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1102,8 +1345,8 @@ tracking and optional target buffers for off screen rendering
 </table>
 </div><div class="memdoc">
 
-<p>Gets the position of the view generated by this camera on the global canvas, in normalized coordinates. </p>
-<p>Default is (0,0) </p>
+<p>View management. </p>
+<p>Gets the position of the view generated by this camera on the global canvas, in normalized coordinates. Default is (0,0) </p>
 
 </div>
 </div>
@@ -1172,6 +1415,52 @@ tracking and optional target buffers for off screen rendering
 
 </div>
 </div>
+<a class="anchor" id="a9bbd70e32a8c183d64ba0b3ea854cdb0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::Camera::isClearColorEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a5e4eef6fbb4881a886d7c1ba6e797f08"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::Camera::isClearDepthEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a15d0034aa8959bb4e136ade60e96b35a"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1233,6 +1522,32 @@ tracking and optional target buffers for off screen rendering
 </div><div class="memdoc">
 
 <p>Returns true if this camera is enabled in the specified draw context. </p>
+
+</div>
+</div>
+<a class="anchor" id="a69741c3e02835c148139132daf503776"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::Camera::isEnabledInContext </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structomega_1_1_draw_context.html#a1d80ad5a2f764a5bdec468424347fede">DrawContext::Task</a>&#160;</td>
+          <td class="paramname"><em>task</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1_display_tile_config.html">DisplayTileConfig</a> *&#160;</td>
+          <td class="paramname"><em>tile</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1379,6 +1694,34 @@ tracking and optional target buffers for off screen rendering
 
 </div>
 </div>
+<a class="anchor" id="ab5e0b64b813690c988432623659edef6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::Camera::overlapsTile </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1_display_tile_config.html">DisplayTileConfig</a> *&#160;</td>
+          <td class="paramname"><em>tile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a> &amp;&#160;</td>
+          <td class="paramname"><em>canvasSize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns true if this camera view area overlaps the specified tile. </p>
+
+</div>
+</div>
 <a class="anchor" id="aaf9d70b693c811987f04b8557f7c9940"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1391,6 +1734,30 @@ tracking and optional target buffers for off screen rendering
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_i_camera_listener.html">ICameraListener</a> *&#160;</td>
           <td class="paramname"><em>listener</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a7f8cec45a191e736317beaae1b4a1b8e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::Camera::setBackgroundColor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1_color.html">Color</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1657,6 +2024,52 @@ tracking and optional target buffers for off screen rendering
 
 </div>
 </div>
+<a class="anchor" id="a6bb9dd30488cea1c4258d5927b8931eb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::Camera::setReferenceView </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="ad28032480b0a93d76e7b54cf9cbb332b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1682,7 +2095,7 @@ tracking and optional target buffers for off screen rendering
 <p>Returns a view ray given an origin point in normalized coordinates. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">normalizedPoint</td><td>- the origin point for the ray in normalized ([0, 1]) coordinates <a class="el" href="classomega_1_1_camera.html" title="The Camera class handles information about a view transformation, head  tracking and optional target ...">Camera</a> flags When set to true, will draw all 3D scene render passes for this camera. Set to true by default. </td></tr>
+    <tr><td class="paramname">normalizedPoint</td><td>- the origin point for the ray in normalized ([0, 1]) coordinates <a class="el" href="classomega_1_1_camera.html" title="The Camera class handles information about a view transformation, head tracking and optional target b...">Camera</a> flags When set to true, will draw all 3D scene render passes for this camera. Set to true by default. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1750,6 +2163,32 @@ tracking and optional target buffers for off screen rendering
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae162e41e988b8fdeb7f77f264bf1c1ea"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::Camera::setViewMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44">ViewMode</a>&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets or sets the view mode. </p>
 
 </div>
 </div>
@@ -1833,6 +2272,29 @@ tracking and optional target buffers for off screen rendering
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a382e9d36ea89eff13445acf4f4ca674b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::Camera::updateImmersiveViewTransform </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

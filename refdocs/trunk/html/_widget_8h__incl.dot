@@ -20,11 +20,12 @@ digraph "D:/Workspace/omegalib/core/include/omegaToolkit/ui/Widget.h"
   Node7 [label="Renderer.h",height=0.2,width=0.4,color="red",URL="$_renderer_8h.html"];
   Node7 -> Node3 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node7 -> Node8 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node8 [label="Renderable.h",height=0.2,width=0.4,color="red",URL="$_renderable_8h.html"];
+  Node8 [label="DrawInterface.h",height=0.2,width=0.4,color="red",URL="$_draw_interface_8h.html"];
   Node8 -> Node3 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node7 -> Node9 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node8 -> Node9 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node9 [label="omega/ApplicationBase.h",height=0.2,width=0.4,color="red",URL="$_application_base_8h.html"];
   Node9 -> Node3 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node7 -> Node9 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node7 -> Node10 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node10 [label="SystemManager.h",height=0.2,width=0.4,color="red",URL="$_system_manager_8h.html"];
   Node10 -> Node3 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
@@ -36,9 +37,9 @@ digraph "D:/Workspace/omegalib/core/include/omegaToolkit/ui/Widget.h"
   Node6 -> Node12 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node12 [label="omega/EventSharingModule.h",height=0.2,width=0.4,color="red",URL="$_event_sharing_module_8h.html"];
   Node12 -> Node3 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node1 -> Node13 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node13 [label="DrawInterface.h",height=0.2,width=0.4,color="red",URL="$_draw_interface_8h.html"];
-  Node13 -> Node3 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node13 -> Node9 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node1 -> Node8 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node1 -> Node13 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node13 [label="Renderable.h",height=0.2,width=0.4,color="red",URL="$_renderable_8h.html"];
+  Node13 -> Node3 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node13 -> Node7 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
 }

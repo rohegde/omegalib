@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">5.1</span>
+   &#160;<span id="projectnumber">5.3</span>
    </div>
   </td>
  </tr>
@@ -96,6 +96,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
+<p>Implements an <a class="el" href="classomega_1_1_actor.html" title="A specialied EngineModule used to control objects in a scene and define custom behaviors. ">Actor</a> that sets the position and orientation of a scene node based on a events generated from a tracking system.  
+ <a href="classomega_1_1_tracked_object.html#details">More...</a></p>
+
 <p><code>#include &lt;TrackedObject.h&gt;</code></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for omega::TrackedObject:</div>
@@ -126,10 +129,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a92f350eea03f96c9341f9c0284558275"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3ff5e3233de994115c07646f4441875"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tracked_object.html#af3ff5e3233de994115c07646f4441875">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
 <tr class="separator:af3ff5e3233de994115c07646f4441875"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9364b0963436e0adf3ac02ae38d37598"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tracked_object.html#a9364b0963436e0adf3ac02ae38d37598">setOffset</a> (<a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> value)</td></tr>
-<tr class="separator:a9364b0963436e0adf3ac02ae38d37598"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c1704dbbdf6e1051bcaedd35a2dbbac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tracked_object.html#a7c1704dbbdf6e1051bcaedd35a2dbbac">getOffset</a> ()</td></tr>
-<tr class="separator:a7c1704dbbdf6e1051bcaedd35a2dbbac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63b8fa7c49e5e03c9b6f644448e091db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tracked_object.html#a63b8fa7c49e5e03c9b6f644448e091db">setOffset</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;value)</td></tr>
+<tr class="separator:a63b8fa7c49e5e03c9b6f644448e091db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad24dd689415ebcc1f37890c1dd737798"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tracked_object.html#ad24dd689415ebcc1f37890c1dd737798">getOffset</a> ()</td></tr>
+<tr class="separator:ad24dd689415ebcc1f37890c1dd737798"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3378241260bd521e439083b218ac1ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tracked_object.html#ac3378241260bd521e439083b218ac1ae">setOrientationOffset</a> (const <a class="el" href="namespaceomicron.html#abe495230fb99452e2ea1b9d237a98885">Quaternion</a> &amp;value)</td></tr>
 <tr class="separator:ac3378241260bd521e439083b218ac1ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52efeab90cf60c82545f09b6fd56a227"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#abe495230fb99452e2ea1b9d237a98885">Quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tracked_object.html#a52efeab90cf60c82545f09b6fd56a227">getOrientationOffset</a> ()</td></tr>
@@ -150,6 +153,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6dc51e4b1ae27834a0bfd3f07916fb20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60e4f60fbfdb11acc68893a2ac861935"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tracked_object.html#a60e4f60fbfdb11acc68893a2ac861935">getTrackableSourceId</a> ()</td></tr>
 <tr class="separator:a60e4f60fbfdb11acc68893a2ac861935"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dd784523e716bbed202521c6f752fbe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tracked_object.html#a5dd784523e716bbed202521c6f752fbe">setHideTimeout</a> (float timeout)</td></tr>
+<tr class="memdesc:a5dd784523e716bbed202521c6f752fbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a timeout in seconds to auto-hide the tracked object, if no events have been received.  <a href="#a5dd784523e716bbed202521c6f752fbe">More...</a><br/></td></tr>
+<tr class="separator:a5dd784523e716bbed202521c6f752fbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0917e7e46f7638cdf5651423942702b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tracked_object.html#ac0917e7e46f7638cdf5651423942702b">getHideTimeout</a> ()</td></tr>
+<tr class="separator:ac0917e7e46f7638cdf5651423942702b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49d9bbf9bb53cdc4dd3ac50c6aa8d564"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tracked_object.html#a49d9bbf9bb53cdc4dd3ac50c6aa8d564">setAutoHideEnabled</a> (bool value)</td></tr>
+<tr class="separator:a49d9bbf9bb53cdc4dd3ac50c6aa8d564"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6513a503f8fbeebedbcbd64fcb7970f6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tracked_object.html#a6513a503f8fbeebedbcbd64fcb7970f6">isAutoHideEnabled</a> ()</td></tr>
+<tr class="separator:a6513a503f8fbeebedbcbd64fcb7970f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classomega_1_1_actor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomega_1_1_actor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classomega_1_1_actor.html">omega::Actor</a></td></tr>
 <tr class="memitem:a4a95e63319fe1616c3e8a09422a5bd3a inherit pub_methods_classomega_1_1_actor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_actor.html#a4a95e63319fe1616c3e8a09422a5bd3a">Actor</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;name)</td></tr>
 <tr class="separator:a4a95e63319fe1616c3e8a09422a5bd3a inherit pub_methods_classomega_1_1_actor"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -257,7 +269,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a436dafe8b6a5c62b5f111b644c6ed4b0 inherit pro_static_attribs_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="classomicron_1_1_reference_type.html">ReferenceType</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a436dafe8b6a5c62b5f111b644c6ed4b0">mysObjList</a></td></tr>
 <tr class="separator:a436dafe8b6a5c62b5f111b644c6ed4b0 inherit pro_static_attribs_classomicron_1_1_reference_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Implements an <a class="el" href="classomega_1_1_actor.html" title="A specialied EngineModule used to control objects in a scene and define custom behaviors. ">Actor</a> that sets the position and orientation of a scene node based on a events generated from a tracking system. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="abb0a10f07bc52db5bdea1a23ba168a6b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -297,7 +311,7 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a7c1704dbbdf6e1051bcaedd35a2dbbac"></a>
+<a class="anchor" id="ac0917e7e46f7638cdf5651423942702b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -305,7 +319,30 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> omega::TrackedObject::getOffset </td>
+          <td class="memname">float omega::TrackedObject::getHideTimeout </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad24dd689415ebcc1f37890c1dd737798"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp; omega::TrackedObject::getOffset </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -415,6 +452,29 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a6513a503f8fbeebedbcbd64fcb7970f6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::TrackedObject::isAutoHideEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a19c0f69ce2b15287bab164795c8dde19"></a>
 <div class="memitem">
 <div class="memproto">
@@ -461,7 +521,57 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9364b0963436e0adf3ac02ae38d37598"></a>
+<a class="anchor" id="a49d9bbf9bb53cdc4dd3ac50c6aa8d564"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::TrackedObject::setAutoHideEnabled </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a5dd784523e716bbed202521c6f752fbe"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::TrackedObject::setHideTimeout </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>timeout</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set a timeout in seconds to auto-hide the tracked object, if no events have been received. </p>
+
+</div>
+</div>
+<a class="anchor" id="a63b8fa7c49e5e03c9b6f644448e091db"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -471,7 +581,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">void omega::TrackedObject::setOffset </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>

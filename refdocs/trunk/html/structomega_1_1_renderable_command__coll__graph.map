@@ -1,6 +1,0 @@
-<map id="omega::RenderableCommand" name="omega::RenderableCommand">
-<area shape="rect" id="node2" href="$classomega_1_1_i_renderer_command.html" title="omega::IRendererCommand" alt="" coords="5,185,163,209"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="13,104,155,128"/>
-<area shape="rect" id="node6" href="$classomicron_1_1_list.html" title="omicron::List\&lt; omicron\l::ReferenceType * \&gt;" alt="" coords="19,6,149,42"/>
-<area shape="rect" id="node10" href="$classomicron_1_1_ref.html" title="omicron::Ref\&lt; omega\l::Renderable \&gt;" alt="" coords="282,179,408,215"/>
-</map>

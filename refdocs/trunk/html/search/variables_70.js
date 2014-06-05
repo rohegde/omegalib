@@ -16,6 +16,8 @@ var searchData=
   ['posz',['posz',['../structomicron_connector_1_1_event_data.html#a69b0f7c4645f1cebbfe8d793ba29bba7',1,'omicronConnector::EventData']]],
   ['preallocblockid',['preallocBlockId',['../structomega_1_1_image_utils_1_1_load_image_async_task_data.html#a667b6ba1e48dd4436a2ec1d0b9a3dcb9',1,'omega::ImageUtils::LoadImageAsyncTaskData']]],
   ['prev',['prev',['../classomega_1_1xml_1_1_ti_xml_node.html#ab78404a78e26d7d78c2731be0954cb73',1,'omega::xml::TiXmlNode']]],
+  ['prevposresettime',['prevPosResetTime',['../struct_touch.html#acf22434771b371eab550124456e8169d',1,'Touch']]],
+  ['prevpostimer',['prevPosTimer',['../struct_touch.html#a2319e59d591adeb632394367a423d681',1,'Touch']]],
   ['projection',['projection',['../structomega_1_1_draw_context.html#accae58455968f893011768e1aa9f35db',1,'omega::DrawContext']]],
   ['purple',['Purple',['../classomega_1_1_color.html#ac2c6bab9cbeb0d3e3d8571f2d0cea9f7',1,'omega::Color']]]
 ];
