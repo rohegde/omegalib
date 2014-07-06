@@ -1,7 +1,7 @@
 var searchData=
 [
   ['panopticstereoenabled',['panopticStereoEnabled',['../classomega_1_1_display_config.html#ae8c4af50a96c52caef697015f8e992b1',1,'omega::DisplayConfig']]],
-  ['parent',['Parent',['../classomega_1_1xml_1_1_ti_xml_node.html#aabab724e2c347735712f02731227b444',1,'omega::xml::TiXmlNode::Parent()'],['../classomega_1_1xml_1_1_ti_xml_node.html#a0d71e3c089bcd3942763f733c92d6752',1,'omega::xml::TiXmlNode::Parent() const '],['../structconfig__setting__t.html#a70368ebbbb3c902adbbcd96606547d7d',1,'config_setting_t::parent()'],['../structparse__context.html#a79ae4fb7bb22de08f7f99c8478187e22',1,'parse_context::parent()'],['../classomega_1_1xml_1_1_ti_xml_node.html#a858cf46af1c026ccda722e98559445de',1,'omega::xml::TiXmlNode::parent()']]],
+  ['parent',['parent',['../structconfig__setting__t.html#a70368ebbbb3c902adbbcd96606547d7d',1,'config_setting_t::parent()'],['../structparse__context.html#a79ae4fb7bb22de08f7f99c8478187e22',1,'parse_context::parent()'],['../classomega_1_1xml_1_1_ti_xml_node.html#a858cf46af1c026ccda722e98559445de',1,'omega::xml::TiXmlNode::parent()'],['../classomega_1_1xml_1_1_ti_xml_node.html#aabab724e2c347735712f02731227b444',1,'omega::xml::TiXmlNode::Parent()'],['../classomega_1_1xml_1_1_ti_xml_node.html#a0d71e3c089bcd3942763f733c92d6752',1,'omega::xml::TiXmlNode::Parent() const ']]],
   ['parse',['Parse',['../classomega_1_1xml_1_1_ti_xml_base.html#af0cf83e49ee95de1c2d48e923a0c08ad',1,'omega::xml::TiXmlBase::Parse()'],['../classomega_1_1xml_1_1_ti_xml_attribute.html#ada423bcc4da536ea2540e93488cf01e6',1,'omega::xml::TiXmlAttribute::Parse()'],['../classomega_1_1xml_1_1_ti_xml_element.html#af3751ed95b401345b5e38ec7981406fa',1,'omega::xml::TiXmlElement::Parse()'],['../classomega_1_1xml_1_1_ti_xml_comment.html#a093a25c17f64a41d79d6eb0aaa03e8f8',1,'omega::xml::TiXmlComment::Parse()'],['../classomega_1_1xml_1_1_ti_xml_text.html#a53237c9939ed1511ed7524f5e00184ec',1,'omega::xml::TiXmlText::Parse()'],['../classomega_1_1xml_1_1_ti_xml_declaration.html#a512a7821c7eda0b1ea1bbb74b90335e6',1,'omega::xml::TiXmlDeclaration::Parse()'],['../classomega_1_1xml_1_1_ti_xml_unknown.html#a123f5ce0959d9ded4bd6e88221370fb8',1,'omega::xml::TiXmlUnknown::Parse()'],['../classomega_1_1xml_1_1_ti_xml_document.html#ab3151587cfc8ff6c4dd8883e668bd258',1,'omega::xml::TiXmlDocument::Parse()']]],
   ['parse_5fcontext',['parse_context',['../structparse__context.html',1,'']]],
   ['parsebuttonname',['parseButtonName',['../classomicron_1_1_event.html#a0917a981fd7b0e81f586e31df437c53e',1,'omicron::Event']]],
@@ -123,15 +123,17 @@ var searchData=
   ['pyapi_5fref_5fclass',['PYAPI_REF_CLASS',['../_python_interpreter_wrapper_8h.html#ace9281fd0f5279db158d1c37a3095e4e',1,'PythonInterpreterWrapper.h']]],
   ['pyapi_5fref_5fclass_5fwith_5fctor',['PYAPI_REF_CLASS_WITH_CTOR',['../_python_interpreter_wrapper_8h.html#a26639356485d1b50deb7775ccc985301',1,'PythonInterpreterWrapper.h']]],
   ['pyapi_5fref_5fgetter',['PYAPI_REF_GETTER',['../_python_interpreter_wrapper_8h.html#ad52e2c51e05209747a72cb543f5cd334',1,'PythonInterpreterWrapper.h']]],
+  ['pyapi_5fref_5fproperty',['PYAPI_REF_PROPERTY',['../_python_interpreter_wrapper_8h.html#af4b3e9dc02d0aec043247d6c57b3f945',1,'PythonInterpreterWrapper.h']]],
   ['pyapi_5freturn_5finternal_5fref',['PYAPI_RETURN_INTERNAL_REF',['../_python_interpreter_wrapper_8h.html#a09efa4b1df2655e5660c36e03edc02eb',1,'PythonInterpreterWrapper.h']]],
   ['pyapi_5freturn_5fnew_5finstance',['PYAPI_RETURN_NEW_INSTANCE',['../_python_interpreter_wrapper_8h.html#a1aed1bbb6beef72b78ebaf45638518fd',1,'PythonInterpreterWrapper.h']]],
   ['pyapi_5freturn_5fref',['PYAPI_RETURN_REF',['../_python_interpreter_wrapper_8h.html#a255c94991a300c145e28198c7b7bb2a4',1,'PythonInterpreterWrapper.h']]],
   ['pyapi_5freturn_5fvalue',['PYAPI_RETURN_VALUE',['../_python_interpreter_wrapper_8h.html#a670f6daa55c354894e6fa4d0b974574d',1,'PythonInterpreterWrapper.h']]],
   ['pyapi_5fstatic_5fref_5fgetter',['PYAPI_STATIC_REF_GETTER',['../_python_interpreter_wrapper_8h.html#a3f112a6af155bdfa7bbb1550adc7097a',1,'PythonInterpreterWrapper.h']]],
-  ['pythoninterpreter',['PythonInterpreter',['../classomega_1_1_python_interpreter.html#a3219875408f8111cb003ed269c656281',1,'omega::PythonInterpreter']]],
+  ['pyapi_5fvalue_5fproperty',['PYAPI_VALUE_PROPERTY',['../_python_interpreter_wrapper_8h.html#a2d831b7125217bf9457b8187c8380128',1,'PythonInterpreterWrapper.h']]],
   ['pythoninterpreter',['PythonInterpreter',['../classomega_1_1_python_interpreter.html',1,'omega']]],
+  ['pythoninterpreter',['PythonInterpreter',['../classomega_1_1_python_interpreter.html#a3219875408f8111cb003ed269c656281',1,'omega::PythonInterpreter']]],
   ['pythoninterpreter_2eh',['PythonInterpreter.h',['../_python_interpreter_8h.html',1,'']]],
-  ['pythoninterpreterwrapper',['PythonInterpreterWrapper',['../structomega_1_1_python_interpreter_wrapper.html',1,'omega']]],
   ['pythoninterpreterwrapper',['PythonInterpreterWrapper',['../classomega_1_1_python_interpreter.html#a64c0808c7300e509f0393d0946237445',1,'omega::PythonInterpreter']]],
+  ['pythoninterpreterwrapper',['PythonInterpreterWrapper',['../structomega_1_1_python_interpreter_wrapper.html',1,'omega']]],
   ['pythoninterpreterwrapper_2eh',['PythonInterpreterWrapper.h',['../_python_interpreter_wrapper_8h.html',1,'']]]
 ];

@@ -48,5 +48,6 @@ var searchData=
   ['drawrecttexture',['drawRectTexture',['../classomega_1_1_draw_interface.html#a3cf9a0d957a10a82ac30c51207f33b7d',1,'omega::DrawInterface']]],
   ['drawtext',['drawText',['../classomega_1_1_draw_interface.html#a64b966dddbc4968985a03293e499b0bb',1,'omega::DrawInterface']]],
   ['drawwiresphere',['drawWireSphere',['../classomega_1_1_draw_interface.html#a7b7c971b508dd98f6c4169dd4a159f5f',1,'omega::DrawInterface']]],
+  ['drawwtext',['drawWText',['../classomega_1_1_draw_interface.html#ae0652fa8e00d68ba68547a56584e4b63',1,'omega::DrawInterface']]],
   ['dynamic_5fpointer_5fcast',['dynamic_pointer_cast',['../namespaceomicron.html#a3f80363c6dd30cd0ebd0ed88771402c6',1,'omicron']]]
 ];

@@ -27,6 +27,7 @@ var searchData=
   ['addmodule',['addModule',['../classomega_1_1_module_services.html#a6ef8c31d5ae0cc4e2d030aaffbb33e30',1,'omega::ModuleServices::addModule()'],['../classomega_1_1_python_interpreter.html#a0c00e06b30830c36eb88c3df1b3e0507',1,'omega::PythonInterpreter::addModule(const char *name, PyMethodDef *methods)'],['../classomega_1_1_python_interpreter.html#a4a83e9d32e8e4fe4d66136ffa0f096a9',1,'omega::PythonInterpreter::addModule(const char *name, PyMethodDef *methods, const Dictionary&lt; String, int &gt; intConstants, const Dictionary&lt; String, String &gt; stringConstants)']]],
   ['addnode',['addNode',['../classomega_toolkit_1_1_scene_editor_module.html#a9765f87d8515a315e4e00a196417bd75',1,'omegaToolkit::SceneEditorModule']]],
   ['addpythonpath',['addPythonPath',['../classomega_1_1_python_interpreter.html#aab7e6192fca08e3d4eed6c93b3e610dd',1,'omega::PythonInterpreter']]],
+  ['addquickcommand',['addQuickCommand',['../classomega_1_1_engine.html#a2bfeebaf6e8c1d8050e0cb5a9f04d191',1,'omega::Engine']]],
   ['addrenderable',['addRenderable',['../classomega_1_1_renderable_factory.html#a2544737b613e1afeb79c3450133fc6a9',1,'omega::RenderableFactory']]],
   ['addrenderer',['addRenderer',['../classomega_1_1_engine.html#a7acf813d37f69ce4b80828e2cfe96a59',1,'omega::Engine']]],
   ['addrenderpass',['addRenderPass',['../classomega_1_1_renderer.html#a1143f7d98ad36b9b4546781c0f0299d3',1,'omega::Renderer']]],

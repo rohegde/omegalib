@@ -3,6 +3,7 @@ var searchData=
   ['callbacktriggerflags',['CallbackTriggerFlags',['../classwiimote.html#afc89f3e4a11b65d736e624d8bb1ef9dd',1,'wiimote']]],
   ['camera',['camera',['../classomega_1_1_display_tile_config.html#a428d97862f43ce22c62df4a684900f0f',1,'omega::DisplayTileConfig::camera()'],['../structomega_1_1_draw_context.html#ad8bad607260bb257eed8ea29f2d73864',1,'omega::DrawContext::camera()']]],
   ['cameraname',['cameraName',['../classomega_1_1_display_tile_config.html#a647147207adbac2e0a3dec9df9344aea',1,'omega::DisplayTileConfig']]],
+  ['canvaspixelrect',['canvasPixelRect',['../classomega_1_1_display_config.html#ac35ff9e37f73ec8543314ec4ac6e7768',1,'omega::DisplayConfig']]],
   ['canvaspixelsize',['canvasPixelSize',['../classomega_1_1_display_config.html#ad4c1c37fdf3e640b0676b62895046062',1,'omega::DisplayConfig']]],
   ['capacity',['capacity',['../structstrbuf__t.html#af532e798544a7dab19767406c6504649',1,'strbuf_t']]],
   ['center',['center',['../classomega_1_1_display_tile_config.html#a6f07dd7c6b4fa72b5e33b47da515f71d',1,'omega::DisplayTileConfig::center()'],['../structomega_toolkit_1_1ui_1_1_container3d_settings.html#aba94c3cfc98ca891040c1f7b80370770',1,'omegaToolkit::ui::Container3dSettings::center()']]],

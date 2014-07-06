@@ -16,7 +16,7 @@ digraph "Graphical Class Hierarchy"
   Node1 -> Node6 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node6 [label="omicron::Dictionary\l\< String, omega::Stat * \>",height=0.2,width=0.4,color="black",URL="$classomicron_1_1_dictionary.html"];
   Node1 -> Node7 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node7 [label="omicron::Dictionary\l\< String, omicron::Ref\l\< omega::Font \> \>",height=0.2,width=0.4,color="black",URL="$classomicron_1_1_dictionary.html"];
+  Node7 [label="omicron::Dictionary\l\< String, QuickCommand \>",height=0.2,width=0.4,color="black",URL="$classomicron_1_1_dictionary.html"];
   Node1 -> Node8 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node8 [label="omicron::Dictionary\l\< String, Ref\< Channel \> \>",height=0.2,width=0.4,color="black",URL="$classomicron_1_1_dictionary.html"];
   Node1 -> Node9 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];

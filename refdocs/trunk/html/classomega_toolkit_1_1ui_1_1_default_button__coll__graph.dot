@@ -38,6 +38,6 @@ digraph "omegaToolkit::ui::DefaultButton"
   Node15 -> Node11 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" myColor" ,fontname="FreeSans.ttf"];
   Node15 [label="omega::Color",height=0.2,width=0.4,color="black",URL="$classomega_1_1_color.html"];
   Node15 -> Node15 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" Yellow\nLime\nNavy\nWhite\nOlive\nBlue\nPurple\nTeal\nAqua\nSilver\n..." ,fontname="FreeSans.ttf"];
-  Node6 -> Node2 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" myImageEnabled" ,fontname="FreeSans.ttf"];
+  Node6 -> Node2 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" myTextEnabled\nmyImageEnabled" ,fontname="FreeSans.ttf"];
   Node15 -> Node2 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" myColor" ,fontname="FreeSans.ttf"];
 }

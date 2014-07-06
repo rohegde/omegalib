@@ -1,9 +1,9 @@
-digraph "D:/Workspace/omegalib/core/include/omega/EqualizerDisplaySystem.h"
+digraph "D:/Workspace/omegalib/source/include/omega/EqualizerDisplaySystem.h"
 {
   bgcolor="transparent";
   edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
   node [fontname="FreeSans.ttf",fontsize="8",shape=record];
-  Node1 [label="D:/Workspace/omegalib\l/core/include/omega/Equalizer\lDisplaySystem.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 [label="D:/Workspace/omegalib\l/source/include/omega\l/EqualizerDisplaySystem.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
   Node1 -> Node2 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node2 [label="DisplaySystem.h",height=0.2,width=0.4,color="black",URL="$_display_system_8h.html"];
   Node2 -> Node3 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
@@ -27,12 +27,10 @@ digraph "D:/Workspace/omegalib/core/include/omega/EqualizerDisplaySystem.h"
   Node9 -> Node3 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node9 -> Node7 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node2 -> Node10 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node10 [label="Color.h",height=0.2,width=0.4,color="black",URL="$_color_8h.html"];
+  Node10 [label="omega/Color.h",height=0.2,width=0.4,color="red",URL="$_color_8h.html"];
   Node10 -> Node3 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node10 -> Node11 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node11 [label="omicron/StringUtils.h",height=0.2,width=0.4,color="red",URL="$_string_utils_8h.html"];
-  Node2 -> Node12 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node12 [label="DisplayUtils.h",height=0.2,width=0.4,color="black",URL="$_display_utils_8h.html"];
-  Node12 -> Node7 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node2 -> Node11 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node11 [label="DisplayUtils.h",height=0.2,width=0.4,color="black",URL="$_display_utils_8h.html"];
+  Node11 -> Node7 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node1 -> Node6 [color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
 }

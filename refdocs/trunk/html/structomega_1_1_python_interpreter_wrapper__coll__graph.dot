@@ -19,7 +19,7 @@ digraph "omega::PythonInterpreterWrapper"
   Node7 [label="omicron::List\< omega\l::PythonInterpreter::\lQueuedCommand * \>",height=0.2,width=0.4,color="black",URL="$classomicron_1_1_list.html"];
   Node8 -> Node7 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node8 [label="std::list\< omega::Python\lInterpreter::QueuedCommand * \>",height=0.2,width=0.4,color="grey75",tooltip="STL class. "];
-  Node9 -> Node4 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" myInitCommand" ,fontname="FreeSans.ttf"];
+  Node9 -> Node4 [dir="back",color="darkorchid3",fontsize="8",style="dashed",label=" myInitCommand\nmyInitScript" ,fontname="FreeSans.ttf"];
   Node9 [label="std::string",height=0.2,width=0.4,color="grey75",tooltip="STL class. "];
   Node10 -> Node9 [dir="back",color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node10 [label="std::basic_string\<\l char \>",height=0.2,width=0.4,color="grey75",tooltip="STL class. "];

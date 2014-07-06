@@ -15,7 +15,7 @@ var searchData=
   ['querysort',['QuerySort',['../classomega_1_1_scene_query.html#a5ff5a1025bdd821b818e06f2719b0ad9ad6e4946a0225643436a2e8e8e20a9ba4',1,'omega::SceneQuery']]],
   ['queryunsignedattribute',['QueryUnsignedAttribute',['../classomega_1_1xml_1_1_ti_xml_element.html#acebb79993995b7cefd8047674062a08a',1,'omega::xml::TiXmlElement']]],
   ['queue',['Queue',['../classomicron_1_1_queue.html',1,'omicron']]],
-  ['queue_3c_20const_20omega_3a_3adisplaytileconfig_20_2a_20_3e',['Queue&lt; const omega::DisplayTileConfig * &gt;',['../classomicron_1_1_queue.html',1,'omicron']]],
+  ['queue_3c_20omega_3a_3adisplaytileconfig_20_2a_20_3e',['Queue&lt; omega::DisplayTileConfig * &gt;',['../classomicron_1_1_queue.html',1,'omicron']]],
   ['queue_3c_20omicron_3a_3aref_3c_20omega_3a_3airenderercommand_20_3e_20_3e',['Queue&lt; omicron::Ref&lt; omega::IRendererCommand &gt; &gt;',['../classomicron_1_1_queue.html',1,'omicron']]],
   ['queue_5fentry',['queue_entry',['../structwiimote_1_1hid_1_1queue__entry.html#a2b0ffe2c51045464bc6b45b8807713ed',1,'wiimote::hid::queue_entry']]],
   ['queue_5fentry',['queue_entry',['../structwiimote_1_1hid_1_1queue__entry.html',1,'wiimote::hid']]],

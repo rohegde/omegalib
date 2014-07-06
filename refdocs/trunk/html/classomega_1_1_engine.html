@@ -21,10 +21,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">5.3</span>
+   &#160;<span id="projectnumber">6.0</span>
    </div>
   </td>
  </tr>
@@ -89,6 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
@@ -169,6 +169,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac138255642458f8cc13feeffe3085511"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4eebd7f2e2e2692dd1e721e1e9b9f130"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine.html#a4eebd7f2e2e2692dd1e721e1e9b9f130">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
 <tr class="separator:a4eebd7f2e2e2692dd1e721e1e9b9f130"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e48f3d72b5751f69ec190a82069ac72"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine.html#a5e48f3d72b5751f69ec190a82069ac72">handleCommand</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;cmd)</td></tr>
+<tr class="separator:a5e48f3d72b5751f69ec190a82069ac72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a7acf813d37f69ce4b80828e2cfe96a59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine.html#a7acf813d37f69ce4b80828e2cfe96a59">addRenderer</a> (<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *client)</td></tr>
 <tr class="memdesc:a7acf813d37f69ce4b80828e2cfe96a59"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classomega_1_1_renderer.html" title="The omegalib renderer is the entry point for all of omegalib rendering code. ">Renderer</a> management.  <a href="#a7acf813d37f69ce4b80828e2cfe96a59">More...</a><br/></td></tr>
@@ -232,6 +234,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afce1d8c551b5a7aa8bb961b1b86156e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977">Event::Flags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine.html#afce1d8c551b5a7aa8bb961b1b86156e3">getPrimaryButton</a> ()</td></tr>
 <tr class="memdesc:afce1d8c551b5a7aa8bb961b1b86156e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input mappings.  <a href="#afce1d8c551b5a7aa8bb961b1b86156e3">More...</a><br/></td></tr>
 <tr class="separator:afce1d8c551b5a7aa8bb961b1b86156e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a2bfeebaf6e8c1d8050e0cb5a9f04d191"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine.html#a2bfeebaf6e8c1d8050e0cb5a9f04d191">addQuickCommand</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;cmd, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;call, int args, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;description)</td></tr>
+<tr class="memdesc:a2bfeebaf6e8c1d8050e0cb5a9f04d191"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quick commands.  <a href="#a2bfeebaf6e8c1d8050e0cb5a9f04d191">More...</a><br/></td></tr>
+<tr class="separator:a2bfeebaf6e8c1d8050e0cb5a9f04d191"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad913cf722f259aa15857ae536439e2b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine.html#ad913cf722f259aa15857ae536439e2b2">removeQuickCommand</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;cmd)</td></tr>
+<tr class="separator:ad913cf722f259aa15857ae536439e2b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a67ee43bd869da4325f4fc86a74c7dee5 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a67ee43bd869da4325f4fc86a74c7dee5">ReferenceType</a> ()</td></tr>
 <tr class="separator:a67ee43bd869da4325f4fc86a74c7dee5 inherit pub_methods_classomicron_1_1_reference_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -346,6 +354,46 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a2bfeebaf6e8c1d8050e0cb5a9f04d191"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::Engine::addQuickCommand </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>cmd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>call</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>description</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Quick commands. </p>
+
+</div>
+</div>
 <a class="anchor" id="a7acf813d37f69ce4b80828e2cfe96a59"></a>
 <div class="memitem">
 <div class="memproto">
@@ -852,6 +900,22 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a5e48f3d72b5751f69ec190a82069ac72"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::Engine::handleCommand </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>cmd</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="ac138255642458f8cc13feeffe3085511"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1015,6 +1079,22 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Scene query. </p>
+
+</div>
+</div>
+<a class="anchor" id="ad913cf722f259aa15857ae536439e2b2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::Engine::removeQuickCommand </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>cmd</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1188,7 +1268,7 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/core/include/omega/<a class="el" href="_engine_8h.html">Engine.h</a></li>
+<li>D:/Workspace/omegalib/source/include/omega/<a class="el" href="_engine_8h.html">Engine.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

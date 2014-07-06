@@ -27,7 +27,7 @@ var searchData=
   ['width',['width',['../structomega_toolkit_1_1ui_1_1_widget_1_1_border_style.html#a5b6578e2e4b54e792c55fbbe14ae30d0',1,'omegaToolkit::ui::Widget::BorderStyle::width()'],['../structomicron_1_1_rect.html#a5cc9c9bdc8c25ccd00c263de294e32ac',1,'omicron::Rect::width()']]],
   ['wii_5fmotionplus',['Wii_MotionPlus',['../classomicron_1_1_legacy_direct_input_service.html#aba268a2acf7c5fdbcf6e39b26711772fa62eed333624da80e95aa6d4c0c039a54',1,'omicron::LegacyDirectInputService']]],
   ['wii_5fnunchuk',['Wii_Nunchuk',['../classomicron_1_1_legacy_direct_input_service.html#aba268a2acf7c5fdbcf6e39b26711772fa498ddabbdb4cb55a89fea36cefecf873',1,'omicron::LegacyDirectInputService']]],
-  ['wiimote',['wiimote',['../classwiimote.html',1,'wiimote'],['../classwiimote.html#a6c0adf03ba7221d1b47ffdf93e31b58a',1,'wiimote::wiimote()'],['../classomicron_1_1_legacy_direct_input_service.html#aba268a2acf7c5fdbcf6e39b26711772fa9a2a95306287189b27c1ffeeaf0ea5fb',1,'omicron::LegacyDirectInputService::Wiimote()']]],
+  ['wiimote',['wiimote',['../classwiimote.html',1,'wiimote'],['../classomicron_1_1_legacy_direct_input_service.html#aba268a2acf7c5fdbcf6e39b26711772fa9a2a95306287189b27c1ffeeaf0ea5fb',1,'omicron::LegacyDirectInputService::Wiimote()'],['../classwiimote.html#a6c0adf03ba7221d1b47ffdf93e31b58a',1,'wiimote::wiimote()']]],
   ['wiimote_2eh',['Wiimote.h',['../_wiimote_8h.html',1,'']]],
   ['wiimote_5fstate_5fevent',['wiimote_state_event',['../structwiimote__state__event.html',1,'']]],
   ['wiimoteservice',['WiimoteService',['../classomicron_1_1_wiimote_service.html',1,'omicron']]],

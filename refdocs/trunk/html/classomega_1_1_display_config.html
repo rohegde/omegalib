@@ -21,10 +21,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
-   &#160;<span id="projectnumber">5.3</span>
+   &#160;<span id="projectnumber">6.0</span>
    </div>
   </td>
  </tr>
@@ -145,6 +144,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1ab6e05e54a6aa8c7a6a02a734a4203a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ee92f45708de006a0c3cc29994fd102"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_display_tile_config.html">DisplayTileConfig</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_config.html#a6ee92f45708de006a0c3cc29994fd102">getTileFromPixel</a> (int x, int y)</td></tr>
 <tr class="separator:a6ee92f45708de006a0c3cc29994fd102"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa11810106dfd3ba929af90c3d7a17c14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_config.html#aa11810106dfd3ba929af90c3d7a17c14">updateCanvasPixelSize</a> ()</td></tr>
+<tr class="memdesc:aa11810106dfd3ba929af90c3d7a17c14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recompute the canvas pixel size based on the currently active tiles.  <a href="#aa11810106dfd3ba929af90c3d7a17c14">More...</a><br/></td></tr>
+<tr class="separator:aa11810106dfd3ba929af90c3d7a17c14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec846624967980586de38bb36734ae0f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_config.html#aec846624967980586de38bb36734ae0f">DisplayConfig</a> ()</td></tr>
 <tr class="separator:aec846624967980586de38bb36734ae0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
@@ -177,7 +179,11 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a09583c22b91ee6227829a44e06f6048e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_config.html#a09583c22b91ee6227829a44e06f6048e">verbose</a></td></tr>
 <tr class="memdesc:a09583c22b91ee6227829a44e06f6048e"><td class="mdescLeft">&#160;</td><td class="mdescRight">When set to true, the Display system will output additional diagnostic messages during startup and shutdown.  <a href="#a09583c22b91ee6227829a44e06f6048e">More...</a><br/></td></tr>
 <tr class="separator:a09583c22b91ee6227829a44e06f6048e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac35ff9e37f73ec8543314ec4ac6e7768"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomicron_1_1_rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_config.html#ac35ff9e37f73ec8543314ec4ac6e7768">canvasPixelRect</a></td></tr>
+<tr class="memdesc:ac35ff9e37f73ec8543314ec4ac6e7768"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the canvas minimum and maximum boundaries.  <a href="#ac35ff9e37f73ec8543314ec4ac6e7768">More...</a><br/></td></tr>
+<tr class="separator:ac35ff9e37f73ec8543314ec4ac6e7768"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4c1c37fdf3e640b0676b62895046062"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_config.html#ad4c1c37fdf3e640b0676b62895046062">canvasPixelSize</a></td></tr>
+<tr class="memdesc:ad4c1c37fdf3e640b0676b62895046062"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the canvas pixel size, computed from canvasPixelRect.  <a href="#ad4c1c37fdf3e640b0676b62895046062">More...</a><br/></td></tr>
 <tr class="separator:ad4c1c37fdf3e640b0676b62895046062"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1e4a5a77ce3e084b0fa5771b64bb87e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_config.html#ac1e4a5a77ce3e084b0fa5771b64bb87e">latency</a></td></tr>
 <tr class="memdesc:ac1e4a5a77ce3e084b0fa5771b64bb87e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display configuration type.  <a href="#ac1e4a5a77ce3e084b0fa5771b64bb87e">More...</a><br/></td></tr>
@@ -512,6 +518,23 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aa11810106dfd3ba929af90c3d7a17c14"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::DisplayConfig::updateCanvasPixelSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Recompute the canvas pixel size based on the currently active tiles. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a648b1fc4caa94f69ba7e2d0eeff18cc4"></a>
 <div class="memitem">
@@ -555,6 +578,21 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ac35ff9e37f73ec8543314ec4ac6e7768"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structomicron_1_1_rect.html">Rect</a> omega::DisplayConfig::canvasPixelRect</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Stores the canvas minimum and maximum boundaries. </p>
+<p>Normally, the minimum canvas point is (0,0) but in some settings (i.e. offset workspaces) the canvas starting point may be different. The canvas pixel rect is updated by the updateCanvasPixelSize method. </p>
+
+</div>
+</div>
 <a class="anchor" id="ad4c1c37fdf3e640b0676b62895046062"></a>
 <div class="memitem">
 <div class="memproto">
@@ -564,6 +602,8 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Stores the canvas pixel size, computed from canvasPixelRect. </p>
 
 </div>
 </div>
@@ -965,7 +1005,7 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/core/include/omega/<a class="el" href="_display_config_8h.html">DisplayConfig.h</a></li>
+<li>D:/Workspace/omegalib/source/include/omega/<a class="el" href="_display_config_8h.html">DisplayConfig.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
