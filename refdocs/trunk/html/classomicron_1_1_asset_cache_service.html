@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,6 +22,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
    &#160;<span id="projectnumber">6.0</span>
@@ -63,7 +65,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -100,24 +102,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <a href="classomicron_1_1_asset_cache_service.html#details">More...</a></p>
 
 <p><code>#include &lt;AssetCacheService.h&gt;</code></p>
-<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for omicron::AssetCacheService:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="classomicron_1_1_asset_cache_service__inherit__graph.png" border="0" usemap="#omicron_1_1_asset_cache_service_inherit__map" alt="Inheritance graph"/></div>
-<map name="omicron_1_1_asset_cache_service_inherit__map" id="omicron_1_1_asset_cache_service_inherit__map">
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for omicron::AssetCacheService:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="classomicron_1_1_asset_cache_service__coll__graph.png" border="0" usemap="#omicron_1_1_asset_cache_service_coll__map" alt="Collaboration graph"/></div>
-<map name="omicron_1_1_asset_cache_service_coll__map" id="omicron_1_1_asset_cache_service_coll__map">
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -250,7 +234,20 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The asset cache service manages a set of caches. </p>
 <p>A cache is a group of files that can be updated by a remote asset cache manager. The asset cache is used to synchronize files between machines: for instance, the head node on a cluster can use it to send sound assets to a sound server. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for omicron::AssetCacheService:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+ <div class="center">
+  <img src="classomicron_1_1_asset_cache_service.png" usemap="#omicron::AssetCacheService_map" alt=""/>
+  <map id="omicron::AssetCacheService_map" name="omicron::AssetCacheService_map">
+<area href="classomicron_1_1_tcp_server.html" title="Implements a Tcp server. " alt="omicron::TcpServer" shape="rect" coords="0,112,175,136"/>
+<area href="classomicron_1_1_service.html" title="The base class for Services: a Service has code that is executed periodically (in the poll method) an..." alt="omicron::Service" shape="rect" coords="0,56,175,80"/>
+<area href="classomicron_1_1_reference_type.html" title="Implements a base class for reference-counted types. " alt="omicron::ReferenceType" shape="rect" coords="0,0,175,24"/>
+</map>
+ </div></div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a2845fbeecb92f852049a36079747dd25"></a>
 <div class="memitem">
 <div class="memproto">

@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,6 +22,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
    &#160;<span id="projectnumber">6.0</span>
@@ -63,7 +65,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -101,15 +103,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <a href="structomega_1_1_draw_context.html#details">More...</a></p>
 
 <p><code>#include &lt;DrawContext.h&gt;</code></p>
-<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for omega::DrawContext:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="structomega_1_1_draw_context__coll__graph.png" border="0" usemap="#omega_1_1_draw_context_coll__map" alt="Collaboration graph"/></div>
-<map name="omega_1_1_draw_context_coll__map" id="omega_1_1_draw_context_coll__map">
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -141,11 +134,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1cf0018db5934d8e319b0ed887b7feec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a27c9f77fc3a963f8be506a1ae409b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a5a27c9f77fc3a963f8be506a1ae409b9">clear</a> ()</td></tr>
 <tr class="separator:a5a27c9f77fc3a963f8be506a1ae409b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cb6b67cd4dd8e3c895930632fabfe9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a6cb6b67cd4dd8e3c895930632fabfe9f">updateViewBounds</a> (const <a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a> &amp;viewPos, const <a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a> &amp;viewSize)</td></tr>
-<tr class="memdesc:a6cb6b67cd4dd8e3c895930632fabfe9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the viewport based on the view size and position an the size of the overall canvas.  <a href="#a6cb6b67cd4dd8e3c895930632fabfe9f">More...</a><br/></td></tr>
-<tr class="separator:a6cb6b67cd4dd8e3c895930632fabfe9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a4b9f3b571f4c2bb866ed5266f6ff46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a8a4b9f3b571f4c2bb866ed5266f6ff46">updateTransforms</a> (const <a class="el" href="namespaceomicron.html#a0513fe6a52c8d302529daca2ce376757">AffineTransform3</a> &amp;head, const <a class="el" href="namespaceomicron.html#a0513fe6a52c8d302529daca2ce376757">AffineTransform3</a> &amp;view, float eyeSeparation, float nearZ, float farZ)</td></tr>
-<tr class="memdesc:a8a4b9f3b571f4c2bb866ed5266f6ff46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the modelview and projection matrices based on head / view transform and eye separation.  <a href="#a8a4b9f3b571f4c2bb866ed5266f6ff46">More...</a><br/></td></tr>
+<tr class="memdesc:a8a4b9f3b571f4c2bb866ed5266f6ff46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the viewport based on the view size and position an the size of the overall canvas.  <a href="#a8a4b9f3b571f4c2bb866ed5266f6ff46">More...</a><br/></td></tr>
 <tr class="separator:a8a4b9f3b571f4c2bb866ed5266f6ff46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -156,13 +146,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a252dc6d93dd7fc3950e18c7a96a96a49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accae58455968f893011768e1aa9f35db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#ae54777cf4d205671e9b17e8a06f68f75">Transform3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#accae58455968f893011768e1aa9f35db">projection</a></td></tr>
 <tr class="separator:accae58455968f893011768e1aa9f35db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aece87d1abc20026bd9bbdba8c5145a5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#aece87d1abc20026bd9bbdba8c5145a5a">viewMin</a></td></tr>
-<tr class="memdesc:aece87d1abc20026bd9bbdba8c5145a5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The viewMin and viewMax are normalized coordinates of the view bounds on the current tile (that is, the size of the current rendered view on the current tile).  <a href="#aece87d1abc20026bd9bbdba8c5145a5a">More...</a><br/></td></tr>
-<tr class="separator:aece87d1abc20026bd9bbdba8c5145a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c5b12bb93858eab348c1a40b8336679"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a3c5b12bb93858eab348c1a40b8336679">viewMax</a></td></tr>
-<tr class="separator:a3c5b12bb93858eab348c1a40b8336679"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa52c0e14a78effc78e23dc203fe1239b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomicron_1_1_rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#aa52c0e14a78effc78e23dc203fe1239b">viewport</a></td></tr>
-<tr class="memdesc:aa52c0e14a78effc78e23dc203fe1239b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pixel viewport coordinates of this context with respect to the owner window of the context.  <a href="#aa52c0e14a78effc78e23dc203fe1239b">More...</a><br/></td></tr>
+<tr class="memdesc:aa52c0e14a78effc78e23dc203fe1239b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The viewMin and viewMax are normalized coordinates of the view bounds on the current tile (that is, the size of the current rendered view on the current tile).  <a href="#aa52c0e14a78effc78e23dc203fe1239b">More...</a><br/></td></tr>
 <tr class="separator:aa52c0e14a78effc78e23dc203fe1239b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e9781dcb951970883cfbe9d10a92a85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0">Eye</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a3e9781dcb951970883cfbe9d10a92a85">eye</a></td></tr>
 <tr class="memdesc:a3e9781dcb951970883cfbe9d10a92a85"><td class="mdescLeft">&#160;</td><td class="mdescRight">The eye being rendered for this context.  <a href="#a3e9781dcb951970883cfbe9d10a92a85">More...</a><br/></td></tr>
@@ -430,36 +415,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Updates the modelview and projection matrices based on head / view transform and eye separation. </p>
-<p>Crrent eye is read from context. </p>
-
-</div>
-</div>
-<a class="anchor" id="a6cb6b67cd4dd8e3c895930632fabfe9f"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void omega::DrawContext::updateViewBounds </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a> &amp;&#160;</td>
-          <td class="paramname"><em>viewPos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a> &amp;&#160;</td>
-          <td class="paramname"><em>viewSize</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
 <p>Updates the viewport based on the view size and position an the size of the overall canvas. </p>
+<p>Updates the modelview and projection matrices based on head / view transform and eye separation. Crrent eye is read from context. </p>
 
 </div>
 </div>
@@ -635,33 +592,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a3c5b12bb93858eab348c1a40b8336679"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a> omega::DrawContext::viewMax</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="aece87d1abc20026bd9bbdba8c5145a5a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a> omega::DrawContext::viewMin</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The viewMin and viewMax are normalized coordinates of the view bounds on the current tile (that is, the size of the current rendered view on the current tile). </p>
-<p>These values are computed intersecting the tile position and size on the global canvas with the active camera view position and size. The view minimum and maximum bounds influence the frustum shape and pixel viewport. </p>
-
-</div>
-</div>
 <a class="anchor" id="aa52c0e14a78effc78e23dc203fe1239b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -672,7 +602,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>The pixel viewport coordinates of this context with respect to the owner window of the context. </p>
+<p>The viewMin and viewMax are normalized coordinates of the view bounds on the current tile (that is, the size of the current rendered view on the current tile). </p>
+<p>These values are computed intersecting the tile position and size on the global canvas with the active camera view position and size. The view minimum and maximum bounds influence the frustum shape and pixel viewport. The pixel viewport coordinates of this context with respect to the owner window of the context. </p>
 
 </div>
 </div>

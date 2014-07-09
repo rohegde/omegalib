@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,6 +22,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
    &#160;<span id="projectnumber">6.0</span>
@@ -63,7 +65,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -96,24 +98,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 
 <p><code>#include &lt;SharedDataServices.h&gt;</code></p>
-<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for omega::SharedObject:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="classomega_1_1_shared_object__inherit__graph.png" border="0" usemap="#omega_1_1_shared_object_inherit__map" alt="Inheritance graph"/></div>
-<map name="omega_1_1_shared_object_inherit__map" id="omega_1_1_shared_object_inherit__map">
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for omega::SharedObject:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="classomega_1_1_shared_object__coll__graph.png" border="0" usemap="#omega_1_1_shared_object_coll__map" alt="Collaboration graph"/></div>
-<map name="omega_1_1_shared_object_coll__map" id="omega_1_1_shared_object_coll__map">
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -142,6 +126,28 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a436dafe8b6a5c62b5f111b644c6ed4b0 inherit pro_static_attribs_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="classomicron_1_1_reference_type.html">ReferenceType</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a436dafe8b6a5c62b5f111b644c6ed4b0">mysObjList</a></td></tr>
 <tr class="separator:a436dafe8b6a5c62b5f111b644c6ed4b0 inherit pro_static_attribs_classomicron_1_1_reference_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for omega::SharedObject:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+ <div class="center">
+  <img src="classomega_1_1_shared_object.png" usemap="#omega::SharedObject_map" alt=""/>
+  <map id="omega::SharedObject_map" name="omega::SharedObject_map">
+<area href="classomicron_1_1_reference_type.html" title="Implements a base class for reference-counted types. " alt="omicron::ReferenceType" shape="rect" coords="106,0,308,24"/>
+<area href="classomega_1_1_engine_module.html" alt="omega::EngineModule" shape="rect" coords="0,112,202,136"/>
+<area href="classomega_1_1_python_interpreter.html" alt="omega::PythonInterpreter" shape="rect" coords="212,112,414,136"/>
+<area href="classomega_1_1_actor.html" title="A specialied EngineModule used to control objects in a scene and define custom behaviors. " alt="omega::Actor" shape="rect" coords="212,168,414,192"/>
+<area href="classomega_1_1_camera_controller.html" alt="omega::CameraController" shape="rect" coords="212,224,414,248"/>
+<area href="classomega_1_1_console.html" alt="omega::Console" shape="rect" coords="212,280,414,304"/>
+<area href="classomega_1_1_event_sharing_module.html" alt="omega::EventSharingModule" shape="rect" coords="212,336,414,360"/>
+<area href="classomega_1_1_image_broadcast_module.html" alt="omega::ImageBroadcastModule" shape="rect" coords="212,392,414,416"/>
+<area href="classomega_1_1_mission_control_client.html" alt="omega::MissionControlClient" shape="rect" coords="212,448,414,472"/>
+<area href="classomega_toolkit_1_1_scene_editor_module.html" alt="omegaToolkit::SceneEditorModule" shape="rect" coords="212,504,414,528"/>
+<area href="classomega_toolkit_1_1ui_1_1_menu_manager.html" alt="omegaToolkit::ui::MenuManager" shape="rect" coords="212,560,414,584"/>
+<area href="classomega_toolkit_1_1_ui_module.html" alt="omegaToolkit::UiModule" shape="rect" coords="212,616,414,640"/>
+</map>
+ </div></div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a2dcc033e497ebda6852191ca3fea09d8"></a>
 <div class="memitem">

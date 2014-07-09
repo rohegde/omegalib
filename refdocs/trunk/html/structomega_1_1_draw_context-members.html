@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,6 +22,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
    &#160;<span id="projectnumber">6.0</span>
@@ -63,7 +65,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -99,8 +101,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr class="even"><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#ad5639a082fb11e9cdaebe45b14eeb097">drawBuffer</a></td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a6676de9ed6bc99e3e61e84f8e44d4f9a">DrawContext</a>()</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a044382b982bac6ac2db0222ba46e596b">drawFrame</a>(uint64 frameNum)</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a3e9781dcb951970883cfbe9d10a92a85">eye</a></td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0">Eye</a> enum name</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0">Eye</a> enum name</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a3e9781dcb951970883cfbe9d10a92a85">eye</a></td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0a3d1d5c0c1add136d7a5175a52cd9a450">EyeCyclop</a> enum value</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0a2ac9fc48b2b9338ff840ef755e61c80f">EyeLeft</a> enum value</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0ad7f12345276b72473a8b62aa585ad298">EyeRight</a> enum value</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
@@ -117,16 +119,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr class="even"><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a1d80ad5a2f764a5bdec468424347fedea02022b12e83f9e8a2a663522b93e3a50">SceneDrawTask</a> enum value</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a566f7a2c0b6bc30b7e92b6ee41edd0f1">setupInterleaver</a>()</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#ac01284be394a6cc54d12aa48f1754444">stencilInitialized</a></td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a1d80ad5a2f764a5bdec468424347fede">Task</a> enum name</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a69f2529e07cf9bb0d1b2b212abb9c4f5">task</a></td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a69f2529e07cf9bb0d1b2b212abb9c4f5">task</a></td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a1d80ad5a2f764a5bdec468424347fede">Task</a> enum name</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a241205e79f9b2ff00d36dfb85d969e69">tile</a></td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a1f6da1f10a6bfbbb70a448374a9fc07d">tileStack</a></td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a8a4b9f3b571f4c2bb866ed5266f6ff46">updateTransforms</a>(const AffineTransform3 &amp;head, const AffineTransform3 &amp;view, float eyeSeparation, float nearZ, float farZ)</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a6cb6b67cd4dd8e3c895930632fabfe9f">updateViewBounds</a>(const Vector2i &amp;viewPos, const Vector2i &amp;viewSize)</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a9b93bc2df5f6fb405b40c72fdc9cfb49">updateViewport</a>()</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a3c5b12bb93858eab348c1a40b8336679">viewMax</a></td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#aece87d1abc20026bd9bbdba8c5145a5a">viewMin</a></td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#aa52c0e14a78effc78e23dc203fe1239b">viewport</a></td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#a9b93bc2df5f6fb405b40c72fdc9cfb49">updateViewport</a>()</td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structomega_1_1_draw_context.html#aa52c0e14a78effc78e23dc203fe1239b">viewport</a></td><td class="entry"><a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

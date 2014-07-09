@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,6 +22,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
    &#160;<span id="projectnumber">6.0</span>
@@ -63,7 +65,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -96,21 +98,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 
 <p><code>#include &lt;MissionControl.h&gt;</code></p>
-<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for omega::IMissionControlMessageHandler:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="classomega_1_1_i_mission_control_message_handler__inherit__graph.png" border="0" usemap="#omega_1_1_i_mission_control_message_handler_inherit__map" alt="Inheritance graph"/></div>
-<map name="omega_1_1_i_mission_control_message_handler_inherit__map" id="omega_1_1_i_mission_control_message_handler_inherit__map">
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8bb7f06fb55ce415f7fb1905f2dd57e4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_i_mission_control_message_handler.html#a8bb7f06fb55ce415f7fb1905f2dd57e4">handleMessage</a> (<a class="el" href="classomega_1_1_mission_control_connection.html">MissionControlConnection</a> *sender, const char *header, char *data, int size)=0</td></tr>
 <tr class="separator:a8bb7f06fb55ce415f7fb1905f2dd57e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for omega::IMissionControlMessageHandler:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+ <div class="center">
+  <img src="classomega_1_1_i_mission_control_message_handler.png" usemap="#omega::IMissionControlMessageHandler_map" alt=""/>
+  <map id="omega::IMissionControlMessageHandler_map" name="omega::IMissionControlMessageHandler_map">
+<area href="classomega_1_1_mission_control_client.html" alt="omega::MissionControlClient" shape="rect" coords="0,56,238,80"/>
+</map>
+ </div></div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a8bb7f06fb55ce415f7fb1905f2dd57e4"></a>
 <div class="memitem">

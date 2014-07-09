@@ -14,6 +14,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,6 +22,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo-shadow (Custom).png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">omegalib
    &#160;<span id="projectnumber">6.0</span>
@@ -63,7 +65,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li class="current"><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -207,15 +209,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>Up
 : <a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a0113d8bf8529d050fe6c8c1026436a7d">omicron::EventBase</a>
 </li>
-<li>Update
-: <a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53aedaf961c6bfe48c3889aed7480320e64">omicron::EventBase</a>
-</li>
 <li>update()
-: <a class="el" href="classomega_toolkit_1_1ui_1_1_slider.html#ae15711cb2f035b96456bdfb9032becda">omegaToolkit::ui::Slider</a>
+: <a class="el" href="classomega_toolkit_1_1ui_1_1_text_box.html#ad741a8d2b85bfa3bc9818bda5a76d31d">omegaToolkit::ui::TextBox</a>
 , <a class="el" href="classomega_1_1_actor.html#aa67cfecc539e8d7fd50c5c65c5150eb4">omega::Actor</a>
 , <a class="el" href="classomega_1_1_camera_controller.html#adf17770dda159f9d3337e2113bba255e">omega::CameraController</a>
 , <a class="el" href="classomega_1_1_engine.html#a4eebd7f2e2e2692dd1e721e1e9b9f130">omega::Engine</a>
-, <a class="el" href="classomega_toolkit_1_1ui_1_1_button.html#a3e6b77e6d49538df4b5f9f4d1335d59c">omegaToolkit::ui::Button</a>
+, <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a1c1130db1bccfa0b9b0c9e738252a364">omegaToolkit::ui::Container</a>
 , <a class="el" href="classomega_1_1_gamepad_camera_controller.html#a8b5872bc3b5adcbfd6535ee73455b274">omega::GamepadCameraController</a>
 , <a class="el" href="classomega_1_1_keyboard_mouse_camera_controller.html#a06cbaef2020ef7cdf0dced68280a960c">omega::KeyboardMouseCameraController</a>
 , <a class="el" href="classomega_1_1_mission_control_client.html#ab6ca09134411b08d4d664c8657d81049">omega::MissionControlClient</a>
@@ -223,28 +222,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="classomega_1_1_module_services.html#a3f55d239fdce3475ae858f517ccd5220">omega::ModuleServices</a>
 , <a class="el" href="classomega_1_1_mouse_camera_controller.html#ad662f013f143adcfbf9df442afb81c2c">omega::MouseCameraController</a>
 , <a class="el" href="classomega_1_1_node.html#a59a6ee4efdfaa15019a274ffece91986">omega::Node</a>
-, <a class="el" href="classomega_1_1_tracked_object.html#af3ff5e3233de994115c07646f4441875">omega::TrackedObject</a>
+, <a class="el" href="classomega_1_1_wand_camera_controller.html#a558fd7241095ba97b513a9790c9fe9e5">omega::WandCameraController</a>
 , <a class="el" href="classomega_1_1_node_component.html#a0f5f76f1648a52c6d3cf471c154439af">omega::NodeComponent</a>
 , <a class="el" href="classomega_1_1_python_interpreter.html#a2a27feb1ccca57b36c3ceee00cb0de64">omega::PythonInterpreter</a>
 , <a class="el" href="classomega_1_1_scene_node.html#a335819b7392e2f68835588ece3cbecb0">omega::SceneNode</a>
-, <a class="el" href="classomega_1_1_wand_camera_controller.html#a558fd7241095ba97b513a9790c9fe9e5">omega::WandCameraController</a>
+, <a class="el" href="classomega_1_1_tracked_object.html#af3ff5e3233de994115c07646f4441875">omega::TrackedObject</a>
 , <a class="el" href="classomega_toolkit_1_1_controller_manipulator.html#a689e1d1e368c59e28ce5590649e58dd4">omegaToolkit::ControllerManipulator</a>
 , <a class="el" href="classomega_toolkit_1_1_mouse_manipulator.html#a6a681aa1518f4ecb69a2d85cf69de609">omegaToolkit::MouseManipulator</a>
 , <a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#ad4093e29d80a0db449d1a6665477e807">omegaToolkit::SceneEditorModule</a>
 , <a class="el" href="classomega_toolkit_1_1_ui_module.html#accdee57372ee23f12b5f547bfafdc031">omegaToolkit::UiModule</a>
 , <a class="el" href="classomega_toolkit_1_1_wand_manipulator.html#a030c2440da2efcab7d9e91fa55cb41ef">omegaToolkit::WandManipulator</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_abstract_button.html#ad4a3261e15c846364939a1aa5a55a7df">omegaToolkit::ui::AbstractButton</a>
-, <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a1c1130db1bccfa0b9b0c9e738252a364">omegaToolkit::ui::Container</a>
+, <a class="el" href="classomega_toolkit_1_1ui_1_1_button.html#a3e6b77e6d49538df4b5f9f4d1335d59c">omegaToolkit::ui::Button</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_menu.html#ab862ae08d8ff906ae92dd301587b643d">omegaToolkit::ui::Menu</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_menu_manager.html#a362d086e46ed9479f153c33c2047c99f">omegaToolkit::ui::MenuManager</a>
-, <a class="el" href="classomega_toolkit_1_1ui_1_1_text_box.html#ad741a8d2b85bfa3bc9818bda5a76d31d">omegaToolkit::ui::TextBox</a>
+, <a class="el" href="classomega_toolkit_1_1ui_1_1_slider.html#ae15711cb2f035b96456bdfb9032becda">omegaToolkit::ui::Slider</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#ade24ea07ef8365ebb5c2d5ab2f1b04c9">omegaToolkit::ui::Widget</a>
+</li>
+<li>Update
+: <a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53aedaf961c6bfe48c3889aed7480320e64">omicron::EventBase</a>
+</li>
+<li>updateActiveRect()
+: <a class="el" href="classomega_1_1_display_tile_config.html#a1c9516437f159090c94f8a962d80291a">omega::DisplayTileConfig</a>
 </li>
 <li>updateBoundingBox()
 : <a class="el" href="classomega_1_1_node_component.html#ac5c7b72db27084307d2f985854242261">omega::NodeComponent</a>
-</li>
-<li>updateCanvasPixelSize()
-: <a class="el" href="classomega_1_1_display_config.html#aa11810106dfd3ba929af90c3d7a17c14">omega::DisplayConfig</a>
 </li>
 <li>updateChildrenNavigation()
 : <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#ac3bd9c68f377c71c370273fa0e58f03f">omegaToolkit::ui::Container</a>
@@ -262,20 +264,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classomega_1_1_glut_display_system.html#a3a931722abf5b39a73d3683534bb3765">omega::GlutDisplaySystem</a>
 </li>
 <li>updateSharedData()
-: <a class="el" href="classomega_1_1_shared_object.html#ab75d571413704191930c695d8d70a270">omega::SharedObject</a>
-, <a class="el" href="classomega_1_1_engine_module.html#a02a53825388a2bce137bd53c46b81882">omega::EngineModule</a>
-, <a class="el" href="classomega_1_1_image_broadcast_module.html#a7425b0caffc3a665e64f4d403f2d53bb">omega::ImageBroadcastModule</a>
-, <a class="el" href="classomega_1_1_python_interpreter.html#a98ed2e36cca7942fb71d797e2be3fb79">omega::PythonInterpreter</a>
+: <a class="el" href="classomega_1_1_engine_module.html#a02a53825388a2bce137bd53c46b81882">omega::EngineModule</a>
+, <a class="el" href="classomega_1_1_shared_object.html#ab75d571413704191930c695d8d70a270">omega::SharedObject</a>
 , <a class="el" href="classomega_1_1_event_sharing_module.html#abb1475194f1ad893fd9b804d9b7ba081">omega::EventSharingModule</a>
+, <a class="el" href="classomega_1_1_python_interpreter.html#a98ed2e36cca7942fb71d797e2be3fb79">omega::PythonInterpreter</a>
+, <a class="el" href="classomega_1_1_image_broadcast_module.html#a7425b0caffc3a665e64f4d403f2d53bb">omega::ImageBroadcastModule</a>
 </li>
 <li>updateSize()
-: <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a41ab8af6235fe6ffd583bdc89bca79c7">omegaToolkit::ui::Widget</a>
-, <a class="el" href="classomega_toolkit_1_1ui_1_1_text_box.html#ad80ee1a0d1407979d29be1592969e1d5">omegaToolkit::ui::TextBox</a>
+: <a class="el" href="classomega_toolkit_1_1ui_1_1_text_box.html#ad80ee1a0d1407979d29be1592969e1d5">omegaToolkit::ui::TextBox</a>
+, <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a41ab8af6235fe6ffd583bdc89bca79c7">omegaToolkit::ui::Widget</a>
 , <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#afb80b5a913d90876f9a0ea64b636efaa">omegaToolkit::ui::Container</a>
 </li>
 <li>updateStyle()
-: <a class="el" href="classomega_toolkit_1_1ui_1_1_label.html#a06e48e04284278f18fdf20dcb14df097">omegaToolkit::ui::Label</a>
-, <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a459e873f3e6b84296c0d5690cfbe3719">omegaToolkit::ui::Widget</a>
+: <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a459e873f3e6b84296c0d5690cfbe3719">omegaToolkit::ui::Widget</a>
+, <a class="el" href="classomega_toolkit_1_1ui_1_1_label.html#a06e48e04284278f18fdf20dcb14df097">omegaToolkit::ui::Label</a>
 </li>
 <li>updateTransforms()
 : <a class="el" href="structomega_1_1_draw_context.html#a8a4b9f3b571f4c2bb866ed5266f6ff46">omega::DrawContext</a>
@@ -284,9 +286,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>updateTraversal()
 : <a class="el" href="classomega_1_1_scene_node.html#a265a62edbd15faf37eaa6572a7a74dda">omega::SceneNode</a>
 , <a class="el" href="classomega_1_1_camera.html#a2cb7cbe93dae42131ec03f228f93b017">omega::Camera</a>
-</li>
-<li>updateViewBounds()
-: <a class="el" href="structomega_1_1_draw_context.html#a6cb6b67cd4dd8e3c895930632fabfe9f">omega::DrawContext</a>
 </li>
 <li>updateViewport()
 : <a class="el" href="structomega_1_1_draw_context.html#a9b93bc2df5f6fb405b40c72fdc9cfb49">omega::DrawContext</a>
@@ -301,8 +300,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classomega_1_1xml_1_1_ti_xml_base.html#a06d920a2fc84eef7fabbf8f3981e4ed6">omega::xml::TiXmlBase</a>
 </li>
 <li>userID
-: <a class="el" href="structomicron_1_1_mocap_user.html#a486b1066e2cebed89eb65b1df779747b">omicron::MocapUser</a>
-, <a class="el" href="structomicron_1_1_joint.html#a3313faebabbfce2a60e4e06210dc74bb">omicron::Joint</a>
+: <a class="el" href="structomicron_1_1_joint.html#a3313faebabbfce2a60e4e06210dc74bb">omicron::Joint</a>
+, <a class="el" href="structomicron_1_1_mocap_user.html#a486b1066e2cebed89eb65b1df779747b">omicron::MocapUser</a>
 </li>
 <li>utf8ByteTable
 : <a class="el" href="classomega_1_1xml_1_1_ti_xml_base.html#a7f05110346e454c88fda9cc351ec538e">omega::xml::TiXmlBase</a>
