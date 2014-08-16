@@ -2,6 +2,7 @@ var searchData=
 [
   ['enter',['Enter',['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977aa0eaad0195622ef75ac976aca28146dc',1,'omicron::EventBase']]],
   ['equalizer',['Equalizer',['../classomega_1_1_display_system.html#af4f12048c7d637be88b17733a9d85268ac166b8aa3c91c3cc2a4552d4a52fdd34',1,'omega::DisplaySystem']]],
+  ['exclusive',['Exclusive',['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a6b7655cd0efd6e261fd1afdd6bd2bd0e',1,'omicron::EventBase']]],
   ['extent_5ffinite',['EXTENT_FINITE',['../classomicron_1_1_aligned_box3.html#aa5ca503cc04397fcbd453d6a53f4f514a1c1a7b89490962d6dddc4b922c954705',1,'omicron::AlignedBox3']]],
   ['extent_5finfinite',['EXTENT_INFINITE',['../classomicron_1_1_aligned_box3.html#aa5ca503cc04397fcbd453d6a53f4f514a2e3c9077bbc9f54da6d2ec02bc49a324',1,'omicron::AlignedBox3']]],
   ['extent_5fnull',['EXTENT_NULL',['../classomicron_1_1_aligned_box3.html#aa5ca503cc04397fcbd453d6a53f4f514a7b5134330740099cf11fb3e7eaa51f3b',1,'omicron::AlignedBox3']]],

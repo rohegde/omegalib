@@ -14,6 +14,7 @@ var searchData=
   ['dictionary',['Dictionary',['../classomicron_1_1_dictionary.html',1,'omicron']]],
   ['dictionary_3c_20char_2c_20omega_3a_3acolor_20_3e',['Dictionary&lt; char, omega::Color &gt;',['../classomicron_1_1_dictionary.html',1,'omicron']]],
   ['dictionary_3c_20int_2c_20omicron_3a_3aref_3c_20omega_3a_3apointer_20_3e_20_3e',['Dictionary&lt; int, omicron::Ref&lt; omega::Pointer &gt; &gt;',['../classomicron_1_1_dictionary.html',1,'omicron']]],
+  ['dictionary_3c_20string_2c_20bool_20_3e',['Dictionary&lt; String, bool &gt;',['../classomicron_1_1_dictionary.html',1,'omicron']]],
   ['dictionary_3c_20string_2c_20gluint_20_3e',['Dictionary&lt; String, GLuint &gt;',['../classomicron_1_1_dictionary.html',1,'omicron']]],
   ['dictionary_3c_20string_2c_20omega_3a_3adisplaytileconfig_20_2a_20_3e',['Dictionary&lt; String, omega::DisplayTileConfig * &gt;',['../classomicron_1_1_dictionary.html',1,'omicron']]],
   ['dictionary_3c_20string_2c_20omega_3a_3asharedobject_20_2a_20_3e',['Dictionary&lt; String, omega::SharedObject * &gt;',['../classomicron_1_1_dictionary.html',1,'omicron']]],

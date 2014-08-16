@@ -1,8 +1,10 @@
 var searchData=
 [
   ['ray',['Ray',['../classomicron_1_1_ray.html',1,'omicron']]],
+  ['raypointmapper',['RayPointMapper',['../classomicron_1_1_ray_point_mapper.html',1,'omicron']]],
   ['rayscenequery',['RaySceneQuery',['../classomega_1_1_ray_scene_query.html',1,'omega']]],
-  ['rect',['Rect',['../structomicron_1_1_rect.html',1,'omicron']]],
+  ['rect_5ft',['Rect_T',['../structomicron_1_1_rect___t.html',1,'omicron']]],
+  ['rect_5ft_3c_20int_20_3e',['Rect_T&lt; int &gt;',['../structomicron_1_1_rect___t.html',1,'omicron']]],
   ['ref',['Ref',['../classomicron_1_1_ref.html',1,'omicron']]],
   ['ref_3c_20camera_20_3e',['Ref&lt; Camera &gt;',['../classomicron_1_1_ref.html',1,'omicron']]],
   ['ref_3c_20omega_3a_3acamera_20_3e',['Ref&lt; omega::Camera &gt;',['../classomicron_1_1_ref.html',1,'omicron']]],
@@ -40,6 +42,7 @@ var searchData=
   ['ref_3c_20omicron_3a_3aassetcachemanager_20_3e',['Ref&lt; omicron::AssetCacheManager &gt;',['../classomicron_1_1_ref.html',1,'omicron']]],
   ['ref_3c_20omicron_3a_3aconfig_20_3e',['Ref&lt; omicron::Config &gt;',['../classomicron_1_1_ref.html',1,'omicron']]],
   ['ref_3c_20omicron_3a_3adatamanager_20_3e',['Ref&lt; omicron::DataManager &gt;',['../classomicron_1_1_ref.html',1,'omicron']]],
+  ['ref_3c_20omicron_3a_3araypointmapper_20_3e',['Ref&lt; omicron::RayPointMapper &gt;',['../classomicron_1_1_ref.html',1,'omicron']]],
   ['ref_3c_20omicron_3a_3aservice_20_3e',['Ref&lt; omicron::Service &gt;',['../classomicron_1_1_ref.html',1,'omicron']]],
   ['ref_3c_20omicron_3a_3asound_20_3e',['Ref&lt; omicron::Sound &gt;',['../classomicron_1_1_ref.html',1,'omicron']]],
   ['ref_3c_20omicron_3a_3asoundenvironment_20_3e',['Ref&lt; omicron::SoundEnvironment &gt;',['../classomicron_1_1_ref.html',1,'omicron']]],

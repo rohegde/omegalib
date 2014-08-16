@@ -119,8 +119,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:afbc9b8ebeec384107c853d679fc981d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62d745f53d30ce08da8e2cfd585d6429"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mission_control_server.html#a62d745f53d30ce08da8e2cfd585d6429">setMessageHandler</a> (<a class="el" href="classomega_1_1_i_mission_control_message_handler.html">IMissionControlMessageHandler</a> *msgHandler)</td></tr>
 <tr class="separator:a62d745f53d30ce08da8e2cfd585d6429"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec1ffa110a9ba2d194ca05a423e326cf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mission_control_server.html#aec1ffa110a9ba2d194ca05a423e326cf">setListener</a> (<a class="el" href="classomega_1_1_i_mission_control_listener.html">IMissionControlListener</a> *l)</td></tr>
+<tr class="separator:aec1ffa110a9ba2d194ca05a423e326cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d813762ca8d6a0d9fcdf9fc20f3afdc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_i_mission_control_listener.html">IMissionControlListener</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mission_control_server.html#a3d813762ca8d6a0d9fcdf9fc20f3afdc">getListener</a> ()</td></tr>
+<tr class="separator:a3d813762ca8d6a0d9fcdf9fc20f3afdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae650ba6162e9745b6c00d8e6f6374b7c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mission_control_server.html#ae650ba6162e9745b6c00d8e6f6374b7c">addLine</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;line)</td></tr>
 <tr class="separator:ae650ba6162e9745b6c00d8e6f6374b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3d996c447b2bdb7c39142880366abe6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mission_control_server.html#ae3d996c447b2bdb7c39142880366abe6">broadcastEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt, <a class="el" href="classomega_1_1_mission_control_connection.html">MissionControlConnection</a> *sender=NULL)</td></tr>
+<tr class="memdesc:ae3d996c447b2bdb7c39142880366abe6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Broadcasts an event.  <a href="#ae3d996c447b2bdb7c39142880366abe6">More...</a><br/></td></tr>
+<tr class="separator:ae3d996c447b2bdb7c39142880366abe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab58795f59188baa427e9b521b15dec75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mission_control_server.html#ab58795f59188baa427e9b521b15dec75">sendEventTo</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt, <a class="el" href="classomega_1_1_mission_control_connection.html">MissionControlConnection</a> *target)</td></tr>
+<tr class="memdesc:ab58795f59188baa427e9b521b15dec75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send an event to the specified client.  <a href="#ab58795f59188baa427e9b521b15dec75">More...</a><br/></td></tr>
+<tr class="separator:ab58795f59188baa427e9b521b15dec75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classomicron_1_1_tcp_server"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomicron_1_1_tcp_server')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classomicron_1_1_tcp_server.html">omicron::TcpServer</a></td></tr>
 <tr class="memitem:a7a900dad184df4ca2124dab559aed26a inherit pub_methods_classomicron_1_1_tcp_server"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_tcp_server.html#a7a900dad184df4ca2124dab559aed26a">TcpServer</a> ()</td></tr>
 <tr class="separator:a7a900dad184df4ca2124dab559aed26a inherit pub_methods_classomicron_1_1_tcp_server"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,6 +304,35 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ae3d996c447b2bdb7c39142880366abe6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::MissionControlServer::broadcastEvent </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;&#160;</td>
+          <td class="paramname"><em>evt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_mission_control_connection.html">MissionControlConnection</a> *&#160;</td>
+          <td class="paramname"><em>sender</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Broadcasts an event. </p>
+<p>If sender is not null, the event not be sent to the specified client. </p>
+
+</div>
+</div>
 <a class="anchor" id="ae42e4f242c00b0ea8c4afdece2f4116f"></a>
 <div class="memitem">
 <div class="memproto">
@@ -380,6 +419,29 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a3d813762ca8d6a0d9fcdf9fc20f3afdc"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1_i_mission_control_listener.html">IMissionControlListener</a>* omega::MissionControlServer::getListener </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="afbc9b8ebeec384107c853d679fc981d9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -440,6 +502,58 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="classomicron_1_1_tcp_server.html#ae9b9a025b8ff1c6238b2e111460fb9bd">omicron::TcpServer</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab58795f59188baa427e9b521b15dec75"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::MissionControlServer::sendEventTo </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;&#160;</td>
+          <td class="paramname"><em>evt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_mission_control_connection.html">MissionControlConnection</a> *&#160;</td>
+          <td class="paramname"><em>target</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send an event to the specified client. </p>
+
+</div>
+</div>
+<a class="anchor" id="aec1ffa110a9ba2d194ca05a423e326cf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::MissionControlServer::setListener </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_i_mission_control_listener.html">IMissionControlListener</a> *&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

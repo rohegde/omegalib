@@ -53,6 +53,7 @@ var searchData=
   ['loadimageasync',['loadImageAsync',['../classomega_1_1_image_utils.html#a73b853f003ca87c4dc7f036599f0a4d1',1,'omega::ImageUtils']]],
   ['loadimageasynctaskdata',['LoadImageAsyncTaskData',['../structomega_1_1_image_utils_1_1_load_image_async_task_data.html#a92d5e24bfe4e7ac175d550b7eb24cbd0',1,'omega::ImageUtils::LoadImageAsyncTaskData::LoadImageAsyncTaskData()'],['../structomega_1_1_image_utils_1_1_load_image_async_task_data.html#a28c7a3befe6e6a2bbb3508b755f9f0b2',1,'omega::ImageUtils::LoadImageAsyncTaskData::LoadImageAsyncTaskData(const String &amp;_path, bool _isFullPath)']]],
   ['loadimagefromstream',['loadImageFromStream',['../classomega_1_1_image_utils.html#a8dd8d6c21fb3d7754667a7ac15c5937c',1,'omega::ImageUtils']]],
+  ['loadimagesasync',['loadImagesAsync',['../classomega_1_1_image_utils.html#a0e8d9d9bab28854c3e6dca1eaba2e96a',1,'omega::ImageUtils']]],
   ['loadsoundfromfile',['loadSoundFromFile',['../classomicron_1_1_sound_environment.html#a6159a4b7b1f93f9ea983a8e6c025802b',1,'omicron::SoundEnvironment']]],
   ['localtoworldorientation',['localToWorldOrientation',['../classomega_1_1_camera.html#a7f462c7450512ac4d442719e6b6e3962',1,'omega::Camera']]],
   ['localtoworldposition',['localToWorldPosition',['../classomega_1_1_camera.html#a07118b8c1392a6dab7524ccaf7132c68',1,'omega::Camera::localToWorldPosition()'],['../classomicron_1_1_sound_manager.html#ac47ef73272049418373b63a0222d1928',1,'omicron::SoundManager::localToWorldPosition()']]],

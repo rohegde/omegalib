@@ -111,8 +111,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa6beeb18ebaa05c04963bc5207e91825"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0313d2afcd03d063ac5c8162a4f8d99e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a0313d2afcd03d063ac5c8162a4f8d99e">copyFrom</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;e)</td></tr>
 <tr class="separator:a0313d2afcd03d063ac5c8162a4f8d99e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3aa2f1c57b3d40a46e8bb0b5eff0379a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a3aa2f1c57b3d40a46e8bb0b5eff0379a">reset</a> (<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53">Type</a> type, <a class="el" href="classomicron_1_1_service.html#a3992f0756d1aee668f6740487ddb4daf">Service::ServiceType</a> serviceType, <a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a> sourceId=0, int serviceId=-1)</td></tr>
-<tr class="separator:a3aa2f1c57b3d40a46e8bb0b5eff0379a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a994459044c1dbc8bc4b54d00ba59c4b3"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a994459044c1dbc8bc4b54d00ba59c4b3">serialize</a> (<a class="el" href="structomicron_connector_1_1_event_data.html">omicronConnector::EventData</a> *ed) const </td></tr>
+<tr class="memdesc:a994459044c1dbc8bc4b54d00ba59c4b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serializes this event to a streamable event data packet.  <a href="#a994459044c1dbc8bc4b54d00ba59c4b3">More...</a><br/></td></tr>
+<tr class="separator:a994459044c1dbc8bc4b54d00ba59c4b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b2484dfcf0cce57e79ad3f80a593f07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a9b2484dfcf0cce57e79ad3f80a593f07">deserialize</a> (<a class="el" href="structomicron_connector_1_1_event_data.html">omicronConnector::EventData</a> *ed)</td></tr>
+<tr class="memdesc:a9b2484dfcf0cce57e79ad3f80a593f07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserializes from an event data packet.  <a href="#a9b2484dfcf0cce57e79ad3f80a593f07">More...</a><br/></td></tr>
+<tr class="separator:a9b2484dfcf0cce57e79ad3f80a593f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9f9bbf0210938fcc88d72ac8328cbc5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#aa9f9bbf0210938fcc88d72ac8328cbc5">reset</a> (<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53">Type</a> type, <a class="el" href="classomicron_1_1_service.html#a3992f0756d1aee668f6740487ddb4daf">Service::ServiceType</a> serviceType, <a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a> sourceId=0, unsigned short serviceId=0, unsigned short userId=0)</td></tr>
+<tr class="separator:aa9f9bbf0210938fcc88d72ac8328cbc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0a6cf9b20876a80d452e7e20e1c5ebe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#ad0a6cf9b20876a80d452e7e20e1c5ebe">resetSourceId</a> (<a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a> newSourceId)</td></tr>
+<tr class="memdesc:ad0a6cf9b20876a80d452e7e20e1c5ebe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only resets the event sourc eid, keeping the rest of the event data intact.  <a href="#ad0a6cf9b20876a80d452e7e20e1c5ebe">More...</a><br/></td></tr>
+<tr class="separator:ad0a6cf9b20876a80d452e7e20e1c5ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5305cad633dc08565c6f30f7051e7eb"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#ad5305cad633dc08565c6f30f7051e7eb">getSourceId</a> () const </td></tr>
 <tr class="memdesc:ad5305cad633dc08565c6f30f7051e7eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">id of the source of this event. Input services associate unique ids to each of their event sources.  <a href="#ad5305cad633dc08565c6f30f7051e7eb">More...</a><br/></td></tr>
 <tr class="separator:ad5305cad633dc08565c6f30f7051e7eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,22 +129,34 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa44713d87756a053db85b5d08f45649c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the service that generated this event.  <a href="#aa44713d87756a053db85b5d08f45649c">More...</a><br/></td></tr>
 <tr class="separator:aa44713d87756a053db85b5d08f45649c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3be27855467169f55c731c6570949ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#ab3be27855467169f55c731c6570949ff">setProcessed</a> () const </td></tr>
+<tr class="memdesc:ab3be27855467169f55c731c6570949ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to mark events that have been processed.  <a href="#ab3be27855467169f55c731c6570949ff">More...</a><br/></td></tr>
 <tr class="separator:ab3be27855467169f55c731c6570949ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5715f04917d0b4b9efab9be779736fa5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a5715f04917d0b4b9efab9be779736fa5">isProcessed</a> () const </td></tr>
 <tr class="separator:a5715f04917d0b4b9efab9be779736fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e0e5a417b2dc72365e254c65f8d88fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a9e0e5a417b2dc72365e254c65f8d88fd">setExclusive</a> () const </td></tr>
+<tr class="memdesc:a9e0e5a417b2dc72365e254c65f8d88fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">being broadcast.  <a href="#a9e0e5a417b2dc72365e254c65f8d88fd">More...</a><br/></td></tr>
+<tr class="separator:a9e0e5a417b2dc72365e254c65f8d88fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dd80d5215a42d7c899d085361735581"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a4dd80d5215a42d7c899d085361735581">isExclusive</a> () const </td></tr>
+<tr class="separator:a4dd80d5215a42d7c899d085361735581"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd31dee74e4265b00f90e155aecb6e2f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#abd31dee74e4265b00f90e155aecb6e2f">getPosition</a> () const </td></tr>
 <tr class="memdesc:abd31dee74e4265b00f90e155aecb6e2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the event position.  <a href="#abd31dee74e4265b00f90e155aecb6e2f">More...</a><br/></td></tr>
 <tr class="separator:abd31dee74e4265b00f90e155aecb6e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31acc47fdbaca6b744aa49db1e686f34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a31acc47fdbaca6b744aa49db1e686f34">setServiceType</a> (<a class="el" href="classomicron_1_1_service.html#a3992f0756d1aee668f6740487ddb4daf">Service::ServiceType</a> type)</td></tr>
 <tr class="separator:a31acc47fdbaca6b744aa49db1e686f34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a717646e37404e8651eb65c0eaa105acd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a717646e37404e8651eb65c0eaa105acd">getServiceId</a> () const </td></tr>
-<tr class="memdesc:a717646e37404e8651eb65c0eaa105acd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unique id of the service and / or hardware device that generated this event.  <a href="#a717646e37404e8651eb65c0eaa105acd">More...</a><br/></td></tr>
-<tr class="separator:a717646e37404e8651eb65c0eaa105acd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0850cb3abb6bf9aeb1782b7298a3b268"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a0850cb3abb6bf9aeb1782b7298a3b268">getServiceId</a> () const </td></tr>
+<tr class="memdesc:a0850cb3abb6bf9aeb1782b7298a3b268"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the unique id of the event service that generated this event.  <a href="#a0850cb3abb6bf9aeb1782b7298a3b268">More...</a><br/></td></tr>
+<tr class="separator:a0850cb3abb6bf9aeb1782b7298a3b268"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e17a7dd562eca5826e28fa4f067960f"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a1e17a7dd562eca5826e28fa4f067960f">getUserId</a> () const </td></tr>
+<tr class="memdesc:a1e17a7dd562eca5826e28fa4f067960f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Numeric id of the user associated to this event.  <a href="#a1e17a7dd562eca5826e28fa4f067960f">More...</a><br/></td></tr>
+<tr class="separator:a1e17a7dd562eca5826e28fa4f067960f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f3c6699a4ef91a4462bb7fbecb9e2f7"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a6f3c6699a4ef91a4462bb7fbecb9e2f7">getDeviceTag</a> () const </td></tr>
+<tr class="memdesc:a6f3c6699a4ef91a4462bb7fbecb9e2f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the event device tag.  <a href="#a6f3c6699a4ef91a4462bb7fbecb9e2f7">More...</a><br/></td></tr>
+<tr class="separator:a6f3c6699a4ef91a4462bb7fbecb9e2f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e04994b6b44a2b4b99bbb72d380b7aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53">Type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a3e04994b6b44a2b4b99bbb72d380b7aa">getType</a> () const </td></tr>
 <tr class="memdesc:a3e04994b6b44a2b4b99bbb72d380b7aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">The event type.  <a href="#a3e04994b6b44a2b4b99bbb72d380b7aa">More...</a><br/></td></tr>
 <tr class="separator:a3e04994b6b44a2b4b99bbb72d380b7aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a474dbe4ac507d37e7192309ab87b865c"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a474dbe4ac507d37e7192309ab87b865c">getTimestamp</a> () const </td></tr>
-<tr class="memdesc:a474dbe4ac507d37e7192309ab87b865c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the event timestamp. The timestamp is updated everytime the <a class="el" href="classomicron_1_1_event.html#a3aa2f1c57b3d40a46e8bb0b5eff0379a">Event::reset</a> is called.  <a href="#a474dbe4ac507d37e7192309ab87b865c">More...</a><br/></td></tr>
+<tr class="memdesc:a474dbe4ac507d37e7192309ab87b865c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the event timestamp. The timestamp is updated everytime the <a class="el" href="classomicron_1_1_event.html#aa9f9bbf0210938fcc88d72ac8328cbc5">Event::reset</a> is called.  <a href="#a474dbe4ac507d37e7192309ab87b865c">More...</a><br/></td></tr>
 <tr class="separator:a474dbe4ac507d37e7192309ab87b865c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02a84d61d1a0d9165875792ed1c76e1b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a02a84d61d1a0d9165875792ed1c76e1b">setPosition</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;value)</td></tr>
 <tr class="memdesc:a02a84d61d1a0d9165875792ed1c76e1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to true if this event has been processed already.  <a href="#a02a84d61d1a0d9165875792ed1c76e1b">More...</a><br/></td></tr>
@@ -237,6 +258,8 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a0917a981fd7b0e81f586e31df437c53e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977">Event::Flags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a0917a981fd7b0e81f586e31df437c53e">parseButtonName</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;name)</td></tr>
 <tr class="separator:a0917a981fd7b0e81f586e31df437c53e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a541d84fd630c5259ea0476f1e51a8521"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a541d84fd630c5259ea0476f1e51a8521">parseJointName</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;name)</td></tr>
+<tr class="separator:a541d84fd630c5259ea0476f1e51a8521"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a2ab483ab6db3edcca6495fe9465d72d2 inherit pub_static_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a2ab483ab6db3edcca6495fe9465d72d2">printObjCounts</a> ()</td></tr>
 <tr class="separator:a2ab483ab6db3edcca6495fe9465d72d2 inherit pub_static_methods_classomicron_1_1_reference_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -330,7 +353,8 @@ Additional Inherited Members</h2></td></tr>
 <a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a099b8f927fac7bb8e1e6e112a3584ac8">Button9</a> = 1 &lt;&lt; 16, 
 <br/>
 &#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a3598551098d5d9535ce8c765891e9764">Processed</a> = 1 &lt;&lt; 14, 
-<a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977aa07f7799c917c4bbe27ff661cbc53a31">User</a> = 1 &lt;&lt; 17
+<a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a6b7655cd0efd6e261fd1afdd6bd2bd0e">Exclusive</a> = 1 &lt;&lt; 17, 
+<a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977aa07f7799c917c4bbe27ff661cbc53a31">User</a> = 1 &lt;&lt; 18
 <br/>
  }</td></tr>
 <tr class="memdesc:a39f525558912d1fd57b9d0a58a5e4977"><td class="mdescLeft">&#160;</td><td class="mdescRight">#PYAPI Defines some generic input event flags  <a href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977">More...</a><br/></td></tr>
@@ -380,11 +404,21 @@ Additional Inherited Members</h2></td></tr>
 &#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6afa44b4d865c902a85af83cf5a9493c3e">OMICRON_SKEL_RIGHT_FOOT</a>, 
 <a class="el" href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6afb2083251a4c828b77a35ee7733c95db">OMICRON_SKEL_SPINE</a>, 
 <a class="el" href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6ae63030d09eb296ca5e360db62a6bed56">OMICRON_SKEL_SHOULDER_CENTER</a>, 
+<a class="el" href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6a77b21b9a914e63d692c3ad3b43547bb8">OMICRON_SKEL_LEFT_THUMB</a>, 
+<br/>
+&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6a8da1d939fb5f80bb65cfa5b751c20383">OMICRON_SKEL_RIGHT_THUMB</a>, 
 <a class="el" href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6a617c4d0799bbc9e2b27f30a12fce7d6a">OMICRON_SKEL_COUNT</a>
 <br/>
  }</td></tr>
 <tr class="memdesc:a8347c53970a3fd6eedd99718622009c6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structomicron_1_1_joint.html">Joint</a> enumerations for Kinect (Uses OpenNI's enumerations with additional Kinect for Windows values) See <a class="el" href="_m_s_kinect_service_8h.html">MSKinectService.h</a>, XnTypes.h (OpenNI), or NuiSensor.h (Kinect for Windows)  <a href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6">More...</a><br/></td></tr>
 <tr class="separator:a8347c53970a3fd6eedd99718622009c6 inherit pub_types_classomicron_1_1_event_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3c349956dcb5ff95b2b82f31f5be298 inherit pub_types_classomicron_1_1_event_base"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298">DeviceTagMask</a> { <a class="el" href="classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298a2ee751220131c2bc788b19ed9e76da86">DTServiceIdMask</a> = 0x0000ffff, 
+<a class="el" href="classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298a37fa0040955fda90da8328b5418eb5ea">DTUserIdMask</a> = 0xffff0000, 
+<a class="el" href="classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298a6665ef9d869fe17b429ab1bab07f8fa0">DTUserIdOffset</a> = 16, 
+<a class="el" href="classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298ac13e57b69432d8edef234d4fe9e88b2a">DTServiceIdOffset</a> = 0
+ }</td></tr>
+<tr class="memdesc:aa3c349956dcb5ff95b2b82f31f5be298"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit masks used to read the service id and user id from the event device tag.  <a href="classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298">More...</a><br/></td></tr>
+<tr class="separator:aa3c349956dcb5ff95b2b82f31f5be298 inherit pub_types_classomicron_1_1_event_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_static_attribs_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a436dafe8b6a5c62b5f111b644c6ed4b0 inherit pro_static_attribs_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="classomicron_1_1_reference_type.html">ReferenceType</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a436dafe8b6a5c62b5f111b644c6ed4b0">mysObjList</a></td></tr>
 <tr class="separator:a436dafe8b6a5c62b5f111b644c6ed4b0 inherit pro_static_attribs_classomicron_1_1_reference_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -475,6 +509,32 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a9b2484dfcf0cce57e79ad3f80a593f07"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omicron::Event::deserialize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structomicron_connector_1_1_event_data.html">omicronConnector::EventData</a> *&#160;</td>
+          <td class="paramname"><em>ed</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Deserializes from an event data packet. </p>
+
+</div>
+</div>
 <a class="anchor" id="a791f744a066a646f74723582f0594ab0"></a>
 <div class="memitem">
 <div class="memproto">
@@ -525,6 +585,32 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Utility method that gets a character stored in this event. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if the event has been generated by a keyboard service and contains an ASCII character. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6f3c6699a4ef91a4462bb7fbecb9e2f7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int omicron::Event::getDeviceTag </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the event device tag. </p>
+<p>The device tag identifies the service and the user associated with this event. The lower two bytes contain the service id, while the top two bytes contain the user id. Both can be accessed using the getServiceId and getUserId utility functions. </p>
 
 </div>
 </div>
@@ -817,7 +903,7 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a717646e37404e8651eb65c0eaa105acd"></a>
+<a class="anchor" id="a0850cb3abb6bf9aeb1782b7298a3b268"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -825,7 +911,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int omicron::Event::getServiceId </td>
+          <td class="memname">unsigned int omicron::Event::getServiceId </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -838,7 +924,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Unique id of the service and / or hardware device that generated this event. </p>
+<p>Gets the unique id of the event service that generated this event. </p>
+<p>This value is part of the device tag. </p>
 
 </div>
 </div>
@@ -913,7 +1000,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gets the event timestamp. The timestamp is updated everytime the <a class="el" href="classomicron_1_1_event.html#a3aa2f1c57b3d40a46e8bb0b5eff0379a">Event::reset</a> is called. </p>
+<p>Gets the event timestamp. The timestamp is updated everytime the <a class="el" href="classomicron_1_1_event.html#aa9f9bbf0210938fcc88d72ac8328cbc5">Event::reset</a> is called. </p>
 
 </div>
 </div>
@@ -939,6 +1026,32 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The event type. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1e17a7dd562eca5826e28fa4f067960f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int omicron::Event::getUserId </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Numeric id of the user associated to this event. </p>
+<p>This value is part of the device tag. </p>
 
 </div>
 </div>
@@ -980,6 +1093,29 @@ Additional Inherited Members</h2></td></tr>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977">Flags</a>&#160;</td>
           <td class="paramname"><em>button</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4dd80d5215a42d7c899d085361735581"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omicron::Event::isExclusive </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -1213,7 +1349,31 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a3aa2f1c57b3d40a46e8bb0b5eff0379a"></a>
+<a class="anchor" id="a541d84fd630c5259ea0476f1e51a8521"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int omicron::Event::parseJointName </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa9f9bbf0210938fcc88d72ac8328cbc5"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1241,8 +1401,14 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>serviceId</em> = <code>-1</code>&#160;</td>
+          <td class="paramtype">unsigned short&#160;</td>
+          <td class="paramname"><em>serviceId</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned short&#160;</td>
+          <td class="paramname"><em>userId</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1279,6 +1445,85 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad0a6cf9b20876a80d452e7e20e1c5ebe"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omicron::Event::resetSourceId </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a>&#160;</td>
+          <td class="paramname"><em>newSourceId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Only resets the event sourc eid, keeping the rest of the event data intact. </p>
+<p>Useful when dynamically re-routing events (i.e. to transparently re-associate head tracking sources to applications) </p>
+
+</div>
+</div>
+<a class="anchor" id="a994459044c1dbc8bc4b54d00ba59c4b3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t omicron::Event::serialize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structomicron_connector_1_1_event_data.html">omicronConnector::EventData</a> *&#160;</td>
+          <td class="paramname"><em>ed</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Serializes this event to a streamable event data packet. </p>
+<p>Returns the size of data to stream. </p>
+
+</div>
+</div>
+<a class="anchor" id="a9e0e5a417b2dc72365e254c65f8d88fd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omicron::Event::setExclusive </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>being broadcast. </p>
 
 </div>
 </div>
@@ -1694,6 +1939,8 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Used to mark events that have been processed. </p>
 
 </div>
 </div>

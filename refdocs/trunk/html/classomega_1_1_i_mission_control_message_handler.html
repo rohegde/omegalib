@@ -97,6 +97,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
+<p>Interface for classes that handle mission control messages.  
+ <a href="classomega_1_1_i_mission_control_message_handler.html#details">More...</a></p>
+
 <p><code>#include &lt;MissionControl.h&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -104,7 +107,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8bb7f06fb55ce415f7fb1905f2dd57e4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_i_mission_control_message_handler.html#a8bb7f06fb55ce415f7fb1905f2dd57e4">handleMessage</a> (<a class="el" href="classomega_1_1_mission_control_connection.html">MissionControlConnection</a> *sender, const char *header, char *data, int size)=0</td></tr>
 <tr class="separator:a8bb7f06fb55ce415f7fb1905f2dd57e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Interface for classes that handle mission control messages. </p>
+<p>Useful for extending the deault mission control protocol message set with new message formats. </p>
+</div><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for omega::IMissionControlMessageHandler:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>

@@ -116,8 +116,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ae7d4ac60ceb2f9d9f9e84c88b6621d07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea262faa5226da9df0eb4d263f2c9a6c"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomicron_connector_1_1_event_data.html#aea262faa5226da9df0eb4d263f2c9a6c">sourceId</a></td></tr>
 <tr class="separator:aea262faa5226da9df0eb4d263f2c9a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09eca8fb3436cf0231e6fadb6b32cba8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomicron_connector_1_1_event_data.html#a09eca8fb3436cf0231e6fadb6b32cba8">serviceId</a></td></tr>
-<tr class="separator:a09eca8fb3436cf0231e6fadb6b32cba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f4f568ce59c3bf78022e4938b4252dc"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomicron_connector_1_1_event_data.html#a2f4f568ce59c3bf78022e4938b4252dc">deviceTag</a></td></tr>
+<tr class="separator:a2f4f568ce59c3bf78022e4938b4252dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a786b4fb6b4b96d8e3b149e30763ed968"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomicron_connector_1_1_event_data.html#a786b4fb6b4b96d8e3b149e30763ed968">serviceType</a></td></tr>
 <tr class="separator:a786b4fb6b4b96d8e3b149e30763ed968"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c304a1948fd986cc00d481eb4d76ccd"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomicron_connector_1_1_event_data.html#a9c304a1948fd986cc00d481eb4d76ccd">type</a></td></tr>
@@ -227,7 +227,8 @@ Additional Inherited Members</h2></td></tr>
 <a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a099b8f927fac7bb8e1e6e112a3584ac8">Button9</a> = 1 &lt;&lt; 16, 
 <br/>
 &#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a3598551098d5d9535ce8c765891e9764">Processed</a> = 1 &lt;&lt; 14, 
-<a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977aa07f7799c917c4bbe27ff661cbc53a31">User</a> = 1 &lt;&lt; 17
+<a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a6b7655cd0efd6e261fd1afdd6bd2bd0e">Exclusive</a> = 1 &lt;&lt; 17, 
+<a class="el" href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977aa07f7799c917c4bbe27ff661cbc53a31">User</a> = 1 &lt;&lt; 18
 <br/>
  }</td></tr>
 <tr class="memdesc:a39f525558912d1fd57b9d0a58a5e4977"><td class="mdescLeft">&#160;</td><td class="mdescRight">#PYAPI Defines some generic input event flags  <a href="classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977">More...</a><br/></td></tr>
@@ -277,11 +278,21 @@ Additional Inherited Members</h2></td></tr>
 &#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6afa44b4d865c902a85af83cf5a9493c3e">OMICRON_SKEL_RIGHT_FOOT</a>, 
 <a class="el" href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6afb2083251a4c828b77a35ee7733c95db">OMICRON_SKEL_SPINE</a>, 
 <a class="el" href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6ae63030d09eb296ca5e360db62a6bed56">OMICRON_SKEL_SHOULDER_CENTER</a>, 
+<a class="el" href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6a77b21b9a914e63d692c3ad3b43547bb8">OMICRON_SKEL_LEFT_THUMB</a>, 
+<br/>
+&#160;&#160;<a class="el" href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6a8da1d939fb5f80bb65cfa5b751c20383">OMICRON_SKEL_RIGHT_THUMB</a>, 
 <a class="el" href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6a617c4d0799bbc9e2b27f30a12fce7d6a">OMICRON_SKEL_COUNT</a>
 <br/>
  }</td></tr>
 <tr class="memdesc:a8347c53970a3fd6eedd99718622009c6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structomicron_1_1_joint.html">Joint</a> enumerations for Kinect (Uses OpenNI's enumerations with additional Kinect for Windows values) See <a class="el" href="_m_s_kinect_service_8h.html">MSKinectService.h</a>, XnTypes.h (OpenNI), or NuiSensor.h (Kinect for Windows)  <a href="classomicron_1_1_event_base.html#a8347c53970a3fd6eedd99718622009c6">More...</a><br/></td></tr>
 <tr class="separator:a8347c53970a3fd6eedd99718622009c6 inherit pub_types_classomicron_1_1_event_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3c349956dcb5ff95b2b82f31f5be298 inherit pub_types_classomicron_1_1_event_base"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298">DeviceTagMask</a> { <a class="el" href="classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298a2ee751220131c2bc788b19ed9e76da86">DTServiceIdMask</a> = 0x0000ffff, 
+<a class="el" href="classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298a37fa0040955fda90da8328b5418eb5ea">DTUserIdMask</a> = 0xffff0000, 
+<a class="el" href="classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298a6665ef9d869fe17b429ab1bab07f8fa0">DTUserIdOffset</a> = 16, 
+<a class="el" href="classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298ac13e57b69432d8edef234d4fe9e88b2a">DTServiceIdOffset</a> = 0
+ }</td></tr>
+<tr class="memdesc:aa3c349956dcb5ff95b2b82f31f5be298"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit masks used to read the service id and user id from the event device tag.  <a href="classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298">More...</a><br/></td></tr>
+<tr class="separator:aa3c349956dcb5ff95b2b82f31f5be298 inherit pub_types_classomicron_1_1_event_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for omicronConnector::EventData:</div>
@@ -378,6 +389,18 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a2f4f568ce59c3bf78022e4938b4252dc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int omicronConnector::EventData::deviceTag</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a02c0f7c26d9f6a7d7e1f12220cb8d1bc"></a>
 <div class="memitem">
 <div class="memproto">
@@ -536,18 +559,6 @@ Additional Inherited Members</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">float omicronConnector::EventData::posz</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a09eca8fb3436cf0231e6fadb6b32cba8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int omicronConnector::EventData::serviceId</td>
         </tr>
       </table>
 </div><div class="memdoc">

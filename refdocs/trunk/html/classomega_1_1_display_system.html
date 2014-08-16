@@ -128,12 +128,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae57a7b1221fbfa57a71e5ec9fd5b895e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6fa7a49e0d6952439956c1b57ef3f98"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#ad6fa7a49e0d6952439956c1b57ef3f98">killCluster</a> ()</td></tr>
 <tr class="separator:ad6fa7a49e0d6952439956c1b57ef3f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acaea01d368546e07069563eb2aa6ca72"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#acaea01d368546e07069563eb2aa6ca72">refreshSettings</a> ()</td></tr>
-<tr class="memdesc:acaea01d368546e07069563eb2aa6ca72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-applies the display settings to the display system.  <a href="#acaea01d368546e07069563eb2aa6ca72">More...</a><br/></td></tr>
-<tr class="separator:acaea01d368546e07069563eb2aa6ca72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9381fc4e6e08ac322b45f632ea2fb938"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a9381fc4e6e08ac322b45f632ea2fb938">getCanvasSize</a> ()=0</td></tr>
-<tr class="memdesc:a9381fc4e6e08ac322b45f632ea2fb938"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the size of the display canvas.  <a href="#a9381fc4e6e08ac322b45f632ea2fb938">More...</a><br/></td></tr>
-<tr class="separator:a9381fc4e6e08ac322b45f632ea2fb938"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5e75384a026d58cac02be36e03ec480"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_ray.html">Ray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#aa5e75384a026d58cac02be36e03ec480">getViewRay</a> (<a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a> position)</td></tr>
 <tr class="separator:aa5e75384a026d58cac02be36e03ec480"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3275ff6605649733351bb7a6437a2f9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#aa3275ff6605649733351bb7a6437a2f9">getViewRayFromEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt, <a class="el" href="classomicron_1_1_ray.html">Ray</a> &amp;ray, bool normalizedPointerCoords=false)</td></tr>
@@ -152,6 +146,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2129ca4703e771812ab1ecbf1d21d7c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa63c3b8b6886382e76d345382e662bea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#aa63c3b8b6886382e76d345382e662bea">isClearDepthEnabled</a> ()</td></tr>
 <tr class="separator:aa63c3b8b6886382e76d345382e662bea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3ec4be332d6d2cd9dbdf0c083b64a55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#ae3ec4be332d6d2cd9dbdf0c083b64a55">frameStarted</a> ()</td></tr>
+<tr class="separator:ae3ec4be332d6d2cd9dbdf0c083b64a55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fc1057df0080b5dcbcd35ca6dfbc8e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a6fc1057df0080b5dcbcd35ca6dfbc8e6">frameFinished</a> ()</td></tr>
+<tr class="memdesc:a6fc1057df0080b5dcbcd35ca6dfbc8e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">internal Called internally by derived classes to signal the end of a frame.  <a href="#a6fc1057df0080b5dcbcd35ca6dfbc8e6">More...</a><br/></td></tr>
+<tr class="separator:a6fc1057df0080b5dcbcd35ca6dfbc8e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
 <tr class="memitem:a67ee43bd869da4325f4fc86a74c7dee5 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a67ee43bd869da4325f4fc86a74c7dee5">ReferenceType</a> ()</td></tr>
 <tr class="separator:a67ee43bd869da4325f4fc86a74c7dee5 inherit pub_methods_classomicron_1_1_reference_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -342,6 +341,55 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a6fc1057df0080b5dcbcd35ca6dfbc8e6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::DisplaySystem::frameFinished </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>internal Called internally by derived classes to signal the end of a frame. </p>
+
+</div>
+</div>
+<a class="anchor" id="ae3ec4be332d6d2cd9dbdf0c083b64a55"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::DisplaySystem::frameStarted </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Called internally by derived classes to signal the beginning of a new frame. </p>
+
+</div>
+</div>
 <a class="anchor" id="a2c48a0ad27086caef221eb1ffba15497"></a>
 <div class="memitem">
 <div class="memproto">
@@ -362,33 +410,6 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a9381fc4e6e08ac322b45f632ea2fb938"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="namespaceomicron.html#a953e260f5d083fbdc07f77f1521ac331">Vector2i</a> omega::DisplaySystem::getCanvasSize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the size of the display canvas. </p>
-
-<p>Implemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#a1897257d1cf90e8a6b8dd540edea1622">omega::EqualizerDisplaySystem</a>, <a class="el" href="classomega_1_1_equalizer_display_system.html#a1897257d1cf90e8a6b8dd540edea1622">omega::EqualizerDisplaySystem</a>, <a class="el" href="classomega_1_1_glut_display_system.html#a2a86e0de2a9eb0cd533b9ec1f8183e2b">omega::GlutDisplaySystem</a>, and <a class="el" href="classomega_1_1_null_display_system.html#ac0d125e40324bd7ea8fedcdd91081a4e">omega::NullDisplaySystem</a>.</p>
 
 </div>
 </div>
@@ -600,34 +621,6 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Reimplemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#a87893ad91a79132159b17749903bb232">omega::EqualizerDisplaySystem</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="acaea01d368546e07069563eb2aa6ca72"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void omega::DisplaySystem::refreshSettings </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Re-applies the display settings to the display system. </p>
-<p>Depending on the display system, some settings may not be re-applied at runtime. </p>
-
-<p>Reimplemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#ad5f671451eeaa40a511a93edf9260f86">omega::EqualizerDisplaySystem</a>.</p>
 
 </div>
 </div>

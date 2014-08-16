@@ -122,6 +122,12 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a290f871a8e58d76ab7351666e5619c9d"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mission_control_message_ids.html#a290f871a8e58d76ab7351666e5619c9d">ClientList</a></td></tr>
 <tr class="memdesc:a290f871a8e58d76ab7351666e5619c9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">clls &lt;client list&gt;=""&gt; - Sent by the server to clients, contains a list of space-separated client names for all the clients currently connected to the server.  <a href="#a290f871a8e58d76ab7351666e5619c9d">More...</a><br/></td></tr>
 <tr class="separator:a290f871a8e58d76ab7351666e5619c9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e91e6c9e6ff465360934e3f5de44334"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mission_control_message_ids.html#a2e91e6c9e6ff465360934e3f5de44334">LogEnabled</a></td></tr>
+<tr class="memdesc:a2e91e6c9e6ff465360934e3f5de44334"><td class="mdescLeft">&#160;</td><td class="mdescRight">log1 &lt;log enabled&gt;=""&gt; - Sent by clients to server, tells server to forward log messages to this client.  <a href="#a2e91e6c9e6ff465360934e3f5de44334">More...</a><br/></td></tr>
+<tr class="separator:a2e91e6c9e6ff465360934e3f5de44334"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5013ba7f8e8aed664472ff73e5aeb5a8"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mission_control_message_ids.html#a5013ba7f8e8aed664472ff73e5aeb5a8">LogDisabled</a></td></tr>
+<tr class="memdesc:a5013ba7f8e8aed664472ff73e5aeb5a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">log0 &lt;log disabled&gt;=""&gt; - Sent by clients to server, tells server to disable forwarding of log messages to this client.  <a href="#a5013ba7f8e8aed664472ff73e5aeb5a8">More...</a><br/></td></tr>
+<tr class="separator:a5013ba7f8e8aed664472ff73e5aeb5a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21ffc93437c26d721e782f7f99df4e78"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mission_control_message_ids.html#a21ffc93437c26d721e782f7f99df4e78">ScriptCommand</a></td></tr>
 <tr class="memdesc:a21ffc93437c26d721e782f7f99df4e78"><td class="mdescLeft">&#160;</td><td class="mdescRight">scmd &lt;command&gt; - default behavior (see MissionControlMessageHandler): the receiver will dispatch &lt;command&gt; to the script interpreter.  <a href="#a21ffc93437c26d721e782f7f99df4e78">More...</a><br/></td></tr>
 <tr class="separator:a21ffc93437c26d721e782f7f99df4e78"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -134,6 +140,9 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:ab65987c918734b7d049e44ef4f0f2a30"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mission_control_message_ids.html#ab65987c918734b7d049e44ef4f0f2a30">StatUpdate</a></td></tr>
 <tr class="memdesc:ab65987c918734b7d049e44ef4f0f2a30"><td class="mdescLeft">&#160;</td><td class="mdescRight">stup [name cur min max avg]* - default behavior (see MissionControlMessageHandler): the receiver will send back a stup message with current data (name, min, max, average times / values) about statistics enabled by a sten message.  <a href="#ab65987c918734b7d049e44ef4f0f2a30">More...</a><br/></td></tr>
 <tr class="separator:ab65987c918734b7d049e44ef4f0f2a30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e2032fa21c6854e16c376da408af9b8"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mission_control_message_ids.html#a7e2032fa21c6854e16c376da408af9b8">Event</a></td></tr>
+<tr class="memdesc:a7e2032fa21c6854e16c376da408af9b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">ievt [binary event data] - default behavior (see MissionControlMessageHandler): the receiver will deserialize and forward an Event to the ServiceManager.  <a href="#a7e2032fa21c6854e16c376da408af9b8">More...</a><br/></td></tr>
+<tr class="separator:a7e2032fa21c6854e16c376da408af9b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Stores the 4-character ids of messages used by the Mission Control protocol. </p>
@@ -223,6 +232,72 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>clls &lt;client list&gt;=""&gt; - Sent by the server to clients, contains a list of space-separated client names for all the clients currently connected to the server. </p>
+
+</div>
+</div>
+<a class="anchor" id="a7e2032fa21c6854e16c376da408af9b8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* omega::MissionControlMessageIds::Event</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ievt [binary event data] - default behavior (see MissionControlMessageHandler): the receiver will deserialize and forward an Event to the ServiceManager. </p>
+
+</div>
+</div>
+<a class="anchor" id="a5013ba7f8e8aed664472ff73e5aeb5a8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* omega::MissionControlMessageIds::LogDisabled</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>log0 &lt;log disabled&gt;=""&gt; - Sent by clients to server, tells server to disable forwarding of log messages to this client. </p>
+
+</div>
+</div>
+<a class="anchor" id="a2e91e6c9e6ff465360934e3f5de44334"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* omega::MissionControlMessageIds::LogEnabled</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>log1 &lt;log enabled&gt;=""&gt; - Sent by clients to server, tells server to forward log messages to this client. </p>
 
 </div>
 </div>

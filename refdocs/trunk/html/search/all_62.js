@@ -29,6 +29,8 @@ var searchData=
   ['box_5finfinite',['BOX_INFINITE',['../classomicron_1_1_aligned_box3.html#a569bbbf14740b6238db2326e210775bd',1,'omicron::AlignedBox3']]],
   ['box_5fnull',['BOX_NULL',['../classomicron_1_1_aligned_box3.html#adb5aa9ac9b458a7b4b4fbc2268decf2b',1,'omicron::AlignedBox3']]],
   ['brain',['Brain',['../classomicron_1_1_service.html#a3992f0756d1aee668f6740487ddb4dafae410e12da1b6b0134700672217a4a000',1,'omicron::Service']]],
+  ['bringtofront',['bringToFront',['../classomega_1_1_display_config.html#a1cdd6a52fc2a2639ee89df0654846657',1,'omega::DisplayConfig']]],
+  ['broadcastevent',['broadcastEvent',['../classomega_1_1_mission_control_server.html#ae3d996c447b2bdb7c39142880366abe6',1,'omega::MissionControlServer']]],
   ['brush',['Brush',['../structomega_1_1_brush.html',1,'omega']]],
   ['brush',['Brush',['../structomega_1_1_brush.html#accdb14e61fd00f9b52ab306d6d802d4c',1,'omega::Brush']]],
   ['buffers',['buffers',['../structscan__context.html#a49a22b83cacfde03f8f3ac70784ef202',1,'scan_context']]],
@@ -62,8 +64,8 @@ var searchData=
   ['buttonup',['ButtonUp',['../classomicron_1_1_event_base.html#a39f525558912d1fd57b9d0a58a5e4977a80c9666ef689cf30daa0c6165887b3f0',1,'omicron::EventBase::ButtonUp()'],['../classomicron_1_1_wiimote_service.html#afe6a34a9ab7e417280398d5dd076cc11a11c619d1f2ba9b3b85aebd2aacb53265',1,'omicron::WiimoteService::ButtonUp()']]],
   ['bye',['Bye',['../classomega_1_1_mission_control_message_ids.html#a4a8a6b083a5a1ff969a77fa3f7b0bf85',1,'omega::MissionControlMessageIds']]],
   ['byte',['byte',['../namespaceomicron.html#accbbf225f8124c69519d9bbaf963107c',1,'omicron']]],
-  ['bytearray',['ByteArray',['../structomicron_1_1_byte_array.html',1,'omicron']]],
   ['bytearray',['ByteArray',['../structomicron_1_1_byte_array.html#a95641e910428b550f88e4d76db2d08dd',1,'omicron::ByteArray']]],
+  ['bytearray',['ByteArray',['../structomicron_1_1_byte_array.html',1,'omicron']]],
   ['bytearray_2eh',['ByteArray.h',['../_byte_array_8h.html',1,'']]],
   ['bytesavailable',['bytesAvailable',['../classomicron_1_1_data_stream.html#a3afbc4dcfbd05377e1ba62dac7aa1333',1,'omicron::DataStream::bytesAvailable()'],['../classomicron_1_1_file_data_stream.html#abe23a472e616168e3d5694683fcfb860',1,'omicron::FileDataStream::bytesAvailable()']]]
 ];

@@ -11,5 +11,9 @@ var searchData=
   ['drawnone',['DrawNone',['../classomega_1_1_console.html#a37b6b4338f9722358b0b2c04c1c98408a29073471c925959c2f776be694c1108a',1,'omega::Console']]],
   ['drawoverlay',['DrawOverlay',['../classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5a18ef22e656ce035a7ecfb9d17658aebe',1,'omega::Camera']]],
   ['drawscene',['DrawScene',['../classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5acf5ad8da80e8ef549d24282045c8e0fc',1,'omega::Camera']]],
-  ['drawstats',['DrawStats',['../classomega_1_1_console.html#a37b6b4338f9722358b0b2c04c1c98408a4a2dc520837f114835b773f00cb23f20',1,'omega::Console']]]
+  ['drawstats',['DrawStats',['../classomega_1_1_console.html#a37b6b4338f9722358b0b2c04c1c98408a4a2dc520837f114835b773f00cb23f20',1,'omega::Console']]],
+  ['dtserviceidmask',['DTServiceIdMask',['../classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298a2ee751220131c2bc788b19ed9e76da86',1,'omicron::EventBase']]],
+  ['dtserviceidoffset',['DTServiceIdOffset',['../classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298ac13e57b69432d8edef234d4fe9e88b2a',1,'omicron::EventBase']]],
+  ['dtuseridmask',['DTUserIdMask',['../classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298a37fa0040955fda90da8328b5418eb5ea',1,'omicron::EventBase']]],
+  ['dtuseridoffset',['DTUserIdOffset',['../classomicron_1_1_event_base.html#aa3c349956dcb5ff95b2b82f31f5be298a6665ef9d869fe17b429ab1bab07f8fa0',1,'omicron::EventBase']]]
 ];

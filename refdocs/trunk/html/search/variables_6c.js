@@ -17,5 +17,7 @@ var searchData=
   ['localeventflag',['LocalEventFlag',['../classomega_1_1_event_sharing_module.html#a8037171ed13791270d9b65b0e2ccdbdd',1,'omega::EventSharingModule']]],
   ['location',['location',['../classomega_1_1xml_1_1_ti_xml_base.html#a54b7a0f6d9bcaf0b18fb3fabc02a69f7',1,'omega::xml::TiXmlBase']]],
   ['log2base',['Log2Base',['../classomicron_1_1_math.html#a45a2df62952bf9d98369d06a8580059f',1,'omicron::Math']]],
+  ['logdisabled',['LogDisabled',['../classomega_1_1_mission_control_message_ids.html#a5013ba7f8e8aed664472ff73e5aeb5a8',1,'omega::MissionControlMessageIds']]],
+  ['logenabled',['LogEnabled',['../classomega_1_1_mission_control_message_ids.html#a2e91e6c9e6ff465360934e3f5de44334',1,'omega::MissionControlMessageIds']]],
   ['logmessage',['LogMessage',['../classomega_1_1_mission_control_message_ids.html#a3ff67b48249e17ed65d8f7a955f346d1',1,'omega::MissionControlMessageIds']]]
 ];

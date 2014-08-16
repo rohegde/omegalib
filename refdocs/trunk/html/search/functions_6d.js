@@ -23,7 +23,7 @@ var searchData=
   ['mousemotioncallback',['mouseMotionCallback',['../classomega_1_1_mouse_service.html#a7de004a8209433e59710efcb57e786e9',1,'omega::MouseService']]],
   ['mouseservice',['MouseService',['../classomega_1_1_mouse_service.html#ab0730a762348c5326330692094cd7709',1,'omega::MouseService']]],
   ['mousewheelcallback',['mouseWheelCallback',['../classomega_1_1_mouse_service.html#afca7024844135fe042236a5440424fba',1,'omega::MouseService']]],
-  ['mskinectservice',['MSKinectService',['../classomicron_1_1_m_s_kinect_service.html#a953348e05cde235cda1290364d9e4f33',1,'omicron::MSKinectService']]],
+  ['mskinectservice',['MSKinectService',['../classomicron_1_1_m_s_kinect_service.html#a953348e05cde235cda1290364d9e4f33',1,'omicron::MSKinectService::MSKinectService()'],['../classomicron_1_1_m_s_kinect_service.html#a953348e05cde235cda1290364d9e4f33',1,'omicron::MSKinectService::MSKinectService()']]],
   ['multiinstanceconfig',['MultiInstanceConfig',['../structomega_1_1_multi_instance_config.html#a38115996a05fd6c117989b6bca336042',1,'omega::MultiInstanceConfig']]],
   ['mutespeaker',['MuteSpeaker',['../classwiimote.html#a4a117c7982dc727ba9cfec304c504e6f',1,'wiimote']]]
 ];

@@ -110,56 +110,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ae3df8ad43ab228ca798edadd6313f197"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_utils.html#ae3df8ad43ab228ca798edadd6313f197">getViewRayFromEvent</a> (const <a class="el" href="classomicron_1_1_event.html">Event</a> &amp;evt, <a class="el" href="classomicron_1_1_ray.html">Ray</a> &amp;ray, const <a class="el" href="classomega_1_1_display_config.html">DisplayConfig</a> &amp;cfg, bool normalizedPointerCoords=false, <a class="el" href="classomega_1_1_camera.html">Camera</a> *=NULL)</td></tr>
 <tr class="memdesc:ae3df8ad43ab228ca798edadd6313f197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes a view ray from a pointer or wand event.  <a href="#ae3df8ad43ab228ca798edadd6313f197">More...</a><br/></td></tr>
 <tr class="separator:ae3df8ad43ab228ca798edadd6313f197"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a296e7c0c017cf0d89bcfec537e1c3256"><td class="memItemLeft" align="right" valign="top">static std::pair&lt; bool, <a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_utils.html#a296e7c0c017cf0d89bcfec537e1c3256">getDisplayPointFromViewRay</a> (const <a class="el" href="classomicron_1_1_ray.html">Ray</a> &amp;ray, const <a class="el" href="classomega_1_1_display_config.html">DisplayConfig</a> &amp;cfg, bool normalizedPointerCoords=false)</td></tr>
-<tr class="memdesc:a296e7c0c017cf0d89bcfec537e1c3256"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes a 2D pointer given a 3D view ray.  <a href="#a296e7c0c017cf0d89bcfec537e1c3256">More...</a><br/></td></tr>
-<tr class="separator:a296e7c0c017cf0d89bcfec537e1c3256"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a296e7c0c017cf0d89bcfec537e1c3256"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static std::pair&lt;bool, <a class="el" href="namespaceomicron.html#a6edb474e601f7c52909d25fe6c6f8af6">Vector2f</a>&gt; omega::DisplayUtils::getDisplayPointFromViewRay </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classomicron_1_1_ray.html">Ray</a> &amp;&#160;</td>
-          <td class="paramname"><em>ray</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classomega_1_1_display_config.html">DisplayConfig</a> &amp;&#160;</td>
-          <td class="paramname"><em>cfg</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>normalizedPointerCoords</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Computes a 2D pointer given a 3D view ray. </p>
-<p>The ray will be used to intersect the tile planes to genrate the pointer The result will be optionally returned in normalized display coordinates (instead of pixel coordinates). </p>
-<dl class="section return"><dt>Returns</dt><dd>a pair of values: the first boolean indicates whether an intersection exists. The second is the 2D point value </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>only display configs providing a ray-to-point converter object can be used with this method. </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="a7cdff7c2ad8b6cbc7f030240058d6ebb"></a>
 <div class="memitem">
 <div class="memproto">

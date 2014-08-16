@@ -6,7 +6,7 @@ var searchData=
   ['needssend',['needsSend',['../structomega_1_1_python_interpreter_1_1_queued_command.html#a70fdc3c14bf00059db38006e645ab469',1,'omega::PythonInterpreter::QueuedCommand']]],
   ['negativeinfinity',['NegativeInfinity',['../classomicron_1_1_math.html#a860076bf9f1aca476d5c764f3a388fa7',1,'omicron::Math']]],
   ['next',['next',['../classomega_1_1xml_1_1_ti_xml_node.html#a267fa57dacec31513ebb03aba1e99ebd',1,'omega::xml::TiXmlNode']]],
-  ['node',['node',['../structomega_1_1_scene_query_result.html#a0aedd60e927d0e38f3d4a6a72f51cc33',1,'omega::SceneQueryResult::node()'],['../structomega_toolkit_1_1ui_1_1_container3d_settings.html#af8295e83a6bcead50dd0ab2838dd701a',1,'omegaToolkit::ui::Container3dSettings::node()']]],
+  ['node',['node',['../classomega_1_1_display_tile_config.html#a88b45c2ee505b396557b6dd406deed3e',1,'omega::DisplayTileConfig::node()'],['../structomega_1_1_scene_query_result.html#a0aedd60e927d0e38f3d4a6a72f51cc33',1,'omega::SceneQueryResult::node()'],['../structomega_toolkit_1_1ui_1_1_container3d_settings.html#af8295e83a6bcead50dd0ab2838dd701a',1,'omegaToolkit::ui::Container3dSettings::node()']]],
   ['nodekiller',['nodeKiller',['../classomega_1_1_display_config.html#a653b607074d3c1beee3f4c063ec5b6c2',1,'omega::DisplayConfig']]],
   ['nodelauncher',['nodeLauncher',['../classomega_1_1_display_config.html#aad7855d91cd731a5189c05a1ef9b44f0',1,'omega::DisplayConfig']]],
   ['nodes',['nodes',['../classomega_1_1_display_config.html#aacec39c04f551d1bc0a7f4782a9463cb',1,'omega::DisplayConfig']]],
