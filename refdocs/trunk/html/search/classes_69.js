@@ -2,6 +2,7 @@ var searchData=
 [
   ['iasynctaskhandler',['IAsyncTaskHandler',['../classomega_1_1_async_task_1_1_i_async_task_handler.html',1,'omega::AsyncTask']]],
   ['icameralistener',['ICameraListener',['../classomega_1_1_i_camera_listener.html',1,'omega']]],
+  ['icanvaslistener',['ICanvasListener',['../classomega_1_1_i_canvas_listener.html',1,'omega']]],
   ['ieventlistener',['IEventListener',['../classomicron_1_1_i_event_listener.html',1,'omicron']]],
   ['ihttprequestlistener',['IHttpRequestListener',['../classomicron_1_1_i_http_request_listener.html',1,'omicron']]],
   ['iloglistener',['ILogListener',['../classomicron_1_1_i_log_listener.html',1,'omicron']]],

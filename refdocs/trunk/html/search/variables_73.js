@@ -20,7 +20,7 @@ var searchData=
   ['stencilinitialized',['stencilInitialized',['../structomega_1_1_draw_context.html#ac58ae4c7b065aee5e8c8976363e5a518',1,'omega::DrawContext']]],
   ['stencilmaskheight',['stencilMaskHeight',['../structomega_1_1_draw_context.html#a1bd1739a9e0520dc166fe3328894e344',1,'omega::DrawContext']]],
   ['stencilmaskwidth',['stencilMaskWidth',['../structomega_1_1_draw_context.html#a2e02dc5cf54e7948c579c4ab78df888c',1,'omega::DrawContext']]],
-  ['stereomode',['stereoMode',['../classomega_1_1_display_tile_config.html#af045014b52684cb0f2961619bf9330d2',1,'omega::DisplayTileConfig::stereoMode()'],['../classomega_1_1_display_config.html#abd8a56cdefd31a79afcfe406ebd41ca5',1,'omega::DisplayConfig::stereoMode()']]],
+  ['stereomode',['stereoMode',['../classomega_1_1_display_config.html#abd8a56cdefd31a79afcfe406ebd41ca5',1,'omega::DisplayConfig::stereoMode()'],['../classomega_1_1_display_tile_config.html#af045014b52684cb0f2961619bf9330d2',1,'omega::DisplayTileConfig::stereoMode()']]],
   ['streams',['streams',['../structscan__context.html#a42b7e86466be147d557499f45d47cfb9',1,'scan_context']]],
   ['string',['string',['../structparse__context.html#aa69b91bd3127bb918700074992130b4a',1,'parse_context::string()'],['../structscan__context.html#aa23d5c633b40966b509c91068b72fc47',1,'scan_context::string()'],['../structstrbuf__t.html#ac33d87e4a1e65b81c34728c08c58e225',1,'strbuf_t::string()']]],
   ['sval',['sval',['../union_y_y_s_t_y_p_e.html#ab660933e53766ba3914f0d60ed01f6e4',1,'YYSTYPE::sval()'],['../unionconfig__value__t.html#a376d09b3da99952fcb1373b3574266ce',1,'config_value_t::sval()']]]

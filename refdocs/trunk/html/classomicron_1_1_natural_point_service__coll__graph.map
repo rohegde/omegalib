@@ -1,0 +1,5 @@
+<map id="omicron::NaturalPointService" name="omicron::NaturalPointService">
+<area shape="rect" id="node2" href="$classomicron_1_1_service.html" title="The base class for Services: a Service has code that is executed periodically (in the poll method) an..." alt="" coords="34,179,136,203"/>
+<area shape="rect" id="node3" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="15,104,156,128"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_list.html" title="omicron::List\&lt; omicron\l::ReferenceType * \&gt;" alt="" coords="20,6,151,42"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; char, omega::Color \&gt;" alt="" coords="154,5,291,41"/>
+<area shape="rect" id="node3" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, GLuint \&gt;" alt="" coords="165,65,280,101"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, omega::DisplayTile\lConfig * \&gt;" alt="" coords="143,125,302,173"/>
+<area shape="rect" id="node5" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, omega::SharedObject * \&gt;" alt="" coords="125,198,320,234"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, omega::Stat * \&gt;" alt="" coords="149,258,297,294"/>
+<area shape="rect" id="node7" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, QuickCommand \&gt;" alt="" coords="147,318,299,354"/>
+<area shape="rect" id="node8" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, Ref\&lt; Channel \&gt; \&gt;" alt="" coords="144,378,301,414"/>
+<area shape="rect" id="node9" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, Ref\&lt; Node \&gt; \&gt;" alt="" coords="151,438,294,474"/>
+<area shape="rect" id="node10" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, ServiceAllocator \&gt;" alt="" coords="145,498,301,534"/>
+<area shape="rect" id="node11" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, String \&gt;" alt="" coords="165,558,280,594"/>
+<area shape="rect" id="node12" href="$classomicron_1_1_dictionary.html" title="A Dictionary storing key&#45;value pairs using a hashtable implementation. " alt="" coords="165,618,280,654"/>
+</map>

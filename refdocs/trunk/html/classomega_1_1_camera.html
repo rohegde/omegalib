@@ -65,7 +65,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -106,10 +106,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ac9fdcfcdbb6a11db52d58a8b7dae0a44"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44">ViewMode</a> { <a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44a289f4cb516fc3e96470dd85673f85c07">Immersive</a>, 
-<a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44ad847cbf8ca0de1c0af1bcd71f52feff8">Classic</a>
- }</td></tr>
-<tr class="separator:ac9fdcfcdbb6a11db52d58a8b7dae0a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8ebd502f9dc760f33bf8fc58c58bcf5"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5">CameraFlags</a> { <a class="el" href="classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5acf5ad8da80e8ef549d24282045c8e0fc">DrawScene</a> = 1 &lt;&lt; 1, 
 <a class="el" href="classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5a18ef22e656ce035a7ecfb9d17658aebe">DrawOverlay</a> = 1 &lt;&lt; 2, 
 <a class="el" href="classomega_1_1_camera.html#ac8ebd502f9dc760f33bf8fc58c58bcf5aba06c0a544606a9b3d0e9ce232d637e8">DefaultFlags</a> = DrawScene | DrawOverlay
@@ -263,11 +259,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab9f75e22f50fa27c360dde634637565c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9bc0790fca95000d3335e1014a57a6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ae9bc0790fca95000d3335e1014a57a6e">setViewSize</a> (float width, float height)</td></tr>
 <tr class="separator:ae9bc0790fca95000d3335e1014a57a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae162e41e988b8fdeb7f77f264bf1c1ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#ae162e41e988b8fdeb7f77f264bf1c1ea">setViewMode</a> (<a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44">ViewMode</a> mode)</td></tr>
-<tr class="memdesc:ae162e41e988b8fdeb7f77f264bf1c1ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the view mode.  <a href="#ae162e41e988b8fdeb7f77f264bf1c1ea">More...</a><br/></td></tr>
-<tr class="separator:ae162e41e988b8fdeb7f77f264bf1c1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb32e7076c8610877ea95b739564bfad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44">ViewMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#afb32e7076c8610877ea95b739564bfad">getViewMode</a> ()</td></tr>
-<tr class="separator:afb32e7076c8610877ea95b739564bfad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:aefeed88e844b5c18003971c98a969b15"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomega_1_1_color.html">Color</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#aefeed88e844b5c18003971c98a969b15">getBackgroundColor</a> ()</td></tr>
 <tr class="memdesc:aefeed88e844b5c18003971c98a969b15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frame buffer clear.  <a href="#aefeed88e844b5c18003971c98a969b15">More...</a><br/></td></tr>
@@ -576,9 +567,6 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a5639d4ccf9498e1d6d0433a2b1e33aa5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a5639d4ccf9498e1d6d0433a2b1e33aa5">updateTransforms</a> (<a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;ctx)</td></tr>
 <tr class="memdesc:a5639d4ccf9498e1d6d0433a2b1e33aa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the specified draw context, computing an off-axis projection based on the tile and active eye in the draw context.  <a href="#a5639d4ccf9498e1d6d0433a2b1e33aa5">More...</a><br/></td></tr>
 <tr class="separator:a5639d4ccf9498e1d6d0433a2b1e33aa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a382e9d36ea89eff13445acf4f4ca674b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_camera.html#a382e9d36ea89eff13445acf4f4ca674b">updateImmersiveViewTransform</a> ()</td></tr>
-<tr class="memdesc:a382e9d36ea89eff13445acf4f4ca674b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recomputed the view bounds for the current tile, updating the viewMin and viewMax values in the context structure.  <a href="#a382e9d36ea89eff13445acf4f4ca674b">More...</a><br/></td></tr>
-<tr class="separator:a382e9d36ea89eff13445acf4f4ca674b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classomega_1_1_scene_node"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classomega_1_1_scene_node')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classomega_1_1_scene_node.html">omega::SceneNode</a></td></tr>
 <tr class="memitem:adbf5a34d4cc53ac68ea60afb2f52d504 inherit pro_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#adbf5a34d4cc53ac68ea60afb2f52d504">setParent</a> (<a class="el" href="classomega_1_1_node.html">Node</a> *parent)</td></tr>
 <tr class="memdesc:adbf5a34d4cc53ac68ea60afb2f52d504 inherit pro_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only available internally - notification of parent.  <a href="#adbf5a34d4cc53ac68ea60afb2f52d504">More...</a><br/></td></tr>
@@ -676,14 +664,19 @@ Additional Inherited Members</h2></td></tr>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
- <div class="center">
-  <img src="classomega_1_1_camera.png" usemap="#omega::Camera_map" alt=""/>
-  <map id="omega::Camera_map" name="omega::Camera_map">
-<area href="classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph. " alt="omega::SceneNode" shape="rect" coords="0,112,150,136"/>
-<area href="classomega_1_1_node.html" title="Class representing a general-purpose node in an articulated scene graph. " alt="omega::Node" shape="rect" coords="0,56,150,80"/>
-<area href="classomicron_1_1_reference_type.html" title="Implements a base class for reference-counted types. " alt="omicron::ReferenceType" shape="rect" coords="0,0,150,24"/>
-</map>
- </div></div>
+<div class="center"><img src="classomega_1_1_camera__inherit__graph.png" border="0" usemap="#omega_1_1_camera_inherit__map" alt="Inheritance graph"/></div>
+<map name="omega_1_1_camera_inherit__map" id="omega_1_1_camera_inherit__map">
+<area shape="rect" id="node2" href="classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph. " alt="" coords="18,149,133,173"/><area shape="rect" id="node3" href="classomega_1_1_node.html" title="Class representing a general&#45;purpose node in an articulated scene graph. " alt="" coords="33,77,119,101"/><area shape="rect" id="node4" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="5,5,147,29"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for omega::Camera:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classomega_1_1_camera__coll__graph.png" border="0" usemap="#omega_1_1_camera_coll__map" alt="Collaboration graph"/></div>
+<map name="omega_1_1_camera_coll__map" id="omega_1_1_camera_coll__map">
+<area shape="rect" id="node2" href="classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph. " alt="" coords="742,222,858,246"/><area shape="rect" id="node3" href="classomega_1_1_node.html" title="Class representing a general&#45;purpose node in an articulated scene graph. " alt="" coords="507,254,594,278"/><area shape="rect" id="node4" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="167,6,308,30"/><area shape="rect" id="node8" href="classomicron_1_1_name_generator.html" title="Utility class to generate a sequentially numbered series of names. " alt="" coords="166,298,309,322"/><area shape="rect" id="node9" title="STL class. " alt="" coords="5,261,77,285"/><area shape="rect" id="node12" href="classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, Ref\&lt; Node \&gt; \&gt;" alt="" coords="166,421,309,457"/><area shape="rect" id="node14" href="classomicron_1_1_list.html" title="omicron::List\&lt; omega\l::Node * \&gt;" alt="" coords="174,531,301,567"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="ac8ebd502f9dc760f33bf8fc58c58bcf5"></a>
 <div class="memitem">
@@ -718,26 +711,6 @@ Additional Inherited Members</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a746373af21486a022c4dc1c806e685c9a184d132ade07a4dc54e8cc42e6a07b64"></a>DefaultRenderPassMask</em>&nbsp;</td><td class="fielddoc">
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="a746373af21486a022c4dc1c806e685c9ac29b2697c019b7935656731a4837cc1d"></a>AllRenderPassMask</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-</table>
-
-</div>
-</div>
-<a class="anchor" id="ac9fdcfcdbb6a11db52d58a8b7dae0a44"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44">omega::Camera::ViewMode</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="ac9fdcfcdbb6a11db52d58a8b7dae0a44a289f4cb516fc3e96470dd85673f85c07"></a>Immersive</em>&nbsp;</td><td class="fielddoc">
-<p>In immersive view mode, the scene does not follow view movement. </p>
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="ac9fdcfcdbb6a11db52d58a8b7dae0a44ad847cbf8ca0de1c0af1bcd71f52feff8"></a>Classic</em>&nbsp;</td><td class="fielddoc">
-<p>In classic view mode, the scene follows the view movement and size. </p>
 </td></tr>
 </table>
 
@@ -1208,29 +1181,6 @@ Additional Inherited Members</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">int omega::Camera::getTrackerSourceId </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="afb32e7076c8610877ea95b739564bfad"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44">Camera::ViewMode</a> omega::Camera::getViewMode </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -2031,32 +1981,6 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae162e41e988b8fdeb7f77f264bf1c1ea"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void omega::Camera::setViewMode </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44">ViewMode</a>&#160;</td>
-          <td class="paramname"><em>mode</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets or sets the view mode. </p>
-
-</div>
-</div>
 <a class="anchor" id="a3ae82e7636513007cc9c9d4ac429680e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2138,31 +2062,6 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a382e9d36ea89eff13445acf4f4ca674b"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void omega::Camera::updateImmersiveViewTransform </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Recomputed the view bounds for the current tile, updating the viewMin and viewMax values in the context structure. </p>
 
 </div>
 </div>

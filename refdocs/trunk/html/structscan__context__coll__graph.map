@@ -1,0 +1,6 @@
+<map id="scan_context" name="scan_context">
+<area shape="rect" id="node2" href="$structconfig__t.html" title="config_t" alt="" coords="309,121,371,145"/>
+<area shape="rect" id="node7" href="$structconfig__setting__t.html" title="config_setting_t" alt="" coords="377,224,476,248"/>
+<area shape="rect" id="node9" href="$unionconfig__value__t.html" title="config_value_t" alt="" coords="471,121,564,145"/>
+<area shape="rect" id="node12" href="$structstrbuf__t.html" title="strbuf_t" alt="" coords="857,121,919,145"/>
+</map>

@@ -15,7 +15,7 @@ var searchData=
   ['defaultwidgetfactory',['DefaultWidgetFactory',['../classomega_toolkit_1_1ui_1_1_default_widget_factory.html#a879b02a6dc28053b8f20aa87616fc689',1,'omegaToolkit::ui::DefaultWidgetFactory']]],
   ['degreestoradians',['degreesToRadians',['../classomicron_1_1_math.html#a6121d16ddbaf90e4349d2a0dfc90a49d',1,'omicron::Math']]],
   ['deletestream',['deleteStream',['../classomicron_1_1_data_source.html#aad4bbb56ea513aa830e9d0319a6dab35',1,'omicron::DataSource::deleteStream()'],['../classomicron_1_1_data_manager.html#a17627fdb856ac33a6a962dac559682bd',1,'omicron::DataManager::deleteStream()'],['../classomicron_1_1_filesystem_data_source.html#abb2f19dca00307bce2d126792d8e606a',1,'omicron::FilesystemDataSource::deleteStream()']]],
-  ['deserialize',['deserialize',['../classomicron_1_1_event.html#a9b2484dfcf0cce57e79ad3f80a593f07',1,'omicron::Event']]],
+  ['deserialize',['deserialize',['../classomicron_1_1_event.html#a12339b7caa1f3d175f9ca6d3cb773bf3',1,'omicron::Event']]],
   ['destroycamera',['destroyCamera',['../classomega_1_1_engine.html#ad0a38f54dc29a769a24ff00dbf64ee52',1,'omega::Engine']]],
   ['destroyextendedui',['destroyExtendedUi',['../classomega_toolkit_1_1_ui_module.html#ad0e608af0c8dea2edc1afcccd0be3bf2',1,'omegaToolkit::UiModule']]],
   ['disablemotionplus',['DisableMotionPlus',['../classwiimote.html#adbff68119a64722c538099986413f813',1,'wiimote']]],

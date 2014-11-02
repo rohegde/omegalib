@@ -2,7 +2,6 @@ var searchData=
 [
   ['idle',['IDLE',['../struct_touch.html#a01501a46b9666b95eecf447cd2adb842a1eec352bf7cdd5a108b22605aeef5e2c',1,'Touch']]],
   ['image',['Image',['../classomega_toolkit_1_1ui_1_1_menu_item.html#ae3f2271d031d040784adbf9ee9045bfea234fa4839670838e8d174ac4da6e506d',1,'omegaToolkit::ui::MenuItem']]],
-  ['immersive',['Immersive',['../classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44a289f4cb516fc3e96470dd85673f85c07',1,'omega::Camera']]],
   ['in_5fbuttons',['IN_BUTTONS',['../classwiimote.html#a887692d8a5e95d07e11d77f471c7710cafa6a96bed2a373255cae6c340833306f',1,'wiimote']]],
   ['in_5fbuttons_5faccel',['IN_BUTTONS_ACCEL',['../classwiimote.html#a887692d8a5e95d07e11d77f471c7710ca6e5284d603afeb78ed1c368e039c277b',1,'wiimote']]],
   ['in_5fbuttons_5faccel_5fext',['IN_BUTTONS_ACCEL_EXT',['../classwiimote.html#a887692d8a5e95d07e11d77f471c7710cacbe18448a84c68528dada773b9c09496',1,'wiimote']]],

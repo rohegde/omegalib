@@ -1,0 +1,13 @@
+<map id="omegaToolkit::ui::WidgetRenderable" name="omegaToolkit::ui::WidgetRenderable">
+<area shape="rect" id="node2" href="$classomega_1_1_renderable.html" title="omega::Renderable" alt="" coords="592,5,709,29"/>
+<area shape="rect" id="node3" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="240,188,381,212"/>
+<area shape="rect" id="node7" href="$classomega_1_1_gpu_resource.html" title="omega::GpuResource" alt="" coords="437,107,563,131"/>
+<area shape="rect" id="node9" href="$classomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="734,441,877,465"/>
+<area shape="rect" id="node18" href="$classomega_1_1_renderer.html" title="The omegalib renderer is the entry point for all of omegalib rendering code. " alt="" coords="597,188,704,212"/>
+<area shape="rect" id="node19" href="$classomega_1_1_gpu_context.html" title="omega::GpuContext" alt="" coords="745,828,865,852"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_list.html" title="omicron::List\&lt; omicron\l::ReferenceType * \&gt;" alt="" coords="5,182,136,218"/>
+<area shape="rect" id="node5" href="$structomega_1_1_draw_context.html" title="Contains information about the context in which drawing operations take place. " alt="" coords="1019,441,1146,465"/>
+<area shape="rect" id="node6" href="$classomega_1_1_render_target.html" title="omega::RenderTarget" alt="" coords="741,41,870,65"/>
+<area shape="rect" id="node10" href="$classomega_1_1_camera.html" title="The Camera class handles information about a view transformation, head tracking and optional target b..." alt="" coords="451,395,549,419"/>
+<area shape="rect" id="node17" href="$classomicron_1_1_queue.html" title="omicron::Queue\&lt; omega\l::DisplayTileConfig * \&gt;" alt="" coords="734,707,877,743"/>
+</map>

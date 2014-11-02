@@ -1,0 +1,11 @@
+<map id="omega::DisplayConfig" name="omega::DisplayConfig">
+<area shape="rect" id="node9" href="$classomega_1_1_display_tile_config.html" title="omega::DisplayTileConfig" alt="" coords="897,531,1039,555"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="305,773,447,797"/>
+<area shape="rect" id="node3" href="$classomicron_1_1_list.html" title="omicron::List\&lt; omicron\l::ReferenceType * \&gt;" alt="" coords="24,767,155,803"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, omega::DisplayTile\lConfig * \&gt;" alt="" coords="297,460,455,508"/>
+<area shape="rect" id="node8" href="$classomega_1_1_i_canvas_listener.html" title="Listener for canvas changes, register using DisplayConfig::setCanvasListener. " alt="" coords="306,725,446,749"/>
+<area shape="rect" id="node19" href="$structomega_1_1_display_node_config.html" title="omega::DisplayNodeConfig" alt="" coords="1117,531,1269,555"/>
+<area shape="rect" id="node10" href="$classomega_1_1_camera.html" title="The Camera class handles information about a view transformation, head tracking and optional target b..." alt="" coords="665,455,764,479"/>
+<area shape="rect" id="node16" title="STL class. " alt="" coords="340,255,412,279"/>
+<area shape="rect" id="node20" href="$classomicron_1_1_ref.html" title="omicron::Ref\&lt; omega\l::DisplayConfigBuilder \&gt;" alt="" coords="307,399,445,435"/>
+</map>

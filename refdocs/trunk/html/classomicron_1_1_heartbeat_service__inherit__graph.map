@@ -1,0 +1,4 @@
+<map id="omicron::HeartbeatService" name="omicron::HeartbeatService">
+<area shape="rect" id="node2" href="$classomicron_1_1_service.html" title="The base class for Services: a Service has code that is executed periodically (in the poll method) an..." alt="" coords="29,77,131,101"/>
+<area shape="rect" id="node3" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="9,5,151,29"/>
+</map>

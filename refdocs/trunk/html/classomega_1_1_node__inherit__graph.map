@@ -1,0 +1,5 @@
+<map id="omega::Node" name="omega::Node">
+<area shape="rect" id="node3" href="$classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph. " alt="" coords="18,149,133,173"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="5,5,147,29"/>
+<area shape="rect" id="node4" href="$classomega_1_1_camera.html" title="The Camera class handles information about a view transformation, head tracking and optional target b..." alt="" coords="27,221,125,245"/>
+</map>

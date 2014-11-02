@@ -1,0 +1,12 @@
+<map id="omega::Actor" name="omega::Actor">
+<area shape="rect" id="node6" href="$classomega_1_1_tracked_object.html" title="Implements an Actor that sets the position and orientation of a scene node based on a events generate..." alt="" coords="718,5,850,29"/>
+<area shape="rect" id="node7" href="$classomega_toolkit_1_1_controller_manipulator.html" title="omegaToolkit::Controller\lManipulator" alt="" coords="714,54,854,90"/>
+<area shape="rect" id="node8" href="$classomega_toolkit_1_1_default_mouse_interactor.html" title="omegaToolkit::DefaultMouse\lInteractor" alt="" coords="705,114,863,150"/>
+<area shape="rect" id="node9" href="$classomega_toolkit_1_1_default_two_hands_interactor.html" title="omegaToolkit::DefaultTwo\lHandsInteractor" alt="" coords="710,174,858,210"/>
+<area shape="rect" id="node10" href="$classomega_toolkit_1_1_mouse_manipulator.html" title="omegaToolkit::MouseManipulator" alt="" coords="694,235,874,259"/>
+<area shape="rect" id="node11" href="$classomega_toolkit_1_1_wand_manipulator.html" title="Implements a wand node manipulator. " alt="" coords="695,283,873,307"/>
+<area shape="rect" id="node2" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="381,151,509,175"/>
+<area shape="rect" id="node3" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="200,127,328,151"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="5,127,147,151"/>
+<area shape="rect" id="node5" href="$classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="195,175,333,199"/>
+</map>

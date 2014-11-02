@@ -5,7 +5,7 @@ var searchData=
   ['black',['Black',['../classomega_1_1_color.html#a80b4c9004077b731e20b962aea853b82',1,'omega::Color']]],
   ['blank',['BLANK',['../classomicron_1_1_string_utils.html#a8a407ef78976d289cf34f04df74b0b2b',1,'omicron::StringUtils']]],
   ['blue',['Blue',['../classomega_1_1_color.html#aa3ca0432aa8168290bc6fc5dce19b6a0',1,'omega::Color']]],
-  ['borderless',['borderless',['../classomega_1_1_display_tile_config.html#a80351e16e1eedf1da073c7dee256572e',1,'omega::DisplayTileConfig::borderless()'],['../classomega_1_1_display_config.html#a05c59606376426b226a9a5db16b7c923',1,'omega::DisplayConfig::borderless()']]],
+  ['borderless',['borderless',['../classomega_1_1_display_config.html#a05c59606376426b226a9a5db16b7c923',1,'omega::DisplayConfig::borderless()'],['../classomega_1_1_display_tile_config.html#a80351e16e1eedf1da073c7dee256572e',1,'omega::DisplayTileConfig::borderless()']]],
   ['bottomleft',['bottomLeft',['../classomega_1_1_display_tile_config.html#ae1b53db3ced823329746388dfca388e0',1,'omega::DisplayTileConfig']]],
   ['bottomright',['bottomRight',['../classomega_1_1_display_tile_config.html#aea35adf3ed1d33951e00e6742bbf8c6f',1,'omega::DisplayTileConfig']]],
   ['box_5finfinite',['BOX_INFINITE',['../classomicron_1_1_aligned_box3.html#a569bbbf14740b6238db2326e210775bd',1,'omicron::AlignedBox3']]],

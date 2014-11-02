@@ -65,7 +65,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -125,6 +125,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a89fcc8c5b8766bb3610fad2f5531ffaa"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_ref.html">Ref</a>&lt; <a class="el" href="classomega_1_1_pixel_data.html">PixelData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a89fcc8c5b8766bb3610fad2f5531ffaa">loadImage</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;filename, bool hasFullPath=false)</td></tr>
 <tr class="memdesc:a89fcc8c5b8766bb3610fad2f5531ffaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a file.  <a href="#a89fcc8c5b8766bb3610fad2f5531ffaa">More...</a><br/></td></tr>
 <tr class="separator:a89fcc8c5b8766bb3610fad2f5531ffaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6242741e9c763762373885d81b8ec2f8"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a6242741e9c763762373885d81b8ec2f8">saveImage</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;filename, <a class="el" href="classomega_1_1_pixel_data.html">PixelData</a> *data, <a class="el" href="classomega_1_1_image_utils.html#a3adea18d896812a9499e62290793f35c">ImageFormat</a> format)</td></tr>
+<tr class="memdesc:a6242741e9c763762373885d81b8ec2f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save <a class="el" href="classomega_1_1_pixel_data.html">PixelData</a> to a file with format.  <a href="#a6242741e9c763762373885d81b8ec2f8">More...</a><br/></td></tr>
+<tr class="separator:a6242741e9c763762373885d81b8ec2f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dd8d6c21fb3d7754667a7ac15c5937c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_ref.html">Ref</a>&lt; <a class="el" href="classomega_1_1_pixel_data.html">PixelData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a8dd8d6c21fb3d7754667a7ac15c5937c">loadImageFromStream</a> (std::istream &amp;fin, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;streamName)</td></tr>
 <tr class="memdesc:a8dd8d6c21fb3d7754667a7ac15c5937c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a stream.  <a href="#a8dd8d6c21fb3d7754667a7ac15c5937c">More...</a><br/></td></tr>
 <tr class="separator:a8dd8d6c21fb3d7754667a7ac15c5937c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -613,6 +616,48 @@ Static Public Member Functions</h2></td></tr>
 <p>Preallocated memory management. </p>
 <p>Preallocate memory blocks for image loading and processing. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if preallocation succeeded. False otherwise. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6242741e9c763762373885d81b8ec2f8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool omega::ImageUtils::saveImage </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_pixel_data.html">PixelData</a> *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_image_utils.html#a3adea18d896812a9499e62290793f35c">ImageFormat</a>&#160;</td>
+          <td class="paramname"><em>format</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Save <a class="el" href="classomega_1_1_pixel_data.html">PixelData</a> to a file with format. </p>
 
 </div>
 </div>

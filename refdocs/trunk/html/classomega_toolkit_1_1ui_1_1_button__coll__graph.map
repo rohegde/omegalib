@@ -1,0 +1,10 @@
+<map id="omegaToolkit::ui::Button" name="omegaToolkit::ui::Button">
+<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_abstract_button.html" title="omegaToolkit::ui::Abstract\lButton" alt="" coords="590,201,741,237"/>
+<area shape="rect" id="node3" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="273,294,415,318"/>
+<area shape="rect" id="node10" href="$classomega_toolkit_1_1ui_1_1_image.html" title="omegaToolkit::ui::Image" alt="" coords="596,262,735,286"/>
+<area shape="rect" id="node14" href="$classomega_toolkit_1_1ui_1_1_label.html" title="omegaToolkit::ui::Label" alt="" coords="598,474,733,498"/>
+<area shape="rect" id="node4" href="$classomega_1_1_renderable_factory.html" title="Base class for objects that can create renderables. " alt="" coords="5,246,160,270"/>
+<area shape="rect" id="node5" href="$classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="14,294,151,318"/>
+<area shape="rect" id="node12" href="$classomicron_1_1_ref.html" title="omicron::Ref\&lt; omega\l::PixelData \&gt;" alt="" coords="281,233,407,269"/>
+<area shape="rect" id="node18" href="$classomega_1_1_color.html" title="omega::Color" alt="" coords="301,774,387,798"/>
+</map>

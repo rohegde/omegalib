@@ -40,6 +40,7 @@ var searchData=
   ['alignedbox3',['AlignedBox3',['../classomicron_1_1_aligned_box3.html#a12eb43fc59408a9954538fe121e59b8e',1,'omicron::AlignedBox3::AlignedBox3()'],['../classomicron_1_1_aligned_box3.html#a6e3164c21d55b549cbb103639f1a962a',1,'omicron::AlignedBox3::AlignedBox3(Extent e)'],['../classomicron_1_1_aligned_box3.html#aeeeb231abbf4f7152600276cf87a5938',1,'omicron::AlignedBox3::AlignedBox3(const AlignedBox3 &amp;rkBox)'],['../classomicron_1_1_aligned_box3.html#a05ab47515460fa2fe6a2b2b0574b4cc5',1,'omicron::AlignedBox3::AlignedBox3(const Vector3f &amp;min, const Vector3f &amp;max)'],['../classomicron_1_1_aligned_box3.html#ab94b9f2431e5fb0bff544b389079e71d',1,'omicron::AlignedBox3::AlignedBox3(float mx, float my, float mz, float Mx, float My, float Mz)']]],
   ['append',['append',['../classomega_1_1xml_1_1_ti_xml_string.html#a4ef7a5d57d34336dfd3dd1251e8dc225',1,'omega::xml::TiXmlString']]],
   ['application',['Application',['../classomega_1_1_application.html#a166720ef8f57606a8489cd9439b3991a',1,'omega::Application']]],
+  ['applicationbase',['ApplicationBase',['../classomega_1_1_application_base.html#ae2ae428d041c2b8c3383ce8d6e0d8155',1,'omega::ApplicationBase']]],
   ['arecommandsenabled',['areCommandsEnabled',['../classomega_1_1_actor.html#a1fa48f64d6f5917ef0a0482c2e97e8f5',1,'omega::Actor']]],
   ['areeventsenabled',['areEventsEnabled',['../classomega_1_1_actor.html#adea7dac735aedc8237d92d0ca3890d92',1,'omega::Actor']]],
   ['asin',['asin',['../classomicron_1_1_math.html#ae660f7d53c2d34030f74acc4b25e697b',1,'omicron::Math']]],

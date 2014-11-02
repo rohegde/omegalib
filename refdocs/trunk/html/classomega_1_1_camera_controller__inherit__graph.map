@@ -1,0 +1,10 @@
+<map id="omega::CameraController" name="omega::CameraController">
+<area shape="rect" id="node6" href="$classomega_1_1_gamepad_camera_controller.html" title="omega::GamepadCameraController" alt="" coords="753,5,943,29"/>
+<area shape="rect" id="node7" href="$classomega_1_1_keyboard_mouse_camera_controller.html" title="Implements a camera controller using mouse and keyboard in FPS style: WASD keys are used to move..." alt="" coords="760,54,936,90"/>
+<area shape="rect" id="node8" href="$classomega_1_1_mouse_camera_controller.html" title="omega::MouseCameraController" alt="" coords="759,115,937,139"/>
+<area shape="rect" id="node9" href="$classomega_1_1_wand_camera_controller.html" title="omega::WandCameraController" alt="" coords="761,163,935,187"/>
+<area shape="rect" id="node2" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="381,88,509,112"/>
+<area shape="rect" id="node3" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="200,64,328,88"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="5,64,147,88"/>
+<area shape="rect" id="node5" href="$classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="195,112,333,136"/>
+</map>

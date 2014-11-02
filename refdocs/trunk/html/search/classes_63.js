@@ -3,6 +3,7 @@ var searchData=
   ['camera',['Camera',['../classomega_1_1_camera.html',1,'omega']]],
   ['cameracontroller',['CameraController',['../classomega_1_1_camera_controller.html',1,'omega']]],
   ['cameraoutput',['CameraOutput',['../classomega_1_1_camera_output.html',1,'omega']]],
+  ['camerastereoswitcher',['CameraStereoSwitcher',['../classomega_toolkit_1_1_camera_stereo_switcher.html',1,'omegaToolkit']]],
   ['color',['Color',['../classomega_1_1_color.html',1,'omega']]],
   ['config',['Config',['../classomicron_1_1_config.html',1,'omicron']]],
   ['config_5flist_5ft',['config_list_t',['../structconfig__list__t.html',1,'']]],

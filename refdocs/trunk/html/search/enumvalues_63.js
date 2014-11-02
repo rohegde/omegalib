@@ -5,7 +5,6 @@ var searchData=
   ['callbackupdate',['CallbackUpdate',['../classomega_1_1_python_interpreter.html#a92dedd3bd1ab9ac69f29ce66e0efafb7a265018537789583a80bab9669491f72a',1,'omega::PythonInterpreter']]],
   ['changevalue',['ChangeValue',['../classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a1f8d4a31d62fc6e9c52d3e8f957d7d68',1,'omicron::EventBase']]],
   ['checkbox',['Checkbox',['../classomega_toolkit_1_1ui_1_1_menu_item.html#ae3f2271d031d040784adbf9ee9045bfea996fa50e36dfd308b49dd6d5dc23021c',1,'omegaToolkit::ui::MenuItem']]],
-  ['classic',['Classic',['../classomega_1_1_camera.html#ac9fdcfcdbb6a11db52d58a8b7dae0a44ad847cbf8ca0de1c0af1bcd71f52feff8',1,'omega::Camera']]],
   ['click',['Click',['../classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53a58969b7f740850ea5c7161dc821e98a5',1,'omicron::EventBase']]],
   ['columninterleaved',['ColumnInterleaved',['../classomega_1_1_display_tile_config.html#a173c7e3329dca1fc6bfc76497a7e81a0a9a44a2d49aebd73bd5673f831b85eb3e',1,'omega::DisplayTileConfig']]],
   ['config_5ferr_5ffile_5fio',['CONFIG_ERR_FILE_IO',['../libconfig_8h.html#aa2ee0cc0ed9667955b6c3e93b8577339afa8304bf3565a6d1b679bee268fcecc9',1,'libconfig.h']]],

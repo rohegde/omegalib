@@ -65,7 +65,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -114,9 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a994459044c1dbc8bc4b54d00ba59c4b3"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a994459044c1dbc8bc4b54d00ba59c4b3">serialize</a> (<a class="el" href="structomicron_connector_1_1_event_data.html">omicronConnector::EventData</a> *ed) const </td></tr>
 <tr class="memdesc:a994459044c1dbc8bc4b54d00ba59c4b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serializes this event to a streamable event data packet.  <a href="#a994459044c1dbc8bc4b54d00ba59c4b3">More...</a><br/></td></tr>
 <tr class="separator:a994459044c1dbc8bc4b54d00ba59c4b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b2484dfcf0cce57e79ad3f80a593f07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a9b2484dfcf0cce57e79ad3f80a593f07">deserialize</a> (<a class="el" href="structomicron_connector_1_1_event_data.html">omicronConnector::EventData</a> *ed)</td></tr>
-<tr class="memdesc:a9b2484dfcf0cce57e79ad3f80a593f07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserializes from an event data packet.  <a href="#a9b2484dfcf0cce57e79ad3f80a593f07">More...</a><br/></td></tr>
-<tr class="separator:a9b2484dfcf0cce57e79ad3f80a593f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12339b7caa1f3d175f9ca6d3cb773bf3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#a12339b7caa1f3d175f9ca6d3cb773bf3">deserialize</a> (const <a class="el" href="structomicron_connector_1_1_event_data.html">omicronConnector::EventData</a> *ed)</td></tr>
+<tr class="memdesc:a12339b7caa1f3d175f9ca6d3cb773bf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserializes from an event data packet.  <a href="#a12339b7caa1f3d175f9ca6d3cb773bf3">More...</a><br/></td></tr>
+<tr class="separator:a12339b7caa1f3d175f9ca6d3cb773bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9f9bbf0210938fcc88d72ac8328cbc5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#aa9f9bbf0210938fcc88d72ac8328cbc5">reset</a> (<a class="el" href="classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53">Type</a> type, <a class="el" href="classomicron_1_1_service.html#a3992f0756d1aee668f6740487ddb4daf">Service::ServiceType</a> serviceType, <a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a> sourceId=0, unsigned short serviceId=0, unsigned short userId=0)</td></tr>
 <tr class="separator:aa9f9bbf0210938fcc88d72ac8328cbc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0a6cf9b20876a80d452e7e20e1c5ebe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_event.html#ad0a6cf9b20876a80d452e7e20e1c5ebe">resetSourceId</a> (<a class="el" href="namespaceomicron.html#ad9c8fa00a154bea52d85e91a16b57046">uint</a> newSourceId)</td></tr>
@@ -430,13 +430,19 @@ Additional Inherited Members</h2></td></tr>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
- <div class="center">
-  <img src="classomicron_1_1_event.png" usemap="#omicron::Event_map" alt=""/>
-  <map id="omicron::Event_map" name="omicron::Event_map">
-<area href="classomicron_1_1_reference_type.html" title="Implements a base class for reference-counted types. " alt="omicron::ReferenceType" shape="rect" coords="0,0,150,24"/>
-<area href="classomicron_1_1_event_base.html" alt="omicron::EventBase" shape="rect" coords="160,0,310,24"/>
-</map>
- </div></div>
+<div class="center"><img src="classomicron_1_1_event__inherit__graph.png" border="0" usemap="#omicron_1_1_event_inherit__map" alt="Inheritance graph"/></div>
+<map name="omicron_1_1_event_inherit__map" id="omicron_1_1_event_inherit__map">
+<area shape="rect" id="node2" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="5,5,147,29"/><area shape="rect" id="node3" href="classomicron_1_1_event_base.html" title="omicron::EventBase" alt="" coords="171,5,289,29"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for omicron::Event:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classomicron_1_1_event__coll__graph.png" border="0" usemap="#omicron_1_1_event_coll__map" alt="Collaboration graph"/></div>
+<map name="omicron_1_1_event_coll__map" id="omicron_1_1_event_coll__map">
+<area shape="rect" id="node2" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="5,192,147,216"/><area shape="rect" id="node3" href="classomicron_1_1_list.html" title="omicron::List\&lt; omicron\l::ReferenceType * \&gt;" alt="" coords="11,94,141,130"/><area shape="rect" id="node4" title="STL class. " alt="" coords="14,6,137,42"/><area shape="rect" id="node5" href="classomicron_1_1_event_base.html" title="omicron::EventBase" alt="" coords="171,192,289,216"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aa6beeb18ebaa05c04963bc5207e91825"></a>
 <div class="memitem">
@@ -509,7 +515,7 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9b2484dfcf0cce57e79ad3f80a593f07"></a>
+<a class="anchor" id="a12339b7caa1f3d175f9ca6d3cb773bf3"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -519,7 +525,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">void omicron::Event::deserialize </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structomicron_connector_1_1_event_data.html">omicronConnector::EventData</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="structomicron_connector_1_1_event_data.html">omicronConnector::EventData</a> *&#160;</td>
           <td class="paramname"><em>ed</em></td><td>)</td>
           <td></td>
         </tr>

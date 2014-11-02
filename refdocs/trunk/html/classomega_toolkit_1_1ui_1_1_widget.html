@@ -65,7 +65,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -381,6 +381,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8f795eb87ea0667a790b006d9277160e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a8f795eb87ea0667a790b006d9277160e">setDebugModeEnabled</a> (bool value)</td></tr>
 <tr class="memdesc:a8f795eb87ea0667a790b006d9277160e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enabled or disabled debug mode for this widget.  <a href="#a8f795eb87ea0667a790b006d9277160e">More...</a><br/></td></tr>
 <tr class="separator:a8f795eb87ea0667a790b006d9277160e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a2cde6cad3e28868a5acfd020a4e39d87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a2cde6cad3e28868a5acfd020a4e39d87">setPreDrawCallback</a> (PyObject *predcb)</td></tr>
+<tr class="memdesc:a2cde6cad3e28868a5acfd020a4e39d87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scriptable draw callbacks.  <a href="#a2cde6cad3e28868a5acfd020a4e39d87">More...</a><br/></td></tr>
+<tr class="separator:a2cde6cad3e28868a5acfd020a4e39d87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c841ab8bd175dddef4e8cf81f7f784b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a1c841ab8bd175dddef4e8cf81f7f784b">setPostDrawCallback</a> (PyObject *postdcb)</td></tr>
+<tr class="memdesc:a1c841ab8bd175dddef4e8cf81f7f784b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a python function to be called right before rendering of this widget terminates.  <a href="#a1c841ab8bd175dddef4e8cf81f7f784b">More...</a><br/></td></tr>
+<tr class="separator:a1c841ab8bd175dddef4e8cf81f7f784b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classomega_1_1_renderable_factory"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomega_1_1_renderable_factory')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classomega_1_1_renderable_factory.html">omega::RenderableFactory</a></td></tr>
 <tr class="memitem:aa1252a6d5adf66ca9ee3cbecc45b4ea5 inherit pub_methods_classomega_1_1_renderable_factory"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_renderable_factory.html#aa1252a6d5adf66ca9ee3cbecc45b4ea5">RenderableFactory</a> ()</td></tr>
 <tr class="separator:aa1252a6d5adf66ca9ee3cbecc45b4ea5 inherit pub_methods_classomega_1_1_renderable_factory"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -412,6 +419,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:acd8216b93c2eed284e4bf38fcd95d0cf"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">Widget</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#acd8216b93c2eed284e4bf38fcd95d0cf">create</a> (<a class="el" href="classomega_toolkit_1_1ui_1_1_container.html">Container</a> *parent)</td></tr>
+<tr class="separator:acd8216b93c2eed284e4bf38fcd95d0cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d6149d0a72c1ed61ae13d910c7d17a1"><td class="memTemplParams" colspan="2">template&lt;typename W &gt; </td></tr>
 <tr class="memitem:a5d6149d0a72c1ed61ae13d910c7d17a1"><td class="memTemplItemLeft" align="right" valign="top">static W *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a5d6149d0a72c1ed61ae13d910c7d17a1">getSource</a> (const Event &amp;evt)</td></tr>
 <tr class="separator:a5d6149d0a72c1ed61ae13d910c7d17a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -488,23 +497,19 @@ Additional Inherited Members</h2></td></tr>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
- <div class="center">
-  <img src="classomega_toolkit_1_1ui_1_1_widget.png" usemap="#omegaToolkit::ui::Widget_map" alt=""/>
-  <map id="omegaToolkit::ui::Widget_map" name="omegaToolkit::ui::Widget_map">
-<area href="classomega_1_1_renderable_factory.html" title="Base class for objects that can create renderables. " alt="omega::RenderableFactory" shape="rect" coords="298,56,487,80"/>
-<area href="classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="omicron::IEventListener" shape="rect" coords="497,56,686,80"/>
-<area href="classomicron_1_1_reference_type.html" title="Implements a base class for reference-counted types. " alt="omicron::ReferenceType" shape="rect" coords="298,0,487,24"/>
-<area href="classomega_toolkit_1_1ui_1_1_abstract_button.html" alt="omegaToolkit::ui::AbstractButton" shape="rect" coords="0,168,189,192"/>
-<area href="classomega_toolkit_1_1ui_1_1_container.html" alt="omegaToolkit::ui::Container" shape="rect" coords="199,168,388,192"/>
-<area href="classomega_toolkit_1_1ui_1_1_image.html" alt="omegaToolkit::ui::Image" shape="rect" coords="398,168,587,192"/>
-<area href="classomega_toolkit_1_1ui_1_1_label.html" alt="omegaToolkit::ui::Label" shape="rect" coords="597,168,786,192"/>
-<area href="classomega_toolkit_1_1ui_1_1_slider.html" alt="omegaToolkit::ui::Slider" shape="rect" coords="796,168,985,192"/>
-<area href="classomega_toolkit_1_1ui_1_1_button.html" alt="omegaToolkit::ui::Button" shape="rect" coords="0,224,189,248"/>
-<area href="classomega_toolkit_1_1ui_1_1_text_box.html" alt="omegaToolkit::ui::TextBox" shape="rect" coords="597,224,786,248"/>
-<area href="classomega_toolkit_1_1ui_1_1_default_slider.html" alt="omegaToolkit::ui::DefaultSlider" shape="rect" coords="796,224,985,248"/>
-<area href="classomega_toolkit_1_1ui_1_1_default_button.html" alt="omegaToolkit::ui::DefaultButton" shape="rect" coords="0,280,189,304"/>
-</map>
- </div></div>
+<div class="center"><img src="classomega_toolkit_1_1ui_1_1_widget__inherit__graph.png" border="0" usemap="#omega_toolkit_1_1ui_1_1_widget_inherit__map" alt="Inheritance graph"/></div>
+<map name="omega_toolkit_1_1ui_1_1_widget_inherit__map" id="omega_toolkit_1_1ui_1_1_widget_inherit__map">
+<area shape="rect" id="node5" href="classomega_toolkit_1_1ui_1_1_abstract_button.html" title="omegaToolkit::ui::Abstract\lButton" alt="" coords="593,5,743,41"/><area shape="rect" id="node8" href="classomega_toolkit_1_1ui_1_1_container.html" title="omegaToolkit::ui::Container" alt="" coords="590,65,746,89"/><area shape="rect" id="node9" href="classomega_toolkit_1_1ui_1_1_image.html" title="omegaToolkit::ui::Image" alt="" coords="599,113,737,137"/><area shape="rect" id="node10" href="classomega_toolkit_1_1ui_1_1_label.html" title="omegaToolkit::ui::Label" alt="" coords="601,161,735,185"/><area shape="rect" id="node12" href="classomega_toolkit_1_1ui_1_1_slider.html" title="omegaToolkit::ui::Slider" alt="" coords="601,212,735,236"/><area shape="rect" id="node2" href="classomega_1_1_renderable_factory.html" title="Base class for objects that can create renderables. " alt="" coords="195,89,349,113"/><area shape="rect" id="node3" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="5,89,147,113"/><area shape="rect" id="node4" href="classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="203,137,341,161"/><area shape="rect" id="node6" href="classomega_toolkit_1_1ui_1_1_button.html" title="omegaToolkit::ui::Button" alt="" coords="799,11,940,35"/><area shape="rect" id="node7" href="classomega_toolkit_1_1ui_1_1_default_button.html" title="omegaToolkit::ui::Default\lButton" alt="" coords="992,5,1136,41"/><area shape="rect" id="node11" href="classomega_toolkit_1_1ui_1_1_text_box.html" title="omegaToolkit::ui::TextBox" alt="" coords="795,159,944,183"/><area shape="rect" id="node13" href="classomega_toolkit_1_1ui_1_1_default_slider.html" title="omegaToolkit::ui::Default\lSlider" alt="" coords="797,207,941,243"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for omegaToolkit::ui::Widget:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classomega_toolkit_1_1ui_1_1_widget__coll__graph.png" border="0" usemap="#omega_toolkit_1_1ui_1_1_widget_coll__map" alt="Collaboration graph"/></div>
+<map name="omega_toolkit_1_1ui_1_1_widget_coll__map" id="omega_toolkit_1_1ui_1_1_widget_coll__map">
+<area shape="rect" id="node2" href="classomega_1_1_renderable_factory.html" title="Base class for objects that can create renderables. " alt="" coords="5,179,160,203"/><area shape="rect" id="node3" href="classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="12,104,153,128"/><area shape="rect" id="node4" href="classomicron_1_1_list.html" title="omicron::List\&lt; omicron\l::ReferenceType * \&gt;" alt="" coords="17,6,148,42"/><area shape="rect" id="node5" href="classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="185,179,321,203"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="a3756ea690a251b54bcd93c5f5e7f0db7"></a>
 <div class="memitem">
@@ -655,6 +660,30 @@ Additional Inherited Members</h2></td></tr>
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="acd8216b93c2eed284e4bf38fcd95d0cf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">Widget</a>* omegaToolkit::ui::Widget::create </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html">Container</a> *&#160;</td>
+          <td class="paramname"><em>parent</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -2824,6 +2853,60 @@ template&lt;typename W &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1c841ab8bd175dddef4e8cf81f7f784b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omegaToolkit::ui::Widget::setPostDrawCallback </td>
+          <td>(</td>
+          <td class="paramtype">PyObject *&#160;</td>
+          <td class="paramname"><em>postdcb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets a python function to be called right before rendering of this widget terminates. </p>
+<p>Pointer must be to a callable PyObject. </p>
+
+</div>
+</div>
+<a class="anchor" id="a2cde6cad3e28868a5acfd020a4e39d87"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omegaToolkit::ui::Widget::setPreDrawCallback </td>
+          <td>(</td>
+          <td class="paramtype">PyObject *&#160;</td>
+          <td class="paramname"><em>predcb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Scriptable draw callbacks. </p>
+<p>Sets a python function to be called before rendering of this widget begins. Pointer must be to a callable PyObject. </p>
 
 </div>
 </div>

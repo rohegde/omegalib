@@ -1,0 +1,5 @@
+<map id="omega::RenderPass" name="omega::RenderPass">
+<area shape="rect" id="node3" href="$classomega_1_1_console_render_pass.html" title="omega::ConsoleRenderPass" alt="" coords="5,149,163,173"/>
+<area shape="rect" id="node4" href="$classomega_toolkit_1_1_ui_render_pass.html" title="omegaToolkit::UiRenderPass" alt="" coords="187,149,345,173"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="104,5,245,29"/>
+</map>

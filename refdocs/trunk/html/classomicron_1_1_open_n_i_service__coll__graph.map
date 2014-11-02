@@ -1,0 +1,9 @@
+<map id="omicron::OpenNIService" name="omicron::OpenNIService">
+<area shape="rect" id="node2" href="$classomicron_1_1_service.html" title="The base class for Services: a Service has code that is executed periodically (in the poll method) an..." alt="" coords="498,11,601,35"/>
+<area shape="rect" id="node3" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="268,11,409,35"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_list.html" title="omicron::List\&lt; omicron\l::ReferenceType * \&gt;" alt="" coords="5,5,136,41"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_vector.html" title="omicron::Vector\&lt; xn\l::DepthGenerator \&gt;" alt="" coords="489,107,610,143"/>
+<area shape="rect" id="node7" title="STL class. " alt="" coords="241,121,437,145"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="244,171,433,195"/>
+<area shape="rect" id="node9" href="$classomicron_1_1_vector.html" title="omicron::Vector\&lt; xn\l::UserGenerator \&gt;" alt="" coords="489,167,610,203"/>
+</map>

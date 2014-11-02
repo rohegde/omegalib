@@ -1,0 +1,13 @@
+<map id="omega::PythonInterpreterWrapper" name="omega::PythonInterpreterWrapper">
+<area shape="rect" id="node4" href="$classomega_1_1_python_interpreter.html" title="omega::PythonInterpreter" alt="" coords="561,240,711,264"/>
+<area shape="rect" id="node5" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="257,108,385,132"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="29,108,171,132"/>
+<area shape="rect" id="node7" href="$classomicron_1_1_list.html" title="omicron::List\&lt; omega\l::PythonInterpreter::\lQueuedCommand * \&gt;" alt="" coords="258,156,385,204"/>
+<area shape="rect" id="node8" title="STL class. " alt="" coords="5,162,195,198"/>
+<area shape="rect" id="node9" title="STL class. " alt="" coords="285,228,357,252"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="45,222,155,258"/>
+<area shape="rect" id="node11" href="$classomicron_1_1_ref.html" title="omicron::Ref\&lt; omega\l::Stat \&gt;" alt="" coords="258,277,385,313"/>
+<area shape="rect" id="node13" href="$classomicron_1_1_list.html" title="omicron::List\&lt; void * \&gt;" alt="" coords="254,392,389,416"/>
+<area shape="rect" id="node14" title="STL class. " alt="" coords="45,392,155,416"/>
+<area shape="rect" id="node15" href="$classomicron_1_1_lock.html" title="omicron::Lock" alt="" coords="277,459,365,483"/>
+</map>

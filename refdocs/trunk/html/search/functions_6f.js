@@ -23,6 +23,7 @@ var searchData=
   ['omsg',['omsg',['../namespaceomicron.html#a34fe814f0bdad988ac54d4523ac92a8a',1,'omicron']]],
   ['onattached',['onAttached',['../classomega_1_1_node_component.html#a5dba940239539b61b4c80ed664f53a46',1,'omega::NodeComponent']]],
   ['onattachedtoscene',['onAttachedToScene',['../classomega_1_1_scene_node_listener.html#a09600d0b3f59ec48c6fa7714d05672d4',1,'omega::SceneNodeListener::onAttachedToScene()'],['../classomega_1_1_scene_node.html#ac7405c4cacd9aafe551fb83a5f5588f3',1,'omega::SceneNode::onAttachedToScene()']]],
+  ['oncanvaschange',['onCanvasChange',['../classomega_1_1_cylindrical_display_config.html#a7ab0860fb24003bfafd12eb90445c72a',1,'omega::CylindricalDisplayConfig::onCanvasChange()'],['../classomega_1_1_display_config_builder.html#aa066603576e68b9901ee11bebbc3d859',1,'omega::DisplayConfigBuilder::onCanvasChange()'],['../classomega_1_1_i_canvas_listener.html#a7d3eefa8fb074f4be6366043ad65a3a7',1,'omega::ICanvasListener::onCanvasChange()']]],
   ['onclientconnected',['onClientConnected',['../classomega_1_1_i_mission_control_listener.html#ae105c71cd18521870faecb9520c6fc61',1,'omega::IMissionControlListener']]],
   ['onclientdisconnected',['onClientDisconnected',['../classomega_1_1_i_mission_control_listener.html#a8cdfa28e0bfd921bb891c9a133765325',1,'omega::IMissionControlListener']]],
   ['oncommand',['onCommand',['../classomega_1_1_actor.html#ae502d2931b1ef8e28b484424de814980',1,'omega::Actor']]],

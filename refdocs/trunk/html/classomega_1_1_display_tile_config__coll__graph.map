@@ -1,0 +1,10 @@
+<map id="omega::DisplayTileConfig" name="omega::DisplayTileConfig">
+<area shape="rect" id="node13" href="$classomega_1_1_display_config.html" title="Stores omegalib display configuration data. " alt="" coords="1163,685,1290,709"/>
+<area shape="rect" id="node16" href="$structomega_1_1_display_node_config.html" title="omega::DisplayNodeConfig" alt="" coords="841,916,993,940"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="Implements a base class for reference&#45;counted types. " alt="" coords="240,68,381,92"/>
+<area shape="rect" id="node3" href="$classomicron_1_1_list.html" title="omicron::List\&lt; omicron\l::ReferenceType * \&gt;" alt="" coords="5,62,136,98"/>
+<area shape="rect" id="node4" href="$classomega_1_1_camera.html" title="The Camera class handles information about a view transformation, head tracking and optional target b..." alt="" coords="261,725,360,749"/>
+<area shape="rect" id="node5" href="$classomega_1_1_scene_node.html" title="Represents a node in the omegalib scene graph. " alt="" coords="13,725,129,749"/>
+<area shape="rect" id="node11" title="STL class. " alt="" coords="275,1039,347,1063"/>
+<area shape="rect" id="node14" href="$classomicron_1_1_dictionary.html" title="omicron::Dictionary\l\&lt; String, omega::DisplayTile\lConfig * \&gt;" alt="" coords="838,964,997,1012"/>
+</map>

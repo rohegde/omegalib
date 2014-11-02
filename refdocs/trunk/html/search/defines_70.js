@@ -23,6 +23,7 @@ var searchData=
   ['pyapi_5freturn_5fnew_5finstance',['PYAPI_RETURN_NEW_INSTANCE',['../_python_interpreter_wrapper_8h.html#a1aed1bbb6beef72b78ebaf45638518fd',1,'PythonInterpreterWrapper.h']]],
   ['pyapi_5freturn_5fref',['PYAPI_RETURN_REF',['../_python_interpreter_wrapper_8h.html#a255c94991a300c145e28198c7b7bb2a4',1,'PythonInterpreterWrapper.h']]],
   ['pyapi_5freturn_5fvalue',['PYAPI_RETURN_VALUE',['../_python_interpreter_wrapper_8h.html#a670f6daa55c354894e6fa4d0b974574d',1,'PythonInterpreterWrapper.h']]],
+  ['pyapi_5fstatic_5fmethod',['PYAPI_STATIC_METHOD',['../_python_interpreter_wrapper_8h.html#a5f4bd1b77bacf88b1d044a7e2d62cc76',1,'PythonInterpreterWrapper.h']]],
   ['pyapi_5fstatic_5fref_5fgetter',['PYAPI_STATIC_REF_GETTER',['../_python_interpreter_wrapper_8h.html#a3f112a6af155bdfa7bbb1550adc7097a',1,'PythonInterpreterWrapper.h']]],
   ['pyapi_5fvalue_5fproperty',['PYAPI_VALUE_PROPERTY',['../_python_interpreter_wrapper_8h.html#a2d831b7125217bf9457b8187c8380128',1,'PythonInterpreterWrapper.h']]]
 ];
