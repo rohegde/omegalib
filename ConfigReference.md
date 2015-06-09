@@ -1,0 +1,286 @@
+<p><b>Last revision:</b> ver. 4.0 - 22 May 2013<font color='#ff0000'> (This is a preliminary / work in progress document and may be incomplete)</font></p>
+
+
+
+# Omegalib configuration file reference #
+Omegalib applications use configuration files to learn about the the hardware they run on. Configuration files describe the capabilities and geometry of the display system, supported input devices, and network configurations for clustered systems. The omegalib distribution contains several configration files to test applications out of the box (i.e. to run them windowed on a standard PC). Programmers and system administrators can learn about configuration files to customize omegalib applications for other display and input systems.
+
+## Configuration file types ##
+Omegalib applications are usually based on two distints configuation files: the **system configuration file** and the **application configuration file**.
+
+The system configuration file determines the properties of the system the application will run on such as:
+  * What input devices are available and how they are to be set up
+  * The resolution of displays, their geometry, and network configuration for cluster systems
+  * The defaults for observer position, navigation styles and interaction keymappings
+Examples for several different system configuration files can be found in the `data/system` folder.
+
+The application configuration file contains application-specific options, as determined by the application itself. See the `Config` class reference for more information on how to read configuration values. The simplest possible application configuration file is:
+```c
+
+config:
+{
+systemConfig = "system/desktop.cfg";
+};
+```
+This application configuration specifies no option other than which system configuration file to use (in this case, `system/desktop.cfg`)
+
+## Loading configuration files ##
+By default, applications try to open an application configuration file with the application name and a `cfg` extension. If not found, the library will search for `default.cfg`. The default configuration file can be changed by passing a different file as the first argument to an omegalib application.
+
+## System configuration syntax ##
+Configuration files follow the syntax of libconfig. Each section has a name and is delimited by curly braces. Section contain name-value pairs. Values can be of different types:
+  * Boolean
+  * String
+  * Integer
+  * Floating point
+  * Vector of integers or floating points.
+A system configuration file contains several sections. A few of them (like the `display` section) are mandatory, while other are optional. The following paragraphs describe the structure of each supported section.
+
+
+---
+
+### Global configuration options ###
+These options go directly into the `config` section of the configuration file
+  * `pythonShellEnabled` (bool): enables the interactive python console.
+  * `drawPointers` (bool, default `false`): draw 2D pointers on screen.
+  * `pointerSize` (bool, default 32): the size in pixels of 2D pointers.
+
+
+---
+
+### `display` section ###
+The display configuration section describes the display system geometry, resources and rendering modes used by omegalib. The `display` section contains the following entries:
+  * `type` (String, required): The type of the display system manager running the display system. Can be one of the following values
+    * `"Equalizer"`: Uses Equalizer to manage the display system.
+  * `verbose` (Boolean, default `false`) - when set to true, the Display system will output additional diagnostic messages during startup and shutdown.
+  * `geometry` (String, required) - sets the geometry class of this display system (Supported values in omegalib 3.0 and higher are `Planar`, `Cylindrical`, and `Custom`)
+  * `numTiles`
+  * `referenceTile`
+  * `referenceOffset`
+  * `tileSize`
+  * `bezelSize`
+  * `autoOffsetWindows`
+  * `tileResolution`
+  * `windowOffset`
+  * `latency`
+  * `stereoMode`
+  * `fullscreen` (Boolean) - enable fullscreen for all tiles. When set to true also disables window borders.
+  * `borderless` (Boolean) - Disable window borders for all tiles (unless specified in tile configuration)
+  * `disableConfigGenerator`
+  * `nodeLauncher`
+  * `nodeKiller`
+  * `basePort`
+  * `launcherInterval`
+  * `displayStatsOnMaster`
+  * `enableVSync`
+  * `enableSwapSync`
+  * `tiles`
+
+#### Node Section ####
+  * `hostname`
+  * `port`
+
+Example:
+```
+	lyra-01:
+	{
+		hostname="lyra-01";
+		
+		// This is a tile section
+		t0x1: { device = 0; }; 
+	};
+```
+
+#### Tile Configuration ####
+  * `stereoMode`
+  * `device`
+  * `center`
+  * `yaw`
+  * `pitch`
+  * `position`
+  * `resolution`
+  * `offset`
+  * `offscreen` (Boolean) - Render this tile offscreen.
+  * `cameraName`
+  * `disableMouse` (Boolean) - When set to true, disables mouse event generation for this tile.
+  * `borderless` (Boolean) - Disable window borders for this tile.
+
+Example:
+```
+	headTile:
+	{
+		resolution = [800, 800];
+		device = 0;
+		center = [0, 2, -2];
+		tileSize = [1.2, 0.8];
+		stereoMode = "Mono";
+		//enabled = true;
+	};
+```
+
+
+---
+
+### `ui` section ###
+  * `menuRayPlaceEnabled` (bool)
+  * `menuDefaultPosition` (Vector3f)
+  * `menuDefaultScale` (float)
+  * `menu3dEnabled` (bool)
+  * `menuSuspendNavigation` (bool)
+  * `menuToggleButton` (String - button name)
+  * `confirmButton` (String - button name): the name of the button used to confirm actions on a gamepad or wand
+  * `cancelButton` (String - button name): the name of the button used to cancel actions on a gamepad or wand
+  * `clickButton` (String - button name): the name of the button used to confirm actions when the event happens ON the widget (for pointer devices and wands)
+
+
+
+---
+
+### `sound` section ###
+  * `soundServerIP`
+  * `soundServerPort`
+  * `assetCacheEnabled` (bool) - when set to true enabled the asset cache manager. The application will try to copy sounds over to the sound server machine (assuming a cache server is running)
+  * `assetCachePort` (int: default 22500) - the asset cache server port number
+Example:
+```
+	sound:
+	{
+		soundServerIP = "xenakis.evl.uic.edu";
+		soundServerPort = 57120;
+		showMenuSound = "/Users/evldemo/sounds/menu_sounds/menu_load.wav";
+		hideMenuSound = "/Users/evldemo/sounds/menu_sounds/menu_closed.wav";
+		selectMenuSound = "/Users/evldemo/sounds/menu_sounds/menu_select.wav";
+		scrollMenuSound = "/Users/evldemo/sounds/menu_sounds/menu_scroll.wav";
+		
+		// Optional sound parameters
+		menuSoundVolume = 0.1;
+		menuSoundWidth = 1.0;
+		menuSoundMix = 0.1;
+		menuSoundReverb = 0.0;
+	};
+```
+
+---
+
+### `services` section ###
+The `services` section can be alternatively called `input` for compatibility reasons. This section lists all the event services that should run at startup, and their configuration.
+
+Example:
+```
+	services:
+	{
+		NetService:
+		{
+			serverIP = "CAVE2Tracker.evl.uic.edu";
+			msgPort = 28000;
+			dataPort = 7001;
+		};
+	};
+```
+
+
+---
+
+### `camera` section ###
+The `camera` section configures the default camera.
+  * `controller` (String - one of `wand` `gamepad` `mouse` `mousekeyboard`)
+  * `trackerSourceId` (int)
+  * `navigationButton` (String - button name): sets the button used by the camera controller for navigation. Supported by `wand` camera controller.
+  * `overrideButton` (String - button name): when this button is pressed, the controller will not process any input or change the camera. Useful to temporary map the same input buttons and axes to some different functionality. Supported by `wand` camera controller.
+
+Example:
+```
+	camera:
+	{
+		controller ="Wand";
+		trackerSourceId = 0;
+	};
+```
+
+
+---
+
+### `interactor` section ###
+The `interactor` section configures the standard interactor mode for the application
+  * `style` (String - one of `wand` `mouse`)
+  * `moveButton` String - button name): sets the button used by to move objects. Supported by `wand` interactor.
+  * `rotateButton` String - button name): sets the button used by to rotate objects. Supported by `wand` interactor.
+Example:
+```
+	interactor:
+	{
+		style = "Wand";
+		moveButton = "Button3";
+	};
+```
+
+
+---
+
+### `defaultFont` section ###
+The `defaultFont` section configures the fond used by default by all ui elements.
+  * `filename` (String): path to a font file
+  * `size` (int): font size
+Example:
+```
+	defaultFont:
+	{
+		filename = "fonts/segoeuimod.ttf";
+		size = 42;
+	};
+```
+
+
+---
+
+### `console` section ###
+The `console` section configures the on-screen console.
+  * `font` (Subsection): configures the console font, following the same syntax used for the `defaultFont` section.
+  * `lines` (int): sets the number of lines displayed by the console.
+
+Example:
+```
+	console:
+	{
+		font:
+		{
+			filename = "fonts/segoeuimod.ttf";
+			size = 32;
+		};
+	};
+```
+
+
+---
+
+### `missionControl` section ###
+Example:
+```
+	missionControl:
+	{
+		serverEnabled = true;
+	};
+```
+
+
+---
+
+## Application configuration syntax ##
+The application configuration file contains configuration sections associated to each application. Altough applications can read and use custom configuration parameters, we list here a few common ones
+
+---
+
+### `orun` section ###
+This section contains options used by the standard `orun` application used to launch omegalib python scripts.
+  * `initScript` (String): name or path to a script that will be launched at startup. Default is `orun_init.py`
+  * `appStartFunction` (String): name of a function that will be launched every time orun resets the current application or loads a new one. This function is typically defined in the init script. Default is `_onAppStart()`
+
+Example:
+```
+	orun:
+	{
+		initScript = "customInitScript.py";
+		// We add a print statement before calling a custom application start function.
+		appStartFunction = "print('Application Restart!'); _myOwnStartFunction()";
+	};
+```

@@ -1,0 +1,135 @@
+# Cyclops programming in omegalib #
+<p><b>Last revision:</b> ver. 3.7 - 3 May 2013</p>
+
+In this page we will introduce Cyclops programming. Cyclops is a utility library that sits on top of omegalib and OpenSceneGraph. It is designed to speed-up development of simple graphical applications, without having to deal with the low-level details of osg. In a sense, cyclops is the `GLUT` library of omegalib. Some of cyclops features are:
+  * Support for loading scenes defined in a simple xml format
+  * Easy creation of primitive shapes, like planes, spheres, cubes and so on
+  * Out-of-the-box support for soft shadows
+  * An expandable shaders and effects library
+  * Full support for scripting through a python interface
+
+If you are undecided whether to develop your omegalib application using OpenSceneGraph or Cyclops, go with Cyclops. It will take you way less time to have a working code base, and you will still have the option of integrating your own OpenSceneGraph code by subclassing the `Entity` class. The only scenario in which it makes sense to stick with omega/osg is when porting already existing applications, or when you are planning on using only advanced features of OpenSceneGraph and don't want to reference another utility library. Another thing to keep in mind is that Cyclops uses customizable shaders to control drawing, and does per-pixel lighting by default. For most simple things, you will not need to write shaders yourself. Even when you do, Cyclops takes care of the most complex parts of a shader internally, so you only have to describe how your object will look like. But if you need to target the old fixed pipeline, or you feel more comfortable with it, Cyclops may not be for you.
+
+## Cyclops Hello World ##
+The following code illustrates a basic cyclops application:
+```
+	#include <omega.h>
+	#include <cyclops.h>
+
+	using namespace omega;
+	using namespace cyclops;
+
+	class HelloApplication: public EngineModule
+	{
+	public:
+		HelloApplication(): mySceneManager(NULL) {}
+		virtual void initialize();
+
+	private:
+		SceneManager* mySceneManager;
+	};
+
+	void HelloApplication::initialize()
+	{
+		// Create and initialize the cyclops scene manager.
+		mySceneManager = SceneManager::createAndInitialize();
+
+		SphereShape* sphere = new SphereShape(mySceneManager, 0.5f);
+		sphere->setEffect("colored -d red");
+		sphere->setPosition(0, 0, -2);
+
+		PlaneShape* plane = new PlaneShape(mySceneManager, 4, 4);
+		plane->setEffect("colored -d green");
+		plane->pitch(-90 * Math::DegToRad);
+		plane->setPosition(0, -1, -2);
+
+		// Setup a light for the scene.
+		Light* light = new Light(mySceneManager);
+		light->setEnabled(true);
+		light->setPosition(Vector3f(0, 50, 0));
+		light->setColor(Color(1.0f, 1.0f, 0.7f));
+		light->setAmbient(Color(0.1f, 0.1f, 0.1f));
+		mySceneManager->setMainLight(light);
+	}
+
+	int main(int argc, char** argv)
+	{
+		Application<HelloApplication> app("cyhello");
+		return omain(app, argc, argv);
+	}
+```
+
+For this simple example, all the logic is inside the application `initialize` function. First of all we create a cyclops scene manager using the `SceneManager::createAndInitialize()` static method. This method will setup the scene manager, and load a few configuration settings from the application configuration file. The supported settings are:
+  * `scene (string)`: if present, the scene manager will try to load the specified .scene file.
+  * `shadowMode (either "NoShadows" or "SoftShadows")`: will set the shadow mode for the application
+  * `shadowQuality (integer)`: will set the shadow quality for applications with shadows enabled. Should be an integer between 1 and 10.
+
+<p align='middle'><img src='http://omegalib.googlecode.com/svn/wiki/BasicCyclops/cyhello.png' width='500' /></p><p align='middle'>
+<i><sup>The cyhello demo running.</sup></i>
+</p>
+
+After creating the scene manager, the `initialize` method creates a few simple objects (a sphere and a plane), sets their position and rotation, and attaches an `effect` to them. Effects are used to specify the look of objects. They are always passed as strings (called **effect definitions**), and they can be switched at run time. A full description of the effect definition syntax will be presented elsewhere, but a few valid effect definitions are:
+  * `colored`: renders the object using per-face or per-vertex color information (depending on what's available for the object)
+  * `colored -d red`: forces the object diffuse color to red
+  * `colored -d #ffffff`: forces the object diffuse color to white (hex ffffff)
+  * `textured`: renders the object with its default diffuse texture if present
+  * `textured -d textures/dalbeton.jpg`: forces the diffuse texture of the object to the specified file
+  * `blueprint`: does a double-pass rendering of the object, wireframe on top of a flat color shading.
+
+## Cyclops Hello World, Take 2 ##
+under omegaSource/src/apps/cyhello2 you can find a slightly more complex cyclops demo. With respect to the first application, this one introduces a few additional features, like object manipulation and 3d menus. The code is well commented, so you can check out the source directly to learn more about those features.
+
+<p align='middle'><img src='http://omegalib.googlecode.com/svn/wiki/BasicCyclops/cyhello2.png' width='500' /></p><p align='middle'>
+<i><sup>The cyhello2 demo running.</sup></i>
+</p>
+
+## Cyclops and Python ##
+Cyclops programs can also be implemented as **python scripts**. omegalib offers a python interface for many of its core functionalities, and it covers the cyclops API as well. The following is an example of a cyclops python program:
+```
+	# Create a green sphere
+	sphere = SphereShape.create(1, 4)
+	sphere.setPosition(Vector3(0, 2, -5))
+	sphere.setEffect("colored -d green")
+
+	# Create a grey ground plane
+	plane = PlaneShape.create(10, 10)
+	plane.setPosition(Vector3(0, 0, -5))
+	plane.pitch(radians(-90))
+	plane.setEffect("colored -d gray")
+
+	# Create a default white light
+	light = Light.create()
+	light.setColor(Color("white"))
+	light.setPosition(Vector3(0, 50, -5))
+	light.setEnabled(True)
+
+	scene = getSceneManager()
+	scene.setMainLight(light)
+
+	# Load a mesh from a file
+	torusModel = ModelInfo()
+	torusModel.name = "torus"
+	torusModel.path = "cyclops/test/torus.fbx"
+	torusModel.size = 3.0
+	scene.loadModel(torusModel)
+
+	# Create an object using the loaded mesh
+	torus = StaticObject.create("torus")
+	torus.setPosition(Vector3(0, 4, -4.5))
+	torus.setEffect("colored -d blue")
+	torus.pitch(radians(20))
+	torus.roll(radians(20))
+
+	# Animate the model
+	def onUpdate(frame, t, dt):
+		torus.setPosition(Vector3(0, sin(t) * 0.5 + 0.5, -2))
+
+	setUpdateFunction(onUpdate)
+```
+
+This program implements the same functionality as cyhello2. To run this python script you need to use the `orun` omegalib application. For instance, if you have a copy of the script in omegaSource/data/helloWorld, the command to run it would be:
+```
+	orun -s helloWorld/helloWorld.py
+```
+You will find the orun application in your omegalib build binary directory.
+**NOTE:** orun requires python support. If python support was disabled for your build, orun will not be available.

@@ -1,0 +1,500 @@
+<p><b>Last revision:</b> ver. 4.0 - 16 May 2013</p>
+
+
+
+# Module cyclops #
+Cyclops is a utility library that sits on top of omegalib and OpenSceneGraph, and it is designed to simplify developement of applications that need to draw complex and visually pleasant scenes, without having to deal with the low-level details of osg. SOme of cyclops features are:
+  * Support for loading scenes defined in a simple xml format
+  * Easy creation of primitive shapes, like planes, spheres, cubes and so on
+  * Out-of-the-box support for soft shadows
+  * An expandable shaders and effects library
+
+---
+
+## Misc Functions ##
+
+### `getSceneManager()` ###
+Returns a reference to the cyclops scene manager
+
+
+---
+
+## `class ProgramAsset` ##
+Wraps the [cyclops::ProgramAsset](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_program_asset.html) class. Represents a Gpu program source and its associated binary code.
+### Methods ###
+| Property | Description |
+|:---------|:------------|
+| `name`   |             |
+| `vertexShaderName` |             |
+| `fragmentShaderName` |             |
+| `geometryShaderName` |             |
+| `embedded` |             |
+| `vertexShaderSource` |             |
+| `fragmentShaderSource` |             |
+| `geometryShaderSource` |             |
+| `geometryOutVertices` |             |
+| `geometryInput` | The primitive type of input elements to the geometry shader. Use the `PrimitiveType` enumeration |
+| `geometryOutput` | The primitive type of output elements to the geometry shader. Use the `PrimitiveType` enumeration |
+
+### Notes ###
+The `PrimitiveType` enumeration supports the following values:
+  * `Points`
+  * `Triangles`
+  * `TriangleStrip`
+
+Example:
+```
+	# Create a program asset from vertex, fragment and geometry shader files.
+	shaderPath = "modules/PointCloud/shaders";
+	program = ProgramAsset()
+	program.name = "points"
+	program.vertexShaderName = shaderPath + "/Sphere.vert"
+	program.fragmentShaderName = shaderPath + "/Sphere.frag"
+	program.geometryShaderName = shaderPath + "/Sphere.geom"
+	
+	# Set some options for the geometry shader.
+	program.geometryOutVertices = 4
+	program.geometryInput = PrimitiveType.TriangleStrip
+	program.geometryOutput = PrimitiveType.TriangleStrip
+	
+	# Load and compile the program. 
+	scene.addProgram(program)
+
+	# Create a sphere and apply the program
+	sphere = SphereShape.create(1, 4)
+	sphere.setEffect("points") # We use the same name as the program.
+```
+
+
+---
+
+## `class SceneManager` ##
+Wraps the [cyclops::ModelLoader](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_model_loader.html) C++ class.
+Classes derive from `ModelLoader` to implement custom file readers
+
+
+---
+
+## `class SceneManager` ##
+Wraps the [cyclops::SceneManager](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_scene_manager.html) C++ class. Manages a cyclops scene and its associated resources.
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| **Backgrond** |             |
+| `setBackgroundColor(color)` |             |
+| `setSkyBox(skybox)` |             |
+| **Scene management** |             |
+| `loadModel(modelInfo)` | Loads a model defined by the data in `modelInfo` |
+| `loadModelAsync(modelInfo, command)` | Queues a model for loading. Call the command in the `command` string when loading is done (successful or not) |
+| `loadScene(path)` | Loads a cyclops xml scene file |
+| `unload()` | Cleans the scene and releases all associated resources |
+| `addLoader(loader)` | Registers a new model loader. loader must be an object of `ModelLoader` type |
+| **Wand**  |             |
+| `displayWand(wandId, trackableId)` | Displays a wand (identified by `wandId`) and attaches it to a trackable object `trackableId` |
+| `setWandEffect(wandId, effect)` | Sets the render effect for wand `wandId` |
+| `setWandSize(width, height)` |             |
+| **Shadow support** |             |
+| `getMainLight()`, `setMainLight(light)` | Sets the main scene light. When shadow mapping is enabled, it will be used to cast shadows |
+| `getCurrentShadowSettings()` | Gets the current settings for shadow mapping |
+| `resetShadowSettings(settings)` | Resets the shadow settings. Can be used to turn shadow maps on and off, and to change their quality |
+| **Shaders** |             |
+| `setShaderMacroToFile(macro, file)` | Sets the specified shader macro to the contents of a file. Appearances of the macro in any loaded shader will be replaced with the file contents. Example: ```
+scene.setShaderMacroToFile('macro1', 'file.frag')``` will substitute `@macro1` in shaders with the text from `file.frag` |
+| `setShaderMacroToString(macro, string)` | Sets the specified shader macro to the specified string. Appearances of the macro in any loaded shader will be replaced with the string text. Example: ```
+scene.setShaderMacroToFile('macro1', 'a = b + c')``` will substitute `@macro1` in shaders with `a = b + c` |
+| `createProgramFromString(name, vertexCode, fragmentCode)` | Creates a new Gpu Program using the vertex and fragment source code passed as parameters. Registers the program with the specified name, so it can be used in effect definitions. It aso returns the program as a `ProgramAsset` object. |
+| `addProgram(program)` | Adds a `ProgramAsset` to the gpu programs library |
+| `updateProgram(program)` | Updates a `ProgramAsset`, forcing reloading and recompiling of the associated shaders. |
+| `reloadAndRecompileShaders()` | Forces the shaders to be reloaded and recompiled from source |
+| `getGlobalUniforms()` | Returns the global uniforms object. Can be used to set uniforms that will apply to all entities. See the `Uniforms` class. |
+| **Textures** |             |
+| `createTexture(name, pixels)` | Creates a texture with the specified name using the passed `PixelData` object. The texture can then be referenced in effect definitions. |
+
+### Examples ###
+#### Global Uniforms ####
+```
+	scene = getSceneManager()
+	
+	# Use the customFragmentDefs section to inject a custom uniform into all shaders
+	scene.setShaderMacroToString('customFragmentDefs', '''
+		uniform float unif_CustomFloat;
+	''')
+
+	# set the global float uniform to 0.5
+	customFloat = scene.getGlobalUniforms().addUniform("unif_CustomFloat", UniformType.Float)
+	customFloat.setFloat(0.5)
+```
+
+
+
+
+---
+
+## `class Uniform` ##
+Represents a shader uniform value.
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `getType()` | Returns the uniform type. |
+| `setInt(value)`, `getInt()` |             |
+| `setFloat(value)`, `getFloat()` |             |
+| `setVector2f(value)`, `getVector2f()` |             |
+| `setVector3f(value)`, `getVector3f()` |             |
+| `setColor(value)`, `getColor()` |             |
+
+### Uniform Types ###
+Currently supported uniform types are listed in the `UniformType` enumeration:
+  * `Float`
+  * `Int`
+  * `Vector2f`
+  * `Vector3f`
+  * `Color`
+**NOTE:** The color uniform type maps to a `vec4` type in the GL shading language. The use of `Color` here is due to lack of a Vector4 type in the used python math library (euclid).
+
+
+---
+
+## `class Uniforms` ##
+Represents a collection of shader uniforms.
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `addUniform(name, type)` |             |
+| `addUniformrray(name, type, numElements)` |             |
+| `getUniform(name)` |             |
+| `removeAllUniforms()` |             |
+
+
+---
+
+## `class Material` (extends `Uniforms`) ##
+Contains visual properties for an entity. Visual properties set through a material are applied after an effect definition, and override properties specified in the effect. See [the effect and material reference page](EffectReference.md) for more information.
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `Material create()` **static** | creates a new material object |
+| `setColor(Color diffuse, Color emissive)` | Sets the diffuse and emissive colors for this material. After calling `setColor`, the passed colors will **override** any color definition specified in the entity effect. |
+| `reset()` | Resets all material properties to their default values. Colors and transparency will switch back to their default values (that is, whatever is specified in the entity effect. See [the effect and material reference page](EffectReference.md) for more information. |
+| `parse(string definiton)` |             |
+| `setAlpha(bool value)`, `getAlpha()` | Sets or gets the material alpha value. `setAlpha` only sets the value of the unif\_Alpha uniform. By default, cyclops shaders use this uniform to modulate fragment alpha values after lighting (see `postLightingSection/default.frag`). This behavior can be modified by the user, redefining the @postLightingSection shader macro.|
+| `setPolygonOffset(float factor, float units)` |             |
+| `setShininess(float value)`, `float getShininess()` |             |
+| `setGloss(float value)`, `float getGloss()` |             |
+| **Flags** |             |
+| `setTransparent(bool value)` `isTransparent()` | Sets or gets the transparent flag for this entity. `setTransparent` overrides a transparency flag specified in the entity effect. |
+| `setWireframe(bool value)`, `isWireframe()` |             |
+| `setDoubleFace(bool value)`, `isDoubleFace()` |             |
+| `setAdditive(bool value)`, `isAdditive()` |             |
+| `setDepthTestEnabled(bool value)`, `isDepthTestEnabled()` |             |
+| **Textures** |             |
+| `setDiffuseTexture(String texture)`, `String getDiffuseTexture()` |             |
+| `setNormalTexture(String texture)`, `String getNormalTexture()` |             |
+
+
+---
+
+## `class Entity` (extends `SceneNode`) ##
+Wraps [cyclops::Entity](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_entity.html).
+AN entity is a drawable thing that derives from a scene node. Entities offer additional functionality for 3d model visualization, like transparency, rendering effects and link to motion capture tracked objects. Upon creation, entities are attached to the scene root, but they can be attached to different nodes in the scene after creation.
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `followTrackable(int trackabeId)` | Starts following the motion-captured trackable `trackableId` |
+| `setFollowOffset(Vector3 offset, Quaternion orientationOffset)` | Sets the tracking position and orientation offset applied to this object, with respect to the motion captured trackable |
+| `unfollow()` | Stops following a motion-captured trackable |
+| **Visual Properties** |             |
+| `hasEffect()` | Returns true if an effect is set for the entity |
+| `Material getMaterial()`, `Material getMaterialByIndex(int index)` | Retrieves a material layer for this entity. `getMaterial()` returns material layer 0 by default |
+| `int getMaterialCount()` | Returns the number of material layers for this entity. |
+| `clearMaterials()` | Remosed all the material layers for this entity. |
+| `addMaterial(Material m)` | Adds a material layer to this entity. The Entity visuals will be automatically updated. |
+| `setEffect(string effectDefinition)` | Sets the rendering effect for the entity |
+| **EXPERIMENTAL Context menu** |             |
+| `createContextMenu()` | Creates a context menu attached to this entity. When the user selectes the entity, the menu will pop up. Returns a `Menu` object |
+| `Menu getContextMenu()` | Gets the attached context menu for the entity if one has been set. |
+|  `deleteContextMenu()` | Deletes a context menu attached to this entity |
+| **Entity Pieces** | Entities can be made up by multiple components (pieces). For instance, complex loaded models may have multiple parts that we want to manipulate separately. |
+| `listPieces(string path)` | Returns a list containing the names of all the entity pieces in the specified path. A path is a list of node names in the entity node tree. Use an empy string to list all the piece names connected directly to the entity root. |
+| `getPiece(string path)` | Returns a `SceneNode` for a piece identified by the passed `path`. If no piece exists for `path`, returns `None`. All basic `SceneNode` functions work on entity pieces, but  pieces can't be detached from this entity and attached to another one (doing so will not influence their transform, since it is always local to the owner entity). |
+
+### Examples ###
+#### Entity Pieces ####
+```
+	# Assume the house model represents a house with a door and window. The window has two panels (left and right)
+	house = StaticObject.create('house')
+	
+	# Print the names of all root pieces for this entity (would print something like 'window, door')
+	for pieceName in house.listPieces(''): print pieceName
+	
+	# Print the names for all pieces under the 'window' piece (would print something like 'left, right')
+	for pieceName in house.listPieces('window'): print pieceName
+	
+	# Get the left window panel and rotate it to open the window.
+	leftPanel = house.getPiece('window/left')
+	leftPanel.yaw(radians(90))
+```
+
+
+---
+
+## `class SphereShape` (extends `SphereShape`) ##
+Wraps [cyclops::SphereShape](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_sphere_shape.html).
+Represents a sphere shape, with a specific radius.
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `create(radius, subdivisions)` **static** | Returns true if an effect is set for the entity |
+
+### Examples ###
+#### Creation ####
+```
+	# Create a sphere with a radius on 1 meter, with a 4 subdivision level.
+	s = SphereShape.create(1, 4)
+	# Make the sphere half-transparent and move it
+	s.getMaterial().setAlpha(0.5)
+	s.setPosition(Vector3(0, 1.5, 0))
+```
+
+
+---
+
+## `class PlaneShape` (extends `Entity`) ##
+Wraps the [cyclops::PlaneShape](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_plane_shape.html).
+Represents a plane with width, height. Planes are constructed on the XY plane by default.
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `create(width, height)` **static** | Creates a plane with the specified width and height, on the X-Y plane |
+
+
+---
+
+## `class BoxShape` (extends `Entity`) ##
+Wraps the [cyclops::BoxShape](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_box_shape.html).
+Defines a box with width, height, depth.
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `create(width, height, depth)` **static** | Creates a box with the specified width, height and depth |
+
+
+---
+
+## `class CylinderShape` (extends `Entity`) ##
+Wraps the [cyclops::CylinderShape](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_cylinder_shape.html).
+Defines a cylinder that can be added to the scene. Cylinder shapes have custom subdivision levels and different radii for their ends, allowing the user to create a variety of shapes (cylinder, pyramid, truncated pyramid, tetrahedron, etc).
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `create(length, radius1, radius2, subdivisions, sides)` **static** | Creates a new cylinder shape |
+
+
+---
+
+## `class LineSet` (extends `Entity`) ##
+Wraps the [cyclops::LineSet](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_line_set.html). Defines a container of 3D line primitives. Lines are drawn as cylinders. Using this class instead of the CylinderShape class is better if:
+  * You have to draw lots of lines (or cylinders) that share the same material / effect
+  * You want to place lines in the scene defining a start / end point and thickness (instead of position / orientation / scale)
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `create()` **static** | Creates a new LineSet object |
+| `addLine()` | Creates a new line |
+| `removeLine(line)` | Removes the specified line |
+
+`addLine()` returns an object of type `Line` that supports the following methods:
+| Method(s) | Description |
+|:----------|:------------|
+| `setStart(position)` | Sets the start position of the line (as a `Vector3`) |
+| `setEnd(position)` | Sets the end position of the line (as a `Vector3`) |
+| `getThickness()` `setThickness(value)` | Gets or sets the line thickness |
+
+
+---
+
+## `class StaticObject` (extends `Entity`) ##
+Wraps the [cyclops::StaticObject](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_static_object.html).
+Represents an instance of a loaded 3D model.
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `create(modelName)` **static** | Creates an object using a loaded model with the specified name |
+
+### Examples ###
+#### Sync model loading and creation ####
+```
+	# Load a torus model
+	mi = ModelInfo()
+	mi.name = "torus"
+	mi.path = "cyclops/test/torus.fbx"
+	scene.loadModel(mi)
+	
+	# Create a green torus
+	t1 = StaticObject.create("torus")
+	t1.setPosition(Vector3(-1, 0, 0))
+	t1.setEffect("colored -d green")
+	
+	# Create a red torus
+	t1 = StaticObject.create("torus")
+	t1.setPosition(Vector3(1, 0, 0))
+	t1.setEffect("colored -d red")
+```
+
+#### Async model loading and creation ####
+```
+	# Same as the previous example, but uses asynchronous loading
+	mi = ModelInfo()
+	mi.name = "torus"
+	mi.path = "cyclops/test/torus.fbx"
+	
+	# After this call control returns immediately to the script.
+	# onTorusLoaded() will be called once the model is done loading.
+	scene.loadModelAsync(mi, "onTorusLoaded()")
+	
+	def onTorusLoaded():
+		# Create a green torus
+		t1 = StaticObject.create("torus")
+		t1.setPosition(Vector3(-1, 0, 0))
+		t1.setEffect("colored -d green")
+		
+		# Create a red torus
+		t1 = StaticObject.create("torus")
+		t1.setPosition(Vector3(1, 0, 0))
+		t1.setEffect("colored -d red")
+```
+
+
+---
+
+## `class AnimatedObject` (extends `Entity`) ##
+Wraps the [cyclops::AnimatedObject](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_animated_object.html).
+Represents an instance of a loaded, animated 3D model. If the model contains animations, they can be played back through this class. Models using the Autodesk .fbx format are supported by default. `AnimatedObject` also supports loading a set of separate model files that can be played back in a flipbook-style animation.
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `create(modelName)` **static** | Creates an object using a loaded model with the specified name |
+| `hasAnimations()` | Returns true if the object contains animations |
+| `getNumAnimations()` |             |
+| `playAnimation(animId)` |             |
+| `loopAnimation(animId)` |             |
+| `pauseAnimation(animId)` |             |
+| `stopAllAnimations()` |             |
+| `getCurAnimation()` |             |
+| `getAnimationLength(animId)` |             |
+| `getAnimationStart(animId)` |             |
+| `setAnimationStart(animId)` |             |
+
+
+---
+
+## `class Light` (extends `SceneNode`) ##
+Wraps the [cyclops::Light](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_light.html).
+Defines a light for the scene. After creation, lights are automatically attached to the scene root node. Lights need to be explicitly turned on using the `setEnabled` method.
+Cyclops supports point, spot and directional lights by default, but custom light functions can be added by the user.
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `create()` **static** | Creates a new light object |
+| `setColor(color)` | Sets the diffuse color for this light |
+| `setAmbient(color)` | Sets the ambient color for this light. Ambient color will be considered only for the main scene light (see `SceneManager.setMainLight`) |
+| `isEnabled()`, `setEnabled(value)` | Gets or sets the light enabled value |
+| `getSoftShadowJitter()`, `setSoftShadowJitter(value)` | Gets or sets soft shadow jitter value for this light. Used only for the main light when shadows are enabled |
+| `getSoftShadowWidth()`, `setSoftShadowWidth(value)` | Gets or sets soft shadow width value for this light. Used only for the main light when shadows are enabled |
+| `setAttenuation(consant, linear, quadratic)`, `getAttenuation()` | Sets or gets the light attenuation values. `getAttenuation()` returns the attenuation parameters as a `Vector3` object. |
+| `setLightType(type)`, `getLightType()` | Sets or gets the light type |
+| `setLightFunction(string)`, `getLightFunction()` | Sets or gets the light function |
+| `setLightDirection(value)`, `getLightDirection()` | Sets or gets the light direction for Spot or Directional light types |
+| `setSpotExponent(value)`, `getSpotExponent()` | Sets or gets the spot exponent for Spot lights |
+| `setSpotCutoff(value)`, `getSpotCutoff()` | Sets or gets the spot cutoff for Spot lights |
+
+### Light Types ###
+The `setLightType()` method accepts a value from the `LightType` enumeration. Supported values are:
+  * `Point`: for point lights
+  * `Directional`: for directional lights
+  * `Spot`: for spot lights
+  * `Custom`: for custom lights
+
+Custom lights allow the user to specify a custom, per pixel light function:
+```
+	scene = getSceneManager()
+	
+	// Use the customFragmentFunctions macro to inject code into fragment shaders.
+	scene.setShaderMacroToString('customFragmentFunctions', '''
+		customLightFunction(SurfaceData sd, LightData ld)
+		{
+			// Trivial example: return a fixed color regardless of light or surface properties
+			return vec4(1, 0, 0, 0);
+		}
+	'''
+	)
+	
+	light = Light.create()
+	light.setType(lightType.Custom)
+	light.setLightFunction('customLightFunction')
+```
+
+
+---
+
+## `class ModelInfo` ##
+Wraps the [cyclops::ModelInfo](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_model_info.html).
+Contains the name of a model to load and load options.
+
+### Properties ###
+| Properties | Description |
+|:-----------|:------------|
+| `name`     | The unique name for this model |
+| `description` | A description for this model. Can be used in user interfaces |
+| `generateNormals` | when set to `True`, cyclops will generate normals for the loaded model |
+| `generateTangents` | when set to `True`, cyclops will generate tangents for the loaded model. Tangents are used for tangent space computations in bump shaders and effects |
+| `numFiles` | If set to a value other than 1, cyclops will attempt to load multiple models the string `%1` in the model path will be substituded by a model index |
+| `path`     | The relative path to the model. File lookup follows the rules defined in [the filesystem page](https://code.google.com/p/omegalib/wiki/Filesystem) |
+| `size`     | The size of the loaded model in meters. If left to 0, the original model size will be preserved |
+| `optimize` | When set to `True` cyclops will perform some optimizations on the loaded model to increase rendering performance. This is a recommended setting. |
+| `usePowerOfTwoTextures` | When set to `True` non-power-of-two textures will e converted to power of two. Can be usually left set to false. |
+
+
+---
+
+## `class ShadowSettings` ##
+Wraps the [cyclops::ShadowSettings](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_shadow_settings.html).
+Contains shadow setting for the scene
+
+### Properties ###
+| Properties | Description |
+|:-----------|:------------|
+| `shadowsEnabled` | Set to `True` cyclops will render shadows using the main light as the shadow map reference light |
+| `shadowsResolutionRation` |             |
+
+
+---
+
+## `class Skybox` ##
+Wraps the [cyclops::Skybox](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classcyclops_1_1_skybox.html).
+Defines a sky box for the scene, using a cube map texture
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `loadCubeMap(path, extension)` | loads a cube map using a set of six textures contained in the specified path |
+
+### Examples ###
+#### Basic example ####
+```
+	# Load a cube map and attach it to the scene
+	# the textures in common/cubemaps/grid4 must be named
+	# posx.png, posy.png, negx.png, negy.png, posz.png, negz.png
+	skybox = Skybox()
+	skybox.loadCubeMap("common/cubemaps/grid4", "png")
+	getSceneManager().setSkyBox(skybox)
+```

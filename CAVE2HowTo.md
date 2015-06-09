@@ -1,0 +1,83 @@
+# Running omegalib scripts in CAVE2 #
+<p><b>Last revision:</b> ver. 4.0 - 28 May 2013</p>
+This step by step guide explains how to run omegalib scripts on the EVL CAVE2 system. It is targeted at users that already have an account set up in the system. For more information on python programming check the [BasicPython](BasicPython.md) page, or the python reference section in the sidebar
+
+## Prerequisites ##
+The user should have a personal account on the CAVE2 cluster, and should be able to `ssh` into the cluster head node. Furthermore, password-less ssh into other nodes in the cluster from the head node should be set up.
+
+## Step 1: setting the path ##
+The omegalib user version is installed in `/data/evl/omegalib-user`. To simplify launching scripts from your account, you should add the binary folder from this install to your path. For instance, you can add the following lines to the `.bashrc` file in your home directory:
+**NOTE** To use OpenSceneGraph plugins (for instance to load obj files, .earth files etc), you will have to add the respective paths to the `LD_LIBRARY_PATH` variable.
+```
+	# Add the omegalib bin directory to path
+	PATH=$PATH:/data/evl/omegalib-user/build/bin
+	export PATH
+	# (OPTIONAL) add the osg plugins path and the osgEarth binary path to LD_LIBRARY_PATH
+	export LD_LIBRARY_PATH=/data/evl/osgearth/lib:/data/evl/omegalib-user/build/bin/osgPlugins-3.0.1
+```
+To see if you have done this correctly, log into into your account and type.
+```
+	> orun
+```
+This command should start omegalib on the cluster, showing a gray background on all screens. Your console should allow you to type in interactive python commands. For instance, if you type
+```
+	> sphere = SphereShape.create(1, 4)
+	> sphere.setPosition(Vector3(0, 1.5, -2))
+```
+You should see a sphere towards the front of CAVE2.
+
+### Stopping orun ###
+To stop orun, type `oexit()` at the console, or press `control-C`. If orun gets stuck or crashes on some nodes and you can't control it anymore, you can force a kill by opening another ssh connection to the head node and running
+```
+	> orun -K
+```
+This command will kill any orun instances you control on all nodes in the cluster.
+
+## Step 2: running scripts ##
+Assume you have an omegalib script application in your home directory, into a directory called `hello`. If the main script for this application is called `main.py`, you can start it typing (from you home dir)
+```
+	> cd hello
+	> orun -s main.py
+```
+It is important to launch the script from the root directory of your application, since omegalib will use that directory to resolve relative data paths for file lookups.
+
+## Step 3: using custom configurations ##
+By default omegalib configures the system by looking up for a `default.cfg` configuration file. If the file is not found in you application directory, omegalib will use the one in `/data/evl/omegalib-user/core/data`. If you want to run a custom configuration in CAVE2, simply add a default.cfg file in your application directory. You can use this file to **redirect** the system configuration to a different file:
+```
+	config:
+	{
+		// We don't want to use this configuration file...
+		//systemConfig = "evl/lyra-xinerama.cfg";
+		
+		// Let's use this instead.
+		systemConfig = "system/desktop.cfg";
+	};
+```
+Or you can directly write a full system configuration into your own default.cfg.
+
+## Random Notes ##
+### Sound in CAVE2 ###
+CAVE2 uses a supercollider sound serve that can be controlled with the sound API in the omega module. But sound applications that run on your desktop may need a small change to run in CAVE2. In CAVE2, only the head node controls the sound server, so all the display nodes will have their sound interface disabled. `isSoundEnabled()` returns `False`, and `getSoundEnvironment()` returns `None` on all nodes except the master. This may lead to script errors unless you check for sound support before running you sound code:
+```
+	# Check for sound support
+	se = getSoundEnvironment()
+	if(se != None):
+		# DO sound stuff here ..
+```
+
+### Fixing configuration ###
+If when you start your program in CAVE2 it just displays on the head node, or on a subset of the CAVE2, that's likely because the wrong configuration has been set as default. Fixing this is easy, you just need to modify the `default.cfg` file under `/data/evl/omegalib-user/core/data`. The file will look similar to this:
+```
+	config:
+	{
+		systemConfig = "system/desktop.cfg";
+		//systemConfig = "evl/lyra-xinerama.cfg";
+		//systemConfig = "system/test-multipipe.cfg";
+		//systemConfig = "system/cave-emu.cfg";
+		//systemConfig = "system/test-multinode.cfg";
+		//systemConfig = "system/test-customTile.cfg";
+		//systemConfig = "system/test-wand-emulation.cfg";
+		//systemConfig = "system/test-tracker.cfg";
+	};
+```
+Make sure that the `systemConfig = "evl/lyra-xinerama.cfg";` is the only uncommented line: in the example above, omegalib is configured to run in desktop mode.

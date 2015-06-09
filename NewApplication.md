@@ -1,0 +1,95 @@
+# Creating an omegalib application #
+<p><b>Last revision:</b> ver. 3.7 - 20 April 2012</p>
+
+This page explains how to set up the build environment for an empty omegalib application. When using **omegaSource** on this page, we refer to the root directory of your source copy of omegalib. **omegaBuild** will be the root directory of your build.
+
+When creating a new omegalib application, you have three options:
+  * **Add it to the omegalib build**: This is the easiest solution. Your application would be under omegaSource/src/apps. Building omegalib would automatically build your application as well. This may not be desirable if you want to keep your application separate from the omegalib codebase (i.e. you are not one of the main developers)
+
+  * **Create an external application using CMake**: This is still pretty easy to do. You would create a cmake file for your own application (this assumes you have basic knowledge of cmake) and use the `find_package` CMake command to link your application to your local omegalib build.
+
+  * **Create an external application using a native build system directly (make, Visual Studio, etc.)**: Altough doable, this solution is not officially supported. You should really use CMake, and save yourself a few headaches. If you must choose this path the basic steps would be:
+    * add omegaSource/include, omegaSource/ext/include and omegaBuild/include, omegaBuild/omicron/omicron/include to your compiler include paths
+    * depending on build type and platform, link against libraries under omegaBuild/lib, omegaBuild/bin, omegaSource/ext/lib32, omegaSource/ext/lib64
+
+This page only covers solutions 1 and 2.
+
+
+---
+
+## Solution 1: Adding an application to the omegalib build ##
+### Step 1: Create the application directory and CMake file ###
+Under omegaSource/src/apps create a new folder named as your application (we will be calling it `myapp` from now on). Create an empty source file `myapp.cpp` and a cmake build file, `CMakeList.txt`. Put the following in the CMake file:
+```
+	add_executable(myapp myapp.cpp)
+	set_target_properties(ohello PROPERTIES FOLDER apps)
+	target_link_libraries(ohello omega)
+```
+`add_executable` defines a new executable target with `myapp.cpp` as the only source file.
+`set_target_properties` is optional: it is only used when generating visual studio solutions, to put the executable in the apps solution folder.
+`target_link_libraries` specifies link targets for the executable. For this basic example we are only linking agains `omega` Depending on the application you are developing, you may want to link against additional libraries, i.e. `omegaToolkit`, `omegaOsg`, `omegaVtk`.
+
+### Step 2: Adding application code ###
+To `myapp.cpp` add the following code:
+```
+	#include <omega.h>
+	#include <omegaGl.h>
+
+	using namespace omega;
+
+	class HelloApplication: public ServerModule
+	{
+	public:
+		HelloApplication() {}
+		virtual ~HelloApplication() {}
+	};
+
+	int main(int argc, char** argv)
+	{
+		Application<HelloApplication> app("myapp");
+		return omain(app, argc, argv);
+	}
+```
+**NOTE:** the `Application` object created in `main` takes one string parameter. This string parameter **must be the same as the application name**. If you specify anything different, your application won't work when run in cluster mode.
+
+The code above is the most basic omegalib application possible. It will do nothing more than initializing the various omegalib subsystems and open an empty render window. Creating an application that actually does something is covered in other wiki pages.
+
+### Step 3: Adding the application to the omegalib build ###
+Now you need to make the main omegalib build aware of our new application. Go to omegaSource/src and open the `CMakeLists.txt` file you find there. you should add a line like the following:
+```
+	add_subdirectory(apps/myapp)
+```
+if your application just uses openGL functionality, you can simply add this line at the end of the file. If you are using OSG/cyclops or Vtk, you should add the line inside the `OMEGA_BUILD_OSG_LIB` and `OMEGA_BUILD_VTK_LIB` if blocks, respectively.
+
+### Step 4: Done! ###
+You should be all set now. Just reopen the omegalib solution and build (or run `make` on linux). Your application binary should be created in the default omegalib bin directory.
+
+
+
+---
+
+## Solution 2: Building an external application ##
+This second solution assumes you have minimal knowledge of the CMake build system. This guide follows steps similar to the [Mixing Python and C++ Guide](ExtendingOmegalib.md). Check that page as well for some additional information.
+
+### Step 1: Create the directory structure ###
+  * Create a new directory (say, `myapp-source`).
+  * copy omegaSource/FindOmegalib.cmake to myapp-source
+
+### Step 2: Create the source and cmake file ###
+In a new directory, create a source file `myapp.cpp` with the same contents as shown in solution 1 step 2. Also create a `CMakeLists.txt` file in the same directory, with the following content:
+```
+	cmake_minimum_required(VERSION 2.8.1) 
+	project(myapp)
+
+	find_package(Omegalib)
+
+	include_directories(${OMEGA_INCLUDE_DIRS})
+	add_executable(myapp myapp.cpp)
+	target_link_libraries(myapp ${OMEGA_LIB})
+```
+
+The last line, `target_link_libraries(myapp ${OMEGA_LIB})`, links your application against the omegalib libraries. You can add `{OMEGA_TOOLKIT_LIB}`, `{OMEGA_OSG_LIB}`, `{OMEGA_CYCLOPS_LIB}`, `{OMEGA_VTK_LIB}`, depending on what you need.
+
+### Step 4: Configure your build ###
+Now run cmake using `myapp` as your source directory. During configuration, CMake will ask you to set the `Omegalib_DIR` variable. Set this to the path of your omegalib build directory (i.e, on Windows the directory containing OmegaLib.sln). Configure, generate, exit. You should now have a build environment ready for your application.
+**Note:** In windows when you run your application, you should have the binary folder from the omegalib install containing the omegalib dlls in your `PATH`, otherwise the application will fail to launch due to missing dlls.

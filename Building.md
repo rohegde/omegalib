@@ -1,0 +1,1 @@
+See https://github.com/uic-evl/omegalib/wiki/Building

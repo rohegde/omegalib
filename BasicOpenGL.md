@@ -1,0 +1,103 @@
+# OpenGL programming in omegalib #
+<p><b>Last revision:</b> ver. 3.0 - 21 August 2012</p>
+
+This page explains how to create a basic openGL omegalib application. It is based on the `ohello` example. You can find the example source code under omegaSource/src/apps/ohello.
+
+Before getting into the code, it's important to understand the structure of a generic omegalib application. Omegalib applications perform rendering on a thread (or threads) different than the one used to update your application logic. This is done to enable scalability on machines with multiple graphic pipes. rendering thread may in turn run several independent sequential operations, called **Render passes**. Render passes allow applications and libraries to `plug` their own rendering code into render threads. When using more advanced libraries like osg, vtk or cyclops, you won't have to write render passes directly. But if you want to program low-level openGL, implementing a render pass is the way to go.
+
+Here is how your application would work:
+  * create a subclass of `omega::RenderPass`
+    * reimplement the `render` method to add your own openGL drawing code
+  * create a subclass of `omega::EngineModule` - don't let the name confuse you: this is your main 'application class' (that is, the thing that runs updates on the cpu, processes input events and so on)
+    * reimplement the `initializeRenderer` method to create an instance of your render pass, and attach it to the rendering thread.
+  * Add a little bit of initialization code to your application `main`
+
+That's pretty much it. A basic example of an 'empty' openGL application looks like the following:
+```
+	#include <omega.h>
+	#include <omegaGl.h>
+
+	using namespace omega;
+
+	class HelloRenderPass: public RenderPass
+	{
+	public:
+		HelloRenderPass(Renderer* client): RenderPass(client, "HelloRenderPass") 
+		{}
+		
+		virtual void render(Renderer* client, const DrawContext& context)
+		{  
+		  // Add your rendering code here!
+		}
+	};
+
+	class HelloApplication: public EngineModule
+	{
+	public:
+		HelloApplication() {}
+
+		virtual void initializeRenderer(Renderer* r) 
+		{ 
+			r->addRenderPass(new HelloRenderPass(r), true);
+		}
+	};
+
+	int main(int argc, char** argv)
+	{
+		Application<HelloApplication> app("ohello");
+		return omain(app, argc, argv);
+	}
+```
+
+Let's look at it step by step.
+## create a subclass of `omega::RenderPass` ##
+This piece of code...
+```
+	class HelloRenderPass: public RenderPass
+	{
+	public:
+		HelloRenderPass(Renderer* client): RenderPass(client, "HelloRenderPass") 
+		{}
+		
+		virtual void render(Renderer* client, const DrawContext& context)
+		{  
+		  // Add your rendering code here!
+		}
+	};
+```
+...creates a new custom render pass. All render passes should have a unique name (that's the "HelloRenderPass" string in the `RenderPass` constructor). Using the class name for this string is usually a safe bet. The render pass name is used in diagnostic log messages, among other things.
+**See also:** [omega::RenderPass](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_render_pass.html)
+
+The `render` method should contain your own drawing code. Multiple instances of this class may be created at runtime, depending on how many GPUs you dedicate to the application. The method takes two parameters:
+  * `Renderer* client`: this is a pointer to the renderer object, managing the GPU rendering thread. **See also:** [omega::Renderer](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_renderer.html)
+  * `DrawContext& context`: this object contains information about the current draw operation. **See also:** [omega::DrawContext](http://omegalib.googlecode.com/svn/refdocs/trunk/html/structomega_1_1_draw_context.html)
+
+## create a subclass of `omega::EngineModule` ##
+```
+	class HelloApplication: public EngineModule
+	{
+	public:
+		HelloApplication() {}
+
+		virtual void initializeRenderer(Renderer* r) 
+		{ 
+			r->addRenderPass(new HelloRenderPass(r), true);
+		}
+	};
+```
+This code defines your main application class, and reimplements the `initializeRenderer` method to create a new instance of your render pass class. Straightforward. Note that the main application class could reimplement a number of other method (to perform frame updates, handle input events, synchronize shared data, etc.).
+**See also:** [omega::EngineModule](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_engine_module.html)
+
+## Add a little bit of initialization code to your application `main` ##
+An omegalib application main function is very simple:
+```
+		Application<HelloApplication> app("ohello");
+		return omain(app, argc, argv);
+```
+We just create a factory wrapper for our application using the [omega::Application](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_application.html) class and pass it to the `omain` function. `omain` is the entry point for omegalib applications. It will take care of system initialization and will call back methods in your application and render pass classes when needed.
+
+<p align='middle'><img src='http://omegalib.googlecode.com/svn/wiki/Building/ohello.png' width='500' /></p><p align='middle'>
+<i><sup>The ohello demo running.</sup></i>
+</p>
+
+This page did not show any actual drawing code. If you want to see the complete example go to omegaSource/src/apps/ohello. If you want to see a slightly more complex example, using basic event handling and cluster data synchronization, see omegaSource/src/apps/ohello2.

@@ -1,0 +1,25 @@
+<p><b>Last revision:</b> ver. 3.4 - 4 March 2013</p>
+
+
+
+# List of Python Examples #
+This documents lists all of the python examples included in the omegalib distribution. The examples can be found in the `data/examples` directory. They can be started using the `orun` command, like the
+following:
+```
+	orun -s examples/picking.py
+```
+In general, orun should be launched from its containing binary directory, to make sure all libraries and data paths are set up correctly. In linux, this is not as important, and examples should run regardless of the starting directory.
+
+## Example List ##
+| **Screenshot** | **Script name** | **Techniques** |
+|:---------------|:----------------|:---------------|
+| <img src='http://omegalib.googlecode.com/svn/wiki/PythonExamples/loadModel.png' width='150' /> | [loadModel.py](https://code.google.com/p/omegalib/source/browse/trunk/data/examples/loadModel.py) | simple model loading, point and spot lights. |
+| <img src='http://omegalib.googlecode.com/svn/wiki/PythonExamples/billboard.png' width='150' /> | [billboard.py](https://code.google.com/p/omegalib/source/browse/trunk/data/examples/billboard.py) | camera facing nodes and interactors. |
+| <img src='http://omegalib.googlecode.com/svn/wiki/PythonExamples/embeddedShader.png' width='150' /> | [embeddedShader.py](https://code.google.com/p/omegalib/source/browse/trunk/data/examples/embeddedShader.py) | Custom object shaders embedded in python script. Custom shader uniforms. |
+| <img src='http://omegalib.googlecode.com/svn/wiki/PythonExamples/fxdemo.png' width='150' /> | [fxdemo.py](https://code.google.com/p/omegalib/source/browse/trunk/data/examples/fxdemo.py) | Various rendering effects. Custom multilevel menus. Picking. |
+| <img src='http://omegalib.googlecode.com/svn/wiki/PythonExamples/headlight.png' width='150' /> | [headlight.py](https://code.google.com/p/omegalib/source/browse/trunk/data/examples/headlight.py) | Scene hierarchy. Camera-attached lights. Trackable objects. |
+| <img src='http://omegalib.googlecode.com/svn/wiki/PythonExamples/lightFunction.png' width='150' /> | [lightFunction.py](https://code.google.com/p/omegalib/source/browse/trunk/data/examples/lightFunction.py) | CUstom shader light functions. Interactors. |
+| <img src='http://omegalib.googlecode.com/svn/wiki/PythonExamples/multilight.png' width='150' /> | [multilight.py](https://code.google.com/p/omegalib/source/browse/trunk/data/examples/multilight.py) | Multple scene lights. Event Handling. Interactors. Scene hierarchy. Menus. Context Menus. |
+| <img src='http://omegalib.googlecode.com/svn/wiki/PythonExamples/picking.png' width='150' /> | [picking.py](https://code.google.com/p/omegalib/source/browse/trunk/data/examples/picking.py) | Object ray picking. Ui-to-texture rendering. |
+| <img src='http://omegalib.googlecode.com/svn/wiki/PythonExamples/spincube.png' width='150' /> | [spincube.py](https://code.google.com/p/omegalib/source/browse/trunk/data/examples/spincube.py) | Basic shape creation. Using the update function. |
+| <img src='http://omegalib.googlecode.com/svn/wiki/PythonExamples/uitotexture.png' width='150' /> | [uitotexture.py](https://code.google.com/p/omegalib/source/browse/trunk/data/examples/uitotexture.py) | Render-to-texture ui. Using the update function. |

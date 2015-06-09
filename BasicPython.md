@@ -1,0 +1,47 @@
+# Running Python Applications #
+<p><b>Last revision:</b> ver. 3.6 - 9 April 2012<br>
+</p>
+
+omegalib exposes most of its API to Python, so the vast majority of omegalib applications are developed as python scripts. Using python instead of C++ to develop your omegalib application offers several advantages:
+  * You can port your application to different systems without recompiling. For instance you can develop a script on your laptop, then copy it to CAVE2 and just launch it. Configuration files will do the rest.
+  * You can modify your application at runtime using the interactive python console
+  * If you need integration with C++ or need access to advanced omegalib functionality, you can write C++ code as an **omegalib module** and import it into your python script.
+
+omegalib uses its own python interpreter to run python scripts. The interpreter executable is called `orun`, and is built with omegalib when you enable python support.
+
+## Running python omegalib programs: orun ##
+To run python omegalib programs, you need the `orun` application. orun is part of the standard omegalib distribution.
+You have two ways to start a script using orun
+
+Though the command line using a command in the form:
+```
+	orun -s <filepath.py>
+```
+
+After starting orun, typing:
+```
+	:r <applicationName> 
+```
+
+### Stopping orun ###
+To stop an orun program, press esc, type `oexit()` or `:q` or press control-C (on linux) at the orun console, or run `orun -K` on another terminal.
+
+### orun quick commands ###
+If the interactive console as been enabled in the loaded configuration file (using `pythonShellEnabled = true;`) it will be possible to type in commands while the script runs. orun offers a full python interpreter, and preloads all the default omegalib modules (euclid, omega, omegaToolkit, cyclops).
+
+In addition to python, the orun console supports **quick commands** that perform some utility functions at runtime. All quick commands start with a colon symbol, like `:q` or `:r`. The default commands supported by orun are:
+  * `:? [topic] [prefix]`: prints help reference for objects and classes. Use this to quickly look up the methods offered by a specific class or object. The command also accepts a `prefix` argument, to limit results that start with a specified string. The command `:? . [prefix]` returns the name of all global variables currently used by the script. A fex examples of the command are `:? .`, `:? SceneNode`, `:? Entity get`.
+  * `:r [script]` Runs a script (shortcut to `orun(script)`)
+  * `:r! [script]` Runs a script, after unloading the current one (shortcut to `ocleanrun(script)`)
+  * `:lo` Lists all live, reference counted objects
+  * `:ln` Prints the scene node tree
+
+For a full reference about quick commands check the [Quick Commands Wiki Page](QuickCommands.md)
+
+### omegalib Python Reference ###
+omegalib exposes 4 main python modules:
+  * [`omega`](OmegaPythonReference.md) the core omegalib module
+  * [`omegaToolkit`](OmegaToolkitPythonReference.md) a module with a few utility classes
+  * [`cyclops`](CyclopsPythonReference.md) a simple osg-based graphic engine
+  * [`euclid`](http://code.google.com/p/pyeuclid/source/browse/trunk/euclid.txt) a 3d math module
+

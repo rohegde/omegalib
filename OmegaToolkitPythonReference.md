@@ -1,0 +1,312 @@
+<p><b>Last revision:</b> ver. 3.7 - 8 May 2013</p>
+
+
+
+# Module omegaToolkit #
+omegaToolkit is a utility module for omegalib. It exposes some non-core functionalities such as
+  * a 2D / 3D graphical user interface
+  * a set of object manipulator techniques based on mouse / touch, 3d wands and kinect tracking
+
+
+---
+
+## General Functions ##
+
+### `getCameraById(id)` ###
+Retrieves a camera based on its id (**currently supported by Porthole service only**)
+
+
+---
+
+## `class ToolkitUtils` ##
+Wraps the [omegaTookit::ToolkitUtils](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1_toolkit_utils.html) C++ class. Offers some generic utility static functions.
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `createInteractor(setting)` **static** | Creates an interactor object from a setting object |
+| `setupInteractor(settingName)` **static** | Creates an interactor object from a setting name |
+| `getKinectDepthCameraImage()` **static** | If a kinect service is running, this method returns a depth camera image as a `PixelData` object. Returns `None` if no kinect service is active |
+
+### Examples ###
+#### Interactor creation ####
+```
+	node = SceneNode.create('node')
+	
+	# [ ... ] attach stuff to the node here
+	
+	# Create a standard interactor based on the settings under config/interactor
+	# The config/interactor section of the system configuration file specifies what
+	# interactor should be used depending on the hardware platform we are using (VR system, laptop, etc)
+	interactor = ToolkitUtils.setupInteractor("config/interactor")
+	
+	# If we succesfully created an interactor, let's attach the node to it
+	if(interactor != None):
+		interactor.setSceneNode(node)
+```
+
+
+---
+
+## `class MenuManager` ##
+Wraps the [omegaTookit::ui::MenuManager](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_menu_manager.html) C++ class. Offers a simple to use menu system to control applications.
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `createAndInitialize()` **static** | Creates a new instance of the MenManager and initializes it |
+| `createMenu(name)` | Creates a new menu and returns it |
+| `setMainMenu(menu)`, `getMainMenu()` | Gets or Sets the main menu (it will be opened when a system-specific key or button will be pressed |
+
+### Examples ###
+#### Basic ####
+```
+	# Create an empty menu and set it as the main menu
+	mm = MenuManager.createAndInitialize()
+	menu = mm.createMenu('menu')
+	mm.setMainMenu(menu)
+```
+
+
+---
+
+## `class Menu` ##
+Wraps the [omegaTookit::ui::Menu](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_menu.html) C++ class. Represents a menu. Menus can contain buttons, sliders, checkboxes and sub menus
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `addItem(type)` | Adds an item to the menu. Type can be one of `MenuItem.Button`, `MenuItem.Checkbox`, `MenuItem.Slider`, `MenuItem.SubMenu`, `MenuItem.Label`, `MenuItem.Image`, `MenuItem.Container` |
+| `addButton(label, command)` | Convenience method for adding a button item and associating a command to it. Returns a reference to the created `MenuItem` |
+| `addSubMenu(label)` | Convenience method for adding a sub menu. Returns a reference to the created `Menu` |
+| `addLabel(text)` | Convenience method for adding a label. Returns a reference to the created `MenuItem` |
+| `addImage(image)` | Convenience method for adding an image. Returns a reference to the created `MenuItem`. the image is a `PixelData` object |
+| `addSlider(ticks, command)` | Convenience method for adding a slider. Returns a reference to the created `MenuItem` |
+| `addContainer()` | Convenience method for adding a container. Returns a reference to the created `MenuItem` |
+| `show()`  | Displays the menu |
+| `hide()`  | Hides the menu |
+| `isVisible()` | Returns `True` if this menu is currently visible |
+| `placeOnWand(event)` | When 3d menus are enabled, places the menu on the wand ray. The argument must be an event containing ray information, like a `Wand` or `Pointer` event. |
+| `getContainer()` | Gets the 'Container' widget containing the items of this menu |
+
+### Examples ###
+#### Place on wand ####
+**TODO**
+
+
+---
+
+## `class MenuItem` ##
+Wraps the [omegaTookit::ui::Menu](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_menu_item.html) C++ class. Represents an item in a menu
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `getText()`, `setText(string)` | Gets or sets the label for the menu item |
+| `getDescription()`, `setDescription(string)` | Gets or sets the description for the menu item |
+| `getCommand()`, `setCommand(string)` | Gets or sets the script command to be executed when the menu item is activated or changed |
+| `isChecked()`, `setChecked(value)` | Gets or sets the checked status for checkbox menu items |
+| `getUserTag()`, `setUserTag(value)` | Gets or sets a string user tag associated to this menu item |
+| `getSubMenu()` | Returns the sub menu attached to this menu item. Valid only for `MenuItem.SubMenu` item types |
+| `getWidget()` | Returns the a reference to the widget representing this menu item |
+| `getSlider()` | Returns a reference to a `Slider` widget if this menu item is a slider. Returns `None` otherwise |
+| `getImage()` | Returns a reference to an `Image` widget if this menu item is an image. Returns `None` otherwise |
+| `getContainer()` | Returns a reference to a `Container` widget if this menu item is a container. Returns `None` otherwise |
+| `getButton()` | Returns a reference to a `Button` widget if this menu item is a button. Returns `None` otherwise |
+| `setImage(image)` | Sets the image for this menu item. Image and Button menu items support images |
+
+
+---
+
+## `class Container3dSettings` ##
+Wraps the [omegaTookit::ui::Container3dSettings](http://omegalib.googlecode.com/svn/refdocs/trunk/html/structomega_toolkit_1_1ui_1_1_container3d_settings.html) C++ class. Stored settings used by ui container when rendering in 3d mode.
+
+### Properties ###
+| Property | Description |
+|:---------|:------------|
+| `enable3d` | When set to `True` renders this container in 3d mode |
+| `position` | The container 3d position as a `Vector3` value |
+| `normal` | The container 3d normal as a `Vector3` value |
+| `up`     | The container 3d up vector as a `Vector3` value |
+| `scale`  | The container scale. Scale is the conversion between pixels and world units |
+| `alpha`  | The container transparency (between 0.0 and 1.0) |
+| `node`   | The scene node this container is attached to. When a container is attached to a scene node and rendered in 3d, its position and orientation will be relative to the attached node. This is useful to create camera-attached 3d widgets. |
+
+
+---
+
+## `class UiModule` ##
+Wraps the [omegaTookit::ui::UiModule](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1_ui_module.html) C++ class. Base class for graphical user interface support.
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `instance()` **static** | Returns in instance of the `UiModule` class |
+| `createAndInitialize()` **static** | Creates and initializes an instance of the `UiModule` class |
+| `getWidgetFactory()` **static** | Returns an instance of the `WidgetFactory` class. `WidgetFactory` can be used to create widgets |
+| `getUi()` **static** | Returns the root ui container |
+
+
+---
+
+## `class WidgetFactory` ##
+Wraps the [omegaTookit::ui::WidgetFactory](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_widget_factory.html) C++ class. Use this class to create ui widgets.
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `createButton(name, container)` | Creates a button widget |
+| `createSlider(name, container)` | Creates a slider widget |
+| `createCheckButton(name, container)` | Creates a check button widget |
+| `createImage(name, container)` | Creates an image widget |
+| `createLabel(name, container, text)` | Creates a label widget |
+| `createContainer(name, container, layout)` | Creates an container widget with the specified layout |
+
+### Container layouts ###
+The method `createContainer()` can specify a layout for containers. The layout is a value from the `ContainerLayout` enumeration. The `ContainerLayout` enumeration contains the following values: `LayoutFree`, `LayoutHorizontal`, `LayoutVertical`, `LayoutGrid`
+
+
+---
+
+## `class Widget` ##
+Wraps the [omegaTookit::ui::Widget](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_widget.html) C++ class.
+Base class for GUI elements
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `setVisible(visible)`, `isVisible()` | Gets or sets the visibility for the widget |
+| `setPosition(position)`, `getPosition()` | Gets or sets the widget position in pixels as a `Vector2` value |
+| `getSize()`, `'getSize(size)` | Gets or sets the size of the widget in pixels as a `Vector2` value |
+| `getWidth()`, `'setWidth(value)` | Gets or sets the widget width |
+| `getHeight()`, `'setHeight(value)` | Gets or sets the widget height |
+| `setName(name)`, `getName()` | Gets or sets the widget name |
+| `setStyle(style)` | Sets one or more widget styles as `key: value` pairs |
+| `setStyleValue(style, value)` | Sets the value for a single style key |
+| `refresh()` | Forces a widget refresh |
+| `hitTest(position)` | Checks if the specified pixel position (as a `Vector2` value) lies within the widget area |
+| `setUIEventCommand(command)` | Sets the command to be invoked when events happen in the widget area (like clicks or value changes) |
+| `getLayer()`, `setLayer(value)` | Gets or sets the layer for the widget. Layers influence the drawing order of widgets within the same container |
+| `transformPoint(point)` | Transforms a point from global pixel coordinates to local pixel coordinates in the widget space. Returns a `Vector2` value |
+| `setCenter(point)`, `getCenter()` | Gets or Sets the widget position by it center |
+| `setAlpha(value)` `getAlpha()` | Gets or sets the transparency of the widget. Blendng must be enabled through `setBlendMode` |
+| `setBlendMode(value)` `setBlendMode()` | Gets or sets the blend mode for the widget |
+| `setUpdateCommand(cmdstring)` `getUpdateCommand()` | Gets or specified an update command to be executed for each update cycle on the widget. Example: ```
+ widget.setUpdateCommand("print('widget updated')") ``` |
+| `isStereo()` `setStereo(value)` | Gets or sets stereo mode for the Widget. Some widgets (like `Image`) perform rendering differently when stereo mode is enabled. For instance, `Image` supports rendering of side-by-side stereo images. |
+
+### Widget layers ###
+The method `getLayer()` returns a value from the `WidgetLayer` enumeration. The `WidgetLayer` enumeration contains the following values: `Front`, `Middle`, `Back`
+
+### Widget Blend Mode ###
+The method `getLayer()` returns a value from the `WidgetBlendMode` enumeration. The `WidgetLayer` enumeration:
+  * `BlendInherit` sets the blend mode to inherited from parent
+  * `BlendNormal` sets the blend mode to standard blending
+  * `BlendAdditive` sets the blend mode to additive blending
+
+### Styles ###
+The methods `setStyle` and `setStyleValue` accept the following style keys:
+  * `fill`: sets the widget fill color. Example: ```
+ widget.setStyleValue('fill', '#ff0000') ```
+  * `border`: sets the border style for all borders. widget fill color. Border style is a border width followed by a borer color. Example: ```
+ widget.setStyleValue('border', '2 #ffff00') ```
+  * `border-top`, `border-bottom`, `border-left`, `border-right`: sets each border side style separately
+
+
+---
+
+## `class Container` (extends `Widget`) ##
+Wraps the [omegaTookit::ui::Container](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_container.html) C++ class. Base class for GUI container elements
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `get3dSettings()` | Returns the container 3d settings for the container |
+| `setPixelOutputEnabled(bool)` `isPixelOutputEnabled()` | Sets pixel output for the container. When enabled, the container will render to a pixel buffer instead of the screen |
+| `getPixels()` | Returns the pixel data from the container when pixel output is enabled. Returned object is of `PixelData` type |
+| `addChild(Widget child)` | Adds a child to this container |
+| `removeChild(Widget child)` | Removes a child from this container |
+| `getChildByIndex(int)` | Returns a child by index. Returns `None` if index is invalid. |
+| `getChildByName()` | Returns a child by name. Returns `None` if name is invalid. |
+| **Layout** |             |
+| `ContainerLayout getLayout()`, `setLayout(ContainerLayout layout)` | Gets or sets the layout of this container. The `ContainerLayout` enumeration contains the following values: `LayoutFree`, `LayoutHorizontal`, `LayoutVertical`, `LayoutGrid` |
+| `int getMargin()`, `setMargin(int pixels)` | Gets or sets the margin between the container's content and its borders |
+| `int getPadding()`, `setPadding(int pixels)` | Gets or sets the padding space between elements within the container |
+| **Interaction** |             |
+| `bool isEventInside(Event e)` | Returns true if the event happens within the container boundaries. This method supports all pointer and ray-generating events, and works with 2D and 3D mode containers. |
+
+
+---
+
+## `class Button` (extends `Widget`) ##
+Wraps the [omegaTookit::ui::Button](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_button.html) C++ class. Repreenta a generic button
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `getText()`, `setText(name)` | Gets or sets the label for the button |
+| `isCheckable()` | `True` if this button is a check box |
+| `setCheckable(value)` | Sets the button as a check box |
+| `isChecked()`, `setChecked(value)` | Gets or sets the checked state for checkable buttons |
+| `isRadio()`, `setRadio(value)` | Gets or sets the radio button mode for this button. When multiple radio buttons exist in the same container, only one of them can be checked. |
+| `setIcon(icon)`, `getIcon()` | Gets or sets the button icon (as a `PixelData` object) |
+| `getImage()` | Gets a reference to the internal `Image` widget used to display the button icon |
+
+
+---
+
+## `class Image` (extends `Widget`) ##
+Wraps the [omegaTookit::ui::Image](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_image.html) C++ class.
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `getData()`, `setData(value)` | Gets or sets the image data visualized by this widget as a `PixelData` object |
+
+
+---
+
+## `class Label` (extends `Widget`) ##
+Wraps the [omegaTookit::ui::Label](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_label.html) C++ class.
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `getText()`, `setText(name)` | Gets or sets the label for the label|
+| `setColor(color)` | Sets the label color. Exaample: `label.setColor(Color('white'))` |
+| `setFont(fontName)` | Sets the label font using a `<font> <size>` string. Example: `label.setFont('fonts/arial.ttf 20')` |
+
+### Styles ###
+In addition to widget style, `Label` supports the following additional styles:
+  * `font`: sets the font used by the label. The style is a font name followed by a font size. Example: ```
+ label.setStyleValue('font', 'fonts/arial.ttf 20') ```
+  * `color`: sets the font color used by the label. Example: ```
+ label.setStyleValue('color', 'red') ```
+  * `align`: sets the font alignment used by the label. Alignment format is `<vertical>-<horizontal>`, where vertical is one of `top`, `middle`, `bottom` and horizontal is one of `left`, `center`, `right`. Example: ```
+ label.setStyleValue('align', 'middle-left') ```
+
+
+---
+
+## `class Slider` (extends `Widget`) ##
+Wraps the [omegaTookit::ui::Slider](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1ui_1_1_slider.html) C++ class.
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `setColor(color)` | Sets the label color. Exaample: `label.setColor(Color('white'))` |
+| `setFont(fontName)` | Sets the label font using a `<font> <size>` string. Example: `label.setFont('fonts/arial.ttf 20'')` |
+
+
+---
+
+## `class PortholeService` ##
+Wraps the [omega::PortholeService](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_camera.html) class. Manages the Porthole, a web-based interaction and display service for omegalib applications.
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `createAndInitialize(port, xmlPath, cssPath)` **static** | Creates a new instance of the porthole service |
+
+### Examples ###
+#### Initialization ####
+```
+	# Starts up the porthole service. 
+	# The service will accept web requests on port 4480
+	# app/app.xml contains the web interface definition (gui elements, output windows etc)
+	# app/app.css defines the style of the interface. Can be left empty
+	svc = PortholeService.createAndInitialize(4480, 'app/app.xml', 'app/app.css')
+```

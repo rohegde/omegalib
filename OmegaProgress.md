@@ -1,0 +1,167 @@
+# omegalib v1.0 & Future versions #
+See [ReleaseNotes](ReleaseNotes.md)
+
+
+---
+
+
+# omegalib v0.6 #
+## Summary ##
+The main features of omegalib 0.6 will be a complete integration with third party libraries like Vtk and OSG, finishing the work started in omegalib 0.5 It will also support communication and interaction with tablet devices like the iPad. This version will also improve support
+for clustered / multigpu display systems.
+
+**Expected delivery**: `December 2011`
+
+## Completed Tasks ##
+  * Basic model-view-controller toolkit in outils
+  * Streamlined support for integration of omegalib into third party projects
+
+## Work In Progress ##
+  * Integration of PS3 and Wii controller (**Arthur**)
+    * PS3 needs to directly connect without using MotionInJoy.
+    * Wii remote orientation using Wii Motion Plus.
+  * Unity example project: (**Arthur**)
+    * Using touch, Kinect, 3D, controllers.
+  * Add a multi-user touch gestures (**Arthur**)
+    * Zoom, drag, and other current SAGE touch gestures
+  * Integration with Qt (**Alessandro**)
+  * Tutorials
+    * Tutorial 1: Building A Basic Omegalib (**Alessandro**)
+    * Tutorial 2: Using Omegalib Event Services: Direct Integration (**Alessandro**)
+    * Tutorial 3: Using Omegalib Event Services Part 2: oinputserver (**Alessandro**)
+    * Tutorial 4: Graphics Intro Part 1: A Basic OpenGL Application (**Alessandro**)
+  * Vtk integration: (**Alessandro**)
+    * Support visualization of multiple entities.
+    * Script loading in separate thread.
+    * UI interface for interaction with Vtk pipelines
+    * Script templates.
+
+
+
+---
+
+# omegalib v0.5 (**delivered:** August 2011) #
+## Summary ##
+Main objectives for this release: support of multiple object manipulation through kinect / mocap and a better integration with Vtk. Integration with External scene graph and UI libraries (like OpenSceneGraph and Qt) is also planned for this version.
+
+## Completed Tasks ##
+  * Compiles under Mac OSX in i386 mode
+  * Can use XCode as compiler (cmake -G XCode)
+  * OpenNI library works under Linux
+  * (**experimental**) OpenSceneGraph integration
+  * Vtk integration:
+    * ovtk library core
+    * Python script loader
+    * Vtk viewer application
+  * VRPN Integration
+    * Preliminary work
+    * Data streamed from VICON tracker into mocap events
+    * Set multiple objects in configuration file
+
+
+
+---
+
+# omegalib v0.4 (**delivered:** May 2011) #
+## Summary ##
+This version will the first one to compile on linux as well on windows.
+A complete demo application will be included (meshviewer) as well as kinect integration. Experimental integration with vtk and a small demo application is also planned to be integrated into omegalib 0.4.
+
+## Completed Tasks ##
+  * All of codebase compiles on linux (**Alessandro**)
+  * kinect integration (**Victor**)
+  * mocap calibration application (**Alessandro**)
+  * improve ease of integration into external applications (**Alessandro**)
+  * Vtk integration library (**Alessandro**)
+  * vtk viewer demo application (**Alessandro**)
+  * filters to join mocap & kinect data for controller / tangible object ownership (**Alessandro**)
+  * Linux 64bit build of basic services (**Arthur**)
+  * complete meshviewer application (**Alessandro**)
+  * Integration of XBox 360 controller (**Arthur**)
+  * Linux 64bit build of complete system except GLUT
+
+
+> 
+---
+
+# omegalib v0.3 (**delivered:** January 2011) #
+## <u> Alessandro </u> ##
+  * OmegaLib / VTK Integration
+    * Render vtk content into omegalib / equalizer channels (**done**)
+    * Integrate OmegaLib input into vtk interaction system (control camera by mouse / touch?)
+    * Create separate ovtk library
+  * Test active stereo rendering
+
+## <u> Unassigned </u> ##
+  * omegalib / Ogre integration?
+  * omegalib >> Processing.
+  * support linux builds (i386 only for now)
+
+
+> 
+---
+
+# omegalib v0.2 (**delivered**: October 2010) #
+
+## <u> Dennis </u> ##
+  * Convert oTest to oDemo (**DONE**)
+  * Documentation for Cristian and Shannon (optiTrack support) (**DONE**)
+  * Add to concepts page
+
+## <u> Alessandro </u> ##
+  * Configuration system support (**done**)
+> > Omega applications should be set up through configuration files and not through code. Working on config file support.
+
+  * Lay down basic omega utility toolkit (**done**)
+> > outk will offer some additional functionality to applications that need it (i.e. basic GUI support, a simple graphics library, etc.)
+
+  * Start work on outk GUI system (**done** - needs more testing / debugging)
+> > Add a couple of basic GUI widgets
+    * Button (**done**)
+    * Slider (**done**)
+    * Image (**done**)
+
+  * Add basic support for Input filter creation (**delivery**: ?)
+> > Input filters will be used to process and mangle input event coming from services, before they get delivered to an omegalib application. Filters can implement functionalities like noise reduction, improved finger / object tracking and gesture support.
+
+## <u> Victor </u> ##
+  * Integrating Kinect and OpenNI to omegalib
+
+  * Waiting for:
+    * Gestures
+    * Rigid body movements (will it work on 64bit?)
+
+## <u> Brad </u> ##
+  * Reading papers on 3D gesturing and gesture disambiguation.
+
+  * Start working on a simple application to have pattern recognition for
+> > 3D gesturing.
+    * Going to try to get a wave and a rotate/pivot gesture working first.
+
+## <u> Arthur </u> ##
+  * Paint 3D teapot by painting 2D texture map via multi-touch (**delivery**: ?)
+
+  * Update PQService to use config files (**done**)
+
+  * Integrate PQLabs gestures into PQService (**done**)
+    * Add PQLabs gestures to oinputservice (**done**)
+    * NetService convert gestures back into events (**delivery**: Early February)
+
+  * oinputservice / NetService implementation (**done**)
+    * oinputservice streams events out via UDP socket (**done**)
+    * NetService capable of receiving events (**done**)
+> > > - Latency issue (**solved**)
+    * Processing/TouchAPI capable of receiving events (**done**)
+    * Unity capable of receiving events (**done** - mocap and touch)
+
+  * Add a multi-user pan/zoom gesture to replace single-user PQLabs gesture (**delivery**: ?)
+
+  * Update PQService to stream TUIO format coordinates using screen ratio (**done**)
+
+  * Integration of PS3 controller (**delivery**: Spring '11?)
+  * Integration of XBox 360 controller (**delivery**: Spring '11?)
+
+## <u> Unassigned </u> ##
+  * TacTile integration (**delivery**: ?)
+
+> > Implement TacTileService.

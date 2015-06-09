@@ -1,0 +1,643 @@
+
+
+
+---
+
+# omegalib v4.0 (**current developer version**) #
+## Major Changes ##
+**omega**
+  * Added `Color` from omicron. Added `Color.isValidColor`
+  * Added per-tile runtime camera controls: `isHostInTileSection`, `setTileCamera`.
+  * `pointerSize` config option
+  * Automatic multi-instance port adjustment for NetService
+  * on the `-I` multi-instance switch, the port pool can be left unspecified. It will be set to 100 by default.
+  * **4.0.2**: omegalib can build using an external omicron installation
+  * **4.0.2** (rev2964): python interpreter now does module lookups in the current script directory.
+**cyclops**
+  * Major revision of the Material API. Materials have a lot more properties and flags. Multiple material layers can be added to an entity, without having to use the `setEffect` string. `setEffect` is not just a shorthand version of adding material layers to an Entity.
+  * **4.0.1** **FIX** incorrect handling of `-t` transparent effect flag.
+**omicron**
+  * Improved sound asset management: sound assets now get copied automatically to the sound server.
+  * **NOTE FOR APPLICATION DEVELOPERS** All sound paths in applications need to switch to use relative paths.
+
+
+
+
+---
+
+# omegalib v3.7 #
+## Notes ##
+This is an intermediate release, before some major planned API additions for 4.0.
+## Major Changes ##
+**general**
+  * Improved support for building custom external modules.
+  * Additional fixes to runtime application switching.
+  * added mission control `-m` flag to the default command line options. (see [the Command Line Wiki page](CommandLine.md)).
+  * added support for **multi-instance** launching (using the `-I` command line option). Now multiple intances of omegalib can easily run on a cluster driving a display system, sharing the same configuration and each controlling a subsection of the display space.
+**omega**
+  * `DisplayConfig.verbose` mode
+  * New python functions: `getViewRay(x, y)`, `broadcastCommand()`
+  * number of lines in the onscreen console can be customized.
+  * Stereo eye separation can be customized at runtime through `Camera.setEyeSeparation`
+**cyclops**
+  * Fixed material and effect color and alpha overrides
+  * Fix to emissive texture shader (would not render correctly with lighting enabled).
+  * **API CHANGE**: Material `setDiffuseColor` and `setEmissiveColor` have been merged into `setColor(diffuse, emissive)` to make it clear material color override both emissive and diffuse.
+  * API Additions: `Entity.listPieces()`, `Entity.getPiece()`.
+  * Fixed optimization error for animated models.
+  * polygon offset and wireframe options for setEffect (`-o`, `-w`)
+**omegaOsg**
+  * FIX: `queueCommand(':autonearfar on')` done before osg module initialization was being ignored.
+  * Added support for depth partitioning, to correctly render large scale scenes.
+**omegaToolkit**
+  * API Additions: `Widget.getCenter()`
+  * API Additions: `Menu.getContainer()`
+  * Improved support for 2D mode menus
+
+---
+
+# omegalib v3.6 #
+## Major Changes ##
+general
+  * moved Porthole code from omega to omegaToolkit
+  * (**3.6.1**) additional improvements and fixes to runtime application switching.
+  * (**3.6.3**) added `modules` directory for modules that are shipped as part of omegalib but are not part of the core libraries. Modules also provide a good source of examples on how to extend omegalib.
+  * (**3.6.3**) fbx sdk packages are downloaded on demand from omegalib website instead of being part of the repository.
+  * (**3.6.4**) python and FreeImage fbx sdk packages are downloaded on demand from omegalib website instead of being part of the repository.
+orun
+  * control of application start command
+omega
+  * Python interpreter adds data root to module seearch path
+  * A few fixes and improvements to multipipe rendering and to mouse pointer - ray conversion.
+  * (internal) Render pass management moved from Pipe to Window
+  * removed obsolete Gpu classes. They may be placed in a separate module in the future.
+  * added `borderless` option to display and tile configuration.
+  * (**3.6.1**) reformatted python errors to make them easier to spot in the log.
+  * (**3.6.1, Windows 32bit**) build process uses an internal copy of python instead of an external, so omegalib builds out-of-the-box even with python suppor enabled.
+  * (**3.6.2**) Fixed regression on loading of 8bit png images.
+  * (**3.6.3**) added onParentChanged to SceneNodeListener
+  * (**3.6.3**) Fixed invertex colors in readback target
+omegaToolkit
+  * New menu widgets: label, slider, image
+  * `Slider` class accessible from Python API
+  * fixed menu deallocation when switching applications at runtime
+  * some fixes to container layout code
+  * removed Panel container type (it can be replicated using Container styles)
+  * (**3.6.2**) added radio buttons.
+  * (**3.6.3**) custom uis can be added to a menu through Menu.addContainer
+cyclops
+  * Added support for **geometry shaders** in C++ and python API through the `ProgramAsset` class.
+  * (**3.6.3**) fixed node remove errors
+  * (**3.6.3**) Simplified entity management and removed obsolete entity functions from SceneManager
+  * (**3.6.3**) Improvements to `Material` (alpha set and get, material reset)
+  * (**3.6.3**) Added support for post-lighting custom shader code (`@postLightingSection` macro)
+
+
+---
+
+# omegalib v3.5 #
+## Major Changes ##
+  * Reorganized source: all c++ and python examples are now under `/examples`.
+  * (3.5.1) omicron and omegalib use double precision math by default.
+omega
+  * Improvements to python API
+  * Camera.focusOn
+  * clip plane control
+  * (**3.5.1**) fixes to SceneNode bounding box
+  * NodeComponent API slightly changed to support more functionality for objects attached to scene nodes.
+  * (3.5.1) `ImageUtils::loadImageFromStream()`
+  * (3.5.1) Keyboard service generates button left/right/up/down events when keyboard arrows are used.
+
+omegaOsg
+  * fixed bounding box generation
+  * fixes to clipping
+  * (**3.5.1**) Added auto near / far Z computation toggle (`:setautonearfar [on|off]`)
+  * (**3.5.1**) Added support for PagedLOD and DatabasePager
+  * (**3.5.1**) FBX support can be optionally disabled
+omegaVtk
+  * re-added support for vtk python scripting
+  * added support for vtk lights.
+  * added support for depth peeling
+cyclops
+  * Context menus can be attached to entities using a simpler API that does not require custom scripting.
+  * Added support for custom model loaders
+  * GPU Program assets are now fully configurable through python (using the `ProgramAsset` class). Programs can be reloaded at runtime using a simple command (`SceneManager.updateProgram`) allowing users to experiment with different shaders.
+orun
+  * configurable startup script and application start function. The startup script can be used as a 'boot' script to modify applications depending on the system they are running on. The application start function (typically defined in the init script) is launched every time a new application starts and can be used to inject cutom functions (like system menus) into the application.
+omegaToolkit
+  * (**3.5.1**) added `Container:isEventInside`, other improvements and fixes to ui Container class
+  * (**3.5.1**) improved `AppDrawer`
+  * (**3.5.1**) custom user data can be attached to Widget
+  * (**3.5.1**) Button icons
+
+
+
+---
+
+# omegalib v3.4 #
+## Summary ##
+omegalib 3.4 Improves a few existing functionalities (3D widgets, runtime application switching) and fixes a few shader and transparency bugs in cyclops.
+It also introduces `mcserver`, a mission control server that allows multiple omegalib instances to connect and share scripting commands, allowing the creation of collaborative instances.
+
+## Major Changes ##
+omicron
+  * Event::getAxis
+  * Tcp: merged TcpConnection and TcpClientConnection into a single class.
+  * Tcp: improved disconnection logic.
+omega
+  * PixelData and Texture support PixelBufferObject transfers
+  * Improvements to python API
+  * Shader fixes
+  * orun now executes a default startup script (orun\_init.py) before launching applications. Useful to execute system-specific code (like creating system menus)
+  * Improved Mission Control services: mission control server can now be run standalone and multiple omegalib instances can connect and share python commands. This can be used as a starting point for collaborative sessions.
+  * Improved runtime switching of applications. Added new commands (`oclean()`, `ocleanrun()`) to handle application switching from scripts.
+omegaToolikt
+  * 3d widgets can be attached to scene nodes
+  * Menus are by default attached to camera
+  * Camera navigation stays enabled by default when in menus. Can be disabled through a config file option.
+  * added `AppDrawer` utility class
+cyclops
+  * Major fixes to transparency support: Now all objects share the same depth sorted bin by default, and shader alpha handling has been made more consistent.
+  * Other misc fixes to shaders.
+  * CylinderShape, LineSet, Line can be used in python scripts.
+
+
+
+
+---
+
+# omegalib v3.3 #
+**Initial Revision**: 2440
+**Initial Revision**: 2477
+
+## Summary ##
+Bugfixed v3.3. Main changes are improved shader and light support in cyclops.
+
+## Major Changes ##
+cyclops
+  * added Spot and Directional lights
+  * added support for light attenuation
+  * added support for custom light functions
+  * shader uniforms can be specified in Python scripts
+  * shaders can be embedded in code instead of loading them from a separate file
+  * added shader source caching.
+  * revised examples
+
+
+---
+
+# omegalib v3.3-beta #
+**Initial Revision**: 2400
+**Branch-out Revision**: 2439
+
+## Summary ##
+> This is a work-in-progress release created for the EVL CAVE2 programming tutorial. Various changes merged from the 4.0 branch, mostly involving advanced GUI support, optimizations and GUI render-to-texture. Prebuilt version is much better on windows, and python scripts can now be launched from any directory on all platforms. Some work in progress on cyclops effects and materials.
+
+## Major Changes ##
+omega
+  * various bugfixes
+  * followTrackable moved from cyclops Entity to SceneNode
+  * Equalizer CUDA support disabled by default
+  * ISceneObject >> NodeComponent
+  * SceneNode facing camera support
+omegaToolkit
+  * removed obsolete SceneRenderable classes
+misc
+  * updated MakeDistro batch
+  * updated examples
+  * new examples
+  * python scripts can run from any directory now
+  * merged changes from v4.0 branch
+cyclops
+  * Started revising Effect support to use Materials for high-frequency property changes to objects.
+  * Separate cyclops light functions and Custom light shader function support
+  * Entity.castShadow
+  * shaders - ambient accumulated for all lights
+
+
+---
+
+# omegalib v3.2 #
+**Initial Revision**: 2345
+**Branch-out Revision**: 2399
+
+## Summary ##
+> This is a maintenance version with a few changes and bugfixes in several omegalib modules.
+## Major Changes ##
+  * omega
+    * reorganized log messages to simplify reading
+    * fixed a few Camera bugs
+    * Event setProcessed / isProcesed usable in Python
+  * omegaToolkit
+    * Image now supports refreshing with images of different dimensions
+    * Extended Widget Python API
+  * cyclops
+    * Textures can be created and updated using PixelData objects (C++ and python)
+    * Fixed Bump shader errors
+  * misc
+    * orun now tries to load config file based on loaded script. Also, added a couple of related fixes to Engine and module services
+    * simplified slider.py demo
+    * added ui render-to-texture example
+
+
+---
+
+# omegalib v3.1 #
+**Initial Revision**: 2235
+**Branch-out Revision**: 2344
+## Summary ##
+> Omegalib 3.1 improves on version 3.0 introducing a few new features and improvements (sound, python API, porthole, configurability), and is the first version since the dark ages of the project that offers a prepackaged binary version for windows.
+## Major Changes ##
+  * omega
+    * big improvements on sound support
+    * improved configuration, tile configuration is now much more flexible and allows eterogeneous geometries and stereo modes
+    * (linux) control-C kills application even on cluster systems
+    * omegalib builds on OSX
+    * runtime stereo switch
+    * `orun -D` option lets user switch application data directory instead of system data directory
+  * omegaToolkit
+    * 3d ui control supported in python, plus additional ui interaction improvements
+  * cyclops
+    * simplified shader system
+    * added emissive texture support
+    * added bump effect shader
+    * improved animation support
+  * omegaVtk
+    * support for per-actor visibility
+  * omegaOsg
+    * optional support for Inventor / VRML files
+
+
+---
+
+# omegalib v3.0 #
+**Initial Revision**: 1839
+**Branch-out Revision**: 2233
+## Summary ##
+> Omegalib 3.0 is a major improvement over the 2.0 distribution. It is the version used on the first public demos of the [CAVE2](http://www.evl.uic.edu/core.php?mod=4&type=1&indi=424) virtual reality system. It greatly improves performance and stability on cluster display systems, and integrates an extended python API for application developement.
+> C++ and Python omegalib applications can now be accessed in the [omegalib applications repository](https://code.google.com/p/omegalib-apps/).
+> omegalib 3.0 also integrates a new version of [Porthole](PortholeReference.md).
+## Major Changes ##
+  * omega
+    * new Sound Server API from omicron (C++ and Python)
+    * script commands can be queued for later execution from within a python script using the `queueCommand` function
+    * improved wand navigation
+    * Per-tile camera support
+    * 2d drawing support in python (draw callback)
+    * refactoring: removed `RenderState` `RendererBase` `ServerBase`
+    * panoptic stereo can be toggled at runtime
+    * per-tile stereo mode
+    * Kinect depth texture accessible from python API
+    * Interleaved stereo now implemented using a stencil buffer technique
+    * Scene objects can expose custom ray intersection techniques
+    * orun `:?` now supports listing of object menbers
+    * `Camera` and `Light` are now full scene nodes. They use the standard node transform API and can have children
+    * Added a custom statistics display derived from the one in Equalizer. Specific statistics can be enabled or disabled at runtime through the `toggleStats` python function.
+    * Improved logging on custer systems
+    * Improved garbage collection, initialization and shutdown code
+    * The mouse curor is hidden in fullscreen linux windows
+    * Added an option to disable the equalizer configuration generator (to use custom equalizer configs)
+    * Added image asynchronous loading support
+    * Added the `mcsend` command line tool to send python commands to remote omegalib instances through the Mission Control protocol
+    * Scene query API exposed to python
+    * Merged `Camera` and `Observer` classes. Camera supports head tracking directly (for simple unfiltered tracking there is no need to use a separate observer update service anymore)
+    * Application config can be redirected using `SystemManager::setAppConfig`
+    * Added `EngineModule::handleCommand`
+    * Improved and standardized config for desktop systems
+  * omegaToolkit
+    * Added support for multiple independent user interfaces
+    * Extended python API
+    * Basic support for widget style descriptors (similar to CSS)
+  * cyclops
+    * extended python API
+    * forward pipeline supports backface illumination
+    * Re-added bump mapping shaders, integrated with effect system
+    * Improved tracked object and wand support
+    * Improved support for transparent objects
+    * Refactoring: `Entity` >> `AnimatedObject`, `DrawableObject` >> `Entity`.
+    * Added `BoxShape`
+    * Effects can specify cull mode
+    * Shadows can be toggled at runtime
+    * Improved animation support
+
+
+---
+
+# omegalib v2.1 #
+**Initial Revision**: 1631
+**Branch-out Revision**: 1837
+## Summary ##
+> Omegalib 2.1 is mostly a bookkeeping / work-in-progress tag, before some refactoring work for omegalib 3.0
+## Major Changes ##
+  * omega
+    * Added support for headless master nodes on cluster configs
+    * Improved equalizer code for cluster configs
+    * Added preliminary support for cylindrical display configs
+    * Python API redesigned to more closely match the C++ API (using boost::python)
+      * Python API integrated pyEuclid for math fnctionality
+    * system configuration does not need to be in app config file anymore. It is now looked up from default.cfg
+    * current working dir support in clustered launcher
+    * orun works without osg / vtk support
+    * MouseCameraController (control camera just using mouse, useful for SAGEPointer-based control of remote displays)
+    * Added support for skybox, environment mapped shaders
+    * Custom display geometry in config files
+  * omicron
+    * Cleaned up math library
+  * cyclops
+    * Major improvements in effects support
+    * Added cyclops LineSet class
+    * Support for multilight shaders
+    * Shadows can be enabled / disabled at runtime
+    * Normals can be generated and / or normalized for loaded models
+  * misc.
+    * Added prepackaged binary build for windows (work in progress)
+  * MissionControl
+    * Basic tool implemented
+    * Basic statistics support
+
+
+---
+
+# omegalib v2.0 #
+**Initial Revision**: 1306
+**Branch-out Revision**: 1627
+## Summary ##
+> Omegalib 2.0 is a big improvement over 1.0, both feature and API-wise. This is the first version thoroughly tested on a clustered display system. OpenSceneGraph support has been deeply improved, and the Cyclops toolkit is now offered as a library, allowing simplified developement of omegalib/osg applications. Other changes include:
+    * **a revision of Vtk support** (now integrated in the omegVtk library). Vtk integration works correctly in a clustered environment
+    * Improved support for gamepad / wand camera navigation and object control
+    * Support for **3d user interfaces**
+    * The **Cyclops toolkit** support for:
+      * Loading of custom scenes from XML files
+    * Animated models
+    * Customized shader-based materials and effects
+    * osg-based soft shadowing
+    * OpenScenegraph support for **all major image formats** (through a custom FreeImage plugin) and the industry standard **Fbx format**.
+    * A **menu-based user interface API** (`MenuManager`, `Menu`, `MenuItem`)
+    * A **python interactive console** and support for **python ui event handlers**
+    * **Simplified definition of display configs** though an automated Equalizer configuration generator: Users can now define the display configuration using a simpler format inside system config files. omegalib will parse and convert the configuration to the Equalizer format, removing a lot of redundant and error-prone manual steps.
+## Change Log ##
+  * NEW: structure demo light control
+  * NEW: Animated menus
+  * NEW: wand ray fixes and generation code
+  * NEW: Menu supports submenus
+  * NEW: transparent panel background
+  * NEW: auto-extractable linux fbx sdk
+  * NEW: global kill switch, optional pointer drawing
+  * NEW: big revision of shading and effect system in cyclops, plus some fixes in osg support.
+  * NEW: cyclops Effect (WIP)
+  * NEW: 3d ui stuff and new skin
+  * NEW: meshviewer in old folder.
+  * NEW: 3d ui basic support, and deep changes / fixes to pointer and wand math
+  * NEW: Structure working, MenuManager working, several ui fixes.
+  * NEW: Fbx / Obj loader in omegaOsg
+  * NEW: baybridge dataset
+  * NEW: Multimodel entities and assets in cyclops
+  * NEW: fbx support
+  * NEW: Started working on structure app
+  * NEW: Camera position / orientation scripting
+  * NEW: RailSim application
+  * NEW: Basic Menu system working, python scripting for ui events, gamepad ui navigation.
+  * NEW: updated desktop file and emulation-vr-generic added
+  * NEW: New camera orientation code to allow for default loading of from the cfg file.
+  * NEW: cyclops menu toggling
+  * NEW: Wand emulation service
+  * NEW: Revised material and shading support in cyclops. Some slight changes in railsim to keep code in line with changes.
+  * NEW: Hospital room dataset
+  * NEW: SceneManager code cleanup
+  * NEW: CameraController
+  * NEW: FreeImage-based image loader for osg
+  * NEW: osg freeImage loader
+  * NEW: Additional work on menus and configurable shadowing and editing in scenemanager
+  * NEW: Camera wiimote navigation
+  * NEW: advanced interactive terminal support on linux (using readline)
+  * NEW: wand support (WIP)
+  * NEW: Pointer functionality revision
+  * NEW: cyclops: started revision of material support
+  * NEW: Support for external OSG build
+  * NEW: Visual Leak detector installer
+  * NEW: revision cyclops, support for killing display clusters
+  * NEW: vtk demo + python interactive command clustered execution
+  * NEW: python vtk scripting works
+  * NEW: Python scripting and callbacks support
+  * NEW: Equalizer tile device from config
+  * NEW: started working on cluster support
+  * NEW: metaconfig support for remote nodes (wip)
+  * NEW: equalizer meta-config (wip)
+  * NEW: python node API (wip)
+  * NEW: multigpu vtk rendering support.
+  * NEW: Movable and resizable widgets
+  * NEW: overlay draw tasks can be disabled in equalizer renderer through define.
+  * NEW: configurable image overlay support
+  * NEW: sample images in meshviewer cfg script
+  * NEW: support for stereo ui image rendering
+  * NEW: EVL\_DEMO
+  * NEW: python interactive shell now needs to be enabled explicitly in the config file.
+  * NEW: Basic python console support
+  * CHANGE: Removed getFirstRenderable
+  * CHANGE: cleanup, removed old render passes from omegaToolkit, and started working on structure entity editor.
+  * CHANGE: Moved MenuManager to omegaToolkit, fixes to mouse ray generation
+  * CHANGE: fbx reader does not handle obj files anymore
+  * REVERT: re-added obj loader to cyclops (the one included in the FBX SDK does not work as well)
+  * CHANGE: system configuration files cleanup
+  * CHANGE: engine looks for default font in both system and application config file.
+  * CHANGE: v2.0 compile changes
+  * CHANGE: general project cleanup
+  * CHANGE: omegaVtk (simplified prop attaching to omegalib nodes)
+  * REMOVED: MasterEngine
+  * REMOVED: old tracking files
+  * REMOVED: unity tutorial (moved to omicron SDK)
+  * CHANGE: ovtk >> omegaVtk
+  * REMOVED: evl-specific config files
+  * CHANGE: refactored engine modules
+## Bugfixes ##
+  * FIX: race condition in osg render pass (temporary fix using sInitLock)
+  * FIX: ui rendering (fonts and 3d ui)
+  * FIX: 3d ui now working correctly
+  * FIX: container 3d orientation
+  * FIX: to avoid useless warnings when setting Node listener multiple times
+  * FIX: Header location of fbx headers
+  * FIX: SceneManager initialization
+  * FIX: camera controller set in system file instead of app file
+  * FIX: Event ExtraData read incorrectly over network connection
+  * FIX: pointer ray stuff
+  * FIX: pointer out of bounds check
+  * FIX: EqualizerDisplaySystem::getViewRay crashed on invalid position
+  * FIX: tracked observer flickering
+  * FIX: multipipe rendering isse (needed refactoring of renderpass Api)
+  * FIX: observer initialization
+  * FIX: Obj loader fixes for cyclops
+  * FIX: memleaks
+  * FIX: vtk support and camera manipulation
+  * FIX: omegaVtk
+  * FIX: python interpreter NEW: graceful exit command
+  * FIX: cyclops obj loader for materials with no texture
+  * FIX: stereo images
+  * FIX: Glut support
+  * FIX: python interactive console
+  * FIX: setting custom output directories
+  * FIX: container visible flag
+
+
+---
+
+# omegalib v1.0 #
+**Initial Revision**: 965
+**Branch-out Revision**: 1302
+## Summary ##
+> This is the first "official" version of the omegalib (and omicron) APIs. The project has been deeply refactored into a set of well-separated modules:
+    * `omicron`: lives an external project, and contains all the event services code, input device support, plus various utility classes.
+    * `omega`: contains most of the dispaly system support code, plus a lightweight rendering system that allows building applications that distribute rendering on multiple gpus / machine nodes.
+    * `omegaToolkit`: contains a set of utility classes that simplify the developement of graphical applications (i.e. mesh loading and rendering, gui support). `omegaToolkit` is used mainly by the demo applications included with omega. Most of the code inside `omegaToolkit` should be considered experimental and is not part of the stable API.
+    * `omegaOsg`: contains classes that integrate OpenSceneGraph wwith omegalib. omegaOsg deeply simplifies the conversion of existing osg programs into virtual relity applications running on top of omegalib.
+> > Like previous versions, omegalib has no external dependencies, and compiles out-of-the-box. Required third party packages are either included as binary downloadables or as source code, and compile / link automatically as part of the omegalib build process.
+## Change Log ##
+  * REMOVED: old unity app (new one is tutorial8)
+  * MOVE: qt stuff to old folder
+  * MOVE: oqt to old folder
+  * CHANGE: oengine >> omegaToolkit
+  * CHANGE: ext >> external
+  * CHANGE: OmegaObject & TypeInfo classes removed.
+  * CHANGE: cybersplash moved to old folder
+  * CHANGE: 1.0 - now depends on omicron SDK
+  * NEW: Anaglyph, side-by-side stereo for Unity stereo script.
+  * UPDATE: Interleaved stereo script renamed OmegaControllerScript.cs. Added public variables to adjust stereo,
+  * UPDATE: MocapScript.cs now abstract. Added orientation toggle.
+  * MOVE: porthole moved to old folder. Porthole now lives as its own separate project.
+  * NEW: cyclops supports modes size spec
+  * Changed the FIA touch msgs to generate Notifcations instead of using delegate.  Crappy copy before delete the old stuff
+  * NEW: SceneEditorModule
+  * NEW: gui serialization on TabletInterface
+  * NEW: cyclops
+  * NEW: camera view ray support
+  * NEW: Image serialization support (only as png for now)
+  * NEW: Revised tcp connection, display system initialization, other minor things.
+  * NEW: RenderTarget & secondary camera support
+  * CHANGE: equalizer optimizations
+  * NEW: Event key codes
+  * Scale in controller, new define in ObserverUpdateService
+  * NEW: ControllerManipulator
+  * NEW: Added controller support for NetService.
+  * NEW: Experimental zoom gesture added to NetService to eventually replace PQ gestures.
+  * NEW: started working on material effects for hplviewer
+  * CHANGE: removed support for background gradients in oengine (2d drawing cannot be done correctly interlaced mode). Substituted by simple color clear buffer in equalizer channels.
+  * NEW: Engine background support, hplviewer uses internal obj viewer now
+  * CHANGE: camera support focus change, hpl work with planes
+  * NEW: added osgWorks
+  * CHANGE: camera mouse movement using mouse buttons
+  * NEW: tinyxml, hplviewer, new interaction in nightfield
+  * UPDATE: OmegaControllerScript updated to use new Wiimote datagram (battery,IR, MotionPlus moved to its own controller type) FIX: InputServiceScript no longer give warning about TouchListener (TouchListener tag will be removed soon)
+  * TabletService fixed rotation and pinch gesture abstraction to mouse
+  * CHANGE: camera move up support + osgviewer working again
+  * NEW: camera scale support
+  * NEW: Camera navigation
+  * NEW: NeuroSky Unity example added.
+  * Generalized TCPClient and made a specialized TCPClientOmega.  Setup simple delegation btn DetailVC and FIA.  Need to pipe all networking msgs through this delegate next.
+  * NEW: on-screen console
+  * CHANGE: fixes / changes to engine to make osg rendering work.
+  * NEW: download linux binaries for openscenegraph
+  * CHANGE: osg binary packages are now in googlecode download page.
+  * CHANGE: moved flock files in common folder
+  * CHANGE: nighfield flock center over last selected object
+  * NEW: nightfield allows for customized selectable objects
+  * CHANGE: revised effect
+  * NEW: Depth test setting in Effect
+  * NEW: effects are not added to scenenode. Added multipass effect support.
+  * CHANGE: Removed the battery attribute from ThinkGear/oinputserver.
+  * CHANGE: ThinkGear logging is now disabled by default, but can be enabled via config.
+  * NEW: ThinkGear blink support.
+  * UPDATED: Oinputserver wiki with ThinkGear/NeuroSky datagra...
+  * NEW: esc button force closes the application.
+  * NEW: support for custom meshes
+  * NEW: nightfield config & cybercommon text meshes
+  * CHANGE: TabletService now works as pointer controller.
+  * CHANGE: processing launcher unmaintained, moved into old code folder.
+  * CHANGE: old kinectdemo removed and substituted by multipleKinectDemo.
+  * UPDATE: nightfield - added support for trail rendering.
+  * UPDATE: nightfield interaction working + correct transparency support.
+  * UPDATE: add color and normal to sphere mesh
+  * nightfield: Interactor >> FlockAffector + fix for missing font in Pointer class
+  * CHANGE: updated nightfield to support drawing lines in flockrenderable
+  * NEW: nightfield uses oengine and custom renderables now (multigpu support)
+  * NEW: ThinkGearService and Brain events.
+  * UPDATED: Update intervals for VRPN and ThinkGear are handled in their respective config setting rather than by oinputserver. By default oinputserver streams as fast as possible.
+  * CHANGE: added define to compile a simplified version of ObserverUpdateService
+  * NEW: NavigationInteractor
+  * NEW: OpenSceneGraph binary packages
+  * UPDATED: Unity 3.2 to 3.4.1 now supported for the stereo script/prefab/package.
+  * CHANGE: Fixed ReferenceBox
+  * NEW: tutorial 6, custom renderable
+  * MERGE: bugfixes from the 0.6 branch
+  * UPDATED: Stereo script/prefab/package now configured for 2731x1525 (nearly full screen) resolution. Added stereo toggle to script.
+  * NEW: added option to batch build tutorials together with library
+## Bugfixes ##
+  * FIX: image loading
+  * FIX: osg
+  * FIX: tutorials and mouse wheel zoom
+  * FIX: FreeImage linux x64 build
+  * FIX: omicron integration
+  * FIX: WiimoteControllerScript no longer gives errors messages if there are no IR test objects attached.
+  * FIX: offsreen rendering in osg
+  * FIX: gui serialization on TabletInterface
+  * FIX: bug in math library constant definitions.
+  * FIX: secondary camera rendering on multipipe configs
+  * FIX: tcp connection
+  * FIX: tablet connection
+  * FIX: controller manipulator is hardcoded to get input from controller Id 0 to avoid problems when multiple controllers are active.
+  * FIX: pipe / channel initialization
+  * FIX: FindOmega.cmake
+  * FIX: external project include dirs
+  * FIX: font multithreading bug.
+  * FIX: Error in controller datagram parser
+  * FIX: NetService controller enumerations changed to ints for Linux compile.
+  * FIX: osgparallax light movement kinda fixed now
+  * FIX: Camera view transform
+  * FIX: Customizable camera projection offset
+  * FIX: NetService touch timeouts now work properly.
+  * FIX: osg dependency paths in linux
+  * FIX: external projects use nmake generator for visual studio 10 to fix some dependency issues.
+  * FIX: freefly camera navigation.
+  * FIX: Pointer ray unprojection for arbitrary observer positions.
+  * FIX: Unity MocapScript orientation working correctly. Updated example.
+  * FIX: Unity touch example and TouchScript
+  * FIX: NetService now supports events with up to 32 'Extra Data' values.
+  * FIX: Removed update interval from ThinkGear service. Was broken and not really needed due to native update interval of ThinkGear.
+  * FIX: Corrected quaternion ordering into event stream.
+  * FIX: OInputServer timing out on handshake.
+  * FIX: Update interval for ThinkGearService now updates correctly.
+  * FIX: overlay draw task for engine client performed during scene draw.
+  * FIX: app config files
+  * FIX: FindOpenSceneGraph.cmake
+  * FIX: linux opencl
+  * FIX: nightfield demo working again
+  * FIX: meshviewer object deletion + support for deletion using middle mouse button.
+  * FIX: lights not getting disabled in LightingPass + ambient light not set.
+  * FIX: Lights & LightingPass work again.
+  * FIX: Mouse causing crashes & vertex buffer drawing.
+  * FIX: pointer & draw functionality for interlaced mode.
+  * FIX: Tcp connection now processed all available data on each poll call.
+  * FIXED: Adding missing meta files for Unity tutorial.
+  * FIX: interlaced stuff
+
+
+---
+
+# omegalib v0.9 #
+**Branch-out Revision**: 1248
+## Summary ##
+(**Internal release**) This is the last release before breaking changes in the Api for 1.0
+
+
+---
+
+# omegalib v0.8.6 #
+**Branch-out Revision**: 1232
+## Summary ##
+(**Internal release**) This release has been created to mark the last working porthole release on venom
+
+
+---
+
+# omegalib v0.8 #
+**Branch-out Revision**: 1151
+## Summary ##
+(**Internal release**) This release has been created to build side-by-side with the first release of omegadoom.

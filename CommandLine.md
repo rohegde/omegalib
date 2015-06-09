@@ -1,0 +1,44 @@
+# Command line support #
+<p><b>Last revision:</b> ver. 3.7 - 3 May 2013</p>
+
+All omegalib applications (yes, even the ones you create) support a few predefined command line arguments. If you application neds more, you can also add custom ones.
+
+## Predefined command line arguments ##
+The predefined command line syntax of an omegalib application is:
+```
+	omegaApp [configFile] [-?] [-K] [-D path] [-L path] [-I <tx>,<ty>,<tw>,<th>,<portPool>] [-m <default|client|server>]
+```
+  * `configFile`: is the configuration file to use with this application (default: same as the application name with a .cfg extention, or default.cfg if the previous is not found)
+  * `-?`: prints the full command line reference (predefined AND custom options)
+  * `-K`: kill all application instances, when running on a cluster system
+  * `-D path`: changes the default omegalib data path see [the filesystem page](Filesystem.md) for more information
+  * `-L path`: changes the path of the application log file (default: same as the application name with a .log extention)
+  * `-I <tx>,<ty>,<tw>,<th>,<portPool>`: (version 3.7+) sets up multi-instance mode. See [the Multi-Instance Guide](MultiInstance.md) for more information.
+  * `-m <default|client|server,disable>`: (version 3.7+) sets the mission control mode. Read more in the section below.
+
+### Mission Control Mode ###
+The `-m` switch speciies the mission control mode for the application. Mission control allows applications to receive remote commands and create connections to each other to support collaborative applications. See the [Mission Control Wiki Page](MissionControl.md) for more information about Mission Control.
+The configuration of mission control is specified in the system configuration file (see [ConfigReference](ConfigReference.md)). The `-m` flag supports three modes:
+  * `default`: this is the default mode (not entering the `-m` switch is the same as entering `-m default`). In this mode the application checks the `serverEnabled` variable in the system configuration, and if set to true opens a **mission control server** on the port specified in the system configuration (`port` variable), or using default port 22500.
+  * `server`: same as default  bt forces the creation of a server even if `serverEnabled` is set to false in the configuration file.
+  * `client`: this option sets up the application as a **mission control client**, and attempts connection to a server using the `serverHost` and `port` variables in the system configuration file.
+  * `disable`: disables mission control
+
+## Custom command line arguments ##
+You can create additional command line arguments for your application, right before calling `omain`:
+```
+	int main(int argc, char** argv)
+	{
+		String argString;
+		bool argFlag;
+
+		Application<MyApplication> app("myapp");
+		
+		oargs().newNamedString('s', "string", "string", "a custom string", argString);
+		oargs().newFlag('f', "flag", "a custom flag", argFlag);
+		
+		return omain(app, argc, argv);
+	}
+```
+
+the `oargs()` function uses the `ArgumentHelper` class to perform argument parsing. More information about `ArgumentHelper` can be found [here](http://graphics.stanford.edu/~drussel/Argument_helper/).

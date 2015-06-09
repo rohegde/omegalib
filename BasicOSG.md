@@ -1,0 +1,172 @@
+# OpenSceneGraph programming in omegalib #
+<p><b>Last revision:</b> ver. 2.1 - 26 June 2012</p>
+
+This page explains the basics of OpenSceneGrph programming inside omegalib. [OpenSceneGraph](http://www.openscenegraph.org/projects/osg) is an open source high performance 3D graphics toolkit, used by application developers in fields such as visual simulation, games, virtual reality, scientific visualization and modelling. Existing osg applications can be easily ported to omegalib, or users can develop their own omega/osg applications from scratch.
+
+Altough osg is very powerful, it requires quite a lot of technical knowledge to be used effectively. In order to simplify the developement of omega/osg applications, omegalib integrates a wrapper library, called **cyclops**. If you are not sure you need the low-lever complexity and control of osg, check the [Cyclops developement page](BasicCyclops.md) first.
+
+## omega/osg application structure ##
+The general structure of an application using osg is similar to the one presented in the [basic openGL guide](BasicOpenGL.md). The major difference is that in this case we won't be creating a render pass explicitly, but we will let the osg support module (`OsgModule`) take care of this.
+
+### A little side note: what are Modules? ###
+Modules are pluggable components that can enrich the functionality of omegalib applications. In a sense they are similar to render passes (see the [basic openGL guide](BasicOpenGL.md)). The main difference with render passes is that while a render pass can only plug new rendering functionality into omegalib, a Module can:
+  * plug in code that is run at every frame update
+  * add its own handler for input events
+  * manage its own synchronized data in a cluster configuration
+omegalib ships with a bunch of pre-made modules, like the ones that add support for vtk and OpenSceneGraph. And each time you are implementing an omegalib application, you are actually **implementing a new module** (that's why your main application will always be a subclass of `EngineModule`). For more information on `EngineModule` see [omega::EngineModule](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_engine_module.html)
+
+Now let's go back to the main topic and take a look at the basic omega/osg application structure:
+```
+	#include <osgDB/ReadFile>
+	
+	#define OMEGA_NO_GL_HEADERS
+	#include <omega.h>
+	#include <omegaToolkit.h>
+	#include <omegaOsg.h>
+
+	using namespace omega;
+	using namespace omegaOsg;
+
+	class OsgViewer: public EngineModule
+	{
+	public:
+		OsgViewer()
+		{
+			myOsg = new OsgModule();
+			ModuleServices::addModule(myOsg); 
+		}
+
+		virtual void initialize();
+
+	private:
+		OsgModule* myOsg;
+	};
+
+	void OsgViewer::initialize()
+	{
+		// The node containing the scene
+		osg::Node* node = NULL;
+
+		// The root node (we attach lights and other global state properties here)
+		// Set the root to be a lightsource to attach a light to it to illuminate the scene
+		osg::Group* root = new osg::Group();
+
+		if(sModelName == "")
+		{
+			owarn("No model specified!!");
+			return;
+		}
+
+		String path;
+		if(DataManager::findFile(sModelName, path))
+		{
+			node = osgDB::readNodeFile(path);
+			if (node == NULL) 
+			{
+				ofwarn("!Failed to load model: %1% (unsupported file format or corrupted data)", %path);
+				return;
+			}
+			root->addChild(node);
+		}
+		else
+		{
+			ofwarn("!File not found: %1%", %sModelName);
+		}
+
+		// Set the osg node as the root node
+		myOsg->setRootNode(root);
+		
+		// Setup shading
+		myLight = new osg::Light;
+		myLight->setLightNum(0);
+		myLight->setPosition(osg::Vec4(0.0, 2, 1, 1.0));
+		myLight->setAmbient(osg::Vec4(0.1f,0.1f,0.2f,1.0f));
+		myLight->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+		myLight->setSpotExponent(0);
+		myLight->setSpecular(osg::Vec4(0.0f,0.0f,0.0f,1.0f));
+
+		osg::LightSource* ls = new osg::LightSource();
+		ls->setLight(myLight);
+		ls->setStateSetModes(*root->getOrCreateStateSet(), osg::StateAttribute::ON);
+
+		root->addChild(ls);
+	}
+
+	int main(int argc, char** argv)
+	{
+		Application<OsgViewer> app("osgviewer");
+		oargs().newNamedString('m', "model", "model", "The osg model to load", sModelName);
+		return omain(app, argc, argv);
+	}
+```
+
+The code presented is a simplified version of the osgviewer demo (omegaSource/src/apps/osgviewer). The actual demo code is a little more complex than this, and does a few additional things like adding a bounding box around the model, loading a mesh from a configuration file and enabling object interaction through scene node attachments. We won't discuss these details in this page and just concentrate on the basic functionality of the application, step by step.
+
+<p align='middle'><img src='http://omegalib.googlecode.com/svn/wiki/BasicOsg/osgviewer.png' width='500' /></p><p align='middle'>
+<i><sup>The osgviewer demo running (with arguments `-m meshes/walker.fbx`).</sup></i>
+</p>
+
+## The header section ##
+You may have noticed that in the header section, right after the osg include we define `OMEGA_NO_GL_HEADERS`. This define, placed before the include to `omega.h`, prevents the inclusion of the omegalib opengl headers. Adding this line is recommended if you are not performing direct openGL calls in our code.
+
+## The main application class ##
+The application class basic code looks like this:
+```
+	class OsgViewer: public ServerModule
+	{
+	public:
+		OsgViewer()
+		{
+			myOsg = new OsgModule();
+			ModuleServices::addModule(myOsg); 
+		}
+
+		virtual void initialize();
+
+	private:
+		OsgModule* myOsg;
+	};
+```
+The basic structure is similar to the one presented in the OpenGL demo. But here, instead of redefining the `initializeRenderer` method and creating a render pass, we create an instance of `OsgModule` and register it using the `ModuleServices` class. This will make sure that the omegalib osg subsystem is initialized and ready to go when we start the application (**See Also:** [omegaOsg::OsgModule](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_osg_1_1_osg_module.html), [omega::ModuleServices](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_module_services.html))
+
+## The OsgViewer::initialize() method ##
+The OsgViewer::initialize() method does most of the work in this application. Let's look at a couple of interesting portions of code.
+```
+	String path;
+	if(DataManager::findFile(sModelName, path))
+	{
+		node = osgDB::readNodeFile(path);
+		if (node == NULL) 
+		{
+			ofwarn("!Failed to load model: %1% (unsupported file format or corrupted data)", %path);
+			return;
+		}
+		root->addChild(node);
+	}
+	else
+	{
+		ofwarn("!File not found: %1%", %sModelName);
+	}
+```
+This part of the code performs the actual loading of an osg model. we use the omegalib `DataManager::findFile` method to convert a relative file path into an absolute one. The DataManager class searches for files in a few default locations (the most important one is the data folder inside your omega source directory). So, a relative path like `meshes/walker.fbx` could be converted to something like `C:/Workspace/omegaSource/data/meshes/walker.fbx` Search paths for the data manager can be customized, but we won't discuss it in this page. (for more information see [omicron::DataManager](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomicron_1_1_data_manager.html))
+
+The line `myOsg->setRootNode(root)` is the central point of the application: it passes the newly created osg node (put inside an `osg::Group`) to the omegalib osg module for rendering. This is equivalent to passing the rot node to an osg Viewer in a classic osg application.
+
+## The application entry point ##
+```
+	int main(int argc, char** argv)
+	{
+		Application<OsgViewer> app("osgviewer");
+		oargs().newNamedString('m', "model", "model", "The osg model to load", sModelName);
+		return omain(app, argc, argv);
+	}
+```
+The only new interesting piece of code here is the `newNamedString` method. It allows the application to read arguments passed to it and store the result into local or global variables. For this application, we are using it to read the path of the object we want to load
+
+## Side Note: osg supported formats ##
+Normally OpenScenegraph builds rely on plugins to read/write 3d and image file formats. The osg installation that comes with omegalib has already a default set of plugins installed. In particular it can read:
+  * most image file formats (jpg, png, tga, bmp, ...)
+  * Wavefront obj files
+  * Stanford ply files
+  * Autodesk fbx files
+The best supported 3d file format is fbx. It is therefore recommended that you convert your models to the fbx format (you can use [an excellent free tool by Autodesk](http://usa.autodesk.com/adsk/servlet/pc/item?id=10775855&siteID=123112) for this)

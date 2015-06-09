@@ -1,0 +1,528 @@
+<p><b>Last revision:</b> ver. 4.0 - 31 May 2013</p>
+
+
+
+# Module omega #
+The omega module contains all the core functionality of omegalib like scene graph management and event handling. It also offers a few utility functions to manage verious aspects of an omegalib application.
+
+
+---
+
+## Scene Management ##
+These functions are used to access the scene, query nodes and read input events.
+
+### `getScene()` ###
+Returns the root node of the scene.
+
+Example:
+```
+	# Move the entire scene
+	root = getScene()
+	root.setPosition(Vector3(0, 2, 0))
+```
+
+### `getEvent()` ###
+Returns the event currenty being processed. Should be used only inside an event handler function.
+
+### `getRayFromEvent(evt)` ###
+Returns a 3D ray from events that support ray generation.
+`Pointer`, `Wand` and `Mocap` events all support the generation of 3D rays into the scene. A typical use of rays is object picking. (see `querySceneRay`)
+The function returns a tuple containing three values:
+  * A boolean, se tto true when ray generation was sucessfull
+  * A `Vector3` containing the ray origin
+  * A `Vector3`containing the ray direction
+
+### `getRayFromPoint(x, y)` ###
+Returns a ray from a 2D point on the screen plane. This method works for tiled displays as long as they provide a planar mapping of the display geometry (`PlanarDisplayConfig` and `CylindricalDisplayConfig` work. `CustomDisplayConfig` does not).
+The function returns a tuple containing three values:
+  * A boolean, se tto true when ray generation was sucessfull
+  * A `Vector3` containing the ray origin
+  * A `Vector3`containing the ray direction
+
+### `querySceneRay(origin, dir, callback)` ###
+Performs a query on the scene using a ray defined by the `origin` and `dir` parameters. For each hit node, it invokes a callback function taking the node reference and distance to the origin as parameters.
+
+**NOTE:** only nodes tagged as selectable (see `Node.setSelectable`) will be considered for the query.
+
+Example 1 - Simple query:
+```
+	node = SceneNode.create('node')
+	getScene().addChild(node)
+	node.setSelectable(true)
+	
+	# attach some stuff to the node...
+	# [ ... ]
+	
+	def queryCallback(node distance):
+		print("Node " + node.getName() + " hit at " + distance)
+	
+	querySceneRay(Vector3f(0, 0, 0), Vector3f(0, 0, -1), queryCallback)
+```
+
+Example 2 - Picking and moving objects:
+```
+	# Create multiple objects, do setSelectable(True) on them
+	# to make them selectable in ray queries
+	# [...] Skipping code
+	
+	# Create an interactor, this will be used to move objects once they
+	# are selected
+	interactor = ToolkitUtils.setupInteractor('config/interactor')
+
+	# This function is called when an object is picked.
+	# Just set the object as the active movable object by passing it
+	# to the interactor
+	def onObjectSelected(node, distance):
+		interactor.setSceneNode(node)
+
+	# Event function: on pointer events when the left button is pressed,
+	# do picking. 
+	def onEvent():
+		e = getEvent()
+		if(e.getServiceType() == ServiceType.Pointer):
+			# When the confirm button is pressed:
+			if(e.isButtonDown(EventFlags.Button1)):
+				r = getRayFromEvent(e)
+				if(r[0]): querySceneRay(r[1], r[2], onObjectSelected)
+
+	setEventFunction(onEvent)
+```
+
+
+
+---
+
+## Camera Management Functions ##
+These global functions that control the camera.
+
+### `getDefaultCamera()` ###
+Returns the main omegalib camera instance
+
+### `getCamera(name)` ###
+Finds a camera by name
+
+### `getOrCreateCamera(name)` ###
+Finds a camera by name, or creates it if no camera with the specified name exists.
+
+### `setTileCamera(tileName, cameraName)` ###
+Sets the camera attached to the specified tile (by name). The tile names can be obtained using the `getTiles()` function. If a camera with the specified name does not exist, it will be created.
+
+### `setNearFarZ(near, far)` ###
+Sets the near and far clip planes for the default camera
+
+### `getNearZ()` ###
+Gets the near clip plane for the default camera
+
+### `getFarZ()` ###
+Gets the far clip plane for the default camera
+
+
+---
+
+## Callbacks ##
+These functions specify callbacks to be executed during frame updates and when events are received.
+
+### `setUpdateFunction(func)` ###
+Sets a callback functionto to be called for each frame. The function will take three parameters:
+  * frame number
+  * time since application start (in seconds)
+  * time since last frame (in seconds)
+Example:
+```
+	def onUpdate(frame, time, dt):
+		print("frame number: " + frame)
+		
+	setUpdateFunction(onUpdate)
+```
+
+### `setEventFunction(func)` ###
+Sets a callback function to be called every time an event is received.
+Example:
+```
+	def onEvent():
+		e = getEvent()
+		# prints the event type
+		print(e.getType())
+		
+	setEventFunction(onUpdate)
+```
+
+### `setDrawFunction(func)` ###
+(**experimental**)
+Sets a callback functionto to be called for each frame during 2d drawing. The function will take four parameters:
+  * the total display size (as a Vector2)
+  * the current tile size (as a Vector2)
+  * a `Camera` object
+  * a `DrawInterface` object that can be used to draw 2d elements
+Example:
+```
+	white = Color("white")
+	black = Color("black")
+
+	def onDraw(displaySize, tileSize, camera, painter):
+		global white
+		global black
+
+		# Get the default font
+		font = painter.getDefaultFont()
+
+		# Set some text and compute its width and height in pixels (given the font we cant to use)
+		text = "Hello World From Python!"
+		textSize = font.computeSize(text)
+
+		# Draw a white box and put the text inside it
+		painter.drawRect(Vector2(10, 10), textSize + Vector2(10, 10), white)
+		painter.drawText(text, font, Vector2(15, 15), TextAlign.HALeft | TextAlign.VATop, black)
+		
+	setDrawFunction(onDraw)
+```
+
+### `addSelectionListener(node, cmd)` ###
+Attaches a command to be executed whenever the node selection state changes
+
+Example:
+```
+	node = SceneNode.create('node')
+	getScene().addChild(node)
+	
+	# Change the node size when the selection state changes
+	addSelectionListener(node, 'node.setScale(Vector3f(1.5, 1.5, 1.5))')
+	
+	# Force a selection state change. This will invoke the listener code
+	node.setSelected(True)
+```
+
+### `addVisibilityListener(node, cmd)` ###
+Attaches a command to be executed whenever the node visibility changes
+
+Example:
+```
+	node = SceneNode.create('node')
+	getScene().addChild(node)
+	
+	# Print a message on visibility changes
+	addVisibilityListener(node, 'print("node " + node.getName() + " visible changed"')
+	
+	# Change node visibility.
+	node.setVisible(False)
+```
+
+
+---
+
+## Sound Management ##
+These global functions are used to handle the sound environment.
+
+### `getSoundEnvironment()` ###
+Returns an instance of the `SoundEnvironment` class if sound support is available on the system. Return `None` otherwise. On cluster systems with sound enabled, this function returns a valid `SoundEnvironment` instance **only** on the master node. Slave nodes do not have a sound interface. To create cluster-aware code users should skip sound code in their scripts when sound is disabled (for instance with an `if(isSoundEnabled()):` block.
+For more information on sound support check the [omicron Sound Reference Page](https://code.google.com/p/omicron-sdk/wiki/SoundAPIReference)
+
+### `isSoundEnabled()` ###
+Returns `True` if sound is enabled and available on the system. On cluster systems with sound enabled, this function returns true **only** on the head node.
+
+
+---
+
+## Application Control ##
+This functions control execution and can be used to start stop and clean scripts, and to execute deferred code.
+
+### `oexit()` ###
+Exits the application
+
+### `isMaster()` ###
+Returns `True` if the script is executing on the **master node** of a cluster display system.
+
+### `queueCommand(script)` ###
+Queues a script command for execution. The command will be executed during the next update cycle.
+
+### `broadcastCommand(script)` ###
+**For cluster systems only**. When executed on the master node, it tells all the slaves (and itself) to execute the specified command. Useful to implement event handlers after some code executed only on the master node (i.e. caching of remote data).
+A `broadcastCommand` call executed on a slave node does nothing. A call on a non-cluster environment behaves like `queueCommand`.
+
+Example:
+```
+	import urllib
+	# On the master node, fetch an image somewhere on the internet
+	if(isMaster())
+		urllib.urlretrieve("http://www.digimouth.com/news/media/2011/09/google-logo.jpg", "local-image.jpg")
+		# Call this when you are done
+		broadcastCommand('onImageLoaded()')
+	
+	# This will be called on all nodes once the image is loaded. You can open the image here.
+	# (Assuming use of a shared filesystem in your cluster installation)
+	def onImageLoaded():
+		img = loadImage("local-image.jpg")
+```
+
+### `orun(script)` ###
+Runs an external script. The script is executed immediately.
+
+### `oclean()` ###
+Stops the current script, cleans the engine and get everything back to its initial state.
+
+### `ocleanrun(script)` ###
+Like orun, but performs a cleanup first. Useful for runtime switching to a different application.
+
+### `getHostname()` ###
+Gets the name of the host running the slave instance of omegalib
+
+### `isHostInTileSection(string host, int tilex, int tiley, int tilew, int tileh)` ###
+Returns true if the specified host owns at least a tile in the specified tile rectangle.
+Example:
+```
+	# Prints TRUE on hosts that are within the tile rectangle [1,1 -> 2,1]
+	if(isHostInTileSection(getHostname(), 1, 1, 2, 1) print('TRUE')
+```
+
+
+---
+
+## Data Access ##
+These functions are used control the loading of assets.
+
+### `ofindfile(name)` ###
+Searches for a file, returning the full path if found, or an empty string if the search fails. See [the filesystem management page](FileSystem.md) for more information on file lookup in omegalib.
+
+### `osetdataprefix(prefix)` ###
+Sets a path prefix for data loading operations. Currently used only for image loading commands.
+
+### `ogetdataprefix()` ###
+Gets the path prefix used for data loading operations. Currently used only for image loading commands.
+
+### `loadImage(filename)` ###
+Loads an image given a file path. If loading is succesfull, returns an instance of `PixelData`. If loading fails, return `None`
+
+### `setImageLoaderThreads(int)`, `getImageLoaderThreads()` ###
+Gets or sets the number of threads used for asynchronous image loading. Async image loading is currently available only for native code modules.
+
+
+---
+
+## Diagnostics and Configuration ##
+These functins are used to configure various aspects of the application, and to print debug information.
+
+### `getBoolSetting(section, name, default)` ###
+Reads a boolean-type setting `name` from setting section `section`. The section is searched inside the app configuration file first, then in system configuration.
+If the setting is not found, the function return the specified default value.
+
+### `printChildren(node, depth)` ###
+Prints the tree of children of `node` up to the specified depth
+
+### `overridePanopticStereo(value)` ###
+When set to true, switches from panoptic stereo tracking to standard tracking. This option is used only when panoptic stereo is enabled for the current display system.
+
+### `listTiles()` ###
+Return a list of the names of all the tiles used by the current configuration
+
+### `toggleStereo()` ###
+Switches between mono and stereo rendering mode on systems with stereo rendering support.
+
+### `toggleStats(stats)` ###
+Enables or disables statistics output from a specific source in the statitics window. The statistics window must be enabled for the configuration. The `stats` parameter is a list of statistic or tile names separated by spaces.
+
+Example:
+```
+	# Starts displaying statistics for tile 0x0
+	toggleStats('0x0')
+	
+	# Stops displaying statistics for tile 0x0
+	toggleStats('0x0')
+	
+	# Starts displaying statistics for tile 1x0, 1x1, 0x1
+	toggleStats('1x0 1x1 0x1')
+	
+	# Displays statistics for all available sources
+	toggleStats('all')
+	
+	# Displays statistics in compact mode
+	toggleStats('compact')
+```
+
+### `printObjCounts()` ###
+Prints a list and count of currently allocated refcounted objects
+
+### `printModules()` ###
+Lists the modules currently active in the application
+
+
+---
+
+## `class SceneNode` ##
+Wraps the [omega::SceneNode](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_scene_node.html) C++ class. Base class for nodes in the scene graph
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| **Basic** |             |
+| `create(name)` **static** | Creates a scene node with the specified name |
+| `getName()` | Gets the node name |
+| **Transformation** |             |
+| `getPosition()` | Gets the node position |
+| `setPosition(pos)`, `getPosition()` | Gets and sets the node position |
+| `getScale()`, `setScale(pos)` | Gets and sets the node scale |
+| `getOrientation()`, `setOrientation(orientation)` | Gets and sets the node orientation |
+| `yaw(rads)`, `pitch(rads)`, `roll(rads)` | Applies a yaw, pitch or roll to the node (in radians) |
+| `lookAt(position, upvector)` | Makes the node face the specified position and orients the node Y axis to correspond to the passed up vector. |
+| `setFacingCamera(camera)` `getFacingCamera()` | Makes the node face the specified camera (billboard) pass `None` to disable billboard mode. |
+| **Hierarchy** |             |
+| `numChildren()` | Gets the number of children of this node |
+| `getChildByName(name)` | Finds a child by name |
+| `getChildByIndex(index)` | Gets a child by index |
+| `addChild(node)` | Adds a child to this node |
+| `removeChildByRef(node)` | Removes a child by reference |
+| `removeChildByName(name)` | Removes a child by its name |
+| `removeChildByIndex(index)` | Removes a child by its index |
+| `getParent()` | Gets the node parent |
+| **Visibility** |             |
+| `isVisible()`, `setVisible(value)` | Gets or sets the node visibility status |
+| **Bounding box** |
+| `isBoundingBoxVisible()`, `setBoundingBoxVisible(value)` |             |
+| `getBoundMinimum()`, `getBoundMaximum()` | Gets the bounding box minimum or maximum points (as `Vector3`) |
+| `getBoundCenter()` | Gets the bounding box center (as `Vector3`) |
+| `getBoundRadius()` | Gets the bounding box radius |
+| **Selection control** |
+| `isBoundingBoxVisible()`, `setBoundingBoxVisible(value)` |             |
+| `isSelected()`, `setSelected(value)`|             |
+| `isSelectable()`, `setSelectable(value)` |             |
+| `getTag()`, `setTag(tag)` | Gets or sets the string tag for the node |
+| `getFacingCamera()`, `setFacingCamera(camera)` | Gets or sets the camera this node should be always facing (billboard mode) |
+
+### Examples ###
+#### Basic ####
+```
+	# gets the root scene node
+	root = getEngine().getScene()
+	# prints the node position
+	print(root.getPosition()
+	
+	root.setPosition(Vector3(0, 2, -2))
+	
+	# scale is returned as a Vector3
+	scale = root.getScale()
+	scale.x = 0.1
+	root.setScale(scale)
+	
+	# orientation is of Quaternion type
+	print(root.getOrientation())
+	
+	# yaw, pitch roll are in radians	
+	root.yaw(1)
+```
+
+
+---
+
+## `class Event` ##
+Wraps the [omicron::Event](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomicron_1_1_event.html) C++ class. Encapsulates information about input events.
+Input events are explained in more detail [here](https://code.google.com/p/omicron-sdk/wiki/EventReference).
+This class is used within the context of an event handler function, registered through the `setEventFunction` call. The `EventType`, `EventFlags`, `EventExtraDataType`, `ServiceType` are together with the event class. They encapsulate the [omicron::EventBase::Type](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomicron_1_1_event_base.html#af95879546c1e3486d8b26c24e787dc53) [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomicron\_1\_1\_event\_base.html#a39f525558912d1fd57b9d0a58a5e4977 omicron::EventBase::Flags](.md) [omicron::EventBase::ExtraDataType](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomicron_1_1_event_base.html#a91f2e2308ea1cec00fe036789a040bb9) [omicron::EventBase::ServiceType](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomicron_1_1_event_base.html#ab1f3e0a5d901729bf93e3b5ff37a54be) C++ Enumerations.
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `isKeyDown(key)`, `isKeyUp(key)` |             |
+| `isButtonDown(button)`, `isButtonUp(button)` |             |
+| `getAxis(index)` | Gets the value for the specified axis (if available) Non available axes return 0 by default. |
+| `getSourceId()` |             |
+| `getType()` |             |
+| `getServiceType()` |             |
+| `getPosition()`,	`getOrientation()` |             |
+| `isProcessed()` | Returns `True` if this event has already been handled somewhere else |
+| `setProcessed()` | Marks this event as processed |
+
+### Event types ###
+The method `getType()` returns a value from the `EventType` enumeration. The `EventType` enumeration contains the following values: `Select`, `Toggle`, `ChangeValue`, `Update`, `Move`, `Down`, `Up`, `Trace`, `Connect`, `Untrace`, `Disconnect`, `Click`, `Zoom`, `Split`, `Rotate`, `Null`
+
+For more information about event types read the [Event reference page](https://code.google.com/p/omicron-sdk/wiki/EventReference) of the omicron SDK
+
+### Event flags ###
+The methods `isKeyDown()`, `isKeyUp()`, `isButtonDown()`, `isButtonUp()` return a value from the `EventFlags` enumeration. The `EventFlags` enumeration contains the following values: `Left`, `Middle`, `Right`, `Button1`, `Button2`, `Button3`, `Button4`, `Button5`, `Button6`, `Button7`, `SpecialButton1`, `SpecialButton2`, `SpecialButton3`, `Ctrl`, `Alt`, `Shift`, `ButtonDown`, `ButtonUp`, `ButtonLeft`, `ButtonRight`, `Processed`, `User`
+
+For more information about event flags read the [Event reference page](https://code.google.com/p/omicron-sdk/wiki/EventReference) of the omicron SDK
+
+### Event service types ###
+The method `getServiceType()` returns a value from the `ServiceType` enumeration. The `ServiceType` enumeration contains the following values: `Pointer`, `Mocap`, `Keyboard`, `Controller`, `Ui`, `Generic`, `Brain`, `Wand`, `Audio`
+
+For more information about event service types read the [Event reference page](https://code.google.com/p/omicron-sdk/wiki/EventReference) of the omicron SDK
+
+### Example ###
+```
+	def handleEvent():
+		e = getEvent()
+		print(e.getPosition())
+		if(e.isButtonDown(EventFlags.ButtonLeft)): 
+			print("Left button pressed")
+		if(e.isButtonDown(EventFlags.ButtonUp)): 
+			print("Up button pressed")
+			
+	setEventFunction(handleEvent)
+```
+
+
+---
+
+## `class Camera` (extends `SceneNode`) ##
+Wraps the [omega::Camera](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_camera.html) class. Controls the applications camera (accessed through `getDefaultCamera()` or additional cameras in the application.
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `setPitchYawRoll(value)` | Sets the camera orientation as yaw, pitch roll in radians. `value` is a `Vector3`. For example, to rotate 45 degrees around the global Y axis: ` camera.setPitchYawRoll(Vector3(0, radians(45), 0)) ` |
+| `getHeadOffset()`, `setHeadOffset(value)` |             |
+| `setEyeSeparation(float value)`, `getEyeSeparation()` | Gets or sets the eye separation for stereo rendering |
+| `setHeadOrientation(Vector3 value)`, `getHeadOrientation()` |             |
+| `isTrackingEnabled()`, `setTrackingEnabled(value)` |             |
+| `getTrackerSourceId()`, `setTrackerSourceId(value)` |             |
+| `setControllerEnabled(value)`, `isControllerEnabled()` |             |
+| `localToWorldPosition(position)` |             |
+| `localToWorldOrientation(orientation)`|             |
+| `focusOn(node)`| Moves and orients the camera to center the node in the field of view. |
+
+
+---
+
+## `class DrawInterface` ##
+(**experimental**)
+Wraps the [omega::DrawInterface](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_draw_interface.html) class. Exposes methods to simplify drawing on 2d surfaces.
+Used in conjunction with `setDrawFunction`
+
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `drawRectGradient(position, size, orientation)` |             |
+| `drawRect(position, size, color)` |             |
+| `drawRectOutline(position, size, color)` |             |
+| `drawText(text, font, position, alignFlags)` |             |
+| `drawCircleOutline(position, radius, color, segments)` |             |
+| `createFont(fontName, fileName, size)` |             |
+| `getFont(name)` |             |
+| `getDefaultFont()` |             |
+
+### Remarks ###
+Valid align flags for `drawText`:
+  * `TextAlign.HALeft`
+  * `TextAlign.HARight`
+  * `TextAlign.HACenter`
+  * `TextAlign.VATop`
+  * `TextAlign.VABottom`
+  * `TextAlign.VAMidde`
+
+
+---
+
+## `class Font` ##
+(**experimental**)
+Wraps the [omega::Font](http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_font.html) class.
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `computeSize(text)` | Returns the width and height in pixels of the specified string |
+
+
+---
+
+## `class PixelData` ##
+Wraps the [omega::PixelData](http://omegalib.googlecode.com/svn/refdocs/trunk/html/structomega_1_1_pixel_data.html) class.
+### Methods ###
+| Method(s) | Description |
+|:----------|:------------|
+| `getWidth()`, `getHeight()` | Returns the width and height in pixels of the specified image |

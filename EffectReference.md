@@ -1,0 +1,182 @@
+<p><b>Last revision:</b> ver. 4.0 - 18 May 2013**</p>**
+
+
+
+# Cyclops Effects and Materials #
+The cyclops library offers some helper functionality to add vertex and fragment shaders to cyclops objects (that is, everything derived from the `Entity` class).
+Shaders are attached to entities using **effects**. Effects simplify support of several shading features like per-pixel lighting with multiple lights, shadow maps and multipass shading support.
+Effects can be applied using the `Entity.setEffect` method. `setEffect` takes a string **effect definition**, containing the effect type, custom shaders and optional arguments
+
+An example of applying effects in python follows:
+```
+	# Create a cube and make it red
+	box = BoxShape.create(0.5, 0.5, 0.5)
+	box.setEffect("colored -d red")
+```
+
+In general the effect string definition will look like `<effect-type> [-option [value]]+`
+
+## Note for omegalib 4.0 and higher ##
+In omegalib 4.0+, the cyclops material API has been extended to support **all** the functionality included in effects. Please see the [CyclopsPythonReference](CyclopsPythonReference.md) page for more information. All the information described here is still valid. The Effect and material API is backwards compatible. But some explanation of the internals may be out of date. This document will be updated in the near future to better explain how the new material API works.
+
+## Effects and Materials, Some Background ##
+In version 3.5 and higher of omegalib, Entities offer a new material API (`Entity.getMaterial` and the `Material` and `Uniforms` class). Materials and effects share a few common functionalities.
+For instance, you can set the diffuse color of an object using both:
+```
+	# do this...
+	box.setEffect('colored -d blue')
+	# or this (first color is diffuse, second is emissive)
+	box.getMaterial().setColor(Color(0,0,1,0), Color(0, 0, 0))
+```
+In general, the `setEffect` function exists for historical reasons: before a simpler way to wrap the API to python was available, it was quicker to expose a simple function accepting a string definition of a visual effect instead of implementing a full material class. When the Material class was introduced, removal of `setEffect` was considered but ultimately this way of setting visual properties was kept for a few practical reasons:
+  * using a single `setEffect` call instead of multiple longer material property sets keeps code shorter and more readable for simple effects. It is also very practical for runtime debugging of graphics (i.e. Its easier to type `box.setEffect('colored -e #ffffff80 -t')` than `box.getMaterial().setColor(Color('#ffffff80'), Color('black')); box.getMaterial().getTransparent(True)`)
+  * `setEffect` can be used to easily specify **multipass effects** using the pipe operator `|`.
+  * effect definitions are easier to serialize / deserialize
+On the other hand, introducing the `Material` class is useful for the following reasons:
+  * For dynamically changing properties (i.e. a diffuse color or alpha value changing every frame). the Material API is much more efficient, since it does not require string parsing and can also skip some internal OpenSceneGraph logic.
+  * Materials let users specify shader uniforms (see the cyclops `Uniforms` class, from which `Material` derives).
+
+The co-existence of `Material` and `setEffect` turned out to have a few advantages for applications. one can think of effects as **material templates** that define what shader to use, textures and a few other basic properties of a material. The effect can be applied to multiple entities that can then **personalize** the way the effect looks on them, using their own Material properties like colors and shader uniforms. Changes to an Entity material will show only on that specific entity, and not on other entities using the same effect.
+
+Effects are naturally used to define what shader program to use for object rendering. Omegalib provides a few default shaders ('colored', 'textured', 'bump'), but users can add their own:
+```
+	# Create a new program called 'fancy', using fancy.vert and fancy.frag as shaders.
+	# we assume this program uses a float uniform value called 'fanciness'
+	program = ProgramAsset()
+	program.name = "fancy"
+	program.vertexShaderName = "./fancy.vert"
+	program.fragmentShaderName = "./fancy.frag"
+	getSceneManager().addProgram(program)
+
+	# Apply effect to box1 and make it really fancy
+	box1.setEffect('fancy')
+	box1Fanciness = box1.getMaterial().addUniform('fanciness', UniformType.Float)
+	box1Fanciness.setFloat(100)
+	
+	# Box2 is not as fancy as box1.
+	box2.setEffect('fancy')
+	box2Fanciness = box2.getMaterial().addUniform('fanciness', UniformType.Float)
+	box2Fanciness.setFloat(0.1)
+	
+	# Box3 is fancy AND colored blue (will be drawn twice)
+	box3.setEffect('fancy | colored -d blue')
+```
+Using Effects and Materials together gives users a lot of creative flexibility, and altough a few things can be done with either of them, you can follow these quidelines to help you choose:
+  * You need to specify which shader you want to use with an entity: **use setEffect**
+  * You want to quickly test visual variations of an object at runtime: **use setEffect**
+  * You want to do multipass rendering for an object: **use setEffect**
+  * You have a shader with custom uniforms and want to set them at runtime: **use Material**
+  * You want to change an object color or alpha value at each frame: **use Material**
+
+The rest of this document will explain how to use effect definitions. For more information about the Material API, check the [Cyclops Python Reference Page](CyclopsPythonReference.md).
+
+
+---
+
+## Common Effect Options ##
+| **Option** | **Meaning** |
+|:-----------|:------------|
+| `-t`		     | Enable alpha blending |
+| `-a`		     | Enable additive blending (requires `-t`) |
+| `-D`		     | Disable depth testing |
+| `-C`		     | Disable backface culling |
+| `-w`		     | Render object as wireframe |
+| `-o [num]`		| Polygon offset value. Used when rendering the same object multiple times, to offset the depth value and pass the depth test. |
+| `-g <value>`		| Sets the specular gloss value (usually between 0 and 1). This parameter sets the `unif_Gloss` uniform in the fragment shader |
+| `-s <value>`		| Sets the specular shininess value (usually between 0 and 100+). This parameter sets the `unif_Shininess` uniform in the fragment shader |
+
+The common options are available on all effects, both builtin (`colored`, `textured`, `bump`) and user-defined.
+
+### Custom shaders ###
+
+
+---
+
+## Colored shading ##
+| **Effect Definition** | **Result** |
+|:----------------------|:-----------|
+| `colored -d red`      | <img src='http://omegalib.googlecode.com/svn/wiki/EffectReference/red.png' width='150' /> |
+| `colored -d #404040`  | <img src='http://omegalib.googlecode.com/svn/wiki/EffectReference/grey.png' width='150' /> |
+| `colored -d blue -g 1.0 -s 30` | <img src='http://omegalib.googlecode.com/svn/wiki/EffectReference/bluePlastic.png' width='150' /> |
+| `colored -d blue -g 0.5 -s 1` | <img src='http://omegalib.googlecode.com/svn/wiki/EffectReference/blues1.png' width='150' /> |
+| `colored -d #202020 -g 1.0 -s 30 -t -a` | <img src='http://omegalib.googlecode.com/svn/wiki/EffectReference/additive.png' width='150' /> |
+| `colored -d black -e yellow` | <img src='http://omegalib.googlecode.com/svn/wiki/EffectReference/emissive.PNG' width='150' /> |
+| `colored -d yellow | colored -d black -e red -w -o -10000` | <img src='http://omegalib.googlecode.com/svn/wiki/EffectReference/wire2.PNG' width='150' /> |
+
+
+---
+
+## Textured shading ##
+| **Effect Definition** | **Result** |
+|:----------------------|:-----------|
+| `textured -d cyclops/test/checker.jpg` | <img src='http://omegalib.googlecode.com/svn/wiki/EffectReference/textured1.png' width='150' /> |
+| `textured -d cyclops/test/graduated.jpg -t -a` | <img src='http://omegalib.googlecode.com/svn/wiki/EffectReference/texturedgrad.png' width='150' /> |
+
+
+---
+
+## Bump shading ##
+**TODO**
+
+
+---
+
+# Shaders Reference #
+
+## Shader Macros ##
+| **Macro** | **Description** |
+|:----------|:----------------|
+| `@vertexShader` | Added at the beginning of a shader, add the default cyclops vertex shader code. (default is `/data/cyclops/common/forward/default.vert`). You need to add this at the beginning of a vertex shader to use all the other macros and functions listed here. |
+| `@surfaceShader` | Added at the beginning of a shader, add the default cyclops fragment shader code. (default is `/data/cyclops/common/forward/default.fragment`). You need to add this at the beginning of a vertex shader to use all the other macros and functions listed here. |
+| `@postLightingSection` |                 |
+| `$@fragmentLightSection { }@` | Defines the block of code that will be included in the shader for each active light Inisde the block, `@lightIndex` is the index of the current light in the gl\_LightSource array. See `/data/cyclops/common/forward/default.frag` for an example of use. Re-defining this in your shader as an empty block can be used to disable lighting. |
+
+| `@vsinclude shadowMap` | **internal** |
+|:-----------------------|:-------------|
+| `@fsinclude shadowMap` | **internal** |
+| `@fsinclude lightFunctions` | **internal** |
+| `@customFragmentDefs`  | **internal** |
+
+## Callbacks ##
+| **Function Name** | **Description** |
+|:------------------|:----------------|
+| `void setupSurfaceData(vec4 eyeSpacePosition)` | Used inside a cyclops vertex shader (see `@vertexShader`) to setup custom per-vertex rendering properties. Can be left empty. |
+| `SurfaceData getSurfaceData(void)` | Used inside a cyclops surface shader (see `@surfaceShader`) to define the properties of the renderable surface. Must return a `SurfaceData` structure with the properties of the current surface fragment. |
+| `vec4 lightFunction(SurfaceData sd, LightData ld)` | Used to implement custom light functions used by `Light.setLightFuction`. Accepts surface and light definition structures, and returns output luminance for the current surface fragment.|
+
+## Common Variables ##
+| **Variable** | **Description** |
+|:-------------|:----------------|
+| `varying vec3 var_Normal` |                 |
+| `varying vec3 var_EyeVector` |                 |
+| `uniform float unif_Alpha` |                 |
+
+## Structures ##
+### `SurfaceData` ###
+| **Variable** | **Description** |
+|:-------------|:----------------|
+| `vec4 albedo` | The albedo of the surface. Will be modulated by the lights affecting the surface. Albedo alpha will be multiplied by emissive alpha. |
+| `vec4 emissive` | The emissive color of the surface. This color will be added to the final luminance, after lighting. |
+| `vec3 normal` | The normal of this surface fragment. |
+| `float shininess` | The shininess power of the fragment. Used for specular calculation. |
+| `float gloss` | The gloss of the fragment. Between 0 and 1. Modulates the specular luminance before adding it to the final fragment luminance (so, 0 disables specular) |
+
+### `LightData` ###
+| **Variable** | **Description** |
+|:-------------|:----------------|
+| `vec4 diffuse` | The diffuse color of the light. |
+| `vec4 ambient` | The ambient color of the light. |
+| `vec4 specular` | The specular color of the light. |
+| `vec3 dir`   | The light direction for directional lights. |
+| `vec3 halfDir` | The light half vector. |
+| `vec3 spotDirection` | The light direction for spot lights. |
+| `float spotCutoff` | The cutoff for spot lights. |
+| `float spotExponent` | The exponent for spot lights. |
+| `float shadow` | A shadow multiplier for lights generating shadow maps. |
+| `float distance` | The distance for spot lights. |
+| `vec3 attenuation` | The constant, linear, quadratic attenuation for the light. |
+
+### `LitSurfaceData` ###
+| **Variable** | **Description** |
+|:-------------|:----------------|
+| `vec4 luminance` | The final luminance for the fragment. Typically this is the final value written to the frame buffer. |
